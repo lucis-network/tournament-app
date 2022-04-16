@@ -1,0 +1,74 @@
+@import "styles/common"
+
+.pcMenu
+  position: absolute
+  width: 100%
+  z-index: 10
+    
+.menu_container
+  color: inherit
+  background: rgba(40, 38, 54, 0.2)
+  @media (min-width: 1024px)
+    backdrop-filter: blur(4px)
+    border-bottom: 1px solid #cfcfcf73
+    padding-top: 20px
+    padding-bottom: 20px
+
+.logo
+  height: 75px
+  width: 268px
+  display: flex
+  flex-flow: row wrap
+  align-items: center
+  justify-content: flex-start
+  cursor: pointer
+  p
+    margin: 0
+    font-size: 12px
+    color: white
+
+.groundSubMenu
+  position: relative
+  a:hover 
+    color: white
+  .subMenu
+    position: absolute
+    top: -40px
+    right: -100px
+    width: 280px
+    box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2)
+    background: linear-gradient(121.07deg, rgba(255, 255, 255, 0.3) -26.88%, rgba(255, 255, 255, 0.1) 73.85%)
+    transform: scale(0) translate(0px, 0px)
+    backdrop-filter: blur(4px)
+    opacity: 0
+    transition: 0.3s
+    padding: 0px 16px
+  .subMenu > li
+    color: #fff
+    font-size: 20px
+    padding: 12px 0px
+    cursor: pointer
+    transition: 0.3s
+    border-bottom: 2px solid #fff
+  .subMenu > li:last-child
+    border-bottom: none
+  .subMenu > li:hover
+    opacity: 0.8
+
+.groundSubMenu:hover .subMenu
+  opacity: 1
+  transform: scale(1) translate(-115px, 80px)
+
+.infinite
+  // width: 450px
+  // height: 350px
+  // overflow: auto
+  // display: flex
+  // justify-content: flex-end
+  .infiniteContainer
+    width: 450px
+    height: 350px
+    overflow: auto
+
+.notification 
+  width: 24px

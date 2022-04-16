@@ -1,0 +1,62 @@
+@import ../../../styles/common
+
+.container
+  font-size: inherit
+
+.mdl
+  :global(.ant-modal-content)
+    max-width: 372px
+    margin: 0 auto
+  :global(.anticon )
+    color: #CD28E8
+.title
+  font-size: 18px
+
+.items
+  display: flex
+  flex-flow: row wrap
+  justify-content: space-evenly
+  align-items: center
+  margin-bottom: 20px
+
+.verifyC
+  p
+    font-size: 14px
+    margin: 0
+  button
+    margin-top: 20px
+  .note
+    margin-top: 10px
+
+.item
+  cursor: pointer
+  border: none
+  width: 90px
+  height: 90px
+  display: flex
+  flex-flow: column wrap
+  justify-content: center
+  align-items: center
+
+  @include no-select
+
+  margin-bottom: 10px
+
+  img
+    margin-top: 10px
+    width: 38px
+    height: 38px
+  p
+    font-size: 12px
+    margin: 8px 0 0 0
+
+  &.active
+    border: none
+    @include border-grad-1(linear-gradient(0deg, #0BEBD6 0%, #CD28E8 100%))
+    background: rgba(0, 0, 0, 0.3)
+    box-shadow: 0px 4px 35px rgba(234, 211, 12, 0.35)
+    border-radius: 10px
+
+  &.disable
+    cursor: not-allowed
+    opacity: 0.4
