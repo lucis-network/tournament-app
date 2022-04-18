@@ -10,15 +10,10 @@ type Props = {
   small?: boolean;
 };
 export default observer(function AuthBox(props: Props) {
-  
+
   return (
     <>
-      {AuthStore.isLoggedIn ? (
-        <User />
-      ) : (
-        <ConnectWalletBtn small={props.small} />
-      )}
-
+      <ConnectWalletBtn small={props.small} />
       <ConnectWalletModal />
     </>
   );

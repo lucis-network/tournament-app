@@ -1,27 +1,31 @@
 import { makeAutoObservable } from "mobx";
 import { isClient } from "../../utils/DOM";
 
-
-type TLoyalty = {
-  level: number;
-  totalVolume: number;
-};
 export type AuthUser = {
   id?: number;
   code?: string;
-  address?: string;
   token?: string;
   email?: string;
+  facebook_id?: string;
+  google_id?: string;
   name?: string;
-  loyalty?: TLoyalty;
-  loading?: boolean;
-  facebook?: string;
-  twitter?: string;
-  telegram?: string;
-  discord?: string;
-  phone?: string;
-  full_name?: string;
+  profile?: UserProfile;
+  ref_code?: string;
+  role?: UserRole;
+  status?: string;
+  updated_at?: string;
 };
+
+type UserProfile = {
+  user_id?: number;
+
+}
+
+type UserRole = {
+  Admin?: string;
+  Customer?: string;
+}
+
 type AuthWallet = {
   address?: string;
   networkId?: number;
@@ -34,40 +38,25 @@ export type TAuthInfo = AuthUser | AuthWallet;
 class AuthStore {
   private _id?: number;
   private _code?: string;
-  private _address?: string;
   private _token?: string;
   private _email?: string;
+  private _facebook_id?: string;
+  private _google_id?: string;
   private _name?: string;
-  private _facebook?: string;
-  private _twitter?: string;
-  private _tele?: string;
-  private _discord?: string;
-  private _phone?: string;
-  private _loyalty: TLoyalty = {
-    level: 0,
-    totalVolume: 0,
-  };
+  private _profile?: UserProfile;
+  private _ref_code?: string;
+  private _role?: UserRole;
+  private _status?: string;
+  private _updated_at?: string;
   private _balance?: string;
   private _loading: boolean = false;
 
-  /**
-   * This state will ensure:
-   * - User connected their wallet
-   * - User completed the verification process
-   *
-   * So this will be use in the whole app,
-   * whenever you wanna check if user have finished connecting their wallet and logging in
-   */
   public get isLoggedIn(): boolean {
     return !!this._token;
   }
 
   constructor() {
     makeAutoObservable(this);
-    // const u = getLocalAuthInfo();
-    // if (!!u) {
-    //   this.setAuthUser(u);
-    // }
   }
 
   resetStates() {
@@ -75,33 +64,29 @@ class AuthStore {
     this._code = undefined;
     this._token = undefined;
     this._email = undefined;
+    this._facebook_id = undefined;
+    this._google_id = undefined;
     this._name = undefined;
-    this._facebook = undefined;
-    this._twitter = undefined;
-    this._tele = undefined;
-    this._discord = undefined;
-    this._phone = undefined;
-    this._loyalty = {
-      level: 0,
-      totalVolume: 0,
-    };
-    this._balance = undefined;
-    this._loading = false;
+    this._profile = undefined;
+    this._ref_code = undefined;
+    this._role = undefined;
+    this._status = undefined;
+    this._updated_at = undefined;
   }
 
   setAuthUser(user: AuthUser) {
     this._id = user.id;
     this._code = user.code;
-    this._address = user.address;
     this._token = user.token;
     this._email = user.email;
+    this._facebook_id = user.facebook_id;
+    this._google_id = user.google_id;
     this._name = user.name;
-    this._loyalty = user.loyalty!;
-    this._facebook = user.facebook;
-    this._twitter = user.twitter;
-    this._tele = user.telegram;
-    this._discord = user.discord;
-    this._phone = user.phone;
+    this._profile = user.profile;
+    this._ref_code = user.ref_code;
+    this._role = user.role;
+    this._status = user.status;
+    this._updated_at = user.updated_at;
   }
 
   /* ============= Getter & Setter ==============*/
@@ -114,12 +99,12 @@ class AuthStore {
     this._id = value;
   }
 
-  get address(): string | undefined {
-    return this._address;
+  get code(): string | undefined {
+    return this._code;
   }
 
-  set address(value: string | undefined) {
-    this._address = value;
+  set code(value: string | undefined) {
+    this._code = value;
   }
 
   get token(): string | undefined {
@@ -138,28 +123,20 @@ class AuthStore {
     this._email = value;
   }
 
-  get loyalty(): TLoyalty {
-    return this._loyalty;
+  get facebook_id(): string | undefined {
+    return this._facebook_id;
   }
 
-  set loyalty(value: TLoyalty) {
-    this._loyalty = value;
+  set facebook_id(value: string | undefined) {
+    this._facebook_id = value;
   }
 
-  get loading(): boolean {
-    return this._loading;
+  get google_id(): string | undefined {
+    return this._google_id;
   }
 
-  set loading(value: boolean) {
-    this._loading = value;
-  }
-
-  get code(): string | undefined {
-    return this._code;
-  }
-
-  set code(value: string | undefined) {
-    this._code = value;
+  set google_id(value: string | undefined) {
+    this._google_id = value;
   }
 
   get name(): string | undefined {
@@ -170,44 +147,44 @@ class AuthStore {
     this._name = value;
   }
 
-  get phone(): string | undefined {
-    return this._phone;
+  get profile(): any {
+    return this._profile;
   }
 
-  set phone(value: string | undefined) {
-    this._phone = value;
+  set profile(value: UserProfile) {
+    this._profile = value;
   }
 
-  get facebook(): string | undefined {
-    return this._facebook;
+  get role(): any {
+    return this._role;
   }
 
-  set facebook(value: string | undefined) {
-    this._facebook = value;
+  set role(value: UserRole) {
+    this._role = value;
   }
 
-  get twitter(): string | undefined {
-    return this._twitter;
+  get ref_code(): string | undefined {
+    return this._ref_code;
   }
 
-  set twitter(value: string | undefined) {
-    this._twitter = value;
+  set ref_code(value: string | undefined) {
+    this._ref_code = value;
   }
 
-  get tele(): string | undefined {
-    return this._tele;
+  get status(): string | undefined {
+    return this._status;
   }
 
-  set tele(value: string | undefined) {
-    this._tele = value;
+  set status(value: string | undefined) {
+    this._status = value;
   }
 
-  get discord(): string | undefined {
-    return this._discord;
+  get updated_at(): string | undefined {
+    return this._updated_at;
   }
 
-  set discord(value: string | undefined) {
-    this._discord = value;
+  set updated_at(value: string | undefined) {
+    this._updated_at = value;
   }
 
   get balance(): string | undefined {
@@ -216,6 +193,14 @@ class AuthStore {
 
   set balance(value: string | undefined) {
     this._balance = value;
+  }
+
+  get loading(): boolean {
+    return this._loading;
+  }
+
+  set loading(value: boolean) {
+    this._loading = value;
   }
 }
 

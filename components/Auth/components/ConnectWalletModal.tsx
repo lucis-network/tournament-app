@@ -92,7 +92,7 @@ export default observer(function ConnectWalletModal(props: Props) {
     // console.log("{handleAccountsChanged} address: ", address);
     if (currentAccount !== address) {
       ConnectWalletStore.address = currentAccount;
-      loginWithLucis(currentAccount, false);
+      //loginWithLucis(currentAccount, false);
       // changeWallet(activeWallet!);
     }
   };
@@ -141,97 +141,97 @@ export default observer(function ConnectWalletModal(props: Props) {
      */
   };
 
-  const loginWithLucis = useCallback(
-    async (address, showSuccessMessage = true) => {
-      /**
-       * Web3 User need to link their wallet with Lucis system
-       */
-      if (!address) {
-        message.error(
-          <span>
-            Wallet not connected properly, please connect wallet again
-          </span>,
-          3
-        );
-        return;
-      }
+  // const loginWithLucis = useCallback(
+  //   async (address, showSuccessMessage = true) => {
+  //     /**
+  //      * Web3 User need to link their wallet with Lucis system
+  //      */
+  //     if (!address) {
+  //       message.error(
+  //         <span>
+  //           Wallet not connected properly, please connect wallet again
+  //         </span>,
+  //         3
+  //       );
+  //       return;
+  //     }
 
-      try {
-        AuthStore.loading = true;
-        const authService = new AuthService();
-        const r = await authService.login(address!, 0);
+  //     try {
+  //       AuthStore.loading = true;
+  //       const authService = new AuthService();
+  //       const r = await authService.login(address!, 0);
 
-        if (!ConnectWalletStore_NonReactiveData.web3Provider) {
-          throw message.error("Need to connect your wallet first");
-        }
+  //       if (!ConnectWalletStore_NonReactiveData.web3Provider) {
+  //         throw message.error("Need to connect your wallet first");
+  //       }
 
-        const ethersService = new EthersService(
-          ConnectWalletStore_NonReactiveData.web3Provider
-        );
-        const balance = await ethersService.getNativeBalance(address);
-        AuthStore.balance = balance;
-        //@ts-ignore
-        // window.tmp = ConnectWalletStore_NonReactiveData;
-        // const balance = await provider.getBalance(address);
-        // console.log(balance);
+  //       const ethersService = new EthersService(
+  //         ConnectWalletStore_NonReactiveData.web3Provider
+  //       );
+  //       const balance = await ethersService.getNativeBalance(address);
+  //       AuthStore.balance = balance;
+  //       //@ts-ignore
+  //       // window.tmp = ConnectWalletStore_NonReactiveData;
+  //       // const balance = await provider.getBalance(address);
+  //       // console.log(balance);
 
-        AuthStore.loading = false;
-        DEBUG && console.log("{loginWithLucis.} r: ", r);
+  //       AuthStore.loading = false;
+  //       DEBUG && console.log("{loginWithLucis.} r: ", r);
 
-        switch (r.error) {
-          case null:
-            // Success
-            // Already set the auth token to the AuthStore in AuthService
-            showSuccessMessage &&
-              message.success(
-                <span>Successfully connect and verify your wallet</span>,
-                5
-              );
-            AuthBoxStore.verified = true;
-            setTimeout(() => {
-              setIsModalVisible(false);
-            }, 2000);
-            break;
+  //       switch (r.error) {
+  //         case null:
+  //           // Success
+  //           // Already set the auth token to the AuthStore in AuthService
+  //           showSuccessMessage &&
+  //             message.success(
+  //               <span>Successfully connect and verify your wallet</span>,
+  //               5
+  //             );
+  //           AuthBoxStore.verified = true;
+  //           setTimeout(() => {
+  //             setIsModalVisible(false);
+  //           }, 2000);
+  //           break;
 
-          case AuthError.UserDeniedMsgSignature:
-            message.error(<span>User denied</span>, 5);
-            break;
+  //         case AuthError.UserDeniedMsgSignature:
+  //           message.error(<span>User denied</span>, 5);
+  //           break;
 
-          default:
-            message.error(
-              <span>
-                Cannot verify your address due to unhandled error.
-                <br />
-                It's might be the improper wallet connection
-              </span>,
-              5
-            );
-            disconnectWallet();
-        }
-      } catch (err: any) {
-        console.log("err:", err);
-        AuthStore.loading = false;
-        // message.error(`<span>${err.toString()}</span>`, 5);
+  //         default:
+  //           message.error(
+  //             <span>
+  //               Cannot verify your address due to unhandled error.
+  //               <br />
+  //               It's might be the improper wallet connection
+  //             </span>,
+  //             5
+  //           );
+  //           disconnectWallet();
+  //       }
+  //     } catch (err: any) {
+  //       console.log("err:", err);
+  //       AuthStore.loading = false;
+  //       // message.error(`<span>${err.toString()}</span>`, 5);
 
-        message.error(
-          <span>
-            Cannot verify your address due to unhandled error.
-            <br />
-            It's might be the improper wallet connection
-          </span>,
-          5
-        );
-      }
-    },
-    []
-  );
+  //       message.error(
+  //         <span>
+  //           Cannot verify your address due to unhandled error.
+  //           <br />
+  //           It's might be the improper wallet connection
+  //         </span>,
+  //         5
+  //       );
+  //     }
+  //   },
+  //   []
+  // );
 
-  const loginWithLucisCb = useCallback(
-    async (showSuccessMessage = true) => {
-      return loginWithLucis(address, showSuccessMessage);
-    },
-    [address]
-  );
+  // const loginWithLucisCb = useCallback(
+  //   async (showSuccessMessage = true) => {
+  //     return loginWithLucis(address, showSuccessMessage);
+  //   },
+  //   [address]
+  // );
 
   const changeWallet = useCallback(
     async (w: Wallet, network?: ChainNetwork) => {
@@ -291,7 +291,10 @@ export default observer(function ConnectWalletModal(props: Props) {
               /**
                * This is memoization, so if address changed, loginWithLucis is another function
                */
-              return loginWithLucis(ConnectWalletStore.address, false);
+              console.log("ConnectWalletStore", ConnectWalletStore);
+              alert("ConnectWall successs");
+              setIsModalVisible(false);
+              //return loginWithLucis(ConnectWalletStore.address, false);
             }
           })
         )
@@ -377,7 +380,7 @@ export default observer(function ConnectWalletModal(props: Props) {
             /**
              * This is memoization, so if address changed, loginWithLucis is another function
              */
-            return loginWithLucis(ConnectWalletStore.address, false);
+            //return loginWithLucis(ConnectWalletStore.address, false);
           }
         })
       )
@@ -623,55 +626,6 @@ export default observer(function ConnectWalletModal(props: Props) {
       footer={null}
       wrapClassName={s.mdl}
     >
-      {/* <p className={`${s.title} font-[600]`}>1. Choose network</p>
-      <div className={s.items}>
-        <div
-          onClick={() => changeNetwork(ChainNetwork.eth)}
-          className={`${s.item} ${network === ChainNetwork.eth ? s.active : ""
-            }`}
-        >
-          <img src="/assets/crypto/ico-chain-eth.png" alt="" />
-          <p>Ethereum</p>
-        </div>
-        <div
-          onClick={() => changeNetwork(ChainNetwork.bsc)}
-          className={`${s.item} ${network === ChainNetwork.bsc ? s.active : ""
-            }`}
-        >
-          <img src="/assets/crypto/ico-chain-bsc.png" alt="" />
-          <p>BSC</p>
-        </div>
-        <div
-          onClick={() => changeNetwork(ChainNetwork.polygon)}
-          className={`${s.item} ${network === ChainNetwork.polygon ? s.active : ""
-            }`}
-        >
-          <img src="/assets/crypto/ico-chain-polygon.png" alt="" />
-          <p>Polygon</p>
-        </div>
-        <div
-          className={`${s.item} ${s.disable} ${network === ChainNetwork.near ? s.active : ""
-            }`}
-        >
-          <img src="/assets/crypto/ico-chain-near.svg" alt="" />
-          <p>NEAR</p>
-        </div>
-        <div
-          className={`${s.item} ${s.disable} ${network === ChainNetwork.flow ? s.active : ""
-            }`}
-        >
-          <img src="/assets/crypto/ico-chain-flow.png" alt="" />
-          <p>Flow</p>
-        </div>
-        <div
-          className={`${s.item} ${s.disable} ${network === ChainNetwork.avax ? s.active : ""
-            }`}
-        >
-          <img src="/assets/crypto/ico-chain-avax.svg" alt="" />
-          <p>Avalanche</p>
-        </div>
-      </div>
-      <p className={`${s.title} font-[600]`}>Choose wallet</p> */}
       <div className={s.items}>
         {supported_wallets.map((i) => predefined_wallets[i])}
       </div>

@@ -49,14 +49,14 @@ export type ConnectWalletOption = {
 class ConnectWalletHelper {
   // The data was store at ConnectWalletStore with reactive
 
-  public onWalletEvent_AccountsChanged = (accounts: string[]) => {};
-  public onWalletEvent_ChainChanged = (_hexChainId: string) => {};
+  public onWalletEvent_AccountsChanged = (accounts: string[]) => { };
+  public onWalletEvent_ChainChanged = (_hexChainId: string) => { };
   public onWalletEvent_Disconnect = (error: {
     code: number;
     message: string;
-  }) => {};
+  }) => { };
 
-  constructor() {}
+  constructor() { }
 
   /**
    * Try to init the sdk to make user connect to his wallet
@@ -162,7 +162,7 @@ class ConnectWalletHelper {
   /**
    * connect* funtion must fire this event on failed
    */
-  onConnectFailed() {}
+  onConnectFailed() { }
 
   //
   // private initNear() {
@@ -179,9 +179,7 @@ class ConnectWalletHelper {
     option: ConnectWalletOption
   ) {
     return new Promise<any>((resolve, reject) => {
-      //const requiredChainId = this.getConfiguredChainId(network);
-      const requiredChainId = 97;
-      //const requiredChainId = process.env.NEXT_PUBLIC_CHAIN_ID__BSC
+      const requiredChainId = this.getConfiguredChainId(ChainNetwork.bsc);
       /**
        * See the: components/Auth/Web3Modal.ts::_getProviderOptions
        */
@@ -266,7 +264,7 @@ class ConnectWalletHelper {
   private connectC98Wallet(
     network: ChainNetwork,
     option: ConnectWalletOption
-  ) {}
+  ) { }
 
   private connectWalletConnect(
     network: ChainNetwork,

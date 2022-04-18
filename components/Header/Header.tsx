@@ -1,16 +1,22 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
 import s from "./Header.module.sass";
 import Image from "../Image";
-import AuthBox from "../Auth/components/AuthBox";
 import Logo from "assets/icon/logo.png";
+import Login from "components/Auth/Login/Login";
+import AuthStore from "components/Auth/AuthStore";
+import User from "components/Auth/components/User";
+import { observer } from "mobx-react-lite";
+import { useEffect } from "react";
 
 type Props = {
   handleMenuOpen: Function;
 };
 
-export default function Header(props: Props) {
-  const router = useRouter();
+export default observer(function Header(props: Props) {
+
+  // useEffect(() => {
+  //   const user = localStorage.getItem('user')
+  // }, [])
 
   return (
     <div className={`${s.pcMenu} bg-nav`}>
@@ -47,7 +53,7 @@ export default function Header(props: Props) {
                   // onClick={(e) => e.preventDefault()}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white text-24px leading-28px "
+                  className="text-white text-18px leading-28px "
                 >
                   Guide
                 </a>
@@ -63,7 +69,17 @@ export default function Header(props: Props) {
 
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
               <li>
-                <AuthBox />
+                {/* <AuthBox /> */}
+              </li>
+              <li>
+                {
+                  AuthStore.isLoggedIn ?
+                    <>
+                      <User></User>
+                    </>
+                    :
+                    <Login />
+                }
               </li>
               {/* TODO: Notification infinite scroll */}
               {/* <li>
@@ -77,3 +93,4 @@ export default function Header(props: Props) {
     </div>
   );
 }
+);

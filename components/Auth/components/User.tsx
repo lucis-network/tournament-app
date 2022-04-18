@@ -25,6 +25,7 @@ import { trim_middle } from "utils/String";
 import s from "./User.module.sass";
 import { AppEmitter } from "../../../services/emitter";
 import { useWindowSize } from "hooks/useWindowSize";
+import ConnectWalletModal from "./ConnectWalletModal";
 
 type Props = {};
 export default observer(function User(props: Props) {
@@ -100,9 +101,13 @@ export default observer(function User(props: Props) {
     </Row>
   );
 
+  const showModal = () => {
+    AuthBoxStore.connectModalVisible = true;
+  };
+
   return (
     <div className={s.container}>
-      <Button onClick={changeWallet} className={s.chainBtn}>
+      <Button onClick={showModal} className={s.chainBtn}>
         <img src={chainNetIcoUrl} alt="" />
         {getAppNetworkFriendlyName(connected_network)}
       </Button>
@@ -119,6 +124,8 @@ export default observer(function User(props: Props) {
           <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
         </div>
       </Popover>
+      <ConnectWalletModal />
+
     </div>
   );
 });
