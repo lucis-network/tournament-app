@@ -463,9 +463,9 @@ export default observer(function ConnectWalletModal(props: Props) {
 
         message.error(
           <span>
-            You've rejected to do this action.
+            You have rejected to do this action.
             <br />
-            Or there's already a same pending request on your wallet.
+            Or there is already a same pending request on your wallet.
           </span>,
           5
         );
