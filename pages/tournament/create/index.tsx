@@ -3,6 +3,19 @@ import s from "./index.module.sass";
 import { Row, Col } from "antd";
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
+import { Radio } from "antd";
+import { Select } from "antd";
+import {
+  BracketType,
+  Participants,
+  Region,
+  Rounds,
+  Teamsize,
+} from "utils/Enum";
+import { Button } from "antd";
+import UploadImage from "components/ui/common/upload/UploadImage";
+
+const { Option } = Select;
 
 type Props = {};
 
@@ -30,7 +43,7 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Cover (Banner)</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <UploadImage></UploadImage>
               </Col>
               <Col span={4} className="text-center">
                 <p>Thumbnail</p>
@@ -50,7 +63,19 @@ export default observer(function CreateTournament(props: Props) {
                 <p className="ml-[10px]">Bracket type</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Radio.Group className={s.bracketType}>
+                  {BracketType.map((item, index) => {
+                    return (
+                      <Radio
+                        value={item.value}
+                        key={index}
+                        className={s.textColor}
+                      >
+                        {item.label}
+                      </Radio>
+                    );
+                  })}
+                </Radio.Group>
               </Col>
             </Row>
             <Row className="pt-4">
@@ -58,13 +83,29 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Teamsize</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Select defaultValue={Teamsize[0]} style={{ width: 150 }}>
+                  {Teamsize.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </Col>
               <Col span={4}>
                 <p className="ml-[10px]">Numbers of participants</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Select defaultValue="0" style={{ width: 150 }}>
+                  {Participants.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </Col>
             </Row>
             <Row className="pt-4">
@@ -73,7 +114,15 @@ export default observer(function CreateTournament(props: Props) {
                 <p className="ml-[10px]">Best of for all rounds</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Select defaultValue="0" style={{ width: 150 }}>
+                  {Rounds.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </Col>
             </Row>
             <Row className="pt-4">
@@ -81,13 +130,21 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Timeline</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Button>Setup Timeline</Button>
               </Col>
               <Col span={4}>
                 <p className="ml-[10px]">Region</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Select defaultValue={Region[0].value} style={{ width: 150 }}>
+                  {Region.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
+                </Select>
               </Col>
             </Row>
             <Row className="pt-4">
@@ -95,7 +152,17 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Entry</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Radio.Group className={s.bracketType}>
+                  <Radio value="0" className={s.textColor}>
+                    Free
+                  </Radio>
+                  <Radio value="1" className={`${s.textColor} ${s.textColor1}`}>
+                    <div className={`${s.radioFee}`}>
+                      <p className="">With Fee</p>
+                      <Input placeholder="Input Fee" />
+                    </div>
+                  </Radio>
+                </Radio.Group>
               </Col>
               <Col span={12}>
                 <p className="ml-[10px]">Referee(s)</p>
