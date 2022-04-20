@@ -22,7 +22,7 @@ const myBucket = new AWS.S3({
   region: REGION,
 });
 
-function UploadImage(props: Props) {
+function Tournament(props: Props) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [url, setUrl] = useState("");
   const handleFileInput = (e: any) => {
@@ -77,4 +77,4 @@ function UploadImage(props: Props) {
   );
 }
 
-export default UploadImage;
+export default Tournament;

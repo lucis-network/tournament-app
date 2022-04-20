@@ -1,15 +1,10 @@
-import { useState, useEffect } from "react";
-import { observer } from "mobx-react-lite";
-
 import s from "./ConnectWallet.module.sass";
-import GradientButton from "../../Button/GradientButton";
 import AuthBoxStore from "./AuthBoxStore";
-import { Modal } from 'antd';
+import GradientButton from "components/ui/common/button/GradientButton";
 type Props = {
   small?: boolean;
 };
 export default function ConnectWalletBtn(props: Props) {
-
   const showModal = () => {
     AuthBoxStore.connectModalVisible = true;
   };

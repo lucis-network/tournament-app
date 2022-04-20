@@ -1,6 +1,6 @@
-import GradientButton from 'components/Button/GradientButton';
-import LoginBoxStore from './LoginBoxStore';
-import LoginModal from './LoginModal';
+import GradientButton from "components/ui/common/button/GradientButton";
+import LoginBoxStore from "./LoginBoxStore";
+import LoginModal from "./LoginModal";
 
 export default function Login(props: any) {
   const showModal = () => {
