@@ -22,6 +22,7 @@
     "@walletconnect/types": "^1.7.7",
     "@walletconnect/web3-provider": "^1.7.7",
     "antd": "^4.19.5",
+    "aws-sdk": "^2.1116.0",
     "crypto-js": "^4.1.1",
     "enquire-js": "^0.2.1",
     "ethers": "^5.6.2",
