@@ -1,47 +1,49 @@
-import { Modal } from 'antd';
-import GoogleLogin from 'react-google-login';
+import { Modal } from "antd";
+import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
-import LoginBoxStore from './LoginBoxStore';
-import FacebookLogin from '@greatsumini/react-facebook-login';
-import AuthStore from '../AuthStore';
-import AuthService from '../AuthService';
+import LoginBoxStore from "./LoginBoxStore";
+import FacebookLogin from "@greatsumini/react-facebook-login";
+import AuthStore from "../AuthStore";
+import AuthService from "../AuthService";
 
 type Props = {};
 
-const clientId = process.env.NEXT_PUBLIC_GOOGLE_ID ? process.env.NEXT_PUBLIC_GOOGLE_ID : ''
-const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID ? process.env.NEXT_PUBLIC_FACEBOOK_ID : ''
+const clientId = process.env.NEXT_PUBLIC_GOOGLE_ID
+  ? process.env.NEXT_PUBLIC_GOOGLE_ID
+  : "";
+const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
+  ? process.env.NEXT_PUBLIC_FACEBOOK_ID
+  : "";
 
 export default observer(function LoginModal(props: Props) {
-
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
 
   const onSuccess = async (res: any, type: string) => {
     const authService = new AuthService();
-    let tokenid = '';
+    let tokenid = "";
 
-    if (type === 'google') tokenid = res?.tokenId;
-    if (type === 'facebook') tokenid = res?.accessToken;
+    if (type === "google") tokenid = res?.tokenId;
+    if (type === "facebook") tokenid = res?.accessToken;
 
     const r = await authService.login(tokenid, 100, type);
 
-    console.log(AuthStore)
+    // console.log(AuthStore)
     switch (r.error) {
       case null:
         // Success
         // Already set the auth token to the LoginStore in LoginService
-        console.log("Successfully connect")
+        console.log("Successfully connect");
 
         setTimeout(() => {
           setIsModalVisible(false);
         }, 2000);
         break;
     }
-
   };
 
   const onFailure = (res: any, str: string) => {
-    console.log('Login failed: res:', res);
+    console.log("Login failed: res:", res);
   };
 
   const handleCancel = () => {
@@ -60,32 +62,39 @@ export default observer(function LoginModal(props: Props) {
       >
         <GoogleLogin
           clientId={clientId}
-          render={renderProps => (
-            <button onClick={renderProps.onClick} className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded`}>Login Google</button>
+          render={(renderProps) => (
+            <button
+              onClick={renderProps.onClick}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded`}
+            >
+              Login Google
+            </button>
           )}
           onSuccess={(response) => {
-            onSuccess(response, 'google')
+            onSuccess(response, "google");
           }}
           onFailure={(error) => {
-            onFailure(error, 'google')
+            onFailure(error, "google");
           }}
         />
         <FacebookLogin
           appId={facebookId}
           onSuccess={(response) => {
-            onSuccess(response, 'facebook')
+            onSuccess(response, "facebook");
           }}
           onFail={(error) => {
-            onFailure(error, 'facebook')
+            onFailure(error, "facebook");
           }}
-          render={renderProps => (
-            <button onClick={renderProps.onClick} className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded ml-20px`}>Login Facebook</button>
+          render={(renderProps) => (
+            <button
+              onClick={renderProps.onClick}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded ml-20px`}
+            >
+              Login Facebook
+            </button>
           )}
-        >
-        </FacebookLogin>
-
+        ></FacebookLogin>
       </Modal>
-
     </>
   );
-})
+});

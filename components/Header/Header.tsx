@@ -13,7 +13,6 @@ type Props = {
 };
 
 export default observer(function Header(props: Props) {
-
   // useEffect(() => {
   //   const user = localStorage.getItem('user')
   // }, [])
@@ -47,7 +46,7 @@ export default observer(function Header(props: Props) {
                 </a>
               </li> */}
 
-              <li className={s.groundSubMenu}>
+              {/* <li className={s.groundSubMenu}>
                 <a
                   href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
                   // onClick={(e) => e.preventDefault()}
@@ -57,29 +56,26 @@ export default observer(function Header(props: Props) {
                 >
                   Guide
                 </a>
-                {/* <ul className={s.subMenu}>
+                <ul className={s.subMenu}>
                   <li>For Game Publisher</li>
                   <li>For Personal Investor</li>
-                </ul> */}
-              </li>
+                </ul>
+              </li> */}
 
               {/* <li style={{ cursor: "pointer" }}>
                 <Notification />
               </li> */}
 
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
+              <li>{/* <AuthBox /> */}</li>
               <li>
-                {/* <AuthBox /> */}
-              </li>
-              <li>
-                {
-                  AuthStore.isLoggedIn ?
-                    <>
-                      <User></User>
-                    </>
-                    :
-                    <Login />
-                }
+                {AuthStore.isLoggedIn ? (
+                  <>
+                    <User />
+                  </>
+                ) : (
+                  <Login />
+                )}
               </li>
               {/* TODO: Notification infinite scroll */}
               {/* <li>
@@ -92,5 +88,4 @@ export default observer(function Header(props: Props) {
       </div>
     </div>
   );
-}
-);
+});

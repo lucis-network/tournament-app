@@ -4,10 +4,7 @@ import AuthStore, { AuthUser } from "./AuthStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
 } from "utils/apollo_client";
-import {
-  clearLocalAuthInfo,
-  setLocalAuthInfo,
-} from "./AuthLocal";
+import { clearLocalAuthInfo, setLocalAuthInfo } from "./AuthLocal";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -28,13 +25,12 @@ function delay(time: number) {
 
 export default class AuthService {
   private async loginByGoogle(token: string): Promise<AuthUser> {
-
     const loginRes = await apoloClient.mutate({
       mutation: gql`
         mutation loginGoogle($token: String!) {
           loginGoogle(token: $token) {
             token
-            user { 
+            user {
               id
               email
               role
@@ -43,7 +39,7 @@ export default class AuthService {
               ref_code
               google_id
               status
-              profile{
+              profile {
                 user_id
                 given_name
                 family_name
@@ -57,7 +53,7 @@ export default class AuthService {
         }
       `,
       variables: {
-        token
+        token,
       },
     });
 
@@ -69,7 +65,7 @@ export default class AuthService {
       code: u.code,
       email: u.email,
       role: u.role,
-      name: u.name,
+      name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
       ref_code: u.ref_code,
       google_id: u.google_id,
       status: u.status,
@@ -80,13 +76,12 @@ export default class AuthService {
   }
 
   private async loginByFacebook(accessToken: string): Promise<AuthUser> {
-
     const loginRes = await apoloClient.mutate({
       mutation: gql`
         mutation loginFacebook($accessToken: String!) {
           loginFacebook(accessToken: $accessToken) {
             token
-            user { 
+            user {
               id
               email
               role
@@ -95,7 +90,7 @@ export default class AuthService {
               ref_code
               google_id
               status
-              profile{
+              profile {
                 user_id
                 given_name
                 family_name
@@ -109,7 +104,7 @@ export default class AuthService {
         }
       `,
       variables: {
-        accessToken
+        accessToken,
       },
     });
 
@@ -138,18 +133,22 @@ export default class AuthService {
    *              useful when you wanna show success for some secs before unmount the components
    */
 
-  async login(tokenId: string, delay = 1000, type?: string): Promise<LoginResponse> {
+  async login(
+    tokenId: string,
+    delay = 1000,
+    type?: string
+  ): Promise<LoginResponse> {
     let res: LoginResponse = {
       error: null,
     };
     let user = {};
     try {
       // new-login
-      if (type === 'google') {
+      if (type === "google") {
         user = await this.loginByGoogle(tokenId);
       }
 
-      if (type === 'facebook') {
+      if (type === "facebook") {
         user = await this.loginByFacebook(tokenId);
       }
 
