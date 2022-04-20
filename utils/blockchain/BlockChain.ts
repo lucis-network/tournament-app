@@ -1,5 +1,4 @@
 import { chainProfilesIndexed, IChainData } from "./ChainConfig";
-import { ChainSymbol } from "../../src/generated/graphql";
 
 /**
  * Those blockchain config must be the same on the server / database
@@ -26,9 +25,9 @@ export enum ChainNetwork {
   solana = "solana",
 }
 
-export function symbol2Network(chainSymbol: ChainSymbol): ChainNetwork {
-  return ChainNetwork[chainSymbol.toLowerCase() as keyof typeof ChainNetwork];
-}
+// export function symbol2Network(chainSymbol: ChainSymbol): ChainNetwork {
+//   return ChainNetwork[chainSymbol.toLowerCase() as keyof typeof ChainNetwork];
+// }
 
 export const NetworkBranch = {
   [ChainNetwork.eth]: ChainBranch.web3,
@@ -55,19 +54,19 @@ export enum Wallet {
 }
 
 export const NetworkSupportedWallets: Record<ChainNetwork | string, Wallet[]> =
-  {
-    null: [],
+{
+  null: [],
 
-    [ChainNetwork.eth]: [Wallet.metamask, Wallet.wc, Wallet.bsc],
-    [ChainNetwork.bsc]: [Wallet.metamask, Wallet.wc, Wallet.bsc],
-    [ChainNetwork.polygon]: [Wallet.metamask, Wallet.wc],
-    [ChainNetwork.avax]: [],
-    [ChainNetwork.flow]: [],
+  [ChainNetwork.eth]: [Wallet.metamask, Wallet.wc, Wallet.bsc],
+  [ChainNetwork.bsc]: [Wallet.metamask, Wallet.wc, Wallet.bsc],
+  [ChainNetwork.polygon]: [Wallet.metamask, Wallet.wc],
+  [ChainNetwork.avax]: [],
+  [ChainNetwork.flow]: [],
 
-    [ChainNetwork.near]: [Wallet.near],
-    [ChainNetwork.polkadot]: [Wallet.polkadot_js],
-    [ChainNetwork.solana]: [Wallet.solet],
-  };
+  [ChainNetwork.near]: [Wallet.near],
+  [ChainNetwork.polkadot]: [Wallet.polkadot_js],
+  [ChainNetwork.solana]: [Wallet.solet],
+};
 
 export const ChainNetworkAvatar: Record<string, string> = {
   undefined: "/assets/crypto/ico-question-mark.png",
