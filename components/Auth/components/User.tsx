@@ -48,7 +48,9 @@ export default observer(function User(props: Props) {
     const authService = new AuthService();
     authService.logout();
 
-    if (facebook_id) (window as any).FB.logout();
+    if (facebook_id != '') {
+      (window as any).FB.logout();
+    }
 
     if (google_id) {
       const auth2 = (window as any).gapi.auth2.getAuthInstance();

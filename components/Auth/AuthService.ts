@@ -47,7 +47,6 @@ export default class AuthService {
                 user_id
                 given_name
                 family_name
-                locale
                 phone
                 avatar
                 cover
@@ -99,7 +98,6 @@ export default class AuthService {
                 user_id
                 given_name
                 family_name
-                locale
                 phone
                 avatar
                 cover
