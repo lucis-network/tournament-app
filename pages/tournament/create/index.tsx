@@ -18,8 +18,16 @@ import UploadImage from "components/ui/common/upload/UploadImage";
 const { Option } = Select;
 
 type Props = {};
-
+type CrT = {
+  name?: string;
+  cover?: string;
+  thumbnail?: string;
+};
 export default observer(function CreateTournament(props: Props) {
+  const callbackFunction = (childData: string) => {
+    console.log("childData", childData);
+  };
+
   return (
     <>
       {/* <DocHead />
@@ -43,13 +51,24 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Cover (Banner)</p>
               </Col>
               <Col span={8}>
-                <UploadImage></UploadImage>
+                <UploadImage
+                  parentCallback={callbackFunction}
+                  heigh="200px"
+                  width="200px"
+                ></UploadImage>
+                <p>Recommended size: 1200x300</p>
               </Col>
+              <Col span={2}></Col>
               <Col span={4} className="text-center">
                 <p>Thumbnail</p>
               </Col>
-              <Col span={8}>
-                <Input placeholder="Basic usage" />
+              <Col span={6}>
+                <UploadImage
+                  parentCallback={callbackFunction}
+                  heigh="200px"
+                  width="200px"
+                ></UploadImage>
+                <p>Recommended size: 200x200</p>
               </Col>
             </Row>
             <Row className="pt-4">
@@ -57,7 +76,7 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Choose game</p>
               </Col>
               <Col span={8}>
-                <Input placeholder="Basic usage" />
+                <Button>Choose game</Button>
               </Col>
               <Col span={4}>
                 <p className="ml-[10px]">Bracket type</p>
@@ -82,22 +101,15 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={4}>
                 <p>Teamsize</p>
               </Col>
-              <Col span={8}>
-                <Select defaultValue={Teamsize[0]} style={{ width: 150 }}>
-                  {Teamsize.map((item, index) => {
-                    return (
-                      <Option value={item} key={index}>
-                        {item}
-                      </Option>
-                    );
-                  })}
-                </Select>
+              <Col span={4}>
+                <Input placeholder="Input Teamsize" width="120px" />
               </Col>
+              <Col span={4}></Col>
               <Col span={4}>
                 <p className="ml-[10px]">Numbers of participants</p>
               </Col>
               <Col span={8}>
-                <Select defaultValue="0" style={{ width: 150 }}>
+                <Select defaultValue="8" style={{ width: 150 }}>
                   {Participants.map((item, index) => {
                     return (
                       <Option value={item} key={index}>
@@ -114,7 +126,7 @@ export default observer(function CreateTournament(props: Props) {
                 <p className="ml-[10px]">Best of for all rounds</p>
               </Col>
               <Col span={8}>
-                <Select defaultValue="0" style={{ width: 150 }}>
+                <Select defaultValue="1" style={{ width: 150 }}>
                   {Rounds.map((item, index) => {
                     return (
                       <Option value={item} key={index}>
@@ -166,6 +178,7 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={12}>
                 <p className="ml-[10px]">Referee(s)</p>
+                <Button>+ Add</Button>
               </Col>
             </Row>
           </div>

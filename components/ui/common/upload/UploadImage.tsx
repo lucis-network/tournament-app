@@ -4,8 +4,13 @@ import AWS from "aws-sdk";
 import Image from "next/image";
 import { Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { stringMap } from "aws-sdk/clients/backup";
 //import defaultImage from "/default.jpg";
-type Props = {};
+type Props = {
+  heigh?: string;
+  width?: string;
+  parentCallback?: any;
+};
 
 const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
   ? process.env.NEXT_PUBLIC_BUCKET_NAME
@@ -25,10 +30,10 @@ const myBucket = new AWS.S3({
 });
 
 function UploadImage(props: Props) {
-  const [selectedFile, setSelectedFile] = useState(null);
   const [url, setUrl] = useState("");
   const handleFileInput = (e: any) => {
-    setSelectedFile(e.target.files[0]);
+    const file = e.target.files[0];
+    if (file && file.name) handleUpload(e.target.files[0]);
   };
 
   const handleUpload = async (file: any) => {
@@ -43,16 +48,14 @@ function UploadImage(props: Props) {
     myBucket
       .putObject(params)
       .on("httpUploadProgress", (evt, response) => {
-        //setProgress(Math.round((evt.loaded / evt.total) * 100));
         console.log("evt", evt);
         console.log("response", response);
       })
       .send((err, data) => {
-        //if (err) console.log("err", err);
-
         var s3url = myBucket.getSignedUrl("getObject", { Key: params.Key });
         const str = s3url.split("?")[0];
         setUrl(str);
+        props.parentCallback(str);
       });
   };
 
@@ -65,19 +68,24 @@ function UploadImage(props: Props) {
           <Image
             src={url}
             alt="Picture of the author"
-            width="200px"
-            height="200px"
+            width={props.width}
+            height={props.heigh}
             layout="responsive"
           />
         ) : (
-          <img src="/default.jpg" width="200px" height="200px" alt="" />
+          <img
+            src="/default.jpg"
+            width={props.width}
+            height={props.heigh}
+            alt=""
+          />
         )}
 
-        <Upload>
+        {/* <Upload>
           <Button icon={<UploadOutlined />} >Click to Upload</Button>
-        </Upload>
+        </Upload> */}
         <input type="file" onChange={handleFileInput} />
-        <button onClick={() => handleUpload(selectedFile)}>Upload</button>
+        {/* <button onClick={() => handleUpload(selectedFile)}>Upload</button> */}
       </div>
     </>
   );

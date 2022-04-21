@@ -3,20 +3,21 @@ import s from "./Header.module.sass";
 import Image from "../common/images/Image";
 import Logo from "assets/icon/logo.png";
 import Login from "components/Auth/Login/Login";
-import AuthStore from "components/Auth/AuthStore";
+import AuthStore, { AuthUser } from "components/Auth/AuthStore";
 import User from "components/Auth/components/User";
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 
 type Props = {
   handleMenuOpen: Function;
 };
 
 export default observer(function Header(props: Props) {
-
   // useEffect(() => {
   //   const user = localStorage.getItem('user')
   // }, [])
+  const cachedUser: AuthUser | null = getLocalAuthInfo();
 
   return (
     <div className={`${s.pcMenu} bg-nav`}>
@@ -68,18 +69,15 @@ export default observer(function Header(props: Props) {
               </li> */}
 
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
+              <li>{/* <AuthBox /> */}</li>
               <li>
-                {/* <AuthBox /> */}
-              </li>
-              <li>
-                {
-                  AuthStore.isLoggedIn ?
-                    <>
-                      <User></User>
-                    </>
-                    :
-                    <Login />
-                }
+                {cachedUser ? (
+                  <>
+                    <User></User>
+                  </>
+                ) : (
+                  <Login />
+                )}
               </li>
               {/* TODO: Notification infinite scroll */}
               {/* <li>
@@ -92,5 +90,4 @@ export default observer(function Header(props: Props) {
       </div>
     </div>
   );
-}
-);
+});
