@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+/pages/test
 
 # testing
 /coverage
@@ -35,3 +36,4 @@ yarn-error.log*
 *.tsbuildinfo
 
 cert
+deploy/docker-compose.yml

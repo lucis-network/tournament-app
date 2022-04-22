@@ -51,24 +51,36 @@ body .ant-layout-header {
 
 /* body gradient */
 body {
-  background: radial-gradient(1200px 1800px at calc(100vw / 2 + 400px) 750px,
+  background: radial-gradient(
+      1200px 1800px at calc(100vw / 2 + 400px) 750px,
       #05056c 0%,
-      transparent),
-    radial-gradient(1200px 1800px at calc(100vw / 2 + 750px) 750px,
+      transparent
+    ),
+    radial-gradient(
+      1200px 1800px at calc(100vw / 2 + 750px) 750px,
       #0000ff -150%,
-      transparent),
-    radial-gradient(1200px 1800px at calc(100vw / 2 - 400px) 4850px,
+      transparent
+    ),
+    radial-gradient(
+      1200px 1800px at calc(100vw / 2 - 400px) 4850px,
       #05056c 0%,
-      transparent),
-    radial-gradient(1200px 1800px at calc(100vw / 2 - 400px) 7000px,
+      transparent
+    ),
+    radial-gradient(
+      1200px 1800px at calc(100vw / 2 - 400px) 7000px,
       #05056c 0%,
-      transparent),
-    radial-gradient(1200px 1800px at calc(100vw / 2 + 400px) 9550px,
+      transparent
+    ),
+    radial-gradient(
+      1200px 1800px at calc(100vw / 2 + 400px) 9550px,
       #05056c 0%,
-      transparent),
-    radial-gradient(1200px 1800px at calc(100vw / 2 + 400px) 10550px,
+      transparent
+    ),
+    radial-gradient(
+      1200px 1800px at calc(100vw / 2 + 400px) 10550px,
       #05056c 0%,
-      transparent);
+      transparent
+    );
   /* background: linear-gradient(45deg, rgba(0,0,49,1) 0%, rgba(0,0,49,1) 38%, rgba(0,0,255,1) 100%); */
 }
 
@@ -202,7 +214,7 @@ body .ant-menu {
   }
 
   body .ant-menu-inline.ant-menu-root .ant-menu-item,
-  .ant-menu-inline.ant-menu-root>.ant-menu-submenu-title {
+  .ant-menu-inline.ant-menu-root > .ant-menu-submenu-title {
     padding-left: 24px !important;
     align-items: flex-start;
   }
@@ -438,7 +450,8 @@ body .backdrop-blur-sm {
 /*
 * Override antd style
 */
-.ant-modal-close {}
+.ant-modal-close {
+}
 
 .ant-modal-close .ant-modal-close-x {
   background: #e4e0e0;
@@ -450,7 +463,7 @@ body .backdrop-blur-sm {
 }
 
 .ant-modal-root .ant-modal-content:before {
-  content: "";
+  /* content: "";
 
   position: absolute;
   top: 0;
@@ -463,23 +476,27 @@ body .backdrop-blur-sm {
   padding: 1px;
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-  mask-composite: exclude;
+  mask-composite: exclude; */
 
   /*background: linear-gradient(105.27deg, #aa6ee5 0%, #caffff 20.31%, rgba(202, 255, 255, 0) 37.5%, rgba(253, 240, 116, 0) 68.75%, #fdf074 84.9%, #c1d8f8 100%);*/
-  background: linear-gradient(105.27deg,
-      #aa6ee5 0%,
-      #caffff 20.31%,
-      rgba(202, 255, 255, 0) 37.5%,
-      rgba(253, 240, 116, 0) 68.75%,
-      #fdf074 84.9%,
-      #c1d8f8 100%);
+  /* background: linear-gradient(
+    105.27deg,
+    #aa6ee5 0%,
+    #caffff 20.31%,
+    rgba(202, 255, 255, 0) 37.5%,
+    rgba(253, 240, 116, 0) 68.75%,
+    #fdf074 84.9%,
+    #c1d8f8 100%
+  ); */
 }
 
 .ant-modal-root .ant-modal-content {
   /*background: rgb(47 33 102);*/
-  background: linear-gradient(126.08deg,
-      rgba(255, 255, 255, 0.3) 13.84%,
-      rgba(255, 255, 255, 0.1) 74.14%);
+  background: linear-gradient(
+    126.08deg,
+    rgba(255, 255, 255, 0.3) 13.84%,
+    rgba(255, 255, 255, 0.1) 74.14%
+  );
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(40px);
   /* Note: backdrop-filter has minimal browser support */
@@ -541,11 +558,14 @@ body .backdrop-blur-sm {
   color: #00ffd7;
 }
 
-.ant-popover-content {}
+.ant-popover-content {
+}
 
-.ant-popover-content .ant-popover-arrow {}
+.ant-popover-content .ant-popover-arrow {
+}
 
-.ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {}
+.ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {
+}
 
 /*Same style as modal content */
 .ant-popover-content .ant-popover-inner:before {
@@ -657,9 +677,11 @@ body .ant-col {
 } */
 
 body .ant-input {
-  background: linear-gradient(152.97deg,
-      rgba(255, 255, 255, 0.2) 0%,
-      rgba(255, 255, 255, 0) 100%);
+  background: linear-gradient(
+    152.97deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
   backdrop-filter: blur(42px);
   transition: 0.3s;
   border: 1px solid #d9d9d933;
@@ -686,9 +708,11 @@ body .ant-input-group-addon {
 /* AUTOCOMPLETE */
 
 body .ant-select-dropdown {
-  background: linear-gradient(126.08deg,
-      rgba(255, 255, 255, 0.3) 13.84%,
-      rgba(255, 255, 255, 0.1) 74.14%);
+  background: linear-gradient(
+    126.08deg,
+    rgba(255, 255, 255, 0.3) 13.84%,
+    rgba(255, 255, 255, 0.1) 74.14%
+  );
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(30px);
   border-radius: 10px;
@@ -716,3 +740,8 @@ body .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
 /* body .ant-select-dropdown-hidden {
   display: block;
 } */
+
+/* PICKER */
+body .ant-picker-cell-inner {
+  color: black;
+}

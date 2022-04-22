@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  tournament_fe:
+    build:
+      context: ../
+      dockerfile: deploy/Dockerfile
+    image: tournament_fe:1.0
+    container_name: "tournament_fe"
+    restart: always
+    # volumes:
+    #   - ../logs/:/app/logs/
+    # ports:
+    #   - 3000:3000
+
+networks:
+  default:
+     external:
+        name: lucis_network 

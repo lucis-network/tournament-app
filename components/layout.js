@@ -1,8 +1,7 @@
 // components/layout.js
 import React, { useState } from "react";
 
-import AppHeader from "./Header/Header";
-// import AppFooter from "./Footer";
+import AppHeader from "./ui/header/Header";
 
 
 

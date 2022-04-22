@@ -5,7 +5,10 @@ const nextConfig = withAntdLess(
   {
     reactStrictMode: false,
 
-    images: { loader: "custom" },
+    images: { 
+      loader: "imgix",
+      path: "",
+    },
 
     webpack: (config, { isServer }) => {
       const rules = config.module.rules

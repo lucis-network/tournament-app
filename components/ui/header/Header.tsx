@@ -1,6 +1,6 @@
 import Link from "next/link";
 import s from "./Header.module.sass";
-import Image from "../Image";
+import Image from "../common/images/Image";
 import Logo from "assets/icon/logo.png";
 import Login from "components/Auth/Login/Login";
 import AuthStore from "components/Auth/AuthStore";

@@ -76,6 +76,7 @@ export default observer(function LoginModal(props: Props) {
           onFailure={(error) => {
             onFailure(error, "google");
           }}
+          cookiePolicy={"single_host_origin"}
         />
         <FacebookLogin
           appId={facebookId}

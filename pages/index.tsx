@@ -1,5 +1,5 @@
 import DocHead from 'components/DocHead'
-import Footer from 'components/Footer/Footer'
+import Footer from 'components/ui/footer/Footer'
 import type { NextPage } from 'next'
 import styles from '../styles/Home.module.css'
 
