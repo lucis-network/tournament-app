@@ -14,6 +14,12 @@ import {
 } from "utils/Enum";
 import { Button } from "antd";
 import UploadImage from "components/ui/common/upload/UploadImage";
+import dynamic from "next/dynamic";
+import ChooseGameModal from "components/ui/tournament/create/chooseGame/ChooseGameModal";
+import { useState } from "react";
+import TournamentStore from "src/store/TournamentStore";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
 
@@ -26,6 +32,10 @@ type CrT = {
 export default observer(function CreateTournament(props: Props) {
   const callbackFunction = (childData: string) => {
     console.log("childData", childData);
+  };
+
+  const openModal = (value: string) => {
+    if (value === "choosegame") TournamentStore.chooseGameModalVisible = true;
   };
 
   return (
@@ -43,32 +53,31 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Name</p>
               </Col>
               <Col span={20}>
-                <Input placeholder="Basic usage" />
+                <Input placeholder="Tournament name" />
               </Col>
             </Row>
-            <Row className="pt-4">
+            <Row className="pt-6">
               <Col span={4}>
                 <p>Cover (Banner)</p>
               </Col>
-              <Col span={8}>
+              <Col span={10}>
                 <UploadImage
                   parentCallback={callbackFunction}
-                  heigh="200px"
-                  width="200px"
+                  heigh="450"
+                  width="1200"
                 ></UploadImage>
                 <p>Recommended size: 1200x300</p>
               </Col>
-              <Col span={2}></Col>
               <Col span={4} className="text-center">
                 <p>Thumbnail</p>
               </Col>
               <Col span={6}>
                 <UploadImage
                   parentCallback={callbackFunction}
-                  heigh="200px"
-                  width="200px"
+                  heigh="200"
+                  width="300"
                 ></UploadImage>
-                <p>Recommended size: 200x200</p>
+                <p>Recommended size: 300x200</p>
               </Col>
             </Row>
             <Row className="pt-4">
@@ -76,7 +85,9 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Choose game</p>
               </Col>
               <Col span={8}>
-                <Button>Choose game</Button>
+                <Button onClick={() => openModal("choosegame")}>
+                  Choose game
+                </Button>
               </Col>
               <Col span={4}>
                 <p className="ml-[10px]">Bracket type</p>
@@ -84,11 +95,20 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={8}>
                 <Radio.Group className={s.bracketType}>
                   {BracketType.map((item, index) => {
-                    return (
+                    return item.value !== "battle" ? (
                       <Radio
                         value={item.value}
                         key={index}
                         className={s.textColor}
+                      >
+                        {item.label}
+                      </Radio>
+                    ) : (
+                      <Radio
+                        value={item.value}
+                        key={index}
+                        className={s.textColor}
+                        disabled
                       >
                         {item.label}
                       </Radio>
@@ -148,11 +168,11 @@ export default observer(function CreateTournament(props: Props) {
                 <p className="ml-[10px]">Region</p>
               </Col>
               <Col span={8}>
-                <Select defaultValue={Region[0].value} style={{ width: 150 }}>
+                <Select defaultValue="VN" style={{ width: 150 }}>
                   {Region.map((item, index) => {
                     return (
-                      <Option value={item} key={index}>
-                        {item}
+                      <Option value={item.value} key={index}>
+                        {item.label}
                       </Option>
                     );
                   })}
@@ -178,7 +198,28 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={12}>
                 <p className="ml-[10px]">Referee(s)</p>
-                <Button>+ Add</Button>
+                <div className="flex flex-row">
+                  <div className="flex flex-col items-center mr-15px">
+                    <img
+                      src="/assets/avatar.jpg"
+                      width="50"
+                      height="50"
+                      alt=""
+                    />
+                    <p className="mt-5px">Luciz</p>
+                  </div>
+                  <div className="flex flex-col items-center mr-15px">
+                    <img
+                      src="/assets/avatar.jpg"
+                      width="50"
+                      height="50"
+                      alt=""
+                    />
+                    <p className="mt-5px">Luciz</p>
+                  </div>
+
+                  <Button>+ Add</Button>
+                </div>
               </Col>
             </Row>
           </div>
@@ -188,28 +229,48 @@ export default observer(function CreateTournament(props: Props) {
 
           <div>
             <p className="text-30px mt-20px">Tournament Overview</p>
+            <div>
+              <ReactQuill
+              // value={this.state.text}
+              // onChange={this.handleChange}
+              />
+            </div>
           </div>
 
           <div>
             <p className="text-30px mt-20px">Rules</p>
+            <div>
+              <ReactQuill
+              // value={this.state.text}
+              // onChange={this.handleChange}
+              />
+            </div>
           </div>
 
           <div>
             <p className="text-25px mt-20px">Sponsor</p>
           </div>
 
-          <div>
+          <div className="mt-20px">
             <Row>
-              <Col span={6}>
+              <Col span={4}>
                 <p>Tournament password</p>
               </Col>
-              <Col span={18}>
+              <Col span={20}>
                 <Input placeholder="Password" />
               </Col>
             </Row>
           </div>
+
+          <div className="mt-20px text-center pb-20px">
+            <Button>Save Draft</Button>
+            <Button className="ml-10px">Create tournament</Button>
+          </div>
         </div>
+
+        <ChooseGameModal />
       </div>
+
       {/* <Footer /> */}
     </>
   );

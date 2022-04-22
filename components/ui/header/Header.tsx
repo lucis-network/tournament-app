@@ -6,7 +6,7 @@ import Login from "components/Auth/Login/Login";
 import AuthStore, { AuthUser } from "components/Auth/AuthStore";
 import User from "components/Auth/components/User";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 
 type Props = {
@@ -14,10 +14,14 @@ type Props = {
 };
 
 export default observer(function Header(props: Props) {
+  // const [isLoggin, setIsLogin] = useState(false);
+  // let cachedUser;
   // useEffect(() => {
-  //   const user = localStorage.getItem('user')
-  // }, [])
-  const cachedUser: AuthUser | null = getLocalAuthInfo();
+  //   cachedUser = getLocalAuthInfo();
+  //   console.log("Khong vao day a");
+  //   if (cachedUser?.google_id != '') setIsLogin(true);
+    
+  // }, [cachedUser]);
 
   return (
     <div className={`${s.pcMenu} bg-nav`}>
@@ -71,7 +75,7 @@ export default observer(function Header(props: Props) {
               {/*<li><a href="#" className='text-white text-24px leading-28px p-15px'>Roadmap</a></li>*/}
               <li>{/* <AuthBox /> */}</li>
               <li>
-                {cachedUser ? (
+                {AuthStore.isLoggedIn ? (
                   <>
                     <User></User>
                   </>

@@ -4,8 +4,8 @@ import AWS from "aws-sdk";
 import Image from "next/image";
 import { Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import { stringMap } from "aws-sdk/clients/backup";
-//import defaultImage from "/default.jpg";
+import profilePic from "../../../../public/favicon.png";
+
 type Props = {
   heigh?: string;
   width?: string;
@@ -65,19 +65,22 @@ function UploadImage(props: Props) {
 
       <div className="">
         {url ? (
-          <Image
+          <img
             src={url}
             alt="Picture of the author"
-            width={props.width}
-            height={props.heigh}
-            layout="responsive"
+            style={{
+              objectFit: "cover",
+              aspectRatio: `${props.width} / ${props.heigh}`,
+            }}
           />
         ) : (
           <img
-            src="/default.jpg"
-            width={props.width}
-            height={props.heigh}
-            alt=""
+            src="/assets/default.jpg"
+            alt="Default images"
+            style={{
+              objectFit: "cover",
+              aspectRatio: `${props.width} / ${props.heigh}`,
+            }}
           />
         )}
 

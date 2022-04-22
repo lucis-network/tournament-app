@@ -12,6 +12,7 @@
 /* Fix tailwind base fucking behavior */
 img {
   display: inline;
+  height: initial;
 }
 
 html,
