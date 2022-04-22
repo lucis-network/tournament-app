@@ -5,37 +5,33 @@ import { Input } from "antd";
 import { observer } from "mobx-react-lite";
 import { Radio } from "antd";
 import { Select } from "antd";
-import {
-  BracketType,
-  Participants,
-  Region,
-  Rounds,
-  Teamsize,
-} from "utils/Enum";
+import { BracketType, Participants, Region, Rounds } from "utils/Enum";
 import { Button } from "antd";
 import UploadImage from "components/ui/common/upload/UploadImage";
-import dynamic from "next/dynamic";
 import ChooseGameModal from "components/ui/tournament/create/chooseGame/ChooseGameModal";
-import { useState } from "react";
 import TournamentStore from "src/store/TournamentStore";
+import RefereeModal from "components/ui/tournament/create/referee/RefereeModal";
+import { useEffect, useState } from "react";
+import "react-quill/dist/quill.snow.css";
+import dynamic from "next/dynamic";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
 
 type Props = {};
-type CrT = {
-  name?: string;
-  cover?: string;
-  thumbnail?: string;
-};
+
 export default observer(function CreateTournament(props: Props) {
+  const [overview, setOverview] = useState("");
+  const [rules, setRules] = useState("");
+
   const callbackFunction = (childData: string) => {
     console.log("childData", childData);
   };
 
   const openModal = (value: string) => {
     if (value === "choosegame") TournamentStore.chooseGameModalVisible = true;
+    if (value === "referee") TournamentStore.refereeModalVisible = true;
   };
 
   return (
@@ -63,7 +59,7 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={10}>
                 <UploadImage
                   parentCallback={callbackFunction}
-                  heigh="450"
+                  heigh="480"
                   width="1200"
                 ></UploadImage>
                 <p>Recommended size: 1200x300</p>
@@ -199,7 +195,7 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={12}>
                 <p className="ml-[10px]">Referee(s)</p>
                 <div className="flex flex-row">
-                  <div className="flex flex-col items-center mr-15px">
+                  <div className="flex flex-col items-center mr-15px ml-[10px]">
                     <img
                       src="/assets/avatar.jpg"
                       width="50"
@@ -218,7 +214,7 @@ export default observer(function CreateTournament(props: Props) {
                     <p className="mt-5px">Luciz</p>
                   </div>
 
-                  <Button>+ Add</Button>
+                  <Button onClick={() => openModal("referee")}>+ Add</Button>
                 </div>
               </Col>
             </Row>
@@ -229,21 +225,19 @@ export default observer(function CreateTournament(props: Props) {
 
           <div>
             <p className="text-30px mt-20px">Tournament Overview</p>
-            <div>
+            <div style={{ minHeight: 50 }}>
               <ReactQuill
-              // value={this.state.text}
-              // onChange={this.handleChange}
+                theme="snow"
+                value={overview}
+                onChange={setOverview}
               />
             </div>
           </div>
 
           <div>
             <p className="text-30px mt-20px">Rules</p>
-            <div>
-              <ReactQuill
-              // value={this.state.text}
-              // onChange={this.handleChange}
-              />
+            <div style={{ minHeight: 50 }}>
+              <ReactQuill theme="snow" value={rules} onChange={setRules} />
             </div>
           </div>
 
@@ -269,6 +263,7 @@ export default observer(function CreateTournament(props: Props) {
         </div>
 
         <ChooseGameModal />
+        <RefereeModal />
       </div>
 
       {/* <Footer /> */}

@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 class TournamentStore {
   private _chooseGameModalVisible: boolean = false;
+  private _refereeModalVisible: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -13,6 +14,13 @@ class TournamentStore {
   }
   public set chooseGameModalVisible(value: boolean) {
     this._chooseGameModalVisible = value;
+  }
+
+  public get refereeModalVisible(): boolean {
+    return this._refereeModalVisible;
+  }
+  public set refereeModalVisible(value: boolean) {
+    this._refereeModalVisible = value;
   }
 }
 

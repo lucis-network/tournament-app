@@ -441,6 +441,12 @@ body .backdrop-blur-sm {
 */
 .ant-modal-close {}
 
+.ant-radio-group{
+  display: flex !important;
+  font-size: 14px !important;
+  color: white !important;
+}
+
 .ant-modal-close .ant-modal-close-x {
   background: #e4e0e0;
   width: 26px;

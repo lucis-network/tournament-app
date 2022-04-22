@@ -71,6 +71,7 @@ function UploadImage(props: Props) {
             style={{
               objectFit: "cover",
               aspectRatio: `${props.width} / ${props.heigh}`,
+              marginBottom: "10px",
             }}
           />
         ) : (
@@ -80,6 +81,7 @@ function UploadImage(props: Props) {
             style={{
               objectFit: "cover",
               aspectRatio: `${props.width} / ${props.heigh}`,
+              marginBottom: "10px",
             }}
           />
         )}
@@ -87,7 +89,11 @@ function UploadImage(props: Props) {
         {/* <Upload>
           <Button icon={<UploadOutlined />} >Click to Upload</Button>
         </Upload> */}
-        <input type="file" onChange={handleFileInput} />
+        <input
+          type="file"
+          style={{ color: "white" }}
+          onChange={handleFileInput}
+        />
         {/* <button onClick={() => handleUpload(selectedFile)}>Upload</button> */}
       </div>
     </>
