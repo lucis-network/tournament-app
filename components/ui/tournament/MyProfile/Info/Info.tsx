@@ -1,5 +1,5 @@
 import s from "./Info.module.sass";
-import AuthStore from "../../Auth/AuthStore"
+import AuthStore from "../../../../Auth/AuthStore"
 
 type Props = {
   click: () => void
