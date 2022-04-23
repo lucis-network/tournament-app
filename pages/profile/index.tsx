@@ -1,6 +1,6 @@
-import InfoMyProfile from "components/MyProfile/Info/Info"
-import EditProfile from "components/MyProfile/EditProfile/EditProfile"
-import ContentTournament from "components/MyProfile/ContentTournament/ContentTournament"
+import InfoMyProfile from "components/ui/tournament/MyProfile/Info/Info"
+import EditProfile from "components/ui/tournament/MyProfile/EditProfile/EditProfile"
+import ContentTournament from "components/ui/tournament/MyProfile/ContentTournament/ContentTournament"
 
 import s from "./profile.module.sass"
 import { useState } from "react"
