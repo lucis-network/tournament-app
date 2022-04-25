@@ -609,13 +609,13 @@ div {
   backdrop-filter: blur(10px);
 }
 
-.ant-form-item {
+/* .ant-form-item {
   margin: 0;
 }
 
 .ant-form-item-control:first-child:not([class^="ant-col-"]):not([class*=" ant-col-"]) {
   margin: auto;
-}
+} */
 
 body .ant-btn-primary {
   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
