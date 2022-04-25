@@ -13,27 +13,35 @@ export default function TableParticipant() {
       age: 32,
       address: '10 Downing Street',
       position: 'rank',
+      member: [
+        {id: 1, name: 'NonCaiTay', room_master: true},
+        {id: 2, name: 'BestTop'},
+        {id: 3, name: 'BestSp'},
+      ]
     },
     {
-      key: '2',
+      key: '2', 
       name: 'Cai Nit',
-      age: 42,
+      age: 32,
       address: '10 Downing Street',
       position: 'rank',
+      member: [
+        {id: 1, name: 'Mid~pro', room_master: true},
+        {id: 2, name: 'Mid~pro'},
+        {id: 3, name: 'Mid~pro'},
+      ]
     },
     {
-      key: '3',
-      name: 'Ao Ma',
-      age: 42,
+      key: '3', 
+      name: 'Cai Nit',
+      age: 32,
       address: '10 Downing Street',
       position: 'rank',
-    },
-    {
-      key: '4',
-      name: 'Hoi Non',
-      age: 42,
-      address: '10 Downing Street',
-      position: 'rank',
+      member: [
+        {id: 1, name: 'Mid~pro', room_master: true},
+        {id: 2, name: 'Mid~pro'},
+        {id: 3, name: 'Mid~pro'},
+      ]
     },
   ];
   
@@ -65,7 +73,7 @@ export default function TableParticipant() {
     {
       title: '',
       width: '15%',
-      render: (_:any, item: object) => <ButtonDonate name={item} />,
+      render: (_:any, item: object) => <ButtonDonate nameTeam={item} />,
     },
   ];
   return(
