@@ -1,0 +1,41 @@
+.content_modal
+  max-width: 400px
+  :global(.ant-modal-footer)
+    display: none
+  .information
+    display: flex
+    flex-direction: column
+    align-items: center
+    .avt_member
+      min-width: 100px
+      height: 100px
+      background: #FFF
+      overflow: hidden
+      border-radius: 100%
+    p
+      margin-top: 12px
+  
+  .input
+    justify-content: space-between
+    flex-wrap: nowrap
+    align-items: center
+    :global(.ant-input)
+      border-radius: 8px
+  .message
+    margin: 12px 0px
+    :global(.ant-input)
+      resize: none
+    :global(.ant-input-textarea-show-count::after)
+      color: #FFF
+      font-size: 14px
+      font-weight: 100
+  
+  .message_error
+    font-size: 14px
+    margin-top: 4px
+    color: #cb3636
+
+  .btn
+    margin-top: 22px
+    align-items: center
+    justify-content: center
