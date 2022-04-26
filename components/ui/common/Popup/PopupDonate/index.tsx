@@ -1,36 +1,36 @@
 import { Button, Col, Input, Modal, Row } from "antd";
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { AppEmitter } from "services/emitter";
 import s from "./PopupDonate.module.sass";
 
 type Props = {
-  datas?: object;
+  datas: object;
+  status: boolean;
+  onClick: () => void
 };
 
 const { TextArea } = Input;
 
-export default function PopupDonate(props: Props) {
-  const { datas } = props;
+const PopupDonate = (props: Props) => {
+  const { datas, status, onClick } = props;
+
   const [modalVisible, setModalVisible] = useState(Boolean);
   const [titleMessage, setTitleMessage] = useState("");
   const [values, setValues] = useState("");
 
-  const showModal = () => {
-    setModalVisible(true);
-  };
-  useEffect(() => {
-    const subscription = AppEmitter.addListener(
-      "setPopupDonate",
-      (visible: boolean) => {
-        if (visible) {
-          showModal();
-        }
-      }
-    );
-    return () => {
-      subscription.remove();
-    };
-  }, []);
+  // useEffect(() => {
+  //   const subscription = AppEmitter.addListener(
+  //     "setPopupDonate",
+  //     (visible: boolean) => {
+  //       if (visible) {
+  //         setModalVisible(true);
+  //       }
+  //     }
+  //   );
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
 
   const handleBlur = () => {
     if (values === "") {
@@ -51,17 +51,18 @@ export default function PopupDonate(props: Props) {
   };
 
   useEffect(() => {
-    if (modalVisible) {
-      setTitleMessage('')
-      setValues('')
+    if (status) {
+      setTitleMessage("");
+      setValues("");
     }
-  }, [modalVisible])
+  }, [status]);
+
   return (
     <Modal
       centered
-      visible={modalVisible}
-      onOk={() => setModalVisible(false)}
-      onCancel={() => setModalVisible(false)}
+      visible={status}
+      onOk={onClick}
+      onCancel={onClick}
       className={s.content_modal}
     >
       {Object.values([datas]).map((e: any) => (
@@ -78,7 +79,7 @@ export default function PopupDonate(props: Props) {
           <Col>Amount</Col>
           <Col span={13}>
             <Input
-              style={titleMessage !== '' ? { borderColor: "#cb3636" } : {}}
+              style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
               onBlur={handleBlur}
               value={values}
               onChange={handleChange}
@@ -106,6 +107,7 @@ export default function PopupDonate(props: Props) {
             />
           </Col>
         </Row>
+
         <Row className={s.btn}>
           <Col>
             <Button type="primary">Donate</Button>
@@ -114,4 +116,6 @@ export default function PopupDonate(props: Props) {
       </div>
     </Modal>
   );
-}
+};
+
+export default memo(PopupDonate);
