@@ -24,6 +24,7 @@ import {
 } from "react";
 import Item from "antd/lib/list/Item";
 import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
+import { useLocalStore } from "mobx-react";
 
 const LUCIS_FEE = 10;
 const REFEREER_FEE = 1;
@@ -111,6 +112,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   handleSave,
   ...restProps
 }) => {
+  const tournamentStore = useLocalStore(() => TournamentStore);
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<any>(null);
   const form = useContext(EditableContext)!;
@@ -128,7 +130,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   const calculatePrizing = (record: Item, values: number) => {
     record.total = values;
-    record.estimated = (20000 * values) / 100;
+    if (tournamentStore.pool_size)
+      record.estimated = Number.parseFloat(
+        ((tournamentStore.pool_size * values) / 100).toFixed(2)
+      );
     return record;
   };
 
@@ -235,7 +240,7 @@ export default observer(function Prizing(props: Props) {
             style={{ color: "white" }}
             title="Sure to delete?"
             onConfirm={() => handleDelete(record.key)}
-            disabled={record.key != state.dataSource.length - 1 ? true : false}
+            disabled={record.key == state.dataSource.length - 1}
           >
             <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
           </Popconfirm>
@@ -272,25 +277,21 @@ export default observer(function Prizing(props: Props) {
     });
     const total = calculateTotalAllocation(newData);
     if (total > 100) message.error("Total Allocation must be equal to 100%");
-    else {
-      newData = recalculatePercent(newData);
-      setState({ dataSource: newData });
-    }
+    setState({ dataSource: newData });
   };
 
-  const recalculatePercent = (newData: any) => {
-    let total = calculateTotalAllocation(newData);
-    // newData.forEach((item: { total: any }, idx: number) => {
-
-    // });
-    newData[newData.length - 1].total += 100 - total;
-    return newData;
-  };
+  // const recalculatePercent = (newData: any) => {
+  //   let total = calculateTotalAllocation(newData);
+  //   newData.forEach((item: { total: any }, idx: number) => {
+  //     total += item.total;
+  //   });
+  //   return total;
+  // };
 
   const calculateTotalAllocation = (newData: any) => {
     let total = 0;
     newData.forEach((item: { total: any }, idx: number) => {
-      if (idx != newData.length - 1) total += Number.parseFloat(item.total);
+      total += item.total;
     });
     return total;
   };
@@ -310,7 +311,7 @@ export default observer(function Prizing(props: Props) {
       let obj: PrizeAllocation = {
         position: index + 1,
         qty: item.quantity,
-        percent: item.total,
+        percent: Number.parseFloat((item.total / 100).toFixed(2)),
       };
       arr.push(obj);
     });
@@ -398,9 +399,6 @@ export default observer(function Prizing(props: Props) {
 
       <div className="pt-4">
         <p>Prize Allocation</p>
-        <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
-          Add a row
-        </Button>
         <Table
           className={s.container_table}
           components={components}
@@ -410,6 +408,21 @@ export default observer(function Prizing(props: Props) {
           columns={columns as ColumnTypes}
           pagination={false}
         />
+        <Row style={{ marginTop: 16 }}>
+          <Col span={2}>
+            <Button onClick={handleAdd} type="primary">
+              Add a row
+            </Button>
+          </Col>
+          <Col span={8}></Col>
+          <Col span={6}>
+            {calculateTotalAllocation(dataSource) !== 100 ? (
+              <p style={{ color: "red" }}>Total Allocation must be 100%</p>
+            ) : (
+              ""
+            )}
+          </Col>
+        </Row>
       </div>
 
       <div className="pt-4">

@@ -64,7 +64,7 @@ export default observer(function ChooseGameModal(props: Props) {
       <div className="mt-15px">
         <Radio.Group
           onChange={onChange}
-          value={value}
+          //value={value}
           className={`flex flex-wrap`}
         >
           {getDataChooseGame

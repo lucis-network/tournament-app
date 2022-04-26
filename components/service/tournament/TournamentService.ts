@@ -15,7 +15,7 @@ type LoginResponse = {
 };
 
 export default class TournamentService {
-  private async createTournament(ct: CreateTournament): Promise<any> {
+  public async createTournament(ct: CreateTournament): Promise<any> {
     const createTournamentRes = await apoloClient.mutate({
       mutation: gql`
         mutation createTournament($input: TournamentCreateInputGql!) {

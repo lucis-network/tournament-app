@@ -16,10 +16,11 @@ export type CreateTournament = {
   join_fee?: number;
   pool_size?: number;
   referees?: number[];
-  regions?: string;
+  regions?: string[];
   bracket_type?: string;
   sponsor_slots?: SponsorTierType[];
   start_at?: Date;
+  rounds?: any[];
 };
 
 export type PrizeAllocation = {
@@ -80,7 +81,7 @@ class TournamentStore {
 
   private _referees?: number[] | undefined;
 
-  private _regions?: string | undefined;
+  private _regions?: string[] = ["VN"];
 
   private _bracket_type?: string | undefined;
 
@@ -88,6 +89,7 @@ class TournamentStore {
 
   private _start_at?: Date | undefined;
   private _sponsor_slots: SponsorTierType[] | undefined;
+  private _rounds?: any[] | undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -113,6 +115,7 @@ class TournamentStore {
     this._bracket_type = cr.bracket_type;
     this._sponsor_slots = cr.sponsor_slots;
     this._start_at = cr.start_at;
+    this._rounds = cr.rounds;
   }
 
   getCreateTournament() {
@@ -136,6 +139,7 @@ class TournamentStore {
     cr.bracket_type = this._bracket_type;
     cr.sponsor_slots = this._sponsor_slots;
     cr.start_at = this._start_at;
+    cr.rounds = this._rounds;
     return cr;
   }
 
@@ -252,10 +256,10 @@ class TournamentStore {
   public set referees(value: number[] | undefined) {
     this._referees = value;
   }
-  public get regions(): string | undefined {
+  public get regions(): string[] | undefined {
     return this._regions;
   }
-  public set regions(value: string | undefined) {
+  public set regions(value: string[] | undefined) {
     this._regions = value;
   }
   public get bracket_type(): string | undefined {
@@ -282,6 +286,12 @@ class TournamentStore {
   }
   public set sponsor_slots(value: SponsorTierType[]) {
     this._sponsor_slots = value;
+  }
+  public get rounds_1(): any[] | undefined {
+    return this._rounds;
+  }
+  public set rounds_1(value: any[] | undefined) {
+    this._rounds = value;
   }
 }
 

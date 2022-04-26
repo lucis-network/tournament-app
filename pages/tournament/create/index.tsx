@@ -1,6 +1,6 @@
 import DocHead from "components/DocHead";
 import s from "./index.module.sass";
-import { Row, Col, Switch, InputNumber, InputRef, Form } from "antd";
+import { Row, Col, Switch, InputNumber, InputRef, Form, message } from "antd";
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
 import { Radio } from "antd";
@@ -24,9 +24,49 @@ const { Option } = Select;
 
 type Props = {};
 
+const rounds = [
+  {
+    title: "Round 2",
+    start_at: "2022-04-25T04:00:00",
+    type: "UPPER",
+  },
+  {
+    title: "Loser round 1",
+    start_at: "2022-04-26T04:00:00",
+    type: "LOWER",
+  },
+  {
+    title: "Loser round 2",
+    start_at: "2022-04-27T06:00:00",
+    type: "LOWER",
+  },
+  {
+    title: "Round 3",
+    start_at: "2022-04-26T08:00:00",
+    type: "UPPER",
+  },
+  {
+    title: "Loser round 3",
+    start_at: "2022-04-26T08:00:00",
+    type: "LOWER",
+  },
+  {
+    title: "Loser round 4",
+    start_at: "2022-04-27T10:00:00",
+    type: "LOWER",
+  },
+  {
+    title: "Final",
+    start_at: "2022-04-27T12:00:00",
+    type: "UPPER",
+  },
+];
 export default observer(function CreateTournament(props: Props) {
-  //const inputRef = useRef<any>(null);
-  const [titleMessage, setTitleMessage] = useState("");
+  const inputRef = useRef<any>(null);
+  const inputRefName = useRef<any>(null);
+
+  const [messageErrorName, setmessageErrorName] = useState("");
+  const [messageErrorTeamSize, setmessageErrorTeamSize] = useState("");
 
   const [checkPassword, setCheckPassword] = useState(false);
 
@@ -54,21 +94,48 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const createTournament = () => {
-    console.log(TournamentStore);
     let cr = TournamentStore.getCreateTournament();
-
-    cr.prize_allocation = JSON.parse(JSON.stringify(cr.prize_allocation));
-    cr.referees = JSON.parse(JSON.stringify(cr.referees));
-    (cr.start_at = new Date()), console.log("cr", cr);
+    cr.rounds = rounds;
+    cr.start_at = new Date();
+    console.log("cr", cr);
     const tournamentService = new TournamentService();
+
+    if (!validationInput(cr)) return;
+    const response = tournamentService.createTournament(cr);
+    console.log(response);
   };
 
-  // useEffect(() => {
-  //   inputRef.current!.focus();
-  // }, [TournamentStore.name == ""]);
+  const validationInput = (cr: any) => {
+    if (!cr.name) {
+      message.error("Name be not empty");
+      inputRefName.current!.focus();
+      return false;
+    }
 
-  const handleBlur = () => {
-    if (!TournamentStore.name) setTitleMessage("Name must not be empty");
+    if (!cr.team_size) {
+      message.error("Team size be not empty");
+      inputRef.current!.focus();
+      return false;
+    }
+    if (!cr.cover) {
+      message.error("Cover (Banner) be not empty");
+      return false;
+    }
+
+    if (!cr.thumbnail) {
+      message.error("Thumbnail be not empty");
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleBlur = (value: string) => {
+    if (value === "name" && !TournamentStore.name)
+      setmessageErrorName("Name must not be empty");
+
+    if (value === "teamsize" && !TournamentStore.team_size)
+      setmessageErrorTeamSize("Teamsize must not be empty");
   };
 
   return (
@@ -87,19 +154,21 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={20}>
                 <Input
-                  style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
+                  style={
+                    messageErrorName !== "" ? { borderColor: "#cb3636" } : {}
+                  }
                   placeholder="Tournament name"
                   onChange={(e) => {
                     TournamentStore.name = e.target.value;
-                    if (TournamentStore.name) setTitleMessage("");
+                    if (TournamentStore.name) setmessageErrorName("");
                   }}
                   maxLength={125}
                   required
-                  // ref={inputRef}
-                  onBlur={handleBlur}
+                  ref={inputRefName}
+                  onBlur={() => handleBlur("name")}
                   value={TournamentStore.name}
                 />
-                <div className={s.message_error}>{titleMessage}</div>
+                <div className={s.message_error}>{messageErrorName}</div>
               </Col>
             </Row>
             <Row className="pt-6">
@@ -200,14 +269,25 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={3}>
                 <Input
-                  placeholder="input teamsize"
+                  style={
+                    messageErrorTeamSize !== ""
+                      ? { borderColor: "#cb3636" }
+                      : {}
+                  }
+                  placeholder="Team size"
+                  ref={inputRef}
                   type="number"
                   onChange={(value: any) => {
-                    TournamentStore.team_size = value.target.value;
+                    TournamentStore.team_size = Number.parseInt(
+                      value.target.value
+                    );
+                    if (TournamentStore.team_size) setmessageErrorTeamSize("");
                   }}
+                  onBlur={() => handleBlur("teamsize")}
                   min={1}
                   required
                 />
+                <div className={s.message_error}>{messageErrorTeamSize}</div>
               </Col>
               <Col span={5}></Col>
               <Col span={4}>
@@ -266,11 +346,12 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Select
-                  defaultValue="VN"
+                  defaultValue={"VN"}
                   style={{ width: 150 }}
                   onChange={(value) => {
-                    TournamentStore.regions = value;
+                    TournamentStore.regions?.push(value);
                   }}
+                  disabled
                 >
                   {Region.map((item, index) => {
                     return (

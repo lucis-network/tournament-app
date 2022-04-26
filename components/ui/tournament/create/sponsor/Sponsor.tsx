@@ -19,13 +19,13 @@ const sponsorsDataInit: SponsorTierType[] = [
     show_logo: true,
     show_name: true,
     cover: "",
-    slots: [
-      {
-        id: "sponsor1",
-        name: "Sponsor 1",
-        logo: ""
-      },
-    ]
+    // slots: [
+    //   {
+    //     id: "sponsor1",
+    //     name: "Sponsor 1",
+    //     logo: ""
+    //   },
+    // ]
   },
   {
     uid: "gold",
@@ -36,18 +36,18 @@ const sponsorsDataInit: SponsorTierType[] = [
     show_logo: true,
     show_name: true,
     cover: "",
-    slots: [
-      {
-        id: "sponsor2",
-        name: "Sponsor 2",
-        logo: ""
-      },
-      {
-        id: "sponsor3",
-        name: "Sponsor 3",
-        logo: ""
-      },
-    ]
+    // slots: [
+    //   {
+    //     id: "sponsor2",
+    //     name: "Sponsor 2",
+    //     logo: ""
+    //   },
+    //   {
+    //     id: "sponsor3",
+    //     name: "Sponsor 3",
+    //     logo: ""
+    //   },
+    // ]
   },
   {
     uid: "silver",
@@ -58,23 +58,23 @@ const sponsorsDataInit: SponsorTierType[] = [
     show_logo: true,
     show_name: true,
     cover: "",
-    slots: [
-      {
-        id: "sponsor4",
-        name: "Sponsor 4",
-        logo: ""
-      },
-      {
-        id: "sponsor5",
-        name: "Sponsor 5",
-        logo: ""
-      },
-      {
-        id: "sponsor6",
-        name: "Sponsor 6",
-        logo: ""
-      },
-    ]
+    // slots: [
+    //   {
+    //     id: "sponsor4",
+    //     name: "Sponsor 4",
+    //     logo: ""
+    //   },
+    //   {
+    //     id: "sponsor5",
+    //     name: "Sponsor 5",
+    //     logo: ""
+    //   },
+    //   {
+    //     id: "sponsor6",
+    //     name: "Sponsor 6",
+    //     logo: ""
+    //   },
+    // ]
   },
   {
     uid: "enthusiated",
@@ -85,33 +85,33 @@ const sponsorsDataInit: SponsorTierType[] = [
     show_logo: true,
     show_name: true,
     cover: "",
-    slots: [
-      {
-        id: "sponsor7",
-        name: "Sponsor 7",
-        logo: ""
-      },
-      {
-        id: "sponsor8",
-        name: "Sponsor 8",
-        logo: ""
-      },
-      {
-        id: "sponsor9",
-        name: "Sponsor 9",
-        logo: ""
-      },
-      {
-        id: "sponsor10",
-        name: "Sponsor 10",
-        logo: ""
-      },
-      {
-        id: "sponsor11",
-        name: "Sponsor 11",
-        logo: ""
-      },
-    ]
+    // slots: [
+    //   {
+    //     id: "sponsor7",
+    //     name: "Sponsor 7",
+    //     logo: ""
+    //   },
+    //   {
+    //     id: "sponsor8",
+    //     name: "Sponsor 8",
+    //     logo: ""
+    //   },
+    //   {
+    //     id: "sponsor9",
+    //     name: "Sponsor 9",
+    //     logo: ""
+    //   },
+    //   {
+    //     id: "sponsor10",
+    //     name: "Sponsor 10",
+    //     logo: ""
+    //   },
+    //   {
+    //     id: "sponsor11",
+    //     name: "Sponsor 11",
+    //     logo: ""
+    //   },
+    // ]
   },
 ];
 
