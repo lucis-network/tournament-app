@@ -441,6 +441,12 @@ body .backdrop-blur-sm {
 */
 .ant-modal-close {}
 
+.ant-radio-group{
+  display: flex !important;
+  font-size: 14px !important;
+  color: white !important;
+}
+
 .ant-modal-close .ant-modal-close-x {
   background: #e4e0e0;
   width: 26px;
@@ -603,13 +609,13 @@ div {
   backdrop-filter: blur(10px);
 }
 
-.ant-form-item {
+/* .ant-form-item {
   margin: 0;
 }
 
 .ant-form-item-control:first-child:not([class^="ant-col-"]):not([class*=" ant-col-"]) {
   margin: auto;
-}
+} */
 
 body .ant-btn-primary {
   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
