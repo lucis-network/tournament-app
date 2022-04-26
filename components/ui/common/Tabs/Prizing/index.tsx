@@ -23,25 +23,28 @@ export default function Prizing(props: Props) {
     }));
   }, [totalPrize]);
 
-  const dataSource = [
+  const dataPrize = [
     {
+      key: "10",
       place: "1 st place",
       prizeAllocation: `${(prizePercent.firstPrize * 100) / totalPrize}%`,
       prize: `${formatNumber(prizePercent.firstPrize)}`,
     },
     {
+      key: "11",
       place: "2 st place",
       prizeAllocation: `${(prizePercent.secondPrize * 100) / totalPrize}%`,
       prize: `${formatNumber(prizePercent.secondPrize)}`,
     },
     {
+      key: "12",
       place: "3 st place",
       prizeAllocation: `${(prizePercent.thirdPrize * 100) / totalPrize}%`,
       prize: `${formatNumber(prizePercent.thirdPrize)}`,
     },
   ];
 
-  const columns = [
+  const columnsPrize = [
     {
       title: "Place",
       dataIndex: "place",
@@ -62,14 +65,14 @@ export default function Prizing(props: Props) {
     },
   ];
   return (
-    <>
+    <div className={s.container}>
       <h1>Prize distribution</h1>
       <Table
-        dataSource={dataSource}
-        columns={columns}
+        dataSource={dataPrize}
+        columns={columnsPrize}
         bordered
         className={s.container_table}
       />
-    </>
+    </div>
   );
 }
