@@ -21,6 +21,24 @@ export type CreateTournament = {
   bracket_type?: string;
 };
 
+export type SponsorTierType = {
+  uid?: string;
+  name?: string;
+  max: number;
+  min?: number;
+  show_logo?: boolean;
+  show_name?: boolean;
+  cover?: string;
+  show_ads?: boolean;
+  slots?: SponsorSlotType[];
+}
+
+export type SponsorSlotType = {
+  id?: string;
+  name?: string;
+  logo?: string;
+}
+
 class TournamentStore {
   private _chooseGameModalVisible: boolean = false;
   private _refereeModalVisible: boolean = false;
@@ -59,6 +77,8 @@ class TournamentStore {
   private _regions?: string | undefined;
 
   private _bracket_type?: string | undefined;
+
+  private _sponsor_slots: SponsorTierType[] = [];
 
   constructor() {
     makeAutoObservable(this);
@@ -188,6 +208,12 @@ class TournamentStore {
   }
   public set bracket_type(value: string | undefined) {
     this._bracket_type = value;
+  }
+  public get sponsor_slots(): SponsorTierType[] {
+    return this._sponsor_slots;
+  }
+  public set sponsor_slots(value: SponsorTierType[]) {
+    this._sponsor_slots = value;
   }
 }
 
