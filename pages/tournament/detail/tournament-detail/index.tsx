@@ -1,8 +1,10 @@
 import s from "./tournament-detail.module.sass";
-import SearchComplete from "../../components/ui/common/Search/index";
-import TableParticipant from "../../components/ui/common/Tabs/Participants/index";
+import SearchComplete from "../../../../components/ui/common/Search/index";
+import TableParticipant from "../../../../components/ui/common/Tabs/Participants/index";
+import Referees from "../../../../components/ui/common/Tabs/Referees/index";
 
 import { Button, Col, Row, Tabs } from "antd";
+import Prizing from "components/ui/common/Tabs/Prizing";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
@@ -72,16 +74,16 @@ const TournamentDetail = () => {
             Content of Tab Pane 3
           </TabPane>
           <TabPane tab="Participants(32/32)" key="4">
-            <div style={{ display: 'flex', justifyContent: 'end' }}>
+            <div style={{ display: "flex", justifyContent: "end" }}>
               <SearchComplete />
             </div>
             <TableParticipant />
           </TabPane>
           <TabPane tab="Referees" key="5">
-            Content of Tab Pane 4
+            <Referees />
           </TabPane>
           <TabPane tab="Prizing" key="6">
-            Content of Tab Pane 4
+            <Prizing />
           </TabPane>
         </Tabs>
       </div>

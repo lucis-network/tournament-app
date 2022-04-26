@@ -1,5 +1,5 @@
 import { Modal, Button, Row, Col } from "antd";
-import { useCallback, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import s from "./Button.module.sass";
 import PopupDonate from "../../Popup/PopupDonate/index";
 import { AppEmitter } from "services/emitter";
@@ -7,25 +7,36 @@ import { AppEmitter } from "services/emitter";
 type Props = {
   nameTeam?: object;
 };
-export default function ButtonDonate(props: Props) {
+export default function ModalDonateTeam(props: Props) {
   const { nameTeam } = props;
   const [modalVisible, setModalVisible] = useState(false);
-  const [dataMember, setDataMember] = useState({});
+  const [isPopUp, setIsPopUp] = useState(false)
+  const [newData, setNewData] = useState({})
 
-  const handleClick = () => {
-    setModalVisible(true);
+  const handlButton = (datas: object) => {
+    setIsPopUp(true)
+    setNewData(datas)
   };
-  const handlButton = useCallback((datas) => {
-    AppEmitter.emit("setPopupDonate", true);
-    setDataMember(datas)
-  }, []);
+  const click = () => {
+    setIsPopUp(false)
+  }
 
+  useEffect(() => {
+    const subscription = AppEmitter.addListener(
+      "showPopupDonate",
+      (visible: boolean) => {
+        if (visible) {
+          setModalVisible(true);
+        }
+      }
+    );
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+  
   return (
     <div className={s.container_button_donate}>
-      <Button onClick={handleClick} type="primary">
-        Donate
-      </Button>
-
       <Modal
         centered
         visible={modalVisible}
@@ -34,7 +45,7 @@ export default function ButtonDonate(props: Props) {
         className={s.content_modal}
       >
         {Object.values([nameTeam]).map((e: any) => (
-          <div key={e.key}>
+          <div key={e}>
             <Row className={s.top}>
               <Col span={4} className={s.avt}>
                 avt
@@ -57,7 +68,7 @@ export default function ButtonDonate(props: Props) {
 
             <div className={s.Member}>
               <h1>Member</h1>
-              {e.member.map((item: any) => (
+              {e.member?.map((item: any) => (
                 <Row key={item.id} className={s.container}>
                   <Col span={18} className={s.item_member}>
                     <div className={s.avt_member}>avt</div>
@@ -78,10 +89,10 @@ export default function ButtonDonate(props: Props) {
                   </Col>
                 </Row>
               ))}
+              <PopupDonate onClick={click} status={isPopUp} datas={newData} />
             </div>
           </div>
         ))}
-        <PopupDonate datas={dataMember} />
       </Modal>
     </div>
   );

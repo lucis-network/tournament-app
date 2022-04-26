@@ -1,15 +1,12 @@
 import DocHead from "components/DocHead";
 import { useState } from "react";
 import AWS from "aws-sdk";
-import Image from "next/image";
-import { Upload, Button } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import profilePic from "../../../../public/favicon.png";
 
 type Props = {
   heigh?: string;
   width?: string;
   parentCallback?: any;
+  value?: string;
 };
 
 const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
@@ -55,7 +52,7 @@ function UploadImage(props: Props) {
         var s3url = myBucket.getSignedUrl("getObject", { Key: params.Key });
         const str = s3url.split("?")[0];
         setUrl(str);
-        props.parentCallback(str);
+        props.parentCallback(str, props.value);
       });
   };
 
@@ -71,6 +68,7 @@ function UploadImage(props: Props) {
             style={{
               objectFit: "cover",
               aspectRatio: `${props.width} / ${props.heigh}`,
+              marginBottom: "10px",
             }}
           />
         ) : (
@@ -80,6 +78,7 @@ function UploadImage(props: Props) {
             style={{
               objectFit: "cover",
               aspectRatio: `${props.width} / ${props.heigh}`,
+              marginBottom: "10px",
             }}
           />
         )}
@@ -87,7 +86,11 @@ function UploadImage(props: Props) {
         {/* <Upload>
           <Button icon={<UploadOutlined />} >Click to Upload</Button>
         </Upload> */}
-        <input type="file" onChange={handleFileInput} />
+        <input
+          type="file"
+          style={{ color: "white" }}
+          onChange={handleFileInput}
+        />
         {/* <button onClick={() => handleUpload(selectedFile)}>Upload</button> */}
       </div>
     </>

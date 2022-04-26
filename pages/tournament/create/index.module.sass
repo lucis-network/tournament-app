@@ -8,11 +8,17 @@
   display: flex
   flex-direction: column
   text-color: white
-
+  :global(.ant-radio-disabled + span)
+    color: grey
 .textColor
   color: white
 
-.radioFee 
+.radioFee
   display: flex
-  p 
+  p
     min-width: 100px
+
+.password
+  margin-top: 20px
+  :global(.ant-switch)
+    background-color: rgb(252 11 11 / 25%) !important
