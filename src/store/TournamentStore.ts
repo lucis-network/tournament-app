@@ -18,7 +18,7 @@ export type CreateTournament = {
   referees?: number[];
   regions?: string;
   bracket_type?: string;
-  sponsor_slots?: any[];
+  sponsor_slots?: SponsorTierType[];
   start_at?: Date;
 };
 
@@ -27,6 +27,24 @@ export type PrizeAllocation = {
   qty?: number;
   percent?: number;
 };
+export type SponsorTierType = {
+  uid?: string;
+  name?: string;
+  max: number;
+  min?: number;
+  show_logo?: boolean;
+  show_name?: boolean;
+  cover?: string;
+  show_ads?: boolean;
+  slots?: SponsorSlotType[];
+};
+
+export type SponsorSlotType = {
+  id?: string;
+  name?: string;
+  logo?: string;
+};
+
 class TournamentStore {
   private _chooseGameModalVisible: boolean = false;
   private _refereeModalVisible: boolean = false;
@@ -68,9 +86,8 @@ class TournamentStore {
 
   private _prize_allocation?: PrizeAllocation[] | undefined;
 
-  private _sponsor_slots?: any[] | undefined;
-
   private _start_at?: Date | undefined;
+  private _sponsor_slots: SponsorTierType[] | undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -253,17 +270,18 @@ class TournamentStore {
   public set prize_allocation(value: PrizeAllocation[]) {
     this._prize_allocation = value;
   }
-  public get sponsor_slots(): any[] | undefined {
-    return this._sponsor_slots;
-  }
-  public set sponsor_slots(value: any[] | undefined) {
-    this._sponsor_slots = value;
-  }
+
   public get start_at(): Date | undefined {
     return this._start_at;
   }
   public set start_at(value: Date | undefined) {
     this._start_at = value;
+  }
+  public get sponsor_slots(): SponsorTierType[] {
+    return this._sponsor_slots ? this._sponsor_slots : [];
+  }
+  public set sponsor_slots(value: SponsorTierType[]) {
+    this._sponsor_slots = value;
   }
 }
 
