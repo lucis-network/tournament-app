@@ -33,16 +33,9 @@ export default observer(function Sponsor(props: Props) {
   const [showEdit, setShowEdit] = useState(false);
 
   const callbackFunction = (item: any, checked: boolean, value: string) => {
-    // console.log("item", item);
     if (value === "logo") item.showLogo = checked;
     if (value === "name") item.showName = checked;
-    console.log(item);
-    console.log(sponsorsData);
   };
-
-  useEffect(() => {
-    console.log(sponsorsData);
-  }, [sponsorsData]);
 
   const changeShowEdit = () => {
     setShowEdit(!showEdit);

@@ -287,40 +287,6 @@ export type EarningHistory = {
   type?: Maybe<Scalars['String']>;
 };
 
-export type GTournament = {
-  __typename?: 'GTournament';
-  _count: TournamentCount;
-  bracket?: Maybe<Bracket>;
-  brackets?: Maybe<Array<Bracket>>;
-  cache_tournament?: Maybe<CacheTournament>;
-  claim_transactions?: Maybe<Array<ClaimTransactions>>;
-  cover: Scalars['String'];
-  created_at: Scalars['DateTime'];
-  currency: Currency;
-  currency_uid: Scalars['String'];
-  desc?: Maybe<Scalars['String']>;
-  game: Game;
-  game_uid: Scalars['String'];
-  invite_link?: Maybe<Scalars['String']>;
-  join_fee?: Maybe<Scalars['Decimal']>;
-  name: Scalars['String'];
-  participants: Scalars['Int'];
-  password?: Maybe<Scalars['String']>;
-  pool_size: Scalars['Decimal'];
-  prize_allocation: Scalars['JSON'];
-  regions?: Maybe<Scalars['String']>;
-  rules?: Maybe<Scalars['String']>;
-  sponsorSlot?: Maybe<Array<SponsorSlot>>;
-  status: TournamentStatus;
-  team_size: Scalars['Int'];
-  thumbnail: Scalars['String'];
-  tournament_subscribes?: Maybe<Array<TournamentSubscriber>>;
-  turns?: Maybe<Scalars['Int']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user_id: Scalars['Int'];
-};
-
 export type Game = {
   __typename?: 'Game';
   _count: GameCount;
@@ -418,12 +384,22 @@ export type ProfileUpdateInput = {
 
 export type Query = {
   __typename?: 'Query';
-  getClosedTournament?: Maybe<Array<GTournament>>;
+  getClosedTournament?: Maybe<Array<Tournament>>;
   getGame?: Maybe<Array<Game>>;
-  getOnGoingTournament?: Maybe<Array<GTournament>>;
-  getReferee?: Maybe<Referee>;
-  getUpComingTournament?: Maybe<Array<GTournament>>;
+  getOnGoingTournament?: Maybe<Array<Tournament>>;
+  getReferee?: Maybe<Array<Referee>>;
+  getUpComingTournament?: Maybe<Array<Tournament>>;
   me?: Maybe<UserGraphql>;
+};
+
+
+export type QueryGetGameArgs = {
+  name: Scalars['String'];
+};
+
+
+export type QueryGetRefereeArgs = {
+  name: Scalars['String'];
 };
 
 
@@ -658,10 +634,11 @@ export type TournamentCreateInputGql = {
 export type TournamentFilterInput = {
   bracket?: InputMaybe<Scalars['String']>;
   game?: InputMaybe<Scalars['String']>;
-  prize_pool_ascending?: InputMaybe<Scalars['Boolean']>;
-  status?: InputMaybe<Status>;
-  team_size?: InputMaybe<Scalars['Int']>;
-  time_ascending?: InputMaybe<Scalars['Boolean']>;
+  /** true or false */
+  prize_pool_ascending?: InputMaybe<Scalars['String']>;
+  team_size?: InputMaybe<Scalars['String']>;
+  /** true or false */
+  time_ascending?: InputMaybe<Scalars['String']>;
 };
 
 export enum TournamentStatus {

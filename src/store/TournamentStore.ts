@@ -1,27 +1,28 @@
 import { makeAutoObservable } from "mobx";
 
 export type CreateTournament = {
-  id?: number;
   name?: string;
   cover?: string;
   thumbnail?: string;
-  participants?: string;
+  participants?: number;
   team_size?: number;
-  turns?: string;
+  turns?: number;
   desc?: string;
   rules?: string;
-  prize_allocation?: string;
+  prize_allocation?: PrizeAllocation[];
   password?: string;
   game_uid?: string;
   currency_uid?: string;
-  join_fee?: string;
-  pool_size?: string;
-  referees?: string;
+  join_fee?: number;
+  pool_size?: number;
+  referees?: number[];
   regions?: string;
   bracket_type?: string;
+  sponsor_slots?: any[];
+  start_at?: Date;
 };
 
-type PrizeAllocation = {
+export type PrizeAllocation = {
   position?: number;
   qty?: number;
   percent?: number;
@@ -53,13 +54,13 @@ class TournamentStore {
 
   private _game_uid?: string | undefined;
 
-  private _currency_uid?: string | undefined;
+  private _currency_uid?: string = "USDT";
 
   private _join_fee?: number = 0;
 
   private _pool_size?: number | undefined;
 
-  private _referees?: string | undefined;
+  private _referees?: number[] | undefined;
 
   private _regions?: string | undefined;
 
@@ -67,12 +68,58 @@ class TournamentStore {
 
   private _prize_allocation?: PrizeAllocation[] | undefined;
 
+  private _sponsor_slots?: any[] | undefined;
+
+  private _start_at?: Date | undefined;
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  setPrizeAllocation(prize: PrizeAllocation[]) {
-    this._prize_allocation = prize;
+  setCreateTournament(cr: CreateTournament) {
+    this._name = cr.name;
+    this._cover = cr.cover;
+    this._thumbnail = cr.thumbnail;
+    this._participants = cr.participants;
+    this._team_size = cr.team_size;
+    this._turns = cr.turns;
+    this._desc = cr.desc;
+    this._rules = cr.rules;
+    this._prize_allocation = cr.prize_allocation;
+    this._password = cr.password;
+    this._game_uid = cr.game_uid;
+    this._currency_uid = cr.currency_uid;
+    this._join_fee = cr.join_fee;
+    this._pool_size = cr.pool_size;
+    this._referees = cr.referees;
+    this._regions = cr.regions;
+    this._bracket_type = cr.bracket_type;
+    this._sponsor_slots = cr.sponsor_slots;
+    this._start_at = cr.start_at;
+  }
+
+  getCreateTournament() {
+    let cr: CreateTournament = {};
+    cr.name = this._name;
+    cr.cover = this._cover;
+    cr.thumbnail = this._thumbnail;
+    cr.participants = this._participants;
+    cr.team_size = this._team_size;
+    cr.turns = this._turns;
+    cr.desc = this._desc;
+    cr.rules = this._rules;
+    cr.prize_allocation = this._prize_allocation;
+    cr.password = this._password;
+    cr.game_uid = this._game_uid;
+    cr.currency_uid = this._currency_uid;
+    cr.join_fee = this._join_fee;
+    cr.pool_size = this._pool_size;
+    cr.referees = this._referees;
+    cr.regions = this._regions;
+    cr.bracket_type = this._bracket_type;
+    cr.sponsor_slots = this._sponsor_slots;
+    cr.start_at = this._start_at;
+    return cr;
   }
 
   /* ============= Getter & Setter ==============*/
@@ -182,10 +229,10 @@ class TournamentStore {
   public set pool_size(value: number | undefined) {
     this._pool_size = value;
   }
-  public get referees(): string | undefined {
+  public get referees(): number[] | undefined {
     return this._referees;
   }
-  public set referees(value: string | undefined) {
+  public set referees(value: number[] | undefined) {
     this._referees = value;
   }
   public get regions(): string | undefined {
@@ -200,11 +247,23 @@ class TournamentStore {
   public set bracket_type(value: string | undefined) {
     this._bracket_type = value;
   }
-  public get prize_allocation(): PrizeAllocation[] | undefined {
-    return this._prize_allocation;
+  public get prize_allocation(): PrizeAllocation[] {
+    return this._prize_allocation ? this._prize_allocation : [];
   }
-  public set prize_allocation(value: PrizeAllocation[] | undefined) {
+  public set prize_allocation(value: PrizeAllocation[]) {
     this._prize_allocation = value;
+  }
+  public get sponsor_slots(): any[] | undefined {
+    return this._sponsor_slots;
+  }
+  public set sponsor_slots(value: any[] | undefined) {
+    this._sponsor_slots = value;
+  }
+  public get start_at(): Date | undefined {
+    return this._start_at;
+  }
+  public set start_at(value: Date | undefined) {
+    this._start_at = value;
   }
 }
 

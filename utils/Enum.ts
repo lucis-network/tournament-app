@@ -9,5 +9,5 @@ export const BracketType = [
 ];
 export const ChainOption = [
   { value: "USDT", label: "USDT" },
-  { value: "BSC", label: "BSC" },
+  { value: "BUSD", label: "BUSD" },
 ];

@@ -3,15 +3,21 @@ import { Modal, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Input from "antd/lib/input/Input";
 import Search from "antd/lib/input/Search";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import s from "./index.module.sass";
 import { useChooseGame } from "hooks/tournament/useCreateTournament";
 
-type Props = {};
+type Props = {
+  handCallbackChooseGame?: any;
+};
 
 export default observer(function ChooseGameModal(props: Props) {
+  const inputRef = useRef<any>(null);
+
+  const [name, setName] = useState("");
+
   const { getDataChooseGame } = useChooseGame({
-    nameGame: undefined,
+    name: name,
   });
 
   const isModalVisible = TournamentStore.chooseGameModalVisible,
@@ -23,20 +29,21 @@ export default observer(function ChooseGameModal(props: Props) {
   };
 
   useEffect(() => {
-    console.log("getDataChooseGame", getDataChooseGame);
-  }, [getDataChooseGame]);
+    inputRef.current && inputRef.current.focus();
+  }, [name]);
 
-  const onSearch = (value: string) => console.log(value);
+  const onSearch = (value: string) => setName(value);
 
-  const [value, setValue] = useState(null);
+  const [value, setValue] = useState(0);
 
   const onChange = (e: any) => {
-    console.log("radio checked", e.target.value);
     setValue(e.target.value);
   };
 
   const handleOk = () => {
     setIsModalVisible(false);
+    if (getDataChooseGame)
+      props.handCallbackChooseGame(getDataChooseGame[value]);
   };
 
   return (
@@ -47,7 +54,9 @@ export default observer(function ChooseGameModal(props: Props) {
       onCancel={handleCancel}
     >
       <Search
+        ref={inputRef}
         placeholder="Search by name"
+        style={{ color: "white" }}
         onSearch={onSearch}
         enterButton
         className={`${s.searchText}`}
@@ -62,12 +71,16 @@ export default observer(function ChooseGameModal(props: Props) {
             ? getDataChooseGame?.map((ele: any, index: number) => {
                 return (
                   <div className={`${s.item}`} key={index}>
-                    <img
-                      src="/assets/avatar.jpg"
-                      width="100"
-                      height="100"
-                      alt=""
-                    />
+                    {ele.logo ? (
+                      <img src={ele.logo} width="100" height="100" alt="" />
+                    ) : (
+                      <img
+                        src="/assets/avatar.jpg"
+                        width="100"
+                        height="100"
+                        alt=""
+                      />
+                    )}
                     <Radio className={`${s.itemRadio}`} value={index}></Radio>
                     <p className="mt-5px">{ele.name}</p>
                   </div>

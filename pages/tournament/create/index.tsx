@@ -16,6 +16,7 @@ import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import Sponsor from "components/ui/tournament/create/sponsor/Sponsor";
 import Prizing from "components/ui/tournament/create/prizing/Prizing";
+import TournamentService from "components/service/tournament/TournamentService";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -28,9 +29,23 @@ export default observer(function CreateTournament(props: Props) {
   const [titleMessage, setTitleMessage] = useState("");
 
   const [checkPassword, setCheckPassword] = useState(false);
+
+  const [dataReferees, setDataReferees] = useState([]);
+  const [dataChooseGame, setDataChooseGame] = useState(null);
+
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") TournamentStore.cover = childData;
     if (value === "thumbnail") TournamentStore.thumbnail = childData;
+  };
+
+  const handCallbackReferee = (data: any, arr: any) => {
+    setDataReferees(data);
+    TournamentStore.referees = arr;
+  };
+
+  const handCallbackChooseGame = (data: any) => {
+    setDataChooseGame(data);
+    TournamentStore.game_uid = data.uid;
   };
 
   const openModal = (value: string) => {
@@ -40,6 +55,12 @@ export default observer(function CreateTournament(props: Props) {
 
   const createTournament = () => {
     console.log(TournamentStore);
+    let cr = TournamentStore.getCreateTournament();
+
+    cr.prize_allocation = JSON.parse(JSON.stringify(cr.prize_allocation));
+    cr.referees = JSON.parse(JSON.stringify(cr.referees));
+    (cr.start_at = new Date()), console.log("cr", cr);
+    const tournamentService = new TournamentService();
   };
 
   // useEffect(() => {
@@ -112,9 +133,33 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Choose game</p>
               </Col>
               <Col span={8}>
-                <Button onClick={() => openModal("choosegame")}>
-                  Choose game
-                </Button>
+                <div className="flex flex-row">
+                  {dataChooseGame ? (
+                    <div className="flex flex-col items-center mr-15px ml-[10px]">
+                      {dataChooseGame["logo"] ? (
+                        <img
+                          width="50"
+                          height="50"
+                          src={dataChooseGame["logo"]}
+                          alt=""
+                        />
+                      ) : (
+                        <img
+                          width="50"
+                          height="50"
+                          src="/assets/avatar.jpg"
+                          alt=""
+                        />
+                      )}
+                      <p className="mt-5px">{dataChooseGame["name"]}</p>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <Button onClick={() => openModal("choosegame")}>
+                    Choose game
+                  </Button>
+                </div>
               </Col>
               <Col span={4}>
                 <p className="ml-[10px]">Bracket type</p>
@@ -270,25 +315,31 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={12}>
                 <p className="ml-[10px]">Referee(s)</p>
                 <div className="flex flex-row">
-                  <div className="flex flex-col items-center mr-15px ml-[10px]">
-                    <img
-                      src="/assets/avatar.jpg"
-                      width="50"
-                      height="50"
-                      alt=""
-                    />
-                    <p className="mt-5px">Luciz</p>
-                  </div>
-                  <div className="flex flex-col items-center mr-15px">
-                    <img
-                      src="/assets/avatar.jpg"
-                      width="50"
-                      height="50"
-                      alt=""
-                    />
-                    <p className="mt-5px">Luciz</p>
-                  </div>
-
+                  {dataReferees?.map((item: any, index: number) => {
+                    return (
+                      <div
+                        className="flex flex-col items-center mr-15px ml-[10px]"
+                        key={index}
+                      >
+                        {item.user?.profile.avatar ? (
+                          <img
+                            width="50"
+                            height="50"
+                            src={item.user.profile.avatar}
+                            alt=""
+                          />
+                        ) : (
+                          <img
+                            width="50"
+                            height="50"
+                            src="/assets/avatar.jpg"
+                            alt=""
+                          />
+                        )}
+                        <p className="mt-5px">{item.user.profile.full_name}</p>
+                      </div>
+                    );
+                  })}
                   <Button onClick={() => openModal("referee")}>+ Add</Button>
                 </div>
               </Col>
@@ -362,8 +413,8 @@ export default observer(function CreateTournament(props: Props) {
           </div>
         </div>
 
-        <ChooseGameModal />
-        <RefereeModal />
+        <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
+        <RefereeModal handCallbackReferee={handCallbackReferee} />
       </div>
 
       {/* <Footer /> */}
