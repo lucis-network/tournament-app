@@ -7,6 +7,7 @@ import {
   Input,
   InputNumber,
   InputRef,
+  message,
   Popconfirm,
   Row,
   Select,
@@ -26,6 +27,7 @@ import Item from "antd/lib/list/Item";
 import { useLocalObservable } from "mobx-react";
 import AuthStore from "components/Auth/AuthStore";
 import { isBuffer } from "util";
+import TournamentStore from "src/store/TournamentStore";
 
 const LUCIS_FEE = 10;
 const REFEREER_FEE = 1;
@@ -131,7 +133,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   };
 
   const calculatePrizing = (record: Item, values: number) => {
-    console.log(authStore);
+    record.total = values;
     record.estimated = (20000 * values) / 100;
     return record;
   };
@@ -139,10 +141,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
   const save = async () => {
     try {
       const values = await form.validateFields();
-      console.log("values", values);
       toggleEdit();
-      const row = calculatePrizing(record, values.total);
-
+      const row = calculatePrizing(record, Number.parseFloat(values.total));
       handleSave({ ...row, ...values });
     } catch (errInfo) {
       console.log("Save failed:", errInfo);
@@ -163,10 +163,21 @@ const EditableCell: React.FC<EditableCellProps> = ({
           },
         ]}
       >
-        <InputNumber
+        {/* <InputNumber
           formatter={(value) => `${value}%`}
           parser={(value: any) => value.replace("%", "")}
           style={{ color: "black" }}
+          ref={inputRef}
+          onPressEnter={save}
+          onBlur={save}
+          max={100}
+          min={1}
+        /> */}
+        <Input
+          //formatter={(value) => `${value}%`}
+          //parser={(value: any) => value.replace("%", "")}
+          style={{ color: "white" }}
+          type="number"
           ref={inputRef}
           onPressEnter={save}
           onBlur={save}
@@ -191,6 +202,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export default observer(function Prizing(props: Props) {
   const [state, setState] = useState(dataTable);
   const [poolSize, setPoolSize] = useState(20000);
+  const [chain, setChain] = useState("USDT");
   let columnsHeader = [
     {
       title: "Team place",
@@ -198,7 +210,7 @@ export default observer(function Prizing(props: Props) {
       width: "30%",
     },
     {
-      title: "Qtty",
+      title: "Quantity",
       dataIndex: "quantity",
       width: "10%",
     },
@@ -215,7 +227,9 @@ export default observer(function Prizing(props: Props) {
       title: "Estimated",
       dataIndex: "estimated",
       render: (_: any, record: { key: React.Key; estimated: number }) => (
-        <span>{record.estimated} USDT</span>
+        <span>
+          {record.estimated} {chain}
+        </span>
       ),
     },
     {
@@ -224,11 +238,12 @@ export default observer(function Prizing(props: Props) {
       render: (_: any, record: { key: React.Key }) =>
         state.dataSource.length >= 1 ? (
           <Popconfirm
+            style={{ color: "white" }}
             title="Sure to delete?"
             onConfirm={() => handleDelete(record.key)}
-            disabled={record.key <= 2 ? true : false}
+            disabled={record.key != state.dataSource.length - 1 ? true : false}
           >
-            <a>Delete</a>
+            <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
           </Popconfirm>
         ) : null,
     },
@@ -262,7 +277,7 @@ export default observer(function Prizing(props: Props) {
       ...row,
     });
     const total = calculateTotalAllocation(newData);
-    if (total > 100) alert("Total Allocation <= 100%");
+    if (total > 100) message.error("Total Allocation must be equal to 100%");
     else {
       setState({ dataSource: newData });
     }
@@ -270,8 +285,8 @@ export default observer(function Prizing(props: Props) {
 
   const calculateTotalAllocation = (newData: any) => {
     let total = 0;
-    newData.forEach((item: { total: number }, idx: number) => {
-      total += item.total;
+    newData.forEach((item: { total: any }, idx: number) => {
+      total += Number.parseFloat(item.total);
     });
     return total;
   };
@@ -279,6 +294,25 @@ export default observer(function Prizing(props: Props) {
   function onChange(value: number) {
     setPoolSize(value);
   }
+
+  useEffect(() => {
+    TournamentStore.pool_size = poolSize;
+    recalculateEstimated();
+  }, [poolSize]);
+
+  useEffect(() => {}, [state]);
+
+  useEffect(() => {
+    TournamentStore.currency_uid = chain;
+  }, [chain]);
+
+  const recalculateEstimated = () => {
+    const dataSource = [...state.dataSource];
+    dataSource.forEach((item) => {
+      item.estimated = (poolSize * item.total) / 100;
+    });
+    setState({ dataSource: dataSource });
+  };
 
   const { dataSource } = state;
   const components = {
@@ -317,16 +351,21 @@ export default observer(function Prizing(props: Props) {
         <Row>
           <Col span={3}>
             <InputNumber
+              type="number"
               prefix="$"
               style={{ width: "99%" }}
-              min={10000}
-              max={10000000}
+              min={1}
               defaultValue={20000}
               onChange={onChange}
             />
           </Col>
           <Col span={3}>
-            <Select defaultValue="USDT">
+            <Select
+              defaultValue="USDT"
+              onChange={(value) => {
+                setChain(value);
+              }}
+            >
               {ChainOption.map((item, index) => {
                 return (
                   <Option value={item.value} key={index}>
@@ -345,6 +384,7 @@ export default observer(function Prizing(props: Props) {
           Add a row
         </Button>
         <Table
+          className={s.container_table}
           components={components}
           rowClassName={() => "editable-row"}
           bordered
@@ -384,7 +424,9 @@ export default observer(function Prizing(props: Props) {
           </Col>
           <Col span={12}></Col>
           <Col span={6}>
-            <p>Total : {totalPool()} USDT</p>
+            <p>
+              Total : {totalPool()} {chain}
+            </p>
           </Col>
         </Row>
       </div>

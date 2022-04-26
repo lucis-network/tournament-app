@@ -3,12 +3,17 @@ import { Modal, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Input from "antd/lib/input/Input";
 import Search from "antd/lib/input/Search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import s from "./index.module.sass";
+import { useChooseGame } from "hooks/tournament/useCreateTournament";
 
 type Props = {};
 
 export default observer(function ChooseGameModal(props: Props) {
+  const { getDataChooseGame } = useChooseGame({
+    nameGame: undefined,
+  });
+
   const isModalVisible = TournamentStore.chooseGameModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.chooseGameModalVisible = v);
@@ -17,14 +22,11 @@ export default observer(function ChooseGameModal(props: Props) {
     setIsModalVisible(false);
   };
 
+  useEffect(() => {
+    console.log("getDataChooseGame", getDataChooseGame);
+  }, [getDataChooseGame]);
+
   const onSearch = (value: string) => console.log(value);
-  const data = [
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-  ];
 
   const [value, setValue] = useState(null);
 
@@ -44,22 +46,34 @@ export default observer(function ChooseGameModal(props: Props) {
       onOk={handleOk}
       onCancel={handleCancel}
     >
-      <Search placeholder="input search text" onSearch={onSearch} enterButton className={`${s.searchText}`}/>
+      <Search
+        placeholder="Search by name"
+        onSearch={onSearch}
+        enterButton
+        className={`${s.searchText}`}
+      />
       <div className="mt-15px">
         <Radio.Group
           onChange={onChange}
           value={value}
           className={`flex flex-wrap`}
         >
-          {data.map((ele, index) => {
-            return (
-              <div className={`${s.item}`} key={index}>
-                <img src="/assets/avatar.jpg" width="100" height="100" alt="" />
-                <Radio className={`${s.itemRadio}`} value={index}></Radio>
-                <p className="mt-5px">{ele.label}</p>
-              </div>
-            );
-          })}
+          {getDataChooseGame
+            ? getDataChooseGame?.map((ele: any, index: number) => {
+                return (
+                  <div className={`${s.item}`} key={index}>
+                    <img
+                      src="/assets/avatar.jpg"
+                      width="100"
+                      height="100"
+                      alt=""
+                    />
+                    <Radio className={`${s.itemRadio}`} value={index}></Radio>
+                    <p className="mt-5px">{ele.name}</p>
+                  </div>
+                );
+              })
+            : ""}
         </Radio.Group>
       </div>
     </Modal>
