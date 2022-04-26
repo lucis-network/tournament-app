@@ -21,6 +21,11 @@ export type CreateTournament = {
   bracket_type?: string;
 };
 
+type PrizeAllocation = {
+  position?: number;
+  qty?: number;
+  percent?: number;
+};
 class TournamentStore {
   private _chooseGameModalVisible: boolean = false;
   private _refereeModalVisible: boolean = false;
@@ -34,11 +39,11 @@ class TournamentStore {
 
   private _thumbnail?: string | undefined;
 
-  private _participants?: string | undefined;
+  private _participants?: number = 8;
 
   private _team_size?: number | undefined;
 
-  private _turns?: string | undefined;
+  private _turns?: number = 1;
 
   private _desc?: string | undefined;
 
@@ -52,7 +57,7 @@ class TournamentStore {
 
   private _join_fee?: number = 0;
 
-  private _pool_size?: string | undefined;
+  private _pool_size?: number | undefined;
 
   private _referees?: string | undefined;
 
@@ -60,8 +65,14 @@ class TournamentStore {
 
   private _bracket_type?: string | undefined;
 
+  private _prize_allocation?: PrizeAllocation[] | undefined;
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  setPrizeAllocation(prize: PrizeAllocation[]) {
+    this._prize_allocation = prize;
   }
 
   /* ============= Getter & Setter ==============*/
@@ -111,10 +122,10 @@ class TournamentStore {
   public set cover(value: string | undefined) {
     this._cover = value;
   }
-  public get participants(): string | undefined {
+  public get participants(): number | undefined {
     return this._participants;
   }
-  public set participants(value: string | undefined) {
+  public set participants(value: number | undefined) {
     this._participants = value;
   }
   public get team_size(): number | undefined {
@@ -123,10 +134,10 @@ class TournamentStore {
   public set team_size(value: number | undefined) {
     this._team_size = value;
   }
-  public get turns(): string | undefined {
+  public get turns(): number | undefined {
     return this._turns;
   }
-  public set turns(value: string | undefined) {
+  public set turns(value: number | undefined) {
     this._turns = value;
   }
   public get desc(): string | undefined {
@@ -165,10 +176,10 @@ class TournamentStore {
   public set join_fee(value: number | undefined) {
     this._join_fee = value;
   }
-  public get pool_size(): string | undefined {
+  public get pool_size(): number | undefined {
     return this._pool_size;
   }
-  public set pool_size(value: string | undefined) {
+  public set pool_size(value: number | undefined) {
     this._pool_size = value;
   }
   public get referees(): string | undefined {
@@ -188,6 +199,12 @@ class TournamentStore {
   }
   public set bracket_type(value: string | undefined) {
     this._bracket_type = value;
+  }
+  public get prize_allocation(): PrizeAllocation[] | undefined {
+    return this._prize_allocation;
+  }
+  public set prize_allocation(value: PrizeAllocation[] | undefined) {
+    this._prize_allocation = value;
   }
 }
 

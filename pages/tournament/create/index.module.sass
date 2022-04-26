@@ -3,6 +3,11 @@
   min-height: 100vh
   p
     color: white
+  :global(.ant-input)
+    border-radius: 8px
+    padding: 8px
+  :global(.ant-select-dropdown)
+    padding: 100px
 
 .bracketType
   display: flex
@@ -10,6 +15,7 @@
   text-color: white
   :global(.ant-radio-disabled + span)
     color: grey
+
 .textColor
   color: white
 
@@ -21,4 +27,13 @@
 .password
   margin-top: 20px
   :global(.ant-switch)
-    background-color: rgb(252 11 11 / 25%) !important
+    background-color: grey !important
+  :global(.ant-switch-checked)
+    background-color: #1890ff !important
+  :global(.ant-input[disabled])
+    background-color: grey
+
+.message_error
+  font-size: 14px
+  margin-top: 4px
+  color: #cb3636

@@ -1,6 +1,5 @@
 import { Button, Col, Input, Modal, Row } from "antd";
 import { memo, useCallback, useEffect, useState } from "react";
-import { AppEmitter } from "services/emitter";
 import s from "./PopupDonate.module.sass";
 
 type Props = {
@@ -14,23 +13,8 @@ const { TextArea } = Input;
 const PopupDonate = (props: Props) => {
   const { datas, status, onClick } = props;
 
-  const [modalVisible, setModalVisible] = useState(Boolean);
   const [titleMessage, setTitleMessage] = useState("");
   const [values, setValues] = useState("");
-
-  // useEffect(() => {
-  //   const subscription = AppEmitter.addListener(
-  //     "setPopupDonate",
-  //     (visible: boolean) => {
-  //       if (visible) {
-  //         setModalVisible(true);
-  //       }
-  //     }
-  //   );
-  //   return () => {
-  //     subscription.remove();
-  //   };
-  // }, []);
 
   const handleBlur = () => {
     if (values === "") {

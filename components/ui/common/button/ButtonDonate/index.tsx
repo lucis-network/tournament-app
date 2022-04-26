@@ -1,7 +1,7 @@
 import { Modal, Button, Row, Col } from "antd";
 import { useEffect, useState, useRef } from "react";
 import s from "./Button.module.sass";
-import PopupDonate from "../../Popup/PopupDonate/index";
+import PopupDonate from "../../popup/PopupDonate/index";
 import { AppEmitter } from "services/emitter";
 
 type Props = {
