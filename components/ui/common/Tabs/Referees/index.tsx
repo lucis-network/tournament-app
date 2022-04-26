@@ -1,7 +1,7 @@
 import { Button, Table } from "antd";
 import { useCallback, useState } from "react";
 import { AppEmitter } from "services/emitter";
-import PopupDonate from "../../Popup/PopupDonate";
+import PopupDonate from "../../popup/PopupDonate";
 import s from "./Referees.module.sass";
 
 export default function Referees() {
@@ -16,30 +16,34 @@ export default function Referees() {
     setIsPopUp(false)
   }
 
-  const dataSource = [
+  const datasReferees = [
     {
       avt: "1",
+      key: "4",
       name: "Viet Nam",
       contact: "10 Downing Street",
     },
     {
       avt: "2",
+      key: "5",
       name: "Cai Nit 1",
       contact: "10 Downing Street",
     },
     {
       avt: "3",
+      key: "6",
       name: "Cai Nit 2",
       contact: "10 Downing Street",
     },
     {
       avt: "4",
+      key: "7",
       name: "Cai Nit 3",
       contact: "10 Downing Street",
     },
   ];
 
-  const columns = [
+  const columnsReferees = [
     {
       title: "",
       dataIndex: "avt",
@@ -72,8 +76,8 @@ export default function Referees() {
   return (
     <div>
       <Table
-        dataSource={dataSource}
-        columns={columns}
+        dataSource={datasReferees}
+        columns={columnsReferees}
         bordered
         className={s.container_table}
       />

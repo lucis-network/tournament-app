@@ -1,10 +1,10 @@
-import s from "./tournament-detail.module.sass";
-import SearchComplete from "../../../components/ui/common/Search/index";
-import TableParticipant from "../../../components/ui/common/Tabs/Participants/index";
-import Referees from "../../../components/ui/common/Tabs/Referees/index";
+import s from "./TournamentDetail.module.sass";
+import SearchComplete from "../../../components/ui/common/search/index";
+import TableParticipant from "../../../components/ui/common/tabs/Participants/index";
+import Referees from "../../../components/ui/common/tabs/Referees/index";
+import Prizing from "components/ui/common/tabs/Prizing";
 
 import { Button, Col, Row, Tabs } from "antd";
-import Prizing from "components/ui/common/Tabs/Prizing";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
@@ -62,6 +62,8 @@ const TournamentDetail = () => {
         <Col span={2}>content right</Col>
       </Row>
 
+
+      {/* tabs */}
       <div className={`lucis-container ${s.container_Tabs}`}>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Overview" key="1">
