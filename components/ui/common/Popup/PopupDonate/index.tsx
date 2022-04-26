@@ -52,10 +52,10 @@ export default function PopupDonate(props: Props) {
 
   useEffect(() => {
     if (modalVisible) {
-      setTitleMessage('')
-      setValues('')
+      setTitleMessage("");
+      setValues("");
     }
-  }, [modalVisible])
+  }, [modalVisible]);
   return (
     <Modal
       centered
@@ -78,7 +78,7 @@ export default function PopupDonate(props: Props) {
           <Col>Amount</Col>
           <Col span={13}>
             <Input
-              style={titleMessage !== '' ? { borderColor: "#cb3636" } : {}}
+              style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
               onBlur={handleBlur}
               value={values}
               onChange={handleChange}

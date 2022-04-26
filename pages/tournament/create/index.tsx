@@ -1,6 +1,6 @@
 import DocHead from "components/DocHead";
 import s from "./index.module.sass";
-import { Row, Col, Switch, InputNumber } from "antd";
+import { Row, Col, Switch, InputNumber, InputRef, Form } from "antd";
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
 import { Radio } from "antd";
@@ -11,7 +11,7 @@ import UploadImage from "components/ui/common/upload/UploadImage";
 import ChooseGameModal from "components/ui/tournament/create/chooseGame/ChooseGameModal";
 import TournamentStore from "src/store/TournamentStore";
 import RefereeModal from "components/ui/tournament/create/referee/RefereeModal";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import Sponsor from "components/ui/tournament/create/sponsor/Sponsor";
@@ -24,9 +24,10 @@ const { Option } = Select;
 type Props = {};
 
 export default observer(function CreateTournament(props: Props) {
-  const [overview, setOverview] = useState("");
-  const [rules, setRules] = useState("");
+  //const inputRef = useRef<any>(null);
+  const [titleMessage, setTitleMessage] = useState("");
 
+  const [checkPassword, setCheckPassword] = useState(false);
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") TournamentStore.cover = childData;
     if (value === "thumbnail") TournamentStore.thumbnail = childData;
@@ -39,6 +40,14 @@ export default observer(function CreateTournament(props: Props) {
 
   const createTournament = () => {
     console.log(TournamentStore);
+  };
+
+  // useEffect(() => {
+  //   inputRef.current!.focus();
+  // }, [TournamentStore.name == ""]);
+
+  const handleBlur = () => {
+    if (!TournamentStore.name) setTitleMessage("Name must not be empty");
   };
 
   return (
@@ -57,11 +66,19 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={20}>
                 <Input
+                  style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
                   placeholder="Tournament name"
                   onChange={(e) => {
                     TournamentStore.name = e.target.value;
+                    if (TournamentStore.name) setTitleMessage("");
                   }}
+                  maxLength={125}
+                  required
+                  // ref={inputRef}
+                  onBlur={handleBlur}
+                  value={TournamentStore.name}
                 />
+                <div className={s.message_error}>{titleMessage}</div>
               </Col>
             </Row>
             <Row className="pt-6">
@@ -136,22 +153,24 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={4}>
                 <p>Teamsize</p>
               </Col>
-              <Col span={4}>
-                <InputNumber
-                  placeholder="Input Teamsize"
-                  width="120px"
-                  onChange={(value: number) => {
-                    TournamentStore.team_size = value;
+              <Col span={3}>
+                <Input
+                  placeholder="input teamsize"
+                  type="number"
+                  onChange={(value: any) => {
+                    TournamentStore.team_size = value.target.value;
                   }}
+                  min={1}
+                  required
                 />
               </Col>
-              <Col span={4}></Col>
+              <Col span={5}></Col>
               <Col span={4}>
                 <p className="ml-[10px]">Numbers of participants</p>
               </Col>
               <Col span={8}>
                 <Select
-                  defaultValue="8"
+                  defaultValue={TournamentStore.participants}
                   style={{ width: 150 }}
                   onChange={(value) => {
                     TournamentStore.participants = value;
@@ -174,7 +193,7 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Select
-                  defaultValue="1"
+                  defaultValue={TournamentStore.turns}
                   style={{ width: 150 }}
                   onChange={(value) => {
                     TournamentStore.turns = value;
@@ -224,21 +243,26 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Radio.Group
+                  defaultValue={TournamentStore.join_fee}
                   className={s.bracketType}
                   onChange={(e) => {
                     TournamentStore.join_fee = e.target.value;
                   }}
                 >
-                  <Radio value="0" className={s.textColor}>
+                  <Radio value={0} className={s.textColor}>
                     Free
                   </Radio>
-                  <Radio value="1" className={`${s.textColor} ${s.textColor1}`}>
+                  <Radio
+                    value={1}
+                    className={`${s.textColor} ${s.textColor1}`}
+                    disabled
+                  >
                     <div className={`${s.radioFee}`}>
                       <p className="">With Fee</p>
-                      <Input
+                      {/* <Input
                         placeholder="Input Fee"
                         disabled={TournamentStore.join_fee == 0 ? true : false}
-                      />
+                      /> */}
                     </div>
                   </Radio>
                 </Radio.Group>
@@ -280,8 +304,10 @@ export default observer(function CreateTournament(props: Props) {
             <div style={{ minHeight: 50 }}>
               <ReactQuill
                 theme="snow"
-                value={overview}
-                onChange={setOverview}
+                value={TournamentStore.desc}
+                onChange={(value) => {
+                  TournamentStore.desc = value;
+                }}
               />
             </div>
           </div>
@@ -289,7 +315,13 @@ export default observer(function CreateTournament(props: Props) {
           <div>
             <p className="text-30px mt-20px">Rules</p>
             <div style={{ minHeight: 50 }}>
-              <ReactQuill theme="snow" value={rules} onChange={setRules} />
+              <ReactQuill
+                theme="snow"
+                value={TournamentStore.rules}
+                onChange={(value) => {
+                  TournamentStore.rules = value;
+                }}
+              />
             </div>
           </div>
 
@@ -306,21 +338,27 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={2}>
                 <Switch
                   // defaultChecked={props.item.showName}
-                  // onChange={onChange}
+                  onChange={(checked) => {
+                    setCheckPassword(checked);
+                  }}
                   title="password"
                 />
               </Col>
               <Col span={18}>
-                <Input placeholder="Password" />
+                <Input
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => {
+                    TournamentStore.password = e.target.value;
+                  }}
+                  disabled={!checkPassword}
+                />
               </Col>
             </Row>
           </div>
 
           <div className="mt-20px text-center pb-20px">
-            <Button>Save Draft</Button>
-            <Button className="ml-10px" onClick={createTournament}>
-              Create tournament
-            </Button>
+            <Button onClick={createTournament}>Create tournament</Button>
           </div>
         </div>
 
