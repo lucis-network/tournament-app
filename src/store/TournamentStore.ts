@@ -81,7 +81,7 @@ class TournamentStore {
 
   private _referees?: number[] | undefined;
 
-  private _regions?: string[] = ["VN"];
+  private _regions?: string[] = ["GB"];
 
   private _bracket_type?: string | undefined;
 
@@ -256,10 +256,10 @@ class TournamentStore {
   public set referees(value: number[] | undefined) {
     this._referees = value;
   }
-  public get regions(): string[] | undefined {
-    return this._regions;
+  public get regions(): string[] {
+    return this._regions ? this._regions : [];
   }
-  public set regions(value: string[] | undefined) {
+  public set regions(value: string[]) {
     this._regions = value;
   }
   public get bracket_type(): string | undefined {

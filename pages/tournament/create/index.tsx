@@ -17,6 +17,7 @@ import dynamic from "next/dynamic";
 import Sponsor from "components/ui/tournament/create/sponsor/Sponsor";
 import Prizing from "components/ui/tournament/create/prizing/Prizing";
 import TournamentService from "components/service/tournament/TournamentService";
+import { useRegion } from "hooks/tournament/useCreateTournament";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -73,6 +74,8 @@ export default observer(function CreateTournament(props: Props) {
   const [dataReferees, setDataReferees] = useState([]);
   const [dataChooseGame, setDataChooseGame] = useState(null);
 
+  const { getDataRegions } = useRegion({});
+
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") TournamentStore.cover = childData;
     if (value === "thumbnail") TournamentStore.thumbnail = childData;
@@ -82,6 +85,10 @@ export default observer(function CreateTournament(props: Props) {
     setDataReferees(data);
     TournamentStore.referees = arr;
   };
+
+  useEffect(() => {
+    console.log(getDataRegions);
+  }, [getDataRegions]);
 
   const handCallbackChooseGame = (data: any) => {
     setDataChooseGame(data);
@@ -97,6 +104,8 @@ export default observer(function CreateTournament(props: Props) {
     let cr = TournamentStore.getCreateTournament();
     cr.rounds = rounds;
     cr.start_at = new Date();
+
+    if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
     console.log("cr", cr);
     const tournamentService = new TournamentService();
 
@@ -108,6 +117,12 @@ export default observer(function CreateTournament(props: Props) {
   const validationInput = (cr: any) => {
     if (!cr.name) {
       message.error("Name be not empty");
+      inputRefName.current!.focus();
+      return false;
+    }
+
+    if (cr.name.length > 125) {
+      message.error("Tournament name cannot exceeds 125 characters");
       inputRefName.current!.focus();
       return false;
     }
@@ -138,6 +153,12 @@ export default observer(function CreateTournament(props: Props) {
       setmessageErrorTeamSize("Teamsize must not be empty");
   };
 
+  const checkValidateName = (value: string) => {
+    if (value) setmessageErrorName("");
+    if (value.length > 125)
+      setmessageErrorName("Tournament name cannot exceeds 125 characters");
+  };
+
   return (
     <>
       {/* <DocHead />
@@ -160,9 +181,8 @@ export default observer(function CreateTournament(props: Props) {
                   placeholder="Tournament name"
                   onChange={(e) => {
                     TournamentStore.name = e.target.value;
-                    if (TournamentStore.name) setmessageErrorName("");
+                    checkValidateName(TournamentStore.name);
                   }}
-                  maxLength={125}
                   required
                   ref={inputRefName}
                   onBlur={() => handleBlur("name")}
@@ -346,17 +366,16 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Select
-                  defaultValue={"VN"}
+                  defaultValue={"Global"}
                   style={{ width: 150 }}
                   onChange={(value) => {
-                    TournamentStore.regions?.push(value);
+                    TournamentStore.regions[0] = value;
                   }}
-                  disabled
                 >
-                  {Region.map((item, index) => {
+                  {getDataRegions?.map((item: any, index: number) => {
                     return (
-                      <Option value={item.value} key={index}>
-                        {item.label}
+                      <Option value={item.uid} key={index}>
+                        {item.name}
                       </Option>
                     );
                   })}
@@ -402,7 +421,7 @@ export default observer(function CreateTournament(props: Props) {
                         className="flex flex-col items-center mr-15px ml-[10px]"
                         key={index}
                       >
-                        {item.user?.profile.avatar ? (
+                        {item.user?.profile?.avatar ? (
                           <img
                             width="50"
                             height="50"

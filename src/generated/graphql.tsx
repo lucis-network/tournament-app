@@ -256,6 +256,19 @@ export type CurrencyCount = {
   tournaments: Scalars['Int'];
 };
 
+export type CurrencyGql = {
+  __typename?: 'CurrencyGql';
+  address?: Maybe<Scalars['String']>;
+  chain_symbol?: Maybe<ChainSymbol>;
+  created_at: Scalars['DateTime'];
+  icon?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  owner?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type DonateTransaction = {
   __typename?: 'DonateTransaction';
   amount?: Maybe<Scalars['Decimal']>;
@@ -384,17 +397,30 @@ export type ProfileUpdateInput = {
 
 export type Query = {
   __typename?: 'Query';
+  currencies?: Maybe<Array<CurrencyGql>>;
   getClosedTournament?: Maybe<Array<Tournament>>;
   getGame?: Maybe<Array<Game>>;
   getOnGoingTournament?: Maybe<Array<Tournament>>;
   getReferee?: Maybe<Array<Referee>>;
   getUpComingTournament?: Maybe<Array<Tournament>>;
   me?: Maybe<UserGraphql>;
+  regions?: Maybe<Array<Region>>;
+  search?: Maybe<Array<Tournament>>;
+};
+
+
+export type QueryGetClosedTournamentArgs = {
+  data: TournamentFilterInput;
 };
 
 
 export type QueryGetGameArgs = {
   name: Scalars['String'];
+};
+
+
+export type QueryGetOnGoingTournamentArgs = {
+  data: TournamentFilterInput;
 };
 
 
@@ -405,6 +431,11 @@ export type QueryGetRefereeArgs = {
 
 export type QueryGetUpComingTournamentArgs = {
   data: TournamentFilterInput;
+};
+
+
+export type QuerySearchArgs = {
+  value: Scalars['String'];
 };
 
 export type Reaction = {
@@ -432,6 +463,14 @@ export type Referee = {
   updated_at: Scalars['DateTime'];
   user?: Maybe<User>;
   user_id: Scalars['ID'];
+};
+
+export type Region = {
+  __typename?: 'Region';
+  created_at: Scalars['DateTime'];
+  name?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type SponsorSlot = {
@@ -634,11 +673,11 @@ export type TournamentCreateInputGql = {
 export type TournamentFilterInput = {
   bracket?: InputMaybe<Scalars['String']>;
   game?: InputMaybe<Scalars['String']>;
-  /** true or false */
-  prize_pool_ascending?: InputMaybe<Scalars['String']>;
+  /** ASC OR DESC */
+  prize_pool?: InputMaybe<Scalars['String']>;
   team_size?: InputMaybe<Scalars['String']>;
-  /** true or false */
-  time_ascending?: InputMaybe<Scalars['String']>;
+  /** ASC OR DESC */
+  time?: InputMaybe<Scalars['String']>;
 };
 
 export enum TournamentStatus {

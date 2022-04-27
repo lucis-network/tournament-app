@@ -31,6 +31,19 @@ export function useReferees(props: Props) {
   };
 }
 
+export function useRegion(props: Props) {
+  const { loading, error, data } = useQuery(REGION, {
+    variables: {},
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    getDataRegions: data?.regions,
+  };
+}
+
 const CHOOSE_GAME = gql`
   query ($name: String!) {
     getGame(name: $name) {
@@ -45,6 +58,7 @@ const CHOOSE_GAME = gql`
 const REFEREES = gql`
   query ($name: String!) {
     getReferee(name: $name) {
+      user_id
       user {
         code
         name
@@ -55,6 +69,15 @@ const REFEREES = gql`
         }
       }
       desc
+    }
+  }
+`;
+
+const REGION = gql`
+  query {
+    regions {
+      uid
+      name
     }
   }
 `;

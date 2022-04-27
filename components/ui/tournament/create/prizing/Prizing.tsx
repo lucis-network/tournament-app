@@ -84,21 +84,21 @@ let dataTable = {
       name: "1st place",
       quantity: 1,
       total: 50,
-      estimated: 10000,
+      estimated: 0,
     },
     {
       key: "1",
       name: "2nd place",
       quantity: 1,
       total: 40,
-      estimated: 8000,
+      estimated: 0,
     },
     {
       key: "2",
       name: "3rd place",
       quantity: 1,
       total: 10,
-      estimated: 2000,
+      estimated: 0,
     },
   ],
 };
@@ -200,7 +200,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 export default observer(function Prizing(props: Props) {
   const [state, setState] = useState(dataTable);
-  const [poolSize, setPoolSize] = useState(20000);
+  const [poolSize, setPoolSize] = useState(0);
   const [chain, setChain] = useState(TournamentStore.currency_uid);
   let columnsHeader = [
     {
@@ -236,14 +236,21 @@ export default observer(function Prizing(props: Props) {
       dataIndex: "operation",
       render: (_: any, record: { key: React.Key }) =>
         state.dataSource.length >= 1 ? (
-          <Popconfirm
-            style={{ color: "white" }}
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
-            disabled={record.key == state.dataSource.length - 1}
-          >
-            <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
-          </Popconfirm>
+          // <Popconfirm
+          //   style={{ color: "white" }}
+          //   title="Sure to delete?"
+          //   onConfirm={() => handleDelete(record.key)}
+          //   disabled={record.key == state.dataSource.length - 1}
+          // >
+
+          // </Popconfirm>
+          <img
+            src="/assets/iconDelete.png"
+            width={15}
+            height={15}
+            alt=""
+            onClick={() => handleDelete(record.key)}
+          />
         ) : null,
     },
   ];
@@ -257,7 +264,15 @@ export default observer(function Prizing(props: Props) {
     const { dataSource } = state;
     const newData: DataType = {
       key: dataSource.length.toString(),
-      name: (dataSource.length + 1).toString() + "th place",
+      name:
+        (dataSource.length + 1).toString() +
+        (dataSource.length + 1 == 1
+          ? "st place"
+          : dataSource.length + 1 == 2
+          ? "nd place"
+          : dataSource.length + 1 == 3
+          ? "rd place"
+          : "th place"),
       quantity: 1,
       total: 0,
       estimated: 0,
@@ -373,8 +388,8 @@ export default observer(function Prizing(props: Props) {
               type="number"
               prefix="$"
               style={{ width: "99%" }}
-              min={1}
-              defaultValue={20000}
+              min={0}
+              defaultValue={poolSize}
               onChange={onChange}
             />
           </Col>

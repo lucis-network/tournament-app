@@ -29,17 +29,17 @@ export default observer(function RefereeModal(props: Props) {
   const onSearch = (value: string) => setName(value);
 
   function onChange(checkedValues: any) {
-    console.log("checked = ", checkedValues);
     setCheckedValue(checkedValues);
   }
 
   const handleOk = () => {
-    const dataCallback: any[] = [];
-    checkedValue?.forEach((item: number) => {
-      dataCallback.push(getDataReferees[item]);
+    const dataCallback: number[] = [];
+    const dataRefereeCallback: any[] = [];
+    checkedValue.forEach((item: any) => {
+      dataCallback.push(Number.parseInt(getDataReferees[item].user_id));
+      dataRefereeCallback.push(getDataReferees[item]);
     });
-
-    props.handCallbackReferee(dataCallback, checkedValue);
+    props.handCallbackReferee(dataRefereeCallback, dataCallback);
     setIsModalVisible(false);
   };
 
@@ -51,7 +51,7 @@ export default observer(function RefereeModal(props: Props) {
       onCancel={handleCancel}
     >
       <Search
-        placeholder="input search text"
+        placeholder="Search by name or username"
         onSearch={onSearch}
         enterButton
         className={`${s.searchText}`}
