@@ -1,8 +1,8 @@
 import s from "./TournamentDetail.module.sass";
-import SearchComplete from "../../../components/ui/common/search/index";
-import TableParticipant from "../../../components/ui/common/tabs/participants/index";
-import Referees from "../../../components/ui/common/tabs/referees/index";
-import Prizing from "components/ui/common/tabs/prizing";
+import SearchComplete from "../../../components/ui/common/searchs/index";
+import TableParticipant from "../../../components/ui/common/tabsItem/participantsDetail/index";
+import Referees from "../../../components/ui/common/tabsItem/refereesDetail/index";
+import Prizing from "components/ui/common/tabsItem/prizingDetail";
 
 import { Button, Col, Row, Tabs } from "antd";
 
