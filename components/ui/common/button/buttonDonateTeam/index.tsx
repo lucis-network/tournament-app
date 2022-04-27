@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import s from "./Button.module.sass";
 
 import { AppEmitter } from "services/emitter";
-import PopupDonate from "../../popup/popupDonate";
+import PopupDonate from "../../popUps/popupDonateDetail";
 
 type Props = {
   nameTeam?: object;
