@@ -1,8 +1,9 @@
 import { Modal, Button, Row, Col } from "antd";
 import { useEffect, useState, useRef } from "react";
 import s from "./Button.module.sass";
-import PopupDonate from "../../popup/PopupDonate/index";
+
 import { AppEmitter } from "services/emitter";
+import PopupDonate from "../../popup/PopupDonate/index";
 
 type Props = {
   nameTeam?: object;
@@ -34,7 +35,6 @@ export default function ModalDonateTeam(props: Props) {
       subscription.remove();
     };
   }, []);
-  
   return (
     <div className={s.container_button_donate}>
       <Modal

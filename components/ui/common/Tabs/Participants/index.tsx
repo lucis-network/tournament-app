@@ -84,7 +84,7 @@ export default function TableParticipant() {
         bordered
         className={s.container_table}
       />
-      <ModalDonateTeam nameTeam={datas} />
+      <ModalDonateTeam nameTeam={datas} />  
     </div>
   );
 }
