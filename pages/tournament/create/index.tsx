@@ -115,8 +115,10 @@ export default observer(function CreateTournament(props: Props) {
     const tournamentService = new TournamentService();
 
     if (!validationInput(cr)) return;
-    const response = tournamentService.createTournament(cr);
-    console.log(response);
+    const response = tournamentService.createTournament(cr).then((res) => {
+      if (res.data.createTournament) message.success("Save succcessfully");
+      else message.error("Save fail");
+    });
   };
 
   const validationInput = (cr: any) => {
