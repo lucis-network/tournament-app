@@ -3,9 +3,10 @@ import { Modal, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Input from "antd/lib/input/Input";
 import Search from "antd/lib/input/Search";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import s from "./index.module.sass";
 import { useChooseGame } from "hooks/tournament/useCreateTournament";
+import debounce from "lodash/debounce";
 
 type Props = {
   handCallbackChooseGame?: any;
@@ -28,11 +29,9 @@ export default observer(function ChooseGameModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    inputRef.current && inputRef.current.focus();
-  }, [name]);
-
-  const onSearch = (value: string) => setName(value);
+  const onSearch = (e: any) => {
+    delayedSearch(e.target.value);
+  };
 
   const [value, setValue] = useState(0);
 
@@ -46,21 +45,25 @@ export default observer(function ChooseGameModal(props: Props) {
       props.handCallbackChooseGame(getDataChooseGame[value]);
   };
 
+  const delayedSearch = useCallback(
+    debounce((value: string) => setName(value), 600),
+    []
+  );
+
   return (
     <Modal
       title={<span className="font-[600]">ChooseGame</span>}
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
+      className={`${s.container}`}
     >
-      <Search
-        ref={inputRef}
+      <Input
         placeholder="Search by name"
-        style={{ color: "white" }}
-        onSearch={onSearch}
-        enterButton
+        onChange={onSearch}
         className={`${s.searchText}`}
-      />
+        autoFocus
+      ></Input>
       <div className="mt-15px">
         <Radio.Group
           onChange={onChange}
@@ -72,7 +75,13 @@ export default observer(function ChooseGameModal(props: Props) {
                 return (
                   <div className={`${s.item}`} key={index}>
                     {ele.logo ? (
-                      <img src={ele.logo} width="100" height="100" alt="" />
+                      <img
+                        src={ele.logo}
+                        width="100"
+                        height="100"
+                        alt=""
+                        style={{ height: "100px" }}
+                      />
                     ) : (
                       <img
                         src="/assets/avatar.jpg"

@@ -68,6 +68,8 @@ export default observer(function CreateTournament(props: Props) {
 
   const [messageErrorName, setmessageErrorName] = useState("");
   const [messageErrorTeamSize, setmessageErrorTeamSize] = useState("");
+  const [messageErrorThumbnail, setmessageErrorThumbnail] = useState("");
+  const [messageErrorCover, setmessageErrorCover] = useState("");
 
   const [checkPassword, setCheckPassword] = useState(false);
 
@@ -77,18 +79,21 @@ export default observer(function CreateTournament(props: Props) {
   const { getDataRegions } = useRegion({});
 
   const callbackFunction = (childData: string, value: string) => {
-    if (value === "cover") TournamentStore.cover = childData;
-    if (value === "thumbnail") TournamentStore.thumbnail = childData;
+    if (value === "cover") {
+      TournamentStore.cover = childData;
+      setmessageErrorCover("");
+    }
+
+    if (value === "thumbnail") {
+      TournamentStore.thumbnail = childData;
+      setmessageErrorThumbnail("");
+    }
   };
 
   const handCallbackReferee = (data: any, arr: any) => {
     setDataReferees(data);
     TournamentStore.referees = arr;
   };
-
-  useEffect(() => {
-    console.log(getDataRegions);
-  }, [getDataRegions]);
 
   const handCallbackChooseGame = (data: any) => {
     setDataChooseGame(data);
@@ -116,33 +121,43 @@ export default observer(function CreateTournament(props: Props) {
 
   const validationInput = (cr: any) => {
     if (!cr.name) {
-      message.error("Name be not empty");
+      setmessageErrorName("Name must not be empty");
       inputRefName.current!.focus();
       return false;
     }
 
     if (cr.name.length > 125) {
-      message.error("Tournament name cannot exceeds 125 characters");
+      setmessageErrorName("Tournament name cannot exceeds 125 characters");
       inputRefName.current!.focus();
       return false;
     }
 
     if (!cr.team_size) {
-      message.error("Team size be not empty");
+      setmessageErrorTeamSize("Teamsize must not be empty");
       inputRef.current!.focus();
       return false;
     }
+
     if (!cr.cover) {
-      message.error("Cover (Banner) be not empty");
+      setmessageErrorCover("Cover be not empty");
+      scrollToTop();
       return false;
     }
 
     if (!cr.thumbnail) {
-      message.error("Thumbnail be not empty");
+      setmessageErrorThumbnail("Thumbnail be not empty");
+      scrollToTop();
       return false;
     }
 
     return true;
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleBlur = (value: string) => {
@@ -203,6 +218,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="cover"
                 ></UploadImage>
                 <p>Recommended size: 1200x300</p>
+                <div className={s.message_error}>{messageErrorCover}</div>
               </Col>
               <Col span={4} className="text-center">
                 <p>Thumbnail</p>
@@ -215,6 +231,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="thumbnail"
                 ></UploadImage>
                 <p>Recommended size: 300x200</p>
+                <div className={s.message_error}>{messageErrorThumbnail}</div>
               </Col>
             </Row>
             <Row className="pt-4">
@@ -257,6 +274,7 @@ export default observer(function CreateTournament(props: Props) {
                 <Radio.Group
                   className={s.bracketType}
                   onChange={(e) => {
+                    console.log(e.target.value);
                     TournamentStore.bracket_type = e.target.value;
                   }}
                 >
@@ -367,7 +385,7 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={8}>
                 <Select
                   defaultValue={"Global"}
-                  style={{ width: 150 }}
+                  style={{ width: 200 }}
                   onChange={(value) => {
                     TournamentStore.regions[0] = value;
                   }}
@@ -436,7 +454,9 @@ export default observer(function CreateTournament(props: Props) {
                             alt=""
                           />
                         )}
-                        <p className="mt-5px">{item.user.profile.full_name}</p>
+                        <p className="mt-5px">
+                          {item.user.profile.display_name}
+                        </p>
                       </div>
                     );
                   })}

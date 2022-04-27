@@ -388,11 +388,12 @@ export type ProfileUpdateInput = {
   biography?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   cover?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   discord?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  display_name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   facebook?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
-  full_name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   phone?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   telegram?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   twitter?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  user_name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type Query = {
@@ -402,10 +403,12 @@ export type Query = {
   getGame?: Maybe<Array<Game>>;
   getOnGoingTournament?: Maybe<Array<Tournament>>;
   getReferee?: Maybe<Array<Referee>>;
+  getTeam?: Maybe<Array<UserTeam>>;
   getUpComingTournament?: Maybe<Array<Tournament>>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
   search?: Maybe<Array<Tournament>>;
+  searchTeam?: Maybe<Array<UserTeam>>;
 };
 
 
@@ -436,6 +439,11 @@ export type QueryGetUpComingTournamentArgs = {
 
 export type QuerySearchArgs = {
   value: Scalars['String'];
+};
+
+
+export type QuerySearchTeamArgs = {
+  name: Scalars['String'];
 };
 
 export type Reaction = {
@@ -716,7 +724,6 @@ export type User = {
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
   password?: Maybe<Scalars['String']>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
@@ -767,7 +774,6 @@ export type UserGraphql = {
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  name?: Maybe<Scalars['String']>;
   playedTournament?: Maybe<Array<TTournament>>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
@@ -781,7 +787,6 @@ export type UserGraphql = {
   tournament?: Maybe<Array<Tournament>>;
   tournamentSubscriber?: Maybe<Array<TournamentSubscriber>>;
   updated_at: Scalars['DateTime'];
-  user_team?: Maybe<Array<UserTeam>>;
 };
 
 export type UserProfile = {
@@ -791,9 +796,9 @@ export type UserProfile = {
   cover?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   discord?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
   facebook?: Maybe<Scalars['String']>;
   family_name?: Maybe<Scalars['String']>;
-  full_name?: Maybe<Scalars['String']>;
   given_name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   telegram?: Maybe<Scalars['String']>;
@@ -801,6 +806,7 @@ export type UserProfile = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['ID'];
+  user_name?: Maybe<Scalars['String']>;
 };
 
 export enum UserRole {

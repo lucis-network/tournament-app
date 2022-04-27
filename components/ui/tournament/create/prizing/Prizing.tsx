@@ -24,7 +24,8 @@ import {
 } from "react";
 import Item from "antd/lib/list/Item";
 import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
-import { useLocalStore } from "mobx-react";
+import { useLocalObservable } from "mobx-react";
+import { useCurrencies } from "hooks/tournament/useCreateTournament";
 
 const LUCIS_FEE = 10;
 const REFEREER_FEE = 1;
@@ -112,7 +113,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   handleSave,
   ...restProps
 }) => {
-  const tournamentStore = useLocalStore(() => TournamentStore);
+  const tournamentStore = useLocalObservable(() => TournamentStore);
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<any>(null);
   const form = useContext(EditableContext)!;
@@ -202,6 +203,8 @@ export default observer(function Prizing(props: Props) {
   const [state, setState] = useState(dataTable);
   const [poolSize, setPoolSize] = useState(0);
   const [chain, setChain] = useState(TournamentStore.currency_uid);
+  const { getDataCurrencies } = useCurrencies({});
+
   let columnsHeader = [
     {
       title: "Team place",
@@ -214,7 +217,7 @@ export default observer(function Prizing(props: Props) {
       width: "10%",
     },
     {
-      title: "Total Allocation (%)",
+      title: "Allocation (%)",
       dataIndex: "total",
       width: "20%",
       editable: true,
@@ -236,28 +239,26 @@ export default observer(function Prizing(props: Props) {
       dataIndex: "operation",
       render: (_: any, record: { key: React.Key }) =>
         state.dataSource.length >= 1 ? (
-          // <Popconfirm
-          //   style={{ color: "white" }}
-          //   title="Sure to delete?"
-          //   onConfirm={() => handleDelete(record.key)}
-          //   disabled={record.key == state.dataSource.length - 1}
-          // >
-
-          // </Popconfirm>
-          <img
-            src="/assets/iconDelete.png"
-            width={15}
-            height={15}
-            alt=""
+          <Button
+            style={{
+              padding: 0,
+              background: "none",
+              height: "auto",
+              lineHeight: 1,
+              border: "none",
+            }}
             onClick={() => handleDelete(record.key)}
-          />
+            disabled={record.key == state.dataSource.length - 1 ? false : true}
+          >
+            <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
+          </Button>
         ) : null,
     },
   ];
 
   const handleDelete = (key: React.Key) => {
     const dataSource = [...state.dataSource];
-    setState({ dataSource: dataSource.filter((item) => item.key !== key) });
+    setState({ dataSource: dataSource.filter((item) => item.key != key) });
   };
 
   const handleAdd = () => {
@@ -294,14 +295,6 @@ export default observer(function Prizing(props: Props) {
     if (total > 100) message.error("Total Allocation must be equal to 100%");
     setState({ dataSource: newData });
   };
-
-  // const recalculatePercent = (newData: any) => {
-  //   let total = calculateTotalAllocation(newData);
-  //   newData.forEach((item: { total: any }, idx: number) => {
-  //     total += item.total;
-  //   });
-  //   return total;
-  // };
 
   const calculateTotalAllocation = (newData: any) => {
     let total = 0;
@@ -378,6 +371,7 @@ export default observer(function Prizing(props: Props) {
       (poolSize * REFEREER_FEE) / 100
     ).toFixed(2);
   };
+
   return (
     <div className={s.container}>
       <div>
@@ -400,10 +394,10 @@ export default observer(function Prizing(props: Props) {
                 setChain(value);
               }}
             >
-              {ChainOption.map((item, index) => {
+              {getDataCurrencies?.map((item: any, index: number) => {
                 return (
-                  <Option value={item.value} key={index}>
-                    {item.label}
+                  <Option value={item.uid} key={index}>
+                    {item.name}
                   </Option>
                 );
               })}
@@ -424,12 +418,12 @@ export default observer(function Prizing(props: Props) {
           pagination={false}
         />
         <Row style={{ marginTop: 16 }}>
-          <Col span={2}>
+          <Col span={8}>
             <Button onClick={handleAdd} type="primary">
               Add a row
             </Button>
           </Col>
-          <Col span={8}></Col>
+          <Col span={2}></Col>
           <Col span={6}>
             {calculateTotalAllocation(dataSource) !== 100 ? (
               <p style={{ color: "red" }}>Total Allocation must be 100%</p>

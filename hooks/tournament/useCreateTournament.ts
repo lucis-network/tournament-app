@@ -44,6 +44,19 @@ export function useRegion(props: Props) {
   };
 }
 
+export function useCurrencies(props: Props) {
+  const { loading, error, data } = useQuery(CURRENCIES, {
+    variables: {},
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    getDataCurrencies: data?.currencies,
+  };
+}
+
 const CHOOSE_GAME = gql`
   query ($name: String!) {
     getGame(name: $name) {
@@ -61,10 +74,9 @@ const REFEREES = gql`
       user_id
       user {
         code
-        name
         email
         profile {
-          full_name
+          display_name
           avatar
         }
       }
@@ -77,6 +89,16 @@ const REGION = gql`
   query {
     regions {
       uid
+      name
+    }
+  }
+`;
+
+const CURRENCIES = gql`
+  query {
+    currencies {
+      uid
+      chain_symbol
       name
     }
   }

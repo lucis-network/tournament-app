@@ -81,7 +81,7 @@ class TournamentStore {
 
   private _referees?: number[] | undefined;
 
-  private _regions?: string[] = ["GB"];
+  private _regions?: string[] = ["AA"];
 
   private _bracket_type?: string | undefined;
 
