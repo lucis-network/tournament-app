@@ -252,10 +252,10 @@ class TournamentStore {
   public set pool_size(value: number | undefined) {
     this._pool_size = value;
   }
-  public get referees(): number[] | undefined {
-    return this._referees;
+  public get referees(): number[] {
+    return this._referees ? this._referees : [];
   }
-  public set referees(value: number[] | undefined) {
+  public set referees(value: number[] ) {
     this._referees = value;
   }
   public get regions(): string[] {

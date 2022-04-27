@@ -2,7 +2,7 @@ import { observer } from "mobx-react-lite";
 import { Checkbox, Input, Modal, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Search from "antd/lib/input/Search";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import s from "./index.module.sass";
 import { useReferees } from "hooks/tournament/useCreateTournament";
 import debounce from "lodash/debounce";
@@ -12,8 +12,11 @@ type Props = {
 };
 
 export default observer(function RefereeModal(props: Props) {
+  const inputRef = useRef<any>(null);
   const [name, setName] = useState("");
   const [checkedValue, setCheckedValue] = useState([]);
+  const [messageError, setMessageError] = useState("");
+  const [checkedParticipants, setCheckedParticipants] = useState(false);
 
   const { getDataReferees } = useReferees({
     name: name,
@@ -51,6 +54,25 @@ export default observer(function RefereeModal(props: Props) {
     setIsModalVisible(false);
   };
 
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current!.focus();
+    }
+    if (TournamentStore.participants) {
+      TournamentStore.participants / 2 >= checkedValue.length
+        ? setCheckedParticipants(true)
+        : setCheckedParticipants(false);
+
+      !checkedParticipants
+        ? setMessageError(
+            `You can select max ${
+              TournamentStore.participants / 2
+            } participant(s) `
+          )
+        : setMessageError("");
+    }
+  });
+
   return (
     <Modal
       title={<span className="font-[600]">Choose referees</span>}
@@ -58,11 +80,15 @@ export default observer(function RefereeModal(props: Props) {
       onOk={handleOk}
       onCancel={handleCancel}
       className={`${s.container}`}
+      okButtonProps={{
+        disabled: !checkedParticipants,
+      }}
     >
       <Input
         placeholder="Search by name or username"
         onChange={onSearch}
         className={`${s.searchText}`}
+        ref={inputRef}
       ></Input>
       <Checkbox.Group onChange={onChange} className={`${s.container}`}>
         {getDataReferees
@@ -86,6 +112,7 @@ export default observer(function RefereeModal(props: Props) {
             })
           : ""}
       </Checkbox.Group>
+      <div className={s.message_error}>{messageError}</div>
     </Modal>
   );
 });

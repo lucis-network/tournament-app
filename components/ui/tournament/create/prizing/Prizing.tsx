@@ -29,7 +29,7 @@ import { useCurrencies } from "hooks/tournament/useCreateTournament";
 
 const LUCIS_FEE = 10;
 const REFEREER_FEE = 1;
-type Props = {};
+
 const { Option } = Select;
 
 const EditableContext = createContext<FormInstance<any> | null>(null);
@@ -199,11 +199,17 @@ const EditableCell: React.FC<EditableCellProps> = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
+type Props = {
+  checkPoolSize?: boolean;
+};
+
 export default observer(function Prizing(props: Props) {
+  const inputRef = useRef<any>(null);
   const [state, setState] = useState(dataTable);
   const [poolSize, setPoolSize] = useState(0);
   const [chain, setChain] = useState(TournamentStore.currency_uid);
   const { getDataCurrencies } = useCurrencies({});
+  const [messageErrorPoolSize, setMessageErrorPoolSize] = useState("");
 
   let columnsHeader = [
     {
@@ -306,6 +312,7 @@ export default observer(function Prizing(props: Props) {
 
   function onChange(value: number) {
     setPoolSize(value);
+    setMessageErrorPoolSize("");
   }
 
   useEffect(() => {
@@ -332,6 +339,21 @@ export default observer(function Prizing(props: Props) {
   useEffect(() => {
     TournamentStore.currency_uid = chain;
   }, [chain]);
+
+  useEffect(() => {
+    if (!props.checkPoolSize && poolSize == 0) {
+      if (poolSize == 0 || poolSize == null)
+        if (inputRef && inputRef.current) {
+          inputRef.current!.focus();
+          setMessageErrorPoolSize("Pool size must not be empty");
+        }
+    }
+  });
+
+  const handleBlur = () => {
+    if (poolSize == 0 || poolSize == null)
+      setMessageErrorPoolSize("Pool size must not be empty");
+  };
 
   const recalculateEstimated = () => {
     const dataSource = [...state.dataSource];
@@ -382,9 +404,11 @@ export default observer(function Prizing(props: Props) {
               type="number"
               prefix="$"
               style={{ width: "99%" }}
-              min={0}
-              defaultValue={poolSize}
+              min={1}
+              placeholder="Pool size"
               onChange={onChange}
+              ref={inputRef}
+              onBlur={() => handleBlur()}
             />
           </Col>
           <Col span={3}>
@@ -404,6 +428,7 @@ export default observer(function Prizing(props: Props) {
             </Select>
           </Col>
         </Row>
+        <div className={s.message_error}>{messageErrorPoolSize}</div>
       </div>
 
       <div className="pt-4">

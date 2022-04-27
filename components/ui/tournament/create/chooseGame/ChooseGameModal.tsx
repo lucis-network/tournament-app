@@ -14,7 +14,6 @@ type Props = {
 
 export default observer(function ChooseGameModal(props: Props) {
   const inputRef = useRef<any>(null);
-
   const [name, setName] = useState("");
 
   const { getDataChooseGame } = useChooseGame({
@@ -33,15 +32,16 @@ export default observer(function ChooseGameModal(props: Props) {
     delayedSearch(e.target.value);
   };
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(null);
 
   const onChange = (e: any) => {
     setValue(e.target.value);
   };
 
   const handleOk = () => {
+    console.log(value)
     setIsModalVisible(false);
-    if (getDataChooseGame)
+    if (getDataChooseGame && value != null)
       props.handCallbackChooseGame(getDataChooseGame[value]);
   };
 
@@ -49,6 +49,12 @@ export default observer(function ChooseGameModal(props: Props) {
     debounce((value: string) => setName(value), 600),
     []
   );
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current!.focus();
+    }
+  });
 
   return (
     <Modal
@@ -61,13 +67,12 @@ export default observer(function ChooseGameModal(props: Props) {
       <Input
         placeholder="Search by name"
         onChange={onSearch}
-        className={`${s.searchText}`}
-        autoFocus
+        ref={inputRef}
       ></Input>
       <div className="mt-15px">
         <Radio.Group
           onChange={onChange}
-          //value={value}
+          value={value}
           className={`flex flex-wrap`}
         >
           {getDataChooseGame

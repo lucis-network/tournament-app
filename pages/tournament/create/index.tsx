@@ -65,14 +65,17 @@ const rounds = [
 export default observer(function CreateTournament(props: Props) {
   const inputRef = useRef<any>(null);
   const inputRefName = useRef<any>(null);
-
-  const [messageErrorName, setmessageErrorName] = useState("");
-  const [messageErrorTeamSize, setmessageErrorTeamSize] = useState("");
-  const [messageErrorThumbnail, setmessageErrorThumbnail] = useState("");
-  const [messageErrorCover, setmessageErrorCover] = useState("");
-
+  const inputRefPassword = useRef<any>(null);
+  const [messageErrorName, setMessageErrorName] = useState("");
+  const [messageErrorTeamSize, setMessageErrorTeamSize] = useState("");
+  const [messageErrorThumbnail, setMessageErrorThumbnail] = useState("");
+  const [messageErrorCover, setMessageErrorCover] = useState("");
+  const [messageErrorChoosegame, setMessageErrorChoosegame] = useState("");
+  const [messageErrorBracketType, setMessageErrorBracketType] = useState("");
+  const [messageErrorPassword, setMessageErrorPassword] = useState("");
+  const [messageErrorReferee, setMessageErrorReferee] = useState("");
+  const [checkPoolSize, setCheckPoolSize] = useState(true);
   const [checkPassword, setCheckPassword] = useState(false);
-
   const [dataReferees, setDataReferees] = useState([]);
   const [dataChooseGame, setDataChooseGame] = useState(null);
 
@@ -81,23 +84,25 @@ export default observer(function CreateTournament(props: Props) {
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") {
       TournamentStore.cover = childData;
-      setmessageErrorCover("");
+      setMessageErrorCover("");
     }
 
     if (value === "thumbnail") {
       TournamentStore.thumbnail = childData;
-      setmessageErrorThumbnail("");
+      setMessageErrorThumbnail("");
     }
   };
 
   const handCallbackReferee = (data: any, arr: any) => {
     setDataReferees(data);
     TournamentStore.referees = arr;
+    setMessageErrorReferee("");
   };
 
   const handCallbackChooseGame = (data: any) => {
     setDataChooseGame(data);
     TournamentStore.game_uid = data.uid;
+    setMessageErrorChoosegame("");
   };
 
   const openModal = (value: string) => {
@@ -123,33 +128,64 @@ export default observer(function CreateTournament(props: Props) {
 
   const validationInput = (cr: any) => {
     if (!cr.name) {
-      setmessageErrorName("Name must not be empty");
+      setMessageErrorName("Name must not be empty");
       inputRefName.current!.focus();
       return false;
     }
 
     if (cr.name.length > 125) {
-      setmessageErrorName("Tournament name cannot exceeds 125 characters");
+      setMessageErrorName("Tournament name cannot exceeds 125 characters");
       inputRefName.current!.focus();
       return false;
     }
 
-    if (!cr.team_size) {
-      setmessageErrorTeamSize("Teamsize must not be empty");
-      inputRef.current!.focus();
-      return false;
-    }
-
     if (!cr.cover) {
-      setmessageErrorCover("Cover be not empty");
+      setMessageErrorCover("Cover is required");
       scrollToTop();
       return false;
     }
 
     if (!cr.thumbnail) {
-      setmessageErrorThumbnail("Thumbnail be not empty");
+      setMessageErrorThumbnail("Thumbnail is required");
       scrollToTop();
       return false;
+    }
+
+    if (!cr.game_uid) {
+      setMessageErrorChoosegame("Choose game is required");
+      scrollToTop();
+      return false;
+    }
+
+    if (!cr.bracket_type) {
+      setMessageErrorBracketType("Bracket type is required");
+      scrollToTop();
+      return false;
+    }
+
+    if (!cr.team_size) {
+      setMessageErrorTeamSize("Teamsize must not be empty");
+      inputRef.current!.focus();
+      return false;
+    }
+
+    if (!cr.password && checkPassword) {
+      setMessageErrorPassword("Password must not be empty");
+      inputRefPassword.current!.focus();
+      return false;
+    }
+
+    if (!cr.referees) {
+      setMessageErrorReferee("Referee(s) is required");
+      scrollToTop();
+      return false;
+    }
+
+    if (!cr.pool_size) {
+      setCheckPoolSize(false);
+      return false;
+    } else {
+      setCheckPoolSize(true);
     }
 
     return true;
@@ -164,16 +200,16 @@ export default observer(function CreateTournament(props: Props) {
 
   const handleBlur = (value: string) => {
     if (value === "name" && !TournamentStore.name)
-      setmessageErrorName("Name must not be empty");
+      setMessageErrorName("Name must not be empty");
 
     if (value === "teamsize" && !TournamentStore.team_size)
-      setmessageErrorTeamSize("Teamsize must not be empty");
+      setMessageErrorTeamSize("Teamsize must not be empty");
   };
 
   const checkValidateName = (value: string) => {
-    if (value) setmessageErrorName("");
+    if (value) setMessageErrorName("");
     if (value.length > 125)
-      setmessageErrorName("Tournament name cannot exceeds 125 characters");
+      setMessageErrorName("Tournament name cannot exceeds 125 characters");
   };
 
   return (
@@ -267,6 +303,9 @@ export default observer(function CreateTournament(props: Props) {
                   <Button onClick={() => openModal("choosegame")}>
                     Choose game
                   </Button>
+                  <div className={s.message_error}>
+                    {messageErrorChoosegame}
+                  </div>
                 </div>
               </Col>
               <Col span={4}>
@@ -278,6 +317,7 @@ export default observer(function CreateTournament(props: Props) {
                   onChange={(e) => {
                     console.log(e.target.value);
                     TournamentStore.bracket_type = e.target.value;
+                    setMessageErrorBracketType("");
                   }}
                 >
                   {BracketType.map((item, index) => {
@@ -300,6 +340,9 @@ export default observer(function CreateTournament(props: Props) {
                       </Radio>
                     );
                   })}
+                  <div className={s.message_error}>
+                    {messageErrorBracketType}
+                  </div>
                 </Radio.Group>
               </Col>
             </Row>
@@ -307,8 +350,8 @@ export default observer(function CreateTournament(props: Props) {
               <Col span={4}>
                 <p>Teamsize</p>
               </Col>
-              <Col span={3}>
-                <Input
+              <Col span={4}>
+                {/* <Input
                   style={
                     messageErrorTeamSize !== ""
                       ? { borderColor: "#cb3636" }
@@ -321,15 +364,30 @@ export default observer(function CreateTournament(props: Props) {
                     TournamentStore.team_size = Number.parseInt(
                       value.target.value
                     );
-                    if (TournamentStore.team_size) setmessageErrorTeamSize("");
+                    if (TournamentStore.team_size) setMessageErrorTeamSize("");
                   }}
                   onBlur={() => handleBlur("teamsize")}
                   min={1}
                   required
+                /> */}
+                <InputNumber
+                  style={
+                    messageErrorTeamSize !== ""
+                      ? { borderColor: "#cb3636" }
+                      : {}
+                  }
+                  placeholder="Team size"
+                  ref={inputRef}
+                  onChange={(value: any) => {
+                    TournamentStore.team_size = value;
+                    if (TournamentStore.team_size) setMessageErrorTeamSize("");
+                  }}
+                  onBlur={() => handleBlur("teamsize")}
+                  min={1}
                 />
                 <div className={s.message_error}>{messageErrorTeamSize}</div>
               </Col>
-              <Col span={5}></Col>
+              <Col span={4}></Col>
               <Col span={4}>
                 <p className="ml-[10px]">Numbers of participants</p>
               </Col>
@@ -463,13 +521,14 @@ export default observer(function CreateTournament(props: Props) {
                     );
                   })}
                   <Button onClick={() => openModal("referee")}>+ Add</Button>
+                  <div className={s.message_error}>{messageErrorReferee}</div>
                 </div>
               </Col>
             </Row>
           </div>
           <div>
             <p className="text-30px mt-20px">Prizing</p>
-            <Prizing></Prizing>
+            <Prizing checkPoolSize={checkPoolSize}></Prizing>
           </div>
 
           <div>
@@ -523,9 +582,12 @@ export default observer(function CreateTournament(props: Props) {
                   placeholder="Password"
                   onChange={(e) => {
                     TournamentStore.password = e.target.value;
+                    setMessageErrorPassword("");
                   }}
+                  ref={inputRefPassword}
                   disabled={!checkPassword}
                 />
+                <div className={s.message_error}>{messageErrorPassword}</div>
               </Col>
             </Row>
           </div>
