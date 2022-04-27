@@ -1,8 +1,8 @@
 import s from "./Overview.module.sass"
 import { Row, Col } from 'antd';
+import CardPlayed from "../../cardsItem/played";
+import CardTeam from "../../cardsItem/cardTeam";
 
-import CardPlayed from "../../cards/played/index"
-import CardTeam from '../../cards/team/index'
 
 export default function Overview() {
   return(

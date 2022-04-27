@@ -1,5 +1,5 @@
 import s from "./Participants.module.sass";
-import ModalDonateTeam from "../../button/buttonDonate/index";
+import ModalDonateTeam from "../../button/buttonDonateTeam/index";
 import { AppEmitter } from "services/emitter";
 
 import { Button, Table } from "antd";
