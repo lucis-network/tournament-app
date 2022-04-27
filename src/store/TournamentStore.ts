@@ -39,10 +39,12 @@ export type SponsorTierType = {
   slots?: SponsorSlotType[];
 };
 
-export type SponsorSlotType = {
-  id?: string;
+export type SponsorSlotType = null | {
   name?: string;
   logo?: string;
+  sponsor_amount?: number;
+  home_page?: string;
+  ads_video?: string;
 };
 
 class TournamentStore {

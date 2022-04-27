@@ -19,13 +19,7 @@ const sponsorsDataInit: SponsorTierType[] = [
     show_logo: true,
     show_name: true,
     cover: "",
-    slots: [
-      {
-        id: "sponsor1",
-        name: "Sponsor 1",
-        logo: ""
-      },
-    ]
+    slots: [null],
   },
   {
     uid: "gold",
@@ -38,16 +32,17 @@ const sponsorsDataInit: SponsorTierType[] = [
     cover: "",
     slots: [
       {
-        id: "sponsor2",
         name: "Sponsor 2",
-        logo: ""
+        logo: "",
+        sponsor_amount: 5000,
+        home_page: "",
+        ads_video: "",
       },
       {
-        id: "sponsor3",
         name: "Sponsor 3",
-        logo: ""
+        logo: "",
       },
-    ]
+    ],
   },
   {
     uid: "silver",
@@ -59,22 +54,13 @@ const sponsorsDataInit: SponsorTierType[] = [
     show_name: true,
     cover: "",
     slots: [
+      null,
       {
-        id: "sponsor4",
-        name: "Sponsor 4",
-        logo: ""
-      },
-      {
-        id: "sponsor5",
         name: "Sponsor 5",
-        logo: ""
+        logo: "",
       },
-      {
-        id: "sponsor6",
-        name: "Sponsor 6",
-        logo: ""
-      },
-    ]
+      null,
+    ],
   },
   {
     uid: "enthusiated",
@@ -87,31 +73,26 @@ const sponsorsDataInit: SponsorTierType[] = [
     cover: "",
     slots: [
       {
-        id: "sponsor7",
         name: "Sponsor 7",
-        logo: ""
+        logo: "",
       },
       {
-        id: "sponsor8",
         name: "Sponsor 8",
-        logo: ""
+        logo: "",
       },
       {
-        id: "sponsor9",
         name: "Sponsor 9",
-        logo: ""
+        logo: "",
       },
       {
-        id: "sponsor10",
         name: "Sponsor 10",
-        logo: ""
+        logo: "",
       },
       {
-        id: "sponsor11",
         name: "Sponsor 11",
-        logo: ""
+        logo: "",
       },
-    ]
+    ],
   },
 ];
 
