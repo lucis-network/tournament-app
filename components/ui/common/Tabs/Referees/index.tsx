@@ -1,7 +1,7 @@
 import { Button, Table } from "antd";
 import { useCallback, useState } from "react";
 import { AppEmitter } from "services/emitter";
-import PopupDonate from "../../popup/PopupDonate/index";
+import PopupDonate from "../../popup/PopupDonate";
 import s from "./Referees.module.sass";
 
 export default function Referees() {
