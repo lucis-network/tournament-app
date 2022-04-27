@@ -12,6 +12,7 @@
 /* Fix tailwind base fucking behavior */
 img {
   display: inline;
+  height: initial;
 }
 
 html,
@@ -606,10 +607,10 @@ body .backdrop-blur-sm {
   color: white;
 }
 
-.ant-popover-inner-content a,
+/* .ant-popover-inner-content a,
 div {
   color: white;
-}
+} */
 
 .ant-popover-buttons button {
   background: transparent;
@@ -707,18 +708,16 @@ body .ant-input-group-addon {
 
 /* AUTOCOMPLETE */
 
-body .ant-select-dropdown {
-  background: linear-gradient(
-    126.08deg,
-    rgba(255, 255, 255, 0.3) 13.84%,
-    rgba(255, 255, 255, 0.1) 74.14%
-  );
+/* body .ant-select-dropdown {
+  background: linear-gradient(126.08deg,
+      rgba(255, 255, 255, 0.3) 13.84%,
+      rgba(255, 255, 255, 0.1) 74.14%);
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(30px);
   border-radius: 10px;
   color: white;
   border: 1px solid white;
-}
+} */
 
 body .ant-select-item {
   padding: 0;

@@ -1,28 +1,18 @@
 import { makeAutoObservable } from "mobx";
 
 class TournamentStore {
-  private _verified: boolean = false;
-  private _connectModalVisible: boolean = false;
+  private _chooseGameModalVisible: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
   }
 
   /* ============= Getter & Setter ==============*/
-  get verified(): boolean {
-    return this._verified;
+  public get chooseGameModalVisible(): boolean {
+    return this._chooseGameModalVisible;
   }
-
-  set verified(value: boolean) {
-    this._verified = value;
-  }
-
-  get connectModalVisible(): boolean {
-    return this._connectModalVisible;
-  }
-
-  set connectModalVisible(value: boolean) {
-    this._connectModalVisible = value;
+  public set chooseGameModalVisible(value: boolean) {
+    this._chooseGameModalVisible = value;
   }
 }
 

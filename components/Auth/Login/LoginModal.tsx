@@ -3,8 +3,10 @@ import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
-import AuthStore from "../AuthStore";
+import AuthStore, { AuthUser } from "../AuthStore";
 import AuthService from "../AuthService";
+import { useCallback, useEffect } from "react";
+import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 
 type Props = {};
 
@@ -16,6 +18,15 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
   : "";
 
 export default observer(function LoginModal(props: Props) {
+  useEffect(() => {
+    const cachedUser: AuthUser | null = getLocalAuthInfo();
+    const token = cachedUser?.token;
+    if (token) {
+      console.log("{AuthService.login} re-login user: ");
+      AuthStore.setAuthUser(cachedUser);
+    }
+  });
+
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
 
@@ -28,7 +39,7 @@ export default observer(function LoginModal(props: Props) {
 
     const r = await authService.login(tokenid, 100, type);
 
-    // console.log(AuthStore)
+    console.log(AuthStore);
     switch (r.error) {
       case null:
         // Success
@@ -99,3 +110,6 @@ export default observer(function LoginModal(props: Props) {
     </>
   );
 });
+function ApoloClient_setAuthToken(token: string) {
+  throw new Error("Function not implemented.");
+}

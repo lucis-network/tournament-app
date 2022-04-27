@@ -4,7 +4,11 @@ import AuthStore, { AuthUser } from "./AuthStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
 } from "utils/apollo_client";
-import { clearLocalAuthInfo, setLocalAuthInfo } from "./AuthLocal";
+import {
+  clearLocalAuthInfo,
+  getLocalAuthInfo,
+  setLocalAuthInfo,
+} from "./AuthLocal";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -24,6 +28,50 @@ function delay(time: number) {
 }
 
 export default class AuthService {
+  async fetchUserData(): Promise<AuthUser> {
+    const res = await apoloClient.mutate({
+      mutation: gql`
+        query {
+          me {
+            id
+            address
+            code
+            email
+            profile {
+              full_name
+              twitter
+              facebook
+              discord
+              telegram
+              phone
+              avatar
+            }
+          }
+        }
+      `,
+      variables: {},
+    });
+
+    // .req({
+    //   method: 'GET',
+    //   url: '/user/get',
+    // })
+    const u = res.data.me;
+    const user: AuthUser = {
+      id: u.id,
+      code: u.code,
+      email: u.email,
+      role: u.role,
+      name: u.name,
+      ref_code: u.ref_code,
+      google_id: u.google_id,
+      status: u.status,
+      profile: u.profile,
+    };
+
+    return user;
+  }
+
   private async loginByGoogle(token: string): Promise<AuthUser> {
     const loginRes = await apoloClient.mutate({
       mutation: gql`
@@ -43,7 +91,6 @@ export default class AuthService {
                 user_id
                 given_name
                 family_name
-                locale
                 phone
                 avatar
                 cover
@@ -58,6 +105,7 @@ export default class AuthService {
     });
 
     const u = loginRes.data.loginGoogle.user;
+    console.log("u", loginRes.data.loginGoogle);
     const tokenID = loginRes.data.loginGoogle.token;
     const user: AuthUser = {
       id: u.id,
@@ -94,7 +142,6 @@ export default class AuthService {
                 user_id
                 given_name
                 family_name
-                locale
                 phone
                 avatar
                 cover
@@ -141,9 +188,9 @@ export default class AuthService {
     let res: LoginResponse = {
       error: null,
     };
-    let user = {};
+
     try {
-      // new-login
+      let user: any;
       if (type === "google") {
         user = await this.loginByGoogle(tokenId);
       }
@@ -153,7 +200,7 @@ export default class AuthService {
       }
 
       console.log("{AuthService.login} new-login user: ", user);
-
+      user.token && ApoloClient_setAuthToken(user.token);
       setLocalAuthInfo(user);
       if (!delay) {
         AuthStore.setAuthUser(user);
@@ -177,6 +224,7 @@ export default class AuthService {
   }
 
   logout() {
+    ApoloClient_setAuthToken("");
     AuthStore.resetStates();
     clearLocalAuthInfo();
   }

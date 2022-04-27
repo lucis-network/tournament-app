@@ -48,10 +48,12 @@ export default observer(function User(props: Props) {
     const authService = new AuthService();
     authService.logout();
 
-    if (facebook_id) (window as any).FB.logout();
+    if (facebook_id != "" && facebook_id != undefined) {
+      (window as any).FB?.logout();
+    }
 
     if (google_id) {
-      const auth2 = (window as any).gapi.auth2.getAuthInstance();
+      const auth2 = (window as any).gapi?.auth2.getAuthInstance();
 
       if (auth2 != null) {
         auth2.signOut().then(auth2.disconnect());
@@ -138,7 +140,7 @@ export default observer(function User(props: Props) {
       >
         <div className={s.avatar}>
           <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
-          <span>{name}</span>
+          {/* <span>{name}</span> */}
         </div>
       </Popover>
       <ConnectWalletModal />

@@ -5,6 +5,7 @@ import type { AppProps } from 'next/app'
 import Layout from "components/layout"
 import { ApolloProvider } from "@apollo/client";
 import client from "utils/apollo_client";
+import 'react-quill/dist/quill.snow.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
