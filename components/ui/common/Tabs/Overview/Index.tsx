@@ -2,7 +2,7 @@ import s from "./Overview.module.sass"
 import { Row, Col } from 'antd';
 
 import CardPlayed from "../../cards/played/index"
-import CardTeam from '../../cards/Team/index'
+import CardTeam from '../../cards/team/index'
 
 export default function Overview() {
   return(

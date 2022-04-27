@@ -6,7 +6,6 @@ import {
   FormInstance,
   Input,
   InputNumber,
-  InputRef,
   message,
   Popconfirm,
   Row,
@@ -24,10 +23,8 @@ import {
   useState,
 } from "react";
 import Item from "antd/lib/list/Item";
-import { useLocalObservable } from "mobx-react";
-import AuthStore from "components/Auth/AuthStore";
-import { isBuffer } from "util";
-import TournamentStore from "src/store/TournamentStore";
+import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
+import { useLocalStore } from "mobx-react";
 
 const LUCIS_FEE = 10;
 const REFEREER_FEE = 1;
@@ -115,8 +112,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   handleSave,
   ...restProps
 }) => {
-  const authStore = useLocalObservable(() => AuthStore);
-
+  const tournamentStore = useLocalStore(() => TournamentStore);
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<any>(null);
   const form = useContext(EditableContext)!;
@@ -134,7 +130,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   const calculatePrizing = (record: Item, values: number) => {
     record.total = values;
-    record.estimated = (20000 * values) / 100;
+    if (tournamentStore.pool_size)
+      record.estimated = Number.parseFloat(
+        ((tournamentStore.pool_size * values) / 100).toFixed(2)
+      );
     return record;
   };
 
@@ -163,7 +162,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
           },
         ]}
       >
-        {/* <InputNumber
+        <InputNumber
           formatter={(value) => `${value}%`}
           parser={(value: any) => value.replace("%", "")}
           style={{ color: "black" }}
@@ -172,8 +171,8 @@ const EditableCell: React.FC<EditableCellProps> = ({
           onBlur={save}
           max={100}
           min={1}
-        /> */}
-        <Input
+        />
+        {/* <Input
           //formatter={(value) => `${value}%`}
           //parser={(value: any) => value.replace("%", "")}
           style={{ color: "white" }}
@@ -181,9 +180,9 @@ const EditableCell: React.FC<EditableCellProps> = ({
           ref={inputRef}
           onPressEnter={save}
           onBlur={save}
-          max={100}
-          min={1}
-        />
+          // max={100}
+          // min={0}
+        /> */}
       </Form.Item>
     ) : (
       <div
@@ -202,7 +201,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 export default observer(function Prizing(props: Props) {
   const [state, setState] = useState(dataTable);
   const [poolSize, setPoolSize] = useState(20000);
-  const [chain, setChain] = useState("USDT");
+  const [chain, setChain] = useState(TournamentStore.currency_uid);
   let columnsHeader = [
     {
       title: "Team place",
@@ -241,7 +240,7 @@ export default observer(function Prizing(props: Props) {
             style={{ color: "white" }}
             title="Sure to delete?"
             onConfirm={() => handleDelete(record.key)}
-            disabled={record.key != state.dataSource.length - 1 ? true : false}
+            disabled={record.key == state.dataSource.length - 1}
           >
             <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
           </Popconfirm>
@@ -278,15 +277,21 @@ export default observer(function Prizing(props: Props) {
     });
     const total = calculateTotalAllocation(newData);
     if (total > 100) message.error("Total Allocation must be equal to 100%");
-    else {
-      setState({ dataSource: newData });
-    }
+    setState({ dataSource: newData });
   };
+
+  // const recalculatePercent = (newData: any) => {
+  //   let total = calculateTotalAllocation(newData);
+  //   newData.forEach((item: { total: any }, idx: number) => {
+  //     total += item.total;
+  //   });
+  //   return total;
+  // };
 
   const calculateTotalAllocation = (newData: any) => {
     let total = 0;
     newData.forEach((item: { total: any }, idx: number) => {
-      total += Number.parseFloat(item.total);
+      total += item.total;
     });
     return total;
   };
@@ -300,7 +305,21 @@ export default observer(function Prizing(props: Props) {
     recalculateEstimated();
   }, [poolSize]);
 
-  useEffect(() => {}, [state]);
+  useEffect(() => {
+    let arr: PrizeAllocation[] = [];
+    state.dataSource.forEach((item, index: number) => {
+      let obj: PrizeAllocation = {
+        position: index + 1,
+        qty: item.quantity,
+        percent: Number.parseFloat((item.total / 100).toFixed(2)),
+      };
+      arr.push(obj);
+    });
+
+    if (arr.length >= 0) {
+      TournamentStore.prize_allocation = arr;
+    }
+  }, [state]);
 
   useEffect(() => {
     TournamentStore.currency_uid = chain;
@@ -380,9 +399,6 @@ export default observer(function Prizing(props: Props) {
 
       <div className="pt-4">
         <p>Prize Allocation</p>
-        <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
-          Add a row
-        </Button>
         <Table
           className={s.container_table}
           components={components}
@@ -392,6 +408,21 @@ export default observer(function Prizing(props: Props) {
           columns={columns as ColumnTypes}
           pagination={false}
         />
+        <Row style={{ marginTop: 16 }}>
+          <Col span={2}>
+            <Button onClick={handleAdd} type="primary">
+              Add a row
+            </Button>
+          </Col>
+          <Col span={8}></Col>
+          <Col span={6}>
+            {calculateTotalAllocation(dataSource) !== 100 ? (
+              <p style={{ color: "red" }}>Total Allocation must be 100%</p>
+            ) : (
+              ""
+            )}
+          </Col>
+        </Row>
       </div>
 
       <div className="pt-4">

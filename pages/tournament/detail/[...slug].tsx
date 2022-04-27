@@ -1,15 +1,15 @@
 import s from "./TournamentDetail.module.sass";
 import SearchComplete from "../../../components/ui/common/search/index";
-import TableParticipant from "../../../components/ui/common/tabs/Participants/index";
-import Referees from "../../../components/ui/common/tabs/Referees/index";
-import Prizing from "components/ui/common/tabs/Prizing";
+import TableParticipant from "../../../components/ui/common/tabs/participants/index";
+import Referees from "../../../components/ui/common/tabs/referees/index";
+import Prizing from "components/ui/common/tabs/prizing";
 
 import { Button, Col, Row, Tabs } from "antd";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
 
-const TournamentDetail = () => {
+const TournamentDetail = () => {  
   return (
     <div className={s.wrapper}>
       <div className={s.banner}>

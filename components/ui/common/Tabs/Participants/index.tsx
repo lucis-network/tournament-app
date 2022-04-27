@@ -1,5 +1,5 @@
 import s from "./Participants.module.sass";
-import ModalDonateTeam from "../../button/ButtonDonate/index";
+import ModalDonateTeam from "../../button/buttonDonate/index";
 import { AppEmitter } from "services/emitter";
 
 import { Button, Table } from "antd";
@@ -84,7 +84,7 @@ export default function TableParticipant() {
         bordered
         className={s.container_table}
       />
-      <ModalDonateTeam nameTeam={datas} />
+      <ModalDonateTeam nameTeam={datas} />  
     </div>
   );
 }

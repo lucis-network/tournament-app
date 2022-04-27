@@ -2,12 +2,22 @@ import { observer } from "mobx-react-lite";
 import { Checkbox, Modal, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Search from "antd/lib/input/Search";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import s from "./index.module.sass";
+import { useReferees } from "hooks/tournament/useCreateTournament";
 
-type Props = {};
+type Props = {
+  handCallbackReferee?: any;
+};
 
 export default observer(function RefereeModal(props: Props) {
+  const [name, setName] = useState("");
+  const [checkedValue, setCheckedValue] = useState([]);
+
+  const { getDataReferees } = useReferees({
+    name: name,
+  });
+
   const isModalVisible = TournamentStore.refereeModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.refereeModalVisible = v);
@@ -16,22 +26,20 @@ export default observer(function RefereeModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  const onSearch = (value: string) => console.log(value);
-  const data = [
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-    { label: "Axie Infinity" },
-  ];
-
-  const [value, setValue] = useState(null);
+  const onSearch = (value: string) => setName(value);
 
   function onChange(checkedValues: any) {
     console.log("checked = ", checkedValues);
+    setCheckedValue(checkedValues);
   }
 
   const handleOk = () => {
+    const dataCallback: any[] = [];
+    checkedValue?.forEach((item: number) => {
+      dataCallback.push(getDataReferees[item]);
+    });
+
+    props.handCallbackReferee(dataCallback, checkedValue);
     setIsModalVisible(false);
   };
 
@@ -49,20 +57,26 @@ export default observer(function RefereeModal(props: Props) {
         className={`${s.searchText}`}
       />
       <Checkbox.Group onChange={onChange} className={`${s.container}`}>
-        {data.map((ele, index) => {
-          return (
-            <div className={`${s.item}`} key={index}>
-              <div className={`${s.avatar} ${s.avBig}`}>
-                <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
-              </div>
-              <Checkbox
-                className={`${s.itemCheckbox}`}
-                value={index}
-              ></Checkbox>
-              <p className="mt-5px">{ele.label}</p>
-            </div>
-          );
-        })}
+        {getDataReferees
+          ? getDataReferees.map((ele: any, index: number) => {
+              return (
+                <div className={`${s.item}`} key={index}>
+                  <div className={`${s.avatar} ${s.avBig}`}>
+                    {ele.user?.profile.avatar ? (
+                      <img src={ele.user.profile.avatar} alt="" />
+                    ) : (
+                      <img src="/assets/avatar.jpg" alt="" />
+                    )}
+                  </div>
+                  <Checkbox
+                    className={`${s.itemCheckbox}`}
+                    value={index}
+                  ></Checkbox>
+                  <p className="mt-5px">{ele.user.profile.full_name}</p>
+                </div>
+              );
+            })
+          : ""}
       </Checkbox.Group>
     </Modal>
   );
