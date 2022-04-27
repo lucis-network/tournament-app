@@ -11,7 +11,7 @@ type Props = {};
 
 const sponsorsDataInit: SponsorTierType[] = [
   {
-    uid: "diamond",
+    //uid: "diamond",
     name: 'Diamond',
     min: 1000,
     max: 1,
@@ -28,7 +28,7 @@ const sponsorsDataInit: SponsorTierType[] = [
     // ]
   },
   {
-    uid: "gold",
+    //uid: "gold",
     name: 'Gold',
     min: 1000,
     max: 2,
@@ -50,7 +50,7 @@ const sponsorsDataInit: SponsorTierType[] = [
     // ]
   },
   {
-    uid: "silver",
+    //uid: "silver",
     name: 'Silver',
     min: 1000,
     max: 3,
@@ -77,7 +77,7 @@ const sponsorsDataInit: SponsorTierType[] = [
     // ]
   },
   {
-    uid: "enthusiated",
+    //uid: "enthusiated",
     name: 'Enthusiated',
     min: 1000,
     max: 5,
