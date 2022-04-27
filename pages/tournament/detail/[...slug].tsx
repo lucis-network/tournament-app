@@ -64,7 +64,7 @@ const TournamentDetail = () => {
 
 
       {/* tabs */}
-      <div className={`lucis-container ${s.container_Tabs}`}>
+      {/* <div className={`lucis-container ${s.container_Tabs}`}>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Overview" key="1">
             Content of Tab Pane 1
@@ -88,7 +88,7 @@ const TournamentDetail = () => {
             <Prizing />
           </TabPane>
         </Tabs>
-      </div>
+      </div> */}
     </div>
   );
 };
