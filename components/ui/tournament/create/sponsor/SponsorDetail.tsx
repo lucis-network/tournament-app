@@ -49,7 +49,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
         </Col>
         <Col xs={{ span: 24 }} md={{ span: 16 }}>
           <Row>
-            <Col span={6}>
+            <Col span={6} className="pr-2">
               <CircleImage src="/assets/avatar.jpg" />
             </Col>
             <Col span={18}>

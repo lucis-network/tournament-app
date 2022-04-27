@@ -14,6 +14,7 @@ type SponsorTierProps = {
 type EditTierProps = {
   data: SponsorTierType;
   saveData: (...args: any[]) => void;
+  currencyUid?: string;
 };
 
 const { Option } = Select;
@@ -70,6 +71,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
             <EditTier
               data={data}
               saveData={saveData}
+              currencyUid={TournamentStore.currency_uid}
             ></EditTier>
           </Col>
         </Row>
@@ -79,7 +81,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
 });
 
 const EditTier = (props: EditTierProps) => {
-  const { data, saveData } = props;
+  const { data, saveData, currencyUid } = props;
 
   const maxSponsorOptions = [];
   for (let i = 1; i <= 20; i++) {
@@ -187,9 +189,7 @@ const EditTier = (props: EditTierProps) => {
               min={1000}
               defaultValue={data.min}
               onChange={handleMinSponsorAmountChange}
-              addonAfter={
-                TournamentStore.currency_uid
-              }
+              addonAfter={currencyUid}
               placeholder="1000"
             />
           </Col>
