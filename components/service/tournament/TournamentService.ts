@@ -51,6 +51,10 @@ export function getLocalCreateTournamentInfo(): CreateTournament | null {
   }
 }
 
+export function clearLocalCreateTournament(): void {
+  localStorage.setItem("createTournament", "");
+}
+
 // ----- Solution: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
 function toBinary(string: string) {
   const codeUnits = new Uint16Array(string.length);

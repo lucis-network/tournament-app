@@ -341,6 +341,10 @@ export default observer(function Prizing(props: Props) {
   }, [chain]);
 
   useEffect(() => {
+    if (TournamentStore.pool_size) setPoolSize(TournamentStore.pool_size);
+  });
+
+  useEffect(() => {
     if (!props.checkPoolSize && poolSize == 0) {
       if (poolSize == 0 || poolSize == null)
         if (inputRef && inputRef.current) {
@@ -409,6 +413,7 @@ export default observer(function Prizing(props: Props) {
               onChange={onChange}
               ref={inputRef}
               onBlur={() => handleBlur()}
+              value={TournamentStore.pool_size}
             />
           </Col>
           <Col span={3}>

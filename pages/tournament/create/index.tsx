@@ -26,17 +26,21 @@ import dynamic from "next/dynamic";
 import Sponsor from "components/ui/tournament/create/sponsor/Sponsor";
 import Prizing from "components/ui/tournament/create/prizing/Prizing";
 import TournamentService, {
+  getLocalCreateTournamentInfo,
   setLocalCreateTournamentInfo,
+  clearLocalCreateTournament
 } from "components/service/tournament/TournamentService";
-import { useRegion } from "hooks/tournament/useCreateTournament";
+import {
+  useChooseGame,
+  useReferees,
+  useRegion,
+} from "hooks/tournament/useCreateTournament";
 import Router, { useRouter } from "next/router";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
-
-type Props = {};
 
 const rounds = [
   {
@@ -76,6 +80,10 @@ const rounds = [
   },
 ];
 
+type Props = {
+  getDataChooseGame: any;
+};
+
 export default observer(function CreateTournament(props: Props) {
   const inputRef = useRef<any>(null);
   const inputRefName = useRef<any>(null);
@@ -94,23 +102,55 @@ export default observer(function CreateTournament(props: Props) {
   const [dataChooseGame, setDataChooseGame] = useState(null);
 
   const { getDataRegions } = useRegion({});
+
+  const { getDataChooseGame } = useChooseGame({
+    name: "",
+  });
+
+  const { getDataReferees } = useReferees({
+    name: "",
+  });
+
   const router = useRouter();
 
   const saveDaft = () => {
     let cr = TournamentStore.getCreateTournament();
     cr.rounds = rounds;
-    if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
     setLocalCreateTournamentInfo(cr);
-    //TournamentStore.setCreateTournament(cr);
   };
+
+  useEffect(() => {
+    let cr = getLocalCreateTournamentInfo();
+    console.log(cr);
+    if (cr) TournamentStore.setCreateTournament(cr);
+
+    const dataChooseGameRes = getDataChooseGame?.find(
+      (item: any) => item.uid === cr?.game_uid
+    );
+    setDataChooseGame(dataChooseGameRes);
+
+    // @ts-ignore
+    const dataRefereeRes = [];
+    getDataReferees?.forEach((item: any) => {
+      cr?.referees?.forEach((itm: number) => {
+        if (item.user_id == itm) dataRefereeRes.push(item);
+      });
+    });
+    //@ts-ignore
+    setDataReferees(dataRefereeRes);
+
+    console.log("cr", cr);
+  }, [getDataChooseGame && getDataReferees]);
 
   const beforeRouteHandler = (url: string) => {
     if (Router.pathname !== url) {
       Router.events.emit("routeChangeError");
       const result = window.confirm("Do you want save draft?");
       if (result) saveDaft();
-      // if (!result)
-      //   throw `Route change to "${url}" was aborted. See https://github.com/zeit/next.js/issues/2476.`;
+      else {
+        TournamentStore.resetStates();
+        clearLocalCreateTournament();
+      }
     }
   };
 
@@ -119,16 +159,16 @@ export default observer(function CreateTournament(props: Props) {
     return false;
   };
 
-  // useEffect(() => {
-  //   if (router.asPath == "/tournament/create") {
-  //     router.events.on("routeChangeStart", beforeRouteHandler);
-  //     window.onbeforeunload = handleBeforeUnload;
-  //     return () => {
-  //       router.events.off("routeChangeStart", beforeRouteHandler);
-  //       window.onbeforeunload = () => true;
-  //     };
-  //   }
-  // }, [router.asPath]);
+  useEffect(() => {
+    if (router.asPath == "/tournament/create") {
+      router.events.on("routeChangeStart", beforeRouteHandler);
+      window.onbeforeunload = handleBeforeUnload;
+      return () => {
+        router.events.off("routeChangeStart", beforeRouteHandler);
+        window.onbeforeunload = () => true;
+      };
+    }
+  }, [router.asPath]);
 
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") {
@@ -304,6 +344,7 @@ export default observer(function CreateTournament(props: Props) {
                   heigh="480"
                   width="1200"
                   value="cover"
+                  url={TournamentStore.cover}
                 ></UploadImage>
                 <p>Recommended size: 1200x300</p>
                 <div className={s.message_error}>{messageErrorCover}</div>
@@ -317,6 +358,7 @@ export default observer(function CreateTournament(props: Props) {
                   heigh="200"
                   width="300"
                   value="thumbnail"
+                  url={TournamentStore.thumbnail}
                 ></UploadImage>
                 <p>Recommended size: 300x200</p>
                 <div className={s.message_error}>{messageErrorThumbnail}</div>
@@ -363,6 +405,7 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Radio.Group
+                  value={TournamentStore.bracket_type}
                   className={s.bracketType}
                   onChange={(e) => {
                     TournamentStore.bracket_type = e.target.value;
@@ -400,25 +443,6 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Teamsize</p>
               </Col>
               <Col span={4}>
-                {/* <Input
-                  style={
-                    messageErrorTeamSize !== ""
-                      ? { borderColor: "#cb3636" }
-                      : {}
-                  }
-                  placeholder="Team size"
-                  ref={inputRef}
-                  type="number"
-                  onChange={(value: any) => {
-                    TournamentStore.team_size = Number.parseInt(
-                      value.target.value
-                    );
-                    if (TournamentStore.team_size) setMessageErrorTeamSize("");
-                  }}
-                  onBlur={() => handleBlur("teamsize")}
-                  min={1}
-                  required
-                /> */}
                 <InputNumber
                   style={
                     messageErrorTeamSize !== ""
@@ -433,6 +457,7 @@ export default observer(function CreateTournament(props: Props) {
                   }}
                   onBlur={() => handleBlur("teamsize")}
                   min={1}
+                  value={TournamentStore.team_size}
                 />
                 <div className={s.message_error}>{messageErrorTeamSize}</div>
               </Col>
@@ -442,6 +467,7 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Select
+                  value={TournamentStore.participants}
                   defaultValue={TournamentStore.participants}
                   style={{ width: 150 }}
                   onChange={(value) => {
@@ -470,6 +496,7 @@ export default observer(function CreateTournament(props: Props) {
                   onChange={(value) => {
                     TournamentStore.turns = value;
                   }}
+                  value={TournamentStore.turns}
                 >
                   {Rounds.map((item, index) => {
                     return (
@@ -493,6 +520,7 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Select
+                  value={TournamentStore.regions[0]}
                   defaultValue={"Global"}
                   style={{ width: 200 }}
                   onChange={(value) => {
@@ -621,12 +649,14 @@ export default observer(function CreateTournament(props: Props) {
                   // defaultChecked={props.item.showName}
                   onChange={(checked) => {
                     setCheckPassword(checked);
+                    if (!checked) TournamentStore.password = "";
                   }}
                   title="password"
                 />
               </Col>
               <Col span={18}>
                 <Input
+                  value={TournamentStore.password}
                   type="password"
                   placeholder="Password"
                   onChange={(e) => {
@@ -635,6 +665,7 @@ export default observer(function CreateTournament(props: Props) {
                   }}
                   ref={inputRefPassword}
                   disabled={!checkPassword}
+                  max={32}
                 />
                 <div className={s.message_error}>{messageErrorPassword}</div>
               </Col>
