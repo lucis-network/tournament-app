@@ -54,6 +54,7 @@ const DEFAULT_CURRENCY_UID = "USDT";
 const DEFAULT_JOIN_FEE = 0;
 const DEFAULT_REGIONS = ["AA"];
 class TournamentStore {
+  private _depositModalVisible: boolean = false;
   private _chooseGameModalVisible: boolean = false;
   private _refereeModalVisible: boolean = false;
   private _prizingModalVisible: boolean = false;
@@ -330,6 +331,12 @@ class TournamentStore {
   }
   public set rounds_1(value: any[] | undefined) {
     this._rounds = value;
+  }
+  public get depositModalVisible(): boolean {
+    return this._depositModalVisible;
+  }
+  public set depositModalVisible(value: boolean) {
+    this._depositModalVisible = value;
   }
 }
 
