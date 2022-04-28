@@ -77,7 +77,7 @@ export default observer(function Header(props: Props) {
               <li>
                 {AuthStore.isLoggedIn ? (
                   <>
-                    <User />
+                    <User></User>
                   </>
                 ) : (
                   <Login />
