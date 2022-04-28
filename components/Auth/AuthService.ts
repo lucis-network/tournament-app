@@ -83,7 +83,6 @@ export default class AuthService {
               email
               role
               code
-              name
               ref_code
               google_id
               status
@@ -134,7 +133,6 @@ export default class AuthService {
               email
               role
               code
-              name
               ref_code
               google_id
               status

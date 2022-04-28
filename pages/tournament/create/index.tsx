@@ -1,6 +1,15 @@
 import DocHead from "components/DocHead";
 import s from "./index.module.sass";
-import { Row, Col, Switch, InputNumber, InputRef, Form, message } from "antd";
+import {
+  Row,
+  Col,
+  Switch,
+  InputNumber,
+  InputRef,
+  Form,
+  message,
+  Modal,
+} from "antd";
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
 import { Radio } from "antd";
@@ -16,8 +25,12 @@ import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import Sponsor from "components/ui/tournament/create/sponsor/Sponsor";
 import Prizing from "components/ui/tournament/create/prizing/Prizing";
-import TournamentService from "components/service/tournament/TournamentService";
+import TournamentService, {
+  setLocalCreateTournamentInfo,
+} from "components/service/tournament/TournamentService";
 import { useRegion } from "hooks/tournament/useCreateTournament";
+import Router, { useRouter } from "next/router";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -62,6 +75,7 @@ const rounds = [
     type: "UPPER",
   },
 ];
+
 export default observer(function CreateTournament(props: Props) {
   const inputRef = useRef<any>(null);
   const inputRefName = useRef<any>(null);
@@ -80,6 +94,41 @@ export default observer(function CreateTournament(props: Props) {
   const [dataChooseGame, setDataChooseGame] = useState(null);
 
   const { getDataRegions } = useRegion({});
+  const router = useRouter();
+
+  const saveDaft = () => {
+    let cr = TournamentStore.getCreateTournament();
+    cr.rounds = rounds;
+    if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
+    setLocalCreateTournamentInfo(cr);
+    //TournamentStore.setCreateTournament(cr);
+  };
+
+  const beforeRouteHandler = (url: string) => {
+    if (Router.pathname !== url) {
+      Router.events.emit("routeChangeError");
+      const result = window.confirm("Do you want save draft?");
+      if (result) saveDaft();
+      // if (!result)
+      //   throw `Route change to "${url}" was aborted. See https://github.com/zeit/next.js/issues/2476.`;
+    }
+  };
+
+  const handleBeforeUnload = (e: any) => {
+    e.preventDefault();
+    return false;
+  };
+
+  // useEffect(() => {
+  //   if (router.asPath == "/tournament/create") {
+  //     router.events.on("routeChangeStart", beforeRouteHandler);
+  //     window.onbeforeunload = handleBeforeUnload;
+  //     return () => {
+  //       router.events.off("routeChangeStart", beforeRouteHandler);
+  //       window.onbeforeunload = () => true;
+  //     };
+  //   }
+  // }, [router.asPath]);
 
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") {
@@ -114,11 +163,12 @@ export default observer(function CreateTournament(props: Props) {
     let cr = TournamentStore.getCreateTournament();
     cr.rounds = rounds;
     cr.start_at = new Date();
-
     if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
-    console.log("cr", cr);
-    const tournamentService = new TournamentService();
 
+    setLocalCreateTournamentInfo(cr);
+    TournamentStore.setCreateTournament(cr);
+
+    const tournamentService = new TournamentService();
     if (!validationInput(cr)) return;
     const response = tournamentService.createTournament(cr).then((res) => {
       if (res.data.createTournament) message.success("Save succcessfully");
@@ -315,7 +365,6 @@ export default observer(function CreateTournament(props: Props) {
                 <Radio.Group
                   className={s.bracketType}
                   onChange={(e) => {
-                    console.log(e.target.value);
                     TournamentStore.bracket_type = e.target.value;
                     setMessageErrorBracketType("");
                   }}

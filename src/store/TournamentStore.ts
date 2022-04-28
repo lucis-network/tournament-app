@@ -52,6 +52,7 @@ class TournamentStore {
   private _chooseGameModalVisible: boolean = false;
   private _refereeModalVisible: boolean = false;
   private _prizingModalVisible: boolean = false;
+  private _draftPopupVisible: boolean = false;
 
   private _id?: number | undefined;
 
@@ -146,6 +147,13 @@ class TournamentStore {
   }
 
   /* ============= Getter & Setter ==============*/
+  public get draftPopupVisible(): boolean {
+    return this._draftPopupVisible;
+  }
+  public set draftPopupVisible(value: boolean) {
+    this._draftPopupVisible = value;
+  }
+
   public get chooseGameModalVisible(): boolean {
     return this._chooseGameModalVisible;
   }
@@ -255,7 +263,7 @@ class TournamentStore {
   public get referees(): number[] {
     return this._referees ? this._referees : [];
   }
-  public set referees(value: number[] ) {
+  public set referees(value: number[]) {
     this._referees = value;
   }
   public get regions(): string[] {
