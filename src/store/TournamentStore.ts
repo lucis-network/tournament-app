@@ -102,6 +102,7 @@ class TournamentStore {
   private _prize_allocation?: PrizeAllocation[] | undefined;
 
   private _start_at?: Date | undefined;
+
   private _sponsor_slots: SponsorTierType[] | undefined;
 
   constructor() {

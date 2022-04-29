@@ -1,99 +1,82 @@
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { Button, Col, Collapse, Input, Row, Space, Switch, Modal } from "antd";
-import s from "./index.module.sass";
-import { useEffect, useState } from "react";
-import { SponsorTierType } from "src/store/TournamentStore";
-import SponsorTier from "./SponsorTier";
-const { Panel } = Collapse;
-import TournamentStore from "../../../../../src/store/TournamentStore"
 import { uniqueId } from "lodash"
+import s from "./index.module.sass";
+import TournamentStore from "../../../../../src/store/TournamentStore"
+import { SponsorStore, SponsorTierStore, ISponsorTierStore } from "./SponsorStore";
+import { isClientDevMode } from "../../../../../utils/Env";
+import SponsorTier from "./SponsorTier";
+
+const { Panel } = Collapse;
 
 type Props = {};
 
-const tiersDataInit: SponsorTierType[] = [
+const tiersDataInit: SponsorTierStore[] = [
   {
-    tierId: uniqueId('tier_'),
+    tier_id: uniqueId('tier_'),
     name: 'Diamond',
-    min: 1000,
-    max: 1,
+    min_deposit: 1000,
+    max_slot: 1,
     show_ads: true,
     show_logo: true,
     show_name: true,
-    cover: "",
-    sponsor_transactions: {
-      createMany: {
-        data: [],
-      },
-    },
-  },
+
+    slots: [],
+  } as SponsorTierStore,
   {
-    tierId: uniqueId('tier_'),
+    tier_id: uniqueId('tier_'),
     name: 'Gold',
-    min: 700,
-    max: 2,
-    show_ads: true,
+    min_deposit: 700,
+    max_slot: 2,
     show_logo: true,
-    show_name: true,
-    cover: "",
-    sponsor_transactions: {
-      createMany: {
-        data: [],
-      },
-    },
-  },
+    show_name: false,
+    show_ads: false,
+
+    slots: [],
+  } as SponsorTierStore,
   {
-    tierId: uniqueId('tier_'),
+    tier_id: uniqueId('tier_'),
     name: 'Silver',
-    min: 500,
-    max: 3,
-    show_ads: true,
+    min_deposit: 500,
+    max_slot: 3,
     show_logo: true,
-    show_name: true,
-    cover: "",
-    sponsor_transactions: {
-      createMany: {
-        data: [],
-      },
-    },
-  },
+    show_name: false,
+    show_ads: false,
+
+    slots: [],
+  } as SponsorTierStore,
   {
-    tierId: uniqueId('tier_'),
-    name: 'Enthusiated',
-    min: 300,
-    max: 5,
-    show_ads: true,
+    tier_id: uniqueId('tier_'),
+    name: 'Enthusiast',
+    min_deposit: 300,
+    max_slot: 5,
     show_logo: true,
-    show_name: true,
-    cover: "",
-    sponsor_transactions: {
-      createMany: {
-        data: [],
-      },
-    },
-  },
+    show_name: false,
+    show_ads: false,
+
+    slots: [],
+  } as SponsorTierStore,
 ];
 
+const sponsorStore =  new SponsorStore();
+if (isClientDevMode) {
+  // @ts-ignore
+  window.tmp__SponsorStore = sponsorStore;
+}
+
+sponsorStore.setState({
+  tiers: [...tiersDataInit],
+})
+
 export default observer(function Sponsor(props: Props) {
-  let { sponsor_slots } = TournamentStore;
-  const [tiersData, setTiersData] = useState(sponsor_slots)
-  const saveTier = () => {
-    console.log('saveTier')
-  }
-
-  useEffect(() => {
-    sponsor_slots = tiersDataInit
-    console.log('Sponsor.tsx: sponsor_slots: ', sponsor_slots)
-  }, [])
-
-  useEffect(() => {
-    setTiersData(sponsor_slots)
-  }, [sponsor_slots])
+  const { tiers } = sponsorStore;
   
   return (
     <div className={s.sponsorContainer}>
-      {tiersData.length > 0 && tiersData.map((item, index) => {
+      {tiers.length > 0 && tiers.map((i) => {
         return (
-          <SponsorTier data={item} saveTier={saveTier} key={item.name} />
+          <SponsorTier data={i} key={i.tier_id} />
         );
       })}
     </div>
