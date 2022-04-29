@@ -6,30 +6,43 @@ import Text from 'antd/lib/typography/Text';
 import { SponsorSlotType } from 'src/store/TournamentStore';
 import TournamentStore from "../../../../../src/store/TournamentStore"
 import { myBucket, S3_BUCKET } from 'components/ui/common/upload/UploadImage';
+import { ISponsorSlot, SponsorSlot } from "./SponsorStore";
 
 type SponsorDetailProps = {
   isEdit: boolean;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
-  tier?: string;
-  slot?: SponsorSlotType;
-  onUpdate: (slotData: SponsorSlotType, index: number) => void;
-  index: number;
-  minAmount?: number;
+  tier_name?: string;
+  min_deposit?: number;
+  slot: SponsorSlot;
 }
 
 const { Option } = Select;
 
 export default observer(function SponsorDetail(props: SponsorDetailProps) {
-  const { isEdit, setIsEdit, tier, slot, onUpdate, index, minAmount } = props;
+  const {isEdit, setIsEdit, tier_name, min_deposit, slot} = props;
   const [logoUrl, setLogoUrl] = useState('');
   const [form] = Form.useForm();
   const inputFileRef = useRef<any>(null)
 
-  const handleFormUpdate = (data: SponsorSlotType) => {
-    const currentTier = TournamentStore.sponsor_slots.filter((item) => item.name === tier)
-    // currentTier[0].sponsor_transactions?.createMany?.data.push(data)
-    console.log('handleFormUpdate: ', TournamentStore.sponsor_slots)
-    // onUpdate(data, index)
+  const handleFormUpdate = (data: any) => {
+    // console.log('{handleFormUpdate} data: ', data);
+    const newSlotState: ISponsorSlot = {}
+    if (data.logo) {
+      newSlotState.logo = data.logo;
+    }
+    if (data.ads_video) {
+      newSlotState.ads_link = data.ads_video;
+    }
+    if (data.amount) {
+      newSlotState.amount = data.amount;
+    }
+    if (data.home_page) {
+      newSlotState.home_page = data.home_page;
+    }
+    if (data.name) {
+      newSlotState.name = data.name;
+    }
+    slot.setState(newSlotState)
   }
 
   const handleFileInput = (e: any) => {
@@ -81,7 +94,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
         form={form}
         onFinish={handleFormUpdate}
         initialValues={{
-          amount: slot?.amount || minAmount,
+          amount: slot?.amount || min_deposit,
           name: slot?.name || '',
           home_page: slot?.home_page || '',
           ads_video: slot?.ads_link || '',
@@ -94,13 +107,13 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
           <Col xs={{ span: 24 }} md={{ span: 16 }}>
             <Select
               style={{ width: '100%' }}
-              defaultValue={tier}
+              defaultValue={tier_name}
               disabled
             >
               <Option value="Diamond">Diamond</Option>
               <Option value="Gold">Gold</Option>
               <Option value="Silver">Silver</Option>
-              <Option value="Enthusiated">Enthusiated</Option>
+              <Option value="Enthusiast">Enthusiast</Option>
             </Select>
           </Col>
         </Row>
@@ -114,7 +127,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
               rules={[
                 {
                   type: 'number',
-                  min: minAmount,
+                  min: min_deposit,
                   message: `You need to enter a value greater than \${min} ${TournamentStore.currency_uid}.`
                 }
               ]}

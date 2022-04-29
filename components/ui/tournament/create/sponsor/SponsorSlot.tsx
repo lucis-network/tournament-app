@@ -5,10 +5,10 @@ import { Button } from "antd";
 import s from "./index.module.sass";
 import CircleImage from "components/ui/common/images/CircleImage";
 import SponsorDetail from "./SponsorDetail";
-import { ISponsorSlot } from "./SponsorStore";
+import { SponsorSlot } from "./SponsorStore";
 
 type SponsorSlotProps = {
-  slot: ISponsorSlot;
+  slot: SponsorSlot;
   show_name?: boolean;
   tier_name?: string;
   min_deposit?: number;
@@ -42,17 +42,17 @@ export default observer(
           {show_name && <div className={s.sponsorName}>{slot.name ?? 'Sponsor name'}</div>}
         </div>
 
-        {/*{isEdit && (*/}
-        {/*  <SponsorDetail*/}
-        {/*    isEdit={isEdit}*/}
-        {/*    setIsEdit={setIsEdit}*/}
-        {/*    tier={tier}*/}
-        {/*    slot={slot}*/}
-        {/*    onUpdate={onUpdate}*/}
-        {/*    index={index}*/}
-        {/*    minAmount={minAmount}*/}
-        {/*  />*/}
-        {/*)}*/}
+        {isEdit && (
+          <SponsorDetail
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+
+            tier_name={tier_name}
+            min_deposit={min_deposit}
+
+            slot={slot}
+          />
+        )}
       </>
     )
   }

@@ -92,7 +92,7 @@ export class SponsorSlot implements ISponsorSlot {
     makeAutoObservable(this);
   }
 
-  setState(s: SponsorSlot) {
+  setState(s: ISponsorSlot) {
     (s.logo !== undefined) && (this.logo = s.logo);
     (s.name !== undefined) && (this.name = s.name);
     (s.home_page !== undefined) && (this.home_page = s.home_page);
