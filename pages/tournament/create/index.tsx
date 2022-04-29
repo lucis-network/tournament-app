@@ -9,6 +9,7 @@ import {
   Form,
   message,
   Timeline,
+  Modal,
 } from "antd";
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
@@ -25,9 +26,19 @@ import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import Sponsor from "components/ui/tournament/create/sponsor/Sponsor";
 import Prizing from "components/ui/tournament/create/prizing/Prizing";
-import TournamentService from "components/service/tournament/TournamentService";
-import { useRegion } from "hooks/tournament/useCreateTournament";
 import TimelineModal from "components/ui/tournament/create/timeline/TimelineModal";
+import TournamentService, {
+  getLocalCreateTournamentInfo,
+  setLocalCreateTournamentInfo,
+  clearLocalCreateTournament,
+} from "components/service/tournament/TournamentService";
+import {
+  useChooseGame,
+  useReferees,
+  useRegion,
+} from "hooks/tournament/useCreateTournament";
+import Router, { useRouter } from "next/router";
+import DepositModal from "components/ui/tournament/create/deposit/DepositModal";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -70,7 +81,12 @@ const rounds = [
     type: "UPPER",
   },
 ];
-export default observer(function CreateTournament() {
+
+type Props = {
+  getDataChooseGame: any;
+};
+
+export default observer(function CreateTournament(props: Props) {
   const inputRef = useRef<any>(null);
   const inputRefName = useRef<any>(null);
   const inputRefPassword = useRef<any>(null);
@@ -88,6 +104,80 @@ export default observer(function CreateTournament() {
   const [dataChooseGame, setDataChooseGame] = useState(null);
 
   const { getDataRegions } = useRegion({});
+
+  const { getDataChooseGame } = useChooseGame({
+    name: "",
+  });
+
+  const { getDataReferees } = useReferees({
+    name: "",
+  });
+
+  const router = useRouter();
+
+  const saveDraft = () => {
+    let cr = TournamentStore.getCreateTournament();
+    cr.rounds = rounds;
+    setLocalCreateTournamentInfo(cr);
+  };
+
+  // useEffect(() => {
+  //   TournamentStore.depositModalVisible = true;
+  // });
+
+  useEffect(() => {
+    let cr = getLocalCreateTournamentInfo();
+    if (cr) {
+      TournamentStore.setCreateTournament(cr);
+
+      //Getdata ChooseGame from localstorage
+      const dataChooseGameRes = getDataChooseGame?.find(
+        (item: any) => item.uid === cr?.game_uid
+      );
+      setDataChooseGame(dataChooseGameRes);
+
+      //Getdata dataReferee from localstorage
+      // @ts-ignore
+      const dataRefereeRes = [];
+      getDataReferees?.forEach((item: any) => {
+        cr?.referees?.forEach((itm: number) => {
+          if (item.user_id == itm) dataRefereeRes.push(item);
+        });
+      });
+      //@ts-ignore
+      setDataReferees(dataRefereeRes);
+
+      if (cr.password) setCheckPassword(true);
+      console.log(checkPassword);
+      console.log("cr", cr);
+    }
+  }, [getDataChooseGame && getDataReferees]);
+
+  const beforeRouteHandler = (url: string) => {
+    if (Router.pathname !== url) {
+      Router.events.emit("routeChangeError");
+      const result = window.confirm("Do you want save draft?");
+      if (result) saveDraft();
+      else {
+        TournamentStore.resetStates();
+        clearLocalCreateTournament();
+      }
+    }
+  };
+
+  const handleBeforeUnload = (e: any) => {
+    e.preventDefault();
+    return false;
+  };
+
+  useEffect(() => {
+    router.events.on("routeChangeStart", beforeRouteHandler);
+    //window.onbeforeunload = handleBeforeUnload;
+    return () => {
+      router.events.off("routeChangeStart", beforeRouteHandler);
+      //window.onbeforeunload = () => true;
+    };
+  }, [router.asPath === "/tournament/create"]);
 
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") {
@@ -124,16 +214,26 @@ export default observer(function CreateTournament() {
     let cr = TournamentStore.getCreateTournament();
     cr.rounds = rounds;
     cr.start_at = new Date();
-
     if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
-    console.log("cr", cr);
-    const tournamentService = new TournamentService();
 
+    setLocalCreateTournamentInfo(cr);
+    TournamentStore.setCreateTournament(cr);
+
+    const tournamentService = new TournamentService();
     if (!validationInput(cr)) return;
-    const response = tournamentService.createTournament(cr).then((res) => {
-      if (res.data.createTournament) message.success("Save succcessfully");
-      else message.error("Save fail");
-    });
+    const response = tournamentService
+      .createTournament(cr)
+      .then((res) => {
+        if (res.data.createTournament) {
+          message.success("Save succcessfully");
+          TournamentStore.resetStates();
+          clearLocalCreateTournament();
+        } else {
+          message.error("Save fail");
+          return;
+        }
+      })
+      .then(() => {});
   };
 
   const validationInput = (cr: any) => {
@@ -162,7 +262,7 @@ export default observer(function CreateTournament() {
     }
 
     if (!cr.game_uid) {
-      setMessageErrorChoosegame("Choose game is required");
+      setMessageErrorChoosegame("Game is required");
       scrollToTop();
       return false;
     }
@@ -179,26 +279,52 @@ export default observer(function CreateTournament() {
       return false;
     }
 
-    if (!cr.password && checkPassword) {
-      setMessageErrorPassword("Password must not be empty");
-      inputRefPassword.current!.focus();
-      return false;
-    }
-
     if (!cr.referees) {
       setMessageErrorReferee("Referee(s) is required");
       scrollToTop();
       return false;
     }
 
+    if (cr.participants / 2 < cr.referees?.length) {
+      scrollToTop();
+      return false;
+    }
+
     if (!cr.pool_size) {
       setCheckPoolSize(false);
+      //@ts-ignore
+      document.getElementById("prizing").scrollIntoView();
       return false;
     } else {
       setCheckPoolSize(true);
     }
 
+    if (calculateTotalAllocation(cr.prize_allocation) != 1) {
+      //@ts-ignore
+      document.getElementById("prizing").scrollIntoView();
+      return false;
+    }
+
+    if (!cr.password && checkPassword) {
+      setMessageErrorPassword("Password must not be empty");
+      inputRefPassword.current!.focus();
+      return false;
+    }
+
+    if (checkPassword && (cr.password.length < 4 || cr.password.length > 32)) {
+      inputRefPassword.current!.focus();
+      return false;
+    }
+
     return true;
+  };
+
+  const calculateTotalAllocation = (newData: any) => {
+    let total = 0;
+    newData.forEach((item: { percent: any }, idx: number) => {
+      total += item.percent;
+    });
+    return total;
   };
 
   const scrollToTop = () => {
@@ -264,6 +390,7 @@ export default observer(function CreateTournament() {
                   heigh="480"
                   width="1200"
                   value="cover"
+                  url={TournamentStore?.cover}
                 ></UploadImage>
                 <p>Recommended size: 1200x300</p>
                 <div className={s.message_error}>{messageErrorCover}</div>
@@ -277,6 +404,7 @@ export default observer(function CreateTournament() {
                   heigh="200"
                   width="300"
                   value="thumbnail"
+                  url={TournamentStore?.thumbnail}
                 ></UploadImage>
                 <p>Recommended size: 300x200</p>
                 <div className={s.message_error}>{messageErrorThumbnail}</div>
@@ -313,19 +441,17 @@ export default observer(function CreateTournament() {
                   <Button onClick={() => openModal("choosegame")}>
                     Choose game
                   </Button>
-                  <div className={s.message_error}>
-                    {messageErrorChoosegame}
-                  </div>
                 </div>
+                <div className={s.message_error}>{messageErrorChoosegame}</div>
               </Col>
               <Col span={4}>
                 <p className="ml-[10px]">Bracket type</p>
               </Col>
               <Col span={8}>
                 <Radio.Group
+                  value={TournamentStore.bracket_type}
                   className={s.bracketType}
                   onChange={(e) => {
-                    console.log(e.target.value);
                     TournamentStore.bracket_type = e.target.value;
                     setMessageErrorBracketType("");
                   }}
@@ -361,25 +487,6 @@ export default observer(function CreateTournament() {
                 <p>Teamsize</p>
               </Col>
               <Col span={4}>
-                {/* <Input
-                  style={
-                    messageErrorTeamSize !== ""
-                      ? { borderColor: "#cb3636" }
-                      : {}
-                  }
-                  placeholder="Team size"
-                  ref={inputRef}
-                  type="number"
-                  onChange={(value: any) => {
-                    TournamentStore.team_size = Number.parseInt(
-                      value.target.value
-                    );
-                    if (TournamentStore.team_size) setMessageErrorTeamSize("");
-                  }}
-                  onBlur={() => handleBlur("teamsize")}
-                  min={1}
-                  required
-                /> */}
                 <InputNumber
                   style={
                     messageErrorTeamSize !== ""
@@ -394,6 +501,7 @@ export default observer(function CreateTournament() {
                   }}
                   onBlur={() => handleBlur("teamsize")}
                   min={1}
+                  value={TournamentStore.team_size}
                 />
                 <div className={s.message_error}>{messageErrorTeamSize}</div>
               </Col>
@@ -403,10 +511,21 @@ export default observer(function CreateTournament() {
               </Col>
               <Col span={8}>
                 <Select
+                  value={TournamentStore.participants}
                   defaultValue={TournamentStore.participants}
                   style={{ width: 150 }}
                   onChange={(value) => {
                     TournamentStore.participants = value;
+                    if (
+                      TournamentStore.participants / 2 <
+                      TournamentStore.referees.length
+                    ) {
+                      setMessageErrorReferee(
+                        `You can choose max ${
+                          TournamentStore.participants / 2
+                        } participant(s)`
+                      );
+                    }
                   }}
                 >
                   {Participants.map((item, index) => {
@@ -431,6 +550,7 @@ export default observer(function CreateTournament() {
                   onChange={(value) => {
                     TournamentStore.turns = value;
                   }}
+                  value={TournamentStore.turns}
                 >
                   {Rounds.map((item, index) => {
                     return (
@@ -456,6 +576,7 @@ export default observer(function CreateTournament() {
               </Col>
               <Col span={8}>
                 <Select
+                  value={TournamentStore.regions[0]}
                   defaultValue={"Global"}
                   style={{ width: 200 }}
                   onChange={(value) => {
@@ -508,7 +629,7 @@ export default observer(function CreateTournament() {
                   {dataReferees?.map((item: any, index: number) => {
                     return (
                       <div
-                        className="flex flex-col items-center mr-15px ml-[10px]"
+                        className="flex flex-col items-center mr-15px"
                         key={index}
                       >
                         {item.user?.profile?.avatar ? (
@@ -532,15 +653,24 @@ export default observer(function CreateTournament() {
                       </div>
                     );
                   })}
-                  <Button onClick={() => openModal("referee")}>+ Add</Button>
-                  <div className={s.message_error}>{messageErrorReferee}</div>
+                  <Button
+                    className="ml-[10px]"
+                    onClick={() => openModal("referee")}
+                  >
+                    + Add
+                  </Button>
+                </div>
+                <div className={`${s.message_error} ml-[10px]`}>
+                  {messageErrorReferee}
                 </div>
               </Col>
             </Row>
           </div>
           <div>
-            <p className="text-30px mt-20px">Prizing</p>
-            <Prizing checkPoolSize={checkPoolSize} />
+            <p id="prizing" className="text-30px mt-20px">
+              Prizing
+            </p>
+            <Prizing checkPoolSize={checkPoolSize}></Prizing>
           </div>
 
           <div>
@@ -581,23 +711,37 @@ export default observer(function CreateTournament() {
               </Col>
               <Col span={2}>
                 <Switch
-                  // defaultChecked={props.item.showName}
+                  checked={checkPassword}
                   onChange={(checked) => {
                     setCheckPassword(checked);
+                    if (!checked) {
+                      TournamentStore.password = "";
+                      setMessageErrorPassword("");
+                    }
                   }}
                   title="password"
                 />
               </Col>
               <Col span={18}>
                 <Input
+                  value={TournamentStore.password}
                   type="password"
                   placeholder="Password"
                   onChange={(e) => {
                     TournamentStore.password = e.target.value;
-                    setMessageErrorPassword("");
+                    if (
+                      TournamentStore.password.length < 4 ||
+                      TournamentStore.password.length > 32
+                    )
+                      setMessageErrorPassword(
+                        "Invalid password: length 4-32 characters"
+                      );
+                    else setMessageErrorPassword("");
                   }}
                   ref={inputRefPassword}
                   disabled={!checkPassword}
+                  max={32}
+                  min={4}
                 />
                 <div className={s.message_error}>{messageErrorPassword}</div>
               </Col>
@@ -612,6 +756,7 @@ export default observer(function CreateTournament() {
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
         <RefereeModal handCallbackReferee={handCallbackReferee} />
         <TimelineModal />
+        <DepositModal />
       </div>
 
       {/* <Footer /> */}

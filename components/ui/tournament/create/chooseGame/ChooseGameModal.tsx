@@ -24,6 +24,9 @@ export default observer(function ChooseGameModal(props: Props) {
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.chooseGameModalVisible = v);
 
+  // const value = TournamentStore.game_uid,
+  //   setValue = (v: string) => (TournamentStore.game_uid = v);
+
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -39,14 +42,17 @@ export default observer(function ChooseGameModal(props: Props) {
   };
 
   const handleOk = () => {
-    console.log(value)
+    console.log(value);
     setIsModalVisible(false);
     if (getDataChooseGame && value != null)
       props.handCallbackChooseGame(getDataChooseGame[value]);
   };
 
   const delayedSearch = useCallback(
-    debounce((value: string) => setName(value), 600),
+    debounce((value: string) => {
+      setName(value);
+      setValue(null);
+    }, 600),
     []
   );
 

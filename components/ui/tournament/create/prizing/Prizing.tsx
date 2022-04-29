@@ -298,7 +298,6 @@ export default observer(function Prizing(props: Props) {
       ...row,
     });
     const total = calculateTotalAllocation(newData);
-    if (total > 100) message.error("Total Allocation must be equal to 100%");
     setState({ dataSource: newData });
   };
 
@@ -339,6 +338,10 @@ export default observer(function Prizing(props: Props) {
   useEffect(() => {
     TournamentStore.currency_uid = chain;
   }, [chain]);
+
+  useEffect(() => {
+    if (TournamentStore.pool_size) setPoolSize(TournamentStore.pool_size);
+  });
 
   useEffect(() => {
     if (!props.checkPoolSize && poolSize == 0) {
@@ -409,6 +412,11 @@ export default observer(function Prizing(props: Props) {
               onChange={onChange}
               ref={inputRef}
               onBlur={() => handleBlur()}
+              value={
+                TournamentStore.pool_size
+                  ? TournamentStore.pool_size
+                  : undefined
+              }
             />
           </Col>
           <Col span={3}>

@@ -65,7 +65,7 @@ export default observer(function RefereeModal(props: Props) {
 
       !checkedParticipants
         ? setMessageError(
-            `You can select max ${
+            `You can choose max ${
               TournamentStore.participants / 2
             } participant(s) `
           )
