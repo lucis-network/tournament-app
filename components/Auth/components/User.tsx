@@ -48,7 +48,7 @@ export default observer(function User(props: Props) {
     const authService = new AuthService();
     authService.logout();
 
-    if (facebook_id != '' && facebook_id != undefined) {
+    if (facebook_id != "" && facebook_id != undefined) {
       (window as any).FB?.logout();
     }
 
@@ -125,10 +125,10 @@ export default observer(function User(props: Props) {
 
   return (
     <div className={s.container}>
-      <Button onClick={showModal} className={s.chainBtn}>
+      {/* <Button onClick={showModal} className={s.chainBtn}>
         <img src={chainNetIcoUrl} alt="" />
         {getAppNetworkFriendlyName(connected_network)}
-      </Button>
+      </Button> */}
 
       <Popover
         placement="bottomRight"
@@ -138,8 +138,9 @@ export default observer(function User(props: Props) {
         visible={isVisible}
         onVisibleChange={handleVisibleChange}
       >
-        <div className={s.avatar} style={{ marginLeft: 20 }}>
+        <div className={s.avatar}>
           <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
+          {/* <span>{name}</span> */}
         </div>
       </Popover>
       <ConnectWalletModal />

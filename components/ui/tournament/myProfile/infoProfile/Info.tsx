@@ -1,17 +1,18 @@
 import s from "./Info.module.sass";
-import AuthStore from "../../../../Auth/AuthStore"
+import AuthStore from "../../../../Auth/AuthStore";
 
 type Props = {
-  click: () => void
-}
+  click: () => void;
+};
 export default function InfoMyProfile(props: Props) {
-
-  const { id } = AuthStore    
+  const { id } = AuthStore;
 
   return (
     <div className={s.container}>
-      <div className={s.banner} style={{backgroundImage: 'url(/profile/banner.png)'}}>
-      </div>
+      <div
+        className={s.banner}
+        style={{ backgroundImage: "url(/profile/banner.png)" }}
+      ></div>
       <div className={`${s.user_information} lucis-container`}>
         <div className={s.user_information_left}>
           <div className={s.avt}>

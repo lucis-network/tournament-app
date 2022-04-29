@@ -20,7 +20,7 @@ export default observer(function Header(props: Props) {
   //   cachedUser = getLocalAuthInfo();
   //   console.log("Khong vao day a");
   //   if (cachedUser?.google_id != '') setIsLogin(true);
-    
+
   // }, [cachedUser]);
 
   return (
@@ -52,7 +52,7 @@ export default observer(function Header(props: Props) {
                 </a>
               </li> */}
 
-              <li className={s.groundSubMenu}>
+              {/* <li className={s.groundSubMenu}>
                 <a
                   href="https://launchpad-lucis.gitbook.io/lucis-lauchpad-docs/"
                   // onClick={(e) => e.preventDefault()}
@@ -62,11 +62,11 @@ export default observer(function Header(props: Props) {
                 >
                   Guide
                 </a>
-                {/* <ul className={s.subMenu}>
+                <ul className={s.subMenu}>
                   <li>For Game Publisher</li>
                   <li>For Personal Investor</li>
-                </ul> */}
-              </li>
+                </ul>
+              </li> */}
 
               {/* <li style={{ cursor: "pointer" }}>
                 <Notification />

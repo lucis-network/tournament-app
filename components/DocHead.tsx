@@ -5,6 +5,7 @@ type Props = {
 };
 
 export default function DocHead(props: Props) {
+  console.log(props.title);
   const titleSuffix =
     props.title ??
     "Buy NFT boxes easily from INO campaigns or create your INO campaign with us";

@@ -59,6 +59,7 @@ class TournamentStore {
   private _refereeModalVisible: boolean = false;
   private _prizingModalVisible: boolean = false;
   private _draftPopupVisible: boolean = false;
+  private _timelineModalVisible: boolean = false;
 
   private _id?: number | undefined;
 
@@ -203,6 +204,15 @@ class TournamentStore {
   public set prizingModalVisible(value: boolean) {
     this._prizingModalVisible = value;
   }
+
+  public get timelineModalVisible(): boolean {
+    return this._timelineModalVisible;
+  }
+  public set timelineModalVisible(value: boolean) {
+    this._timelineModalVisible = value;
+  }
+
+  /* ------------ INFO ------------ */
 
   public get id(): number | undefined {
     return this._id;

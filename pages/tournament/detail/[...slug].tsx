@@ -9,7 +9,7 @@ import { Button, Col, Row, Tabs } from "antd";
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
 
-const TournamentDetail = () => {  
+const TournamentDetail = () => {
   return (
     <div className={s.wrapper}>
       <div className={s.banner}>
@@ -61,7 +61,6 @@ const TournamentDetail = () => {
         </Col>
         <Col span={2}>content right</Col>
       </Row>
-
 
       {/* tabs */}
       <div className={`lucis-container ${s.container_Tabs}`}>
