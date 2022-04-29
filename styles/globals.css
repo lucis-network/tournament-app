@@ -454,7 +454,7 @@ body .backdrop-blur-sm {
 .ant-modal-close {
 }
 
-.ant-radio-group{
+.ant-radio-group {
   display: flex !important;
   font-size: 14px !important;
   color: white !important;
@@ -730,8 +730,7 @@ body .ant-select-item {
 }
 
 body .ant-select-item:not(:last-child) {
-  border-bottom: 1px solid #DCDCDC;
-
+  border-bottom: 1px solid #dcdcdc;
 }
 
 body .ant-select-item {

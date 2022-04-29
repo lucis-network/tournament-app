@@ -21,69 +21,6 @@ type Props = {
   handleSelectDate: any;
 };
 
-const rounds: RoundNewProps[] = [
-  {
-    title: (
-      <>
-        <p className="m-0">Round 1</p>
-        <DatePicker showTime />
-      </>
-    ),
-    seeds: [
-      {
-        teams: [
-          { name: "Team 1", score: "10", winner: true },
-          { name: "Team 2", score: "10", winner: false },
-        ],
-      },
-      {
-        teams: [{ name: "Team 3" }, { name: "Team 4" }],
-      },
-      {
-        teams: [{ name: "Team 5" }, { name: "Team 6" }],
-      },
-      {
-        teams: [{ name: "Team C" }, { name: "Team D" }],
-      },
-    ],
-  },
-  {
-    title: (
-      <>
-        <p className="m-0">Round 2</p>
-        <DatePicker showTime />
-      </>
-    ),
-    seeds: [
-      {
-        // id: 5,
-        // date: new Date().toDateString(),
-        teams: [{ name: "Team A" }, { name: "Team C" }],
-      },
-      {
-        // id: 6,
-        // date: new Date().toDateString(),
-        teams: [{ name: "Team A" }, { name: "Team C" }],
-      },
-    ],
-  },
-  {
-    title: (
-      <>
-        <p className="m-0">Final</p>
-        <DatePicker showTime />
-      </>
-    ),
-    seeds: [
-      {
-        // id: 5,
-        // date: new Date().toDateString(),
-        teams: [{ name: null }, { name: null }],
-      },
-    ],
-  },
-];
-
 const createSeed = () => {
   return {
     teams: [{ name: null }, { name: null }],
@@ -137,7 +74,7 @@ const CustomSeed = ({
 
   return (
     <Seed
-      className={"seedItem"}
+      // className={"seedItem"}
       mobileBreakpoint={breakpoint}
       style={{ fontSize: 16 }}
     >

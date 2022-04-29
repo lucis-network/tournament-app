@@ -8,6 +8,8 @@ import {
   RenderSeedProps,
 } from "react-brackets";
 
+import s from "../index.module.sass";
+
 interface LosingProps {
   rounds: RoundProps[];
 }
@@ -15,20 +17,22 @@ interface LosingProps {
 const WiningBracket: React.FC<LosingProps> = ({ rounds: wining }) => {
   const RenderSeed = ({ seed, breakpoint }: RenderSeedProps) => {
     return (
-      <Seed
-        style={{
-          opacity: seed.bye_match ? 0.5 : 1,
-        }}
-        className="custom-border"
-        mobileBreakpoint={breakpoint}
-      >
-        <SeedItem style={{ width: "100%" }}>
-          <div>
-            <SeedTeam>{seed.teams?.[0]?.name || "-----------"}</SeedTeam>
-            <SeedTeam>{seed.teams?.[1]?.name || "-----------"}</SeedTeam>
-          </div>
-        </SeedItem>
-      </Seed>
+      <>
+        <Seed
+          style={{
+            opacity: seed.bye_match ? 0.5 : 1,
+          }}
+          className={s.seedItem}
+          mobileBreakpoint={breakpoint}
+        >
+          <SeedItem style={{ width: "100%" }}>
+            <div>
+              <SeedTeam>{seed.teams?.[0]?.name || "-----------"}</SeedTeam>
+              <SeedTeam>{seed.teams?.[1]?.name || "-----------"}</SeedTeam>
+            </div>
+          </SeedItem>
+        </Seed>
+      </>
     );
   };
 

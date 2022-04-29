@@ -449,7 +449,7 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
               <Col span={8}>
                 <Radio.Group
-                  value={TournamentStore.bracket_type ?? "SINGLE"}
+                  value={TournamentStore.bracket_type}
                   className={s.bracketType}
                   onChange={(e) => {
                     TournamentStore.bracket_type = e.target.value;
