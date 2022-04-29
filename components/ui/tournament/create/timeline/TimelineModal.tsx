@@ -6,6 +6,7 @@ import timeMoment from "moment-timezone";
 
 import TournamentStore from "src/store/TournamentStore";
 import SingleBracket from "components/ui/common/bracket/single-bracket/SingleBracket";
+import DoubleBracket from "components/ui/common/bracket/double-bracket/DoubleBracket";
 
 const { RangePicker } = DatePicker;
 
@@ -132,7 +133,9 @@ const TimelineModal = ({}: Props) => {
       )}
       {/* {selectTimeRoundsSingle} */}
 
-      {calculateWinRoundsDouble && (
+      {TournamentStore.bracket_type === "DOUBLE" && <DoubleBracket />}
+
+      {/* {calculateWinRoundsDouble && (
         <div>
           <h1 className="m-0 text-white text-[32px]">Win</h1>
           {selectWinRoundsDouble}
@@ -144,7 +147,7 @@ const TimelineModal = ({}: Props) => {
           <h1 className="m-0 text-white text-[32px]">Lose</h1>
           {selectLoseRoundsDouble}
         </div>
-      )}
+      )} */}
     </Modal>
   );
 };

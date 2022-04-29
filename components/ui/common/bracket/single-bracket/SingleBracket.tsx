@@ -132,10 +132,12 @@ const CustomSeed = ({
   // breakpoint passed to Bracket component
   // to check if mobile view is triggered or not
   // mobileBreakpoint is required to be passed down to a seed
+  // console.log("seedIndex: ", seedIndex);
+  // console.log(seed);
 
   return (
     <Seed
-      className={s.seedItem}
+      className={"seedItem"}
       mobileBreakpoint={breakpoint}
       style={{ fontSize: 16 }}
     >
@@ -151,7 +153,7 @@ const CustomSeed = ({
                 color: "black",
               }}
             >
-              {seed.teams[0]?.name || "Waiting"}
+              {seed.teams[0]?.name || `Team ---`}
             </div>
             <div
               style={{
@@ -161,7 +163,7 @@ const CustomSeed = ({
                 width: "50px",
               }}
             >
-              {seed.teams[0]?.score || "-"}
+              {seed.teams[0]?.score || "--"}
             </div>
           </SeedTeam>
           <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
@@ -174,7 +176,7 @@ const CustomSeed = ({
                 color: "white",
               }}
             >
-              {seed.teams[1]?.name || "Waiting"}
+              {seed.teams[1]?.name || `Team ---`}
             </div>
             <div
               style={{
@@ -184,7 +186,7 @@ const CustomSeed = ({
                 width: "50px",
               }}
             >
-              {seed.teams[1]?.score || "-"}
+              {seed.teams[1]?.score || "--"}
             </div>
           </SeedTeam>
         </div>
