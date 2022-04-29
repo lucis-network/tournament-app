@@ -6,6 +6,7 @@ import Text from 'antd/lib/typography/Text';
 import TournamentStore from "../../../../../src/store/TournamentStore"
 import { myBucket, S3_BUCKET } from 'components/ui/common/upload/UploadImage';
 import { ISponsorSlot, SponsorSlot, SponsorTierStore } from "./SponsorStore";
+import s from "./index.module.sass";
 
 type SponsorDetailProps = {
   isEdit: boolean;
@@ -104,6 +105,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
           home_page: slot?.home_page || '',
           ads_video: slot?.ads_link || '',
         }}
+        className={s.sponsorDetailForm}
       >
         <Row align="middle" className="mb-4">
           <Col xs={{ span: 24 }} md={{ span: 8 }}>
@@ -138,7 +140,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 prefix="$"
                 style={{ width: "100%" }}
                 min="0"
-                placeholder={`Min 5,000 ${TournamentStore.currency_uid}`}
+                placeholder={`Min ${min_deposit} ${TournamentStore.currency_uid}`}
               />
             </Form.Item>
           </Col>
@@ -152,7 +154,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
               <Col span={6} className="pr-2">
                 <CircleImage src={logoUrl || '/assets/avatar.jpg'} />
               </Col>
-              <Col span={18}>
+              <Col span={18} className="pl-2">
                 <input
                   style={{ display: 'none' }}
                   type="file"
@@ -160,7 +162,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                   onChange={handleFileInput}
                   accept="image/png, image/jpeg, image/gif"
                 />
-                <Button onClick={() => inputFileRef.current?.click()}>Upload logo</Button>
+                <Button onClick={() => inputFileRef.current?.click()} className="mb-2">Upload logo</Button>
                 <Text style={{ color: '#ffffff', fontSize: 12, display: 'block' }}>Recommended size: 200x200px</Text>
               </Col>
             </Row>
