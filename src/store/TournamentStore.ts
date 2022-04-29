@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { isClientDevMode } from "utils/Env";
 
 export type CreateTournament = {
   name?: string;
@@ -27,24 +28,36 @@ export type PrizeAllocation = {
   qty?: number;
   percent?: number;
 };
+
 export type SponsorTierType = {
-  uid?: string;
+  tierId?: string;
   name?: string;
   max: number;
-  min?: number;
+  min: number;
   show_logo?: boolean;
   show_name?: boolean;
   cover?: string;
   show_ads?: boolean;
-  slots?: SponsorSlotType[];
+  sponsor_transactions?: SponsorTransactions;
 };
 
-export type SponsorSlotType = null | {
-  name?: string;
-  logo?: string;
-  sponsor_amount?: number;
-  home_page?: string;
-  ads_video?: string;
+export type SponsorTransactions = {
+  createMany?: CreateMany;
+}
+
+export type CreateMany = {
+  data: SponsorSlotType[],
+  skipDuplicates?: boolean
+}
+
+export type SponsorSlotType = {
+  logo?: string,
+  name: string,
+  home_page?: string,
+  ads_link?: string,
+  tx_hash?: string,
+  order?: number,
+  amount: number,
 };
 
 class TournamentStore {
@@ -285,7 +298,53 @@ class TournamentStore {
   public set sponsor_slots(value: SponsorTierType[]) {
     this._sponsor_slots = value;
   }
+
+
+  
+}
+
+type Slot = any;
+type Tier = {
+  config: any
+  slots: Slot[]
+};
+
+class TournamentSponsorStore {
+  rootStore
+
+  tiers: Tier[] = []
+
+  constructor(rootStore: any) {
+      makeAutoObservable(this, { rootStore: false })
+      this.rootStore = rootStore
+  }
+  
+}
+
+class TierStore { 
+  config: any
+  slots: Slot[] = []
+
+  updateTierMaxslot(n: number) {
+    this.config = this.setConfig({
+      ...this.config,
+      max: n 
+    });
+  }
+  
+  setConfig(config: any) {
+    this.config = config
+  }
+
+  updateSlot(slot: Slot) {
+
+  }
 }
 
 const s = new TournamentStore();
 export default s;
+
+if (isClientDevMode) {
+  // @ts-ignore  
+  window.tmp__TournamentStore = s;
+}

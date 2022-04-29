@@ -6,15 +6,18 @@ import s from "./index.module.sass";
 import CircleImage from "components/ui/common/images/CircleImage";
 import SponsorDetail from "./SponsorDetail";
 
-type SponsorItemProps = {
+type SponsorSlotProps = {
   slot?: SponsorSlotType;
   showName?: boolean;
   tier?: string;
+  onUpdate: (slotData: SponsorSlotType, index: number) => void;
+  index: number;
+  minAmount?: number;
 }
 
 export default observer(
-  function SponsorSlot(props: SponsorItemProps) {
-    const { slot, showName, tier } = props
+  function SponsorSlot(props: SponsorSlotProps) {
+    const { slot, showName, tier, onUpdate, index, minAmount } = props
     const [isEdit, setIsEdit] = useState(false)
 
     return (
@@ -28,15 +31,23 @@ export default observer(
             <Button
               className={s.sponsorEdit}
               onClick={() => setIsEdit(true)}
-            >Edit</Button>
+            >
+              Edit
+            </Button>
           </div>
-          {showName && <div className={s.sponsorName}>Sponsor name</div>}
+          {showName && <div className={s.sponsorName}>{slot?.name || 'Sponsor name'}</div>}
         </div>
-        <SponsorDetail
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
-          tier={tier}
-        />
+        {isEdit && (
+          <SponsorDetail
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+            tier={tier}
+            slot={slot}
+            onUpdate={onUpdate}
+            index={index}
+            minAmount={minAmount}
+          />
+        )}
       </>
     )
   }
