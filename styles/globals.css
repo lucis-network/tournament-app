@@ -442,6 +442,18 @@ body .ant-menu {
     padding: 0 5rem;
   }
 }
+@media (min-width: 1600px) {
+  .lucis-container {
+    max-width: 1600px;
+    padding: 0 5rem;
+  }
+}
+@media (min-width: 1920px) {
+  .lucis-container {
+    max-width: 1920px;
+    padding: 0 5rem;
+  }
+}
 
 /*// tmp fix tailwind bug */
 body .backdrop-blur-sm {
