@@ -3,8 +3,7 @@ import { observer } from "mobx-react-lite";
 import { Button, Col, Collapse, Input, Row, Space, Switch, Modal } from "antd";
 import { uniqueId } from "lodash"
 import s from "./index.module.sass";
-import TournamentStore from "../../../../../src/store/TournamentStore"
-import { SponsorStore, SponsorTierStore, ISponsorTierStore } from "./SponsorStore";
+import { SponsorStore, SponsorTierStore, SponsorSlot } from "./SponsorStore";
 import { isClientDevMode } from "../../../../../utils/Env";
 import SponsorTier from "./SponsorTier";
 
@@ -13,50 +12,39 @@ const { Panel } = Collapse;
 type Props = {};
 
 const tiersDataInit: SponsorTierStore[] = [
-  {
-    tier_id: uniqueId('tier_'),
-    name: 'Diamond',
+  new SponsorTierStore(uniqueId('tier_'), "Diamond", {
     min_deposit: 1000,
     max_slot: 1,
     show_ads: true,
     show_logo: true,
     show_name: true,
-
-    slots: [],
-  } as SponsorTierStore,
-  {
-    tier_id: uniqueId('tier_'),
-    name: 'Gold',
+    slots: [new SponsorSlot()],
+  }),
+  new SponsorTierStore(uniqueId('tier_'), "Gold", {
     min_deposit: 700,
     max_slot: 2,
     show_logo: true,
     show_name: false,
     show_ads: false,
-
-    slots: [],
-  } as SponsorTierStore,
-  {
-    tier_id: uniqueId('tier_'),
-    name: 'Silver',
+    slots: [new SponsorSlot(), new SponsorSlot()],
+  }),
+  new SponsorTierStore(uniqueId('tier_'), "Silver", {
     min_deposit: 500,
     max_slot: 3,
     show_logo: true,
     show_name: false,
     show_ads: false,
 
-    slots: [],
-  } as SponsorTierStore,
-  {
-    tier_id: uniqueId('tier_'),
-    name: 'Enthusiast',
+    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
+  }),
+  new SponsorTierStore(uniqueId('tier_'), "Enthusiast", {
     min_deposit: 300,
     max_slot: 5,
     show_logo: true,
     show_name: false,
     show_ads: false,
-
-    slots: [],
-  } as SponsorTierStore,
+    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
+  }),
 ];
 
 const sponsorStore =  new SponsorStore();

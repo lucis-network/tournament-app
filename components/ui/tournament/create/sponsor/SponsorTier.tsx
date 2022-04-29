@@ -6,68 +6,78 @@ import s from "./index.module.sass";
 import SponsorSlot from "./SponsorSlot";
 import TournamentStore from "../../../../../src/store/TournamentStore"
 import SponsorTierEdit from "./SponsorTierEdit";
+import { SponsorTierStore } from "./SponsorStore";
 
 type SponsorTierProps = {
-  data: SponsorTierType;
-  saveTier: (newTierData: SponsorTierType) => void;
+  data: SponsorTierStore;
+  // saveTier: (newTierData: SponsorTierType) => void;
 }
 
 export default observer(function SponsorTier(props: SponsorTierProps) {
-  const { data, saveTier } = props
+  const { data: tierStore } = props
   const [showEdit, setShowEdit] = useState(false);
-  const [slotsData, setSlotsData] = useState([] as SponsorSlotType[])
-  const { currency_uid, sponsor_slots } = TournamentStore
+  // const [slotsData, setSlotsData] = useState([] as SponsorSlotType[])
+  const { currency_uid } = TournamentStore
 
-  const initSlots: SponsorSlotType[] = [];
-  for (let i = 1; i <= data.max; i++) {
-    initSlots.push(
-      {
-        logo: '',
-        name: '',
-        home_page: '',
-        ads_link: '',
-        amount: data.min,
-      }
-    )
-  }
+  // const initSlots: SponsorSlotType[] = [];
+  // for (let i = 1; i <= data.max; i++) {
+  //   initSlots.push(
+  //     {
+  //       logo: '',
+  //       name: '',
+  //       home_page: '',
+  //       ads_link: '',
+  //       amount: data.min,
+  //     }
+  //   )
+  // }
+
+  const {
+    tier_id,
+    name,
+    show_logo,
+    show_name,
+    show_ads,
+    max_slot,
+    min_deposit,
+    slots,
+  } = tierStore;
 
   const changeShowEdit = () => {
     setShowEdit(!showEdit);
   };
 
-  const onSponsorUpdate = (data: SponsorSlotType, index: number) => {
-    console.log('onSponsorUpdate: ', data, index)
-  }
+  // const onSponsorUpdate = (data: SponsorSlotType, index: number) => {
+  //   console.log('onSponsorUpdate: ', data, index)
+  // }
 
-  useEffect(() => {
-    setSlotsData(initSlots)
-  }, [])
+  // useEffect(() => {
+  //   setSlotsData(initSlots)
+  // }, [])
 
-  useEffect(() => {
-    console.log('sponsor_slots: ', sponsor_slots)
-    const a = sponsor_slots.filter(item => item.name === data.name)
-    // setSlotsData(initSlots)
-  }, [sponsor_slots])
+  // useEffect(() => {
+  //   console.log('sponsor_slots: ', sponsor_slots)
+  //   const a = sponsor_slots.filter(item => item.name === data.name)
+  //   // setSlotsData(initSlots)
+  // }, [sponsor_slots])
   
   return (
     <div className={s.tierRow}>
       <Row align="middle">
         <Col xs={{ span: 8, order: 1 }} lg={{ span: 3 }}>
-          <div className={s.tierTitle}>{data.name}</div>
-          <div>(Min {`${data.min} ${currency_uid}`})</div>
+          <div className={s.tierTitle}>{name}</div>
+          <div>(Min {`${min_deposit} ${currency_uid}`})</div>
         </Col>
 
         <Col xs={{ span: 24, order: 3 }} lg={{ span: 13, order: 2 }}>
           <div className={s.slotWrap}>
-            {slotsData.length > 0 && slotsData.map((slot, index) => (
+            {slots.length > 0 && slots.map((slot, index) => (
               <SponsorSlot
                 key={index}
-                showName={data.show_name}
-                tier={data.name}
-                onUpdate={onSponsorUpdate}
                 slot={slot}
-                index={index}
-                minAmount={data.min}
+                show_name={show_name}
+                tier_name={name}
+                min_deposit={min_deposit}
               />
             ))}
           </div>
@@ -81,14 +91,14 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
           </Button>
         </Col>
       </Row>
+
       {showEdit && (
         <Row className={s.collapse}>
           <Col lg={{ span: 18, offset: 3 }}>
             <SponsorTierEdit
-              data={data}
-              saveTier={saveTier}
-              currencyUid={TournamentStore.currency_uid}
-            ></SponsorTierEdit>
+              data={tierStore}
+              currencyUid={currency_uid}
+            />
           </Col>
         </Row>
       )}

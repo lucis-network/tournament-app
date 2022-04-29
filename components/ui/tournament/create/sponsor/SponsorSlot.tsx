@@ -5,19 +5,23 @@ import { Button } from "antd";
 import s from "./index.module.sass";
 import CircleImage from "components/ui/common/images/CircleImage";
 import SponsorDetail from "./SponsorDetail";
+import { ISponsorSlot } from "./SponsorStore";
 
 type SponsorSlotProps = {
-  slot?: SponsorSlotType;
-  showName?: boolean;
-  tier?: string;
-  onUpdate: (slotData: SponsorSlotType, index: number) => void;
-  index: number;
-  minAmount?: number;
+  slot: ISponsorSlot;
+  show_name?: boolean;
+  tier_name?: string;
+  min_deposit?: number;
 }
 
 export default observer(
   function SponsorSlot(props: SponsorSlotProps) {
-    const { slot, showName, tier, onUpdate, index, minAmount } = props
+    const {
+      slot,
+      show_name,
+      tier_name,
+      min_deposit
+    } = props
     const [isEdit, setIsEdit] = useState(false)
 
     return (
@@ -35,19 +39,20 @@ export default observer(
               Edit
             </Button>
           </div>
-          {showName && <div className={s.sponsorName}>{slot?.name || 'Sponsor name'}</div>}
+          {show_name && <div className={s.sponsorName}>{slot.name ?? 'Sponsor name'}</div>}
         </div>
-        {isEdit && (
-          <SponsorDetail
-            isEdit={isEdit}
-            setIsEdit={setIsEdit}
-            tier={tier}
-            slot={slot}
-            onUpdate={onUpdate}
-            index={index}
-            minAmount={minAmount}
-          />
-        )}
+
+        {/*{isEdit && (*/}
+        {/*  <SponsorDetail*/}
+        {/*    isEdit={isEdit}*/}
+        {/*    setIsEdit={setIsEdit}*/}
+        {/*    tier={tier}*/}
+        {/*    slot={slot}*/}
+        {/*    onUpdate={onUpdate}*/}
+        {/*    index={index}*/}
+        {/*    minAmount={minAmount}*/}
+        {/*  />*/}
+        {/*)}*/}
       </>
     )
   }

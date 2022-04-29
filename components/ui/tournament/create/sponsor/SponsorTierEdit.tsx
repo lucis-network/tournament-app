@@ -4,16 +4,16 @@ import { Col, Input, Row, Select, Switch } from "antd";
 import Text from "antd/lib/typography/Text";
 import { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
+import { ISponsorTierStore, SponsorTierStore, SponsorSlot } from "./SponsorStore";
 const { Option } = Select
 
 type SponsorTierEditProps = {
-  data: SponsorTierType;
-  saveTier: (newTierData: SponsorTierType) => void;
+  data: SponsorTierStore;
   currencyUid?: string;
 };
 
 export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
-  const { data, saveTier, currencyUid } = props;
+  const { data, currencyUid } = props;
 
   const maxSponsorOptions = [];
   for (let i = 1; i <= 20; i++) {
@@ -35,11 +35,37 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
   };
 
   const handleMaxSponsorChange = (value: string) => {
-    console.log('handleMaxSponsorChange: ', value)
+    // data.max_slot = parseInt(value);
+    const new_slots = [...data.slots];
+    const max_slot = parseInt(value);
+
+    /**
+     * render slots base on max slot
+     *  - case 1: max slot decrease => trim the end of slots array
+     *  - case 2: max slot increase => push to the end of slots array
+     */
+    if (max_slot < new_slots.length) {
+      for (let i = 0, c = new_slots.length - max_slot; i < c; i++) {
+        new_slots.pop();
+      }
+    } else if (max_slot > new_slots.length) {
+      for (let i = 0, c = max_slot - new_slots.length; i < c; i++) {
+        new_slots.push(new SponsorSlot());
+      }
+    }
+
+    data.setState({
+      max_slot,
+      slots: new_slots,
+    })
   };
   
   const handleMinSponsorAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    console.log('handleMinSponsorAmountChange: ', event.target.value)
+    const value = event.target.value;
+    console.log('{value.handleMinSponsorAmountChange} value: ', value);
+    data.setState({
+      min_deposit: parseInt(value)
+    })
   };
 
   return (
@@ -94,7 +120,7 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
             <label>Max sponpor slot for this tier</label>
           </Col>
           <Col xs={{ span: 12 }} md={{ span: 10 }} lg={{ span: 10 }}>
-            <Select defaultValue={`${data.max}`} style={{ width: '100%' }} onChange={handleMaxSponsorChange}>
+            <Select defaultValue={`${data.max_slot}`} style={{ width: '100%' }} onChange={handleMaxSponsorChange}>
               {maxSponsorOptions}
             </Select>
           </Col>
@@ -107,10 +133,10 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
             <Input
               type="number"
               min={0}
-              defaultValue={data.min}
+              defaultValue={data.min_deposit}
               onChange={handleMinSponsorAmountChange}
               addonAfter={currencyUid}
-              placeholder={`${data.min}`}
+              placeholder={`${data.min_deposit}`}
             />
           </Col>
         </Row>
