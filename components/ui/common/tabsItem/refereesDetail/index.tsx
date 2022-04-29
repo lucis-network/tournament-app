@@ -1,47 +1,63 @@
-import { Button, Table } from "antd";
-import { useCallback, useState } from "react";
+import { Button, message, Table } from "antd";
+import { useReferees } from "hooks/tournament/useTournamentDetail";
+import { useCallback, useEffect, useState } from "react";
 import { AppEmitter } from "services/emitter";
+
 import PopupDonate from "../../popUps/popupDonateDetail";
+import GroupLink from "../../groupLink/index";
 import s from "./Referees.module.sass";
 
 export default function Referees() {
   const [dataReferees, setDataReferees] = useState({});
-  const [isPopUp, setIsPopUp] = useState(false)
+  const [dataTableReferees, setDataTableReferees] = useState<any[]>([]);
+  const [isPopUp, setIsPopUp] = useState(false);
+
+  const { dataRefereesDetail } = useReferees({
+    uid: "cl2ek8le201060jn6tzuoo7nv",
+  });
+
+  useEffect(() => {
+    fetchDataReferees();
+  }, [dataRefereesDetail]);
+
+  const fetchDataReferees = async () => {
+    try {
+      const datas = await dataRefereesDetail;
+      for (let i = 0; i < datas?.getTournamentDetailReferees.length; i++) {
+        const type = datas?.getTournamentDetailReferees[i]?.user?.profile;
+        setDataTableReferees((prev) => [
+          ...prev,
+          {
+            key: type?.user_id,
+            avt: i + 1,
+            name: (
+              <div>
+                <img
+                  className={s.avt}
+                  src={`${
+                    type?.avatar ?? "/assets/MyProfile/defaultAvatar.png"
+                  }`}
+                  alt=""
+                />
+                <span style={{marginLeft: 12}}>{type?.display_name}</span>
+              </div>
+            ),
+            contact: <GroupLink datas={type} />,
+          },
+        ]);
+      }
+    } catch {
+      message.error("Error fetch data");
+    }
+  };
 
   const handleClickShowPopUp = (e: object) => {
     setDataReferees(e);
-    setIsPopUp(true)
+    setIsPopUp(true);
   };
   const click = () => {
-    setIsPopUp(false)
-  }
-
-  const datasReferees = [
-    {
-      avt: "1",
-      key: "4",
-      name: "Viet Nam",
-      contact: "10 Downing Street",
-    },
-    {
-      avt: "2",
-      key: "5",
-      name: "Cai Nit 1",
-      contact: "10 Downing Street",
-    },
-    {
-      avt: "3",
-      key: "6",
-      name: "Cai Nit 2",
-      contact: "10 Downing Street",
-    },
-    {
-      avt: "4",
-      key: "7",
-      name: "Cai Nit 3",
-      contact: "10 Downing Street",
-    },
-  ];
+    setIsPopUp(false);
+  };
 
   const columnsReferees = [
     {
@@ -76,7 +92,7 @@ export default function Referees() {
   return (
     <div>
       <Table
-        dataSource={datasReferees}
+        dataSource={dataTableReferees}
         columns={columnsReferees}
         bordered
         className={s.container_table}
