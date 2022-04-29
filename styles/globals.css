@@ -700,7 +700,7 @@ body .ant-input {
     152.97deg,
     rgba(255, 255, 255, 0.2) 0%,
     rgba(255, 255, 255, 0) 100%
-  );
+  ) !important;
   backdrop-filter: blur(42px);
   transition: 0.3s;
   border: 1px solid #d9d9d933;

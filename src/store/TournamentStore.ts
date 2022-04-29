@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { isClientDevMode } from "utils/Env";
 
 export type CreateTournament = {
   name?: string;
@@ -28,24 +29,33 @@ export type PrizeAllocation = {
   qty?: number;
   percent?: number;
 };
+
 export type SponsorTierType = {
-  uid?: string;
   name?: string;
   max: number;
-  min?: number;
+  min: number;
   show_logo?: boolean;
   show_name?: boolean;
   cover?: string;
   show_ads?: boolean;
-  slots?: SponsorSlotType[];
+  sponsor_transactions?: SponsorTransactions;
 };
 
-export type SponsorSlotType = null | {
-  name?: string;
+export type SponsorTransactions = {
+  createMany?: CreateMany;
+}
+
+export type CreateMany = {
+  data: SponsorSlotType[];
+}
+
+export type SponsorSlotType = {
   logo?: string;
-  sponsor_amount?: number;
+  name: string;
   home_page?: string;
-  ads_video?: string;
+  ads_link?: string;
+  order?: number;
+  amount: number;
 };
 
 const DEFAULT_PARTICIPANTS = 8;
@@ -98,6 +108,7 @@ class TournamentStore {
   private _prize_allocation?: PrizeAllocation[] | undefined;
 
   private _start_at?: Date | undefined;
+
   private _sponsor_slots: SponsorTierType[] | undefined;
   private _rounds?: any[] | undefined;
 
@@ -352,3 +363,8 @@ class TournamentStore {
 
 const s = new TournamentStore();
 export default s;
+
+if (isClientDevMode) {
+  // @ts-ignore  
+  window.tmp__TournamentStore = s;
+}

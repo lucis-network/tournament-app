@@ -40,6 +40,7 @@ import {
 import Router, { useRouter } from "next/router";
 import DepositModal from "components/ui/tournament/create/deposit/DepositModal";
 import { isClientDevMode } from "utils/Env";
+import sponsorStore, { ISponsorTierStore } from "components/ui/tournament/create/sponsor/SponsorStore";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -121,9 +122,41 @@ export default observer(function CreateTournament(props: Props) {
     window.tmp__NextRoute = router;
   }
 
+  const combineSponsorData = () => {
+    const sponsorsStoreData = JSON.parse(JSON.stringify(sponsorStore.tiers));
+    const sponsorsStoreTiersSlots = sponsorsStoreData.map((tier: ISponsorTierStore) => {
+      return tier && tier.slots?.map((slot, index) => ({
+        logo: slot.logo,
+        name: slot.name,
+        home_page: slot.home_page,
+        ads_link: slot.ads_link,
+        order: index,
+        amount: slot.amount,
+      })).filter(slot => slot.name && slot.name !== '');
+    });
+    const sponsorsData = sponsorsStoreData.map((tier: ISponsorTierStore, index: number) => {
+      return {
+        name: tier.name,
+        max: tier.max_slot,
+        min: tier.min_deposit,
+        show_logo: tier.show_logo,
+        show_name: tier.show_name,
+        show_ads: tier.show_ads,
+        sponsor_transactions: {
+          createMany: {
+            data: sponsorsStoreTiersSlots[index]
+          }
+        },
+      };
+    });
+    
+    return sponsorsData;
+  }
+
   const saveDraft = () => {
     let cr = TournamentStore.getCreateTournament();
     cr.rounds = rounds;
+    cr.sponsor_slots = combineSponsorData()
     setLocalCreateTournamentInfo(cr);
   };
 
@@ -229,6 +262,8 @@ export default observer(function CreateTournament(props: Props) {
     cr.rounds = rounds;
     cr.start_at = new Date();
     if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
+    cr.sponsor_slots = combineSponsorData();
+    // console.log('sponsorStore: ', sponsorStore)
 
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);

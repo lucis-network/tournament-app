@@ -1,20 +1,30 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { SponsorSlotType } from 'src/store/TournamentStore';
 import { Button } from "antd";
 import s from "./index.module.sass";
 import CircleImage from "components/ui/common/images/CircleImage";
 import SponsorDetail from "./SponsorDetail";
+import { SponsorSlot, SponsorTierStore } from "./SponsorStore";
 
-type SponsorItemProps = {
-  slot?: SponsorSlotType;
-  showName?: boolean;
-  tier?: string;
+type SponsorSlotProps = {
+  slot: SponsorSlot;
+  show_name?: boolean;
+  tier: SponsorTierStore;
+  min_deposit?: number;
+  show_ads?: boolean;
+  tier_ids: string[];
 }
 
 export default observer(
-  function SponsorSlot(props: SponsorItemProps) {
-    const { slot, showName, tier } = props
+  function SponsorSlot(props: SponsorSlotProps) {
+    const {
+      slot,
+      show_name,
+      tier,
+      min_deposit,
+      show_ads,
+      tier_ids,
+    } = props
     const [isEdit, setIsEdit] = useState(false)
 
     return (
@@ -22,21 +32,30 @@ export default observer(
         <div className={s.sponsorSlot}>
           <div className={s.sponsorLogoWrap}>
             <CircleImage
-              src={"/assets/avatar.jpg"}
+              src={slot.logo ?? "/assets/avatar.jpg"}
               className={s.sponsorLogo}
             />
             <Button
               className={s.sponsorEdit}
               onClick={() => setIsEdit(true)}
-            >Edit</Button>
+            >
+              Edit
+            </Button>
           </div>
-          {showName && <div className={s.sponsorName}>Sponsor name</div>}
+          {show_name && <div className={s.sponsorName}>{slot.name ?? 'Sponsor name'}</div>}
         </div>
-        <SponsorDetail
-          isEdit={isEdit}
-          setIsEdit={setIsEdit}
-          tier={tier}
-        />
+
+        {isEdit && (
+          <SponsorDetail
+            isEdit={isEdit}
+            setIsEdit={setIsEdit}
+            show_ads={show_ads}
+            tier={tier}
+            min_deposit={min_deposit}
+            slot={slot}
+            tier_ids={tier_ids}
+          />
+        )}
       </>
     )
   }
