@@ -1,5 +1,5 @@
 import { ethers } from "ethers";
-import AnimTokenErc20Abi from "./abi/AnimTokenErc20Abi.json";
+import TokenErc20Abi from "./abi/TokenErc20Abi.json";
 import Erc721Abi from "./abi/Erc721Abi.json";
 import { makeError } from "../../utils/Error";
 
@@ -49,7 +49,7 @@ export default class EtherContract {
   private getContractWithSignerErc20(contractAddress: string): ethers.Contract {
     return new ethers.Contract(
       contractAddress,
-      AnimTokenErc20Abi.abi,
+      TokenErc20Abi.abi,
       this.getSigner()
     );
   }

@@ -39,6 +39,7 @@
     "react-google-login": "^5.2.2",
     "react-quill": "^2.0.0-beta.4",
     "web3modal": "^1.9.5"
+    
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.6.2",

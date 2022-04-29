@@ -37,6 +37,7 @@ import {
 } from "hooks/tournament/useCreateTournament";
 import Router, { useRouter } from "next/router";
 import DepositModal from "components/ui/tournament/create/deposit/DepositModal";
+import { isClientDevMode } from "utils/Env";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -113,15 +114,16 @@ export default observer(function CreateTournament(props: Props) {
 
   const router = useRouter();
 
+  if (isClientDevMode) {
+    // @ts-ignore
+    window.tmp__NextRoute = router;
+  }
+
   const saveDraft = () => {
     let cr = TournamentStore.getCreateTournament();
     cr.rounds = rounds;
     setLocalCreateTournamentInfo(cr);
   };
-
-  // useEffect(() => {
-  //   TournamentStore.depositModalVisible = true;
-  // });
 
   useEffect(() => {
     let cr = getLocalCreateTournamentInfo();
@@ -153,27 +155,39 @@ export default observer(function CreateTournament(props: Props) {
 
   const beforeRouteHandler = (url: string) => {
     if (Router.pathname !== url) {
-      Router.events.emit("routeChangeError");
-      const result = window.confirm("Do you want save draft?");
-      if (result) saveDraft();
-      else {
-        TournamentStore.resetStates();
-        clearLocalCreateTournament();
+      if (
+        TournamentStore.name ||
+        TournamentStore.cover ||
+        TournamentStore.thumbnail ||
+        TournamentStore.desc ||
+        TournamentStore.rules ||
+        TournamentStore.bracket_type ||
+        TournamentStore.team_size 
+        // TournamentStore.sponsor_slots
+      ) {
+        const result = window.confirm("Do you want save draft?");
+        if (result) saveDraft();
+        else {
+          TournamentStore.resetStates();
+          clearLocalCreateTournament();
+        }
       }
     }
   };
 
   const handleBeforeUnload = (e: any) => {
     e.preventDefault();
+    //TournamentStore.resetStates();
+    clearLocalCreateTournament();
     return false;
   };
 
   useEffect(() => {
     router.events.on("routeChangeStart", beforeRouteHandler);
-    //window.onbeforeunload = handleBeforeUnload;
+    window.onbeforeunload = handleBeforeUnload;
     return () => {
       router.events.off("routeChangeStart", beforeRouteHandler);
-      //window.onbeforeunload = () => true;
+      window.onbeforeunload = () => {};
     };
   }, [router.asPath === "/tournament/create"]);
 
@@ -215,15 +229,23 @@ export default observer(function CreateTournament(props: Props) {
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);
 
+    router.events.off("routeChangeStart", beforeRouteHandler);
+    // router.events.off("routeChangeStart", () => {});
+    // router.events.off("routeChangeStart", () => {
+    //   return true;
+    // });
+    // router.events.off("routeChangeStart", () => {
+    //   return false;
+    // });
     const tournamentService = new TournamentService();
     if (!validationInput(cr)) return;
     const response = tournamentService
       .createTournament(cr)
-      .then((res) => {
+      .then(async (res) => {
         if (res.data.createTournament) {
           message.success("Save succcessfully");
-          TournamentStore.resetStates();
-          clearLocalCreateTournament();
+          TournamentStore.depositModalVisible = true;
+          window.onbeforeunload = null;
         } else {
           message.error("Save fail");
           return;
@@ -521,6 +543,8 @@ export default observer(function CreateTournament(props: Props) {
                           TournamentStore.participants / 2
                         } participant(s)`
                       );
+                    } else {
+                      setMessageErrorReferee("");
                     }
                   }}
                 >
