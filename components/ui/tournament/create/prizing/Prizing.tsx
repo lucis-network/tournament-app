@@ -24,10 +24,12 @@ import {
 } from "react";
 import Item from "antd/lib/list/Item";
 import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
+import { useLocalObservable } from "mobx-react";
+import { useCurrencies } from "hooks/tournament/useCreateTournament";
 
 const LUCIS_FEE = 10;
 const REFEREER_FEE = 1;
-type Props = {};
+
 const { Option } = Select;
 
 const EditableContext = createContext<FormInstance<any> | null>(null);
@@ -83,21 +85,21 @@ let dataTable = {
       name: "1st place",
       quantity: 1,
       total: 50,
-      estimated: 10000,
+      estimated: 0,
     },
     {
       key: "1",
       name: "2nd place",
       quantity: 1,
       total: 40,
-      estimated: 8000,
+      estimated: 0,
     },
     {
       key: "2",
       name: "3rd place",
       quantity: 1,
       total: 10,
-      estimated: 2000,
+      estimated: 0,
     },
   ],
 };
@@ -111,6 +113,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
   handleSave,
   ...restProps
 }) => {
+  const tournamentStore = useLocalObservable(() => TournamentStore);
   const [editing, setEditing] = useState(false);
   const inputRef = useRef<any>(null);
   const form = useContext(EditableContext)!;
@@ -128,7 +131,10 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
   const calculatePrizing = (record: Item, values: number) => {
     record.total = values;
-    record.estimated = (20000 * values) / 100;
+    if (tournamentStore.pool_size)
+      record.estimated = Number.parseFloat(
+        ((tournamentStore.pool_size * values) / 100).toFixed(2)
+      );
     return record;
   };
 
@@ -193,10 +199,18 @@ const EditableCell: React.FC<EditableCellProps> = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
+type Props = {
+  checkPoolSize?: boolean;
+};
+
 export default observer(function Prizing(props: Props) {
+  const inputRef = useRef<any>(null);
   const [state, setState] = useState(dataTable);
-  const [poolSize, setPoolSize] = useState(20000);
+  const [poolSize, setPoolSize] = useState(0);
   const [chain, setChain] = useState(TournamentStore.currency_uid);
+  const { getDataCurrencies } = useCurrencies({});
+  const [messageErrorPoolSize, setMessageErrorPoolSize] = useState("");
+
   let columnsHeader = [
     {
       title: "Team place",
@@ -209,7 +223,7 @@ export default observer(function Prizing(props: Props) {
       width: "10%",
     },
     {
-      title: "Total Allocation (%)",
+      title: "Allocation (%)",
       dataIndex: "total",
       width: "20%",
       editable: true,
@@ -231,28 +245,41 @@ export default observer(function Prizing(props: Props) {
       dataIndex: "operation",
       render: (_: any, record: { key: React.Key }) =>
         state.dataSource.length >= 1 ? (
-          <Popconfirm
-            style={{ color: "white" }}
-            title="Sure to delete?"
-            onConfirm={() => handleDelete(record.key)}
-            disabled={record.key != state.dataSource.length - 1 ? true : false}
+          <Button
+            style={{
+              padding: 0,
+              background: "none",
+              height: "auto",
+              lineHeight: 1,
+              border: "none",
+            }}
+            onClick={() => handleDelete(record.key)}
+            disabled={record.key == state.dataSource.length - 1 ? false : true}
           >
             <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
-          </Popconfirm>
+          </Button>
         ) : null,
     },
   ];
 
   const handleDelete = (key: React.Key) => {
     const dataSource = [...state.dataSource];
-    setState({ dataSource: dataSource.filter((item) => item.key !== key) });
+    setState({ dataSource: dataSource.filter((item) => item.key != key) });
   };
 
   const handleAdd = () => {
     const { dataSource } = state;
     const newData: DataType = {
       key: dataSource.length.toString(),
-      name: (dataSource.length + 1).toString() + "th place",
+      name:
+        (dataSource.length + 1).toString() +
+        (dataSource.length + 1 == 1
+          ? "st place"
+          : dataSource.length + 1 == 2
+          ? "nd place"
+          : dataSource.length + 1 == 3
+          ? "rd place"
+          : "th place"),
       quantity: 1,
       total: 0,
       estimated: 0,
@@ -271,32 +298,20 @@ export default observer(function Prizing(props: Props) {
       ...row,
     });
     const total = calculateTotalAllocation(newData);
-    if (total > 100) message.error("Total Allocation must be equal to 100%");
-    else {
-      newData = recalculatePercent(newData);
-      setState({ dataSource: newData });
-    }
-  };
-
-  const recalculatePercent = (newData: any) => {
-    let total = calculateTotalAllocation(newData);
-    // newData.forEach((item: { total: any }, idx: number) => {
-
-    // });
-    newData[newData.length - 1].total += 100 - total;
-    return newData;
+    setState({ dataSource: newData });
   };
 
   const calculateTotalAllocation = (newData: any) => {
     let total = 0;
     newData.forEach((item: { total: any }, idx: number) => {
-      if (idx != newData.length - 1) total += Number.parseFloat(item.total);
+      total += item.total;
     });
     return total;
   };
 
   function onChange(value: number) {
     setPoolSize(value);
+    setMessageErrorPoolSize("");
   }
 
   useEffect(() => {
@@ -310,7 +325,7 @@ export default observer(function Prizing(props: Props) {
       let obj: PrizeAllocation = {
         position: index + 1,
         qty: item.quantity,
-        percent: item.total,
+        percent: Number.parseFloat((item.total / 100).toFixed(2)),
       };
       arr.push(obj);
     });
@@ -323,6 +338,25 @@ export default observer(function Prizing(props: Props) {
   useEffect(() => {
     TournamentStore.currency_uid = chain;
   }, [chain]);
+
+  useEffect(() => {
+    if (TournamentStore.pool_size) setPoolSize(TournamentStore.pool_size);
+  });
+
+  useEffect(() => {
+    if (!props.checkPoolSize && poolSize == 0) {
+      if (poolSize == 0 || poolSize == null)
+        if (inputRef && inputRef.current) {
+          inputRef.current!.focus();
+          setMessageErrorPoolSize("Pool size must not be empty");
+        }
+    }
+  });
+
+  const handleBlur = () => {
+    if (poolSize == 0 || poolSize == null)
+      setMessageErrorPoolSize("Pool size must not be empty");
+  };
 
   const recalculateEstimated = () => {
     const dataSource = [...state.dataSource];
@@ -362,6 +396,7 @@ export default observer(function Prizing(props: Props) {
       (poolSize * REFEREER_FEE) / 100
     ).toFixed(2);
   };
+
   return (
     <div className={s.container}>
       <div>
@@ -373,8 +408,15 @@ export default observer(function Prizing(props: Props) {
               prefix="$"
               style={{ width: "99%" }}
               min={1}
-              defaultValue={20000}
+              placeholder="Pool size"
               onChange={onChange}
+              ref={inputRef}
+              onBlur={() => handleBlur()}
+              value={
+                TournamentStore.pool_size
+                  ? TournamentStore.pool_size
+                  : undefined
+              }
             />
           </Col>
           <Col span={3}>
@@ -384,23 +426,21 @@ export default observer(function Prizing(props: Props) {
                 setChain(value);
               }}
             >
-              {ChainOption.map((item, index) => {
+              {getDataCurrencies?.map((item: any, index: number) => {
                 return (
-                  <Option value={item.value} key={index}>
-                    {item.label}
+                  <Option value={item.uid} key={index}>
+                    {item.name}
                   </Option>
                 );
               })}
             </Select>
           </Col>
         </Row>
+        <div className={s.message_error}>{messageErrorPoolSize}</div>
       </div>
 
       <div className="pt-4">
         <p>Prize Allocation</p>
-        <Button onClick={handleAdd} type="primary" style={{ marginBottom: 16 }}>
-          Add a row
-        </Button>
         <Table
           className={s.container_table}
           components={components}
@@ -410,6 +450,21 @@ export default observer(function Prizing(props: Props) {
           columns={columns as ColumnTypes}
           pagination={false}
         />
+        <Row style={{ marginTop: 16 }}>
+          <Col span={8}>
+            <Button onClick={handleAdd} type="primary">
+              Add a row
+            </Button>
+          </Col>
+          <Col span={2}></Col>
+          <Col span={6}>
+            {calculateTotalAllocation(dataSource) !== 100 ? (
+              <p style={{ color: "red" }}>Total Allocation must be 100%</p>
+            ) : (
+              ""
+            )}
+          </Col>
+        </Row>
       </div>
 
       <div className="pt-4">

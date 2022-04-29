@@ -71,11 +71,6 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       });
   };
 
-  useEffect(() => {
-    console.log('tier_store: ', tier_ids)
-  }, [])
-  
-
   return (
     <Modal
       title="Add existing sponsor"

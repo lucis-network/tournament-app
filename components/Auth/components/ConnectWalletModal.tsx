@@ -292,7 +292,7 @@ export default observer(function ConnectWalletModal(props: Props) {
                * This is memoization, so if address changed, loginWithLucis is another function
                */
               console.log("ConnectWalletStore", ConnectWalletStore);
-              alert("ConnectWall successs");
+              //alert("ConnectWall successs");
               setIsModalVisible(false);
               //return loginWithLucis(ConnectWalletStore.address, false);
             }

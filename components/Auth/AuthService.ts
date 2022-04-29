@@ -83,7 +83,6 @@ export default class AuthService {
               email
               role
               code
-              name
               ref_code
               google_id
               status
@@ -113,7 +112,7 @@ export default class AuthService {
       code: u.code,
       email: u.email,
       role: u.role,
-      name: u.name,
+      name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
       ref_code: u.ref_code,
       google_id: u.google_id,
       status: u.status,
@@ -134,7 +133,6 @@ export default class AuthService {
               email
               role
               code
-              name
               ref_code
               google_id
               status

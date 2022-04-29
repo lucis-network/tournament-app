@@ -3,9 +3,10 @@ import { Modal, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Input from "antd/lib/input/Input";
 import Search from "antd/lib/input/Search";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import s from "./index.module.sass";
 import { useChooseGame } from "hooks/tournament/useCreateTournament";
+import debounce from "lodash/debounce";
 
 type Props = {
   handCallbackChooseGame?: any;
@@ -13,7 +14,6 @@ type Props = {
 
 export default observer(function ChooseGameModal(props: Props) {
   const inputRef = useRef<any>(null);
-
   const [name, setName] = useState("");
 
   const { getDataChooseGame } = useChooseGame({
@@ -24,27 +24,43 @@ export default observer(function ChooseGameModal(props: Props) {
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.chooseGameModalVisible = v);
 
+  // const value = TournamentStore.game_uid,
+  //   setValue = (v: string) => (TournamentStore.game_uid = v);
+
   const handleCancel = () => {
     setIsModalVisible(false);
   };
 
-  useEffect(() => {
-    inputRef.current && inputRef.current.focus();
-  }, [name]);
+  const onSearch = (e: any) => {
+    delayedSearch(e.target.value);
+  };
 
-  const onSearch = (value: string) => setName(value);
-
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(null);
 
   const onChange = (e: any) => {
     setValue(e.target.value);
   };
 
   const handleOk = () => {
+    console.log(value);
     setIsModalVisible(false);
-    if (getDataChooseGame)
+    if (getDataChooseGame && value != null)
       props.handCallbackChooseGame(getDataChooseGame[value]);
   };
+
+  const delayedSearch = useCallback(
+    debounce((value: string) => {
+      setName(value);
+      setValue(null);
+    }, 600),
+    []
+  );
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current!.focus();
+    }
+  });
 
   return (
     <Modal
@@ -52,15 +68,13 @@ export default observer(function ChooseGameModal(props: Props) {
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
+      className={`${s.container}`}
     >
-      <Search
-        ref={inputRef}
+      <Input
         placeholder="Search by name"
-        style={{ color: "white" }}
-        onSearch={onSearch}
-        enterButton
-        className={`${s.searchText}`}
-      />
+        onChange={onSearch}
+        ref={inputRef}
+      ></Input>
       <div className="mt-15px">
         <Radio.Group
           onChange={onChange}
@@ -72,7 +86,13 @@ export default observer(function ChooseGameModal(props: Props) {
                 return (
                   <div className={`${s.item}`} key={index}>
                     {ele.logo ? (
-                      <img src={ele.logo} width="100" height="100" alt="" />
+                      <img
+                        src={ele.logo}
+                        width="100"
+                        height="100"
+                        alt=""
+                        style={{ height: "100px" }}
+                      />
                     ) : (
                       <img
                         src="/assets/avatar.jpg"

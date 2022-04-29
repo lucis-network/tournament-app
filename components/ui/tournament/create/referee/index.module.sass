@@ -1,8 +1,8 @@
-.containerApp
-  width: 100%
-  min-height: 100vh
-  p
-    color: white
+.container
+  :global(.ant-input)
+    border-radius: 8px
+    padding: 8px
+    backdrop-filter: blur(0px)
 
 .bracketType
   display: flex
@@ -48,6 +48,7 @@
 
 .searchText
   margin-bottom: 10px
+
   :global(.ant-input-group-addon)
     position: relative
     overflow: hidden
@@ -63,3 +64,9 @@
   display: flex
   flex-wrap: wrap
   color: white
+
+.message_error
+  font-size: 14px
+  margin-top: 4px
+  color: #cb3636
+  text-align: center

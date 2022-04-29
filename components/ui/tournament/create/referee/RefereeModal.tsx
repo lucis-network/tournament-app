@@ -1,18 +1,22 @@
 import { observer } from "mobx-react-lite";
-import { Checkbox, Modal, Radio } from "antd";
+import { Checkbox, Input, Modal, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Search from "antd/lib/input/Search";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import s from "./index.module.sass";
 import { useReferees } from "hooks/tournament/useCreateTournament";
+import debounce from "lodash/debounce";
 
 type Props = {
   handCallbackReferee?: any;
 };
 
 export default observer(function RefereeModal(props: Props) {
+  const inputRef = useRef<any>(null);
   const [name, setName] = useState("");
   const [checkedValue, setCheckedValue] = useState([]);
+  const [messageError, setMessageError] = useState("");
+  const [checkedParticipants, setCheckedParticipants] = useState(false);
 
   const { getDataReferees } = useReferees({
     name: name,
@@ -26,22 +30,48 @@ export default observer(function RefereeModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  const onSearch = (value: string) => setName(value);
+  const delayedSearch = useCallback(
+    debounce((value: string) => setName(value), 600),
+    []
+  );
+
+  const onSearch = (e: any) => {
+    delayedSearch(e.target.value);
+  };
 
   function onChange(checkedValues: any) {
-    console.log("checked = ", checkedValues);
     setCheckedValue(checkedValues);
   }
 
   const handleOk = () => {
-    const dataCallback: any[] = [];
-    checkedValue?.forEach((item: number) => {
-      dataCallback.push(getDataReferees[item]);
+    const dataCallback: number[] = [];
+    const dataRefereeCallback: any[] = [];
+    checkedValue.forEach((item: any) => {
+      dataCallback.push(Number.parseInt(getDataReferees[item].user_id));
+      dataRefereeCallback.push(getDataReferees[item]);
     });
-
-    props.handCallbackReferee(dataCallback, checkedValue);
+    props.handCallbackReferee(dataRefereeCallback, dataCallback);
     setIsModalVisible(false);
   };
+
+  useEffect(() => {
+    if (inputRef && inputRef.current) {
+      inputRef.current!.focus();
+    }
+    if (TournamentStore.participants) {
+      TournamentStore.participants / 2 >= checkedValue.length
+        ? setCheckedParticipants(true)
+        : setCheckedParticipants(false);
+
+      !checkedParticipants
+        ? setMessageError(
+            `You can choose max ${
+              TournamentStore.participants / 2
+            } participant(s) `
+          )
+        : setMessageError("");
+    }
+  });
 
   return (
     <Modal
@@ -49,13 +79,17 @@ export default observer(function RefereeModal(props: Props) {
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
+      className={`${s.container}`}
+      okButtonProps={{
+        disabled: !checkedParticipants,
+      }}
     >
-      <Search
-        placeholder="input search text"
-        onSearch={onSearch}
-        enterButton
+      <Input
+        placeholder="Search by name or username"
+        onChange={onSearch}
         className={`${s.searchText}`}
-      />
+        ref={inputRef}
+      ></Input>
       <Checkbox.Group onChange={onChange} className={`${s.container}`}>
         {getDataReferees
           ? getDataReferees.map((ele: any, index: number) => {
@@ -72,12 +106,13 @@ export default observer(function RefereeModal(props: Props) {
                     className={`${s.itemCheckbox}`}
                     value={index}
                   ></Checkbox>
-                  <p className="mt-5px">{ele.user.profile.full_name}</p>
+                  <p className="mt-5px">{ele.user.profile.display_name}</p>
                 </div>
               );
             })
           : ""}
       </Checkbox.Group>
+      <div className={s.message_error}>{messageError}</div>
     </Modal>
   );
 });

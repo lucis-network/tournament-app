@@ -18,7 +18,6 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
   : "";
 
 export default observer(function LoginModal(props: Props) {
-  
   useEffect(() => {
     const cachedUser: AuthUser | null = getLocalAuthInfo();
     const token = cachedUser?.token;

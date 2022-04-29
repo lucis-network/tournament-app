@@ -42,8 +42,6 @@ function Tournament(props: Props) {
       .putObject(params)
       .on("httpUploadProgress", (evt, response) => {
         //setProgress(Math.round((evt.loaded / evt.total) * 100));
-        console.log("evt", evt);
-        console.log("response", response);
       })
       .send((err, data) => {
         //if (err) console.log("err", err);

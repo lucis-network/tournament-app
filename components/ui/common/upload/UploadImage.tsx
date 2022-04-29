@@ -1,12 +1,17 @@
 import DocHead from "components/DocHead";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AWS from "aws-sdk";
+import { observer } from "mobx-react";
+import TournamentStore from "src/store/TournamentStore";
+import { Button } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
 
 type Props = {
   heigh?: string;
   width?: string;
   parentCallback?: any;
   value?: string;
+  url?: string;
 };
 
 export const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
@@ -15,7 +20,8 @@ export const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
 const REGION = process.env.NEXT_PUBLIC_REGION;
 const ACCESS_KEY = process.env.NEXT_PUBLIC_ACCESS_KEY;
 const SECRET_ACCESS_KEY = process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY;
-
+const LINK_URL =
+  "https://image-upload-s3-demo.s3.ap-southeast-1.amazonaws.com/";
 AWS.config.update({
   accessKeyId: ACCESS_KEY,
   secretAccessKey: SECRET_ACCESS_KEY,
@@ -26,7 +32,7 @@ export const myBucket = new AWS.S3({
   region: REGION,
 });
 
-function UploadImage(props: Props) {
+export default observer(function UploadImage(props: Props) {
   const [url, setUrl] = useState("");
   const handleFileInput = (e: any) => {
     const file = e.target.files[0];
@@ -58,6 +64,16 @@ function UploadImage(props: Props) {
       });
   };
 
+  useEffect(() => {
+    console.log("TournamentStore.cover", TournamentStore.cover);
+    if (props.value == "cover" && TournamentStore.cover) {
+      setUrl(TournamentStore.cover);
+    }
+
+    if (props.value === "thumbnail" && TournamentStore.thumbnail)
+      setUrl(TournamentStore.thumbnail);
+  }, [TournamentStore.cover || TournamentStore.thumbnail]);
+
   return (
     <>
       <DocHead />
@@ -84,19 +100,33 @@ function UploadImage(props: Props) {
             }}
           />
         )}
-
-        {/* <Upload>
-          <Button icon={<UploadOutlined />} >Click to Upload</Button>
-        </Upload> */}
+        <p
+          style={{
+            color: "white",
+            textAlign: "center",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {url.slice(LINK_URL.length, url.length)}
+        </p>
         <input
+          //style={{ display: "none" }}
           type="file"
-          style={{ color: "white" }}
+          style={{ color: "transparent" }}
           onChange={handleFileInput}
-        />
+          accept=".jpg, .jpeg, .png"
+          title=""
+        ></input>
+
+        {/* <input
+          style={{ display: "none" }}
+          type="file"
+          //style={{ color: "white" }}
+          onChange={handleFileInput}
+        /> */}
         {/* <button onClick={() => handleUpload(selectedFile)}>Upload</button> */}
       </div>
     </>
   );
-}
-
-export default UploadImage;
+});
