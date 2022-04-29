@@ -1,48 +1,40 @@
-import { Table } from "antd";
+import { message, Table } from "antd";
 import { useEffect, useState } from "react";
-import s from "./Prizing.module.sass";
+import { usePrizing } from "hooks/tournament/useTournamentDetail";
 
-import formatNumber from '../../../../../format/formatNumber/index'
+import s from "./Prizing.module.sass";
 
 type Props = {};
 
 export default function Prizing(props: Props) {
-  const [totalPrize, setTotalPrize] = useState(20000);
-  const [prizePercent, setPrizePercent] = useState({
-    firstPrize: 80,
-    secondPrize: 15,
-    thirdPrize: 5,
-  });
+  const [dataPrize, setDataPrize] = useState<any[]>([]);
 
+  const { dataPrizing } = usePrizing({ uid: "cl2ek8le201060jn6tzuoo7nv" });
+
+  const fetchData = async () => {
+    try {
+      const newData = await dataPrizing;      
+      const dataLenght = newData?.getTournamentDetailPrizing.length;
+      for (let i = 0; i < dataLenght; i++) {
+        setDataPrize((prev) => [
+          ...prev,
+          {
+            key: newData?.getTournamentDetailPrizing[i]?.position,
+            place: `${newData?.getTournamentDetailPrizing[i]?.position}st place`,
+            prizeAllocation: `${
+              newData?.getTournamentDetailPrizing[i]?.percentage * 100
+            }%`,
+            thirdPrize: newData?.getTournamentDetailPrizing[i]?.reward,
+          },
+        ]);
+      }
+    } catch {
+      message.error("Error fetch data")
+    }
+  };
   useEffect(() => {
-    setPrizePercent((prev) => ({
-      ...prev,
-      firstPrize: (totalPrize * prev.firstPrize) / 100,
-      secondPrize: (totalPrize * prev.secondPrize) / 100,
-      thirdPrize: (totalPrize * prev.thirdPrize) / 100,
-    }));
-  }, [totalPrize]);
-
-  const dataPrize = [
-    {
-      key: "10",
-      place: "1 st place",
-      prizeAllocation: `${(prizePercent.firstPrize * 100) / totalPrize}%`,
-      prize: `${formatNumber(prizePercent.firstPrize)}`,
-    },
-    {
-      key: "11",
-      place: "2 st place",
-      prizeAllocation: `${(prizePercent.secondPrize * 100) / totalPrize}%`,
-      prize: `${formatNumber(prizePercent.secondPrize)}`,
-    },
-    {
-      key: "12",
-      place: "3 st place",
-      prizeAllocation: `${(prizePercent.thirdPrize * 100) / totalPrize}%`,
-      prize: `${formatNumber(prizePercent.thirdPrize)}`,
-    },
-  ];
+    fetchData();
+  }, [dataPrizing]);
 
   const columnsPrize = [
     {
@@ -59,8 +51,8 @@ export default function Prizing(props: Props) {
     },
     {
       title: "Prize",
-      dataIndex: "prize",
-      key: "prize",
+      dataIndex: "thirdPrize",
+      key: "thirdPrize",
       width: "35%",
     },
   ];

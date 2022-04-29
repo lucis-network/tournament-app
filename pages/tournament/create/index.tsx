@@ -8,6 +8,7 @@ import {
   InputRef,
   Form,
   message,
+  Timeline,
   Modal,
 } from "antd";
 import { Input } from "antd";
@@ -25,6 +26,7 @@ import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import Sponsor from "components/ui/tournament/create/sponsor/Sponsor";
 import Prizing from "components/ui/tournament/create/prizing/Prizing";
+import TimelineModal from "components/ui/tournament/create/timeline/TimelineModal";
 import TournamentService, {
   getLocalCreateTournamentInfo,
   setLocalCreateTournamentInfo,
@@ -216,8 +218,10 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const openModal = (value: string) => {
+    // console.log(value);
     if (value === "choosegame") TournamentStore.chooseGameModalVisible = true;
     if (value === "referee") TournamentStore.refereeModalVisible = true;
+    if (value === "timeline") TournamentStore.timelineModalVisible = true;
   };
 
   const createTournament = () => {
@@ -371,7 +375,7 @@ export default observer(function CreateTournament(props: Props) {
       {/* <DocHead />
       <div className="pt-28 min-h-screen"></div>
       <Footer /> */}
-      <DocHead title="Apply for INO" />
+      <DocHead title="Create new tournament" />
       <div className="container">
         <div className={s.containerApp}>
           <p className="text-30px">Create your tournament</p>
@@ -587,7 +591,9 @@ export default observer(function CreateTournament(props: Props) {
                 <p>Timeline</p>
               </Col>
               <Col span={8}>
-                <Button>Setup Timeline</Button>
+                <Button onClick={() => openModal("timeline")}>
+                  Setup Timeline
+                </Button>
               </Col>
               <Col span={4}>
                 <p className="ml-[10px]">Region</p>
@@ -773,6 +779,7 @@ export default observer(function CreateTournament(props: Props) {
 
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
         <RefereeModal handCallbackReferee={handCallbackReferee} />
+        <TimelineModal />
         <DepositModal />
       </div>
 
