@@ -1,5 +1,4 @@
 import s from "./TournamentDetail.module.sass";
-import SearchComplete from "../../../components/ui/common/searchs/index";
 import TableParticipant from "../../../components/ui/common/tabsItem/participantsDetail/index";
 import Referees from "../../../components/ui/common/tabsItem/refereesDetail/index";
 import Prizing from "components/ui/common/tabsItem/prizingDetail";
@@ -75,9 +74,6 @@ const TournamentDetail = () => {
             Content of Tab Pane 3
           </TabPane>
           <TabPane tab="Participants(32/32)" key="4">
-            <div style={{ display: "flex", justifyContent: "end" }}>
-              <SearchComplete />
-            </div>
             <TableParticipant />
           </TabPane>
           <TabPane tab="Referees" key="5">

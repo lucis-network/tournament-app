@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Input, AutoComplete } from 'antd';
-import { SelectProps } from 'antd/es/select';
+import React, { useState } from "react";
+import { Input, AutoComplete } from "antd";
+import { SelectProps } from "antd/es/select";
 
-import s from './Search.module.sass'
+import s from "./Search.module.sass";
 
 function getRandomInt(max: number, min: number = 0) {
   return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
@@ -10,8 +10,8 @@ function getRandomInt(max: number, min: number = 0) {
 
 const searchResult = (query: string) =>
   new Array(getRandomInt(5))
-    .join('.')
-    .split('.')
+    .join(".")
+    .split(".")
     .map((_, idx) => {
       const category = `${query}${idx}`;
       return {
@@ -19,12 +19,12 @@ const searchResult = (query: string) =>
         label: (
           <div
             style={{
-              display: 'flex',
-              justifyContent: 'space-between',
+              display: "flex",
+              justifyContent: "space-between",
             }}
           >
             <span>
-              Found {query} on{' '}
+              Found {query} on{" "}
               <a
                 href={`https://s.taobao.com/search?q=${query}`}
                 target="_blank"
@@ -40,14 +40,14 @@ const searchResult = (query: string) =>
     });
 
 const SearchComplete: React.FC = () => {
-  const [options, setOptions] = useState<SelectProps<object>['options']>([]);
+  const [options, setOptions] = useState<SelectProps<object>["options"]>([]);
 
   const handleSearch = (value: string) => {
     setOptions(value ? searchResult(value) : []);
   };
 
   const onSelect = (value: string) => {
-    console.log('onSelect', value);
+    console.log("onSelect", value);
   };
 
   return (
