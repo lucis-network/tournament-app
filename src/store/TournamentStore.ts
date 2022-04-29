@@ -40,16 +40,25 @@ export type SponsorTierType = {
   slots?: SponsorSlotType[];
 };
 
-export type SponsorSlotType = {
-  id?: string;
+export type SponsorSlotType = null | {
   name?: string;
   logo?: string;
+  sponsor_amount?: number;
+  home_page?: string;
+  ads_video?: string;
 };
 
+const DEFAULT_PARTICIPANTS = 8;
+const DEFAULT_TURNS = 1;
+const DEFAULT_CURRENCY_UID = "USDT";
+const DEFAULT_JOIN_FEE = 0;
+const DEFAULT_REGIONS = ["AA"];
 class TournamentStore {
+  private _depositModalVisible: boolean = false;
   private _chooseGameModalVisible: boolean = false;
   private _refereeModalVisible: boolean = false;
   private _prizingModalVisible: boolean = false;
+  private _draftPopupVisible: boolean = false;
 
   private _id?: number | undefined;
 
@@ -59,11 +68,11 @@ class TournamentStore {
 
   private _thumbnail?: string | undefined;
 
-  private _participants?: number = 8;
+  private _participants?: number = DEFAULT_PARTICIPANTS;
 
   private _team_size?: number | undefined;
 
-  private _turns?: number = 1;
+  private _turns?: number = DEFAULT_TURNS;
 
   private _desc?: string | undefined;
 
@@ -73,15 +82,15 @@ class TournamentStore {
 
   private _game_uid?: string | undefined;
 
-  private _currency_uid?: string = "USDT";
+  private _currency_uid?: string = DEFAULT_CURRENCY_UID;
 
-  private _join_fee?: number = 0;
+  private _join_fee?: number = DEFAULT_JOIN_FEE;
 
   private _pool_size?: number | undefined;
 
   private _referees?: number[] | undefined;
 
-  private _regions?: string[] = ["VN"];
+  private _regions?: string[] = DEFAULT_REGIONS;
 
   private _bracket_type?: string | undefined;
 
@@ -118,6 +127,29 @@ class TournamentStore {
     this._rounds = cr.rounds;
   }
 
+  resetStates() {
+    this._name = undefined;
+    this._cover = undefined;
+    this._thumbnail = undefined;
+    this._participants = DEFAULT_PARTICIPANTS;
+    this._team_size = undefined;
+    this._turns = DEFAULT_TURNS;
+    this._desc = undefined;
+    this._rules = undefined;
+    this._prize_allocation = undefined;
+    this._password = undefined;
+    this._game_uid = undefined;
+    this._currency_uid = DEFAULT_CURRENCY_UID;
+    this._join_fee = DEFAULT_JOIN_FEE;
+    this._pool_size = undefined;
+    this._referees = undefined;
+    this._regions = DEFAULT_REGIONS;
+    this._bracket_type = undefined;
+    this._sponsor_slots = undefined;
+    this._start_at = undefined;
+    this._rounds = undefined;
+  }
+
   getCreateTournament() {
     let cr: CreateTournament = {};
     cr.name = this._name;
@@ -144,6 +176,13 @@ class TournamentStore {
   }
 
   /* ============= Getter & Setter ==============*/
+  public get draftPopupVisible(): boolean {
+    return this._draftPopupVisible;
+  }
+  public set draftPopupVisible(value: boolean) {
+    this._draftPopupVisible = value;
+  }
+
   public get chooseGameModalVisible(): boolean {
     return this._chooseGameModalVisible;
   }
@@ -250,16 +289,16 @@ class TournamentStore {
   public set pool_size(value: number | undefined) {
     this._pool_size = value;
   }
-  public get referees(): number[] | undefined {
-    return this._referees;
+  public get referees(): number[] {
+    return this._referees ? this._referees : [];
   }
-  public set referees(value: number[] | undefined) {
+  public set referees(value: number[]) {
     this._referees = value;
   }
-  public get regions(): string[] | undefined {
-    return this._regions;
+  public get regions(): string[] {
+    return this._regions ? this._regions : [];
   }
-  public set regions(value: string[] | undefined) {
+  public set regions(value: string[]) {
     this._regions = value;
   }
   public get bracket_type(): string | undefined {
@@ -292,6 +331,12 @@ class TournamentStore {
   }
   public set rounds_1(value: any[] | undefined) {
     this._rounds = value;
+  }
+  public get depositModalVisible(): boolean {
+    return this._depositModalVisible;
+  }
+  public set depositModalVisible(value: boolean) {
+    this._depositModalVisible = value;
   }
 }
 

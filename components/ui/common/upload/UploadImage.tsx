@@ -1,12 +1,15 @@
 import DocHead from "components/DocHead";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AWS from "aws-sdk";
+import { observer } from "mobx-react";
+import TournamentStore from "src/store/TournamentStore";
 
 type Props = {
   heigh?: string;
   width?: string;
   parentCallback?: any;
   value?: string;
+  url?: string;
 };
 
 const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
@@ -26,7 +29,7 @@ const myBucket = new AWS.S3({
   region: REGION,
 });
 
-function UploadImage(props: Props) {
+export default observer(function UploadImage(props: Props) {
   const [url, setUrl] = useState("");
   const handleFileInput = (e: any) => {
     const file = e.target.files[0];
@@ -55,6 +58,14 @@ function UploadImage(props: Props) {
         props.parentCallback(str, props.value);
       });
   };
+
+  useEffect(() => {
+    console.log(TournamentStore.cover);
+    if (props.value === "cover" && TournamentStore.cover)
+      setUrl(TournamentStore.cover);
+    if (props.value === "thumbnail" && TournamentStore.thumbnail)
+      setUrl(TournamentStore.thumbnail);
+  }, [TournamentStore.cover || TournamentStore.thumbnail]);
 
   return (
     <>
@@ -95,6 +106,4 @@ function UploadImage(props: Props) {
       </div>
     </>
   );
-}
-
-export default UploadImage;
+});
