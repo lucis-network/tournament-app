@@ -31,7 +31,6 @@ export type PrizeAllocation = {
 };
 
 export type SponsorTierType = {
-  tierId?: string;
   name?: string;
   max: number;
   min: number;
@@ -47,18 +46,16 @@ export type SponsorTransactions = {
 }
 
 export type CreateMany = {
-  data: SponsorSlotType[],
-  skipDuplicates?: boolean
+  data: SponsorSlotType[];
 }
 
 export type SponsorSlotType = {
-  logo?: string,
-  name: string,
-  home_page?: string,
-  ads_link?: string,
-  tx_hash?: string,
-  order?: number,
-  amount: number,
+  logo?: string;
+  name: string;
+  home_page?: string;
+  ads_link?: string;
+  order?: number;
+  amount: number;
 };
 
 const DEFAULT_PARTICIPANTS = 8;

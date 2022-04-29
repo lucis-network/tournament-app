@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button, Col, Collapse, Input, Row, Space, Switch, Modal } from "antd";
+import { Collapse } from "antd";
 import { uniqueId } from "lodash"
 import s from "./index.module.sass";
-import { SponsorStore, SponsorTierStore, SponsorSlot } from "./SponsorStore";
-import { isClientDevMode } from "../../../../../utils/Env";
+import sponsorStore, { SponsorTierStore, SponsorSlot } from "./SponsorStore";
 import SponsorTier from "./SponsorTier";
 
 const { Panel } = Collapse;
@@ -46,12 +44,6 @@ const tiersDataInit: SponsorTierStore[] = [
     slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
   }),
 ];
-
-const sponsorStore =  new SponsorStore();
-if (isClientDevMode) {
-  // @ts-ignore
-  window.tmp__SponsorStore = sponsorStore;
-}
 
 sponsorStore.setState({
   tiers: [...tiersDataInit],

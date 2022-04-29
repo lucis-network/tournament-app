@@ -1,4 +1,5 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, autorun } from "mobx";
+import { isClientDevMode } from "utils/Env";
 
 export type ISponsorStore = {
   tiers: SponsorTierStore[]
@@ -7,8 +8,8 @@ export class SponsorStore implements ISponsorStore {
   tiers: SponsorTierStore[]
 
   constructor() {
-    makeAutoObservable(this);
     this.tiers = [];
+    makeAutoObservable(this);
   }
 
   setState(s: ISponsorStore) {
@@ -101,4 +102,13 @@ export class SponsorSlot implements ISponsorSlot {
     (s.order !== undefined) && (this.order = s.order);
     (s.amount !== undefined) && (this.amount = s.amount);
   }
+}
+
+const sponsorStore =  new SponsorStore();
+
+export default sponsorStore;
+
+if (isClientDevMode) {
+  // @ts-ignore
+  window.tmp__SponsorStore = sponsorStore;
 }
