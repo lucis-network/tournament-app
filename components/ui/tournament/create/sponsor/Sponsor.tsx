@@ -59,12 +59,13 @@ sponsorStore.setState({
 
 export default observer(function Sponsor(props: Props) {
   const { tiers } = sponsorStore;
-  
+  const tierIDs = tiers.map(tier => tier.tier_id)
+
   return (
     <div className={s.sponsorContainer}>
       {tiers.length > 0 && tiers.map((i) => {
         return (
-          <SponsorTier data={i} key={i.tier_id} />
+          <SponsorTier data={i} key={i.tier_id} tier_ids={tierIDs} />
         );
       })}
     </div>

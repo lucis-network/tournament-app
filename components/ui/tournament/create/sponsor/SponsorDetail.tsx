@@ -1,31 +1,31 @@
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { Button, Col, Input, InputNumber, Modal, Row, Select, Form, Upload } from 'antd';
+import { Button, Col, Input, InputNumber, Modal, Row, Select, Form } from 'antd';
 import { observer } from 'mobx-react';
 import CircleImage from 'components/ui/common/images/CircleImage';
 import Text from 'antd/lib/typography/Text';
-import { SponsorSlotType } from 'src/store/TournamentStore';
 import TournamentStore from "../../../../../src/store/TournamentStore"
 import { myBucket, S3_BUCKET } from 'components/ui/common/upload/UploadImage';
-import { ISponsorSlot, SponsorSlot } from "./SponsorStore";
+import { ISponsorSlot, SponsorSlot, SponsorTierStore } from "./SponsorStore";
 
 type SponsorDetailProps = {
   isEdit: boolean;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
-  tier_name?: string;
+  tier: SponsorTierStore;
   min_deposit?: number;
   slot: SponsorSlot;
+  show_ads?: boolean;
+  tier_ids: string[];
 }
 
 const { Option } = Select;
 
 export default observer(function SponsorDetail(props: SponsorDetailProps) {
-  const {isEdit, setIsEdit, tier_name, min_deposit, slot} = props;
+  const { isEdit, setIsEdit, tier, min_deposit, slot, show_ads, tier_ids } = props;
   const [logoUrl, setLogoUrl] = useState('');
   const [form] = Form.useForm();
   const inputFileRef = useRef<any>(null)
 
   const handleFormUpdate = (data: any) => {
-    // console.log('{handleFormUpdate} data: ', data);
     const newSlotState: ISponsorSlot = {}
     if (data.logo) {
       newSlotState.logo = data.logo;
@@ -70,6 +70,11 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       });
   };
 
+  useEffect(() => {
+    console.log('tier_store: ', tier_ids)
+  }, [])
+  
+
   return (
     <Modal
       title="Add existing sponsor"
@@ -107,13 +112,10 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
           <Col xs={{ span: 24 }} md={{ span: 16 }}>
             <Select
               style={{ width: '100%' }}
-              defaultValue={tier_name}
+              defaultValue={tier.tier_id}
               disabled
             >
-              <Option value="Diamond">Diamond</Option>
-              <Option value="Gold">Gold</Option>
-              <Option value="Silver">Silver</Option>
-              <Option value="Enthusiast">Enthusiast</Option>
+              {tier_ids.map(id => <Option key={tier.tier_id} value={id}>{tier.name}</Option>)}
             </Select>
           </Col>
         </Row>
@@ -194,28 +196,30 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
             </Form.Item>
           </Col>
         </Row>
-        <Row align="middle">
-          <Col xs={{ span: 24 }} md={{ span: 8 }}>
-            <label>Ads Video</label>
-          </Col>
-          <Col xs={{ span: 24 }} md={{ span: 16 }}>
-            <Text strong style={{ color: '#ffffff', fontSize: 12 }}>Youtube ads url</Text>
-            <Form.Item
-              name="ads_video"
-              rules={[
-                {
-                  type: 'url',
-                  message: 'Not a valid url',
-                }
-              ]}
-            >
-              <Input placeholder="https://youtube.com/v/12345678" />
-            </Form.Item>
-            <Text italic className="mb-0" style={{ color: '#ffffff', fontSize: 14 }}>
-              This ads video will be display on the tournament detail screen {">"} Cover Section
-            </Text>
-          </Col>
-        </Row>
+        {show_ads && (
+          <Row align="middle">
+            <Col xs={{ span: 24 }} md={{ span: 8 }}>
+              <label>Ads Video</label>
+            </Col>
+            <Col xs={{ span: 24 }} md={{ span: 16 }}>
+              <Text strong style={{ color: '#ffffff', fontSize: 12 }}>Youtube ads url</Text>
+              <Form.Item
+                name="ads_video"
+                rules={[
+                  {
+                    type: 'url',
+                    message: 'Not a valid url',
+                  }
+                ]}
+              >
+                <Input placeholder="https://youtube.com/v/12345678" />
+              </Form.Item>
+              <Text italic className="mb-0" style={{ color: '#ffffff', fontSize: 14 }}>
+                This ads video will be display on the tournament detail screen {">"} Cover Section
+              </Text>
+            </Col>
+          </Row>
+        )}
       </Form>
     </Modal>
   );

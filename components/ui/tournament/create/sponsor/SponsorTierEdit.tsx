@@ -2,9 +2,8 @@ import React, { ChangeEvent } from "react";
 import { observer } from "mobx-react-lite";
 import { Col, Input, Row, Select, Switch } from "antd";
 import Text from "antd/lib/typography/Text";
-import { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
-import { ISponsorTierStore, SponsorTierStore, SponsorSlot } from "./SponsorStore";
+import { SponsorTierStore, SponsorSlot } from "./SponsorStore";
 const { Option } = Select
 
 type SponsorTierEditProps = {
@@ -24,13 +23,11 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
     const button = event.target.closest("button");
     switch (button.title) {
       case "Name":
-        // console.log('Name ' + checked)
         data.setState({
           show_name: checked,
         })
         break;
       case "Ads":
-        // console.log('Ads ' + checked)
         data.setState({
           show_ads: checked,
         })
@@ -41,7 +38,6 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
   };
 
   const handleMaxSponsorChange = (value: string) => {
-    // data.max_slot = parseInt(value);
     const new_slots = [...data.slots];
     const max_slot = parseInt(value);
 
@@ -68,7 +64,6 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
   
   const handleMinSponsorAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    console.log('{value.handleMinSponsorAmountChange} value: ', value);
     data.setState({
       min_deposit: parseInt(value)
     })

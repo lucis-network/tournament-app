@@ -10,27 +10,14 @@ import { SponsorTierStore } from "./SponsorStore";
 
 type SponsorTierProps = {
   data: SponsorTierStore;
+  tier_ids: string[];
   // saveTier: (newTierData: SponsorTierType) => void;
 }
 
 export default observer(function SponsorTier(props: SponsorTierProps) {
-  const { data: tierStore } = props
+  const { data: tierStore, tier_ids } = props
   const [showEdit, setShowEdit] = useState(false);
-  // const [slotsData, setSlotsData] = useState([] as SponsorSlotType[])
   const { currency_uid } = TournamentStore
-
-  // const initSlots: SponsorSlotType[] = [];
-  // for (let i = 1; i <= data.max; i++) {
-  //   initSlots.push(
-  //     {
-  //       logo: '',
-  //       name: '',
-  //       home_page: '',
-  //       ads_link: '',
-  //       amount: data.min,
-  //     }
-  //   )
-  // }
 
   const {
     tier_id,
@@ -46,20 +33,6 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
   const changeShowEdit = () => {
     setShowEdit(!showEdit);
   };
-
-  // const onSponsorUpdate = (data: SponsorSlotType, index: number) => {
-  //   console.log('onSponsorUpdate: ', data, index)
-  // }
-
-  // useEffect(() => {
-  //   setSlotsData(initSlots)
-  // }, [])
-
-  // useEffect(() => {
-  //   console.log('sponsor_slots: ', sponsor_slots)
-  //   const a = sponsor_slots.filter(item => item.name === data.name)
-  //   // setSlotsData(initSlots)
-  // }, [sponsor_slots])
   
   return (
     <div className={s.tierRow}>
@@ -75,9 +48,11 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
               <SponsorSlot
                 key={index}
                 slot={slot}
+                tier_ids={tier_ids}
+                tier={tierStore}
                 show_name={show_name}
-                tier_name={name}
                 min_deposit={min_deposit}
+                show_ads={show_ads}
               />
             ))}
           </div>
