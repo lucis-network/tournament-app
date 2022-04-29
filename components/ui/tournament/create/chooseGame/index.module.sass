@@ -1,16 +1,13 @@
-.containerApp
-  width: 100%
-  min-height: 100vh
-  p
-    color: white
+.container
+  :global(.ant-input)
+    border-radius: 8px
+    padding: 8px
+    backdrop-filter: blur(0px)
 
 .bracketType
   display: flex
   flex-direction: column
   text-color: white
-
-.textColor
-  color: white
 
 .radioFee
   display: flex
@@ -24,7 +21,7 @@
   position: relative
   img
     margin-bottom: 5px
-    
+
 .itemRadio
   position: absolute
   top: -10px

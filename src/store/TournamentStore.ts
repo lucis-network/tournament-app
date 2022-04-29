@@ -40,16 +40,19 @@ export type SponsorTierType = {
   slots?: SponsorSlotType[];
 };
 
-export type SponsorSlotType = {
-  id?: string;
+export type SponsorSlotType = null | {
   name?: string;
   logo?: string;
+  sponsor_amount?: number;
+  home_page?: string;
+  ads_video?: string;
 };
 
 class TournamentStore {
   private _chooseGameModalVisible: boolean = false;
   private _refereeModalVisible: boolean = false;
   private _prizingModalVisible: boolean = false;
+  private _timelineModalVisible: boolean = false;
 
   private _id?: number | undefined;
 
@@ -81,7 +84,7 @@ class TournamentStore {
 
   private _referees?: number[] | undefined;
 
-  private _regions?: string[] = ["VN"];
+  private _regions?: string[] = ["AA"];
 
   private _bracket_type?: string | undefined;
 
@@ -144,6 +147,8 @@ class TournamentStore {
   }
 
   /* ============= Getter & Setter ==============*/
+
+  /* -------- MODALS --------- */
   public get chooseGameModalVisible(): boolean {
     return this._chooseGameModalVisible;
   }
@@ -164,6 +169,15 @@ class TournamentStore {
   public set prizingModalVisible(value: boolean) {
     this._prizingModalVisible = value;
   }
+
+  public get timelineModalVisible(): boolean {
+    return this._timelineModalVisible;
+  }
+  public set timelineModalVisible(value: boolean) {
+    this._timelineModalVisible = value;
+  }
+
+  /* ------------ INFO ------------ */
 
   public get id(): number | undefined {
     return this._id;
@@ -250,16 +264,16 @@ class TournamentStore {
   public set pool_size(value: number | undefined) {
     this._pool_size = value;
   }
-  public get referees(): number[] | undefined {
-    return this._referees;
+  public get referees(): number[] {
+    return this._referees ? this._referees : [];
   }
-  public set referees(value: number[] | undefined) {
+  public set referees(value: number[]) {
     this._referees = value;
   }
-  public get regions(): string[] | undefined {
-    return this._regions;
+  public get regions(): string[] {
+    return this._regions ? this._regions : [];
   }
-  public set regions(value: string[] | undefined) {
+  public set regions(value: string[]) {
     this._regions = value;
   }
   public get bracket_type(): string | undefined {

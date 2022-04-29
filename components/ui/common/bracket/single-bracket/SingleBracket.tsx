@@ -8,11 +8,27 @@ import {
   RenderSeedProps,
 } from "react-brackets";
 
-import s from "../Bracket.module.sass";
+import s from "../index.module.sass";
+import TournamentStore from "src/store/TournamentStore";
 
-const rounds: RoundProps[] = [
+interface RoundNewProps extends RoundProps {
+  title: any;
+}
+
+type Props = {
+  numRounds: number;
+  numParticipants: number;
+  handleSelectDate: any;
+};
+
+const rounds: RoundNewProps[] = [
   {
-    title: "Round one",
+    title: (
+      <>
+        <p className="m-0">Round 1</p>
+        <DatePicker showTime />
+      </>
+    ),
     seeds: [
       {
         teams: [
@@ -32,7 +48,12 @@ const rounds: RoundProps[] = [
     ],
   },
   {
-    title: "Round Two",
+    title: (
+      <>
+        <p className="m-0">Round 2</p>
+        <DatePicker showTime />
+      </>
+    ),
     seeds: [
       {
         // id: 5,
@@ -47,7 +68,12 @@ const rounds: RoundProps[] = [
     ],
   },
   {
-    title: "Final",
+    title: (
+      <>
+        <p className="m-0">Final</p>
+        <DatePicker showTime />
+      </>
+    ),
     seeds: [
       {
         // id: 5,
@@ -64,8 +90,37 @@ const createSeed = () => {
   };
 };
 
-const calculateNumberRounds = (numTeam: number) => {
-  return Math.round(Math.log(numTeam) / Math.log(2));
+const createRounds = ({
+  numRounds,
+  numParticipants,
+  handleSelectDate,
+}: Props): RoundProps[] => {
+  const temp = [];
+
+  let numGames = numParticipants / 2;
+  for (let i = 0; i < numRounds; i++) {
+    const title = (
+      <>
+        <p className="m-0 text text-white">
+          {i == numRounds - 1 ? `Final` : `Round ${i + 1}`}
+        </p>
+        <DatePicker
+          showTime
+          onChange={(date, dateString) => handleSelectDate(date, dateString, i)}
+        />
+      </>
+    );
+
+    const seeds = [];
+    for (let j = 0; j < numGames; j++) {
+      const tempSeed = createSeed();
+      seeds.push(tempSeed);
+    }
+    numGames = numGames / 2;
+    temp.push({ title, seeds });
+  }
+
+  return temp as any;
 };
 
 const CustomSeed = ({
@@ -86,7 +141,7 @@ const CustomSeed = ({
     >
       <SeedItem>
         <div>
-          <SeedTeam className={s.topSeed}>
+          <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
             <div
               style={{
                 width: "100%",
@@ -109,7 +164,7 @@ const CustomSeed = ({
               {seed.teams[0]?.score || "-"}
             </div>
           </SeedTeam>
-          <SeedTeam className={s.bottomSeed}>
+          <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
             <div
               style={{
                 width: "100%",
@@ -138,8 +193,23 @@ const CustomSeed = ({
   );
 };
 
-const SingleBracket = () => {
-  return <Bracket rounds={rounds} renderSeedComponent={CustomSeed} />;
+const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
+  const numParticipants = TournamentStore.participants ?? 0;
+  const roundsTemp = createRounds({
+    numRounds,
+    numParticipants,
+    handleSelectDate,
+  });
+
+  return (
+    <div className={s.bracketContainer}>
+      <Bracket
+        rounds={roundsTemp}
+        renderSeedComponent={CustomSeed}
+        mobileBreakpoint={0}
+      />
+    </div>
+  );
 };
 
 export default SingleBracket;
