@@ -24,10 +24,16 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
     const button = event.target.closest("button");
     switch (button.title) {
       case "Name":
-        console.log('Name ' + checked)
+        // console.log('Name ' + checked)
+        data.setState({
+          show_name: checked,
+        })
         break;
       case "Ads":
-        console.log('Ads ' + checked)
+        // console.log('Ads ' + checked)
+        data.setState({
+          show_ads: checked,
+        })
         break;
       default:
         break;
