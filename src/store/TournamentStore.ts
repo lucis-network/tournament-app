@@ -60,6 +60,7 @@ class TournamentStore {
   private _prizingModalVisible: boolean = false;
   private _draftPopupVisible: boolean = false;
   private _timelineModalVisible: boolean = false;
+  private _notifyModalVisible: boolean = false;
 
   private _id?: number | undefined;
 
@@ -347,6 +348,12 @@ class TournamentStore {
   }
   public set depositModalVisible(value: boolean) {
     this._depositModalVisible = value;
+  }
+  public get notifyModalVisible(): boolean {
+    return this._notifyModalVisible;
+  }
+  public set notifyModalVisible(value: boolean) {
+    this._notifyModalVisible = value;
   }
 }
 

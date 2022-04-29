@@ -41,6 +41,7 @@ import Router, { useRouter } from "next/router";
 import DepositModal from "components/ui/tournament/create/deposit/DepositModal";
 import { isClientDevMode } from "utils/Env";
 
+
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
@@ -164,7 +165,7 @@ export default observer(function CreateTournament(props: Props) {
         TournamentStore.desc ||
         TournamentStore.rules ||
         TournamentStore.bracket_type ||
-        TournamentStore.team_size 
+        TournamentStore.team_size
         // TournamentStore.sponsor_slots
       ) {
         const result = window.confirm("Do you want save draft?");
@@ -192,6 +193,14 @@ export default observer(function CreateTournament(props: Props) {
       window.onbeforeunload = () => {};
     };
   }, [router.asPath === "/tournament/create"]);
+
+  useEffect(() => {
+    window.onbeforeunload = handleBeforeUnload;
+
+    return () => {
+      window.onbeforeunload = () => {};
+    };
+  }, []);
 
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") {
@@ -775,6 +784,7 @@ export default observer(function CreateTournament(props: Props) {
           <div className="mt-20px text-center pb-20px">
             <Button onClick={createTournament}>Create tournament</Button>
           </div>
+
         </div>
 
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
