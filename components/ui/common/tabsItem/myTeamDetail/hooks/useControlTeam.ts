@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import { useCallback, useState } from "react";
 import { GET_MY_TEAM } from "../myTeamService";
 
-export interface TeamType {
+export interface TeamType extends Record<any, any> {
   user_id: string;
   display_name: string;
   avatar: string;
@@ -159,7 +159,7 @@ const teams: MyTeamType[] = [
   },
 ];
 
-const mockMember = [
+const mockMember: TeamType[] = [
   {
     user_id: "1123",
     display_name: "Vip pro",
@@ -206,15 +206,17 @@ const UseControlTeam = () => {
   const [teamList, setTeamList] = useState<MyTeamType[]>(teams);
   const [memberList, setMemberList] = useState<TeamType[]>(mockMember);
   const [draftData, setDraftData] = useState<MyTeamType>();
-  const [addTeamId, setAddTeamId] = useState<string>("");
+  const [teamId, setTeamId] = useState<string>("");
+  const [memberId, setMemberId] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
   const [searchMemberValue, setSearchMemberValue] = useState<string>("");
   const [isEdit, setIsEdit] = useState<boolean>(false);
-  const [openConfirm, setOpenConfirm] = useState<boolean>(false);
   const [openAdd, setOpenAdd] = useState<boolean>(false);
   const [openCreateTem, setOpenCreateTeam] = useState<boolean>(false);
+  const [openRemove, setOpenRemove] = useState<boolean>(false);
   const [isSaveDraft, setIsSaveDraft] = useState<boolean>(false);
 
+  const excludeField = ["avatar"];
   // Open when have api to query team
   // const { data, loading, error } = useQuery(GET_MY_TEAM);
 
@@ -227,17 +229,44 @@ const UseControlTeam = () => {
   };
 
   const handleRemove = () => {
-    console.log("Run remove user");
+    const updatedData = teamList.map((team) =>
+      team.team_uid === teamId
+        ? {
+            ...team,
+            team: team.team?.filter((member) => member.user_id !== memberId),
+          }
+        : team
+    );
+
+    if (isSaveDraft) {
+      setDraftData({
+        ...draftData!,
+        team: draftData?.team?.filter((member) => member.user_id !== memberId),
+      });
+      setOpenCreateTeam(true);
+    } else {
+      setTeamList(updatedData);
+    }
+    setOpenRemove(false);
+  };
+
+  const handleOpenRemove = (
+    team_uid: string,
+    user_id: string,
+    isSaveDraft?: boolean
+  ) => {
+    setMemberId(user_id);
+    setTeamId(team_uid);
+    setOpenRemove(true);
+    isSaveDraft ? setIsSaveDraft(true) : setIsSaveDraft(false);
   };
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     const searchValue = e.currentTarget.value;
+    const lowerCaseValue = searchValue.toString().toLowerCase();
 
     const filterTeamBySearch = teams.filter((team) =>
-      team?.team_name
-        .toString()
-        .toLowerCase()
-        .includes(searchValue.toString().toLowerCase())
+      team?.team_name.toString().toLowerCase().includes(lowerCaseValue)
     );
 
     setSearchValue(searchValue);
@@ -246,12 +275,14 @@ const UseControlTeam = () => {
 
   const handleSearchMember = (e: React.FormEvent<HTMLInputElement>) => {
     const searchValue = e.currentTarget.value;
+    const lowerCaseValue = searchValue.toString().toLowerCase();
 
     const filterMemberBySearch = mockMember.filter((user) =>
-      user?.display_name
-        .toString()
-        .toLowerCase()
-        .includes(searchValue.toString().toLowerCase())
+      Object.keys(user).some((key: string) =>
+        excludeField.includes(key)
+          ? false
+          : user[key].toString().toLowerCase().includes(lowerCaseValue)
+      )
     );
 
     setSearchMemberValue(searchValue);
@@ -293,7 +324,7 @@ const UseControlTeam = () => {
 
   const handleAddMember = (member: TeamType) => {
     const updatedData = teamList.map((team) =>
-      team.team_uid === addTeamId
+      team.team_uid === teamId
         ? { ...team, team: team.team ? [...team?.team, member] : [member] }
         : team
     );
@@ -310,7 +341,7 @@ const UseControlTeam = () => {
   };
 
   const handleOpenAddMember = (team_uid: string, isSaveDraft?: boolean) => {
-    setAddTeamId(team_uid);
+    setTeamId(team_uid);
     setOpenAdd(true);
     setOpenCreateTeam(false);
     isSaveDraft ? setIsSaveDraft(true) : setIsSaveDraft(false);
@@ -328,10 +359,10 @@ const UseControlTeam = () => {
     memberList,
     draftData,
     openAdd,
-    openConfirm,
     openCreateTem,
-    setOpenConfirm,
+    openRemove,
     setOpenCreateTeam,
+    setOpenRemove,
     handleCreateEditTeam,
     handleLeave,
     handleRemove,
@@ -343,6 +374,7 @@ const UseControlTeam = () => {
     handleAddMember,
     handleOpenAddMember,
     handleCloseAdd,
+    handleOpenRemove,
   };
 };
 

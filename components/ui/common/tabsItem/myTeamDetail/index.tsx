@@ -17,12 +17,12 @@ const MyTeamDetail = () => {
     draftData,
     teamList,
     memberList,
-    openConfirm,
     openAdd,
     openCreateTem,
-    setOpenConfirm,
+    openRemove,
     handleCloseAdd,
     setOpenCreateTeam,
+    setOpenRemove,
     handleCreateEditTeam,
     handleLeave,
     handleRemove,
@@ -33,6 +33,7 @@ const MyTeamDetail = () => {
     handleSearchMember,
     handleAddMember,
     handleOpenAddMember,
+    handleOpenRemove,
   } = useControlTeam();
 
   return (
@@ -66,7 +67,7 @@ const MyTeamDetail = () => {
             teamList={teamList}
             onOpenAdd={handleOpenAddMember}
             onEdit={handleCreateEditTeam}
-            onRemove={handleRemove}
+            onOpenRemove={handleOpenRemove}
             onLeave={handleLeave}
           />
         </div>
@@ -78,11 +79,12 @@ const MyTeamDetail = () => {
             Are you sure to delete this member
           </h3>
         }
-        visible={openConfirm}
+        visible={openRemove}
         wrapClassName={s.mdl}
         okText="Confirm"
         bodyStyle={{ display: "none" }}
-        onCancel={() => setOpenConfirm(false)}
+        onOk={handleRemove}
+        onCancel={() => setOpenRemove(false)}
       />
 
       <CreateTeamModal
@@ -92,6 +94,7 @@ const MyTeamDetail = () => {
         onChangeAvatar={handleChangeAvatar}
         onChangeTeamName={handleChangeTeamName}
         onAddOpen={handleOpenAddMember}
+        onOpenRemove={handleOpenRemove}
         onSave={handleSaveTeam}
         onCancel={() => setOpenCreateTeam(false)}
       />

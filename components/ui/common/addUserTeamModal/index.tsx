@@ -34,7 +34,7 @@ const AddUserTeamModal: React.FC<AddUserTeamModalType> = ({
       <div>
         <div className={s.content_search}>
           <Search
-            placeholder="Search your team"
+            placeholder="Search by name or username"
             value={searchValue}
             onChange={onSearch}
           />

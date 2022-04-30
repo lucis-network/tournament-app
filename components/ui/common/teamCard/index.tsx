@@ -12,7 +12,7 @@ import { MyTeamType } from "../tabsItem/myTeamDetail/hooks/useControlTeam";
 interface TeamCardType {
   teamList?: MyTeamType[];
   onEdit: (isEdit: boolean, team?: any) => void;
-  onRemove: (id: string) => void;
+  onOpenRemove: (team_uid: string, user_id: string) => void;
   onLeave: (team_uid: string) => void;
   onOpenAdd: (team_uid: string) => void;
 }
@@ -22,9 +22,9 @@ const { Item } = Menu;
 const TeamCard: React.FC<TeamCardType> = ({
   teamList = [],
   onEdit,
-  onRemove,
   onLeave,
   onOpenAdd,
+  onOpenRemove,
 }): any => {
   const menu = (team: MyTeamType, isOwner: boolean) =>
     isOwner ? (
@@ -74,9 +74,8 @@ const TeamCard: React.FC<TeamCardType> = ({
               <UserCard
                 key={user.user_id}
                 user={user}
-                isLeader={user.is_leader}
                 enableDelete={isOwner}
-                onRemove={() => onRemove(user.user_id)}
+                onOpenRemove={() => onOpenRemove(team.team_uid, user.user_id)}
               />
             ))}
             {isOwner && (

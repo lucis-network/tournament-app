@@ -14,6 +14,11 @@ interface CreateTeamModalType {
   onChangeAvatar: (childData: string, value: string) => void;
   onChangeTeamName: (e: React.FormEvent<HTMLInputElement>) => void;
   onAddOpen: (team_uid: string, isSaveDraft?: boolean) => void;
+  onOpenRemove: (
+    team_uid: string,
+    user_id: string,
+    isSaveDraft?: boolean
+  ) => void;
   onSave: (id?: string) => void;
   onCancel: () => void;
 }
@@ -27,6 +32,7 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
   onAddOpen,
   onSave,
   onCancel,
+  onOpenRemove,
 }) => {
   return (
     <Modal
@@ -65,7 +71,15 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
         </div>
         <h3 className="text-white mb-4">Team members</h3>
         {draftData?.team?.map((team) => (
-          <UserCard key={team.user_id} user={team} className="w-[70%]" />
+          <UserCard
+            key={team.user_id}
+            user={team}
+            className="w-[70%]"
+            enableDelete={true}
+            onOpenRemove={() =>
+              onOpenRemove(draftData.team_uid, team.user_id, true)
+            }
+          />
         ))}
         <button
           className={s.button_add}

@@ -4,19 +4,19 @@ import { TeamType } from "../tabsItem/myTeamDetail/hooks/useControlTeam";
 
 interface UserCardType {
   user: TeamType;
-  isLeader?: boolean;
   enableDelete?: boolean;
   className?: string;
-  onRemove?: () => void;
+  onOpenRemove?: () => void;
 }
 
 export const UserCard: React.FC<UserCardType> = ({
   user,
-  isLeader = false,
   enableDelete = false,
   className,
-  onRemove,
+  onOpenRemove,
 }) => {
+  console.log(user);
+
   return (
     <div
       className={`flex border justify-between items-center bg-white mb-4 p-2 ${className}`}
@@ -27,10 +27,10 @@ export const UserCard: React.FC<UserCardType> = ({
         </div>
         <h3 className="mb-0 ml-2">{user?.display_name}</h3>
       </div>
-      {isLeader ? (
+      {user?.is_leader ? (
         <StarFilled style={{ color: "black", fontSize: 18 }} />
       ) : enableDelete ? (
-        <button className="outline-none" onClick={onRemove}>
+        <button className="outline-none" onClick={onOpenRemove}>
           <CloseOutlined style={{ color: "black", fontSize: 18 }} />
         </button>
       ) : null}
