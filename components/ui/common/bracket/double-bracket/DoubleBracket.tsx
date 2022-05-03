@@ -1,6 +1,7 @@
-import { RoundProps } from "react-brackets";
+import { RoundProps, Seed } from "react-brackets";
 import LosingBracket from "./LosingBracket";
 import WiningBracket from "./WiningBracket";
+import s from "../index.module.sass";
 
 const DoubleBracket = () => {
   const wining: RoundProps[] = [
@@ -110,9 +111,6 @@ const DoubleBracket = () => {
   return (
     <div style={{ position: "relative" }}>
       <WiningBracket rounds={wining} />
-
-      {/* <div style={{ height: 50 }}></div> */}
-
       <LosingBracket rounds={losing} />
     </div>
   );

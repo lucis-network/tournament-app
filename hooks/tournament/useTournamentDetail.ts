@@ -2,6 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 
 type Props = {
   uid?: string;
+  tournament_uid?: string;
 };
 
 export function useParticipant(props: Props) {
@@ -55,7 +56,38 @@ export function usePrizing(props: Props) {
   };
 }
 
+export function useTournamentDetail(props: Props) {
+  const {
+    loading,
+    error,
+    data: dataTournamentDetail,
+  } = useQuery(GET_TOURNAMENT_DETAIL, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
+  };
+}
+
 // GET DATA GRAPQL
+
+const GET_TOURNAMENT_DETAIL = gql`
+  query ($tournament_uid: String!) {
+    getTournamentDetail(tournament_uid: $tournament_uid) {
+      name
+      cover
+      thumbnail
+      team_size
+      brackets {
+        type
+      }
+    }
+  }
+`;
 
 const GET_PARTICIPANTS_DETAIL = gql`
   query ($uid: String!) {

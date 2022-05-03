@@ -1,8 +1,8 @@
 import s from "./profile.module.sass";
 import { useState } from "react";
-import InfoMyProfile from "components/ui/tournament/myProfile/infoProfile/Info";
-import EditProfile from "components/ui/tournament/myProfile/editMyProfile/EditProfile";
-import ContentTournament from "components/ui/tournament/myProfile/content/ContentTournament";
+import InfoMyProfile from "components/ui/tournament/MyProfile/infoProfile/Info";
+import EditProfile from "components/ui/tournament/MyProfile/editMyProfile/EditProfile";
+import ContentTournament from "components/ui/tournament/MyProfile/content/ContentTournament";
 
 const MyProfile = () => {
   const [isShowEdit, setIsShowEdit] = useState(false);

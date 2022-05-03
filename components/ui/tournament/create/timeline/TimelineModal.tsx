@@ -107,7 +107,7 @@ const TimelineModal = ({}: Props) => {
   return (
     <Modal
       //   onOk={handleOk}
-      bodyStyle={{ overflow: "auto" }}
+      // bodyStyle={{ overflow: "auto" }}
       title="Setup Timeline"
       visible={isModalVisible}
       cancelButtonProps={{
@@ -118,7 +118,7 @@ const TimelineModal = ({}: Props) => {
       okText="Confirm"
       onCancel={handleCancel}
       onOk={handleConfirm}
-      width={"90%"}
+      width={"60%"}
     >
       <i className="text-[14px]">
         * Lucis will review and approve your tournament in less than 24h then
@@ -131,23 +131,8 @@ const TimelineModal = ({}: Props) => {
           handleSelectDate={handleSelectDate}
         />
       )}
-      {/* {selectTimeRoundsSingle} */}
 
       {TournamentStore.bracket_type === "DOUBLE" && <DoubleBracket />}
-
-      {/* {calculateWinRoundsDouble && (
-        <div>
-          <h1 className="m-0 text-white text-[32px]">Win</h1>
-          {selectWinRoundsDouble}
-        </div>
-      )}
-
-      {calculateLoseRoundsDouble && (
-        <div className="mt-4 ">
-          <h1 className="m-0 text-white text-[32px]">Lose</h1>
-          {selectLoseRoundsDouble}
-        </div>
-      )} */}
     </Modal>
   );
 };
