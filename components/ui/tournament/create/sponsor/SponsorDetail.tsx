@@ -16,12 +16,13 @@ type SponsorDetailProps = {
   slot: SponsorSlot;
   show_ads?: boolean;
   tier_ids: string[];
+  minAmountInit: number;
 }
 
 const { Option } = Select;
 
 export default observer(function SponsorDetail(props: SponsorDetailProps) {
-  const { isEdit, setIsEdit, tier, min_deposit, slot, show_ads, tier_ids } = props;
+  const { isEdit, setIsEdit, tier, min_deposit, slot, show_ads, tier_ids, minAmountInit } = props;
   const [logoUrl, setLogoUrl] = useState('');
   const [form] = Form.useForm();
   const inputFileRef = useRef<any>(null)
@@ -95,7 +96,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
         form={form}
         onFinish={handleFormUpdate}
         initialValues={{
-          amount: slot?.amount || min_deposit,
+          amount: slot?.amount || '',
           name: slot?.name || '',
           home_page: slot?.home_page || '',
           ads_video: slot?.ads_link || '',
@@ -134,8 +135,9 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
               <InputNumber
                 prefix="$"
                 style={{ width: "100%" }}
-                min="0"
-                placeholder={`Min ${min_deposit} ${TournamentStore.currency_uid}`}
+                min={minAmountInit}
+                max={999999999999999}
+                placeholder={`Min ${minAmountInit} ${TournamentStore.currency_uid}`}
               />
             </Form.Item>
           </Col>

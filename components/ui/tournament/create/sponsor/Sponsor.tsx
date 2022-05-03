@@ -47,15 +47,22 @@ sponsorStore.setState({
   tiers: [...tiersDataInit],
 })
 
+const minAmountInit = [1000, 700, 500, 300];
+
 export default observer(function Sponsor(props: Props) {
   const { tiers } = sponsorStore;
   const tierIDs = tiers.map(tier => tier.tier_id)
 
   return (
     <div className={s.sponsorContainer}>
-      {tiers.length > 0 && tiers.map((i) => {
+      {tiers.length > 0 && tiers.map((tier, index) => {
         return (
-          <SponsorTier data={i} key={i.tier_id} tier_ids={tierIDs} />
+          <SponsorTier
+            data={tier}
+            key={tier.tier_id}
+            tier_ids={tierIDs}
+            minAmountInit={minAmountInit[index]}
+          />
         );
       })}
       <Button disabled className={`${s.addNewSponsorBtn} ml-auto mt-5`}>+ Add new sponsor Tier</Button>
