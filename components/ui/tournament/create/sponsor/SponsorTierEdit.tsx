@@ -1,18 +1,20 @@
 import React, { ChangeEvent } from "react";
 import { observer } from "mobx-react-lite";
-import { Col, Input, Row, Select, Switch } from "antd";
+import { Col, InputNumber, Row, Select, Switch } from "antd";
 import Text from "antd/lib/typography/Text";
 import s from "./index.module.sass";
 import { SponsorTierStore, SponsorSlot } from "./SponsorStore";
+
 const { Option } = Select
 
 type SponsorTierEditProps = {
   data: SponsorTierStore;
   currencyUid?: string;
+  minAmountInit: number;
 };
 
 export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
-  const { data, currencyUid } = props;
+  const { data, currencyUid, minAmountInit } = props;
 
   const maxSponsorOptions = [];
   for (let i = 1; i <= 20; i++) {
@@ -62,11 +64,16 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
     })
   };
   
-  const handleMinSponsorAmountChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    data.setState({
-      min_deposit: parseInt(value)
-    })
+  const handleMinSponsorAmountChange = (value: number) => {
+    if ((value !== null) && (value > 0)) {
+      data.setState({
+        min_deposit: value
+      })
+    } else {
+      data.setState({
+        min_deposit: minAmountInit
+      })
+    }
   };
 
   return (
@@ -131,13 +138,13 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
             <label>Min sponsor amount</label>
           </Col>
           <Col xs={{ span: 12 }} md={{ span: 10 }} lg={{ span: 10 }}>
-            <Input
-              type="number"
-              min={0}
+            <InputNumber
               defaultValue={data.min_deposit}
+              min={minAmountInit}
+              max={999999999999999}
               onChange={handleMinSponsorAmountChange}
               addonAfter={currencyUid}
-              placeholder={`${data.min_deposit}`}
+              placeholder={`${minAmountInit}`}
             />
           </Col>
         </Row>

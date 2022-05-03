@@ -1,10 +1,9 @@
 import { Button, message, Table } from "antd";
+import GroupLink from "components/ui/common/groupLink";
 import { useReferees } from "hooks/tournament/useTournamentDetail";
-import { useCallback, useEffect, useState } from "react";
-import { AppEmitter } from "services/emitter";
+import { useEffect, useState } from "react";
+import PopupDonate from "../../popup/popupDonate";
 
-import PopupDonate from "../../popUps/popupDonateDetail";
-import GroupLink from "../../groupLink/index";
 import s from "./Referees.module.sass";
 
 export default function Referees() {

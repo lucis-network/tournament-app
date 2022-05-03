@@ -100,6 +100,8 @@ const GET_TOURNAMENT_DETAIL = gql`
       thumbnail
       team_size
       participants
+      desc
+      rules
       brackets {
         type
       }

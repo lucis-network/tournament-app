@@ -1,11 +1,11 @@
 import s from "./Participants.module.sass";
-import ModalDonateTeam from "../../button/buttonDonateTeam/index";
 
 import { AppEmitter } from "services/emitter";
 import { Button, message, Table } from "antd";
 import { useEffect, useState } from "react";
 import { useParticipant } from "hooks/tournament/useTournamentDetail";
-import SearchComplete from "../../searchs";
+import SearchComplete from "components/ui/common/searchs";
+import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
 
 export default function TableParticipant() {
   const [datas, setDatas] = useState({});
