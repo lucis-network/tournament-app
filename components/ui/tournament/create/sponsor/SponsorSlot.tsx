@@ -44,7 +44,7 @@ export default observer(
               Edit
             </Button>
           </div>
-          {show_name && <div className={s.sponsorName}>{slot.name ?? 'Sponsor name'}</div>}
+          {show_name && <div className={s.sponsorName}>{(slot.name && (slot.name.length > 0)) ? slot.name : 'Sponsor name'}</div>}
         </div>
 
         {isEdit && (
