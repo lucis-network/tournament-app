@@ -1,4 +1,4 @@
-
+@import styles/common
 .wrapper
   min-height: 100vh
   .banner
@@ -14,11 +14,22 @@
   .group_button
     display: flex
     align-items: center
-    justify-content: end
+    justify-content: flex-end
     margin-top: 20px
-    :global(.ant-btn-primary)
-      background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
-      margin-left: 12px
+    gap: 12px
+    button 
+      min-width: 162px
+      padding: 12px 0
+      font-size: 20px
+      font-weight: 700
+      @include box-glass
+      background: rgba(0, 0, 0, 0.3)
+      @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+      
+    // :global(.ant-btn-primary)
+    //   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+    //   margin-left: 12px
+    //   border-radius: 10px
   .content_top
     .img_game
       max-width: 258px

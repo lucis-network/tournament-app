@@ -1,3 +1,4 @@
+import s from "components/Auth/AuthStore";
 import React from "react";
 import {
   Bracket,
@@ -8,6 +9,8 @@ import {
   RoundProps,
   RenderSeedProps,
 } from "react-brackets";
+
+import style from "../index.module.sass";
 
 interface LosingProps {
   rounds: RoundProps[];
@@ -23,7 +26,7 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
       losing[roundIndex].seeds.length === losing[roundIndex + 1]?.seeds.length;
     const Wrapper = isLineConnector ? SingleLineSeed : Seed;
     return (
-      <Wrapper mobileBreakpoint={breakpoint}>
+      <Wrapper mobileBreakpoint={breakpoint} className={style.name}>
         <SeedItem style={{ width: "100%" }}>
           <div>
             <SeedTeam>{seed.teams?.[0]?.name || "-----------"}</SeedTeam>

@@ -13,7 +13,7 @@ export default function Prizing(props: Props) {
 
   const fetchData = async () => {
     try {
-      const newData = await dataPrizing;      
+      const newData = await dataPrizing;
       const dataLenght = newData?.getTournamentDetailPrizing.length;
       for (let i = 0; i < dataLenght; i++) {
         setDataPrize((prev) => [
@@ -29,7 +29,7 @@ export default function Prizing(props: Props) {
         ]);
       }
     } catch {
-      message.error("Error fetch data")
+      message.error("Error fetch data");
     }
   };
   useEffect(() => {
