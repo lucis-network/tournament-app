@@ -1,14 +1,12 @@
 import s from "./TournamentDetail.module.sass";
-import TableParticipant from "../../../components/ui/common/tabsItem/participantsDetail/index";
-import Referees from "../../../components/ui/common/tabsItem/refereesDetail/index";
-import Prizing from "components/ui/common/tabsItem/prizingDetail";
-
-import { Button, Col, Row, Tabs } from "antd";
+import { Col, Row, Tabs } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
-import { useRouter } from "next/router";
-import { useMemo } from "react";
-import { isClient } from "utils/DOM";
+import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
+import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
+import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
+import Referees from "components/ui/tournament/detail/tabsitem/referees";
+import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
@@ -39,8 +37,13 @@ const TournamentDetail = () => {
     return "";
   }
 
-  const { team_size, brackets } = dataTournamentDetail;
+  const { team_size, brackets, desc, rules } = dataTournamentDetail;
   console.log(brackets[0].type);
+
+  // useEffect(() => {
+  //   if (dataTournamentDetail)
+  //     console.log("dataTournamentDetail", dataTournamentDetail);
+  // }, [dataTournamentDetail]);
 
   return (
     <div className={s.wrapper}>
@@ -99,10 +102,10 @@ const TournamentDetail = () => {
       <div className={`lucis-container ${s.container_Tabs}`}>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Overview" key="1">
-            Content of Tab Pane 1
+            <Overview desc={desc} />
           </TabPane>
           <TabPane tab="Rules" key="2">
-            Content of Tab Pane 2
+            <Rules rules={rules} />
           </TabPane>
           <TabPane tab="Bracket" key="3">
             Content of Tab Pane 3

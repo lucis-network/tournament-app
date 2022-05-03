@@ -1,6 +1,6 @@
 import s from "./ContentTournament.module.sass";
 import { Tabs } from "antd";
-import Overview from "components/ui/common/tabsItem/overviewDetail/Index";
+import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import MyTeamDetail from "components/ui/common/tabsItem/myTeamDetail";
 
 const { TabPane } = Tabs;
