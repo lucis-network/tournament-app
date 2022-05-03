@@ -11,11 +11,11 @@ import { SponsorTierStore } from "./SponsorStore";
 type SponsorTierProps = {
   data: SponsorTierStore;
   tier_ids: string[];
-  // saveTier: (newTierData: SponsorTierType) => void;
+  minAmountInit: number;
 }
 
 export default observer(function SponsorTier(props: SponsorTierProps) {
-  const { data: tierStore, tier_ids } = props
+  const { data: tierStore, tier_ids, minAmountInit } = props
   const [showEdit, setShowEdit] = useState(false);
   const { currency_uid } = TournamentStore
 
@@ -53,6 +53,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
                 show_name={show_name}
                 min_deposit={min_deposit}
                 show_ads={show_ads}
+                minAmountInit={minAmountInit}
               />
             ))}
           </div>
@@ -73,6 +74,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
             <SponsorTierEdit
               data={tierStore}
               currencyUid={currency_uid}
+              minAmountInit={minAmountInit}
             />
           </Col>
         </Row>
