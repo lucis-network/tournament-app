@@ -14,7 +14,7 @@ type Props = {
   url?: string;
 };
 
-const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
+export const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
   ? process.env.NEXT_PUBLIC_BUCKET_NAME
   : "";
 const REGION = process.env.NEXT_PUBLIC_REGION;
@@ -27,7 +27,7 @@ AWS.config.update({
   secretAccessKey: SECRET_ACCESS_KEY,
 });
 
-const myBucket = new AWS.S3({
+export const myBucket = new AWS.S3({
   params: { Bucket: S3_BUCKET },
   region: REGION,
 });
@@ -38,7 +38,6 @@ export default observer(function UploadImage(props: Props) {
     const file = e.target.files[0];
     if (file && ["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
       handleUpload(e.target.files[0]);
-    } else {
     }
   };
 

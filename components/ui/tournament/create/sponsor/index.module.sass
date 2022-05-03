@@ -9,8 +9,6 @@
     white-space: normal
   .tierRow
     margin-bottom: 30px
-    @media screen and (min-width: 768px)
-      margin-bottom: 60px
     &:last-of-type
       margin-bottom: 0
     &:first-of-type
@@ -45,9 +43,14 @@
       font-weight: 700
       padding-right: 10px
       font-size: 13px
+      @media screen and (min-width: 768px)
+        font-size: 18px
+      @media screen and (min-width: 992px)
+        font-size: 14px
     .editTierWrap
       border: 1px solid
-      padding: 10px
+      padding: 20px
+      margin-bottom: 20px
       :global(.ant-typography)
         color: #ffffff
     .editTier
@@ -95,8 +98,15 @@
         .sponsorName
           text-align: center
           font-size: 10px
-
-.collapse
-  padding: 10px 0 10px
+  .collapse
+    padding: 10px 0 10px
   :global(.ant-switch)
     background-color: rgb(252 11 11 / 25%) !important
+  :global(.ant-btn[disabled])
+    background: #8b8b8b
+    color: #ffffff
+  .addNewSponsorBtn
+    display: block
+.sponsorDetailForm
+  label
+    color: #ffffff !important
