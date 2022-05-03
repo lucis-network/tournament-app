@@ -2,6 +2,10 @@ import s from "./TournamentDetail.module.sass";
 import { Col, Row, Tabs } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
+import { useRouter } from "next/router";
+import { useMemo } from "react";
+import { isClient } from "utils/DOM";
+import Bracket from "components/ui/common/tabsItem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
 import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
@@ -30,14 +34,15 @@ const TournamentDetail = () => {
 
   const { dataTournamentDetail, loading } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2ek8le201060jn6tzuoo7nv",
+    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
   });
 
   if (loading) {
     return "";
   }
 
-  const { team_size, brackets, desc, rules } = dataTournamentDetail;
+  const { team_size, brackets, desc, rules, participants, user, game, name } =
+    dataTournamentDetail;
   console.log(brackets[0].type);
 
   // useEffect(() => {
@@ -63,17 +68,23 @@ const TournamentDetail = () => {
           <div className={s.img_game}>
             <img src="" alt="" />
           </div>
-          <h2>Thetan Arena</h2>
+          <h2>{game.name}</h2>
         </Col>
 
         <Col span={16} className={s.content_center}>
-          <h1>Thetan + Lucis Mid Summer Batch</h1>
+          <h1>{`${game.name} + ${name}`}</h1>
           <Row>
             <Col span={8} className={s.free_entry}>
               <p className={s.title}>Free entry</p>
               <div className={s.text}>
                 <p>Bracket type</p>
-                <span>Single eliminnation</span>
+                <span>
+                  {brackets[0].type === "SINGLE"
+                    ? "Single eliminnation"
+                    : brackets[0].type === "DOUBLE"
+                    ? "Double eliminnation"
+                    : ""}
+                </span>
               </div>
             </Col>
 
@@ -90,7 +101,7 @@ const TournamentDetail = () => {
               <p>Lucis Offical</p>
               <div className={s.text}>
                 <p>Max participants</p>
-                <span>32</span>
+                <span>{participants}</span>
               </div>
             </Col>
           </Row>
@@ -108,9 +119,9 @@ const TournamentDetail = () => {
             <Rules rules={rules} />
           </TabPane>
           <TabPane tab="Bracket" key="3">
-            Content of Tab Pane 3
+            <Bracket />
           </TabPane>
-          <TabPane tab="Participants(32/32)" key="4">
+          <TabPane tab={`Participants (${team_size}/${team_size})`} key="4">
             <TableParticipant />
           </TabPane>
           <TabPane tab="Referees" key="5">
