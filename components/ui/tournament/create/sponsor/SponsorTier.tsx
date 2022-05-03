@@ -69,7 +69,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
 
       {showEdit && (
         <Row className={s.collapse}>
-          <Col lg={{ span: 18, offset: 3 }}>
+          <Col xl={{ span: 18, offset: 3 }}>
             <SponsorTierEdit
               data={tierStore}
               currencyUid={currency_uid}

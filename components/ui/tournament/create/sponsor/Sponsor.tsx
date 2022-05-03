@@ -1,11 +1,9 @@
 import { observer } from "mobx-react-lite";
-import { Collapse } from "antd";
+import { Button } from "antd";
 import { uniqueId } from "lodash"
 import s from "./index.module.sass";
 import sponsorStore, { SponsorTierStore, SponsorSlot } from "./SponsorStore";
 import SponsorTier from "./SponsorTier";
-
-const { Panel } = Collapse;
 
 type Props = {};
 
@@ -60,6 +58,7 @@ export default observer(function Sponsor(props: Props) {
           <SponsorTier data={i} key={i.tier_id} tier_ids={tierIDs} />
         );
       })}
+      <Button disabled className={`${s.addNewSponsorBtn} ml-auto mt-5`}>+ Add new sponsor Tier</Button>
     </div>
   );
 });
