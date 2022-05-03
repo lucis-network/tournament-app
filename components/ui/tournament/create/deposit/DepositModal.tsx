@@ -9,6 +9,10 @@ import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { clearLocalCreateTournament } from "components/service/tournament/TournamentService";
+import EthersService from "../../../../../services/blockchain/Ethers";
+import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+import { BUSD } from "utils/Enum";
+import NotifyModal from "../notify/notifyModal";
 
 type Props = {};
 
@@ -20,21 +24,52 @@ export default observer(function DepositModal(props: Props) {
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.depositModalVisible = v);
 
-  const handleOk = () => {
+  const handleOk = async () => {
     console.log(ConnectWalletStore);
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
       message.info("You need connect wallet");
     } else {
-      setIsModalVisible(false);
-      TournamentStore.resetStates();
-      clearLocalCreateTournament();
-      router.push("/");
+      let txHash = await deposit();
+      console.log(txHash)
+      if (txHash) TournamentStore.notifyModalVisible = true;
+      else {
+        setIsModalVisible(false);
+        TournamentStore.resetStates();
+        clearLocalCreateTournament();
+        router.push("/");
+      }
     }
   };
 
   const fomatNumber = (value: number) => {
     return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+  };
+
+  const deposit = async () => {
+    if (
+      ConnectWalletStore_NonReactiveData.web3Provider &&
+      TournamentStore.pool_size
+    ) {
+      console.log("Vao day khong")
+      //throw makeError("Need to connect your wallet first");
+      const ethersService = new EthersService(
+        ConnectWalletStore_NonReactiveData.web3Provider
+      );
+      const total = getTotalAmount();
+      const txHash = await ethersService.transferFT(
+        "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
+        BUSD,
+        total
+      );
+      return txHash;
+    }
+  };
+
+  const getTotalAmount = () => {
+    if (TournamentStore.pool_size)
+      return (TournamentStore.pool_size * 111) / 100;
+    return 0;
   };
 
   return (
@@ -95,9 +130,20 @@ export default observer(function DepositModal(props: Props) {
                 </p>
               </Col>
             </Row>
+
+            <Row>
+              <Col span={10}>
+                <p>Total</p>
+              </Col>
+              <Col span={2}></Col>
+              <Col span={12}>
+                <p>{getTotalAmount()}</p>
+              </Col>
+            </Row>
           </div>
         </div>
         <ConnectWalletModal />
+        <NotifyModal />
       </Modal>
     </div>
   );

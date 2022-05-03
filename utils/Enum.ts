@@ -11,3 +11,6 @@ export const ChainOption = [
   { value: "USDT", label: "USDT" },
   { value: "BUSD", label: "BUSD" },
 ];
+
+
+export const BUSD = "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450"
