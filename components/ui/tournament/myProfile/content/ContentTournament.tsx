@@ -1,6 +1,7 @@
 import s from "./ContentTournament.module.sass";
 import { Tabs } from "antd";
 import Overview from "components/ui/common/tabsItem/overviewDetail/Index";
+import MyTeamDetail from "components/ui/common/tabsItem/myTeamDetail";
 
 const { TabPane } = Tabs;
 
@@ -11,7 +12,7 @@ export default function ContentTournament() {
         <Overview />
       </TabPane>
       <TabPane tab="My team" key="2">
-        Content of Tab Pane 2
+        <MyTeamDetail />
       </TabPane>
       <TabPane tab="For Sponsor" key="3">
         Content of Tab Pane 3
