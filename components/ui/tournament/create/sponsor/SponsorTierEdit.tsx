@@ -139,11 +139,12 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
           </Col>
           <Col xs={{ span: 12 }} md={{ span: 10 }} lg={{ span: 10 }}>
             <InputNumber
+              defaultValue={data.min_deposit}
               min={minAmountInit}
               max={999999999999999}
               onChange={handleMinSponsorAmountChange}
               addonAfter={currencyUid}
-              placeholder={`${data.min_deposit}`}
+              placeholder={`${minAmountInit}`}
             />
           </Col>
         </Row>
