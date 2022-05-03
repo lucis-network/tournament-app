@@ -516,7 +516,7 @@
 
 "@babel/runtime@7.0.0":
   version "7.0.0"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0.tgz#adeb78fedfc855aa05bc041640f3f6f98e85424c"
+  resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.0.0.tgz"
   integrity sha512-7hGhzlcmg01CvH1EHdSPVXYX1aJ8KCEyz6I9xYIi/asDtzBPMyMhVibhM/K6g/5qnKBwjZtp10bNZIEFTRW1MA==
   dependencies:
     regenerator-runtime "^0.12.0"
@@ -1001,7 +1001,7 @@
 
 "@g-loot/react-tournament-brackets@^1.0.17":
   version "1.0.17"
-  resolved "https://registry.yarnpkg.com/@g-loot/react-tournament-brackets/-/react-tournament-brackets-1.0.17.tgz#cb87c7b7bb4dbe0a82c6f00d457b63544ab64427"
+  resolved "https://registry.npmjs.org/@g-loot/react-tournament-brackets/-/react-tournament-brackets-1.0.17.tgz"
   integrity sha512-6k8JjE1Iq0lfMakV9GVZsfFQDKmStYYtc8bCl28IoJ6affJwgal4dAEDz6CWwUXkWBzG4Tq/dGGQ0QpGf5ZJxg==
 
 "@graphql-codegen/cli@2.6.2":
@@ -2540,6 +2540,16 @@ big.js@^5.2.2:
   version "5.2.2"
   resolved "https://registry.npmjs.org/big.js/-/big.js-5.2.2.tgz"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
+
+bignumber.js@^9.0.2:
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.0.2.tgz#71c6c6bed38de64e24a65ebe16cfcf23ae693673"
+  integrity sha512-GAcQvbpsM0pUb0zw1EI0KhQEZ+lRwR5fYaAp3vPOYuP7aDvGy6cVN6XHLauvF8SOga2y0dcLcjt3iQDTSEliyw==
+
+bignumber@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/bignumber/-/bignumber-1.1.0.tgz#e6ab0a743da5f3ea018e5c17597d121f7868c159"
+  integrity sha1-5qsKdD2l8+oBjlwXWX0SH3howVk=
 
 binary-extensions@^2.0.0:
   version "2.2.0"
@@ -4676,14 +4686,14 @@ globby@^11.0.3, globby@^11.0.4:
 
 gojs-react@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/gojs-react/-/gojs-react-1.1.1.tgz#d6d1ae4facefeaa9b10c4a8b384f0a8810474d83"
+  resolved "https://registry.npmjs.org/gojs-react/-/gojs-react-1.1.1.tgz"
   integrity sha512-5dU8v7WUDakhRGoxGodXi2wEVpeVfdeDaw1i/Bodb7VrQlyUALj5jGQaSKR+AXYQczk/pJ/B5R0xfVYnQLsdYQ==
   dependencies:
     tslib "^2.3.1"
 
 gojs@^2.2.7:
   version "2.2.7"
-  resolved "https://registry.yarnpkg.com/gojs/-/gojs-2.2.7.tgz#11c7ecd6df8e418e31439290c2b7602f8cc52424"
+  resolved "https://registry.npmjs.org/gojs/-/gojs-2.2.7.tgz"
   integrity sha512-X9E7DzfRY9rfmoqL9lezdzaPwnTApZr2Wjh089N2GL0GjNslpjA+3gxd3BH1ZjyvR6wZPNjKsH0st3M6Oi7wOA==
 
 got@^9.6.0:
@@ -5534,7 +5544,7 @@ keccak@^3.0.0:
 
 keycode@^2.1.7:
   version "2.2.1"
-  resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.1.tgz#09c23b2be0611d26117ea2501c2c391a01f39eff"
+  resolved "https://registry.npmjs.org/keycode/-/keycode-2.2.1.tgz"
   integrity sha512-Rdgz9Hl9Iv4QKi8b0OlCRQEzp4AgVxyCtz5S/+VIHezDmrDhkp2N2TqBWOLz0/gbeREXOOiI9/4b8BY9uw2vFg==
 
 keyv@^3.0.0:
@@ -6079,14 +6089,14 @@ mobx@^6.4.1:
 
 moment-timezone@^0.5.34:
   version "0.5.34"
-  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.34.tgz#a75938f7476b88f155d3504a9343f7519d9a405c"
+  resolved "https://registry.npmjs.org/moment-timezone/-/moment-timezone-0.5.34.tgz"
   integrity sha512-3zAEHh2hKUs3EXLESx/wsgw6IQdusOT8Bxm3D9UrHPQR7zlMmzwybC8zHEM1tQ4LJwP7fcxrWr8tuBg05fFCbg==
   dependencies:
     moment ">= 2.9.0"
 
 "moment@>= 2.9.0":
   version "2.29.3"
-  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.3.tgz#edd47411c322413999f7a5940d526de183c031f3"
+  resolved "https://registry.npmjs.org/moment/-/moment-2.29.3.tgz"
   integrity sha512-c6YRvhEo//6T2Jz/vVtYzqBzwvPT95JBQ+smCytzf7c50oMZRsR/a4w88aD34I+/QVSfnoAnSBFPJHItlOMJVw==
 
 moment@^2.24.0, moment@^2.25.3:
@@ -7346,7 +7356,7 @@ rc@^1.2.8:
 
 react-brackets@^0.4.6:
   version "0.4.6"
-  resolved "https://registry.yarnpkg.com/react-brackets/-/react-brackets-0.4.6.tgz#f51e0ae7245872b40b62fe7c8e4d7b97e646b655"
+  resolved "https://registry.npmjs.org/react-brackets/-/react-brackets-0.4.6.tgz"
   integrity sha512-brblO7YI0W3wGg4SprMru210j41A+14/z7JAOJzyTrbb9fLGzUv+2j7dh8l3uLm8M8QmCZIOVUx9oEjCS2wABg==
   dependencies:
     react-swipeable-views "^0.13.9"
@@ -7373,7 +7383,7 @@ react-dom@^16.8.6:
 
 react-event-listener@^0.6.0:
   version "0.6.6"
-  resolved "https://registry.yarnpkg.com/react-event-listener/-/react-event-listener-0.6.6.tgz#758f7b991cad9086dd39fd29fad72127e1d8962a"
+  resolved "https://registry.npmjs.org/react-event-listener/-/react-event-listener-0.6.6.tgz"
   integrity sha512-+hCNqfy7o9wvO6UgjqFmBzARJS7qrNoda0VqzvOuioEpoEXKutiKuv92dSz6kP7rYLmyHPyYNLesi5t/aH1gfw==
   dependencies:
     "@babel/runtime" "^7.2.0"
@@ -7419,7 +7429,7 @@ react-refresh@0.8.3:
 
 react-swipeable-views-core@^0.13.7:
   version "0.13.7"
-  resolved "https://registry.yarnpkg.com/react-swipeable-views-core/-/react-swipeable-views-core-0.13.7.tgz#c082b553f26e83fd20fc17f934200eb717023c8a"
+  resolved "https://registry.npmjs.org/react-swipeable-views-core/-/react-swipeable-views-core-0.13.7.tgz"
   integrity sha512-ekn9oDYfBt0oqJSGGwLEhKvn+QaqMGTy//9dURTLf+vp7W5j6GvmKryYdnwJCDITaPFI2hujXV4CH9krhvaE5w==
   dependencies:
     "@babel/runtime" "7.0.0"
@@ -7427,7 +7437,7 @@ react-swipeable-views-core@^0.13.7:
 
 react-swipeable-views-utils@^0.13.9:
   version "0.13.9"
-  resolved "https://registry.yarnpkg.com/react-swipeable-views-utils/-/react-swipeable-views-utils-0.13.9.tgz#a66e98f2f4502d8b00182901f80d13b2f903e10f"
+  resolved "https://registry.npmjs.org/react-swipeable-views-utils/-/react-swipeable-views-utils-0.13.9.tgz"
   integrity sha512-QLGxRKrbJCbWz94vkWLzb1Daaa2Y/TZKmsNKQ6WSNrS+chrlfZ3z9tqZ7YUJlW6pRWp3QZdLSY3UE3cN0TXXmw==
   dependencies:
     "@babel/runtime" "7.0.0"
@@ -7439,7 +7449,7 @@ react-swipeable-views-utils@^0.13.9:
 
 react-swipeable-views@^0.13.9:
   version "0.13.9"
-  resolved "https://registry.yarnpkg.com/react-swipeable-views/-/react-swipeable-views-0.13.9.tgz#d6a6c508bf5288ad55509f9c65916db5df0f2cec"
+  resolved "https://registry.npmjs.org/react-swipeable-views/-/react-swipeable-views-0.13.9.tgz"
   integrity sha512-WXC2FKYvZ9QdJ31v9LjEJEl1bA7E4AcaloTkbW0uU0dYf5uvv4aOpiyxubvOkVl1a5L2UAHmKSif4TmJ9usrSg==
   dependencies:
     "@babel/runtime" "7.0.0"
@@ -7528,7 +7538,7 @@ regenerator-runtime@0.13.4:
 
 regenerator-runtime@^0.12.0:
   version "0.12.1"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
+  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz"
   integrity sha512-odxIc1/vDlo4iZcfXqRYFj0vpXFNoGdKMAUieAlFYO6m/nl5e9KR/beGf41z4a1FI+aQgtjhuaSlDxQ0hmkrHg==
 
 regenerator-runtime@^0.13.4:
@@ -7928,7 +7938,7 @@ sha.js@^2.4.0, sha.js@^2.4.8:
 
 shallow-equal@^1.2.1:
   version "1.2.1"
-  resolved "https://registry.yarnpkg.com/shallow-equal/-/shallow-equal-1.2.1.tgz#4c16abfa56043aa20d050324efa68940b0da79da"
+  resolved "https://registry.npmjs.org/shallow-equal/-/shallow-equal-1.2.1.tgz"
   integrity sha512-S4vJDjHHMBaiZuT9NPb616CSmLf618jawtv3sufLl6ivK8WocjAo58cXwbRV1cgqxH0Qbv+iUt6m05eqEa2IRA==
 
 shallowequal@^1.1.0:
@@ -8439,7 +8449,7 @@ tough-cookie@~2.5.0:
 
 tournament-generator@^1.2.0:
   version "1.2.0"
-  resolved "https://registry.yarnpkg.com/tournament-generator/-/tournament-generator-1.2.0.tgz#b641452203b7ad2e0d7de0664fa8e5e2ad431920"
+  resolved "https://registry.npmjs.org/tournament-generator/-/tournament-generator-1.2.0.tgz"
   integrity sha512-mH635H0da5kMw6JVL5dV9nMTsboySYGmFSruAOYgD+LP7wgMFjdPgfNgKlmFlpZemvE/oDaVgxoTEbU5gLQLVg==
 
 tr46@^1.0.1:
@@ -8694,7 +8704,7 @@ vm-browserify@1.1.2:
 
 warning@^4.0.1:
   version "4.0.3"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.3.tgz#16e9e077eb8a86d6af7d64aa1e05fd85b4678ca3"
+  resolved "https://registry.npmjs.org/warning/-/warning-4.0.3.tgz"
   integrity sha512-rpJyN222KWIvHJ/F53XSZv0Zl/accqHR8et1kpaMTD/fLCRxtV8iX8czMzY7sVZupTI3zcUTg8eycS2kNF9l6w==
   dependencies:
     loose-envify "^1.0.0"

@@ -442,6 +442,18 @@ body .ant-menu {
     padding: 0 5rem;
   }
 }
+@media (min-width: 1600px) {
+  .lucis-container {
+    max-width: 1600px;
+    padding: 0 5rem;
+  }
+}
+@media (min-width: 1920px) {
+  .lucis-container {
+    max-width: 1920px;
+    padding: 0 5rem;
+  }
+}
 
 /*// tmp fix tailwind bug */
 body .backdrop-blur-sm {
@@ -688,7 +700,7 @@ body .ant-input {
     152.97deg,
     rgba(255, 255, 255, 0.2) 0%,
     rgba(255, 255, 255, 0) 100%
-  );
+  ) !important;
   backdrop-filter: blur(42px);
   transition: 0.3s;
   border: 1px solid #d9d9d933;

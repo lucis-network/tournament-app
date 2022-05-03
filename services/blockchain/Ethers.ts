@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
-import AnimTokenErc20Abi from "./abi/AnimTokenErc20Abi.json";
+import TokenErc20Abi from "./abi/TokenErc20Abi.json";
 import Erc721Abi from "./abi/Erc721Abi.json";
 import { makeError } from "../../utils/Error";
-
+import BigNumber from "bignumber.js";
 /*
 Usage:
 import EthersService from 'service/blockchain/Ethers'
@@ -49,7 +49,7 @@ export default class EtherContract {
   private getContractWithSignerErc20(contractAddress: string): ethers.Contract {
     return new ethers.Contract(
       contractAddress,
-      AnimTokenErc20Abi.abi,
+      TokenErc20Abi.abi,
       this.getSigner()
     );
   }
@@ -167,6 +167,34 @@ export default class EtherContract {
         nftTokenId
       );
       return transaction.wait();
+    } catch (error) {
+      console.log("{EtherContract.transferNft} error: ", error);
+      return false;
+    }
+  }
+  fmt = {
+    decimalSeparator: ",",
+    groupSeparator: ".",
+    groupSize: 3,
+    secondaryGroupSize: 2,
+  };
+  async transferFT(
+    toAddress: string,
+    tokenAddress: string,
+    amount: number
+  ): Promise<string | false> {
+    try {
+      const contract = await this.getContractWithSignerErc20(tokenAddress);
+      const decimal = await contract.decimals();
+
+      const totalAmount = new BigNumber(amount)
+        .multipliedBy(Math.pow(10, decimal))
+        .toFormat({ groupSeparator: "" });
+
+      const transaction = await contract.transfer(toAddress, totalAmount);
+      const txHash = transaction.hash;
+
+      return txHash;
     } catch (error) {
       console.log("{EtherContract.transferNft} error: ", error);
       return false;
