@@ -1,0 +1,17 @@
+.bracketContainer 
+    margin-top: 20px
+    overflow: auto
+    & > :first-child
+        // justify-content: center
+
+.seedItem
+    color: white
+    &:nth-child(even)::after 
+        border-right: 2px solid #b3b3b3 !important
+        border-bottom: 2px solid #b3b3b3 !important
+    &:nth-child(odd):not(:last-child)::after
+        border-right: 2px solid #b3b3b3 !important
+        border-top: 2px solid #b3b3b3 !important
+    &:nth-child(even)::before
+        border-top: 2px solid #b3b3b3 !important
+    

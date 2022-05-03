@@ -73,7 +73,24 @@ export function useTournamentDetail(props: Props) {
   };
 }
 
-// GET DATA GRAPQL
+export function useBracket(props: Props) {
+  const {
+    loading,
+    error,
+    data: dataTournamentDetail,
+  } = useQuery(GET_BRACKET, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    dataBracket: dataTournamentDetail?.getBracket,
+  };
+}
+
+// ======= GET DATA GRAPQL
 
 const GET_TOURNAMENT_DETAIL = gql`
   query ($tournament_uid: String!) {
@@ -82,8 +99,17 @@ const GET_TOURNAMENT_DETAIL = gql`
       cover
       thumbnail
       team_size
+      participants
       brackets {
         type
+      }
+      game {
+        name
+      }
+      user {
+        profile {
+          display_name
+        }
       }
     }
   }
@@ -127,6 +153,26 @@ const GET_PRIZING_DETAIL = gql`
       percentage
       position
       reward
+    }
+  }
+`;
+
+const GET_BRACKET = gql`
+  query ($tournament_uid: String!) {
+    getBracket(tournament_uid: $tournament_uid) {
+      type
+      bracketTeams {
+        uid
+      }
+      bracketRounds {
+        title
+        bracketMatchs {
+          team1_uid
+          team2_uid
+          score_1
+          score_2
+        }
+      }
     }
   }
 `;

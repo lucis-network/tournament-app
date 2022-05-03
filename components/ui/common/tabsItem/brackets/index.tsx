@@ -1,24 +1,29 @@
 import { DatePicker } from "antd";
+import { useBracket } from "hooks/tournament/useTournamentDetail";
+import { Moment } from "moment-timezone";
 import {
   Bracket,
-  RoundProps,
+  RenderSeedProps,
   Seed,
   SeedItem,
   SeedTeam,
-  RenderSeedProps,
 } from "react-brackets";
+import { BracketRound } from "src/generated/graphql";
+import s from "./index.module.sass";
 
-import s from "../index.module.sass";
-import TournamentStore from "src/store/TournamentStore";
+type RoundProps = {
+  //   numRounds: number;
+  //   numGames: number;
+  bracketRounds: BracketRound[];
+};
 
-interface RoundNewProps extends RoundProps {
-  title: any;
-}
+const calculateGames = (bracketRounds: any) => {
+  let totalGames = 0;
+  for (let i = 0; i < bracketRounds.length; i++) {
+    totalGames += bracketRounds[i].bracketMatchs.length;
+  }
 
-type Props = {
-  numRounds: number;
-  numParticipants: number;
-  handleSelectDate: any;
+  return totalGames;
 };
 
 const createSeed = () => {
@@ -27,38 +32,28 @@ const createSeed = () => {
   };
 };
 
-const createRounds = ({
-  numRounds,
-  numParticipants,
-  handleSelectDate,
-}: Props): RoundProps[] => {
-  const temp = [];
+const createRounds = ({ bracketRounds }: RoundProps): any => {
+  const rounds = bracketRounds.map((item, idx) => {
+    return {
+      title: <p className="m-0 text text-white">{item.title}</p>,
+      seeds: item.bracketMatchs?.map((item, idx) => {
+        return {
+          teams: [
+            {
+              id: item.team1_uid !== "bye" ? item.team1_uid : null,
+              score: item.score_1,
+            },
+            {
+              id: item.team2_uid !== "bye" ? item.team2_uid : null,
+              score: item.score_2,
+            },
+          ],
+        };
+      }),
+    };
+  });
 
-  let numGames = numParticipants / 2;
-
-  for (let i = 0; i < numRounds; i++) {
-    const title = (
-      <>
-        <p className="m-0 text text-white">
-          {i == numRounds - 1 ? `Final` : `Round ${i + 1}`}
-        </p>
-        <DatePicker
-          showTime
-          onChange={(date, dateString) => handleSelectDate(date, dateString, i)}
-        />
-      </>
-    );
-
-    const seeds = [];
-    for (let j = 0; j < numGames; j++) {
-      const tempSeed = createSeed();
-      seeds.push(tempSeed);
-    }
-    numGames = numGames / 2;
-    temp.push({ title, seeds });
-  }
-
-  return temp as any;
+  return rounds;
 };
 
 const CustomSeed = ({
@@ -72,6 +67,29 @@ const CustomSeed = ({
   // mobileBreakpoint is required to be passed down to a seed
   // console.log("seedIndex: ", seedIndex);
   // console.log(seed);
+  // {
+  //   title: 'Round 1',
+  //   seeds: [
+  //     {},
+  //     {
+  //       id: 1,
+  //       date: new Date().toDateString(),
+  //       teams: [
+  //         { id: 1, name: 'The Leons', score: 2 },
+  //         // { id: 3, name: 'Kitties', score: 6 },
+  //       ],
+  //     },
+  //     {},
+  //     {
+  //       id: 1,
+  //       date: new Date().toDateString(),
+  //       teams: [
+  //         { id: 1, name: 'The Leons', score: 2 },
+  //         // { id: 3, name: 'Kitties', score: 6 },
+  //       ],
+  //     },
+  //   ],
+  // },
 
   return (
     <Seed
@@ -91,7 +109,7 @@ const CustomSeed = ({
                 color: "black",
               }}
             >
-              {seed.teams[0]?.name || `Team ---`}
+              {seed.teams[0]?.id || `---`}
             </div>
             <div
               style={{
@@ -114,7 +132,7 @@ const CustomSeed = ({
                 color: "white",
               }}
             >
-              {seed.teams[1]?.name || `Team ---`}
+              {seed.teams[1]?.id || `---`}
             </div>
             <div
               style={{
@@ -133,18 +151,25 @@ const CustomSeed = ({
   );
 };
 
-const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
-  const numParticipants = TournamentStore.participants ?? 0;
-  const roundsTemp = createRounds({
-    numRounds,
-    numParticipants,
-    handleSelectDate,
+const BracketUI = () => {
+  const { dataBracket, loading } = useBracket({
+    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
   });
 
+  if (loading) {
+    return <></>;
+  }
+
+  const rounds = createRounds({
+    bracketRounds: dataBracket.bracketRounds,
+  });
+
+  console.log(rounds);
+
   return (
-    <div className={s.bracketContainer}>
+    <div>
       <Bracket
-        rounds={roundsTemp}
+        rounds={rounds}
         renderSeedComponent={CustomSeed}
         mobileBreakpoint={0}
       />
@@ -152,4 +177,4 @@ const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
   );
 };
 
-export default SingleBracket;
+export default BracketUI;
