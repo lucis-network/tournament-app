@@ -197,7 +197,7 @@ export default observer(function CreateTournament(props: Props) {
         TournamentStore.thumbnail ||
         TournamentStore.desc ||
         TournamentStore.rules ||
-        TournamentStore.bracket_type ||
+        //TournamentStore.bracket_type ||
         TournamentStore.team_size
         // TournamentStore.sponsor_slots
       ) {

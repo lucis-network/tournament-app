@@ -31,7 +31,7 @@ export default observer(function DepositModal(props: Props) {
       message.info("You need connect wallet");
     } else {
       let txHash = await deposit();
-      console.log(txHash)
+      console.log(txHash);
       if (txHash) TournamentStore.notifyModalVisible = true;
       else {
         setIsModalVisible(false);
@@ -51,7 +51,6 @@ export default observer(function DepositModal(props: Props) {
       ConnectWalletStore_NonReactiveData.web3Provider &&
       TournamentStore.pool_size
     ) {
-      console.log("Vao day khong")
       //throw makeError("Need to connect your wallet first");
       const ethersService = new EthersService(
         ConnectWalletStore_NonReactiveData.web3Provider
@@ -80,6 +79,7 @@ export default observer(function DepositModal(props: Props) {
         onOk={handleOk}
         className={`${s.container}`}
         cancelButtonProps={{ style: { display: "none" } }}
+        okText="Confirm"
       >
         <div className="">
           <p>Payment detail</p>
@@ -130,14 +130,14 @@ export default observer(function DepositModal(props: Props) {
                 </p>
               </Col>
             </Row>
-
-            <Row>
+                    
+            <Row style={{borderTop: "1px solid", paddingTop: "5px"}}>
               <Col span={10}>
                 <p>Total</p>
               </Col>
               <Col span={2}></Col>
               <Col span={12}>
-                <p>{getTotalAmount()}</p>
+                <p>{getTotalAmount()} {TournamentStore.currency_uid}</p> 
               </Col>
             </Row>
           </div>
