@@ -11,6 +11,7 @@ import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
 import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
 import Referees from "components/ui/tournament/detail/tabsitem/referees";
 import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
+import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
@@ -109,6 +110,12 @@ const TournamentDetail = () => {
         <Col span={2}>content right</Col>
       </Row>
 
+      {/* ===== sponsor ===== */}
+      <div className="lucis-container">
+        <TournamentDetailSponsor />
+      </div>
+      {/* ===== end sponsor ===== */}
+      
       {/* ===== tabs ===== */}
       <div className={`lucis-container ${s.container_Tabs}`}>
         <Tabs defaultActiveKey="1">
