@@ -40,50 +40,14 @@ import {
 import Router, { useRouter } from "next/router";
 import DepositModal from "components/ui/tournament/create/deposit/DepositModal";
 import { isClientDevMode } from "utils/Env";
-import sponsorStore, { ISponsorTierStore } from "components/ui/tournament/create/sponsor/SponsorStore";
-
+import sponsorStore, {
+  ISponsorTierStore,
+} from "components/ui/tournament/create/sponsor/SponsorStore";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 const { Option } = Select;
-
-const rounds = [
-  {
-    title: "Round 2",
-    start_at: "2022-04-25T04:00:00",
-    type: "UPPER",
-  },
-  {
-    title: "Loser round 1",
-    start_at: "2022-04-26T04:00:00",
-    type: "LOWER",
-  },
-  {
-    title: "Loser round 2",
-    start_at: "2022-04-27T06:00:00",
-    type: "LOWER",
-  },
-  {
-    title: "Round 3",
-    start_at: "2022-04-26T08:00:00",
-    type: "UPPER",
-  },
-  {
-    title: "Loser round 3",
-    start_at: "2022-04-26T08:00:00",
-    type: "LOWER",
-  },
-  {
-    title: "Loser round 4",
-    start_at: "2022-04-27T10:00:00",
-    type: "LOWER",
-  },
-  {
-    title: "Final",
-    start_at: "2022-04-27T12:00:00",
-    type: "UPPER",
-  },
-];
 
 type Props = {
   getDataChooseGame: any;
@@ -101,6 +65,7 @@ export default observer(function CreateTournament(props: Props) {
   const [messageErrorBracketType, setMessageErrorBracketType] = useState("");
   const [messageErrorPassword, setMessageErrorPassword] = useState("");
   const [messageErrorReferee, setMessageErrorReferee] = useState("");
+  const [messageErrorTimeline, setMessageErrorTimeline] = useState("");
   const [checkPoolSize, setCheckPoolSize] = useState(true);
   const [checkPassword, setCheckPassword] = useState(false);
   const [dataReferees, setDataReferees] = useState([]);
@@ -118,46 +83,49 @@ export default observer(function CreateTournament(props: Props) {
 
   const router = useRouter();
 
-  if (isClientDevMode) {
-    // @ts-ignore
-    window.tmp__NextRoute = router;
-  }
-
   const combineSponsorData = () => {
     const sponsorsStoreData = JSON.parse(JSON.stringify(sponsorStore.tiers));
-    const sponsorsStoreTiersSlots = sponsorsStoreData.map((tier: ISponsorTierStore) => {
-      return tier && tier.slots?.map((slot, index) => ({
-        logo: slot.logo,
-        name: slot.name,
-        home_page: slot.home_page,
-        ads_link: slot.ads_link,
-        order: index,
-        amount: slot.amount,
-      })).filter(slot => slot.name && slot.name !== '');
-    });
-    const sponsorsData = sponsorsStoreData.map((tier: ISponsorTierStore, index: number) => {
-      return {
-        name: tier.name,
-        max: tier.max_slot,
-        min: tier.min_deposit,
-        show_logo: tier.show_logo,
-        show_name: tier.show_name,
-        show_ads: tier.show_ads,
-        sponsor_transactions: {
-          createMany: {
-            data: sponsorsStoreTiersSlots[index]
-          }
-        },
-      };
-    });
-    
+    const sponsorsStoreTiersSlots = sponsorsStoreData.map(
+      (tier: ISponsorTierStore) => {
+        return (
+          tier &&
+          tier.slots
+            ?.map((slot, index) => ({
+              logo: slot.logo,
+              name: slot.name,
+              home_page: slot.home_page,
+              ads_link: slot.ads_link,
+              order: index,
+              amount: slot.amount,
+            }))
+            .filter((slot) => slot.name && slot.name !== "")
+        );
+      }
+    );
+    const sponsorsData = sponsorsStoreData.map(
+      (tier: ISponsorTierStore, index: number) => {
+        return {
+          name: tier.name,
+          max: tier.max_slot,
+          min: tier.min_deposit,
+          show_logo: tier.show_logo,
+          show_name: tier.show_name,
+          show_ads: tier.show_ads,
+          sponsor_transactions: {
+            createMany: {
+              data: sponsorsStoreTiersSlots[index],
+            },
+          },
+        };
+      }
+    );
+
     return sponsorsData;
-  }
+  };
 
   const saveDraft = () => {
     let cr = TournamentStore.getCreateTournament();
-    cr.rounds = rounds;
-    cr.sponsor_slots = combineSponsorData()
+    cr.sponsor_slots = combineSponsorData();
     setLocalCreateTournamentInfo(cr);
   };
 
@@ -184,8 +152,6 @@ export default observer(function CreateTournament(props: Props) {
       setDataReferees(dataRefereeRes);
 
       if (cr.password) setCheckPassword(true);
-      console.log(checkPassword);
-      console.log("cr", cr);
     }
   }, [getDataChooseGame && getDataReferees]);
 
@@ -213,7 +179,7 @@ export default observer(function CreateTournament(props: Props) {
 
   const handleBeforeUnload = (e: any) => {
     e.preventDefault();
-    //TournamentStore.resetStates();
+    TournamentStore.resetStates();
     clearLocalCreateTournament();
     return false;
   };
@@ -226,14 +192,6 @@ export default observer(function CreateTournament(props: Props) {
       window.onbeforeunload = () => {};
     };
   }, [router.asPath === "/tournament/create"]);
-
-  useEffect(() => {
-    window.onbeforeunload = handleBeforeUnload;
-
-    return () => {
-      window.onbeforeunload = () => {};
-    };
-  }, []);
 
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") {
@@ -253,6 +211,11 @@ export default observer(function CreateTournament(props: Props) {
     setMessageErrorReferee("");
   };
 
+  const handCallbackTimeline = (data: any) => {
+    TournamentStore.rounds = data;
+    if (data) setMessageErrorTimeline("");
+  };
+
   const handCallbackChooseGame = (data: any) => {
     setDataChooseGame(data);
     TournamentStore.game_uid = data.uid;
@@ -260,7 +223,6 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const openModal = (value: string) => {
-    // console.log(value);
     if (value === "choosegame") TournamentStore.chooseGameModalVisible = true;
     if (value === "referee") TournamentStore.refereeModalVisible = true;
     if (value === "timeline") TournamentStore.timelineModalVisible = true;
@@ -268,23 +230,15 @@ export default observer(function CreateTournament(props: Props) {
 
   const createTournament = () => {
     let cr = TournamentStore.getCreateTournament();
-    cr.rounds = rounds;
     cr.start_at = new Date();
     if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
     cr.sponsor_slots = combineSponsorData();
-    // console.log('sponsorStore: ', sponsorStore)
 
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);
 
-    router.events.off("routeChangeStart", beforeRouteHandler);
-    // router.events.off("routeChangeStart", () => {});
-    // router.events.off("routeChangeStart", () => {
-    //   return true;
-    // });
-    // router.events.off("routeChangeStart", () => {
-    //   return false;
-    // });
+    console.log("cr", cr);
+
     const tournamentService = new TournamentService();
     if (!validationInput(cr)) return;
     const response = tournamentService
@@ -341,6 +295,12 @@ export default observer(function CreateTournament(props: Props) {
 
     if (!cr.team_size) {
       setMessageErrorTeamSize("Teamsize must not be empty");
+      inputRef.current!.focus();
+      return false;
+    }
+
+    if (!cr.rounds) {
+      setMessageErrorTimeline("Timeline must not be empty");
       inputRef.current!.focus();
       return false;
     }
@@ -407,12 +367,17 @@ export default observer(function CreateTournament(props: Props) {
     if (value === "teamsize" && !TournamentStore.team_size)
       setMessageErrorTeamSize("Teamsize must not be empty");
   };
-
   const checkValidateName = (value: string) => {
     if (value) setMessageErrorName("");
     if (value.length > 125)
       setMessageErrorName("Tournament name cannot exceeds 125 characters");
   };
+
+  const user = getLocalAuthInfo();
+
+  useEffect(() => {
+    if (!user) Router.push("/");
+  }, [user]);
 
   return (
     <>
@@ -638,7 +603,11 @@ export default observer(function CreateTournament(props: Props) {
                 <Button onClick={() => openModal("timeline")}>
                   Setup Timeline
                 </Button>
+                <div className={`${s.message_error} ml-[10px]`}>
+                  {messageErrorTimeline}
+                </div>
               </Col>
+
               <Col span={4}>
                 <p className="ml-[10px]">Region</p>
               </Col>
@@ -819,12 +788,11 @@ export default observer(function CreateTournament(props: Props) {
           <div className="mt-20px text-center pb-20px">
             <Button onClick={createTournament}>Create tournament</Button>
           </div>
-
         </div>
 
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
         <RefereeModal handCallbackReferee={handCallbackReferee} />
-        <TimelineModal />
+        <TimelineModal handCallbackTimeline={handCallbackTimeline} />
         <DepositModal />
       </div>
 
