@@ -24,9 +24,11 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
   }: RenderSeedProps) => {
     const isLineConnector =
       losing[roundIndex].seeds.length === losing[roundIndex + 1]?.seeds.length;
+
     const Wrapper = isLineConnector ? SingleLineSeed : Seed;
+
     return (
-      <Wrapper mobileBreakpoint={breakpoint} className={style.name}>
+      <Wrapper mobileBreakpoint={breakpoint} className={style.seedLose}>
         <SeedItem style={{ width: "100%" }}>
           <div>
             <SeedTeam>{seed.teams?.[0]?.name || "-----------"}</SeedTeam>

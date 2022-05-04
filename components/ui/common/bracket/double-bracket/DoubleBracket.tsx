@@ -1,23 +1,33 @@
-import { RoundProps, Seed } from "react-brackets";
+import {
+  Bracket,
+  Seed,
+  SeedItem,
+  SeedTeam,
+  RoundProps,
+  RenderSeedProps,
+} from "react-brackets";
 import LosingBracket from "./LosingBracket";
 import WiningBracket from "./WiningBracket";
 import s from "../index.module.sass";
+import GoBracket from "../go-bracket/GoBracket";
+import FinalBracket from "./FinalBracket";
+import { DatePicker } from "antd";
 
 const DoubleBracket = () => {
-  // const double: RoundProps[] = [
-  //   { title: "Round 1", branch: "upper", seeds: [{}, {}, {}, {}] },
-  //   { title: "Round 2", branch: "upper", seeds: [{}, {}] },
-  //   { title: "Round 3", branch: "upper", seeds: [{}] },
-
-  //   { title: "Round 1.1", branch: "lower", seeds: [{}, {}, {}, {}] },
-  //   { title: "Round 2.1", branch: "lower", seeds: [{}, {}] },
-  //   { title: "Round 3.1", branch: "lower", seeds: [{}] },
-  //   { title: "Round 4.1", branch: "lower", seeds: [{}] },
-  // ];
-  const wining: RoundProps[] = [
+  const wining: any[] = [
     // ====== ROUND 1
     {
-      title: "Round 1",
+      title: (
+        <>
+          <p className="m-0 text text-white">Round 1</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
       seeds: [
         {},
         {
@@ -41,7 +51,17 @@ const DoubleBracket = () => {
     },
     // ===== ROUND 2
     {
-      title: "Round 2",
+      title: (
+        <>
+          <p className="m-0 text text-white">Round 2</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
       seeds: [...new Array(2)].fill({
         id: 1,
         date: new Date().toDateString(),
@@ -53,7 +73,17 @@ const DoubleBracket = () => {
     },
 
     {
-      title: "Round 3",
+      title: (
+        <>
+          <p className="m-0 text text-white">Round 3</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
       seeds: [...new Array(1)].fill({
         id: 1,
         date: new Date().toDateString(),
@@ -64,9 +94,19 @@ const DoubleBracket = () => {
       }),
     },
   ];
-  const losing: RoundProps[] = [
+  const losing: any[] = [
     {
-      title: "Round 1",
+      title: (
+        <>
+          <p className="m-0 text text-white">Round 1</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
       seeds: [
         {},
         {
@@ -80,7 +120,17 @@ const DoubleBracket = () => {
       ],
     },
     {
-      title: "Round 2",
+      title: (
+        <>
+          <p className="m-0 text text-white">Round 2</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
       seeds: [
         {},
         {
@@ -94,7 +144,17 @@ const DoubleBracket = () => {
       ],
     },
     {
-      title: "Round 3",
+      title: (
+        <>
+          <p className="m-0 text text-white">Round 3</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
       seeds: [
         {
           id: 1,
@@ -107,7 +167,17 @@ const DoubleBracket = () => {
       ],
     },
     {
-      title: "Round 4",
+      title: (
+        <>
+          <p className="m-0 text text-white">Round 4</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
       seeds: [
         {
           id: 1,
@@ -121,10 +191,57 @@ const DoubleBracket = () => {
     },
   ];
 
+  const final: any[] = [
+    {
+      title: (
+        <>
+          <p className="m-0 text text-white">Final</p>
+          <DatePicker
+            showTime
+            // onChange={(date, dateString) =>
+            //   handleSelectDate(date, dateString, i)
+            // }
+          />
+        </>
+      ),
+      seeds: [
+        {
+          id: 1,
+          date: new Date().toDateString(),
+          teams: [
+            {
+              id: 1,
+              name: "The Leons",
+              score: (
+                <>
+                  <input type="text" />
+                </>
+              ),
+            },
+            { id: 3, name: "Kitties", score: 6 },
+          ],
+        },
+      ],
+    },
+  ];
+
   return (
-    <div style={{ position: "relative" }}>
-      <WiningBracket rounds={wining} />
-      <LosingBracket rounds={losing} />
+    <div
+      style={{
+        position: "relative",
+        display: "flex",
+        gap: "20px",
+        overflow: "auto",
+      }}
+    >
+      <div>
+        <WiningBracket rounds={wining} />
+        <LosingBracket rounds={losing} />
+      </div>
+
+      <div>
+        <FinalBracket rounds={final} />
+      </div>
     </div>
   );
 };

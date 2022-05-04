@@ -3,15 +3,15 @@ import { memo, useCallback, useEffect, useState } from "react";
 import s from "./PopupDonate.module.sass";
 
 type Props = {
-  datas: object;
+  datas?: object;
   status: boolean;
-  onClick: () => void
+  closeModal: () => void;
 };
 
 const { TextArea } = Input;
 
 const PopupDonate = (props: Props) => {
-  const { datas, status, onClick } = props;
+  const { datas, status, closeModal } = props;
 
   const [titleMessage, setTitleMessage] = useState("");
   const [values, setValues] = useState("");
@@ -45,8 +45,9 @@ const PopupDonate = (props: Props) => {
     <Modal
       centered
       visible={status}
-      onOk={onClick}
-      onCancel={onClick}
+      onOk={closeModal}
+      onCancel={closeModal}
+      cancelButtonProps={{ style: { display: "none" } }}
       className={s.content_modal}
     >
       {Object.values([datas]).map((e: any) => (
@@ -54,7 +55,7 @@ const PopupDonate = (props: Props) => {
           <Col span={10}>Donate to</Col>
           <Col className={s.information}>
             <div className={s.avt_member}>avt</div>
-            <p>{e.name}</p>
+            <p>{e?.name ?? ""}</p>
           </Col>
         </Row>
       ))}

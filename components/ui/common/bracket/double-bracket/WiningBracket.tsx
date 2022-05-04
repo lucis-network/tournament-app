@@ -16,8 +16,6 @@ interface LosingProps {
 
 const WiningBracket: React.FC<LosingProps> = ({ rounds: wining }) => {
   const RenderSeed = ({ seed, breakpoint, seedIndex }: RenderSeedProps) => {
-    console.log(wining[seedIndex]);
-
     return (
       <>
         <Seed
@@ -41,6 +39,7 @@ const WiningBracket: React.FC<LosingProps> = ({ rounds: wining }) => {
   return (
     <Bracket
       rounds={wining}
+      roundClassName={s.wining}
       renderSeedComponent={RenderSeed}
       swipeableProps={{
         enableMouseEvents: true,

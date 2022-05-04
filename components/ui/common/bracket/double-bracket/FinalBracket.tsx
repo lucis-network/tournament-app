@@ -1,0 +1,101 @@
+import React from "react";
+import {
+  Bracket,
+  Seed,
+  SeedItem,
+  SeedTeam,
+  RoundProps,
+  RenderSeedProps,
+} from "react-brackets";
+
+import s from "../index.module.sass";
+
+interface FinalProps {
+  rounds: RoundProps[];
+}
+
+const FinalBracket = ({ rounds: final }: FinalProps) => {
+  const RenderSeed = ({ seed, breakpoint, seedIndex }: RenderSeedProps) => {
+    console.log(seedIndex);
+
+    return (
+      <>
+        <Seed
+          style={{
+            opacity: seed.bye_match ? 0.5 : 1,
+          }}
+          mobileBreakpoint={breakpoint}
+        >
+          <SeedItem style={{ width: "100%" }}>
+            <div>
+              <SeedTeam>
+                <div
+                  style={{
+                    width: "100%",
+                    background: "#d8d899",
+                    height: "100%",
+                    padding: "5px 0",
+                    color: "black",
+                  }}
+                >
+                  {seed.teams[0]?.name || `Team ---`}
+                </div>
+                <div
+                  style={{
+                    background: "yellow",
+                    color: "black",
+                    padding: "5px",
+                    width: "50px",
+                    overflow: "hidden",
+                  }}
+                >
+                  {seed.teams[0]?.score || "--"}
+                </div>
+              </SeedTeam>
+              <div style={{ height: 1, backgroundColor: "#707070" }}></div>
+              <SeedTeam>
+                <div
+                  style={{
+                    width: "100%",
+                    background: "#d8d899",
+                    height: "100%",
+                    padding: "5px 0",
+                    color: "black",
+                  }}
+                >
+                  {seed.teams[1]?.name || `Team ---`}
+                </div>
+                <div
+                  style={{
+                    background: "yellow",
+                    color: "black",
+                    padding: "5px",
+                    width: "50px",
+                  }}
+                >
+                  {seed.teams[1]?.score || "--"}
+                </div>
+              </SeedTeam>
+            </div>
+          </SeedItem>
+        </Seed>
+      </>
+    );
+  };
+  return (
+    <Bracket
+      rounds={final}
+      bracketClassName={s.seedFinal}
+      renderSeedComponent={RenderSeed}
+      swipeableProps={{
+        enableMouseEvents: true,
+        animateHeight: true,
+        style: {
+          padding: "0 50px 0 0",
+        },
+      }}
+    />
+  );
+};
+
+export default FinalBracket;
