@@ -1,4 +1,4 @@
-import { ApolloError, gql, useQuery } from "@apollo/client";
+import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
 import { SponsorSlot } from "src/generated/graphql";
 
 type Props = {
@@ -97,11 +97,13 @@ export function useSponsors(props: Props): {
   dataSponsors: {
     getSponsorSlot: SponsorSlot[],
   },
+  refetch: () => Promise<ApolloQueryResult<any>>,
 } {
   const {
     loading,
     error,
     data: dataSponsors,
+    refetch,
   } = useQuery(GET_SPONSOR_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "cache-and-network",
@@ -114,6 +116,7 @@ export function useSponsors(props: Props): {
     loading,
     error,
     dataSponsors,
+    refetch,
   };
 }
 

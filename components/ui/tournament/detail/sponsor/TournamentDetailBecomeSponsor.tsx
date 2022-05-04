@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { Button, Col, Input, InputNumber, Modal, Row, Select, Form } from 'antd';
 import CircleImage from 'components/ui/common/images/CircleImage';
 import Text from 'antd/lib/typography/Text';
@@ -6,28 +6,31 @@ import TournamentStore from "../../../../../src/store/TournamentStore"
 import { myBucket, S3_BUCKET } from 'components/ui/common/upload/UploadImage';
 import { TiersSelectType } from './TournamentDetailSponsor';
 import s from "../../../../../styles/tournament/sponsor/index.module.sass";
+import { ApolloQueryResult } from '@apollo/client';
 
 type TournamentDetailBecomeSponsorProps = {
   isBecome: boolean;
   setIsBecome: Dispatch<SetStateAction<boolean>>;
   tiersSelect: TiersSelectType[];
+  refetch: () => Promise<ApolloQueryResult<any>>;
 }
 
 const { Option } = Select;
 
 export default function TournamentDetailBecomeSponsor(props: TournamentDetailBecomeSponsorProps) {
-  const { isBecome, setIsBecome, tiersSelect } = props;
+  const { isBecome, setIsBecome, tiersSelect, refetch } = props;
   const [selectedTier, setSelectedTier] = useState(tiersSelect[0]);
   const [currentMinAmount, setCurrentMinAmount] = useState(tiersSelect[0].min_deposit)
   const [logoUrl, setLogoUrl] = useState('');
   const [form] = Form.useForm();
-  const { uid: tierUid, name: tierName, min_deposit: minAmount, show_ads, show_name } = selectedTier;
+  const { uid: tierUid, min_deposit: minAmount, show_ads, show_name, is_full } = selectedTier;
   const inputFileRef = useRef<any>(null);
   const inputSponsorAmountRef = useRef<HTMLInputElement>(null);
 
   const handleFormUpdate = (data: any) => {
     // todo submit sponsor
-    console.log(data)
+    refetch();
+    console.log('handleFormUpdate: ', data);
   }
 
   const handleTierChange = (value: string) => {
@@ -36,7 +39,7 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
     if (inputSponsorAmountRef.current && !inputSponsorAmountRef.current.value) {
       setCurrentMinAmount(selected.min_deposit);
     } else if (inputSponsorAmountRef.current && inputSponsorAmountRef.current.value) {
-      form.validateFields()
+      form.validateFields(['amount'])
     }
   };
 
@@ -79,6 +82,7 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
       visible={isBecome}
       onCancel={() => setIsBecome(false)}
       cancelButtonProps={{ style: { display: 'none' } }}
+      okButtonProps={{ disabled: is_full }}
       okText={`Sponsor with ${currentMinAmount} USDT`}
       onOk={() => {
         form
@@ -113,9 +117,11 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
               style={{ width: '100%' }}
               defaultValue={tierUid}
               onChange={handleTierChange}
+              status={is_full ? 'error' : ''}
             >
-              {tiersSelect.map(tier => <Option key={tier.uid} value={tier.uid}>{tier.name}</Option>)}
+              {tiersSelect.map(tier => <Option key={tier.uid} value={tier.uid} disabled={tier.is_full}>{tier.name}</Option>)}
             </Select>
+            {is_full && <div style={{ color: '#ff4d4f' }}>All slots have been occupied.</div>}
           </Col>
         </Row>
         <Row align="middle" className="mb-4">
@@ -145,6 +151,7 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
                 max={999999999999999}
                 placeholder={`Min ${minAmount} ${TournamentStore.currency_uid}`}
                 onChange={handleSponsorAmountChange}
+                disabled={is_full}
               />
             </Form.Item>
           </Col>
@@ -165,8 +172,9 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
                   ref={inputFileRef}
                   onChange={handleFileInput}
                   accept="image/png, image/jpeg, image/gif"
+                  disabled={is_full}
                 />
-                <Button onClick={() => inputFileRef.current?.click()} className="mb-2">Upload logo</Button>
+                <Button onClick={() => inputFileRef.current?.click()} className="mb-2" disabled={is_full}>Upload logo</Button>
                 <Text style={{ color: '#ffffff', fontSize: 12, display: 'block' }}>Recommended size: 200x200px</Text>
               </Col>
             </Row>
@@ -187,7 +195,7 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
                   },
                 ]}
               >
-                <Input placeholder="Sponsor name" maxLength={45} />
+                <Input placeholder="Sponsor name" maxLength={45} disabled={is_full} />
               </Form.Item>
             </Col>
           </Row>
@@ -210,7 +218,7 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
                 },
               ]}
             >
-              <Input placeholder="https://..." />
+              <Input placeholder="https://..." disabled={is_full} />
             </Form.Item>
           </Col>
         </Row>
@@ -230,7 +238,7 @@ export default function TournamentDetailBecomeSponsor(props: TournamentDetailBec
                   }
                 ]}
               >
-                <Input placeholder="https://youtube.com/v/12345678" />
+                <Input placeholder="https://youtube.com/v/12345678" disabled={is_full} />
               </Form.Item>
               <Text italic className="mb-0" style={{ color: '#ffffff', fontSize: 14 }}>
                 This ads video will be display on the tournament detail screen {">"} Cover Section

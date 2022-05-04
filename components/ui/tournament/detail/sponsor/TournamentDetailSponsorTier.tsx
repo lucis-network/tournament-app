@@ -7,12 +7,11 @@ import { uniqueId } from "lodash";
 
 type TournamentDetailSponsorTierProps = {
   tier: SponsorSlot,
-  sponsor_transactions: Maybe<SponsorTransaction[]> | undefined,
 }
 
 export default function TournamentDetailSponsorTier(props: TournamentDetailSponsorTierProps) {
-  const { tier, sponsor_transactions } = props;
-  const { name: tierName, max: maxSponsorSlot } = tier;
+  const { tier } = props;
+  const { name: tierName, max: maxSponsorSlot, sponsor_transactions } = tier;
 
   const newSlots: SponsorTransaction[] = [];
 
@@ -27,9 +26,7 @@ export default function TournamentDetailSponsorTier(props: TournamentDetailSpons
   if (sponsor_transactions) {
     sponsor_transactions.map((item: SponsorTransaction) => {
       const { order } = item
-      if (order) {
-        newSlots[order] = { ...item }
-      }
+      newSlots[order as number] = { ...item }
     })
   }
 
