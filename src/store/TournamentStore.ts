@@ -43,11 +43,11 @@ export type SponsorTierType = {
 
 export type SponsorTransactions = {
   createMany?: CreateMany;
-}
+};
 
 export type CreateMany = {
   data: SponsorSlotType[];
-}
+};
 
 export type SponsorSlotType = {
   logo?: string;
@@ -56,6 +56,12 @@ export type SponsorSlotType = {
   ads_link?: string;
   order?: number;
   amount: number;
+};
+
+export type Rounds = {
+  title?: string;
+  start_at?: Date;
+  type?: string;
 };
 
 const DEFAULT_PARTICIPANTS = 8;
@@ -111,7 +117,8 @@ class TournamentStore {
   private _start_at?: Date | undefined;
 
   private _sponsor_slots: SponsorTierType[] | undefined;
-  private _rounds?: any[] | undefined;
+
+  private _rounds?: Rounds[] | undefined;
 
   constructor() {
     makeAutoObservable(this);
@@ -348,12 +355,6 @@ class TournamentStore {
   public set sponsor_slots(value: SponsorTierType[]) {
     this._sponsor_slots = value;
   }
-  public get rounds_1(): any[] | undefined {
-    return this._rounds;
-  }
-  public set rounds_1(value: any[] | undefined) {
-    this._rounds = value;
-  }
   public get depositModalVisible(): boolean {
     return this._depositModalVisible;
   }
@@ -366,12 +367,18 @@ class TournamentStore {
   public set notifyModalVisible(value: boolean) {
     this._notifyModalVisible = value;
   }
+  public get rounds(): Rounds[] | undefined {
+    return this._rounds;
+  }
+  public set rounds(value: Rounds[] | undefined) {
+    this._rounds = value;
+  }
 }
 
 const s = new TournamentStore();
 export default s;
 
 if (isClientDevMode) {
-  // @ts-ignore  
+  // @ts-ignore
   window.tmp__TournamentStore = s;
 }

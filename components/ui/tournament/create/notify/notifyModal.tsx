@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Modal } from "antd";
+import { Button, Input, Modal } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
@@ -22,6 +22,10 @@ export default observer(function NotifyModal(props: Props) {
     router.push("/");
   };
 
+  const copy = (e: any) => {
+    console.log(e.target.value);
+    navigator.clipboard.writeText("https://lucis-tn.koolab.io/");
+  };
   return (
     <div style={{ width: "400px" }}>
       <Modal
@@ -36,6 +40,17 @@ export default observer(function NotifyModal(props: Props) {
             Lucis will review and approve your tournament in less than 24h then
             your tournament can be visiable to everyone
           </p>
+          <p>Here your invite link to invite team to join your tournaments:</p>
+          <Input
+            disabled
+            value="https://lucis-tn.koolab.io/"
+            onClick={copy}
+            style={{color: "white"}}
+          ></Input>
+          <div className={s.button}>
+            <Button>View your tournament</Button>
+            <Button>Share</Button>
+          </div>
         </div>
         <ConnectWalletModal />
       </Modal>

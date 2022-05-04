@@ -104,6 +104,8 @@ const GET_TOURNAMENT_DETAIL = gql`
       rules
       brackets {
         type
+        start_at
+        status
       }
       game {
         name
@@ -113,6 +115,12 @@ const GET_TOURNAMENT_DETAIL = gql`
           display_name
         }
       }
+      sponsorSlot {
+        sponsor_transactions {
+          amount
+        }
+      }
+      currency_uid
     }
   }
 `;

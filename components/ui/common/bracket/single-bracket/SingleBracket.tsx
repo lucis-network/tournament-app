@@ -10,6 +10,8 @@ import {
 
 import s from "../index.module.sass";
 import TournamentStore from "src/store/TournamentStore";
+import moment from "moment";
+import { range } from "lodash";
 
 interface RoundNewProps extends RoundProps {
   title: any;
@@ -36,6 +38,19 @@ const createRounds = ({
 
   let numGames = numParticipants / 2;
 
+  function disabledDate(current: any) {
+    // Can not select days before today and today
+    return current && current < moment().endOf("day");
+  }
+
+  function disabledDateTime() {
+    return {
+      disabledHours: () => range(0, 24).splice(4, 20),
+      disabledMinutes: () => range(30, 60),
+      disabledSeconds: () => [55, 56],
+    };
+  }
+
   for (let i = 0; i < numRounds; i++) {
     const title = (
       <>
@@ -43,6 +58,8 @@ const createRounds = ({
           {i == numRounds - 1 ? `Final` : `Round ${i + 1}`}
         </p>
         <DatePicker
+          // disabledDate={disabledDate}
+          // disabledTime={disabledDateTime}
           showTime
           onChange={(date, dateString) => handleSelectDate(date, dateString, i)}
         />

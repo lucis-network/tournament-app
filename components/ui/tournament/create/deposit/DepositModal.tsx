@@ -17,7 +17,6 @@ import NotifyModal from "../notify/notifyModal";
 type Props = {};
 
 export default observer(function DepositModal(props: Props) {
-  const [txs, setTxs] = useState([]);
   const router = useRouter();
 
   const isModalVisible = TournamentStore.depositModalVisible,
@@ -25,7 +24,6 @@ export default observer(function DepositModal(props: Props) {
       (TournamentStore.depositModalVisible = v);
 
   const handleOk = async () => {
-    console.log(ConnectWalletStore);
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
       message.info("You need connect wallet");
@@ -67,10 +65,13 @@ export default observer(function DepositModal(props: Props) {
 
   const getTotalAmount = () => {
     if (TournamentStore.pool_size)
-      return (TournamentStore.pool_size * 111) / 100;
+      return ((TournamentStore.pool_size * 111) / 100);
     return 0;
   };
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  }
   return (
     <div style={{ width: "400px" }}>
       <Modal
@@ -80,10 +81,11 @@ export default observer(function DepositModal(props: Props) {
         className={`${s.container}`}
         cancelButtonProps={{ style: { display: "none" } }}
         okText="Confirm"
+        //onCancel={handleCancel}
       >
         <div className="">
           <p>Payment detail</p>
-          <div style={{ padding: "0px 20px 20px 20px" }}>
+          <div style={{ padding: "0px 20px 0px 20px" }}>
             <Row>
               <Col span={10}>
                 <p>Prize Pool</p>
@@ -137,10 +139,11 @@ export default observer(function DepositModal(props: Props) {
               </Col>
               <Col span={2}></Col>
               <Col span={12}>
-                <p>{getTotalAmount()} {TournamentStore.currency_uid}</p> 
+                <p>{getTotalAmount().toFixed(2)} {TournamentStore.currency_uid}</p> 
               </Col>
             </Row>
           </div>
+          <p style={{textAlign: "center", margin: 0}}>Next: You'll need to confirm transaction on your wallet</p>
         </div>
         <ConnectWalletModal />
         <NotifyModal />

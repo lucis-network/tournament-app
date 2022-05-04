@@ -11,6 +11,7 @@ import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
 import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
 import Referees from "components/ui/tournament/detail/tabsitem/referees";
 import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
+import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
@@ -34,17 +35,27 @@ const TournamentDetail = () => {
 
   const { dataTournamentDetail, loading } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
+    tournament_uid: "cl2px4spw10060jnsmddcy28v",
   });
 
   if (loading) {
     return "";
   }
 
-  const { team_size, brackets, desc, rules, participants, user, game, name } =
-    dataTournamentDetail;
-  console.log(brackets[0].type);
-
+  const {
+    team_size,
+    brackets,
+    desc,
+    rules,
+    participants,
+    user,
+    game,
+    name,
+    sponsorSlot,
+    pool_size,
+    currency
+  } = dataTournamentDetail;
+  console.log(dataTournamentDetail);
   // useEffect(() => {
   //   if (dataTournamentDetail)
   //     console.log("dataTournamentDetail", dataTournamentDetail);
@@ -108,6 +119,18 @@ const TournamentDetail = () => {
         </Col>
         <Col span={2}>content right</Col>
       </Row>
+
+      {/* ==== registration phase ====  */}
+
+      <div className={`lucis-container`}>
+        <RegistrationPhase
+          participants={participants}
+          brackets={brackets}
+          sponsorSlot={sponsorSlot}
+          pool_size={pool_size}
+          currency={currency}
+        />
+      </div>
 
       {/* ===== tabs ===== */}
       <div className={`lucis-container ${s.container_Tabs}`}>
