@@ -237,8 +237,6 @@ export default observer(function CreateTournament(props: Props) {
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);
 
-    console.log("cr", cr);
-
     const tournamentService = new TournamentService();
     if (!validationInput(cr)) return;
     const response = tournamentService
