@@ -41,19 +41,20 @@ export default function Prizing(props: Props) {
       title: "Place",
       dataIndex: "place",
       key: "place",
-      width: "30%",
+      width: 50,
     },
     {
       title: "Prize allocation",
       dataIndex: "prizeAllocation",
       key: "prizeAllocation",
-      width: "35%",
+      // width: "35%",
+      width: 250,
     },
     {
       title: "Prize",
       dataIndex: "thirdPrize",
       key: "thirdPrize",
-      width: "35%",
+      // width: "35%",
     },
   ];
   return (

@@ -56,29 +56,31 @@ export default function TableParticipant() {
       title: "No",
       dataIndex: "id",
       key: "id",
-      width: "5%",
+      width: 50,
     },
     {
       title: "Participant",
       dataIndex: "name",
       key: "name",
-      width: "50%",
+      width: 250,
     },
     {
       title: "Earning",
       dataIndex: "position",
       key: "position",
-      width: "15%",
+      width: 250,
+
+      // width: "15%",
     },
     {
       title: "Donated",
       dataIndex: "donate",
       key: "donate",
-      width: "15%",
+      // width: "15%",
     },
     {
       title: "",
-      width: "15%",
+      // width: "15%",
       render: (_: any, item: object) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button onClick={() => handleClick(item)} type="primary">

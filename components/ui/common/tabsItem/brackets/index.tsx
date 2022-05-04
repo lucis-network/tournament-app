@@ -109,7 +109,7 @@ const CustomSeed = ({
                 color: "black",
               }}
             >
-              {seed.teams[0]?.id || `---`}
+              {seed.teams[0]?.id || `bye`}
             </div>
             <div
               style={{
@@ -132,7 +132,7 @@ const CustomSeed = ({
                 color: "white",
               }}
             >
-              {seed.teams[1]?.id || `---`}
+              {seed.teams[1]?.id || `bye`}
             </div>
             <div
               style={{
@@ -167,7 +167,7 @@ const BracketUI = () => {
   console.log(rounds);
 
   return (
-    <div>
+    <div className={s.bracketContainer}>
       <Bracket
         rounds={rounds}
         renderSeedComponent={CustomSeed}

@@ -38,7 +38,7 @@ export default function Referees() {
                   }`}
                   alt=""
                 />
-                <span style={{marginLeft: 12}}>{type?.display_name}</span>
+                <span style={{ marginLeft: 12 }}>{type?.display_name}</span>
               </div>
             ),
             contact: <GroupLink datas={type} />,
@@ -63,19 +63,22 @@ export default function Referees() {
       title: "",
       dataIndex: "avt",
       key: "avt",
-      width: "10%",
+      width: 50,
     },
     {
       title: "Referees",
       dataIndex: "name",
       key: "name",
-      width: "40%",
+      // width: "40%",
+      width: 250,
     },
     {
       title: "Contact",
       dataIndex: "contact",
       key: "contact",
-      width: "40%",
+      width: 250,
+
+      // width: "40%",
     },
     {
       title: "",

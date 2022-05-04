@@ -72,6 +72,29 @@ const CustomSeed = ({
   // mobileBreakpoint is required to be passed down to a seed
   // console.log("seedIndex: ", seedIndex);
   // console.log(seed);
+  // {
+  //   title: 'Round 1',
+  //   seeds: [
+  //     {},
+  //     {
+  //       id: 1,
+  //       date: new Date().toDateString(),
+  //       teams: [
+  //         { id: 1, name: 'The Leons', score: 2 },
+  //         // { id: 3, name: 'Kitties', score: 6 },
+  //       ],
+  //     },
+  //     {},
+  //     {
+  //       id: 1,
+  //       date: new Date().toDateString(),
+  //       teams: [
+  //         { id: 1, name: 'The Leons', score: 2 },
+  //         // { id: 3, name: 'Kitties', score: 6 },
+  //       ],
+  //     },
+  //   ],
+  // },
 
   return (
     <Seed
