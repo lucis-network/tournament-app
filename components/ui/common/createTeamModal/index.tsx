@@ -6,8 +6,10 @@ import { UserCard } from "../userCard";
 import GradientButton from "../button/GradientButton";
 import UploadAvatar from "../upload/UploadAvatar";
 import { MyTeamType } from "../tabsItem/myTeamDetail/hooks/useControlTeam";
+import { isEmpty } from "lodash";
 
 interface CreateTeamModalType {
+  error: Record<string, string>;
   isEdit: boolean;
   draftData?: MyTeamType;
   showModal: boolean;
@@ -17,6 +19,7 @@ interface CreateTeamModalType {
   onOpenRemove: (
     team_uid: string,
     user_id: string,
+    status: "remove" | "delete" | "leave",
     isSaveDraft?: boolean
   ) => void;
   onSave: (id?: string) => void;
@@ -24,6 +27,7 @@ interface CreateTeamModalType {
 }
 
 const CreateTeamModal: React.FC<CreateTeamModalType> = ({
+  error,
   isEdit,
   draftData,
   showModal,
@@ -34,6 +38,8 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
   onCancel,
   onOpenRemove,
 }) => {
+  console.log(draftData);
+
   return (
     <Modal
       title={
@@ -48,26 +54,42 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
       footer={null}
     >
       <div>
-        <div className="flex align-middle items-center mb-4">
+        <div className="flex align-middle items-start mb-4">
           <span className="min-w-[140px]">Team name</span>
-          <Input
-            className="!rounded-8px"
-            value={draftData?.team_name}
-            onChange={onChangeTeamName}
-          />
+          <div>
+            <Input
+              className="!rounded-8px"
+              value={draftData?.team_name}
+              placeholder="Enter name"
+              onChange={onChangeTeamName}
+              onError={(e) => console.log(e)}
+            />
+            {!isEmpty(error["team_name"]) && (
+              <p className="text-[12px] text-emerald-2 mt-1">
+                {error["team_name"]}
+              </p>
+            )}
+          </div>
         </div>
         <div className="flex align-middle items-start mb-4">
           <span className="min-w-[140px]">Team avatar</span>
-          <UploadAvatar
-            parentCallback={onChangeAvatar}
-            heigh="200"
-            width="200"
-            value="cover"
-            className="flex align-middle items-center justify-between"
-            innerImageClass={s.avatar_team}
-            inputClass="w-[260px]"
-            description="(200x200px, 2MB)"
-          />
+          <div>
+            <UploadAvatar
+              parentCallback={onChangeAvatar}
+              heigh="200"
+              width="200"
+              value="cover"
+              className="flex align-middle items-center justify-between"
+              innerImageClass={s.avatar_team}
+              inputClass="w-[260px]"
+              description="(200x200px, 2MB)"
+            />
+            {!isEmpty(error["team_avatar"]) && (
+              <p className="text-[12px] text-emerald-2 mt-1">
+                {error["team_avatar"]}
+              </p>
+            )}
+          </div>
         </div>
         <h3 className="text-white mb-4">Team members</h3>
         {draftData?.team?.map((team) => (
@@ -77,7 +99,7 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
             className="w-[70%]"
             enableDelete={true}
             onOpenRemove={() =>
-              onOpenRemove(draftData.team_uid, team.user_id, true)
+              onOpenRemove(draftData.team_uid, team.user_id, "remove", true)
             }
           />
         ))}
@@ -89,14 +111,13 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
           Add new member
         </button>
 
-        <GradientButton
-          small={true}
-          className="text-white flex align-middle items-center mx-auto mt-12"
-          type={1}
+        <button
+          className={s.button_create}
           onClick={() => onSave(draftData?.team_uid)}
+          disabled={!!error["team_name"] || !!error["team_avatar"]}
         >
           {isEdit ? "Update team" : "Create team"}
-        </GradientButton>
+        </button>
       </div>
     </Modal>
   );
