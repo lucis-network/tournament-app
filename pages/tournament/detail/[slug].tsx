@@ -3,19 +3,21 @@ import { Col, Row, Tabs } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { isClient } from "utils/DOM";
-import Bracket from "components/ui/common/tabsItem/brackets";
+import Bracket from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
 import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
 import Referees from "components/ui/tournament/detail/tabsitem/referees";
 import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
+import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
+import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import { GetStaticPaths } from "next";
 
 const { TabPane } = Tabs;
-const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
+const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
 
 const TournamentDetail = () => {
   // ====== Use to get tournament_uid
@@ -33,6 +35,8 @@ const TournamentDetail = () => {
   //   }
   //   return "";
   // }, [router]);
+  const [isPopupDonate, setIsPopupDonate] = useState(false);
+  const [isPopupShare, setIsPopupShare] = useState(false);
 
   const {
     dataTournamentDetail,
@@ -48,13 +52,28 @@ const TournamentDetail = () => {
     loadingBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
+    tournament_uid: "cl2rcnia105290jrsiotdg5uq",
   });
 
   if (loading) {
     return "";
   }
 
+  const openModal = (item: string) => {
+    if (item === "Donate") {
+      setIsPopupDonate(true);
+    } else if (item === "Invite or Share") {
+      setIsPopupShare(true);
+    }
+  };
+
+  const closeModal = (item: string) => {
+    if (item === "Donate") {
+      setIsPopupDonate(false);
+    } else if (item === "Invite or Share") {
+      setIsPopupShare(false);
+    }
+  };
   const {
     team_size,
     desc,
@@ -67,6 +86,8 @@ const TournamentDetail = () => {
     pool_size,
     currency,
   } = dataTournamentDetail;
+
+  // console.log(dataBracket);
   // useEffect(() => {
   //   if (dataTournamentDetail)
   //     console.log("dataTournamentDetail", dataTournamentDetail);
@@ -81,7 +102,9 @@ const TournamentDetail = () => {
           // <Button type="primary" key={item}>
           //   {item}
           // </Button>
-          <button key={item}>{item}</button>
+          <button key={item} onClick={() => openModal(item)}>
+            {item}
+          </button>
         ))}
       </div>
 
@@ -178,6 +201,18 @@ const TournamentDetail = () => {
           </TabPane>
         </Tabs>
       </div>
+
+      {/* ===== Modal ===== */}
+      <PopupDonate
+        closeModal={() => closeModal("Donate")}
+        status={isPopupDonate}
+        // datas={dataReferees}
+      />
+
+      <PopupShare
+        closeModal={() => closeModal("Invite or Share")}
+        status={isPopupShare}
+      />
     </div>
   );
 };

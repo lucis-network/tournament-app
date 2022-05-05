@@ -4,14 +4,39 @@
     & > :first-child
         // justify-content: center
 
-.seedItem
-    color: white
-    &:nth-child(even)::after 
-        border-right: 2px solid #b3b3b3 !important
-        border-bottom: 2px solid #b3b3b3 !important
-    &:nth-child(odd):not(:last-child)::after
-        border-right: 2px solid #b3b3b3 !important
-        border-top: 2px solid #b3b3b3 !important
-    &:nth-child(even)::before
-        border-top: 2px solid #b3b3b3 !important
+// .wining 
+//     overflow: auto
+
+// .seedItem
+//     color: white
+//     &:nth-child(even)::after 
+//         border-right: 1px solid #b3b3b3 !important
+//         border-bottom: 1px solid #b3b3b3 !important
+//     &:nth-child(odd):not(:last-child)::after
+//         border-right: 1px solid #b3b3b3 !important
+//         border-top: 1px solid #b3b3b3 !important
+//     &:nth-child(even)::before
+//         border-top: 1px solid #b3b3b3 !important
+
+// .seedLose
+//     color: black
+//     &:nth-child(odd):not(:last-child)::after
+//         border-top: 1px solid #b3b3b3 !important
+//         top: calc(50% - 0.5px)
+//     &:nth-child(even)::after
+//         border-bottom: 1px solid #b3b3b3 !important
+//         top: -0.5px
+
+
+    // &:nth-child(even)::before
+    //     border-top: 1px solid #b3b3b3 !important
+
+.seedFinal 
+    height: 100%
+    border-left: 1px solid rgba(185, 185, 185, 0.2)
+    padding-left: 30px
     
+.seedItemContainer
+
+    background: rgb(190,238,174)
+    background: radial-gradient(circle, rgba(190,238,174,1) 0%, rgba(215,221,176,1) 52%, rgba(148,233,208,1) 100%)

@@ -10,12 +10,11 @@ import {
 
 import s from "../index.module.sass";
 
-interface LosingProps {
+interface FinalProps {
   rounds: RoundProps[];
-  // renderSeedComponent: any;
 }
 
-const WiningBracket: React.FC<LosingProps> = ({ rounds: wining }) => {
+const FinalBracket = ({ rounds: final }: FinalProps) => {
   const RenderSeed = ({ seed, breakpoint, seedIndex }: RenderSeedProps) => {
     return (
       <>
@@ -77,8 +76,8 @@ const WiningBracket: React.FC<LosingProps> = ({ rounds: wining }) => {
 
   return (
     <Bracket
-      rounds={wining}
-      roundClassName={s.wining}
+      rounds={final}
+      bracketClassName={s.seedFinal}
       renderSeedComponent={RenderSeed}
       swipeableProps={{
         enableMouseEvents: true,
@@ -91,4 +90,4 @@ const WiningBracket: React.FC<LosingProps> = ({ rounds: wining }) => {
   );
 };
 
-export default WiningBracket;
+export default FinalBracket;

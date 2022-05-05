@@ -39,8 +39,8 @@ export default function ModalDonateTeam(props: Props) {
       subscription.remove();
     };
   }, []);
-  const getDataMember = nameTeam?.team_members
-  const quantityMember = getDataMember?.length
+  const getDataMember = nameTeam?.team_members;
+  const quantityMember = getDataMember?.length;
 
   return (
     <div className={s.container_button_donate}>
@@ -113,7 +113,11 @@ export default function ModalDonateTeam(props: Props) {
                   </Col>
                 </Row>
               ))}
-              <PopupDonate onClick={click} status={isPopUp} datas={newData} />
+              <PopupDonate
+                closeModal={click}
+                status={isPopUp}
+                datas={newData}
+              />
             </div>
           </div>
         }

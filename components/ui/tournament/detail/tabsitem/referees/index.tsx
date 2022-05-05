@@ -8,11 +8,11 @@ import { useState } from "react";
 import s from "./Referees.module.sass";
 
 type Props = {
-  dataRefereesDetail: Referee[]
-  loadingReferees: any
-}
+  dataRefereesDetail: Referee[];
+  loadingReferees: any;
+};
 export default function Referees(props: Props) {
-  const { dataRefereesDetail, loadingReferees } = props
+  const { dataRefereesDetail, loadingReferees } = props;
   const [dataReferees, setDataReferees] = useState({});
   const [isPopUp, setIsPopUp] = useState(false);
 
@@ -38,7 +38,9 @@ export default function Referees(props: Props) {
         return (
           <img
             className={s.avt}
-            src={`${item.user.profile.avatar ?? "/assets/MyProfile/defaultAvatar.png"}`}
+            src={`${
+              item.user.profile.avatar ?? "/assets/MyProfile/defaultAvatar.png"
+            }`}
             alt=""
           />
         );
@@ -81,10 +83,10 @@ export default function Referees(props: Props) {
         dataSource={dataRefereesDetail}
         columns={columnsReferees}
         bordered
-        rowKey={record => `${record.user?.profile?.user_id}`}
+        rowKey={(record) => `${record.user?.profile?.user_id}`}
         className={s.container_table}
       />
-      <PopupDonate onClick={click} status={isPopUp} datas={dataReferees} />
+      <PopupDonate closeModal={click} status={isPopUp} datas={dataReferees} />
     </div>
   );
 }

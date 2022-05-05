@@ -5,11 +5,11 @@ import s from "./Prizing.module.sass";
 
 type Props = {
   dataPrizing: Prize[];
-  loadingPrizing: any
+  loadingPrizing: any;
 };
 
 export default function Prizing(props: Props) {
-  const { dataPrizing, loadingPrizing }= props
+  const { dataPrizing, loadingPrizing } = props;
   if (loadingPrizing) {
     return <></>;
   }
