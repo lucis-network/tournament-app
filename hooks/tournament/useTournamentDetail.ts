@@ -1,60 +1,8 @@
 import { gql, useQuery } from "@apollo/client";
 
 type Props = {
-  uid?: string;
   tournament_uid?: string;
 };
-
-export function useParticipant(props: Props) {
-  const {
-    loading,
-    error,
-    data: dataParticipants,
-  } = useQuery(GET_PARTICIPANTS_DETAIL, {
-    variables: { uid: props?.uid },
-    fetchPolicy: "no-cache",
-  });
-
-  return {
-    loading,
-    error,
-    dataParticipants,
-  };
-}
-
-export function useReferees(props: Props) {
-  const {
-    loading,
-    error,
-    data: dataRefereesDetail,
-  } = useQuery(GET_REFEREES_DETAIL, {
-    variables: { uid: props?.uid },
-    fetchPolicy: "cache-and-network",
-  });
-
-  return {
-    loading,
-    error,
-    dataRefereesDetail,
-  };
-}
-
-export function usePrizing(props: Props) {
-  const {
-    loading,
-    error,
-    data: dataPrizing,
-  } = useQuery(GET_PRIZING_DETAIL, {
-    variables: { uid: props?.uid },
-    fetchPolicy: "cache-and-network",
-  });
-
-  return {
-    loading,
-    error,
-    dataPrizing,
-  };
-}
 
 export function useTournamentDetail(props: Props) {
   const {
@@ -66,18 +14,35 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "cache-and-network",
   });
 
-  return {
-    loading,
-    error,
-    dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
-  };
-}
-
-export function useBracket(props: Props) {
   const {
-    loading,
-    error,
-    data: dataTournamentDetail,
+    loading: loadingParticipant,
+    error: errorParticipant,
+    data: dataParticipants,
+  } = useQuery(GET_PARTICIPANTS_DETAIL, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "no-cache",
+  });
+  const {
+    loading: loadingReferees,
+    error: errorReferees,
+    data: dataRefereesDetail,
+  } = useQuery(GET_REFEREES_DETAIL, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "cache-and-network",
+  });
+  const {
+    loading: loadingPrizing,
+    error: errorPrizing,
+    data: dataPrizing,
+  } = useQuery(GET_PRIZING_DETAIL, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "cache-and-network",
+  });
+
+  const {
+    loading: loadingBracket,
+    error: errorBracket,
+    data: dataBracket,
   } = useQuery(GET_BRACKET, {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "cache-and-network",
@@ -85,8 +50,22 @@ export function useBracket(props: Props) {
 
   return {
     loading,
+    loadingParticipant,
+    loadingReferees,
+    loadingPrizing,
+    loadingBracket,
+
     error,
-    dataBracket: dataTournamentDetail?.getBracket,
+    errorParticipant,
+    errorReferees,
+    errorPrizing,
+    errorBracket,
+    
+    dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
+    dataParticipants: dataParticipants?.getTournamentParticipants,
+    dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
+    dataPrizing: dataPrizing?.getTournamentPrizing,
+    dataBracket: dataBracket?.getBracket,
   };
 }
 
@@ -102,11 +81,6 @@ const GET_TOURNAMENT_DETAIL = gql`
       participants
       desc
       rules
-      brackets {
-        type
-        start_at
-        status
-      }
       game {
         name
       }
@@ -126,21 +100,28 @@ const GET_TOURNAMENT_DETAIL = gql`
 `;
 
 const GET_PARTICIPANTS_DETAIL = gql`
-  query ($uid: String!) {
-    getTournamentDetailParticipants(uid: $uid) {
+  query ($tournament_uid: String!) {
+    getTournamentParticipants(tournament_uid: $tournament_uid) {
       uid
       name
       avatar
       team_members {
         uid
+        is_leader
+        user {
+          profile {
+            display_name
+            avatar
+          }
+        }
       }
     }
   }
 `;
 
 const GET_REFEREES_DETAIL = gql`
-  query ($uid: String!) {
-    getTournamentDetailReferees(uid: $uid) {
+  query ($tournament_uid: String!) {
+    getTournamentReferees(tournament_uid: $tournament_uid) {
       user {
         profile {
           user_id
@@ -157,8 +138,8 @@ const GET_REFEREES_DETAIL = gql`
 `;
 
 const GET_PRIZING_DETAIL = gql`
-  query ($uid: String!) {
-    getTournamentDetailPrizing(uid: $uid) {
+  query ($tournament_uid: String!) {
+    getTournamentPrizing(tournament_uid: $tournament_uid) {
       quantity
       percentage
       position
@@ -171,6 +152,8 @@ const GET_BRACKET = gql`
   query ($tournament_uid: String!) {
     getBracket(tournament_uid: $tournament_uid) {
       type
+      start_at
+      status
       bracketTeams {
         uid
       }

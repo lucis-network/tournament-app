@@ -1,0 +1,54 @@
+.container_card_tournament
+  background-image: url("/assets/Banner/bg_card_tournament.png")
+  background-repeat: no-repeat
+  background-size: cover
+  background-position: top left 
+  min-height: 100vh
+  .tabs
+    display: flex
+    align-items: center 
+    color: #FFF
+    min-height: 50px
+    .tab_item
+      margin-right: 40px
+      font-size: 20px
+      font-weight: 300
+      transition: 0.3s
+    .active
+      font-weight: 700
+      background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+      box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
+      backdrop-filter: blur(12px)
+      border-radius: 4px
+      padding: 8px 20px
+      position: relative 
+    .active::before
+      content: ''
+      position: absolute
+      top:0
+      left:0
+      right:0
+      bottom:0
+      border-radius: 4px
+      padding: 1px
+      background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+      -webkit-mask-composite: xor
+      mask-composite: exclude
+  .creat_tournament
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-top: 190px
+    .heading
+      color: #FFF
+      text-align: right
+      h2
+        color: #FFF
+        font-size: 32px
+        line-height: 36px
+        font-weight: 700
+      p
+        font-weight: 300
+        font-size: 20px
+        line-height: 150%
