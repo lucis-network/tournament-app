@@ -34,9 +34,21 @@ const TournamentDetail = () => {
   //   return "";
   // }, [router]);
 
-  const { dataTournamentDetail, loading } = useTournamentDetail({
+  const {
+    dataTournamentDetail,
+    dataParticipants,
+    dataRefereesDetail,
+    dataPrizing,
+    dataBracket,
+
+    loading,
+    loadingParticipant,
+    loadingReferees,
+    loadingPrizing,
+    loadingBracket,
+  } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2px4spw10060jnsmddcy28v",
+    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
   });
 
   if (loading) {
@@ -45,7 +57,6 @@ const TournamentDetail = () => {
 
   const {
     team_size,
-    brackets,
     desc,
     rules,
     participants,
@@ -54,9 +65,8 @@ const TournamentDetail = () => {
     name,
     sponsorSlot,
     pool_size,
-    currency
+    currency,
   } = dataTournamentDetail;
-  console.log(dataTournamentDetail);
   // useEffect(() => {
   //   if (dataTournamentDetail)
   //     console.log("dataTournamentDetail", dataTournamentDetail);
@@ -91,9 +101,9 @@ const TournamentDetail = () => {
               <div className={s.text}>
                 <p>Bracket type</p>
                 <span>
-                  {brackets[0].type === "SINGLE"
+                  {dataBracket?.type === "SINGLE"
                     ? "Single eliminnation"
-                    : brackets[0].type === "DOUBLE"
+                    : dataBracket?.type === "DOUBLE"
                     ? "Double eliminnation"
                     : ""}
                 </span>
@@ -105,7 +115,7 @@ const TournamentDetail = () => {
               <div className={s.text}>
                 <p>Team size</p>
                 <span>
-                  {team_size} vs {team_size}
+                  {team_size ?? "-"} vs {team_size ?? "-"}
                 </span>
               </div>
             </Col>
@@ -125,7 +135,7 @@ const TournamentDetail = () => {
       <div className={`lucis-container`}>
         <RegistrationPhase
           participants={participants}
-          brackets={brackets}
+          brackets={dataBracket}
           sponsorSlot={sponsorSlot}
           pool_size={pool_size}
           currency={currency}
@@ -148,16 +158,28 @@ const TournamentDetail = () => {
             <Rules rules={rules} />
           </TabPane>
           <TabPane tab="Bracket" key="3">
-            <Bracket />
+            <Bracket
+              dataBracket={dataBracket}
+              loadingBracket={loadingBracket}
+            />
           </TabPane>
           <TabPane tab={`Participants (${team_size}/${team_size})`} key="4">
-            <TableParticipant />
+            <TableParticipant
+              dataParticipants={dataParticipants}
+              loading={loadingParticipant}
+            />
           </TabPane>
           <TabPane tab="Referees" key="5">
-            <Referees />
+            <Referees
+              dataRefereesDetail={dataRefereesDetail}
+              loadingReferees={loadingReferees}
+            />
           </TabPane>
           <TabPane tab="Prizing" key="6">
-            <Prizing />
+            <Prizing
+              dataPrizing={dataPrizing}
+              loadingPrizing={loadingPrizing}
+            />
           </TabPane>
         </Tabs>
       </div>
