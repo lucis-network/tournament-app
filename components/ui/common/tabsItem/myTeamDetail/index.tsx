@@ -11,6 +11,8 @@ import Search from "antd/lib/input/Search";
 
 const MyTeamDetail = () => {
   const {
+    error,
+    status,
     isEdit,
     searchValue,
     searchMemberValue,
@@ -21,10 +23,8 @@ const MyTeamDetail = () => {
     openCreateTem,
     openRemove,
     handleCloseAdd,
-    setOpenCreateTeam,
-    setOpenRemove,
+    handleCloseCreateEditTeam,
     handleCreateEditTeam,
-    handleLeave,
     handleRemove,
     handleSearch,
     handleChangeAvatar,
@@ -34,6 +34,7 @@ const MyTeamDetail = () => {
     handleAddMember,
     handleOpenAddMember,
     handleOpenRemove,
+    handleCloseRemove,
   } = useControlTeam();
 
   return (
@@ -53,6 +54,7 @@ const MyTeamDetail = () => {
             <div className={s.content_search}>
               <Search
                 placeholder="Search your team"
+                autoFocus
                 value={searchValue}
                 onChange={handleSearch}
               />
@@ -68,7 +70,6 @@ const MyTeamDetail = () => {
             onOpenAdd={handleOpenAddMember}
             onEdit={handleCreateEditTeam}
             onOpenRemove={handleOpenRemove}
-            onLeave={handleLeave}
           />
         </div>
       </div>
@@ -76,7 +77,11 @@ const MyTeamDetail = () => {
       <Modal
         title={
           <h3 className="text-16px text-white">
-            Are you sure to delete this member
+            {status === "delete"
+              ? "Are you sure to delete this team?"
+              : status === "leave"
+              ? "Are you sure to leave this team?"
+              : "Are you sure to delete this member?"}
           </h3>
         }
         visible={openRemove}
@@ -84,10 +89,11 @@ const MyTeamDetail = () => {
         okText="Confirm"
         bodyStyle={{ display: "none" }}
         onOk={handleRemove}
-        onCancel={() => setOpenRemove(false)}
+        onCancel={handleCloseRemove}
       />
 
       <CreateTeamModal
+        error={error}
         isEdit={isEdit}
         draftData={draftData}
         showModal={openCreateTem}
@@ -96,7 +102,7 @@ const MyTeamDetail = () => {
         onAddOpen={handleOpenAddMember}
         onOpenRemove={handleOpenRemove}
         onSave={handleSaveTeam}
-        onCancel={() => setOpenCreateTeam(false)}
+        onCancel={handleCloseCreateEditTeam}
       />
 
       <AddUserTeamModal

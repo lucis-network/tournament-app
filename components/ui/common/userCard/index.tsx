@@ -15,15 +15,19 @@ export const UserCard: React.FC<UserCardType> = ({
   className,
   onOpenRemove,
 }) => {
-  console.log(user);
-
   return (
     <div
       className={`flex border justify-between items-center bg-white mb-4 p-2 ${className}`}
     >
       <div className="flex items-center align-middle">
-        <div className="rounded-[30px] w-[30px] overflow-hidden h-full bg-white border border-nav">
-          <img src={user?.avatar} alt="" width={30} height={30} />
+        <div className="rounded-[30px] w-[30px] h-[30px] overflow-hidden bg-white border border-nav">
+          <img
+            className="object-cover w-full h-full"
+            src={user?.avatar}
+            alt=""
+            width={30}
+            height={30}
+          />
         </div>
         <h3 className="mb-0 ml-2">{user?.display_name}</h3>
       </div>
