@@ -34,13 +34,14 @@ export default observer(function Header(props: Props) {
     }
   }
 
-  useEffect(() => {
-    usernameCheck();
-    router.events.on("routeChangeStart", usernameCheck);
-    return () => {
-      router.events.off("routeChangeStart", usernameCheck);
-    };
-  }, []);
+  // do not delete
+  // useEffect(() => {
+  //   usernameCheck();
+  //   router.events.on("routeChangeStart", usernameCheck);
+  //   return () => {
+  //     router.events.off("routeChangeStart", usernameCheck);
+  //   };
+  // }, []);
 
   return (
     <>
