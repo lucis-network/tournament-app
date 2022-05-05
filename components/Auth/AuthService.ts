@@ -46,6 +46,8 @@ export default class AuthService {
               telegram
               phone
               avatar
+              user_name
+              country_code
             }
           }
         }
@@ -94,6 +96,8 @@ export default class AuthService {
                 phone
                 avatar
                 cover
+                user_name
+                country_code
               }
             }
           }

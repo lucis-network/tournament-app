@@ -1058,48 +1058,37 @@ export type GBracketTeamMember = {
 };
 
 export type GDonateTransaction = {
-  amount?: InputMaybe<Scalars['Decimal']>;
+  amount?: InputMaybe<Scalars['Float']>;
   to: Scalars['String'];
   tournamnent_uid?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<DonateTransactionsType>;
 };
 
 export type GMember = {
-  memeber_id?: InputMaybe<Array<Scalars['Int']>>;
+  member_id?: InputMaybe<Array<Scalars['Int']>>;
+  team_uid?: InputMaybe<Scalars['String']>;
 };
 
-export type GTournament = {
-  __typename?: 'GTournament';
-  _count: TournamentCount;
-  cache_tournament?: Maybe<CacheTournament>;
-  claim_transactions?: Maybe<Array<ClaimTransactions>>;
-  cover: Scalars['String'];
+export type GUserProfile = {
+  __typename?: 'GUserProfile';
+  avatar?: Maybe<Scalars['String']>;
+  biography?: Maybe<Scalars['String']>;
+  country_code?: Maybe<Scalars['String']>;
+  cover?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
-  currency: Currency;
-  currency_uid: Scalars['String'];
-  desc?: Maybe<Scalars['String']>;
-  donate_transactions?: Maybe<Array<DonateTransaction>>;
-  game: Game;
-  game_uid: Scalars['String'];
-  join_fee?: Maybe<Scalars['Decimal']>;
-  leader_board?: Maybe<Array<TournamentLeaderBoard>>;
-  name: Scalars['String'];
-  participants: Scalars['Int'];
-  pool_size: Scalars['Decimal'];
-  prize_allocation: Scalars['JSON'];
-  reaction?: Maybe<Array<Reaction>>;
-  referees: Scalars['String'];
-  regions?: Maybe<Scalars['String']>;
-  rules?: Maybe<Scalars['String']>;
-  sponsorSlot?: Maybe<Array<SponsorSlot>>;
-  team_size: Scalars['Int'];
-  thumbnail: Scalars['String'];
-  tournament_subscribes?: Maybe<Array<TournamentSubscriber>>;
-  turns?: Maybe<Scalars['Int']>;
-  uid: Scalars['ID'];
+  discord?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
+  facebook?: Maybe<Scalars['String']>;
+  family_name?: Maybe<Scalars['String']>;
+  given_name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  telegram?: Maybe<Scalars['String']>;
+  twitch?: Maybe<Scalars['String']>;
+  twitter?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
   user: User;
-  user_id: Scalars['Int'];
+  user_id?: Maybe<Scalars['Int']>;
+  user_name?: Maybe<Scalars['String']>;
 };
 
 export type Game = {
@@ -1189,6 +1178,7 @@ export type Mutation = {
   deleteMember?: Maybe<Scalars['Boolean']>;
   deleteTeam?: Maybe<Scalars['Boolean']>;
   donate?: Maybe<Scalars['Boolean']>;
+  editTeam?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
   generateNonce: Scalars['String'];
   joinTournament?: Maybe<Scalars['Boolean']>;
@@ -1213,8 +1203,7 @@ export type MutationAddFavoriteGameArgs = {
 
 
 export type MutationAddMemberArgs = {
-  member_id: GMember;
-  team_uid: Scalars['String'];
+  input: GMember;
 };
 
 
@@ -1267,6 +1256,12 @@ export type MutationDeleteTeamArgs = {
 
 export type MutationDonateArgs = {
   input: GDonateTransaction;
+};
+
+
+export type MutationEditTeamArgs = {
+  input: TeamInput;
+  team_uid: Scalars['String'];
 };
 
 
@@ -1375,28 +1370,29 @@ export type Query = {
   __typename?: 'Query';
   currencies?: Maybe<Array<CurrencyGql>>;
   donateHistory?: Maybe<Array<DonateHistory>>;
+  getAllTournament: Array<TournamentGql>;
   getBracket?: Maybe<BracketGql>;
-  getClosedTournament?: Maybe<Array<Tournament>>;
+  getClosedTournament?: Maybe<Array<TournamentGql>>;
   getGame?: Maybe<Array<Game>>;
   getJoinedTournament?: Maybe<Array<TTournament>>;
   getMyTeam?: Maybe<Array<UserTeam>>;
-  getOnGoingTournament?: Maybe<Array<Tournament>>;
+  getOnGoingTournament?: Maybe<Array<TournamentGql>>;
   getOwnedTournament?: Maybe<Array<TTournament>>;
   getReferee?: Maybe<Array<Referee>>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
   getTeam?: Maybe<Array<BracketTeamMembers>>;
   getTotalDonation?: Maybe<Scalars['Float']>;
-  getTournamentDetail?: Maybe<GTournament>;
+  getTournamentDetail?: Maybe<TournamentGql>;
   getTournamentParticipants?: Maybe<Array<TeamGql>>;
   getTournamentPrizing?: Maybe<Array<Prize>>;
   getTournamentReferees?: Maybe<Array<Referee>>;
   getTournamentReward?: Maybe<Array<Reward>>;
-  getUpComingTournament?: Maybe<Array<Tournament>>;
+  getUpComingTournament?: Maybe<Array<TournamentGql>>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
-  search?: Maybe<Array<Tournament>>;
+  search?: Maybe<Array<TournamentGql>>;
   searchJoinedTournament?: Maybe<Array<TTournament>>;
-  searchMember?: Maybe<Array<UserProfile>>;
+  searchMember?: Maybe<Array<GUserProfile>>;
   searchOwnerTournament?: Maybe<Array<TTournament>>;
   searchTeam?: Maybe<Array<UserTeam>>;
   verifyEmail?: Maybe<Scalars['Boolean']>;
@@ -2644,6 +2640,44 @@ export type TournamentFilterInput = {
   team_size?: InputMaybe<Scalars['String']>;
   /** ASC OR DESC */
   time?: InputMaybe<Scalars['String']>;
+};
+
+export type TournamentGql = {
+  __typename?: 'TournamentGql';
+  _count: TournamentCount;
+  brackets?: Maybe<Array<Bracket>>;
+  cache_tournament?: Maybe<CacheTournament>;
+  cover: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  currency: Currency;
+  currency_uid: Scalars['String'];
+  desc?: Maybe<Scalars['String']>;
+  donate_transactions?: Maybe<Array<DonateTransaction>>;
+  game: Game;
+  game_uid: Scalars['String'];
+  invite_link?: Maybe<Scalars['String']>;
+  join_fee?: Maybe<Scalars['Decimal']>;
+  leader_board?: Maybe<Array<TournamentLeaderBoard>>;
+  name: Scalars['String'];
+  participants: Scalars['Int'];
+  password?: Maybe<Scalars['String']>;
+  pool_size: Scalars['Decimal'];
+  prize_allocation: Scalars['JSON'];
+  reaction?: Maybe<Array<Reaction>>;
+  referees: Scalars['String'];
+  regions?: Maybe<Scalars['String']>;
+  rules?: Maybe<Scalars['String']>;
+  sponsorSlot?: Maybe<Array<SponsorSlot>>;
+  status: TournamentStatus;
+  team_size: Scalars['Int'];
+  thumbnail: Scalars['String'];
+  totalPrizePool?: Maybe<Scalars['Float']>;
+  tournament_subscribes?: Maybe<Array<TournamentSubscriber>>;
+  turns?: Maybe<Scalars['Int']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
 };
 
 export type TournamentLeaderBoard = {
