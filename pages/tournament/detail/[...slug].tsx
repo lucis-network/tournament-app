@@ -33,39 +33,39 @@ const TournamentDetail = () => {
   //   return "";
   // }, [router]);
 
-  const {
-    dataTournamentDetail,
-    dataParticipants,
-    dataRefereesDetail,
-    dataPrizing,
-    dataBracket,
+  // const {
+  //   dataTournamentDetail,
+  //   dataParticipants,
+  //   dataRefereesDetail,
+  //   dataPrizing,
+  //   dataBracket,
 
-    loading,
-    loadingParticipant,
-    loadingReferees,
-    loadingPrizing,
-    loadingBracket,
-  } = useTournamentDetail({
-    // Change to tournamentUid after
-    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
-  });
+  //   loading,
+  //   loadingParticipant,
+  //   loadingReferees,
+  //   loadingPrizing,
+  //   loadingBracket,
+  // } = useTournamentDetail({
+  //   Change to tournamentUid after
+  //   tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
+  // });
 
-  if (loading) {
-    return "";
-  }
+  // if (loading) {
+  //   return "";
+  // }
 
-  const {
-    team_size,
-    desc,
-    rules,
-    participants,
-    user,
-    game,
-    name,
-    sponsorSlot,
-    pool_size,
-    currency,
-  } = dataTournamentDetail;
+  // const {
+  //   team_size,
+  //   desc,
+  //   rules,
+  //   participants,
+  //   user,
+  //   game,
+  //   name,
+  //   sponsorSlot,
+  //   pool_size,
+  //   currency,
+  // } = dataTournamentDetail;
   // useEffect(() => {
   //   if (dataTournamentDetail)
   //     console.log("dataTournamentDetail", dataTournamentDetail);
@@ -84,7 +84,7 @@ const TournamentDetail = () => {
         ))}
       </div>
 
-      <Row className={`lucis-container`}>
+      {/* <Row className={`lucis-container`}>
         <Col span={6} className={s.content_top}>
           <div className={s.img_game}>
             <img src="" alt="" />
@@ -128,11 +128,11 @@ const TournamentDetail = () => {
           </Row>
         </Col>
         <Col span={2}>content right</Col>
-      </Row>
+      </Row> */}
 
       {/* ==== registration phase ====  */}
 
-      <div className={`lucis-container`}>
+      {/* <div className={`lucis-container`}>
         <RegistrationPhase
           participants={participants}
           brackets={dataBracket}
@@ -140,10 +140,10 @@ const TournamentDetail = () => {
           pool_size={pool_size}
           currency={currency}
         />
-      </div>
+      </div> */}
 
       {/* ===== tabs ===== */}
-      <div className={`lucis-container ${s.container_Tabs}`}>
+      {/* <div className={`lucis-container ${s.container_Tabs}`}>
         <Tabs defaultActiveKey="1">
           <TabPane tab="Overview" key="1">
             <Overview desc={desc} />
@@ -176,7 +176,7 @@ const TournamentDetail = () => {
             />
           </TabPane>
         </Tabs>
-      </div>
+      </div> */}
     </div>
   );
 };
