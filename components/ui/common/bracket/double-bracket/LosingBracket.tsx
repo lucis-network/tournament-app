@@ -29,11 +29,54 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
 
     return (
       <Wrapper mobileBreakpoint={breakpoint} className={style.seedLose}>
-        <SeedItem style={{ width: "100%" }}>
+        <SeedItem>
           <div>
-            <SeedTeam>{seed.teams?.[0]?.name || "-----------"}</SeedTeam>
-            <div style={{ height: 1, backgroundColor: "#707070" }}></div>
-            <SeedTeam>{seed.teams?.[1]?.name || "-----------"}</SeedTeam>
+            <SeedTeam className={style.topSeed} style={{ padding: 0 }}>
+              <div
+                style={{
+                  width: "100%",
+                  background: "#d8d899",
+                  height: "100%",
+                  padding: "5px 0",
+                  color: "black",
+                }}
+              >
+                {seed.teams[0]?.name || `Team ---`}
+              </div>
+              <div
+                style={{
+                  background: "yellow",
+                  color: "black",
+                  padding: "5px",
+                  width: "50px",
+                }}
+              >
+                {seed.teams[0]?.score || "--"}
+              </div>
+            </SeedTeam>
+            <SeedTeam className={style.bottomSeed} style={{ padding: 0 }}>
+              <div
+                style={{
+                  width: "100%",
+                  background: "#4e89a3",
+                  height: "100%",
+                  padding: "5px 0",
+                  color: "white",
+                }}
+              >
+                {seed.teams[1]?.name || `Team ---`}
+              </div>
+              <div
+                style={{
+                  background: "#306882",
+                  color: "white",
+                  padding: "5px",
+                  width: "50px",
+                }}
+              >
+                {seed.teams[1]?.score || "--"}
+              </div>
+            </SeedTeam>
           </div>
         </SeedItem>
       </Wrapper>

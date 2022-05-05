@@ -12,23 +12,62 @@ import s from "../index.module.sass";
 
 interface LosingProps {
   rounds: RoundProps[];
+  // renderSeedComponent: any;
 }
 
 const WiningBracket: React.FC<LosingProps> = ({ rounds: wining }) => {
   const RenderSeed = ({ seed, breakpoint, seedIndex }: RenderSeedProps) => {
     return (
       <>
-        <Seed
-          style={{
-            opacity: seed.bye_match ? 0.5 : 1,
-          }}
-          className={s.seedItem}
-          mobileBreakpoint={breakpoint}
-        >
-          <SeedItem style={{ width: "100%" }}>
+        <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
+          <SeedItem>
             <div>
-              <SeedTeam>{seed.teams?.[0]?.name || "-----------"}</SeedTeam>
-              <SeedTeam>{seed.teams?.[1]?.name || "-----------"}</SeedTeam>
+              <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
+                <div
+                  style={{
+                    width: "100%",
+                    background: "#d8d899",
+                    height: "100%",
+                    padding: "5px 0",
+                    color: "black",
+                  }}
+                >
+                  {seed.teams[0]?.name || `Team ---`}
+                </div>
+                <div
+                  style={{
+                    background: "yellow",
+                    color: "black",
+                    padding: "5px",
+                    width: "50px",
+                  }}
+                >
+                  {seed.teams[0]?.score || "--"}
+                </div>
+              </SeedTeam>
+              <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
+                <div
+                  style={{
+                    width: "100%",
+                    background: "#4e89a3",
+                    height: "100%",
+                    padding: "5px 0",
+                    color: "white",
+                  }}
+                >
+                  {seed.teams[1]?.name || `Team ---`}
+                </div>
+                <div
+                  style={{
+                    background: "#306882",
+                    color: "white",
+                    padding: "5px",
+                    width: "50px",
+                  }}
+                >
+                  {seed.teams[1]?.score || "--"}
+                </div>
+              </SeedTeam>
             </div>
           </SeedItem>
         </Seed>

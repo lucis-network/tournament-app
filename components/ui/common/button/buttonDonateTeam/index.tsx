@@ -54,10 +54,7 @@ export default function ModalDonateTeam(props: Props) {
               <Col span={4} className={s.avt}>
                 <img
                   className={s.avt}
-                  src={`${
-                    e.avatar ||
-                    "/assets/MyProfile/defaultAvatar.png"
-                  }`}
+                  src={`${e.avatar || "/assets/MyProfile/defaultAvatar.png"}`}
                   alt=""
                 />
               </Col>
@@ -111,7 +108,11 @@ export default function ModalDonateTeam(props: Props) {
                   </Col>
                 </Row>
               ))}
-              <PopupDonate onClick={click} status={isPopUp} datas={newData} />
+              <PopupDonate
+                closeModal={click}
+                status={isPopUp}
+                datas={newData}
+              />
             </div>
           </div>
         ))}

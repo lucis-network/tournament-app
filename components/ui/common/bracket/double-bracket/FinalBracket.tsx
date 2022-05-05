@@ -16,19 +16,12 @@ interface FinalProps {
 
 const FinalBracket = ({ rounds: final }: FinalProps) => {
   const RenderSeed = ({ seed, breakpoint, seedIndex }: RenderSeedProps) => {
-    console.log(seedIndex);
-
     return (
       <>
-        <Seed
-          style={{
-            opacity: seed.bye_match ? 0.5 : 1,
-          }}
-          mobileBreakpoint={breakpoint}
-        >
-          <SeedItem style={{ width: "100%" }}>
+        <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
+          <SeedItem>
             <div>
-              <SeedTeam>
+              <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
                 <div
                   style={{
                     width: "100%",
@@ -46,29 +39,27 @@ const FinalBracket = ({ rounds: final }: FinalProps) => {
                     color: "black",
                     padding: "5px",
                     width: "50px",
-                    overflow: "hidden",
                   }}
                 >
                   {seed.teams[0]?.score || "--"}
                 </div>
               </SeedTeam>
-              <div style={{ height: 1, backgroundColor: "#707070" }}></div>
-              <SeedTeam>
+              <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
                 <div
                   style={{
                     width: "100%",
-                    background: "#d8d899",
+                    background: "#4e89a3",
                     height: "100%",
                     padding: "5px 0",
-                    color: "black",
+                    color: "white",
                   }}
                 >
                   {seed.teams[1]?.name || `Team ---`}
                 </div>
                 <div
                   style={{
-                    background: "yellow",
-                    color: "black",
+                    background: "#306882",
+                    color: "white",
                     padding: "5px",
                     width: "50px",
                   }}
@@ -82,6 +73,7 @@ const FinalBracket = ({ rounds: final }: FinalProps) => {
       </>
     );
   };
+
   return (
     <Bracket
       rounds={final}
