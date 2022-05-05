@@ -38,8 +38,6 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
   onCancel,
   onOpenRemove,
 }) => {
-  console.log(draftData);
-
   return (
     <Modal
       title={
