@@ -32,18 +32,10 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
     if (data.logo) {
       newSlotState.logo = data.logo;
     }
-    if (data.ads_video) {
-      newSlotState.ads_link = data.ads_video;
-    }
-    if (data.amount) {
-      newSlotState.amount = data.amount;
-    }
-    if (data.home_page) {
-      newSlotState.home_page = data.home_page;
-    }
-    if (data.name) {
-      newSlotState.name = data.name;
-    }
+    newSlotState.ads_link = data.ads_video;
+    newSlotState.amount = data.amount;
+    newSlotState.home_page = data.home_page;
+    newSlotState.name = data.name;
     slot.setState(newSlotState)
   }
 
@@ -94,9 +86,8 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
     >
       <Form
         form={form}
-        onFinish={handleFormUpdate}
         initialValues={{
-          amount: slot?.amount || '',
+          amount: slot?.amount || min_deposit,
           name: slot?.name || '',
           home_page: slot?.home_page || '',
           ads_video: slot?.ads_link || '',
@@ -128,16 +119,16 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 {
                   type: 'number',
                   min: min_deposit,
-                  message: `You need to enter a value greater than \${min} ${TournamentStore.currency_uid}.`
+                  message: `Sponsor amount must be greater than \${min} ${TournamentStore.currency_uid}.`
                 }
               ]}
             >
               <InputNumber
                 prefix="$"
                 style={{ width: "100%" }}
-                min={minAmountInit}
+                min={min_deposit || minAmountInit}
                 max={999999999999999}
-                placeholder={`Min ${minAmountInit} ${TournamentStore.currency_uid}`}
+                placeholder={`Min ${min_deposit} ${TournamentStore.currency_uid}`}
               />
             </Form.Item>
           </Col>

@@ -4,13 +4,15 @@ import moment from "moment";
 import { useEffect, useState } from "react";
 import timeMoment from "moment-timezone";
 
-import TournamentStore from "src/store/TournamentStore";
+import TournamentStore, { Rounds } from "src/store/TournamentStore";
 import SingleBracket from "components/ui/common/bracket/single-bracket/SingleBracket";
 import DoubleBracket from "components/ui/common/bracket/double-bracket/DoubleBracket";
 
 const { RangePicker } = DatePicker;
 
-type Props = {};
+type Props = {
+  handCallbackTimeline: any;
+};
 
 const createElements = (numRounds: any, selectDate: any) => {
   const temp = [];
@@ -43,12 +45,13 @@ const createListTempRounds = (numRounds: any) => {
   for (let i = 0; i < numRounds; i++) {}
 };
 
-const TimelineModal = ({}: Props) => {
+const TimelineModal = (props: Props) => {
+  const { handCallbackTimeline } = props;
   const isModalVisible = TournamentStore.timelineModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.timelineModalVisible = v);
 
-  const [listTimeRounds, setListTimeRounds] = useState<any[]>([]);
+  const [listTimeRounds, setListTimeRounds] = useState<Rounds[]>([]);
 
   const numberParticipants = TournamentStore.participants ?? 0;
   const bracketType = TournamentStore.bracket_type === "DOUBLE" ? 2 : 1;
@@ -70,6 +73,8 @@ const TimelineModal = ({}: Props) => {
 
   const handleConfirm = () => {
     console.log(listTimeRounds);
+    setIsModalVisible(false);
+    handCallbackTimeline(listTimeRounds);
   };
 
   const handleSelectDate = (
@@ -77,12 +82,12 @@ const TimelineModal = ({}: Props) => {
     dateString: string,
     round: number | string
   ) => {
-    const datePickerRound = {
-      titiel: `Round: ${
+    const datePickerRound: Rounds = {
+      title: `Round: ${
         Number(round) + 1 == calculateRoundsSingle ? "Final" : Number(round) + 1
       }`,
       start_at: date._d ?? "",
-      type: TournamentStore.bracket_type === "SINGLE" && "UPPER",
+      type: TournamentStore.bracket_type === "SINGLE" ? "UPPER" : "LOWER",
     };
 
     setListTimeRounds([...listTimeRounds, datePickerRound]);

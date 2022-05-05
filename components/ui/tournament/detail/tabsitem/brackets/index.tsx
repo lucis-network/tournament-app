@@ -133,7 +133,7 @@ const BracketUI = () => {
     return <></>;
   }
 
-  console.log(dataBracket);
+  // console.log(dataBracket.type);
 
   const rounds = createRounds({
     bracketRounds: dataBracket.bracketRounds,

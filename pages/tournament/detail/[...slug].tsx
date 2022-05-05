@@ -13,6 +13,7 @@ import Referees from "components/ui/tournament/detail/tabsitem/referees";
 import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
+import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
@@ -38,15 +39,12 @@ const TournamentDetail = () => {
 
   const { dataTournamentDetail, loading } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
+    tournament_uid: "cl2rcnia105290jrsiotdg5uq",
   });
 
   if (loading) {
     return "";
   }
-
-  const { team_size, brackets, desc, rules, participants, user, game, name } =
-    dataTournamentDetail;
 
   const openModal = (item: string) => {
     if (item === "Donate") {
@@ -63,6 +61,25 @@ const TournamentDetail = () => {
       setIsPopupShare(false);
     }
   };
+  const {
+    team_size,
+    brackets,
+    desc,
+    rules,
+    participants,
+    user,
+    game,
+    name,
+    sponsorSlot,
+    pool_size,
+    currency,
+  } = dataTournamentDetail;
+
+  console.log(dataTournamentDetail.brackets[0]);
+  // useEffect(() => {
+  //   if (dataTournamentDetail)
+  //     console.log("dataTournamentDetail", dataTournamentDetail);
+  // }, [dataTournamentDetail]);
 
   return (
     <div className={s.wrapper}>
@@ -124,6 +141,18 @@ const TournamentDetail = () => {
         </Col>
         <Col span={2}>content right</Col>
       </Row>
+
+      {/* ==== registration phase ====  */}
+
+      <div className={`lucis-container`}>
+        <RegistrationPhase
+          participants={participants}
+          brackets={brackets}
+          sponsorSlot={sponsorSlot}
+          pool_size={pool_size}
+          currency={currency}
+        />
+      </div>
 
       {/* ===== tabs ===== */}
       <div className={`lucis-container ${s.container_Tabs}`}>

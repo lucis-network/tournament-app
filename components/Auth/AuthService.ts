@@ -9,6 +9,7 @@ import {
   getLocalAuthInfo,
   setLocalAuthInfo,
 } from "./AuthLocal";
+import Router from "next/router";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -225,5 +226,6 @@ export default class AuthService {
     ApoloClient_setAuthToken("");
     AuthStore.resetStates();
     clearLocalAuthInfo();
+    Router.push("/");
   }
 }
