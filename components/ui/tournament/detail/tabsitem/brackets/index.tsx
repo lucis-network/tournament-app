@@ -46,7 +46,7 @@ const createSeed = (item: any, idx: any) => {
 
 const createRound = (item: any, idx: any) => {
   return {
-    title: <p className="m-0 text text-white">{item.title}</p>,
+    title: <p className="m-0 text text-white text-[24px]">{item.title}</p>,
     seeds: item.bracketMatchs?.map((item: any, idx: any) =>
       createSeed(item, idx)
     ),
@@ -65,6 +65,7 @@ const CustomSeed = ({
   roundIndex,
   seedIndex,
 }: RenderSeedProps) => {
+  console.log(breakpoint);
   return (
     <Seed
       // className={"seedItem"}
@@ -166,7 +167,7 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
         <Bracket
           rounds={rounds}
           renderSeedComponent={CustomSeed}
-          mobileBreakpoint={0}
+          mobileBreakpoint={360}
         />
       ) : (
         <DoubleBracket {...doubleProps} />

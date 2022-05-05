@@ -79,6 +79,7 @@ const FinalBracket = ({ rounds: final }: FinalProps) => {
       rounds={final}
       bracketClassName={s.seedFinal}
       renderSeedComponent={RenderSeed}
+      mobileBreakpoint={360}
       swipeableProps={{
         enableMouseEvents: true,
         animateHeight: true,

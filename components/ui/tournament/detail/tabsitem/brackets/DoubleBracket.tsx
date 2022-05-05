@@ -9,7 +9,6 @@ type Props = {
 
 const DoubleBracket = ({ upper, lower }: Props) => {
   const upperRounds = [...upper].splice(0, upper.length - 1);
-  console.log("upperRounds: ", upperRounds);
   const finalRound = [...upper].splice(upper.length - 1, 1);
 
   return (
@@ -18,11 +17,12 @@ const DoubleBracket = ({ upper, lower }: Props) => {
         position: "relative",
         display: "flex",
         gap: "20px",
-        overflow: "auto",
+        overflow: "scroll",
       }}
     >
       <div>
         <WiningBracket rounds={upperRounds} />
+        <div style={{ height: "50px" }}></div>
         <LosingBracket rounds={lower} />
       </div>
 
