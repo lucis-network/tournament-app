@@ -93,6 +93,7 @@ const UseControlTeam = () => {
               teamId,
               memberId,
             },
+            onCompleted: () => searchTeam({ name: "" }),
           });
         }
         break;
@@ -202,6 +203,11 @@ const UseControlTeam = () => {
     if (!draftData?.team_name) {
       setError({ ...error, ["team_name"]: "Team name is require" });
     } else {
+      const filterDataMember = draftData?.team?.map((item) => ({
+        user_id: +item.user_id,
+        is_leader: false,
+      }));
+
       id
         ? ""
         : createTeam({
@@ -211,14 +217,16 @@ const UseControlTeam = () => {
                 avatar: draftData?.team_avatar,
                 team_member: [
                   {
-                    user_id: profile?.user_id,
+                    user_id: +profile?.user_id,
                     is_leader: true,
                   },
-                  draftData?.team,
+                  ...(filterDataMember || []),
                 ],
               },
             },
-            onCompleted: () => searchTeam({ name: "" }),
+            onCompleted: () => {
+              searchTeam({ name: "" });
+            },
           });
 
       setOpenCreateTeam(false);
@@ -235,8 +243,10 @@ const UseControlTeam = () => {
     } else {
       addPlayer({
         variables: {
-          teamId,
-          memberId,
+          input: {
+            team_uid: teamId,
+            member_id: member.user_id,
+          },
         },
         onCompleted: () => searchTeam({ name: "" }),
       });
@@ -245,6 +255,10 @@ const UseControlTeam = () => {
   };
 
   const handleOpenAddMember = (team_uid: string, isSaveDraft?: boolean) => {
+    searchMember({
+      teamId: team_uid,
+      value: "",
+    });
     setTeamId(team_uid || "");
     setOpenAdd(true);
     setOpenCreateTeam(false);

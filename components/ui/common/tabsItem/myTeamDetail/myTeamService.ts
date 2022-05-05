@@ -1,5 +1,22 @@
 import { gql } from "@apollo/client";
 
+export const GET_MY_TEAM = gql`
+  query getMyTeam {
+    getMyTeam {
+      team_uid
+      team_name
+      team_avatar
+      participant
+      team {
+        user_id
+        display_name
+        is_leader
+        avatar
+      }
+    }
+  }
+`;
+
 export const CREATE_TEAM = gql`
   mutation createTeam($input: TeamInput!) {
     createTeam(input: $input)
@@ -13,13 +30,13 @@ export const DELETE_TEAM = gql`
 `;
 
 export const DELETE_PLAYER = gql`
-  mutation deletePlayer($teamId: String!, $memberId: Float!) {
-    deletePlayer(team_uid: $teamId, member_id: $memberId)
+  mutation deleteMember($teamId: String!, $memberId: Float!) {
+    deleteMember(team_uid: $teamId, member_id: $memberId)
   }
 `;
 export const ADD_PLAYER = gql`
-  mutation addMember($teamId: String!, $memberId: Float!) {
-    addMember(team_uid: $teamId, member_id: $memberId)
+  mutation addMember($input: GMember!) {
+    addMember(input: $input)
   }
 `;
 

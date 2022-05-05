@@ -42,7 +42,6 @@ export default observer(function ChooseGameModal(props: Props) {
   };
 
   const handleOk = () => {
-    console.log(value);
     setIsModalVisible(false);
     if (getDataChooseGame && value != null)
       props.handCallbackChooseGame(getDataChooseGame[value]);
