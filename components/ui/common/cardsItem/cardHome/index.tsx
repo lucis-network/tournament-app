@@ -8,9 +8,9 @@ export default function CardHome(props: Props) {
   const { datas } = props;
 
   return (
-    <Row className={s.wrapper} gutter={[16, 100]}>
+    <Row className={s.wrapper} gutter={[16, 70]}>
       {datas.map((item: any) => (
-        <Col span={5} className={s.card_item} key={item?.id}>
+        <Col className={s.card_item} key={item?.id}>
           <div className={s.container_card}>
             <div className={s.im_game}>
               <div className={s.info}>
