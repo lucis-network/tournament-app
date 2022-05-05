@@ -1,69 +1,57 @@
 import { message, Table } from "antd";
-import { useEffect, useState } from "react";
-import { usePrizing } from "hooks/tournament/useTournamentDetail";
+import { Prize } from "src/generated/graphql";
 
 import s from "./Prizing.module.sass";
 
-type Props = {};
+type Props = {
+  dataPrizing: Prize[];
+  loadingPrizing: any
+};
 
 export default function Prizing(props: Props) {
-  const [dataPrize, setDataPrize] = useState<any[]>([]);
-
-  const { dataPrizing } = usePrizing({ uid: "cl2ek8le201060jn6tzuoo7nv" });
-
-  const fetchData = async () => {
-    try {
-      const newData = await dataPrizing;
-      const dataLenght = newData?.getTournamentDetailPrizing.length;
-      for (let i = 0; i < dataLenght; i++) {
-        setDataPrize((prev) => [
-          ...prev,
-          {
-            key: newData?.getTournamentDetailPrizing[i]?.position,
-            place: `${newData?.getTournamentDetailPrizing[i]?.position}st place`,
-            prizeAllocation: `${
-              newData?.getTournamentDetailPrizing[i]?.percentage * 100
-            }%`,
-            thirdPrize: newData?.getTournamentDetailPrizing[i]?.reward,
-          },
-        ]);
-      }
-    } catch {
-      message.error("Error fetch data");
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [dataPrizing]);
+  const { dataPrizing, loadingPrizing }= props
+  if (loadingPrizing) {
+    return <></>;
+  }
 
   const columnsPrize = [
     {
       title: "Place",
-      dataIndex: "place",
+      dataIndex: "getTournamentPrizing",
       key: "place",
       width: "30%",
+      render: (_: any, item: any) => {
+        return <>{item.position}st place</>;
+      },
     },
     {
       title: "Prize allocation",
-      dataIndex: "prizeAllocation",
+      dataIndex: "getTournamentPrizing",
       key: "prizeAllocation",
       width: "35%",
+      render: (_: any, item: any) => {
+        return <>{item.percentage * 100}%</>;
+      },
     },
     {
       title: "Prize",
       dataIndex: "thirdPrize",
       key: "thirdPrize",
       width: "35%",
+      render: (_: any, item: any) => {
+        return <>{item.reward}</>;
+      },
     },
   ];
   return (
     <div className={s.container}>
       <h1>Prize distribution</h1>
       <Table
-        dataSource={dataPrize}
+        dataSource={dataPrizing}
         columns={columnsPrize}
         bordered
         className={s.container_table}
+        rowKey={(record) => `${record?.position}`}
       />
     </div>
   );
