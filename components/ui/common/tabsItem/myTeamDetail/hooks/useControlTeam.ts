@@ -221,13 +221,13 @@ const UseControlTeam = () => {
 	};
 
 	const handleSaveTeam = (id?: string) => {
-		if (!draftData?.team_name) {
-			setError({
-				...error,
-				["team_name"]: "Team name is required",
-				["team_avatar"]: "Team avatar is required",
-			});
-		} else {
+		setError({
+			...error,
+			["team_name"]: draftData?.team_name ? "" : "Team name is required",
+			["team_avatar"]: draftData?.team_avatar ? "" : "Team avatar is required",
+		});
+
+		if (draftData?.team_avatar && draftData?.team_name) {
 			const filterDataMember = draftData?.team
 				?.filter((team) => +team.user_id !== +profile?.user_id)
 				?.map((item) => ({
@@ -275,7 +275,6 @@ const UseControlTeam = () => {
 							setReset(true);
 						},
 				  });
-
 			setOpenCreateTeam(false);
 		}
 	};
