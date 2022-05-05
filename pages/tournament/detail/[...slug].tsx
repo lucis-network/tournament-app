@@ -82,6 +82,7 @@ const TournamentDetail = () => {
           // </Button>
           <button key={item}>{item}</button>
         ))}
+        hello
       </div>
 
       {/* <Row className={`lucis-container`}>
