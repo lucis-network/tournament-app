@@ -38,14 +38,16 @@ const TournamentDetail = () => {
     dataParticipants,
     dataRefereesDetail,
     dataPrizing,
+    dataBracket,
 
     loading,
     loadingParticipant,
     loadingReferees,
     loadingPrizing,
+    loadingBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
+    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
   });
 
   if (loading) {
@@ -54,7 +56,6 @@ const TournamentDetail = () => {
 
   const {
     team_size,
-    brackets,
     desc,
     rules,
     participants,
@@ -99,9 +100,9 @@ const TournamentDetail = () => {
               <div className={s.text}>
                 <p>Bracket type</p>
                 <span>
-                  {brackets[0].type === "SINGLE"
+                  {dataBracket?.type === "SINGLE"
                     ? "Single eliminnation"
-                    : brackets[0].type === "DOUBLE"
+                    : dataBracket?.type === "DOUBLE"
                     ? "Double eliminnation"
                     : ""}
                 </span>
@@ -134,7 +135,7 @@ const TournamentDetail = () => {
       <div className={`lucis-container`}>
         <RegistrationPhase
           participants={participants}
-          brackets={brackets}
+          brackets={dataBracket}
           sponsorSlot={sponsorSlot}
           pool_size={pool_size}
           currency={currency}
@@ -151,7 +152,10 @@ const TournamentDetail = () => {
             <Rules rules={rules} />
           </TabPane>
           <TabPane tab="Bracket" key="3">
-            <Bracket />
+            <Bracket
+              dataBracket={dataBracket}
+              loadingBracket={loadingBracket}
+            />
           </TabPane>
           <TabPane tab={`Participants (${team_size}/${team_size})`} key="4">
             <TableParticipant

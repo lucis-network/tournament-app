@@ -19,7 +19,7 @@ export default observer(function RegistrationPhase(props: Props) {
   return (
     <div className={s.wrapper}>
       <div className={s.time}>
-        Start time: {moment(brackets[0].start_at).format("YYYY/MM/DD HH:MM")}
+        Start time: {moment(brackets?.start_at).format("YYYY/MM/DD HH:MM")}
       </div>
       <div className={s.container}>
         <div className={s.prizes}>

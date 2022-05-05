@@ -1,5 +1,5 @@
 import { DatePicker } from "antd";
-import { useBracket } from "hooks/tournament/useTournamentDetail";
+// import { useBracket } from "hooks/tournament/useTournamentDetail";
 import { Moment } from "moment-timezone";
 import {
   Bracket,
@@ -14,7 +14,9 @@ import s from "./index.module.sass";
 type RoundProps = {
   //   numRounds: number;
   //   numGames: number;
-  bracketRounds: BracketRound[];
+  bracketRounds?: BracketRound[];
+  dataBracket?: any;
+  loadingBracket?: any
 };
 
 const calculateGames = (bracketRounds: any) => {
@@ -33,7 +35,7 @@ const createSeed = () => {
 };
 
 const createRounds = ({ bracketRounds }: RoundProps): any => {
-  const rounds = bracketRounds.map((item, idx) => {
+  const rounds = bracketRounds?.map((item, idx) => {
     return {
       title: <p className="m-0 text text-white">{item.title}</p>,
       seeds: item.bracketMatchs?.map((item, idx) => {
@@ -151,16 +153,18 @@ const CustomSeed = ({
   );
 };
 
-const BracketUI = () => {
-  const { dataBracket, loading } = useBracket({
-    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
-  });
+const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
+  console.log('dataBracket: ', dataBracket);
+  // const { dataBracket, loading } = useBracket({
+  //   tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
+  // });
 
-  if (loading) {
+  if (loadingBracket) {
     return <></>;
   }
 
   const rounds = createRounds({
+  
     bracketRounds: dataBracket.bracketRounds,
   });
 
