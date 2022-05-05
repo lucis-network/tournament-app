@@ -6,21 +6,25 @@ import { AppEmitter } from "services/emitter";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 
 type Props = {
-  nameTeam?: object;
+  nameTeam?: any;
 };
 export default function ModalDonateTeam(props: Props) {
   const { nameTeam } = props;
   const [modalVisible, setModalVisible] = useState(false);
-  const [isPopUp, setIsPopUp] = useState(false)
-  const [newData, setNewData] = useState({})
+  const [isPopUp, setIsPopUp] = useState(false);
+  const [newData, setNewData] = useState({});
 
-  const handlButton = (datas: object) => {
-    setIsPopUp(true)
-    setNewData(datas)
+  const handlButtonMember = (datas: any) => {
+    setIsPopUp(true);
+    setNewData(datas.user?.profile);
+  };
+  const handlButtonTeam = (datas: any) => {
+    setIsPopUp(true);
+    setNewData(datas);
   };
   const click = () => {
-    setIsPopUp(false)
-  }
+    setIsPopUp(false);
+  };
 
   useEffect(() => {
     const subscription = AppEmitter.addListener(
@@ -35,6 +39,9 @@ export default function ModalDonateTeam(props: Props) {
       subscription.remove();
     };
   }, []);
+  const getDataMember = nameTeam?.team_members
+  const quantityMember = getDataMember?.length
+
   return (
     <div className={s.container_button_donate}>
       <Modal
@@ -44,21 +51,27 @@ export default function ModalDonateTeam(props: Props) {
         onCancel={() => setModalVisible(false)}
         className={s.content_modal}
       >
-        {Object.values([nameTeam]).map((e: any) => (
-          <div key={e}>
+        {
+          <div>
             <Row className={s.top}>
               <Col span={4} className={s.avt}>
-                avt
+                <img
+                  className={s.avt}
+                  src={`${
+                    nameTeam?.avatar || "/assets/MyProfile/defaultAvatar.png"
+                  }`}
+                  alt=""
+                />
               </Col>
               <Col span={10} className={s.name_team}>
-                <p>{e.name}</p>
-                <span>3</span>
+                <p>{nameTeam?.name}</p>
+                <span>{quantityMember}</span>
               </Col>
               <Col span={10}>
                 <Button
                   type="primary"
                   onClick={() => {
-                    handlButton(e);
+                    handlButtonTeam(nameTeam);
                   }}
                 >
                   Donate for team
@@ -68,12 +81,23 @@ export default function ModalDonateTeam(props: Props) {
 
             <div className={s.Member}>
               <h1>Member</h1>
-              {e.member?.map((item: any) => (
-                <Row key={item.id} className={s.container}>
+              {nameTeam?.team_members?.map((item: any) => (
+                <Row key={item?.uid} className={s.container}>
                   <Col span={18} className={s.item_member}>
-                    <div className={s.avt_member}>avt</div>
-                    <div className={s.name_member}>{item.name}</div>
-                    {item.room_master && (
+                    <div className={s.avt_member}>
+                      <img
+                        className={s.avt}
+                        src={`${
+                          item.user?.profile?.avatar ??
+                          "/assets/MyProfile/defaultAvatar.png"
+                        }`}
+                        alt=""
+                      />
+                    </div>
+                    <div className={s.name_member}>
+                      {item.user?.profile?.display_name}
+                    </div>
+                    {item.is_leader && (
                       <div className={s.rank_member}>rank</div>
                     )}
                   </Col>
@@ -81,7 +105,7 @@ export default function ModalDonateTeam(props: Props) {
                     <Button
                       type="primary"
                       onClick={() => {
-                        handlButton(item);
+                        handlButtonMember(item);
                       }}
                     >
                       Donate
@@ -92,7 +116,13 @@ export default function ModalDonateTeam(props: Props) {
               <PopupDonate onClick={click} status={isPopUp} datas={newData} />
             </div>
           </div>
-        ))}
+        }
+
+        {/* {nameTeam.name}
+
+        {nameTeam?.team_members.map((item: any) => {
+          console.log(item);
+        })} */}
       </Modal>
     </div>
   );

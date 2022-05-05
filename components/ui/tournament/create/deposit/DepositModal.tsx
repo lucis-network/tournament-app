@@ -143,7 +143,7 @@ export default observer(function DepositModal(props: Props) {
               </Col>
             </Row>
           </div>
-          <p style={{textAlign: "center", margin: 0}}>Next: You'll need to confirm transaction on your wallet</p>
+          <p style={{textAlign: "center", margin: 0}}>Next: You will need to confirm transaction on your wallet</p>
         </div>
         <ConnectWalletModal />
         <NotifyModal />
