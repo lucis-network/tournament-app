@@ -9,105 +9,106 @@ import { useChooseGame } from "hooks/tournament/useCreateTournament";
 import debounce from "lodash/debounce";
 
 type Props = {
-  handCallbackChooseGame?: any;
+	handCallbackChooseGame?: any;
 };
 
 export default observer(function ChooseGameModal(props: Props) {
-  const inputRef = useRef<any>(null);
-  const [name, setName] = useState("");
+	const inputRef = useRef<any>(null);
+	const [name, setName] = useState("");
 
-  const { getDataChooseGame } = useChooseGame({
-    name: name,
-  });
+	const { getDataChooseGame } = useChooseGame({
+		name: name,
+	});
 
-  const isModalVisible = TournamentStore.chooseGameModalVisible,
-    setIsModalVisible = (v: boolean) =>
-      (TournamentStore.chooseGameModalVisible = v);
+	const isModalVisible = TournamentStore.chooseGameModalVisible,
+		setIsModalVisible = (v: boolean) =>
+			(TournamentStore.chooseGameModalVisible = v);
 
-  // const value = TournamentStore.game_uid,
-  //   setValue = (v: string) => (TournamentStore.game_uid = v);
+	// const value = TournamentStore.game_uid,
+	//   setValue = (v: string) => (TournamentStore.game_uid = v);
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
 
-  const onSearch = (e: any) => {
-    delayedSearch(e.target.value);
-  };
+	const onSearch = (e: any) => {
+		delayedSearch(e.target.value);
+	};
 
-  const [value, setValue] = useState(null);
+	const [value, setValue] = useState(null);
 
-  const onChange = (e: any) => {
-    setValue(e.target.value);
-  };
+	const onChange = (e: any) => {
+		setValue(e.target.value);
+	};
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-    if (getDataChooseGame && value != null)
-      props.handCallbackChooseGame(getDataChooseGame[value]);
-  };
+	const handleOk = () => {
+		setIsModalVisible(false);
+		if (getDataChooseGame && value != null)
+			props.handCallbackChooseGame(getDataChooseGame[value]);
+	};
 
-  const delayedSearch = useCallback(
-    debounce((value: string) => {
-      setName(value);
-      setValue(null);
-    }, 600),
-    []
-  );
+	const delayedSearch = useCallback(
+		debounce((value: string) => {
+			setName(value);
+			setValue(null);
+		}, 600),
+		[]
+	);
 
-  useEffect(() => {
-    if (inputRef && inputRef.current) {
-      inputRef.current!.focus();
-    }
-  });
+	useEffect(() => {
+		if (inputRef && inputRef.current) {
+			inputRef.current!.focus();
+		}
+	});
 
-  return (
-    <Modal
-      title={<span className="font-[600]">ChooseGame</span>}
-      visible={isModalVisible}
-      onOk={handleOk}
-      onCancel={handleCancel}
-      className={`${s.container}`}
-    >
-      <Input
-        placeholder="Search by name"
-        onChange={onSearch}
-        ref={inputRef}
-      ></Input>
-      <div className="mt-15px">
-        <Radio.Group
-          onChange={onChange}
-          value={value}
-          className={`flex flex-wrap`}
-        >
-          {getDataChooseGame
-            ? getDataChooseGame?.map((ele: any, index: number) => {
-                return (
-                  <div className={`${s.item}`} key={index}>
-                    {ele.logo ? (
-                      <img
-                        src={ele.logo}
-                        width="100"
-                        height="100"
-                        alt=""
-                        style={{ height: "100px" }}
-                      />
-                    ) : (
-                      <img
-                        src="/assets/avatar.jpg"
-                        width="100"
-                        height="100"
-                        alt=""
-                      />
-                    )}
-                    <Radio className={`${s.itemRadio}`} value={index}></Radio>
-                    <p className="mt-5px">{ele.name}</p>
-                  </div>
-                );
-              })
-            : ""}
-        </Radio.Group>
-      </div>
-    </Modal>
-  );
+	return (
+		<Modal
+			centered
+			title={<span className="font-[600]">ChooseGame</span>}
+			visible={isModalVisible}
+			onOk={handleOk}
+			onCancel={handleCancel}
+			className={`${s.container}`}
+		>
+			<Input
+				placeholder="Search by name"
+				onChange={onSearch}
+				ref={inputRef}
+			></Input>
+			<div className="mt-15px">
+				<Radio.Group
+					onChange={onChange}
+					value={value}
+					className={`flex flex-wrap`}
+				>
+					{getDataChooseGame
+						? getDataChooseGame?.map((ele: any, index: number) => {
+								return (
+									<div className={`${s.item}`} key={index}>
+										{ele.logo ? (
+											<img
+												src={ele.logo}
+												width="100"
+												height="100"
+												alt=""
+												style={{ height: "100px" }}
+											/>
+										) : (
+											<img
+												src="/assets/avatar.jpg"
+												width="100"
+												height="100"
+												alt=""
+											/>
+										)}
+										<Radio className={`${s.itemRadio}`} value={index}></Radio>
+										<p className="mt-5px">{ele.name}</p>
+									</div>
+								);
+						  })
+						: ""}
+				</Radio.Group>
+			</div>
+		</Modal>
+	);
 });
