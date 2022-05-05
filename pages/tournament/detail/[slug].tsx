@@ -52,7 +52,7 @@ const TournamentDetail = () => {
     loadingBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
+    tournament_uid: "cl2rcnia105290jrsiotdg5uq",
   });
 
   if (loading) {

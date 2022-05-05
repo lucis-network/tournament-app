@@ -164,11 +164,13 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
   return (
     <div className={s.bracketContainer}>
       {dataBracket.type === "SINGLE" ? (
-        <Bracket
-          rounds={rounds}
-          renderSeedComponent={CustomSeed}
-          mobileBreakpoint={360}
-        />
+        <>
+          <Bracket
+            rounds={rounds}
+            renderSeedComponent={CustomSeed}
+            mobileBreakpoint={360}
+          />
+        </>
       ) : (
         <DoubleBracket {...doubleProps} />
       )}
