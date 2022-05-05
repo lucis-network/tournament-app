@@ -16,12 +16,13 @@ const DoubleBracket = ({ upper, lower }: Props) => {
       style={{
         position: "relative",
         display: "flex",
-        // gap: "20px",
+        gap: "20px",
         overflow: "scroll",
       }}
     >
       <div>
         <WiningBracket rounds={upperRounds} />
+        <div style={{ height: "50px" }}></div>
         <LosingBracket rounds={lower} />
       </div>
 

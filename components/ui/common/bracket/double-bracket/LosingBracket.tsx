@@ -125,6 +125,7 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
         status={modalVisible}
         closeModal={closeModal}
         roundIdx={roundIndex}
+        teams={teams}
       />
     </>
   );

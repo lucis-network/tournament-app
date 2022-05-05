@@ -9,8 +9,6 @@ type Props = {
   teams: any[];
 };
 
-const buttons = ["Cancel", "Update", "Update and finish the match"];
-
 const UpdateScore = (props: Props) => {
   const { status, closeModal, roundIdx, teams } = props;
   if (teams && teams.length > 0) {
@@ -26,7 +24,7 @@ const UpdateScore = (props: Props) => {
       //   className={s.content_modal}
       title="Update match result"
       footer={[
-        <Button key="back" onClick={() => {}}>
+        <Button key="back" onClick={closeModal}>
           Cancel
         </Button>,
         <Button key="submit" type="ghost" onClick={() => {}}>

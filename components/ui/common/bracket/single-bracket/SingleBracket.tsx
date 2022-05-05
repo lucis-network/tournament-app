@@ -154,7 +154,7 @@ const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
       <Bracket
         rounds={roundsTemp}
         renderSeedComponent={CustomSeed}
-        mobileBreakpoint={0}
+        mobileBreakpoint={768}
       />
     </div>
   );
