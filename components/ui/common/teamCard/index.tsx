@@ -12,8 +12,12 @@ import { MyTeamType } from "../tabsItem/myTeamDetail/hooks/useControlTeam";
 interface TeamCardType {
   teamList?: MyTeamType[];
   onEdit: (isEdit: boolean, team?: any) => void;
-  onOpenRemove: (team_uid: string, user_id: string) => void;
-  onLeave: (team_uid: string) => void;
+  onOpenRemove: (
+    team_uid: string,
+    user_id: string,
+    status: "remove" | "delete" | "leave",
+    isSaveDraft?: boolean
+  ) => void;
   onOpenAdd: (team_uid: string) => void;
 }
 
@@ -22,7 +26,6 @@ const { Item } = Menu;
 const TeamCard: React.FC<TeamCardType> = ({
   teamList = [],
   onEdit,
-  onLeave,
   onOpenAdd,
   onOpenRemove,
 }): any => {
@@ -32,13 +35,19 @@ const TeamCard: React.FC<TeamCardType> = ({
         <Item key="edit" onClick={() => onEdit(true, team)}>
           Edit
         </Item>
-        <Item key="delete" onClick={() => onLeave(team.team_uid)}>
+        <Item
+          key="delete"
+          onClick={() => onOpenRemove(team.team_uid, "", "delete")}
+        >
           Delete
         </Item>
       </Menu>
     ) : (
       <Menu>
-        <Item key="leave" onClick={() => onLeave(team.team_uid)}>
+        <Item
+          key="leave"
+          onClick={() => onOpenRemove(team.team_uid, "", "leave")}
+        >
           Leave team
         </Item>
       </Menu>
@@ -53,10 +62,14 @@ const TeamCard: React.FC<TeamCardType> = ({
             className={`p-4 border ${isOwner ? "bg-card" : ""}`}
           >
             <div className="flex align-top items-start mb-2">
-              <div className="rounded-[30px] overflow-hidden h-full bg-white">
-                <img src={team.team_avatar} alt="" width={40} height={40} />
+              <div className="rounded-[30px] w-[44px] h-[44px] overflow-hidden bg-white">
+                <img
+                  className="object-cover h-full w-full"
+                  src={team.team_avatar}
+                  alt=""
+                />
               </div>
-              <div className="w-full ml-2">
+              <div className="w-[80%] ml-2">
                 <div className="flex justify-between w-full align-middle items-center">
                   <h3 className="text-18px m-0 text-white">{team.team_name}</h3>
                   <Dropdown overlay={menu(team, isOwner)} trigger={["click"]}>
@@ -64,7 +77,7 @@ const TeamCard: React.FC<TeamCardType> = ({
                   </Dropdown>
                 </div>
                 <span className="flex align-middle items-center">
-                  {team?.team?.length || 0}
+                  {team?.participant || 0}
                   <TeamOutlined className="ml-1 text-16px" />
                 </span>
               </div>
@@ -75,7 +88,9 @@ const TeamCard: React.FC<TeamCardType> = ({
                 key={user.user_id}
                 user={user}
                 enableDelete={isOwner}
-                onOpenRemove={() => onOpenRemove(team.team_uid, user.user_id)}
+                onOpenRemove={() =>
+                  onOpenRemove(team.team_uid, user.user_id, "remove")
+                }
               />
             ))}
             {isOwner && (

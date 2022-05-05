@@ -6,6 +6,7 @@ type Props = {
   heigh?: string;
   width?: string;
   parentCallback?: any;
+  errorCallback?: any;
   value?: string;
   className?: string;
   inputClass?: string;
@@ -34,7 +35,14 @@ function UploadAvatar(props: Props) {
   const [url, setUrl] = useState("");
   const handleFileInput = (e: any) => {
     const file = e.target.files[0];
-    if (file && file.name) handleUpload(e.target.files[0]);
+    if (
+      file &&
+      ["image/jpeg", "image/png", "image/gif", "image/jpg"].includes(file.type)
+    ) {
+      handleUpload(e.target.files[0]);
+    } else {
+      props.parentCallback("");
+    }
   };
 
   const handleUpload = async (file: any) => {
@@ -43,7 +51,7 @@ function UploadAvatar(props: Props) {
       Body: file,
       Bucket: S3_BUCKET,
       Key: file.name,
-      ContentType: "image/jpeg",
+      ContentType: file.type,
     };
 
     myBucket
@@ -56,7 +64,7 @@ function UploadAvatar(props: Props) {
         var s3url = myBucket.getSignedUrl("getObject", { Key: params.Key });
         const str = s3url.split("?")[0];
         setUrl(str);
-        props.parentCallback(str, props.value);
+        props.parentCallback(str);
       });
   };
 
@@ -68,8 +76,10 @@ function UploadAvatar(props: Props) {
         <div className="text-white">
           <input
             type="file"
+            accept="image/png, image/jpeg, image/jpeg"
             className={props.inputClass}
             onChange={handleFileInput}
+            name="upload"
           />
           {props.description && (
             <p className="mb-0 mt-2">{props.description}</p>
