@@ -7,6 +7,7 @@ import AuthStore, { AuthUser } from "../AuthStore";
 import AuthService from "../AuthService";
 import { useCallback, useEffect } from "react";
 import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
+import { isEmpty } from "lodash"
 
 type Props = {};
 
@@ -38,14 +39,17 @@ export default observer(function LoginModal(props: Props) {
     if (type === "facebook") tokenid = res?.accessToken;
 
     const r = await authService.login(tokenid, 100, type);
-
     console.log(AuthStore);
+    const localUserInfo = getLocalAuthInfo();
+
     switch (r.error) {
       case null:
         // Success
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
-
+        if (isEmpty(localUserInfo?.profile?.user_name)) {
+          LoginBoxStore.signupInfoModalVisible = true;
+        }
         setTimeout(() => {
           setIsModalVisible(false);
         }, 2000);
