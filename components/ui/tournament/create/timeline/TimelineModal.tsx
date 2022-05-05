@@ -55,14 +55,19 @@ const TimelineModal = (props: Props) => {
 
   const numberParticipants = TournamentStore.participants ?? 0;
   const bracketType = TournamentStore.bracket_type === "DOUBLE" ? 2 : 1;
-  // ---
-  // ----
-  // ----- Calculate total rounds follow participants
+
+  /**
+   *
+   *
+   * ===== Calculate total rounds follow participants
+   *
+   *
+   */
   const calculateRoundsSingle =
     bracketType === 1 ? Math.log(numberParticipants) / Math.log(2) : "";
 
   const calculateWinRoundsDouble =
-    bracketType === 2 ? Math.log(numberParticipants) / Math.log(2) + 1 : "";
+    bracketType === 2 ? Math.log(numberParticipants) / Math.log(2) : "";
 
   const calculateLoseRoundsDouble =
     calculateWinRoundsDouble && (calculateWinRoundsDouble - 1) * 2;
@@ -77,17 +82,33 @@ const TimelineModal = (props: Props) => {
     handCallbackTimeline(listTimeRounds);
   };
 
+  const createTitle = (round: any) => {
+    if (TournamentStore.bracket_type === "SINGLE") {
+      Number(round) == calculateRoundsSingle ? "Final" : Number(round);
+    } else {
+      return Number(round);
+    }
+  };
+
   const handleSelectDate = (
     date: any,
     dateString: string,
-    round: number | string
+    round: number | string,
+    branch: any
   ) => {
     const datePickerRound: Rounds = {
-      title: `Round: ${
-        Number(round) + 1 == calculateRoundsSingle ? "Final" : Number(round) + 1
-      }`,
+      // title: `Round: ${round == calculateRoundsSingle ? "Final" : round}`,
+      title: `${round == "Final" ? round : `Round ${round}`}`,
       start_at: date._d ?? "",
-      type: TournamentStore.bracket_type === "SINGLE" ? "UPPER" : "LOWER",
+      // type: TournamentStore.bracket_type === "SINGLE" ? "UPPER" : "LOWER" ,
+      type:
+        TournamentStore.bracket_type === "DOUBLE" && branch == "lower"
+          ? "LOWER"
+          : TournamentStore.bracket_type === "DOUBLE" && branch == "upper"
+          ? "UPPER"
+          : TournamentStore.bracket_type === "SINGLE"
+          ? "UPPER"
+          : "LOWER",
     };
 
     setListTimeRounds([...listTimeRounds, datePickerRound]);
@@ -106,12 +127,9 @@ const TimelineModal = (props: Props) => {
     handleSelectDate
   );
 
-  // console.log("calculateWinRoundsDouble: ", calculateWinRoundsDouble);
-  // console.log("calculateLoseRoundsDouble: ", calculateLoseRoundsDouble);
-
   return (
     <Modal
-      //   onOk={handleOk}
+      // onOk={handleOk}
       // bodyStyle={{ overflow: "auto" }}
       title="Setup Timeline"
       visible={isModalVisible}
@@ -137,7 +155,13 @@ const TimelineModal = (props: Props) => {
         />
       )}
 
-      {TournamentStore.bracket_type === "DOUBLE" && <DoubleBracket />}
+      {TournamentStore.bracket_type === "DOUBLE" && (
+        <DoubleBracket
+          numWinRounds={calculateWinRoundsDouble}
+          numLoseRounds={calculateLoseRoundsDouble}
+          handleSelectDate={handleSelectDate}
+        />
+      )}
     </Modal>
   );
 };

@@ -9,6 +9,7 @@ import {
   SeedTeam,
 } from "react-brackets";
 import { BracketRound } from "src/generated/graphql";
+import DoubleBracket from "./DoubleBracket";
 import s from "./index.module.sass";
 
 type RoundProps = {
@@ -16,7 +17,7 @@ type RoundProps = {
   //   numGames: number;
   bracketRounds?: BracketRound[];
   dataBracket?: any;
-  loadingBracket?: any
+  loadingBracket?: any;
 };
 
 const calculateGames = (bracketRounds: any) => {
@@ -28,32 +29,32 @@ const calculateGames = (bracketRounds: any) => {
   return totalGames;
 };
 
-const createSeed = () => {
+const createSeed = (item: any, idx: any) => {
   return {
-    teams: [{ name: null }, { name: null }],
+    teams: [
+      {
+        id: item.team1_uid !== "bye" ? item.team1_uid : null,
+        score: item.score_1,
+      },
+      {
+        id: item.team2_uid !== "bye" ? item.team2_uid : null,
+        score: item.score_2,
+      },
+    ],
+  };
+};
+
+const createRound = (item: any, idx: any) => {
+  return {
+    title: <p className="m-0 text text-white text-[24px]">{item.title}</p>,
+    seeds: item.bracketMatchs?.map((item: any, idx: any) =>
+      createSeed(item, idx)
+    ),
   };
 };
 
 const createRounds = ({ bracketRounds }: RoundProps): any => {
-  const rounds = bracketRounds?.map((item, idx) => {
-    return {
-      title: <p className="m-0 text text-white">{item.title}</p>,
-      seeds: item.bracketMatchs?.map((item, idx) => {
-        return {
-          teams: [
-            {
-              id: item.team1_uid !== "bye" ? item.team1_uid : null,
-              score: item.score_1,
-            },
-            {
-              id: item.team2_uid !== "bye" ? item.team2_uid : null,
-              score: item.score_2,
-            },
-          ],
-        };
-      }),
-    };
-  });
+  const rounds = bracketRounds?.map((item, idx) => createRound(item, idx));
 
   return rounds;
 };
@@ -64,35 +65,7 @@ const CustomSeed = ({
   roundIndex,
   seedIndex,
 }: RenderSeedProps) => {
-  // breakpoint passed to Bracket component
-  // to check if mobile view is triggered or not
-  // mobileBreakpoint is required to be passed down to a seed
-  // console.log("seedIndex: ", seedIndex);
-  // console.log(seed);
-  // {
-  //   title: 'Round 1',
-  //   seeds: [
-  //     {},
-  //     {
-  //       id: 1,
-  //       date: new Date().toDateString(),
-  //       teams: [
-  //         { id: 1, name: 'The Leons', score: 2 },
-  //         // { id: 3, name: 'Kitties', score: 6 },
-  //       ],
-  //     },
-  //     {},
-  //     {
-  //       id: 1,
-  //       date: new Date().toDateString(),
-  //       teams: [
-  //         { id: 1, name: 'The Leons', score: 2 },
-  //         // { id: 3, name: 'Kitties', score: 6 },
-  //       ],
-  //     },
-  //   ],
-  // },
-
+  console.log(breakpoint);
   return (
     <Seed
       // className={"seedItem"}
@@ -101,7 +74,11 @@ const CustomSeed = ({
     >
       <SeedItem>
         <div>
-          <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
+          <SeedTeam
+            className={s.topSeed}
+            style={{ padding: 0 }}
+            onMouseEnter={() => console.log(seed.teams[0]?.id)}
+          >
             <div
               style={{
                 width: "100%",
@@ -111,7 +88,7 @@ const CustomSeed = ({
                 color: "black",
               }}
             >
-              {seed.teams[0]?.id || `---`}
+              {seed.teams[0]?.id || `bye`}
             </div>
             <div
               style={{
@@ -134,7 +111,7 @@ const CustomSeed = ({
                 color: "white",
               }}
             >
-              {seed.teams[1]?.id || `---`}
+              {seed.teams[1]?.id || `bye`}
             </div>
             <div
               style={{
@@ -154,29 +131,47 @@ const CustomSeed = ({
 };
 
 const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
-  console.log('dataBracket: ', dataBracket);
-  // const { dataBracket, loading } = useBracket({
-  //   tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
-  // });
-
   if (loadingBracket) {
     return <></>;
   }
 
-  const rounds = createRounds({
-  
-    bracketRounds: dataBracket.bracketRounds,
+  const rounds =
+    dataBracket.type === "SINGLE" &&
+    createRounds({
+      bracketRounds: dataBracket.bracketRounds,
+    });
+
+  const filterUpper = dataBracket.bracketRounds.filter(
+    (item: any) => item.type === "UPPER"
+  );
+  const filterLower = dataBracket.bracketRounds.filter(
+    (item: any) => item.type === "LOWER"
+  );
+
+  const upperRounds = createRounds({
+    bracketRounds: filterUpper,
   });
 
-  console.log(rounds);
+  const lowerRounds = createRounds({
+    bracketRounds: filterLower,
+  });
+
+  const doubleProps = {
+    upper: upperRounds,
+    lower: lowerRounds,
+  };
 
   return (
-    <div>
-      <Bracket
-        rounds={rounds}
-        renderSeedComponent={CustomSeed}
-        mobileBreakpoint={0}
-      />
+    <div className={s.bracketContainer}>
+      {dataBracket.type === "SINGLE" ? (
+        <Bracket
+          rounds={rounds}
+          renderSeedComponent={CustomSeed}
+          mobileBreakpoint={360}
+        />
+      ) : (
+        <DoubleBracket {...doubleProps} />
+      )}
     </div>
   );
 };

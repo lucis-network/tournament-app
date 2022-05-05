@@ -21,7 +21,7 @@ export type CreateTournament = {
   bracket_type?: string;
   sponsor_slots?: SponsorTierType[];
   start_at?: Date;
-  rounds?: any[];
+  rounds?: Rounds[];
 };
 
 export type PrizeAllocation = {
@@ -367,10 +367,10 @@ class TournamentStore {
   public set notifyModalVisible(value: boolean) {
     this._notifyModalVisible = value;
   }
-  public get rounds(): Rounds[] | undefined {
-    return this._rounds;
+  public get rounds(): Rounds[]{
+    return this._rounds ? this._rounds : [];
   }
-  public set rounds(value: Rounds[] | undefined) {
+  public set rounds(value: Rounds[]) {
     this._rounds = value;
   }
 }

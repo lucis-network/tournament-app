@@ -7,10 +7,6 @@ import AuthStore, { AuthUser } from "../AuthStore";
 import AuthService from "../AuthService";
 import { useCallback, useEffect } from "react";
 import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
-import { isEmpty } from "lodash"
-import Logo from "../../../assets/icon/logo.png";
-import Image from "../../ui/common/images/Image";
-import s from "./Login.module.sass"
 
 type Props = {};
 
@@ -42,17 +38,13 @@ export default observer(function LoginModal(props: Props) {
     if (type === "facebook") tokenid = res?.accessToken;
 
     const r = await authService.login(tokenid, 100, type);
-    console.log(AuthStore);
-    const localUserInfo = getLocalAuthInfo();
 
     switch (r.error) {
       case null:
         // Success
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
-        if (isEmpty(localUserInfo?.profile?.user_name)) {
-          LoginBoxStore.signupInfoModalVisible = true;
-        }
+
         setTimeout(() => {
           setIsModalVisible(false);
         }, 2000);
@@ -76,19 +68,31 @@ export default observer(function LoginModal(props: Props) {
   return (
     <>
       <Modal
+        title={<span className="font-[600]">Login</span>}
         visible={isModalVisible}
         onCancel={handleCancel}
         footer={null}
         //wrapClassName={s.mdl}
-        className={`flex justify-center ${s.loginModal}`}
+        className={`flex justify-between`}
       >
-        <div className="text-center mb-10">
-          <div className="mb-5">
-            <Image src={Logo} />
-          </div>
-          <h2 className="mb-1">Welcome to Lucis tournament</h2>
-          <h4>Play to relax, but earn</h4>
-        </div>
+        <GoogleLogin
+          clientId={clientId}
+          render={(renderProps) => (
+            <button
+              onClick={renderProps.onClick}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded`}
+            >
+              Login Google
+            </button>
+          )}
+          onSuccess={(response) => {
+            onSuccess(response, "google");
+          }}
+          onFailure={(error) => {
+            onFailure(error, "google");
+          }}
+          cookiePolicy={"single_host_origin"}
+        />
         <FacebookLogin
           appId={facebookId}
           onSuccess={(response) => {
@@ -100,31 +104,12 @@ export default observer(function LoginModal(props: Props) {
           render={(renderProps) => (
             <button
               onClick={renderProps.onClick}
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded mb-5 fb ${s.loginBtn} ${s.fb}`}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded ml-20px`}
             >
-              Sign in with Facebook
+              Login Facebook
             </button>
           )}
-        />
-        <GoogleLogin
-          clientId={clientId}
-          render={(renderProps) => (
-            <button
-              onClick={renderProps.onClick}
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded gg ${s.loginBtn}`}
-            >
-              Sign in with Google
-            </button>
-          )}
-          onSuccess={(response) => {
-            onSuccess(response, "google");
-          }}
-          onFailure={(error) => {
-            onFailure(error, "google");
-          }}
-          cookiePolicy={"single_host_origin"}
-        />
-        <p className="text-center mt-8">By continuing, you agree to Lucis's Terms of Service and acknowledge you've read our Privacy Policy</p>
+        ></FacebookLogin>
       </Modal>
     </>
   );

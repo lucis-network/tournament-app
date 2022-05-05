@@ -51,11 +51,11 @@ const createRounds = ({
     };
   }
 
-  for (let i = 0; i < numRounds; i++) {
+  for (let i = 1; i <= numRounds; i++) {
     const title = (
       <>
         <p className="m-0 text text-white">
-          {i == numRounds - 1 ? `Final` : `Round ${i + 1}`}
+          {i == numRounds ? `Final` : `Round ${i}`}
         </p>
         <DatePicker
           // disabledDate={disabledDate}
@@ -84,18 +84,8 @@ const CustomSeed = ({
   roundIndex,
   seedIndex,
 }: RenderSeedProps) => {
-  // breakpoint passed to Bracket component
-  // to check if mobile view is triggered or not
-  // mobileBreakpoint is required to be passed down to a seed
-  // console.log("seedIndex: ", seedIndex);
-  // console.log(seed);
-
   return (
-    <Seed
-      // className={"seedItem"}
-      mobileBreakpoint={breakpoint}
-      style={{ fontSize: 16 }}
-    >
+    <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
       <SeedItem>
         <div>
           <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
@@ -152,6 +142,7 @@ const CustomSeed = ({
 
 const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
   const numParticipants = TournamentStore.participants ?? 0;
+
   const roundsTemp = createRounds({
     numRounds,
     numParticipants,
@@ -163,7 +154,7 @@ const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
       <Bracket
         rounds={roundsTemp}
         renderSeedComponent={CustomSeed}
-        mobileBreakpoint={0}
+        mobileBreakpoint={768}
       />
     </div>
   );

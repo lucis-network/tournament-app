@@ -3,16 +3,15 @@ import { memo, useCallback, useEffect, useState } from "react";
 import s from "./PopupDonate.module.sass";
 
 type Props = {
-  datas: object;
+  datas?: object;
   status: boolean;
-  onClick: () => void;
+  closeModal: () => void;
 };
 
 const { TextArea } = Input;
 
 const PopupDonate = (props: Props) => {
-  const { datas, status, onClick } = props;
-  console.log('datas: ', datas);
+  const { datas, status, closeModal } = props;
 
   const [titleMessage, setTitleMessage] = useState("");
   const [values, setValues] = useState("");
@@ -46,8 +45,9 @@ const PopupDonate = (props: Props) => {
     <Modal
       centered
       visible={status}
-      onOk={onClick}
-      onCancel={onClick}
+      onOk={closeModal}
+      onCancel={closeModal}
+      cancelButtonProps={{ style: { display: "none" } }}
       className={s.content_modal}
     >
       {Object.values([datas]).map((e: any) => (

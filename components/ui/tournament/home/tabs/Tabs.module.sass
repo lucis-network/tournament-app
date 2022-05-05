@@ -35,20 +35,116 @@
       -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
       -webkit-mask-composite: xor
       mask-composite: exclude
-  .creat_tournament
-    display: flex
-    align-items: center
-    justify-content: space-between
+  .container_create
     margin-top: 190px
-    .heading
-      color: #FFF
-      text-align: right
-      h2
+    box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
+    padding: 30px 0px 30px 0px
+    position: relative
+    .im_create_tournament
+      position: absolute
+      top: -20%
+      left: 170px
+      backdrop-filter: blur(100px)
+      z-index: 1
+      @media (min-width: 0)
+        top: -2%
+        left: 20px
+        right: 20px
+        z-index: 12
+      @media (min-width: 414px)
+        left: 40px
+        right: 40px
+      @media (min-width: 540px)
+        left: 80px
+        right: 80px
+      @media (min-width: 640px)
+        left: 120px
+        right: 120px
+      @media (min-width: 768px)
+        left: 80px
+        right: 300px
+      @media (min-width: 992px)
+        left: 80px
+        right: 500px
+      @media (min-width: 1280px)
+        top: -20%
+        left: 120px
+        right: 0px
+        max-width: 380px
+    .line
+      position: absolute
+      top: 100px
+      left: -40px
+      background: linear-gradient(111.41deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.12) 100%)
+      backdrop-filter: blur(100px)
+      width: 84px
+      height: 84px
+      border-radius: 100%
+      z-index: 6
+    .lin1
+      position: absolute
+      top: 0
+      left: -80px
+      background: linear-gradient(226.29deg, #3BE2CD -0.17%, #33AFD4 93.89%)
+      filter: blur(70px)
+      width: 250px
+      height: 250px
+      border-radius: 100%
+      z-index: 5
+    .creat_tournament
+      border: 1px solid #3BE2CD
+      border-radius: 10px
+      backdrop-filter: blur(12px)
+      justify-content: space-between
+      align-items: center
+      padding: 30px
+      @media ( min-width: 0px )
+        flex-direction: column
+        padding: 30px 12px
+      @media ( min-width: 1280px )
+        flex-direction: row
+        padding: 30px
+      .heading
         color: #FFF
-        font-size: 32px
-        line-height: 36px
-        font-weight: 700
-      p
-        font-weight: 300
-        font-size: 20px
-        line-height: 150%
+        text-align: right
+        @media ( min-width: 0px )
+          text-align: left
+          margin-top: 140px
+        @media ( min-width: 1280px )
+          width: 45%
+          margin-top: 0px
+          text-align: right
+        h2
+          color: #FFF
+          font-size: 32px
+          line-height: 36px
+          font-weight: 700
+          @media ( min-width: 0px )
+            font-size: 24px
+            line-height: 28px
+          @media ( min-width: 1280px )
+            font-size: 32px
+            line-height: 36px
+        p
+          font-weight: 300
+          font-size: 20px
+          line-height: 150%
+          @media ( min-width: 0px )
+            font-size: 16px
+          @media ( min-width: 1280px )
+            font-size: 20px
+        :global(.ant-btn-primary)
+          padding: 12px 40px
+          height: auto
+          border-radius: 10px
+          font-weight: 600
+          font-size: 20px
+          line-height: 115%
+          @media ( min-width: 0px )
+            width: 100%
+            font-size: 14px
+          @media ( min-width: 1280px )
+            font-size: 20px
+          @media ( min-width: 1280px )
+            width: auto
+            font-size: 20px
