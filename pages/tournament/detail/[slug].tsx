@@ -12,6 +12,7 @@ import TableParticipant from "components/ui/tournament/detail/tabsitem/participa
 import Referees from "components/ui/tournament/detail/tabsitem/referees";
 import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
+import { GetStaticPaths } from "next";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Donate", "Subcribe", "Invite or Share"];
@@ -180,5 +181,27 @@ const TournamentDetail = () => {
     </div>
   );
 };
+
+export function getStaticPaths() {
+  return {
+    paths: [
+      {
+        params: { slug: "1" },
+      },
+      {
+        params: { slug: "2" },
+      },
+    ],
+    fallback: false,
+  };
+}
+
+export function getStaticProps({}) {
+  return {
+    props: {
+      course: {},
+    },
+  };
+}
 
 export default TournamentDetail;
