@@ -14,7 +14,7 @@ type Props = {
 
 export default function TableParticipant(props: Props) {
   const { dataParticipants, loading } = props;
-  
+
   const [datas, setDatas] = useState({});
   const handleClick = (e: object) => {
     setDatas(e);
@@ -29,46 +29,31 @@ export default function TableParticipant(props: Props) {
       title: "No",
       dataIndex: "getTournamentParticipants",
       key: "id",
-      width: "5%",
-      render: (_: any, item: any) => {
-        return <>{item.uid}</>;
-      },
+      width: 50,
     },
     {
       title: "Participant",
       dataIndex: "getTournamentParticipants",
       key: "name",
-      width: "50%",
-      render: (_: any, item: any) => {
-        return (
-          <div className={s.title}>
-            <div className={s.im_team}>
-              <img
-                className={s.avt}
-                src={`${item.avatar ?? "/assets/MyProfile/defaultAvatar.png"}`}
-                alt=""
-              />
-            </div>
-            <span>{item.name}</span>
-          </div>
-        );
-      },
+      width: 250,
     },
     {
       title: "Earning",
       dataIndex: "position",
       key: "position",
-      width: "15%",
+      width: 250,
+
+      // width: "15%",
     },
     {
       title: "Donated",
       dataIndex: "donate",
       key: "donate",
-      width: "15%",
+      // width: "15%",
     },
     {
       title: "",
-      width: "15%",
+      // width: "15%",
       render: (_: any, item: object) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button onClick={() => handleClick(item)} type="primary">
@@ -88,7 +73,7 @@ export default function TableParticipant(props: Props) {
         columns={columns}
         bordered
         className={s.container_table}
-        rowKey={record => `${record?.uid}`}
+        rowKey={(record) => `${record?.uid}`}
       />
       <ModalDonateTeam nameTeam={datas} />
     </div>

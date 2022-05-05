@@ -55,54 +55,6 @@ const datas = [
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
-  {
-    id: 9,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
-  {
-    id: 10,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
-  {
-    id: 11,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
-  {
-    id: 12,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
-  {
-    id: 13,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
-  {
-    id: 14,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
-  {
-    id: 15,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
-  {
-    id: 17,
-    name: "Thetan",
-    title:
-      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
-  },
 ];
 
 export default function TabHome() {
@@ -137,19 +89,25 @@ export default function TabHome() {
           <CardHome datas={datas} />
         </div>
 
-        <Row className={s.creat_tournament}>
-          <Col>
+        <div className={s.container_create}>
+          <div className={s.line}></div>
+          <div className={s.lin1}></div>
+          <div className={s.im_create_tournament}>
             <img src="/assets/Banner/im_creat_tournament.png" alt="" />
-          </Col>
-          <Col className={s.heading} span={7}>
-            <h2>CREATE MY TOURNAMENT</h2>
-            <p>
-              Everyone can create tournaments on Lucis Network. The most useful
-              platform to create and manage your own tournaments with ease.
-            </p>
-            <Button type="primary">CREAT NOW</Button>
-          </Col>
-        </Row>
+          </div>
+          <Row className={s.creat_tournament}>
+            <Col></Col>
+            <Col className={s.heading}>
+              <h2>CREATE MY TOURNAMENT</h2>
+              <p>
+                Everyone can create tournaments on Lucis Network. The most
+                useful platform to create and manage your own tournaments with
+                ease.
+              </p>
+              <Button type="primary">CREAT NOW</Button>
+            </Col>
+          </Row>
+        </div>
       </div>
     </div>
   );

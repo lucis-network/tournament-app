@@ -1,0 +1,74 @@
+.content_card
+  box-shadow: 0px 0px 25px 4px rgba(250, 0, 255, 0.3)
+  min-height: 290px
+  min-width: 240px
+  background: linear-gradient(111.03deg, rgba(239, 238, 238, 0.32) 2.82%, rgba(239, 238, 238, 0.06) 90.94%)
+  backdrop-filter: blur(40px)
+  border-radius: 16px
+  position: relative
+  .im_top_player
+    position: absolute
+    top: -28%
+    width: 100%
+    display: flex
+    justify-content: center
+    z-index: 0
+  .content_player
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    padding-top: 50px
+    z-index: 2
+    position: relative
+    .avt
+      height: 100px
+      width: 100px
+      overflow: hidden
+      background: #FFF
+      border-radius: 100%
+    p
+      padding: 16px 0px 2px 0px
+      font-weight: 700
+      font-size: 20px
+      line-height: 115%
+      color: #FFFFFF
+    .btn
+      position: relative
+      padding: 9px 6px
+      .content_btn
+        font-weight: 700
+        font-size: 24px
+        line-height: 115%
+        border: none
+        color: #0BEBD6
+      .content_btn:active
+        background: transparent
+      .content_btn:focus
+        background: transparent
+    .btn::before
+      content: ''
+      position: absolute
+      top:0
+      left:0
+      right:0
+      bottom:0
+      border-radius: 4px
+      padding: 1px
+      background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+      -webkit-mask-composite: xor
+      mask-composite: exclude
+.content_card::before
+  content: ''
+  position: absolute
+  top:0
+  left:0
+  right:0
+  bottom:0
+  border-radius: 16px
+  padding: 1px
+  background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+  -webkit-mask-composite: xor
+  mask-composite: exclude

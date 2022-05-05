@@ -18,7 +18,8 @@ export type AuthUser = {
 
 type UserProfile = {
   user_id?: number;
-
+  user_name?: string | null;
+  country_code?: string | null;
 }
 
 type UserRole = {
