@@ -116,6 +116,7 @@ const GET_PARTICIPANTS_DETAIL = gql`
       name
       avatar
       team_members {
+        uid
         is_leader
         user {
           profile {
