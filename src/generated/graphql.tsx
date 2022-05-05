@@ -1652,6 +1652,7 @@ export type Reward = {
   __typename?: 'Reward';
   amount?: Maybe<Scalars['Float']>;
   chain_symbol?: Maybe<Scalars['String']>;
+  is_claim?: Maybe<Scalars['Boolean']>;
   rank?: Maybe<Scalars['Int']>;
   reward_type?: Maybe<Scalars['String']>;
 };
