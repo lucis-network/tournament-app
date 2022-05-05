@@ -1,5 +1,6 @@
 import s from "components/Auth/AuthStore";
-import React from "react";
+import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
+import React, { useState } from "react";
 import {
   Bracket,
   Seed,
@@ -17,9 +18,24 @@ interface LosingProps {
 }
 
 const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [roundIndex, setRoundIndex] = useState(0);
+  const [teams, setTeams] = useState([]);
+
+  const openModalUpdateScore = (e: any, roundIdx: number, teams: any) => {
+    setRoundIndex(roundIdx);
+    setTeams(teams);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   const RenderLosingSeed = ({
     breakpoint,
     roundIndex,
+    seedIndex,
     seed,
   }: RenderSeedProps) => {
     const isLineConnector =
@@ -41,7 +57,7 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
                   color: "black",
                 }}
               >
-                {seed.teams[0]?.name || `Team ---`}
+                {seed.teams[0]?.id ?? `bye`}
               </div>
               <div
                 style={{
@@ -49,9 +65,13 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
                   color: "black",
                   padding: "5px",
                   width: "50px",
+                  cursor: "pointer",
                 }}
+                onClick={() =>
+                  openModalUpdateScore(seedIndex, roundIndex, seed.teams)
+                }
               >
-                {seed.teams[0]?.score || "--"}
+                {seed.teams[0]?.score ?? "--"}
               </div>
             </SeedTeam>
             <SeedTeam className={style.bottomSeed} style={{ padding: 0 }}>
@@ -64,7 +84,7 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
                   color: "white",
                 }}
               >
-                {seed.teams[1]?.name || `Team ---`}
+                {seed.teams[1]?.id ?? `bye`}
               </div>
               <div
                 style={{
@@ -72,9 +92,13 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
                   color: "white",
                   padding: "5px",
                   width: "50px",
+                  cursor: "pointer",
                 }}
+                onClick={() =>
+                  openModalUpdateScore(seedIndex, roundIndex, seed.teams)
+                }
               >
-                {seed.teams[1]?.score || "--"}
+                {seed.teams[1]?.score ?? "--"}
               </div>
             </SeedTeam>
           </div>
@@ -84,17 +108,25 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
   };
 
   return (
-    <Bracket
-      rounds={losing}
-      renderSeedComponent={RenderLosingSeed}
-      swipeableProps={{
-        enableMouseEvents: true,
-        animateHeight: true,
-        style: {
-          padding: "0 50px 0 0",
-        },
-      }}
-    />
+    <>
+      <Bracket
+        rounds={losing}
+        mobileBreakpoint={360}
+        renderSeedComponent={RenderLosingSeed}
+        swipeableProps={{
+          enableMouseEvents: true,
+          animateHeight: true,
+          style: {
+            padding: "0 50px 0 0",
+          },
+        }}
+      />
+      <UpdateScore
+        status={modalVisible}
+        closeModal={closeModal}
+        roundIdx={roundIndex}
+      />
+    </>
   );
 };
 

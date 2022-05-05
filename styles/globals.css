@@ -654,12 +654,24 @@ body .ant-btn-primary {
   border-color: none;
   border: none;
 }
-
 body .ant-btn-primary:hover {
   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
   border-color: none;
   border: none;
   /* transform: scale(1.1); */
+}
+
+body .ant-btn-ghost {
+  background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%);
+  border-color: none;
+  border: none;
+  color: white;
+}
+body .ant-btn-ghost:hover {
+  background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%);
+  border-color: none;
+  border: none;
+  color: white;
 }
 
 body .ant-btn-default {

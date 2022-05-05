@@ -65,6 +65,7 @@ const CustomSeed = ({
   roundIndex,
   seedIndex,
 }: RenderSeedProps) => {
+  console.log(breakpoint);
   return (
     <Seed
       // className={"seedItem"}
@@ -166,7 +167,7 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
         <Bracket
           rounds={rounds}
           renderSeedComponent={CustomSeed}
-          mobileBreakpoint={0}
+          mobileBreakpoint={360}
         />
       ) : (
         <DoubleBracket {...doubleProps} />

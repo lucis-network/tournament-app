@@ -37,7 +37,7 @@ const createWinRounds = ({
   for (let i = 1; i <= numWinRounds; i++) {
     const title = (
       <>
-        <p className="m-0 text text-white">{`Round ${i}`}</p>
+        <p className="m-0 text-white text-[24px]">{`Round ${i}`}</p>
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
@@ -73,7 +73,7 @@ const createLoseRounds = ({
   for (let i = 1; i <= numLoseRounds; i++) {
     const title = (
       <>
-        <p className="m-0 text text-white">{`Round ${i}`}</p>
+        <p className="m-0 text-white text-[24px]">{`Round ${i}`}</p>
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
@@ -124,7 +124,7 @@ const DoubleBracket = ({
     {
       title: (
         <>
-          <p className="m-0 text text-white">Final</p>
+          <p className="m-0 text-[24px] text-white">Final</p>
           <DatePicker
             showTime
             onChange={(date, dateString) =>
