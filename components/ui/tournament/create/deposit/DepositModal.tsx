@@ -1,24 +1,24 @@
 import { observer } from "mobx-react-lite";
-import { Col, message, Modal, Row } from "antd";
+import { Col, message, Modal, Row, Spin } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { clearLocalCreateTournament } from "components/service/tournament/TournamentService";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import { BUSD } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
+import { LoadingOutlined } from "@ant-design/icons";
+
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 
 type Props = {};
 
 export default observer(function DepositModal(props: Props) {
-  const router = useRouter();
-
+  const [isLoading, setIsLoading] = useState(false);
   const isModalVisible = TournamentStore.depositModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.depositModalVisible = v);
@@ -30,12 +30,14 @@ export default observer(function DepositModal(props: Props) {
     } else {
       let txHash = await deposit();
       console.log(txHash);
+      setIsLoading(false);
       if (txHash) TournamentStore.notifyModalVisible = true;
       else {
-        setIsModalVisible(false);
-        TournamentStore.resetStates();
-        clearLocalCreateTournament();
-        router.push("/");
+        // setIsModalVisible(false);
+        // TournamentStore.resetStates();
+        // clearLocalCreateTournament();
+        // router.push("/");
+        message.error("Insufficient balance");
       }
     }
   };
@@ -45,6 +47,7 @@ export default observer(function DepositModal(props: Props) {
   };
 
   const deposit = async () => {
+    setIsLoading(true);
     if (
       ConnectWalletStore_NonReactiveData.web3Provider &&
       TournamentStore.pool_size
@@ -65,13 +68,13 @@ export default observer(function DepositModal(props: Props) {
 
   const getTotalAmount = () => {
     if (TournamentStore.pool_size)
-      return ((TournamentStore.pool_size * 111) / 100);
+      return (TournamentStore.pool_size * 111) / 100;
     return 0;
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
-  }
+  };
   return (
     <div style={{ width: "400px" }}>
       <Modal
@@ -81,72 +84,78 @@ export default observer(function DepositModal(props: Props) {
         className={`${s.container}`}
         cancelButtonProps={{ style: { display: "none" } }}
         okText="Confirm"
-        //onCancel={handleCancel}
+        onCancel={handleCancel}
       >
-        <div className="">
-          <p>Payment detail</p>
-          <div style={{ padding: "0px 20px 0px 20px" }}>
-            <Row>
-              <Col span={10}>
-                <p>Prize Pool</p>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={12}>
-                <p>
-                  {fomatNumber(
-                    TournamentStore.pool_size ? TournamentStore.pool_size : 0
-                  )}{" "}
-                  {TournamentStore.currency_uid}
-                </p>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={10}>
-                <p>Lucis fee(10%)</p>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={12}>
-                <p>
-                  {fomatNumber(
-                    TournamentStore.pool_size
-                      ? TournamentStore.pool_size / 10
-                      : 0
-                  )}{" "}
-                  {TournamentStore.currency_uid}
-                </p>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={10}>
-                <p>Lucis fee(1%)</p>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={12}>
-                <p>
-                  {fomatNumber(
-                    TournamentStore.pool_size
-                      ? TournamentStore.pool_size / 100
-                      : 0
-                  )}{" "}
-                  {TournamentStore.currency_uid}
-                </p>
-              </Col>
-            </Row>
-                    
-            <Row style={{borderTop: "1px solid", paddingTop: "5px"}}>
-              <Col span={10}>
-                <p>Total</p>
-              </Col>
-              <Col span={2}></Col>
-              <Col span={12}>
-                <p>{getTotalAmount().toFixed(2)} {TournamentStore.currency_uid}</p> 
-              </Col>
-            </Row>
+        <Spin spinning={isLoading}>
+          <div className="">
+            <p>Payment detail</p>
+            <div style={{ padding: "0px 20px 0px 20px" }}>
+              <Row>
+                <Col span={10}>
+                  <p>Prize Pool</p>
+                </Col>
+                <Col span={2}></Col>
+                <Col span={12}>
+                  <p>
+                    {fomatNumber(
+                      TournamentStore.pool_size ? TournamentStore.pool_size : 0
+                    )}{" "}
+                    {TournamentStore.currency_uid}
+                  </p>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={10}>
+                  <p>Lucis fee(10%)</p>
+                </Col>
+                <Col span={2}></Col>
+                <Col span={12}>
+                  <p>
+                    {fomatNumber(
+                      TournamentStore.pool_size
+                        ? TournamentStore.pool_size / 10
+                        : 0
+                    )}{" "}
+                    {TournamentStore.currency_uid}
+                  </p>
+                </Col>
+              </Row>
+              <Row>
+                <Col span={10}>
+                  <p>Lucis fee(1%)</p>
+                </Col>
+                <Col span={2}></Col>
+                <Col span={12}>
+                  <p>
+                    {fomatNumber(
+                      TournamentStore.pool_size
+                        ? TournamentStore.pool_size / 100
+                        : 0
+                    )}{" "}
+                    {TournamentStore.currency_uid}
+                  </p>
+                </Col>
+              </Row>
+
+              <Row style={{ borderTop: "1px solid", paddingTop: "5px" }}>
+                <Col span={10}>
+                  <p>Total</p>
+                </Col>
+                <Col span={2}></Col>
+                <Col span={12}>
+                  <p>
+                    {getTotalAmount().toFixed(2)} {TournamentStore.currency_uid}
+                  </p>
+                </Col>
+              </Row>
+            </div>
+            <p style={{ textAlign: "center", margin: 0 }}>
+              Next: You will need to confirm transaction on your wallet
+            </p>
           </div>
-          <p style={{textAlign: "center", margin: 0}}>Next: You will need to confirm transaction on your wallet</p>
-        </div>
-        <ConnectWalletModal />
-        <NotifyModal />
+          <ConnectWalletModal />
+          <NotifyModal />
+        </Spin>
       </Modal>
     </div>
   );
