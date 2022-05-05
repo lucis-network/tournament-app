@@ -130,13 +130,9 @@ const CustomSeed = ({
 };
 
 const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
-  console.log("dataBracket: ", dataBracket.bracketRounds);
-
   if (loadingBracket) {
     return <></>;
   }
-
-  // console.log(dataBracket.type);
 
   const rounds =
     dataBracket.type === "SINGLE" &&
@@ -158,8 +154,6 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
   const lowerRounds = createRounds({
     bracketRounds: filterLower,
   });
-
-  console.log("upperRounds: ", lowerRounds);
 
   const doubleProps = {
     upper: upperRounds,

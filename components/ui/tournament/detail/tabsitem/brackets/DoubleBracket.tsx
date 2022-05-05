@@ -9,6 +9,7 @@ type Props = {
 
 const DoubleBracket = ({ upper, lower }: Props) => {
   const upperRounds = [...upper].splice(0, upper.length - 1);
+  console.log("upperRounds: ", upperRounds);
   const finalRound = [...upper].splice(upper.length - 1, 1);
 
   return (
