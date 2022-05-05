@@ -37,9 +37,19 @@ const TournamentDetail = () => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
-  const { dataTournamentDetail, loading } = useTournamentDetail({
+  const {
+    dataTournamentDetail,
+    dataParticipants,
+    dataRefereesDetail,
+    dataPrizing,
+
+    loading,
+    loadingParticipant,
+    loadingReferees,
+    loadingPrizing,
+  } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2rcnia105290jrsiotdg5uq",
+    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
   });
 
   if (loading) {
@@ -167,13 +177,22 @@ const TournamentDetail = () => {
             <Bracket />
           </TabPane>
           <TabPane tab={`Participants (${team_size}/${team_size})`} key="4">
-            <TableParticipant />
+            <TableParticipant
+              dataParticipants={dataParticipants}
+              loading={loadingParticipant}
+            />
           </TabPane>
           <TabPane tab="Referees" key="5">
-            <Referees />
+            <Referees
+              dataRefereesDetail={dataRefereesDetail}
+              loadingReferees={loadingReferees}
+            />
           </TabPane>
           <TabPane tab="Prizing" key="6">
-            <Prizing />
+            <Prizing
+              dataPrizing={dataPrizing}
+              loadingPrizing={loadingPrizing}
+            />
           </TabPane>
         </Tabs>
       </div>

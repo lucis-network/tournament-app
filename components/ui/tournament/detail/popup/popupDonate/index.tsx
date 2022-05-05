@@ -54,8 +54,14 @@ const PopupDonate = (props: Props) => {
         <Row key={e}>
           <Col span={10}>Donate to</Col>
           <Col className={s.information}>
-            <div className={s.avt_member}>avt</div>
-            <p>{e?.name ?? ""}</p>
+            <div className={s.avt_member}>
+              <img
+                className={s.avt}
+                src={`${e?.avatar || "/assets/MyProfile/defaultAvatar.png"}`}
+                alt=""
+              />
+            </div>
+            <p>{e?.name || e?.display_name}</p>
           </Col>
         </Row>
       ))}

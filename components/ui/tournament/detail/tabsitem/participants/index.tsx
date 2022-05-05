@@ -3,64 +3,37 @@ import s from "./Participants.module.sass";
 import { AppEmitter } from "services/emitter";
 import { Button, message, Table } from "antd";
 import { useEffect, useState } from "react";
-import { useParticipant } from "hooks/tournament/useTournamentDetail";
-import SearchComplete from "components/ui/common/searchs";
 import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
+import { TeamGql } from "src/generated/graphql";
+import SearchComplete from "components/ui/common/searchs";
 
-export default function TableParticipant() {
+type Props = {
+  dataParticipants: TeamGql[];
+  loading: any;
+};
+
+export default function TableParticipant(props: Props) {
+  const { dataParticipants, loading } = props;
+
   const [datas, setDatas] = useState({});
-  const [dataParticipant, setDataParticipant] = useState<any[]>([]);
-  const { dataParticipants } = useParticipant({
-    uid: "cl2be7tze0019qyvclmlbvvoa",
-  });
-
-  const fetchDataParticipant = async () => {
-    try {
-      const newData = await dataParticipants;
-
-      const dataLenght = newData?.getTournamentDetailParticipants?.length;
-      for (let i = 0; i < dataLenght; i++) {
-        const type = newData?.getTournamentDetailParticipants[i];
-        setDataParticipant((prev) => [
-          ...prev,
-          {
-            id: i + 1,
-            key: type?.uid,
-            name: type?.name,
-            position: "rank",
-            donate: "2.000$",
-            member: [
-              { id: 1, name: "NonCaiTay", room_master: true },
-              { id: 2, name: "BestTop" },
-              { id: 3, name: "BestSp" },
-            ],
-          },
-        ]);
-      }
-    } catch {
-      message.error("Error fetch data");
-    }
-  };
-
-  useEffect(() => {
-    fetchDataParticipant();
-  }, [dataParticipants]);
-
   const handleClick = (e: object) => {
     setDatas(e);
     AppEmitter.emit("showPopupDonate", true);
   };
+  if (loading) {
+    return <></>;
+  }
 
   const columns = [
     {
       title: "No",
-      dataIndex: "id",
+      dataIndex: "getTournamentParticipants",
       key: "id",
       width: 50,
     },
     {
       title: "Participant",
-      dataIndex: "name",
+      dataIndex: "getTournamentParticipants",
       key: "name",
       width: 250,
     },
@@ -96,10 +69,11 @@ export default function TableParticipant() {
         <SearchComplete />
       </div>
       <Table
-        dataSource={dataParticipant}
+        dataSource={dataParticipants}
         columns={columns}
         bordered
         className={s.container_table}
+        rowKey={(record) => `${record?.uid}`}
       />
       <ModalDonateTeam nameTeam={datas} />
     </div>
