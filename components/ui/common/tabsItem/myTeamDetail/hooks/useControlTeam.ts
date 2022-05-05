@@ -1,7 +1,14 @@
-import { useQuery } from "@apollo/client";
-import { useCallback, useState } from "react";
-import { GET_MY_TEAM } from "../myTeamService";
-
+import {
+  ADD_PLAYER,
+  CREATE_TEAM,
+  DELETE_PLAYER,
+  DELETE_TEAM,
+  MY_PROFILE,
+  SEARCH_MEMBER,
+  SEARCH_TEAM,
+} from "./../myTeamService";
+import { useMutation, useQuery } from "@apollo/client";
+import { useCallback, useEffect, useState } from "react";
 export interface TeamType extends Record<any, any> {
   user_id: string;
   display_name: string;
@@ -17,194 +24,7 @@ export interface MyTeamType {
   team?: TeamType[];
 }
 
-const teams: MyTeamType[] = [
-  {
-    team_uid: "team-0",
-    team_name: "Lord team",
-    team_avatar: "/profile/im_user.png",
-    participant: 1,
-    team: [
-      {
-        user_id: "1",
-        display_name: "Master",
-        avatar: "/profile/im_user.png",
-        is_leader: true,
-      },
-      {
-        user_id: "2",
-        display_name: "Member 1",
-        avatar: "/profile/im_user.png",
-      },
-      {
-        user_id: "3",
-        display_name: "Member 2",
-        avatar: "/profile/im_user.png",
-      },
-    ],
-  },
-  {
-    team_uid: "team-1",
-    team_name: "Heaven team",
-    team_avatar: "/profile/im_user.png",
-    participant: 1,
-    team: [
-      {
-        user_id: "1",
-        display_name: "Master",
-        avatar: "/profile/im_user.png",
-        is_leader: true,
-      },
-      {
-        user_id: "2",
-        display_name: "Member 1",
-        avatar: "/profile/im_user.png",
-      },
-      {
-        user_id: "3",
-        display_name: "Member 2",
-        avatar: "/profile/im_user.png",
-      },
-    ],
-  },
-  {
-    team_uid: "team-2",
-    team_name: "Liquid - Team",
-    team_avatar: "/profile/im_user.png",
-    participant: 0,
-    team: [
-      {
-        user_id: "1",
-        display_name: "Master",
-        avatar: "/profile/im_user.png",
-        is_leader: true,
-      },
-      {
-        user_id: "2",
-        display_name: "Member 1",
-        avatar: "/profile/im_user.png",
-      },
-      {
-        user_id: "3",
-        display_name: "Member 2",
-        avatar: "/profile/im_user.png",
-      },
-      {
-        user_id: "4",
-        display_name: "Member 3",
-        avatar: "/profile/im_user.png",
-      },
-    ],
-  },
-  {
-    team_uid: "team-3",
-    team_name: "Assistant Team",
-    team_avatar: "/profile/im_user.png",
-    participant: 0,
-    team: [
-      {
-        user_id: "1",
-        display_name: "Master",
-        avatar: "/profile/im_user.png",
-        is_leader: true,
-      },
-      {
-        user_id: "2",
-        display_name: "Member 1",
-        avatar: "/profile/im_user.png",
-      },
-      {
-        user_id: "3",
-        display_name: "Member 2",
-        avatar: "/profile/im_user.png",
-      },
-    ],
-  },
-  {
-    team_uid: "team-4",
-    team_name: "Super Team",
-    team_avatar: "/profile/im_user.png",
-    participant: 0,
-    team: [
-      {
-        user_id: "1",
-        display_name: "Master",
-        avatar: "/profile/im_user.png",
-        is_leader: true,
-      },
-      {
-        user_id: "2",
-        display_name: "Member 1",
-        avatar: "/profile/im_user.png",
-      },
-    ],
-  },
-  {
-    team_uid: "team-5",
-    team_name: "Adidas Team",
-    team_avatar: "/profile/im_user.png",
-    participant: 0,
-    team: [
-      {
-        user_id: "1",
-        display_name: "Master",
-        avatar: "/profile/im_user.png",
-        is_leader: true,
-      },
-      {
-        user_id: "2",
-        display_name: "Member 1",
-        avatar: "/profile/im_user.png",
-      },
-    ],
-  },
-];
-
-const mockMember: TeamType[] = [
-  {
-    user_id: "1123",
-    display_name: "Vip pro",
-    avatar: "/profile/im_user.png",
-  },
-  {
-    user_id: "3122",
-    display_name: "Noob",
-    avatar: "/profile/im_user.png",
-  },
-  {
-    user_id: "1308",
-    display_name: "Call my name",
-    avatar: "/profile/im_user.png",
-  },
-  {
-    user_id: "91823",
-    display_name: "Crazy guy",
-    avatar: "/profile/im_user.png",
-  },
-  {
-    user_id: "7661",
-    display_name: "Idiot",
-    avatar: "/profile/im_user.png",
-  },
-  {
-    user_id: "234",
-    display_name: "Tony",
-    avatar: "/profile/im_user.png",
-  },
-  {
-    user_id: "122",
-    display_name: "John",
-    avatar: "/profile/im_user.png",
-  },
-  {
-    user_id: "2111",
-    display_name: "Lucas",
-    avatar: "/profile/im_user.png",
-  },
-];
-
 const UseControlTeam = () => {
-  const [teamList, setTeamList] = useState<MyTeamType[]>(teams);
-  const [memberList, setMemberList] = useState<TeamType[]>(mockMember);
   const [draftData, setDraftData] = useState<MyTeamType>();
   const [teamId, setTeamId] = useState<string>("");
   const [memberId, setMemberId] = useState<string>("");
@@ -215,78 +35,119 @@ const UseControlTeam = () => {
   const [openCreateTem, setOpenCreateTeam] = useState<boolean>(false);
   const [openRemove, setOpenRemove] = useState<boolean>(false);
   const [isSaveDraft, setIsSaveDraft] = useState<boolean>(false);
+  const [status, setStatus] = useState<"remove" | "delete" | "leave">("remove");
+  const [error, setError] = useState<Record<string, string>>({});
 
-  const excludeField = ["avatar"];
-  // Open when have api to query team
-  // const { data, loading, error } = useQuery(GET_MY_TEAM);
+  const { data: rawSearchMember, refetch: searchMember } = useQuery(
+    SEARCH_MEMBER,
+    {
+      variables: {
+        teamId,
+        value: "",
+      },
+    }
+  );
 
-  const handleLeave = (team_uid: string) => {
-    const filterTeam = teamList.filter(
-      (team: any) => team.team_uid !== team_uid
-    );
+  const { data: rawSearchTeam, refetch: searchTeam } = useQuery(SEARCH_TEAM, {
+    variables: {
+      name: "",
+    },
+  });
 
-    setTeamList(filterTeam);
-  };
+  const { data: rawProfile } = useQuery(MY_PROFILE);
+
+  const [createTeam] = useMutation(CREATE_TEAM);
+  const [deleteTeam] = useMutation(DELETE_TEAM);
+  const [addPlayer] = useMutation(ADD_PLAYER);
+  const [deletePlayer] = useMutation(DELETE_PLAYER);
+
+  const profile = rawProfile?.me?.profile;
+
+  const convertMemberId = draftData?.team?.reduce(
+    (acc, value) => {
+      acc.push(value.user_id as never);
+      return acc;
+    },
+    [profile?.user_id] as string[]
+  );
+  const teamList = rawSearchTeam?.searchTeam as MyTeamType[];
+  const memberList = isSaveDraft
+    ? (rawSearchMember?.searchMember as TeamType[])?.filter(
+        (member) => !convertMemberId?.some((key: any) => key === member.user_id)
+      )
+    : (rawSearchMember?.searchMember as TeamType[]);
 
   const handleRemove = () => {
-    const updatedData = teamList.map((team) =>
-      team.team_uid === teamId
-        ? {
-            ...team,
-            team: team.team?.filter((member) => member.user_id !== memberId),
-          }
-        : team
-    );
-
-    if (isSaveDraft) {
-      setDraftData({
-        ...draftData!,
-        team: draftData?.team?.filter((member) => member.user_id !== memberId),
-      });
-      setOpenCreateTeam(true);
-    } else {
-      setTeamList(updatedData);
+    switch (status) {
+      case "remove":
+        if (isSaveDraft) {
+          setDraftData({
+            ...draftData!,
+            team: draftData?.team?.filter(
+              (member) => member.user_id !== memberId
+            ),
+          });
+        } else {
+          deletePlayer({
+            variables: {
+              teamId,
+              memberId,
+            },
+          });
+        }
+        break;
+      case "delete":
+      case "leave":
+        deleteTeam({
+          variables: {
+            teamId,
+          },
+          onCompleted: () => searchTeam({ name: "" }),
+        });
+      default:
+        break;
     }
+
     setOpenRemove(false);
   };
+
+  const handleCloseRemove = useCallback(() => {
+    setOpenRemove(false);
+  }, []);
 
   const handleOpenRemove = (
     team_uid: string,
     user_id: string,
+    status: "remove" | "delete" | "leave",
     isSaveDraft?: boolean
   ) => {
     setMemberId(user_id);
     setTeamId(team_uid);
-    setOpenRemove(true);
-    isSaveDraft ? setIsSaveDraft(true) : setIsSaveDraft(false);
+    setStatus(status);
+
+    if (isSaveDraft) {
+      setIsSaveDraft(true);
+    } else {
+      setIsSaveDraft(false);
+      setOpenRemove(true);
+    }
   };
 
   const handleSearch = (e: React.FormEvent<HTMLInputElement>) => {
     const searchValue = e.currentTarget.value;
-    const lowerCaseValue = searchValue.toString().toLowerCase();
-
-    const filterTeamBySearch = teams.filter((team) =>
-      team?.team_name.toString().toLowerCase().includes(lowerCaseValue)
-    );
-
     setSearchValue(searchValue);
-    setTeamList(searchValue ? filterTeamBySearch : teams);
+    searchTeam({
+      name: searchValue,
+    });
   };
 
   const handleSearchMember = (e: React.FormEvent<HTMLInputElement>) => {
     const searchValue = e.currentTarget.value;
-    const lowerCaseValue = searchValue.toString().toLowerCase();
-
-    const filterMemberBySearch = mockMember.filter((user) =>
-      Object.keys(user).some((key: string) =>
-        excludeField.includes(key)
-          ? false
-          : user[key].toString().toLowerCase().includes(lowerCaseValue)
-      )
-    );
-
     setSearchMemberValue(searchValue);
-    setMemberList(searchValue ? filterMemberBySearch : mockMember);
+    searchMember({
+      teamId,
+      value: searchValue,
+    });
   };
 
   const handleCreateEditTeam = useCallback(
@@ -298,36 +159,73 @@ const UseControlTeam = () => {
     []
   );
 
-  const handleChangeAvatar = (childData: string, value: string) => {
-    setDraftData({
-      ...draftData,
-      team_avatar: childData,
-    } as MyTeamType);
+  const handleCloseCreateEditTeam = useCallback(() => {
+    setDraftData(undefined);
+    setOpenCreateTeam(false);
+  }, []);
+
+  const handleChangeAvatar = (childData: string) => {
+    if (childData) {
+      setDraftData({
+        ...draftData,
+        team_avatar: childData,
+      } as MyTeamType);
+      setError({
+        ...error,
+        ["team_avatar"]: "",
+      });
+    } else {
+      setError({
+        ...error,
+        ["team_avatar"]: "File is not valid",
+      });
+    }
   };
 
   const handleChangeTeamName = (e: React.FormEvent<HTMLInputElement>) => {
     const { value } = e.currentTarget;
     setDraftData({ ...draftData, team_name: value } as MyTeamType);
+
+    if (value.length <= 0) {
+      setError({ ...error, ["team_name"]: "Team name is require" });
+    } else if (value.length > 45) {
+      setError({
+        ...error,
+        ["team_name"]: "Team name is to long, maximum in 45 character",
+      });
+    } else {
+      setError({ ...error, ["team_name"]: "" });
+    }
   };
 
   const handleSaveTeam = (id?: string) => {
-    const updatedData = teamList.map((team) =>
-      team.team_uid === id ? { ...team, ...draftData } : team
-    ) as MyTeamType[];
+    if (!draftData?.team_name) {
+      setError({ ...error, ["team_name"]: "Team name is require" });
+    } else {
+      id
+        ? ""
+        : createTeam({
+            variables: {
+              input: {
+                name: draftData?.team_name,
+                avatar: draftData?.team_avatar,
+                team_member: [
+                  {
+                    user_id: profile?.user_id,
+                    is_leader: true,
+                  },
+                  draftData?.team,
+                ],
+              },
+            },
+            onCompleted: () => searchTeam({ name: "" }),
+          });
 
-    id
-      ? setTeamList(updatedData)
-      : setTeamList([...teamList, { ...draftData!, participant: 1 }]);
-
-    setOpenCreateTeam(false);
+      setOpenCreateTeam(false);
+    }
   };
 
   const handleAddMember = (member: TeamType) => {
-    const updatedData = teamList.map((team) =>
-      team.team_uid === teamId
-        ? { ...team, team: team.team ? [...team?.team, member] : [member] }
-        : team
-    );
     if (isSaveDraft) {
       setDraftData({
         ...draftData!,
@@ -335,23 +233,36 @@ const UseControlTeam = () => {
       });
       setOpenCreateTeam(true);
     } else {
-      setTeamList(updatedData);
+      addPlayer({
+        variables: {
+          teamId,
+          memberId,
+        },
+        onCompleted: () => searchTeam({ name: "" }),
+      });
     }
     setOpenAdd(false);
   };
 
   const handleOpenAddMember = (team_uid: string, isSaveDraft?: boolean) => {
-    setTeamId(team_uid);
+    setTeamId(team_uid || "");
     setOpenAdd(true);
     setOpenCreateTeam(false);
     isSaveDraft ? setIsSaveDraft(true) : setIsSaveDraft(false);
   };
 
-  const handleCloseAdd = () => {
+  const handleCloseAdd = useCallback(() => {
+    if (isSaveDraft) setOpenCreateTeam(true);
     setOpenAdd(false);
-  };
+  }, [isSaveDraft]);
+
+  useEffect(() => {
+    isSaveDraft && handleRemove();
+  }, [isSaveDraft]);
 
   return {
+    error,
+    status,
     isEdit,
     searchValue,
     searchMemberValue,
@@ -361,10 +272,8 @@ const UseControlTeam = () => {
     openAdd,
     openCreateTem,
     openRemove,
-    setOpenCreateTeam,
-    setOpenRemove,
+    handleCloseCreateEditTeam,
     handleCreateEditTeam,
-    handleLeave,
     handleRemove,
     handleSearch,
     handleChangeTeamName,
@@ -375,6 +284,7 @@ const UseControlTeam = () => {
     handleOpenAddMember,
     handleCloseAdd,
     handleOpenRemove,
+    handleCloseRemove,
   };
 };
 

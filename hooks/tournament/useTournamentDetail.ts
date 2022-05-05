@@ -39,29 +39,10 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "cache-and-network",
   });
 
-  return {
-    loading,
-    loadingParticipant,
-    loadingReferees,
-    loadingPrizing,
-
-    error,
-    errorParticipant,
-    errorReferees,
-    errorPrizing,
-
-    dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
-    dataParticipants: dataParticipants?.getTournamentParticipants,
-    dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
-    dataPrizing: dataPrizing?.getTournamentPrizing
-  };
-}
-
-export function useBracket(props: Props) {
   const {
-    loading,
-    error,
-    data: dataTournamentDetail,
+    loading: loadingBracket,
+    error: errorBracket,
+    data: dataBracket,
   } = useQuery(GET_BRACKET, {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "cache-and-network",
@@ -69,8 +50,22 @@ export function useBracket(props: Props) {
 
   return {
     loading,
+    loadingParticipant,
+    loadingReferees,
+    loadingPrizing,
+    loadingBracket,
+
     error,
-    dataBracket: dataTournamentDetail?.getBracket,
+    errorParticipant,
+    errorReferees,
+    errorPrizing,
+    errorBracket,
+    
+    dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
+    dataParticipants: dataParticipants?.getTournamentParticipants,
+    dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
+    dataPrizing: dataPrizing?.getTournamentPrizing,
+    dataBracket: dataBracket?.getBracket,
   };
 }
 
@@ -86,11 +81,6 @@ const GET_TOURNAMENT_DETAIL = gql`
       participants
       desc
       rules
-      brackets {
-        type
-        start_at
-        status
-      }
       game {
         name
       }
@@ -116,6 +106,7 @@ const GET_PARTICIPANTS_DETAIL = gql`
       name
       avatar
       team_members {
+        uid
         is_leader
         user {
           profile {
@@ -161,6 +152,8 @@ const GET_BRACKET = gql`
   query ($tournament_uid: String!) {
     getBracket(tournament_uid: $tournament_uid) {
       type
+      start_at
+      status
       bracketTeams {
         uid
       }

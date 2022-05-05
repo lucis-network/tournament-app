@@ -956,6 +956,7 @@ export type DonateHistory = {
   receiver_avatar?: Maybe<Scalars['String']>;
   receiver_display_name?: Maybe<Scalars['String']>;
   time?: Maybe<Scalars['String']>;
+  tx_hash?: Maybe<Scalars['String']>;
   type?: Maybe<DonateTransactionsType>;
 };
 
@@ -1063,10 +1064,13 @@ export type GDonateTransaction = {
   type?: InputMaybe<DonateTransactionsType>;
 };
 
+export type GMember = {
+  memeber_id?: InputMaybe<Array<Scalars['Int']>>;
+};
+
 export type GTournament = {
   __typename?: 'GTournament';
   _count: TournamentCount;
-  brackets?: Maybe<Array<Bracket>>;
   cache_tournament?: Maybe<CacheTournament>;
   claim_transactions?: Maybe<Array<ClaimTransactions>>;
   cover: Scalars['String'];
@@ -1176,12 +1180,13 @@ export type Mutation = {
   addFavoriteGame?: Maybe<Scalars['Boolean']>;
   addMember?: Maybe<Scalars['Boolean']>;
   becomeOurSponsor?: Maybe<Scalars['Boolean']>;
+  checkInTournament?: Maybe<Scalars['Boolean']>;
   claimDonation?: Maybe<Scalars['Boolean']>;
   claimPrize?: Maybe<Scalars['Boolean']>;
   createTeam?: Maybe<Scalars['Boolean']>;
   createTournament?: Maybe<Scalars['String']>;
   deleteFavoriteGame?: Maybe<Scalars['Boolean']>;
-  deletePlayer?: Maybe<Scalars['Boolean']>;
+  deleteMember?: Maybe<Scalars['Boolean']>;
   deleteTeam?: Maybe<Scalars['Boolean']>;
   donate?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
@@ -1194,6 +1199,8 @@ export type Mutation = {
   loginGoogle: AuthGraphql;
   reactToTournament?: Maybe<Scalars['Boolean']>;
   subscribeToTournament?: Maybe<Scalars['Boolean']>;
+  unjoinTournament?: Maybe<Scalars['Boolean']>;
+  unsubscribeToTournament?: Maybe<Scalars['Boolean']>;
   /** Only referee can update match result */
   updateMatchResult?: Maybe<Scalars['String']>;
   updateProfile?: Maybe<UserProfile>;
@@ -1206,13 +1213,19 @@ export type MutationAddFavoriteGameArgs = {
 
 
 export type MutationAddMemberArgs = {
-  member_id: Scalars['Float'];
+  member_id: GMember;
   team_uid: Scalars['String'];
 };
 
 
 export type MutationBecomeOurSponsorArgs = {
   data: SponsorInput;
+};
+
+
+export type MutationCheckInTournamentArgs = {
+  team_uid: Scalars['String'];
+  tournament_uid: Scalars['String'];
 };
 
 
@@ -1241,7 +1254,7 @@ export type MutationDeleteFavoriteGameArgs = {
 };
 
 
-export type MutationDeletePlayerArgs = {
+export type MutationDeleteMemberArgs = {
   member_id: Scalars['Float'];
   team_uid: Scalars['String'];
 };
@@ -1288,6 +1301,17 @@ export type MutationReactToTournamentArgs = {
 
 
 export type MutationSubscribeToTournamentArgs = {
+  tournament_uid: Scalars['String'];
+};
+
+
+export type MutationUnjoinTournamentArgs = {
+  team_uid: Scalars['String'];
+  tournament_uid: Scalars['String'];
+};
+
+
+export type MutationUnsubscribeToTournamentArgs = {
   tournament_uid: Scalars['String'];
 };
 
@@ -1564,8 +1588,8 @@ export type ReactionCreateWithoutUserInput = {
 };
 
 export type ReactionInput = {
-  reaction_type?: InputMaybe<ReactionType>;
   tournament_uid?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<ReactionType>;
 };
 
 export enum ReactionType {
@@ -1632,9 +1656,6 @@ export type Reward = {
   __typename?: 'Reward';
   amount?: Maybe<Scalars['Float']>;
   chain_symbol?: Maybe<Scalars['String']>;
-  donor_avatar?: Maybe<Scalars['String']>;
-  donor_display_name?: Maybe<Scalars['String']>;
-  donor_id?: Maybe<Scalars['Int']>;
   rank?: Maybe<Scalars['Int']>;
   reward_type?: Maybe<Scalars['String']>;
 };
@@ -3282,7 +3303,7 @@ export type UserTeam = {
   team?: Maybe<Array<Member>>;
   team_avatar?: Maybe<Scalars['String']>;
   team_name?: Maybe<Scalars['String']>;
-  team_uid?: Maybe<Scalars['Int']>;
+  team_uid?: Maybe<Scalars['String']>;
 };
 
 export type UserWhereUniqueInput = {

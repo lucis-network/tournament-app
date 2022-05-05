@@ -14,6 +14,7 @@ import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
+import { GetStaticPaths } from "next";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
@@ -42,14 +43,16 @@ const TournamentDetail = () => {
     dataParticipants,
     dataRefereesDetail,
     dataPrizing,
+    dataBracket,
 
     loading,
     loadingParticipant,
     loadingReferees,
     loadingPrizing,
+    loadingBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
+    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
   });
 
   if (loading) {
@@ -73,7 +76,6 @@ const TournamentDetail = () => {
   };
   const {
     team_size,
-    brackets,
     desc,
     rules,
     participants,
@@ -122,9 +124,9 @@ const TournamentDetail = () => {
               <div className={s.text}>
                 <p>Bracket type</p>
                 <span>
-                  {brackets[0].type === "SINGLE"
+                  {dataBracket?.type === "SINGLE"
                     ? "Single eliminnation"
-                    : brackets[0].type === "DOUBLE"
+                    : dataBracket?.type === "DOUBLE"
                     ? "Double eliminnation"
                     : ""}
                 </span>
@@ -136,7 +138,7 @@ const TournamentDetail = () => {
               <div className={s.text}>
                 <p>Team size</p>
                 <span>
-                  {team_size} vs {team_size}
+                  {team_size ?? "-"} vs {team_size ?? "-"}
                 </span>
               </div>
             </Col>
@@ -157,7 +159,7 @@ const TournamentDetail = () => {
       <div className={`lucis-container`}>
         <RegistrationPhase
           participants={participants}
-          brackets={brackets}
+          brackets={dataBracket}
           sponsorSlot={sponsorSlot}
           pool_size={pool_size}
           currency={currency}
@@ -174,7 +176,10 @@ const TournamentDetail = () => {
             <Rules rules={rules} />
           </TabPane>
           <TabPane tab="Bracket" key="3">
-            <Bracket />
+            <Bracket
+              dataBracket={dataBracket}
+              loadingBracket={loadingBracket}
+            />
           </TabPane>
           <TabPane tab={`Participants (${team_size}/${team_size})`} key="4">
             <TableParticipant
@@ -211,5 +216,27 @@ const TournamentDetail = () => {
     </div>
   );
 };
+
+export function getStaticPaths() {
+  return {
+    paths: [
+      {
+        params: { slug: "1" },
+      },
+      {
+        params: { slug: "2" },
+      },
+    ],
+    fallback: false,
+  };
+}
+
+export function getStaticProps({}) {
+  return {
+    props: {
+      course: {},
+    },
+  };
+}
 
 export default TournamentDetail;
