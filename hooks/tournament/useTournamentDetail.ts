@@ -61,7 +61,7 @@ export function useTournamentDetail(props: Props) {
     errorReferees,
     errorPrizing,
     errorBracket,
-    
+
     dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
     dataParticipants: dataParticipants?.getTournamentParticipants,
     dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
@@ -184,10 +184,9 @@ const GET_BRACKET = gql`
       type
       start_at
       status
-      bracketTeams {
-        uid
-      }
+
       bracketRounds {
+        type
         title
         bracketMatchs {
           team1_uid
