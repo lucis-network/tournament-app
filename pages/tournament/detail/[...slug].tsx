@@ -113,7 +113,7 @@ const TournamentDetail = () => {
               <div className={s.text}>
                 <p>Team size</p>
                 <span>
-                  {team_size} vs {team_size}
+                  {team_size ?? "-"} vs {team_size ?? "-"}
                 </span>
               </div>
             </Col>
