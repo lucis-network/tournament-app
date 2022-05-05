@@ -14,6 +14,7 @@ import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
+import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import { GetStaticPaths } from "next";
 
 const { TabPane } = Tabs;
@@ -155,7 +156,6 @@ const TournamentDetail = () => {
       </Row>
 
       {/* ==== registration phase ====  */}
-
       <div className={`lucis-container`}>
         <RegistrationPhase
           participants={participants}
@@ -165,6 +165,12 @@ const TournamentDetail = () => {
           currency={currency}
         />
       </div>
+
+      {/* ===== sponsor ===== */}
+      <div className="lucis-container">
+        <TournamentDetailSponsor />
+      </div>
+      {/* ===== end sponsor ===== */}
 
       {/* ===== tabs ===== */}
       <div className={`lucis-container ${s.container_Tabs}`}>
