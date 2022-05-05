@@ -35,7 +35,7 @@ const TournamentDetail = () => {
 
   const { dataTournamentDetail, loading } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2px4spw10060jnsmddcy28v",
+    tournament_uid: "cl2razfz620080lqo78hnueq0",
   });
 
   if (loading) {

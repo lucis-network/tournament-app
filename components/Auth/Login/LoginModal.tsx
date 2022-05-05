@@ -39,7 +39,6 @@ export default observer(function LoginModal(props: Props) {
 
     const r = await authService.login(tokenid, 100, type);
 
-    console.log(AuthStore);
     switch (r.error) {
       case null:
         // Success
@@ -49,6 +48,8 @@ export default observer(function LoginModal(props: Props) {
         setTimeout(() => {
           setIsModalVisible(false);
         }, 2000);
+
+        console.log("AuthStoreAuthStore", AuthStore);
         break;
     }
   };

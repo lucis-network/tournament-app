@@ -229,10 +229,13 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const createTournament = () => {
+    console.log("TournamentStore", TournamentStore);
     let cr = TournamentStore.getCreateTournament();
     cr.start_at = new Date();
     if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
     cr.sponsor_slots = combineSponsorData();
+
+    console.log("cr", cr)
 
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);
