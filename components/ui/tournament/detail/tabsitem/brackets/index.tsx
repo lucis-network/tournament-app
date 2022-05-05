@@ -9,6 +9,7 @@ import {
   SeedTeam,
 } from "react-brackets";
 import { BracketRound } from "src/generated/graphql";
+import DoubleBracket from "./DoubleBracket";
 import s from "./index.module.sass";
 
 type RoundProps = {
@@ -129,10 +130,7 @@ const CustomSeed = ({
 };
 
 const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
-  console.log("dataBracket: ", dataBracket);
-  // const { dataBracket, loading } = useBracket({
-  //   tournament_uid: "cl2be7tze0019qyvclmlbvvoa",
-  // });
+  console.log("dataBracket: ", dataBracket.bracketRounds);
 
   if (loadingBracket) {
     return <></>;
@@ -140,17 +138,45 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
 
   // console.log(dataBracket.type);
 
-  const rounds = createRounds({
-    bracketRounds: dataBracket.bracketRounds,
+  const rounds =
+    dataBracket.type === "SINGLE" &&
+    createRounds({
+      bracketRounds: dataBracket.bracketRounds,
+    });
+
+  const filterUpper = dataBracket.bracketRounds.filter(
+    (item: any) => item.type === "UPPER"
+  );
+  const filterLower = dataBracket.bracketRounds.filter(
+    (item: any) => item.type === "LOWER"
+  );
+
+  const upperRounds = createRounds({
+    bracketRounds: filterUpper,
   });
+
+  const lowerRounds = createRounds({
+    bracketRounds: filterLower,
+  });
+
+  console.log("upperRounds: ", lowerRounds);
+
+  const doubleProps = {
+    upper: upperRounds,
+    lower: lowerRounds,
+  };
 
   return (
     <div className={s.bracketContainer}>
-      <Bracket
-        rounds={rounds}
-        renderSeedComponent={CustomSeed}
-        mobileBreakpoint={0}
-      />
+      {dataBracket.type === "SINGLE" ? (
+        <Bracket
+          rounds={rounds}
+          renderSeedComponent={CustomSeed}
+          mobileBreakpoint={0}
+        />
+      ) : (
+        <DoubleBracket {...doubleProps} />
+      )}
     </div>
   );
 };
