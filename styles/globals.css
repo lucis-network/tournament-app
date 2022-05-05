@@ -232,6 +232,7 @@ body .ant-menu {
   body.nav-open .overlay {
     display: block;
     transition: all ease-in-out 0.4s;
+    z-index: 10;
   }
 
   .mobile-nav {
@@ -451,7 +452,7 @@ body .ant-menu {
 @media (min-width: 1920px) {
   .lucis-container {
     max-width: 1920px;
-    padding: 0 5rem;
+    padding: 0 164px;
   }
 }
 

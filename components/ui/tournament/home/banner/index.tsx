@@ -20,13 +20,13 @@ export default function BannerPage() {
               <div>
                 <p>Prize pool</p>
                 <div className={s.total}>
-                  <img src="" alt="icon" />
+                  <img src="/assets/home/ic_nft.png" alt="icon" />
                   <span>10,000 USDT</span>
                 </div>
               </div>
               <GradientButton
                 type={1}
-                className={`text-white text-16px leading-28px py-2`}
+                className={`text-white text-16px leading-28px py-2 ${s.btn}`}
                 style={{ whiteSpace: "nowrap", fontWeight: "600" }}
               >
                 JOIN NOW
