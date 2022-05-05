@@ -10,6 +10,7 @@ import {
   setLocalAuthInfo,
 } from "./AuthLocal";
 import Router from "next/router";
+import LoginBoxStore from "../Auth/Login/LoginBoxStore";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -94,6 +95,8 @@ export default class AuthService {
                 phone
                 avatar
                 cover
+                country_code
+                user_name
               }
             }
           }
@@ -144,6 +147,8 @@ export default class AuthService {
                 phone
                 avatar
                 cover
+                country_code
+                user_name
               }
             }
           }
@@ -227,5 +232,6 @@ export default class AuthService {
     AuthStore.resetStates();
     clearLocalAuthInfo();
     Router.push("/");
+    LoginBoxStore.signupInfoModalVisible = false;
   }
 }
