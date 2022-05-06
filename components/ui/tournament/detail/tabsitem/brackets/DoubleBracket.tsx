@@ -5,10 +5,10 @@ import WiningBracket from "components/ui/common/bracket/double-bracket/WiningBra
 type Props = {
   upper: any;
   lower: any;
-  openModal: any;
+  // openModal: any;
 };
 
-const DoubleBracket = ({ upper, lower, openModal }: Props) => {
+const DoubleBracket = ({ upper, lower }: Props) => {
   const upperRounds = [...upper].splice(0, upper.length - 1);
   const finalRound = [...upper].splice(upper.length - 1, 1);
 
@@ -21,15 +21,15 @@ const DoubleBracket = ({ upper, lower, openModal }: Props) => {
         overflow: "scroll",
       }}
     >
-      <div>
-        <WiningBracket rounds={upperRounds} openModal={openModal} />
+      {/* <div>
+        <WiningBracket rounds={upperRounds} />
         <div style={{ height: "50px" }}></div>
-        <LosingBracket rounds={lower} openModal={openModal} />
+        <LosingBracket rounds={lower} />
       </div>
 
       <div>
-        <FinalBracket rounds={finalRound} openModal={openModal} />
-      </div>
+        <FinalBracket rounds={finalRound}  />
+      </div> */}
     </div>
   );
 };

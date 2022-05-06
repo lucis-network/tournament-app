@@ -16,8 +16,6 @@ interface FinalProps {
 }
 
 const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
-  console.log(final);
-
   const RenderSeed = ({
     seed,
     breakpoint,
@@ -39,7 +37,7 @@ const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
                     color: "black",
                   }}
                 >
-                  {seed.teams[0]?.id || `Team ---`}
+                  {seed.teams[0]?.name || `Team ---`}
                 </div>
                 <div
                   style={{
@@ -63,7 +61,7 @@ const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
                     color: "white",
                   }}
                 >
-                  {seed.teams[1]?.id || `Team ---`}
+                  {seed.teams[1]?.name || `Team ---`}
                 </div>
                 <div
                   style={{

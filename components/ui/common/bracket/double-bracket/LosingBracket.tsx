@@ -61,7 +61,7 @@ const LosingBracket: React.FC<LosingProps> = ({
                   color: "black",
                 }}
               >
-                {seed.teams[0]?.id ?? `bye`}
+                {seed.teams[0]?.name ?? `bye`}
               </div>
               <div
                 style={{
@@ -86,7 +86,7 @@ const LosingBracket: React.FC<LosingProps> = ({
                   color: "white",
                 }}
               >
-                {seed.teams[1]?.id ?? `bye`}
+                {seed.teams[1]?.name ?? `bye`}
               </div>
               <div
                 style={{

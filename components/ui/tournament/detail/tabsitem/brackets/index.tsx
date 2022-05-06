@@ -16,6 +16,7 @@ import { useState } from "react";
 import SingleBracket from "./SingleBracket";
 import RoundStore from "src/store/RoundStore";
 import FormItemLabel from "antd/lib/form/FormItemLabel";
+import { observer } from "mobx-react-lite";
 
 type RoundProps = {
   //   numRounds: number;
@@ -64,20 +65,11 @@ const createRounds = ({ bracketRounds, listTeam }: RoundProps): any => {
 };
 
 const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
-  const [modalVisible, setModalVisible] = useState(false);
+  // const [modalVisible, setModalVisible] = useState(false);
   const [roundIndex, setRoundIndex] = useState(0);
+  const [seedIndex, setSeedIndex] = useState(0);
   const [teams, setTeams] = useState([]);
   const listTeam = dataBracket.bracketTeams;
-
-  const openModalUpdateScore = (e: any, roundIdx: number, teams: any) => {
-    setRoundIndex(roundIdx);
-    setTeams(teams);
-    setModalVisible(true);
-  };
-
-  const closeModal = () => {
-    setModalVisible(false);
-  };
 
   if (loadingBracket) {
     return <></>;
@@ -106,15 +98,20 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
     listTeam,
   });
 
+  RoundStore.singleRounds = singleRounds;
+  RoundStore.loseRounds = lowerRounds;
+  RoundStore.winRounds = upperRounds;
+  RoundStore.finalRound = [...upperRounds].splice(upperRounds.length - 1, 1);
+
   const doubleProps = {
     upper: upperRounds,
     lower: lowerRounds,
-    openModal: openModalUpdateScore,
+    // openModal: openModalUpdateScore,
   };
 
   const singleProps = {
     rounds: singleRounds,
-    openModal: openModalUpdateScore,
+    // openModal: openModalUpdateScore,
   };
 
   return (
@@ -124,14 +121,8 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
       ) : (
         <DoubleBracket {...doubleProps} />
       )}
-      <UpdateScore
-        status={modalVisible}
-        closeModal={closeModal}
-        roundIdx={roundIndex}
-        teams={teams}
-      />
     </div>
   );
 };
 
-export default BracketUI;
+export default observer(BracketUI);

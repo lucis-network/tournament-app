@@ -22,20 +22,23 @@ const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
 
 const TournamentDetail = () => {
   // ====== Use to get tournament_uid
-  // const router = useRouter();
-  // const tournamentUid = useMemo(() => {
-  //   const { slug } = router.query;
-  //   if (slug) {
-  //     return slug[0];
-  //   }
-  //   if (isClient) {
-  //     const paths = router.asPath.split("/").filter((item) => item !== "");
-  //     if (paths.length > 1) {
-  //       return paths[1];
-  //     }
-  //   }
-  //   return "";
-  // }, [router]);
+  const router = useRouter();
+  const tournamentUid = useMemo(() => {
+    const { slug } = router.query;
+    if (slug) {
+      return slug[0];
+    }
+    if (isClient) {
+      const paths = router.asPath.split("/").filter((item) => item !== "");
+      if (paths.length > 1) {
+        return paths[1];
+      }
+    }
+    return "";
+  }, [router]);
+
+  console.log(tournamentUid);
+
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
@@ -53,6 +56,8 @@ const TournamentDetail = () => {
     loadingBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
+    // double: cl2rcnia105290jrsiotdg5uq
+    // single: cl2rdu56s18150jrswgoh73lb
     tournament_uid: "cl2rdu56s18150jrswgoh73lb",
   });
 

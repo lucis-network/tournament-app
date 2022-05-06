@@ -1,5 +1,8 @@
 import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import RoundStore from "src/store/RoundStore";
+
 import {
   Bracket,
   Seed,
@@ -10,14 +13,18 @@ import {
 } from "react-brackets";
 
 import s from "./index.module.sass";
+import { truncate } from "lodash";
 
 interface Props {
   rounds: RoundProps[];
-  openModal: any;
+  // openModal: any;
 }
 
-const SingleBracket = ({ rounds, openModal }: Props) => {
-  console.log(rounds);
+const SingleBracket = ({ rounds }: Props) => {
+  const handleOpenModal = (e: any, seed: any) => {
+    RoundStore.updateScoreModal = true;
+    RoundStore.currentMatch = seed.teams;
+  };
 
   const RenderSeed = ({
     seed,
@@ -50,7 +57,8 @@ const SingleBracket = ({ rounds, openModal }: Props) => {
                     width: "50px",
                     cursor: "pointer",
                   }}
-                  onClick={() => openModal(seed.teams, roundIndex, seed.teams)}
+                  // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  onClick={(e) => handleOpenModal(e, seed)}
                 >
                   {seed.teams[0]?.score ?? "--"}
                 </div>
@@ -75,7 +83,8 @@ const SingleBracket = ({ rounds, openModal }: Props) => {
                     width: "50px",
                     cursor: "pointer",
                   }}
-                  onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  onClick={(e) => handleOpenModal(e, seed)}
                 >
                   {seed.teams[1]?.score ?? "--"}
                 </div>
@@ -90,7 +99,7 @@ const SingleBracket = ({ rounds, openModal }: Props) => {
   return (
     <>
       <Bracket
-        rounds={rounds}
+        rounds={RoundStore.singleRounds}
         roundClassName={s.wining}
         renderSeedComponent={RenderSeed}
         mobileBreakpoint={360}
@@ -102,14 +111,9 @@ const SingleBracket = ({ rounds, openModal }: Props) => {
           },
         }}
       />
-      {/* <UpdateScore
-        status={modalVisible}
-        closeModal={closeModal}
-        roundIdx={roundIndex}
-        teams={teams}
-      /> */}
+      <UpdateScore />
     </>
   );
 };
 
-export default SingleBracket;
+export default observer(SingleBracket);
