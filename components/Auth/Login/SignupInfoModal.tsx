@@ -1,11 +1,12 @@
-import { Form, Image, Input, Modal, Select } from "antd";
+import {Button, Form, Image, Input, Modal, Select} from "antd";
 import LoginBoxStore from "./LoginBoxStore";
 import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 import { observer } from "mobx-react-lite";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import s from "./Login.module.sass"
 import { gql, useMutation } from "@apollo/client";
 import { debounce } from "lodash";
+import AuthService from "../AuthService";
 
 type SignupInfoModalProps = {};
 
@@ -16,19 +17,19 @@ type Country = {
   iso3: string;
 }
 
+const UPDATE_PROFILE = gql`
+  mutation UpdateProfile($data: ProfileUpdateInput!) {
+    updateProfile(data: $data) {
+      user_id
+      user_name
+      country_code
+    }
+  }
+`;
+
 export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   const [countryList, setCountryList] = useState<Country[]>([]);
-  const [updateProfileMutation] = useMutation(
-    gql`
-      mutation UpdateProfile($data: ProfileUpdateInput!) {
-        updateProfile(data: $data) {
-          user_id
-          user_name
-          country_code
-        }
-      }
-    `
-  );
+  const [updateProfileMutation] = useMutation(UPDATE_PROFILE);
   const isModalVisible = LoginBoxStore.signupInfoModalVisible,
     setIsModalVisible = (value: boolean) => (LoginBoxStore.signupInfoModalVisible = value);
   const [form] = Form.useForm();
@@ -43,7 +44,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       .catch(error => console.log('error fetchCountryList', error));
   }
 
-  const handleOk = (): void => {
+  const handleComplete = (): void => {
     form
       .validateFields()
       .then(async (values) => {
@@ -51,18 +52,21 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           const response = await updateProfileMutation({
             variables: {
               data: {
-                user_name: values.user_name,
+                user_name: {
+                  set: values.user_name
+                },
                 country_code: values.country_code,
               }
             }
           });
+          const { user_name, country_code } = response.data.updateProfile;
           const user = getLocalAuthInfo()!;
-          if (user.profile) {
-            user.profile.user_name = values.user_name;
-            user.profile.country_code = values.country_code;
+
+          if (user && user.profile) {
+            user.profile.user_name = user_name;
+            user.profile.country_code = country_code;
             setLocalAuthInfo(user);
           }
-          console.log('updateProfileMutation: ', response);
         } catch (error) {
           console.error('error updateProfileMutation: ', error);
         } finally {
@@ -74,9 +78,15 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       });
   };
 
+  const handleLogout = () => {
+    const authService = new AuthService();
+    authService.logout();
+    return false;
+  }
+
   const debouncedInputTyping = useCallback(
     debounce((value) => {
-      // todo check if username already exists
+      // chaupa todo check if username already exists
       console.log(value);
     }, 500),
     []
@@ -95,8 +105,10 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       title={<span className="font-[600]">Sign up info</span>}
       visible={isModalVisible}
       closable={false}
-      onOk={handleOk}
-      cancelButtonProps={{ style: { display: 'none' } }}
+      footer={[
+        <Button key={1} onClick={handleLogout}>Logout</Button>,
+        <Button key={2} onClick={handleComplete} className={s.btnComplete}>Complete</Button>
+      ]}
       className={s.signupInfoModal}
     >
       <h3 style={{ color: '#ffffff' }}>Enter the information below to finish the signup process</h3>
