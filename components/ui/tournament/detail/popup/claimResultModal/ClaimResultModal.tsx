@@ -32,7 +32,7 @@ export default observer(function ClaimResultModal(props: Props) {
           <p>1234 USDT</p>
           <div>
             You&apos;ve got a THIRD PRIZE <br />
-            from "Thetan + Lucis Mid Summer Tournament"
+            from &quot;Thetan + Lucis Mid Summer Tournament&quot;
           </div>
           <Button>Share my victory</Button>
         </div>
