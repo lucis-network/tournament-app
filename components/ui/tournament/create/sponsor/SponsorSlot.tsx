@@ -34,7 +34,7 @@ export default observer(
         <div className={s.sponsorSlot}>
           <div className={s.sponsorLogoWrap}>
             <CircleImage
-              src={slot.logo ?? "/assets/avatar.jpg"}
+              src={slot.logo || "/assets/avatar.jpg"}
               className={s.sponsorLogo}
             />
             <Button

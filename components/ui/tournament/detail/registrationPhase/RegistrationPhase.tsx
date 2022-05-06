@@ -1,22 +1,31 @@
 import { observer } from "mobx-react-lite";
 import { Button } from "antd";
-import { SponsorTierType } from "src/store/TournamentStore";
+import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
 import ChooseTeamModal from "../popup/chooseTeamModal";
 import useTeamModal from "../hooks/useTeamModal";
 
 type Props = {
-  participants: number;
-  brackets: any;
-  sponsorSlot: SponsorTierType[];
-  pool_size: number;
-  currency: any;
+	participants: number;
+	brackets: any;
+	sponsorSlot: SponsorTierType[];
+	pool_size: number;
+	currency: any;
 };
 
 export default observer(function RegistrationPhase(props: Props) {
-  const { show, handleOpenModal, stepConfiguration } = useTeamModal();
-  const { participants, brackets, sponsorSlot, pool_size } = props;
+	const { participants, brackets, sponsorSlot, pool_size } = props;
+	const { show, step, handleOpenModal, stepConfiguration } =
+		useTeamModal(props);
+
+  const claimTokenDonation = async () => {
+    TournamentStore.claimDonationModalVisible = true;
+  };
+
+  const claimToken = async () => {
+    TournamentStore.claimResultModalVisible = true;
+  };
 
   return (
     <>
@@ -53,14 +62,37 @@ export default observer(function RegistrationPhase(props: Props) {
             <span>Thetan NFTs: HeroX, Guitar</span>
             <span>1000 USDT token</span>
           </div>
-          <div className={s.join}>
+          {/* <div className={s.join}>
             <Button onClick={handleOpenModal}>Join tournament</Button>
             <p>Registration ends in 5H 45M 30S</p>
+          </div> */}
+          {/* ===== donation ===== */}
+          <div className={s.join}>
+            <p>YOUR REWARDS</p>
+            <div className={s.rewards}>
+              <div>
+                <div>Prize</div>
+                <p>1234 USDT</p>
+                <Button onClick={claimToken}>Claim</Button>
+                <p>1234 LUCIS</p>
+                <Button onClick={claimToken}>Claim</Button>
+              </div>
+              <div>
+                <p>From Donation</p>
+                <p>1234 USDT</p>
+                <Button onClick={claimTokenDonation}>Claim</Button>
+              </div>
+            </div>
+            <Button>Share my victory</Button>
           </div>
         </div>
       </div>
 
-      <ChooseTeamModal show={show} stepConfiguration={stepConfiguration} />
-    </>
-  );
+			<ChooseTeamModal
+				step={step}
+				show={show}
+				stepConfiguration={stepConfiguration}
+			/>
+		</>
+	);
 });

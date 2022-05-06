@@ -4,11 +4,11 @@ import { AppEmitter } from "services/emitter";
 import { Button, message, Table } from "antd";
 import { useEffect, useState } from "react";
 import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
-import { TeamGql } from "src/generated/graphql";
+import { Team } from "src/generated/graphql";
 import SearchComplete from "components/ui/common/searchs";
 
 type Props = {
-  dataParticipants: TeamGql[];
+  dataParticipants: Team[];
   loading: any;
 };
 

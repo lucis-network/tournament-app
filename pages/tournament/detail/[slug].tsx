@@ -1,5 +1,5 @@
 import s from "./TournamentDetail.module.sass";
-import { Col, Row, Tabs } from "antd";
+import { Button, Col, Row, Tabs } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
@@ -14,30 +14,37 @@ import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
+import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import { GetStaticPaths } from "next";
 import RoundStore from "src/store/RoundStore";
+import ClaimDonationModal from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
+import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
+import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
 
-const TournamentDetail = () => {
+const TournamentDetail = (): any => {
   // ====== Use to get tournament_uid
-  const router = useRouter();
-  const tournamentUid = useMemo(() => {
-    const { slug } = router.query;
-    if (slug) {
-      return slug[0];
-    }
-    if (isClient) {
-      const paths = router.asPath.split("/").filter((item) => item !== "");
-      if (paths.length > 1) {
-        return paths[1];
-      }
-    }
-    return "";
-  }, [router]);
+  // const router = useRouter();
+  // console.log("router.query: ", router);
 
-  console.log(tournamentUid);
+  // const tournamentUid = useMemo(() => {
+  //   const { slug } = router.query;
+  //   console.log("router.query: ", router.query);
+  //   if (slug) {
+  //     return slug[0];
+  //   }
+  //   if (isClient) {
+  //     const paths = router.asPath.split("/").filter((item) => item !== "");
+  //     if (paths.length > 1) {
+  //       return paths[1];
+  //     }
+  //   }
+  //   return "";
+  // }, [router]);
+
+  // console.log("tournamentUid: ", tournamentUid);
 
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
@@ -154,7 +161,6 @@ const TournamentDetail = () => {
       </Row>
 
       {/* ==== registration phase ====  */}
-
       <div className={`lucis-container`}>
         <RegistrationPhase
           participants={participants}
@@ -164,6 +170,11 @@ const TournamentDetail = () => {
           currency={currency}
         />
       </div>
+      {/* ===== sponsor ===== */}
+      <div className="lucis-container">
+        <TournamentDetailSponsor />
+      </div>
+      {/* ===== end sponsor ===== */}
 
       {/* ===== tabs ===== */}
       <div className={`lucis-container ${s.container_Tabs}`}>
@@ -212,6 +223,10 @@ const TournamentDetail = () => {
         closeModal={() => closeModal("Invite or Share")}
         status={isPopupShare}
       />
+
+      <ClaimDonationModal />
+      <ConnectWalletModal />
+      <ClaimResultModal />
     </div>
   );
 };

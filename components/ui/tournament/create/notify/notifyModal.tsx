@@ -22,6 +22,13 @@ export default observer(function NotifyModal(props: Props) {
     router.push("/");
   };
 
+  const handleCancel = () => {
+    setIsModalVisible(false);
+    TournamentStore.resetStates();
+    clearLocalCreateTournament();
+    router.push("/");
+  };
+
   const copy = (e: any) => {
     console.log(e.target.value);
     navigator.clipboard.writeText("https://lucis-tn.koolab.io/");
@@ -29,18 +36,19 @@ export default observer(function NotifyModal(props: Props) {
   return (
     <div style={{ width: "400px" }}>
       <Modal
-        title={<span className="font-[600]">Create successfully</span>}
+        title={<span className="font-[600]">Created successfully</span>}
         visible={isModalVisible}
         onOk={handleOk}
         className={`${s.container}`}
-        cancelButtonProps={{ style: { display: "none" } }}
+        footer={null}
+        onCancel={handleCancel}
       >
-        <div className="">
+        <div style={{ textAlign: "center" }}>
           <p>
             Lucis will review and approve your tournament in less than 24h then
             your tournament can be visiable to everyone
           </p>
-          <p>Here your invite link to invite team to join your tournaments:</p>
+          {/* <p>Here your invite link to invite team to join your tournaments:</p>
           <Input
             disabled
             value="https://lucis-tn.koolab.io/"
@@ -50,7 +58,7 @@ export default observer(function NotifyModal(props: Props) {
           <div className={s.button}>
             <Button>View your tournament</Button>
             <Button>Share</Button>
-          </div>
+          </div> */}
         </div>
         <ConnectWalletModal />
       </Modal>

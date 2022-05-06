@@ -1,247 +1,34 @@
-@import "styles/common"
-.r
-  @media ( max-width: 1024px )
-    width: 100%
-    
-.heading_footer
-  @apply flex flex-row items-start justify-between flex-wrap
-  .group_ic
-    @apply flex flex-row items-center justify-between flex-wrap
-    margin: 100px auto 0px auto
-    width: 576px
-    @media (min-width: 1025px)
-      margin-top: 0
-    .ic_item
-      cursor: pointer
-      margin-bottom: 12px
-    .ic_item > a
-      display: block
-      border-radius: 100%
-      max-width: 100px
-      box-shadow: 0px 2px 40px rgba(255, 255, 255, 0.3)
-      margin: 0 auto
-      width: 70px
-  // .group_ic
-  //   @apply flex flex-row items-center justify-between flex-wrap
-  //   max-width: 720px
-  //   .ic_item
-  //     width: 78px
-  //     height: 78px
-  //     box-shadow: (0px 2px 40px rgba(255, 255, 255, 0.3))
-  //     background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-  //     border-radius: 100%
-  //     transition: 0.3s
-  //     padding: 12px
-  //     margin: 12px 20px
-  //     @apply overflow-hidden flex flex-row items-center justify-center cursor-pointer
-  //   .ic_item:hover
-  //     box-shadow: (0px 2px 40px rgba(255, 255, 255, 0.5))
-.logo
-  img
-    width: 297px
-    margin-top: 0
-  // .r
-  //   padding-left: 20px
-
-.links
-  @media (max-width: 1024px)
-    margin-top: 30px
-  span
-    color: #1fc9c3
-    font-size: 14px
-    margin-right: 1.5em
-    @media (max-width: 1024px)
-      font-size: 16px
-  a
-    color: #1fc9c3
-    font-size: 14px
-    text-decoration: underline
-    margin-right: 2em
-    @media (max-width: 1024px)
-      font-size: 16px
-
-.emailForm
-  color: white
-  font-size: 36px
-  .title
-    margin: 52px 0 22px 0
-    font-weight: 600
-  .msg
-    font-weight: 400
-    margin-top: 36px
-    height: 58px
-    &.hasError
-      color: darkred
-  .form
-    display: flex
-    flex-flow: row nowrap
-    flex-grow: 1
-
-  .inputC
+.container_footer
+  background: #070a45
+  // background: linear-gradient(177.34deg, rgba(0, 0, 0, 0.2) 2.22%, rgba(255, 255, 255, 0) 97.78%)
+  backdrop-filter: blur(42px)
+  .content
+    padding: 20px 0px
+    height: 100%
+    backdrop-filter: blur(42px)
     position: relative
-    display: inline-block
-    height: 76px
-    background: linear-gradient(62.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-    border-radius: 16px 0 0 16px
-    flex-grow: 1
-    &:before
-      content: ""
-      position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
-      z-index: -1
-      border-radius: 16px 0 0 16px
-      padding: 1px
-      background: linear-gradient(99.92deg, #003833 0%, #661673 100%)
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-      -webkit-mask-composite: xor
-      mask-composite: exclude
-    .input
-      width: 100%
-      height: 100%
-      background: transparent
-      outline: none
-      font-size: 26px
-      font-weight: 400
-      padding: 0 29px
+    background: linear-gradient(302deg, rgba(0, 0, 0, 0.2) 2.22%, rgba(255, 255, 255, 0) 97.78%)
+    .r
+      display: flex
+      align-items: center
+      justify-content: space-between
+      .group_ic
+        display: flex
+        align-items: center
+        .ic_item
+          max-width: 40px
+          margin: 0px 15px
 
-  .btn
-    flex-basis: 242px
-    flex-grow: 0
-    height: 76px
-    background: linear-gradient(83.51deg, #CD28E8 3.41%, #0BEBD6 106.98%)
-    border-radius: 0 16px 16px 0
-    font-weight: 500
-    &:hover
-      background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)
-    &:active
-      background: linear-gradient(83.51deg, #8f20a1 3.41%, #09887c 106.98%)
-    &:disabled
-      cursor: not-allowed
-      color: #e7e7e7!important
-      background: linear-gradient(83.51deg, #b62fcc 3.41%, #02af9e 106.98%)!important
-
-.groupLink
-  display: flex
-  align-items: center
-  justify-content: space-between
-  flex-wrap: wrap
-  padding-bottom: 40px
-  a
-    color: #FFF
-    font-size: 28px
-    font-weight: 400
-    line-height: 56px
-    transition: 0.3s
-  a:hover
-    opacity: 0.5
-@media (min-width: 992px) and (max-width: 1024px)
-  .heading_footer
-    flex-direction: column
-    align-items: center
-    .group_ic
-      margin-top: 20px
-@media (min-width: 769px) and (max-width: 991px)
-  .heading_footer
-    flex-direction: column
-    align-items: center
-    .group_ic
-      margin-top: 20px
-      justify-content: space-between
-@media (min-width: 640px) and (max-width: 768px)
-  .heading_footer
-    flex-direction: column
-    align-items: center
-    .group_ic
-      margin-top: 20px
-      justify-content: space-between
-  .groupLink
-    justify-content: center
-    a
-      font-size: 24px
-      padding: 0px 24px
-
-@media (min-width: 540px) and (max-width: 639px)
-  .heading_footer
-    flex-direction: column
-    align-items: center
-    .group_ic
-      margin-top: 20px
-      justify-content: space-between
-  .groupLink
-    justify-content: center
-    a
-      font-size: 22px
-      padding: 0px 12px
-@media (min-width: 540px) and (max-width: 1024px)
-  .logo
-    margin-bottom: 50px
-  .emailForm .title
-    margin-top: 80px
-
-@media (min-width: 414px) and (max-width: 539px)
-  .heading_footer
-    flex-direction: column
-    align-items: center
-    .group_ic
-      margin-top: 20px
-      justify-content: space-between
-      .ic_item
-        width: 15%
-        & > a
-          display: block
-          width: auto
-          margin: 0 5px
-  .logo
-    display: none
-  //img
-  //  width: 200px
-  .emailForm
-    font-size: 20px
-    .inputC
-      height: 54px
-      .input
-        font-size: 18px
-        padding: 0px 12px
-    .btn
-      height: 54px
-      flex-basis: 100px
-  .groupLink
-    justify-content: center
-    a
-      font-size: 20px
-      padding: 0px 12px
-@media (min-width: 0px) and (max-width: 413px)
-  .heading_footer
-    flex-direction: column
-    align-items: center
-    .group_ic
-      margin-top: 20px
-      justify-content: space-between
-      .ic_item
-        width: 15%
-        & > a
-          display: block
-          width: auto
-          margin: 0 5px
-  .logo
-    display: none
-    //img
-    //  width: 200px
-  .emailForm
-    font-size: 18px
-    .inputC
-      height: 54px
-      .input
-        font-size: 18px
-        padding: 0px 12px
-    .btn
-      height: 54px
-      flex-basis: 100px
-  .groupLink
-    justify-content: center
-    a
-      font-size: 18px
-      padding: 0px 12px
+  .content::before
+    content: ''
+    position: absolute
+    top:0
+    left:0
+    right:0
+    bottom:0
+    border-radius: 16px 16px 0px 0px
+    padding: 2px
+    background: linear-gradient(111.03deg, rgba(239, 238, 238, 0.32) 2.82%, rgba(239, 238, 238, 0.06) 90.94%)
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+    -webkit-mask-composite: xor
+    mask-composite: exclude
