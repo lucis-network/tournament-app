@@ -5,15 +5,13 @@ import s from "./index.module.sass";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useState } from "react";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import { BUSD } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
 import { LoadingOutlined } from "@ant-design/icons";
-
-const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+import { fomatNumber } from "utils/Number";
 
 type Props = {};
 
@@ -26,24 +24,17 @@ export default observer(function DepositModal(props: Props) {
   const handleOk = async () => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
-      message.info("You need connect wallet");
     } else {
-      let txHash = await deposit();
-      console.log(txHash);
+      let result = await deposit();
       setIsLoading(false);
-      if (txHash) TournamentStore.notifyModalVisible = true;
-      else {
-        // setIsModalVisible(false);
-        // TournamentStore.resetStates();
-        // clearLocalCreateTournament();
-        // router.push("/");
-        message.error("Insufficient balance");
+      if (!result?.error) {
+        TournamentStore.notifyModalVisible = true;
+        TournamentStore.depositModalVisible = false;
+      } else {
+        //@ts-ignore
+        message.error(result?.error?.message);
       }
     }
-  };
-
-  const fomatNumber = (value: number) => {
-    return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
   };
 
   const deposit = async () => {
@@ -57,12 +48,12 @@ export default observer(function DepositModal(props: Props) {
         ConnectWalletStore_NonReactiveData.web3Provider
       );
       const total = getTotalAmount();
-      const txHash = await ethersService.transferFT(
+      const result = await ethersService.transferFT(
         "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
         BUSD,
         total
       );
-      return txHash;
+      return result;
     }
   };
 
@@ -83,8 +74,8 @@ export default observer(function DepositModal(props: Props) {
         onOk={handleOk}
         className={`${s.container}`}
         cancelButtonProps={{ style: { display: "none" } }}
-        okText="Confirm"
-        onCancel={handleCancel}
+        okText="Deposit"
+        //onCancel={handleCancel}
       >
         <Spin spinning={isLoading}>
           <div className="">

@@ -48,11 +48,6 @@ export default observer(function LoginModal(props: Props) {
         setTimeout(() => {
           setIsModalVisible(false);
         }, 2000);
-
-        console.log("AuthStoreAuthStore", AuthStore);
-        if(!AuthStore.profile?.user_name){
-          alert("abc");
-        }
         break;
     }
   };

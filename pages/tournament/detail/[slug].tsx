@@ -1,5 +1,5 @@
 import s from "./TournamentDetail.module.sass";
-import { Col, Row, Tabs } from "antd";
+import { Button, Col, Row, Tabs } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
@@ -16,6 +16,9 @@ import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import { GetStaticPaths } from "next";
+import ClaimDonationModal from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
+import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
+import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
@@ -165,7 +168,6 @@ const TournamentDetail = () => {
           currency={currency}
         />
       </div>
-
       {/* ===== sponsor ===== */}
       <div className="lucis-container">
         <TournamentDetailSponsor />
@@ -219,6 +221,10 @@ const TournamentDetail = () => {
         closeModal={() => closeModal("Invite or Share")}
         status={isPopupShare}
       />
+
+      <ClaimDonationModal />
+      <ConnectWalletModal />
+      <ClaimResultModal />
     </div>
   );
 };
