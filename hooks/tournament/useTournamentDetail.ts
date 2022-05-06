@@ -1,4 +1,5 @@
-import { gql, useQuery } from "@apollo/client";
+import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
+import { SponsorSlot } from "src/generated/graphql";
 
 type Props = {
   tournament_uid?: string;
@@ -66,6 +67,35 @@ export function useTournamentDetail(props: Props) {
     dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
     dataPrizing: dataPrizing?.getTournamentPrizing,
     dataBracket: dataBracket?.getBracket,
+  };
+}
+
+export function useSponsors(props: Props): {
+  loading: boolean,
+  error: ApolloError | undefined,
+  dataSponsors: {
+    getSponsorSlot: SponsorSlot[],
+  },
+  refetch: () => Promise<ApolloQueryResult<any>>,
+} {
+  const {
+    loading,
+    error,
+    data: dataSponsors,
+    refetch,
+  } = useQuery(GET_SPONSOR_DETAIL, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "cache-and-network",
+    onError: (error) => {
+      console.log('error: ', error)
+    }
+  });
+
+  return {
+    loading,
+    error,
+    dataSponsors,
+    refetch,
   };
 }
 
@@ -164,6 +194,24 @@ const GET_BRACKET = gql`
           score_1
           score_2
         }
+      }
+    }
+  }
+`;
+
+const GET_SPONSOR_DETAIL = gql`
+  query ($tournament_uid: String!) {
+    getSponsorSlot(tournament_uid: $tournament_uid) {
+      uid
+      name
+      max
+      min
+      show_name
+      sponsor_transactions {
+        uid
+        order
+        logo
+        name
       }
     }
   }

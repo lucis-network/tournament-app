@@ -1,0 +1,115 @@
+.sponsorContainer
+  border: 1px solid white
+  padding: 15px
+  color: white
+  @media screen and (min-width: 992px)
+    padding: 20px 40px
+  *
+    word-break: break-word
+    white-space: normal
+  .tierRow
+    margin-bottom: 30px
+    &:last-of-type
+      margin-bottom: 0
+    &:first-of-type
+      .slotWrap
+        .sponsorSlot
+          width: 150px
+          max-width: 50%
+          .sponsorName
+            font-size: 16px
+    &:nth-of-type(2)
+      .slotWrap
+        .sponsorSlot
+          width: 120px
+          max-width: calc(100% / 3)
+          .sponsorName
+            font-size: 14px
+    &:nth-of-type(3)
+      .slotWrap
+        .sponsorSlot
+          width: 90px
+          max-width: calc(100% / 4)
+          .sponsorName
+            font-size: 12px
+    :global(.ant-input-group-addon)
+      padding: 2px
+      width: 50px
+      font-size: 13px
+    label
+      padding-right: 5px
+      display: block
+    .tierTitle
+      font-weight: 700
+      padding-right: 10px
+      font-size: 13px
+      @media screen and (min-width: 768px)
+        font-size: 18px
+      @media screen and (min-width: 992px)
+        font-size: 14px
+    .editTierWrap
+      border: 1px solid
+      padding: 20px
+      margin-bottom: 20px
+      :global(.ant-typography)
+        color: #ffffff
+    .editTier
+      width: 100%
+      max-width: 170px
+      height: auto
+      padding: 5px
+      font-size: 13px
+      &:focus
+        background: none
+        border-color: #ffffff
+        color: #ffffff
+    .slotWrap
+      display: flex
+      flex-wrap: wrap
+      padding-top: 20px
+      margin: 0 -5px
+      @media screen and (min-width: 992px)
+        margin: 0 -10px
+      .sponsorSlot
+        padding: 0 5px
+        margin-bottom: 20px
+        width: 70px
+        max-width: calc(100% / 5)
+        @media screen and (min-width: 768px)
+          padding: 0 10px
+        .sponsorLogoWrap
+          position: relative
+          margin-bottom: 10px
+        .sponsorEdit
+          display: block
+          width: 40px
+          position: absolute
+          bottom: -5px
+          left: 50%
+          transform: translateX(-50%)
+          background: #dddddd
+          color: #000000
+          padding: 2px 5px
+          font-size: 12px
+          line-height: 1
+          height: auto
+        .sponsorLogo
+          width: 100%
+        .sponsorName
+          text-align: center
+          font-size: 10px
+  .collapse
+    padding: 10px 0 10px
+  :global(.ant-switch)
+    background-color: rgb(252 11 11 / 25%) !important
+  :global(.ant-btn[disabled])
+    background: #8b8b8b
+    color: #ffffff
+  :global(.ant-input-number-group-addon)
+    width: 60px
+    padding: 0 5px
+  .addNewSponsorBtn
+    display: block
+.sponsorDetailForm
+  label
+    color: #ffffff !important
