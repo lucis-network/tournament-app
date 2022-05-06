@@ -197,7 +197,12 @@ const GET_BRACKET = gql`
       type
       start_at
       status
-
+      bracketTeams {
+        uid
+        team {
+          name
+        }
+      }
       bracketRounds {
         type
         title

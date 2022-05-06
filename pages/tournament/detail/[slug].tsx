@@ -16,6 +16,7 @@ import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import { GetStaticPaths } from "next";
+import RoundStore from "src/store/RoundStore";
 import ClaimDonationModal from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
@@ -23,12 +24,15 @@ import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultM
 const { TabPane } = Tabs;
 const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
 
-const TournamentDetail = () => {
+const TournamentDetail = (): any => {
   // ====== Use to get tournament_uid
   // const router = useRouter();
+  // console.log("router.query: ", router);
+
   // const tournamentUid = useMemo(() => {
   //   const { slug } = router.query;
-  //   if (slug) {
+  //   console.log("router.query: ", router.query);
+  //   if (slug) {.
   //     return slug[0];
   //   }
   //   if (isClient) {
@@ -39,6 +43,9 @@ const TournamentDetail = () => {
   //   }
   //   return "";
   // }, [router]);
+
+  // console.log("tournamentUid: ", tournamentUid);
+
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
@@ -56,12 +63,16 @@ const TournamentDetail = () => {
     loadingBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
+    // double: cl2rcnia105290jrsiotdg5uq
+    // single: cl2rdu56s18150jrswgoh73lb
     tournament_uid: "cl2rdu56s18150jrswgoh73lb",
   });
 
   if (loading) {
     return "";
   }
+
+  // RoundStore.bracketTeams = dataBracket.bracketTeams;
 
   const openModal = (item: string) => {
     if (item === "Donate") {
@@ -91,21 +102,12 @@ const TournamentDetail = () => {
     currency,
   } = dataTournamentDetail;
 
-  // console.log(dataBracket);
-  // useEffect(() => {
-  //   if (dataTournamentDetail)
-  //     console.log("dataTournamentDetail", dataTournamentDetail);
-  // }, [dataTournamentDetail]);
-
   return (
     <div className={s.wrapper}>
       <Banner />
 
       <div className={`lucis-container ${s.group_button}`}>
         {ItemButton.map((item) => (
-          // <Button type="primary" key={item}>
-          //   {item}
-          // </Button>
           <button key={item} onClick={() => openModal(item)}>
             {item}
           </button>
