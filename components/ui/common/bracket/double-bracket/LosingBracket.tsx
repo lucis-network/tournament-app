@@ -15,22 +15,26 @@ import style from "../index.module.sass";
 
 interface LosingProps {
   rounds: RoundProps[];
+  openModal: any;
 }
 
-const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
-  const [modalVisible, setModalVisible] = useState(false);
-  const [roundIndex, setRoundIndex] = useState(0);
-  const [teams, setTeams] = useState([]);
+const LosingBracket: React.FC<LosingProps> = ({
+  rounds: losing,
+  openModal,
+}) => {
+  // const [modalVisible, setModalVisible] = useState(false);
+  // const [roundIndex, setRoundIndex] = useState(0);
+  // const [teams, setTeams] = useState([]);
 
-  const openModalUpdateScore = (e: any, roundIdx: number, teams: any) => {
-    setRoundIndex(roundIdx);
-    setTeams(teams);
-    setModalVisible(true);
-  };
+  // const openModalUpdateScore = (e: any, roundIdx: number, teams: any) => {
+  //   setRoundIndex(roundIdx);
+  //   setTeams(teams);
+  //   setModalVisible(true);
+  // };
 
-  const closeModal = () => {
-    setModalVisible(false);
-  };
+  // const closeModal = () => {
+  //   setModalVisible(false);
+  // };
 
   const RenderLosingSeed = ({
     breakpoint,
@@ -67,9 +71,7 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
                   width: "50px",
                   cursor: "pointer",
                 }}
-                onClick={() =>
-                  openModalUpdateScore(seedIndex, roundIndex, seed.teams)
-                }
+                onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
               >
                 {seed.teams[0]?.score ?? "--"}
               </div>
@@ -94,9 +96,7 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
                   width: "50px",
                   cursor: "pointer",
                 }}
-                onClick={() =>
-                  openModalUpdateScore(seedIndex, roundIndex, seed.teams)
-                }
+                onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
               >
                 {seed.teams[1]?.score ?? "--"}
               </div>
@@ -121,12 +121,12 @@ const LosingBracket: React.FC<LosingProps> = ({ rounds: losing }) => {
           },
         }}
       />
-      <UpdateScore
+      {/* <UpdateScore
         status={modalVisible}
         closeModal={closeModal}
         roundIdx={roundIndex}
         teams={teams}
-      />
+      /> */}
     </>
   );
 };

@@ -5,9 +5,10 @@ import WiningBracket from "components/ui/common/bracket/double-bracket/WiningBra
 type Props = {
   upper: any;
   lower: any;
+  openModal: any;
 };
 
-const DoubleBracket = ({ upper, lower }: Props) => {
+const DoubleBracket = ({ upper, lower, openModal }: Props) => {
   const upperRounds = [...upper].splice(0, upper.length - 1);
   const finalRound = [...upper].splice(upper.length - 1, 1);
 
@@ -21,13 +22,13 @@ const DoubleBracket = ({ upper, lower }: Props) => {
       }}
     >
       <div>
-        <WiningBracket rounds={upperRounds} />
+        <WiningBracket rounds={upperRounds} openModal={openModal} />
         <div style={{ height: "50px" }}></div>
-        <LosingBracket rounds={lower} />
+        <LosingBracket rounds={lower} openModal={openModal} />
       </div>
 
       <div>
-        <FinalBracket rounds={finalRound} />
+        <FinalBracket rounds={finalRound} openModal={openModal} />
       </div>
     </div>
   );

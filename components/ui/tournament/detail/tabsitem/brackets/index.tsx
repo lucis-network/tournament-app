@@ -11,6 +11,11 @@ import {
 import { BracketRound } from "src/generated/graphql";
 import DoubleBracket from "./DoubleBracket";
 import s from "./index.module.sass";
+import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
+import { useState } from "react";
+import SingleBracket from "./SingleBracket";
+import RoundStore from "src/store/RoundStore";
+import FormItemLabel from "antd/lib/form/FormItemLabel";
 
 type RoundProps = {
   //   numRounds: number;
@@ -18,127 +23,71 @@ type RoundProps = {
   bracketRounds?: BracketRound[];
   dataBracket?: any;
   loadingBracket?: any;
+  listTeam?: any;
 };
 
-const calculateGames = (bracketRounds: any) => {
-  let totalGames = 0;
-  for (let i = 0; i < bracketRounds.length; i++) {
-    totalGames += bracketRounds[i].bracketMatchs.length;
-  }
+const createSeed = (item: any, idx: number, listTeam: any[]) => {
+  const team1 = listTeam.find((i) => i.uid == item.team1_uid);
+  const team2 = listTeam.find((i) => i.uid == item.team2_uid);
 
-  return totalGames;
-};
-
-const createSeed = (item: any, idx: any) => {
   return {
     teams: [
       {
         id: item.team1_uid !== "bye" ? item.team1_uid : null,
+        name: item.team1_uid !== "bye" ? team1?.team.name : null,
         score: item.score_1,
       },
       {
         id: item.team2_uid !== "bye" ? item.team2_uid : null,
+        name: item.team2_uid !== "bye" ? team2?.team.name : null,
         score: item.score_2,
       },
     ],
   };
 };
 
-const createRound = (item: any, idx: any) => {
+const createRound = (item: any, idx: any, listTeam: any[]) => {
   return {
     title: <p className="m-0 text text-white text-[24px]">{item.title}</p>,
     seeds: item.bracketMatchs?.map((item: any, idx: any) =>
-      createSeed(item, idx)
+      createSeed(item, idx, listTeam)
     ),
   };
 };
 
-const createRounds = ({ bracketRounds }: RoundProps): any => {
-  const rounds = bracketRounds?.map((item, idx) => createRound(item, idx));
+const createRounds = ({ bracketRounds, listTeam }: RoundProps): any => {
+  const rounds = bracketRounds?.map((item, idx) =>
+    createRound(item, idx, listTeam)
+  );
 
   return rounds;
 };
 
-const CustomSeed = ({
-  seed,
-  breakpoint,
-  roundIndex,
-  seedIndex,
-}: RenderSeedProps) => {
-  console.log(breakpoint);
-  return (
-    <Seed
-      // className={"seedItem"}
-      mobileBreakpoint={breakpoint}
-      style={{ fontSize: 16 }}
-    >
-      <SeedItem>
-        <div>
-          <SeedTeam
-            className={s.topSeed}
-            style={{ padding: 0 }}
-            onMouseEnter={() => console.log(seed.teams[0]?.id)}
-          >
-            <div
-              style={{
-                width: "100%",
-                background: "#d8d899",
-                height: "100%",
-                padding: "5px 0",
-                color: "black",
-              }}
-            >
-              {seed.teams[0]?.id || `bye`}
-            </div>
-            <div
-              style={{
-                background: "yellow",
-                color: "black",
-                padding: "5px",
-                width: "50px",
-              }}
-            >
-              {seed.teams[0]?.score || "--"}
-            </div>
-          </SeedTeam>
-          <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
-            <div
-              style={{
-                width: "100%",
-                background: "#4e89a3",
-                height: "100%",
-                padding: "5px 0",
-                color: "white",
-              }}
-            >
-              {seed.teams[1]?.id || `bye`}
-            </div>
-            <div
-              style={{
-                background: "#306882",
-                color: "white",
-                padding: "5px",
-                width: "50px",
-              }}
-            >
-              {seed.teams[1]?.score || "--"}
-            </div>
-          </SeedTeam>
-        </div>
-      </SeedItem>
-    </Seed>
-  );
-};
-
 const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [roundIndex, setRoundIndex] = useState(0);
+  const [teams, setTeams] = useState([]);
+  const listTeam = dataBracket.bracketTeams;
+
+  const openModalUpdateScore = (e: any, roundIdx: number, teams: any) => {
+    setRoundIndex(roundIdx);
+    setTeams(teams);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+
   if (loadingBracket) {
     return <></>;
   }
 
-  const rounds =
+  const singleRounds =
     dataBracket.type === "SINGLE" &&
     createRounds({
       bracketRounds: dataBracket.bracketRounds,
+      listTeam,
     });
 
   const filterUpper = dataBracket.bracketRounds.filter(
@@ -150,30 +99,37 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
 
   const upperRounds = createRounds({
     bracketRounds: filterUpper,
+    listTeam,
   });
-
   const lowerRounds = createRounds({
     bracketRounds: filterLower,
+    listTeam,
   });
 
   const doubleProps = {
     upper: upperRounds,
     lower: lowerRounds,
+    openModal: openModalUpdateScore,
+  };
+
+  const singleProps = {
+    rounds: singleRounds,
+    openModal: openModalUpdateScore,
   };
 
   return (
     <div className={s.bracketContainer}>
       {dataBracket.type === "SINGLE" ? (
-        <>
-          <Bracket
-            rounds={rounds}
-            renderSeedComponent={CustomSeed}
-            mobileBreakpoint={360}
-          />
-        </>
+        <SingleBracket {...singleProps} />
       ) : (
         <DoubleBracket {...doubleProps} />
       )}
+      <UpdateScore
+        status={modalVisible}
+        closeModal={closeModal}
+        roundIdx={roundIndex}
+        teams={teams}
+      />
     </div>
   );
 };

@@ -15,6 +15,7 @@ import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import { GetStaticPaths } from "next";
+import RoundStore from "src/store/RoundStore";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
@@ -52,12 +53,14 @@ const TournamentDetail = () => {
     loadingBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: "cl2rcnia105290jrsiotdg5uq",
+    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
   });
 
   if (loading) {
     return "";
   }
+
+  // RoundStore.bracketTeams = dataBracket.bracketTeams;
 
   const openModal = (item: string) => {
     if (item === "Donate") {
@@ -87,21 +90,12 @@ const TournamentDetail = () => {
     currency,
   } = dataTournamentDetail;
 
-  // console.log(dataBracket);
-  // useEffect(() => {
-  //   if (dataTournamentDetail)
-  //     console.log("dataTournamentDetail", dataTournamentDetail);
-  // }, [dataTournamentDetail]);
-
   return (
     <div className={s.wrapper}>
       <Banner />
 
       <div className={`lucis-container ${s.group_button}`}>
         {ItemButton.map((item) => (
-          // <Button type="primary" key={item}>
-          //   {item}
-          // </Button>
           <button key={item} onClick={() => openModal(item)}>
             {item}
           </button>

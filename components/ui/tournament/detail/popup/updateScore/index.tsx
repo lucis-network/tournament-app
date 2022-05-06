@@ -1,4 +1,5 @@
 import { Button, Col, Modal, Row } from "antd";
+import { ChangeEvent, FormEvent } from "react";
 import s from "./UpdateScore.module.sass";
 
 type Props = {
@@ -11,9 +12,11 @@ type Props = {
 
 const UpdateScore = (props: Props) => {
   const { status, closeModal, roundIdx, teams } = props;
-  if (teams && teams.length > 0) {
-    console.log(teams[0]);
-  }
+
+  const handleChangeScore = (e: any, team?: any) => {
+    console.log("team: ", team);
+    team.score = e.target.textContent;
+  };
 
   return (
     <Modal
@@ -47,10 +50,15 @@ const UpdateScore = (props: Props) => {
         <Row justify="center">
           <Col span={8} style={{ textAlign: "center" }}>
             <p className="text-center">
-              {teams && teams.length > 0 && teams[0].id}
+              {teams && teams.length > 0 && teams[0].name}
             </p>
 
-            <span className={`text-center ${s.score}`} contentEditable={true}>
+            <span
+              className={`text-center ${s.score}`}
+              contentEditable={true}
+              suppressContentEditableWarning={true}
+              onInput={(e) => handleChangeScore(e, teams[0])}
+            >
               {teams && teams.length > 0 && teams[0].score}
             </span>
           </Col>
@@ -59,12 +67,14 @@ const UpdateScore = (props: Props) => {
           </Col>
           <Col span={8} style={{ textAlign: "center" }}>
             <p className="text-center">
-              {teams && teams.length > 0 && teams[1].id}
+              {teams && teams.length > 0 && teams[1].name}
             </p>
 
             <span
               className={`text-center ${s.score}`}
               contentEditable={true}
+              suppressContentEditableWarning={true}
+              onChange={(e) => handleChangeScore(e)}
               // style={{
               //   border: "1px solid white",
               //   width: "20px",

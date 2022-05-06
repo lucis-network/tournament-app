@@ -12,10 +12,18 @@ import s from "../index.module.sass";
 
 interface FinalProps {
   rounds: RoundProps[];
+  openModal: any;
 }
 
-const FinalBracket = ({ rounds: final }: FinalProps) => {
-  const RenderSeed = ({ seed, breakpoint, seedIndex }: RenderSeedProps) => {
+const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
+  console.log(final);
+
+  const RenderSeed = ({
+    seed,
+    breakpoint,
+    seedIndex,
+    roundIndex,
+  }: RenderSeedProps) => {
     return (
       <>
         <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
@@ -31,7 +39,7 @@ const FinalBracket = ({ rounds: final }: FinalProps) => {
                     color: "black",
                   }}
                 >
-                  {seed.teams[0]?.name || `Team ---`}
+                  {seed.teams[0]?.id || `Team ---`}
                 </div>
                 <div
                   style={{
@@ -40,6 +48,7 @@ const FinalBracket = ({ rounds: final }: FinalProps) => {
                     padding: "5px",
                     width: "50px",
                   }}
+                  onClick={() => openModal(seed.teams, roundIndex, seed.teams)}
                 >
                   {seed.teams[0]?.score || "--"}
                 </div>
@@ -54,7 +63,7 @@ const FinalBracket = ({ rounds: final }: FinalProps) => {
                     color: "white",
                   }}
                 >
-                  {seed.teams[1]?.name || `Team ---`}
+                  {seed.teams[1]?.id || `Team ---`}
                 </div>
                 <div
                   style={{
@@ -63,6 +72,7 @@ const FinalBracket = ({ rounds: final }: FinalProps) => {
                     padding: "5px",
                     width: "50px",
                   }}
+                  onClick={() => openModal(seed.teams, roundIndex, seed.teams)}
                 >
                   {seed.teams[1]?.score || "--"}
                 </div>
