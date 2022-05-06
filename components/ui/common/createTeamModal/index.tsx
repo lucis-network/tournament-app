@@ -8,12 +8,14 @@ import { MyTeamType } from "../tabsItem/myTeamDetail/hooks/useControlTeam";
 import { isEmpty } from "lodash";
 
 interface CreateTeamModalType {
-	reset?: boolean;
+	url: string;
+	inputKey: string;
+	reset: boolean;
 	error: Record<string, string>;
 	isEdit: boolean;
 	draftData?: MyTeamType;
 	showModal: boolean;
-	onChangeAvatar: (childData: string) => void;
+	onChangeAvatar: (e: any) => void;
 	onChangeTeamName: (e: React.FormEvent<HTMLInputElement>) => void;
 	onAddOpen: (team_uid: string, isSaveDraft?: boolean) => void;
 	onOpenRemove: (
@@ -27,7 +29,9 @@ interface CreateTeamModalType {
 }
 
 const CreateTeamModal: React.FC<CreateTeamModalType> = ({
+	url,
 	reset,
+	inputKey,
 	error,
 	isEdit,
 	draftData,
@@ -75,11 +79,12 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
 					<span className="min-w-[140px]">Team avatar</span>
 					<div>
 						<UploadAvatar
+							url={url}
 							reset={reset}
-							parentCallback={onChangeAvatar}
+							inputKey={inputKey}
+							handleFileInput={onChangeAvatar}
 							heigh="200"
 							width="200"
-							value="cover"
 							className="flex align-middle items-center justify-between"
 							innerImageClass={s.avatar_team}
 							inputClass="w-[260px]"
@@ -104,6 +109,9 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
 						}
 					/>
 				))}
+				{!isEmpty(error["team"]) && (
+					<p className="text-[12px] text-emerald-2 mt-1">{error["team"]}</p>
+				)}
 				<button
 					className={s.button_add}
 					onClick={() => onAddOpen(draftData?.team_uid!, true)}
@@ -115,7 +123,9 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
 				<button
 					className={s.button_create}
 					onClick={() => onSave(draftData?.team_uid)}
-					disabled={!!error["team_name"] || !!error["team_avatar"]}
+					disabled={
+						!!error["team_name"] || !!error["team_avatar"] || !!error["team"]
+					}
 				>
 					{isEdit ? "Update team" : "Create team"}
 				</button>
