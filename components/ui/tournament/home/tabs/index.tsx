@@ -55,6 +55,54 @@ const datas = [
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
+  {
+    id: 9,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
+  {
+    id: 10,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
+  {
+    id: 11,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
+  {
+    id: 12,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
+  {
+    id: 13,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
+  {
+    id: 14,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
+  {
+    id: 15,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
+  {
+    id: 16,
+    name: "Thetan",
+    title:
+      "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
+  },
 ];
 
 export default function TabHome() {
