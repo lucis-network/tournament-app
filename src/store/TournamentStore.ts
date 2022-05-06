@@ -77,6 +77,8 @@ class TournamentStore {
   private _draftPopupVisible: boolean = false;
   private _timelineModalVisible: boolean = false;
   private _notifyModalVisible: boolean = false;
+  private _claimDonationModalVisible: boolean = false;
+  private _claimResultModalVisible: boolean = false;
 
   private _id?: number | undefined;
 
@@ -372,6 +374,20 @@ class TournamentStore {
   }
   public set rounds(value: Rounds[]) {
     this._rounds = value;
+  }
+
+  public get claimDonationModalVisible(): boolean {
+    return this._claimDonationModalVisible;
+  }
+  public set claimDonationModalVisible(value: boolean) {
+    this._claimDonationModalVisible = value;
+  }
+
+  public get claimResultModalVisible(): boolean {
+    return this._claimResultModalVisible;
+  }
+  public set claimResultModalVisible(value: boolean) {
+    this._claimResultModalVisible = value;
   }
 }
 

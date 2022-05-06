@@ -1,0 +1,56 @@
+.container
+  :global(.ant-input)
+    border-radius: 8px
+    padding: 8px
+    backdrop-filter: blur(0px)
+
+.bracketType
+  display: flex
+  flex-direction: column
+  text-color: white
+
+.radioFee
+  display: flex
+  p
+    min-width: 100px
+
+.item
+  display: flex
+  flex-direction: column
+  width: 25%
+  position: relative
+  img
+    margin-bottom: 5px
+
+.itemRadio
+  position: absolute
+  top: -10px
+  right: 5px
+
+.searchText
+  :global(.ant-input-group-addon)
+    position: relative
+    overflow: hidden
+    :global(.ant-input-search-button)
+      display: block
+      width: 100%
+      height: 100%
+      position: absolute
+      top: 0
+
+.container_table
+  margin-top: 16px
+  :global(.ant-table)
+    color: #FFF
+    background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    backdrop-filter: blur(4px)
+    padding: 0px
+  :global(.ant-table-thead > tr > th)
+    color: #FFF
+    font-size: 18px
+    font-weight: 600
+    background: transparent
+  :global(.ant-table-tbody > tr:hover > td)
+    background: rgba(255, 255, 255, 0.2)
+  :global(.ant-pagination)
+    display: none
