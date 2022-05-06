@@ -24,7 +24,7 @@ export default function CardHome(props: Props) {
                   <span>4v4</span>
                 </div>
               </div>
-              <img src="/assets/home/im_game.png" alt="" />
+              <img style={{padding: 2 }} src="/assets/home/im_game.png" alt="" />
             </div>
             <div className={s.heading}>
               <img src="/assets/home/im_logo_game.png" alt="" />
