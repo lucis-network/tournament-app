@@ -104,6 +104,9 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
 						}
 					/>
 				))}
+				{!isEmpty(error["team"]) && (
+					<p className="text-[12px] text-emerald-2 mt-1">{error["team"]}</p>
+				)}
 				<button
 					className={s.button_add}
 					onClick={() => onAddOpen(draftData?.team_uid!, true)}

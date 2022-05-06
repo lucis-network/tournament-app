@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useCallback, useState } from "react";
 export interface TeamType extends Record<any, any> {
 	user_id: Number;
+	user_name: string;
 	display_name: string;
 	avatar: string;
 	is_leader?: boolean;
@@ -225,6 +226,10 @@ const UseControlTeam = () => {
 			...error,
 			["team_name"]: draftData?.team_name ? "" : "Team name is required",
 			["team_avatar"]: draftData?.team_avatar ? "" : "Team avatar is required",
+			["team"]:
+				(draftData?.team?.length as any) > 2
+					? ""
+					: "Your team must have at least 2 members",
 		});
 
 		if (draftData?.team_avatar && draftData?.team_name) {
