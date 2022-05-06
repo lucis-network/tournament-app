@@ -3,6 +3,7 @@ import { Tabs } from "antd";
 
 import MyTeamDetail from "components/ui/common/tabsItem/myTeamDetail";
 import Overview from "../tabsitem/overview/Index";
+import MyTournament from "../tabsitem/myTournament";
 
 const { TabPane } = Tabs;
 
@@ -19,7 +20,7 @@ export default function ContentTournament() {
         Content of Tab Pane 3
       </TabPane>
       <TabPane tab="My Tournament" key="4">
-        Content of Tab Pane 4
+        <MyTournament />
       </TabPane>
     </Tabs>
   );
