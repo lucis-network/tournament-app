@@ -57,10 +57,6 @@ export default observer(function LoginModal(props: Props) {
           setIsModalVisible(false);
         }, 2000);
 
-        console.log("AuthStoreAuthStore", AuthStore);
-        if(!AuthStore.profile?.user_name){
-          alert("abc");
-        }
         break;
     }
   };
@@ -124,7 +120,7 @@ export default observer(function LoginModal(props: Props) {
           }}
           cookiePolicy={"single_host_origin"}
         />
-        <p className="text-center mt-8">By continuing, you agree to Lucis's Terms of Service and acknowledge you've read our Privacy Policy</p>
+        <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge you&apos;ve read our Privacy Policy</p>
       </Modal>
     </>
   );

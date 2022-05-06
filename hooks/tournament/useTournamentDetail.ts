@@ -71,12 +71,12 @@ export function useTournamentDetail(props: Props) {
 }
 
 export function useSponsors(props: Props): {
-  loading: boolean,
-  error: ApolloError | undefined,
+  loading: boolean;
+  error: ApolloError | undefined;
   dataSponsors: {
-    getSponsorSlot: SponsorSlot[],
-  },
-  refetch: () => Promise<ApolloQueryResult<any>>,
+    getSponsorSlot: SponsorSlot[];
+  };
+  refetch: () => Promise<ApolloQueryResult<any>>;
 } {
   const {
     loading,
@@ -87,8 +87,8 @@ export function useSponsors(props: Props): {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "cache-and-network",
     onError: (error) => {
-      console.log('error: ', error)
-    }
+      console.log("error: ", error);
+    },
   });
 
   return {
@@ -96,6 +96,19 @@ export function useSponsors(props: Props): {
     error,
     dataSponsors,
     refetch,
+  };
+}
+
+export function useClaimReward(props: Props) {
+  const { loading, error, data } = useQuery(CLAIM_REWARD, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    data: data?.getTournamentReward,
   };
 }
 
@@ -213,6 +226,18 @@ const GET_SPONSOR_DETAIL = gql`
         logo
         name
       }
+    }
+  }
+`;
+
+const CLAIM_REWARD = gql`
+  query ($tournament_uid: String!) {
+    getTournamentReward(tournament_uid: $tournament_uid) {
+      reward_type
+      rank
+      amount
+      chain_symbol
+      is_claim
     }
   }
 `;

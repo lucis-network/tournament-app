@@ -16,6 +16,12 @@ const ethersService = new EthersService(ConnectWalletStore_NonReactiveData.web3P
 const address = await ethersService.getMyAddress();
 
  */
+
+type ResultTranferFT = {
+  txHash: string;
+  error: null;
+};
+
 export default class EtherContract {
   static ErrorCode = {
     NotInitialized: "NotInitialized",
@@ -178,11 +184,16 @@ export default class EtherContract {
     groupSize: 3,
     secondaryGroupSize: 2,
   };
+
   async transferFT(
     toAddress: string,
     tokenAddress: string,
     amount: number
-  ): Promise<string | false> {
+  ): Promise<ResultTranferFT> {
+    const result: ResultTranferFT = {
+      txHash: "",
+      error: null,
+    };
     try {
       const contract = await this.getContractWithSignerErc20(tokenAddress);
       const decimal = await contract.decimals();
@@ -193,11 +204,13 @@ export default class EtherContract {
 
       const transaction = await contract.transfer(toAddress, totalAmount);
       const txHash = transaction.hash;
-
-      return txHash;
+      result.txHash = txHash;
     } catch (error) {
       console.log("{EtherContract.transferNft} error: ", error);
-      return false;
+
+      //@ts-ignore
+      result.error = error;
     }
+    return result;
   }
 }

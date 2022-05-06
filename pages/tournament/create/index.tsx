@@ -39,7 +39,6 @@ import {
 } from "hooks/tournament/useCreateTournament";
 import Router, { useRouter } from "next/router";
 import DepositModal from "components/ui/tournament/create/deposit/DepositModal";
-import { isClientDevMode } from "utils/Env";
 import sponsorStore, {
   ISponsorTierStore,
 } from "components/ui/tournament/create/sponsor/SponsorStore";
@@ -246,7 +245,6 @@ export default observer(function CreateTournament(props: Props) {
       .createTournament(cr)
       .then(async (res) => {
         if (res.data.createTournament) {
-          message.success("Save succcessfully");
           TournamentStore.depositModalVisible = true;
           window.onbeforeunload = null;
         } else {
