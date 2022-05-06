@@ -12,7 +12,7 @@ import s from "../index.module.sass";
 
 interface FinalProps {
   rounds: RoundProps[];
-  openModal: any;
+  openModal?: any;
 }
 
 const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {

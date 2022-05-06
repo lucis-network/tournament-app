@@ -15,7 +15,7 @@ import style from "../index.module.sass";
 
 interface LosingProps {
   rounds: RoundProps[];
-  openModal: any;
+  openModal?: any;
 }
 
 const LosingBracket: React.FC<LosingProps> = ({

@@ -32,7 +32,7 @@ const TournamentDetail = (): any => {
   // const tournamentUid = useMemo(() => {
   //   const { slug } = router.query;
   //   console.log("router.query: ", router.query);
-  //   if (slug) {
+  //   if (slug) {.
   //     return slug[0];
   //   }
   //   if (isClient) {
