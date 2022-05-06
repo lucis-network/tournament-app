@@ -16,7 +16,8 @@ type Props = {
 
 export default observer(function RegistrationPhase(props: Props) {
 	const { participants, brackets, sponsorSlot, pool_size } = props;
-	const { show, handleOpenModal, stepConfiguration } = useTeamModal(props);
+	const { show, step, handleOpenModal, stepConfiguration } =
+		useTeamModal(props);
 
 	return (
 		<>
@@ -60,7 +61,11 @@ export default observer(function RegistrationPhase(props: Props) {
 				</div>
 			</div>
 
-			<ChooseTeamModal show={show} stepConfiguration={stepConfiguration} />
+			<ChooseTeamModal
+				step={step}
+				show={show}
+				stepConfiguration={stepConfiguration}
+			/>
 		</>
 	);
 });

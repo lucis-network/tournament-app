@@ -9,9 +9,11 @@ import AddUserTeamModal from "../../addUserTeamModal";
 import useControlTeam from "./hooks/useControlTeam";
 import Search from "antd/lib/input/Search";
 import UseUploadAvatar from "./hooks/useUploadAvatar";
+import SpinLoading from "../../Spin";
 
 const MyTeamDetail = () => {
 	const {
+		loading,
 		reset,
 		profile,
 		error,
@@ -72,15 +74,19 @@ const MyTeamDetail = () => {
 				<div className="grid px-8 pb-4">
 					<h1 className="text-white">My team</h1>
 				</div>
-				<div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 px-2 xl:px-8 pb-4 gap-4">
-					<TeamCard
-						profile={profile}
-						teamList={teamList}
-						onOpenAdd={handleOpenAddMember}
-						onEdit={handleCreateEditTeam}
-						onOpenRemove={handleOpenRemove}
-					/>
-				</div>
+				{loading ? (
+					<SpinLoading />
+				) : (
+					<div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 px-2 xl:px-8 pb-4 gap-4">
+						<TeamCard
+							profile={profile}
+							teamList={teamList}
+							onOpenAdd={handleOpenAddMember}
+							onEdit={handleCreateEditTeam}
+							onOpenRemove={handleOpenRemove}
+						/>
+					</div>
+				)}
 			</div>
 
 			<Modal
