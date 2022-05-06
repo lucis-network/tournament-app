@@ -10,7 +10,7 @@ import {
 	SEARCH_TEAM,
 } from "./../myTeamService";
 import { useMutation, useQuery } from "@apollo/client";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 export interface TeamType extends Record<any, any> {
 	user_id: Number;
 	user_name: string;
@@ -42,25 +42,32 @@ const UseControlTeam = () => {
 	const [status, setStatus] = useState<"remove" | "delete" | "leave">("remove");
 	const [error, setError] = useState<Record<string, string>>({});
 
-	const { data: rawSearchMember, refetch: searchMember } = useQuery(
-		SEARCH_MEMBER,
-		{
-			variables: {
-				teamId: "",
-				value: "",
-			},
-		}
-	);
+	const {
+		data: rawSearchMember,
+		loading: memberLoading,
+		refetch: searchMember,
+	} = useQuery(SEARCH_MEMBER, {
+		variables: {
+			teamId: "",
+			value: "",
+		},
+	});
 
-	const { data: rawSearchTeam, refetch: searchTeam } = useQuery(SEARCH_TEAM, {
+	const {
+		data: rawSearchTeam,
+		loading: teamLoading,
+		refetch: searchTeam,
+	} = useQuery(SEARCH_TEAM, {
 		variables: {
 			name: "",
 		},
 	});
 
-	const { data: rawProfile } = useQuery(MY_PROFILE, {
-		fetchPolicy: "cache-and-network",
-	});
+	const {
+		data: rawProfile,
+		loading: profileLoading,
+		refetch: refetchProfile,
+	} = useQuery(MY_PROFILE);
 
 	const [createTeam] = useMutation(CREATE_TEAM);
 	const [deleteTeam] = useMutation(DELETE_TEAM);
@@ -355,7 +362,21 @@ const UseControlTeam = () => {
 		setOpenAdd(false);
 	}, [isSaveDraft]);
 
+	const loading = memberLoading && profileLoading && teamLoading;
+
+	useEffect(() => {
+		refetchProfile();
+		searchMember({
+			teamId: "",
+			value: "",
+		});
+		searchTeam({
+			name: "",
+		});
+	}, [refetchProfile, searchMember, searchTeam]);
+
 	return {
+		loading,
 		reset,
 		profile,
 		error,
