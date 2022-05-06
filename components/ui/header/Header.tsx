@@ -34,14 +34,13 @@ export default observer(function Header(props: Props) {
     }
   }
 
-  // do not delete
-  // useEffect(() => {
-  //   usernameCheck();
-  //   router.events.on("routeChangeStart", usernameCheck);
-  //   return () => {
-  //     router.events.off("routeChangeStart", usernameCheck);
-  //   };
-  // }, []);
+  useEffect(() => {
+    usernameCheck();
+    router.events.on("routeChangeStart", usernameCheck);
+    return () => {
+      router.events.off("routeChangeStart", usernameCheck);
+    };
+  }, []);
 
   return (
     <>
@@ -88,7 +87,7 @@ export default observer(function Header(props: Props) {
           <MenuMobile />
         )}
       </div>
-      {(LoginBoxStore.signupInfoModalVisible === true) && <SignupInfoModal />}
+      {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal />}
     </>
   );
 });

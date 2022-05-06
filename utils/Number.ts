@@ -47,6 +47,9 @@ export function format(num: number, decimal = 0, option?: NumberFormatOption): s
   return s
 }
 
+export function fomatNumber (value: number) : string {
+  return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
+};
 
 if (isClientDevMode) {
   const test_cases: {

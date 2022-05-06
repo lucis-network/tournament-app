@@ -361,7 +361,7 @@ export default observer(function Prizing(props: Props) {
   const recalculateEstimated = () => {
     const dataSource = [...state.dataSource];
     dataSource.forEach((item) => {
-      item.estimated = (poolSize * item.total) / 100;
+      item.estimated = Number.parseFloat(((poolSize * item.total) / 100).toFixed(2));
     });
     setState({ dataSource: dataSource });
   };
@@ -408,7 +408,7 @@ export default observer(function Prizing(props: Props) {
               prefix="$"
               style={{ width: "99%" }}
               min={1}
-              placeholder="Pool size"
+              placeholder="20,000"
               onChange={onChange}
               ref={inputRef}
               onBlur={() => handleBlur()}
