@@ -1,18 +1,22 @@
-import s from "./Player.module.sass"
-import CardPlayer from "../cardPlayer"
-type Props = {}
+import s from "./Player.module.sass";
+import CardPlayer from "../cardPlayer";
+type Props = {};
+
+const listData = [
+  { id: 1, position: 1, name: "Top1" },
+  { id: 2, position: 2, name: "Top2" },
+  { id: 3, position: 3, name: "Top3" },
+];
 
 export default function PlayerHome() {
-  return(
+  return (
     <div className={s.wrapper_player}>
-      <div className='lucis-container'>
+      <div className="lucis-container" style={{ width: "100%" }}>
         <h1>PLAYER OF THE MONTH</h1>
         <div className={s.block_card}>
-          <CardPlayer />
-          <CardPlayer />
-          <CardPlayer />
+          <CardPlayer data={listData} />
         </div>
       </div>
     </div>
-  )
+  );
 }

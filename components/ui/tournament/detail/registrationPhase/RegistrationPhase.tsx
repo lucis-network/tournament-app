@@ -7,16 +7,16 @@ import ChooseTeamModal from "../popup/chooseTeamModal";
 import useTeamModal from "../hooks/useTeamModal";
 
 type Props = {
-  participants: number;
-  brackets: any;
-  sponsorSlot: SponsorTierType[];
-  pool_size: number;
-  currency: any;
+	participants: number;
+	brackets: any;
+	sponsorSlot: SponsorTierType[];
+	pool_size: number;
+	currency: any;
 };
 
 export default observer(function RegistrationPhase(props: Props) {
-  const { show, handleOpenModal, stepConfiguration } = useTeamModal();
-  const { participants, brackets, sponsorSlot, pool_size } = props;
+	const { participants, brackets, sponsorSlot, pool_size } = props;
+	const { show, handleOpenModal, stepConfiguration } = useTeamModal(props);
 
   const claimTokenDonation = async () => {
     TournamentStore.claimDonationModalVisible = true;
@@ -87,7 +87,7 @@ export default observer(function RegistrationPhase(props: Props) {
         </div>
       </div>
 
-      <ChooseTeamModal show={show} stepConfiguration={stepConfiguration} />
-    </>
-  );
+			<ChooseTeamModal show={show} stepConfiguration={stepConfiguration} />
+		</>
+	);
 });

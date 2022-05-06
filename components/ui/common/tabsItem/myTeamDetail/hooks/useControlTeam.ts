@@ -13,6 +13,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useCallback, useState } from "react";
 export interface TeamType extends Record<any, any> {
 	user_id: Number;
+	user_name: string;
 	display_name: string;
 	avatar: string;
 	is_leader?: boolean;
@@ -57,7 +58,9 @@ const UseControlTeam = () => {
 		},
 	});
 
-	const { data: rawProfile } = useQuery(MY_PROFILE);
+	const { data: rawProfile } = useQuery(MY_PROFILE, {
+		fetchPolicy: "cache-and-network",
+	});
 
 	const [createTeam] = useMutation(CREATE_TEAM);
 	const [deleteTeam] = useMutation(DELETE_TEAM);
@@ -138,6 +141,14 @@ const UseControlTeam = () => {
 				...draftData!,
 				team: draftData?.team?.filter((member) => member.user_id !== user_id),
 			});
+			setError({
+				...error,
+				["team"]:
+					(draftData?.team?.filter((member) => member.user_id !== user_id)
+						?.length as any) > 1
+						? ""
+						: "Your team must have at least 2 members",
+			});
 		} else {
 			setIsSaveDraft(false);
 			setOpenRemove(true);
@@ -179,30 +190,42 @@ const UseControlTeam = () => {
 			  } as MyTeamType);
 		setIsEdit(isEdit);
 		setOpenCreateTeam(true);
+		setReset(false);
+		setError({});
 	};
 
-	const handleCloseCreateEditTeam = useCallback(() => {
+	const handleCloseCreateEditTeam = () => {
 		setDraftData(undefined);
 		setOpenCreateTeam(false);
-	}, []);
-
-	const handleChangeAvatar = (childData: string) => {
-		if (childData) {
-			setDraftData({
-				...draftData,
-				team_avatar: childData,
-			} as MyTeamType);
-			setError({
-				...error,
-				["team_avatar"]: "",
-			});
-		} else {
-			setError({
-				...error,
-				["team_avatar"]: "File is not valid",
-			});
-		}
+		setError({});
+		setReset(true);
 	};
+
+	const handleChangeAvatar = useCallback(
+		(childData: string, file: any) => {
+			if (childData && file) {
+				setDraftData({
+					...draftData,
+					team_avatar: childData,
+				} as MyTeamType);
+				setError({
+					...error,
+					["team_avatar"]: "",
+				});
+			} else if (!file) {
+				setError({
+					...error,
+					["team_avatar"]: "Team avatar is required",
+				});
+			} else {
+				setError({
+					...error,
+					["team_avatar"]: "File is not valid",
+				});
+			}
+		},
+		[draftData, error]
+	);
 
 	const handleChangeTeamName = (e: React.FormEvent<HTMLInputElement>) => {
 		const { value } = e.currentTarget;
@@ -225,9 +248,18 @@ const UseControlTeam = () => {
 			...error,
 			["team_name"]: draftData?.team_name ? "" : "Team name is required",
 			["team_avatar"]: draftData?.team_avatar ? "" : "Team avatar is required",
+			["team"]:
+				(draftData?.team?.length as any) > 1
+					? ""
+					: "Your team must have at least 2 members",
 		});
 
-		if (draftData?.team_avatar && draftData?.team_name) {
+		if (
+			draftData?.team_avatar &&
+			draftData?.team_name &&
+			draftData?.team &&
+			draftData?.team?.length > 1
+		) {
 			const filterDataMember = draftData?.team
 				?.filter((team) => +team.user_id !== +profile?.user_id)
 				?.map((item) => ({
@@ -253,7 +285,6 @@ const UseControlTeam = () => {
 						},
 						onCompleted: () => {
 							searchTeam({ name: "" });
-							setReset(true);
 						},
 				  })
 				: createTeam({
@@ -272,9 +303,9 @@ const UseControlTeam = () => {
 						},
 						onCompleted: () => {
 							searchTeam({ name: "" });
-							setReset(true);
 						},
 				  });
+			setReset(true);
 			setOpenCreateTeam(false);
 		}
 	};
@@ -284,6 +315,14 @@ const UseControlTeam = () => {
 			setDraftData({
 				...draftData!,
 				team: draftData?.team ? [...draftData?.team, member] : [member],
+			});
+			setError({
+				...error,
+				["team"]:
+					((draftData?.team ? [...draftData?.team, member] : [member])
+						?.length as any) > 1
+						? ""
+						: "Your team must have at least 2 members",
 			});
 			setOpenCreateTeam(true);
 		} else {

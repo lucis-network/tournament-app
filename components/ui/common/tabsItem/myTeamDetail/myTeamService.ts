@@ -59,6 +59,7 @@ export const MY_PROFILE = gql`
 			profile {
 				user_id
 				display_name
+				user_name
 				avatar
 			}
 		}

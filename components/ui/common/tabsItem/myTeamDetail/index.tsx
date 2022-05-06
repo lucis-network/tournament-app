@@ -8,6 +8,7 @@ import CreateTeamModal from "../../createTeamModal";
 import AddUserTeamModal from "../../addUserTeamModal";
 import useControlTeam from "./hooks/useControlTeam";
 import Search from "antd/lib/input/Search";
+import UseUploadAvatar from "./hooks/useUploadAvatar";
 
 const MyTeamDetail = () => {
 	const {
@@ -38,6 +39,11 @@ const MyTeamDetail = () => {
 		handleOpenRemove,
 		handleCloseRemove,
 	} = useControlTeam();
+
+	const { url, inputKey, handleFileInput } = UseUploadAvatar(
+		handleChangeAvatar,
+		reset
+	);
 
 	return (
 		<>
@@ -97,12 +103,14 @@ const MyTeamDetail = () => {
 			/>
 
 			<CreateTeamModal
+				url={url}
+				inputKey={inputKey}
 				reset={reset}
 				error={error}
 				isEdit={isEdit}
 				draftData={draftData}
 				showModal={openCreateTem}
-				onChangeAvatar={handleChangeAvatar}
+				onChangeAvatar={handleFileInput}
 				onChangeTeamName={handleChangeTeamName}
 				onAddOpen={handleOpenAddMember}
 				onOpenRemove={handleOpenRemove}

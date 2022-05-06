@@ -1,11 +1,23 @@
 .content_card
   box-shadow: 0px 0px 25px 4px rgba(250, 0, 255, 0.3)
-  min-height: 290px
-  min-width: 240px
   background: linear-gradient(111.03deg, rgba(239, 238, 238, 0.32) 2.82%, rgba(239, 238, 238, 0.06) 90.94%)
   backdrop-filter: blur(40px)
   border-radius: 16px
   position: relative
+  margin: 0px 4px
+  min-height: 290px
+  min-width: 240px
+  @media (min-width: 0)
+    margin: 30px 0px
+  @media (min-width: 540px)
+    margin: 0px 4px
+    min-height: 230px
+    min-width: 180px
+  @media (min-width: 768px)
+    min-height: 290px
+    min-width: 240px
+  @media ( min-width: 992px )
+    margin: 0px 22px
   .im_top_player
     position: absolute
     top: -28%
@@ -27,6 +39,12 @@
       overflow: hidden
       background: #FFF
       border-radius: 100%
+      @media (min-width: 540px)
+        height: 60px
+        width: 60px
+      @media (min-width: 768px)
+        height: 100px
+        width: 100px
     p
       padding: 16px 0px 2px 0px
       font-weight: 700
@@ -36,12 +54,20 @@
     .btn
       position: relative
       padding: 9px 6px
+      @media (min-width: 540px)
+        padding: 4px 2px
+      @media (min-width: 768px)
+        padding: 9px 6px
       .content_btn
         font-weight: 700
         font-size: 24px
         line-height: 115%
         border: none
         color: #0BEBD6
+        @media (min-width: 540px)
+          font-size: 18px
+        @media (min-width: 768px)
+          font-size: 24px
       .content_btn:active
         background: transparent
       .content_btn:focus
@@ -72,3 +98,21 @@
   -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
   -webkit-mask-composite: xor
   mask-composite: exclude
+.top1
+  @media (min-width: 768px)
+    margin-top: -120px
+.top2
+  @media (min-width: 0)
+    order: -1
+    transform: scale(0.8)
+    filter: drop-shadow(0px 2px 40px rgba(255, 255, 255, 0.3))
+.top3  
+  @media (min-width: 0)
+    transform: scale(0.8)
+    box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
+  @media (min-width: 768px)
+    transform: scale(0.6)
+    margin-left: -10px
+    margin-top: 80px
+
+  
