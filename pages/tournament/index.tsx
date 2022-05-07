@@ -9,7 +9,7 @@ import TournamentDetail from "./[slug]";
  */
 const TournamentIndex: NextPage = () => {
   //@ts-ignore
-  return <></>;
+  return <TournamentDetail />;
 };
 
 export default TournamentIndex;

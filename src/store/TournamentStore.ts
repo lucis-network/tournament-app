@@ -66,7 +66,7 @@ export type Rounds = {
 
 const DEFAULT_PARTICIPANTS = 8;
 const DEFAULT_TURNS = 1;
-const DEFAULT_CURRENCY_UID = "USDT";
+const DEFAULT_CURRENCY_UID = "BUSD";
 const DEFAULT_JOIN_FEE = 0;
 const DEFAULT_REGIONS = ["AA"];
 class TournamentStore {

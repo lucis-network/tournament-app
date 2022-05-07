@@ -69,7 +69,7 @@ export default observer(function CreateTournament(props: Props) {
   const [checkPassword, setCheckPassword] = useState(false);
   const [dataReferees, setDataReferees] = useState([]);
   const [dataChooseGame, setDataChooseGame] = useState(null);
-
+  const [tournamentModal, setTournamentModal] = useState({});
   const { getDataRegions } = useRegion({});
 
   const { getDataChooseGame } = useChooseGame({
@@ -228,31 +228,16 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const createTournament = () => {
-    console.log("TournamentStore", TournamentStore);
     let cr = TournamentStore.getCreateTournament();
     cr.start_at = new Date();
-    if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
     cr.sponsor_slots = combineSponsorData();
-
-    console.log("cr", cr)
 
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);
 
-    const tournamentService = new TournamentService();
     if (!validationInput(cr)) return;
-    const response = tournamentService
-      .createTournament(cr)
-      .then(async (res) => {
-        if (res.data.createTournament) {
-          TournamentStore.depositModalVisible = true;
-          window.onbeforeunload = null;
-        } else {
-          message.error("Save fail");
-          return;
-        }
-      })
-      .then(() => {});
+    setTournamentModal(cr);
+    TournamentStore.depositModalVisible = true;
   };
 
   const validationInput = (cr: any) => {
@@ -315,7 +300,7 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    if (!cr.pool_size) {
+    if (!cr.pool_size || cr.pool_size <= 0) {
       setCheckPoolSize(false);
       //@ts-ignore
       document.getElementById("prizing").scrollIntoView();
@@ -792,7 +777,7 @@ export default observer(function CreateTournament(props: Props) {
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
         <RefereeModal handCallbackReferee={handCallbackReferee} />
         <TimelineModal handCallbackTimeline={handCallbackTimeline} />
-        <DepositModal />
+        <DepositModal tournamentModal={tournamentModal} />
       </div>
 
       {/* <Footer /> */}
