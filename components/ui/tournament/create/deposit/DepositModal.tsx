@@ -75,7 +75,7 @@ export default observer(function DepositModal(props: Props) {
         className={`${s.container}`}
         cancelButtonProps={{ style: { display: "none" } }}
         okText="Deposit"
-        //onCancel={handleCancel}
+        onCancel={handleCancel}
       >
         <Spin spinning={isLoading}>
           <div className="">

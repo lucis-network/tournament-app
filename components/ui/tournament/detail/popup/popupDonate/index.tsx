@@ -50,8 +50,8 @@ const PopupDonate = (props: Props) => {
       cancelButtonProps={{ style: { display: "none" } }}
       className={s.content_modal}
     >
-      {Object.values([datas]).map((e: any) => (
-        <Row key={e}>
+      {Object.values([datas]).map((e: any, index: number) => (
+        <Row key={index}>
           <Col span={10}>Donate to</Col>
           <Col className={s.information}>
             <div className={s.avt_member}>

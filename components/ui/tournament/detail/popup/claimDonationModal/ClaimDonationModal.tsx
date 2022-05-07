@@ -79,7 +79,11 @@ export default observer(function ClaimDonationModal(props: Props) {
       key: "donated",
       width: "40%",
       render: (_: any, item: any) => {
-        return <>{item.amount} {item.chain_symbol}</>;
+        return (
+          <>
+            {item.amount} {item.chain_symbol}
+          </>
+        );
       },
     },
     {
@@ -110,7 +114,7 @@ export default observer(function ClaimDonationModal(props: Props) {
           dataSource={data}
           columns={columns}
           bordered
-          //rowKey={(record) => `${record.user?.profile?.user_id}`}
+          rowKey={(record, index) => `${index}`}
           className={s.container_table}
         />
       </Modal>

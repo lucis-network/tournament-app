@@ -49,6 +49,15 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "cache-and-network",
   });
 
+  // const {
+  //   loading: loadingBracket,
+  //   error: errorBracket,
+  //   data: dataBracket,
+  // } = useQuery(GET_BRACKET, {
+  //   variables: { tournament_uid: props?.tournament_uid },
+  //   fetchPolicy: "cache-and-network",
+  // });
+
   return {
     loading,
     loadingParticipant,
@@ -112,6 +121,19 @@ export function useClaimReward(props: Props) {
   };
 }
 
+export function useGetAllTournament(props: Props) {
+  const { loading, error, data } = useQuery(GET_ALL_TOURNAMENT, {
+    variables: {},
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    data: data?.getAllTournament,
+  };
+}
+
 // ======= GET DATA GRAPQL
 
 const GET_TOURNAMENT_DETAIL = gql`
@@ -126,6 +148,7 @@ const GET_TOURNAMENT_DETAIL = gql`
       rules
       game {
         name
+        logo
       }
       user {
         profile {
@@ -238,6 +261,15 @@ const CLAIM_REWARD = gql`
       amount
       chain_symbol
       is_claim
+    }
+  }
+`;
+
+const GET_ALL_TOURNAMENT = gql`
+  query {
+    getAllTournament {
+      uid
+      name
     }
   }
 `;
