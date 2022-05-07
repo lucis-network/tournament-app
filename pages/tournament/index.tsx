@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import TournamentDetail from "./[...slug]";
+import TournamentDetail from "./[slug]";
 
 /**
  * This has no function in project
