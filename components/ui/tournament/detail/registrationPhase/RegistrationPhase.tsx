@@ -23,13 +23,13 @@ export default observer(function RegistrationPhase(props: Props) {
   const { show, step, handleOpenModal, stepConfiguration } =
     useTeamModal(props);
 
-  const claimTokenDonation = async () => {
-    TournamentStore.claimDonationModalVisible = true;
-  };
+	const claimTokenDonation = async () => {
+		TournamentStore.claimDonationModalVisible = true;
+	};
 
-  const claimToken = async () => {
-    TournamentStore.claimResultModalVisible = true;
-  };
+	const claimToken = async () => {
+		TournamentStore.claimResultModalVisible = true;
+	};
 
   return (
     <>
