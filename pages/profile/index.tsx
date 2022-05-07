@@ -5,20 +5,19 @@ import EditProfile from "components/ui/tournament/myProfile/editMyProfile/EditPr
 import ContentTournament from "components/ui/tournament/myProfile/content/ContentTournament";
 
 const MyProfile = () => {
-  const [isShowEdit, setIsShowEdit] = useState(false);
+	const [isShowEdit, setIsShowEdit] = useState(false);
+	const handleClick = () => {
+		setIsShowEdit(!isShowEdit);
+	};
+	return (
+		<div className={s.wapper_profile}>
+			{/* Content */}
+			<InfoMyProfile click={handleClick} />
 
-  const handleClick = () => {
-    setIsShowEdit(!isShowEdit);
-  };
-  return (
-    <div className={s.wapper_profile}>
-      {/* Content */}
-      <InfoMyProfile click={handleClick} />
-
-      <div className="lucis-container">
-        {isShowEdit ? <EditProfile /> : <ContentTournament />}
-      </div>
-    </div>
-  );
+			<div className="lucis-container">
+				{isShowEdit ? <EditProfile /> : <ContentTournament />}
+			</div>
+		</div>
+	);
 };
 export default MyProfile;

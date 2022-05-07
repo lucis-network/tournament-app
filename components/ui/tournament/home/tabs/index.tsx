@@ -3,6 +3,7 @@ import { Button, Col, Row } from "antd";
 
 import SearchComplete from "../../../common/searchs/index";
 import CardHome from "components/ui/common/cardsItem/cardHome";
+import ButtonSort from "components/ui/tournament/home/button"
 import s from "./Tabs.module.sass";
 
 const listTabs = ["UPCOMING", "ONGOING", "CLOSED"];
@@ -132,7 +133,7 @@ export default function TabHome() {
             <SearchComplete />
           </Col>
         </Row>
-
+        <ButtonSort />
         <div>
           <CardHome datas={datas} />
         </div>

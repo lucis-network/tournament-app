@@ -1,0 +1,40 @@
+.container
+  display: flex
+  align-items: center
+  .item
+    color: #FFF
+    font-weight: 400
+    font-size: 16px
+    line-height: 115%
+    margin: 38px 0px
+    display: flex
+    align-items: center
+  .item > div
+    padding-right: 20px
+    img
+      padding-right: 12px
+  :global(.ant-select)
+    margin: 0px 12px
+  :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
+    background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
+    color: #FFF
+    border-radius: 8px
+    border: none
+    position: relative
+  :global(.ant-select-arrow)
+    color: #FFF
+
+  :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector::before)
+    content: ''
+    position: absolute
+    top:0
+    left:0
+    right:0
+    bottom:0
+    border-radius: 8px
+    padding: 1px
+    background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
+    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+    -webkit-mask-composite: xor
+    mask-composite: exclude

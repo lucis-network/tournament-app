@@ -369,7 +369,7 @@ class TournamentStore {
   public set notifyModalVisible(value: boolean) {
     this._notifyModalVisible = value;
   }
-  public get rounds(): Rounds[]{
+  public get rounds(): Rounds[] {
     return this._rounds ? this._rounds : [];
   }
   public set rounds(value: Rounds[]) {
