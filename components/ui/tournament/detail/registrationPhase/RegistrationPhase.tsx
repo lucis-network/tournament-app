@@ -5,19 +5,23 @@ import s from "./index.module.sass";
 import moment from "moment";
 import ChooseTeamModal from "../popup/chooseTeamModal";
 import useTeamModal from "../hooks/useTeamModal";
+import { fomatNumber } from "utils/Number";
 
 type Props = {
-	participants: number;
-	brackets: any;
-	sponsorSlot: SponsorTierType[];
-	pool_size: number;
-	currency: any;
+  participants: number;
+  brackets: any;
+  sponsorSlot: SponsorTierType[];
+  pool_size: number;
+  currency_uid: any;
+  totalDonation?: any;
+  totalPrizePool?: any;
 };
 
 export default observer(function RegistrationPhase(props: Props) {
-	const { participants, brackets, sponsorSlot, pool_size } = props;
-	const { show, step, handleOpenModal, stepConfiguration } =
-		useTeamModal(props);
+  const { participants, brackets, currency_uid, totalDonation, totalPrizePool } =
+    props;
+  const { show, step, handleOpenModal, stepConfiguration } =
+    useTeamModal(props);
 
   const claimTokenDonation = async () => {
     TournamentStore.claimDonationModalVisible = true;
@@ -37,13 +41,13 @@ export default observer(function RegistrationPhase(props: Props) {
           <div className={s.prizes}>
             <div className={s.items}>
               <img src="/assets/avatar.jpg" alt="" width={50} />
-              <span>22300 USDT</span>
+              <span>{fomatNumber(totalPrizePool)} {currency_uid}</span>
               <span>Prize pool</span>
             </div>
           </div>
           <div className={s.items}>
             <img src="/assets/avatar.jpg" alt="" width={50} />
-            <span>22300 USDT</span>
+            <span>{fomatNumber(totalDonation)} {currency_uid}</span>
             <span>Total donation</span>
             <Button>Donation</Button>
           </div>
@@ -72,14 +76,14 @@ export default observer(function RegistrationPhase(props: Props) {
             <div className={s.rewards}>
               <div>
                 <div>Prize</div>
-                <p>1234 USDT</p>
+                <p>{fomatNumber(totalPrizePool)} {currency_uid}</p>
                 <Button onClick={claimToken}>Claim</Button>
-                <p>1234 LUCIS</p>
+                <p>{fomatNumber(totalDonation)} LUCIS</p>
                 <Button onClick={claimToken}>Claim</Button>
               </div>
               <div>
                 <p>From Donation</p>
-                <p>1234 USDT</p>
+                <p>{fomatNumber(totalDonation)} {currency_uid}</p>
                 <Button onClick={claimTokenDonation}>Claim</Button>
               </div>
             </div>
@@ -88,11 +92,11 @@ export default observer(function RegistrationPhase(props: Props) {
         </div>
       </div>
 
-			<ChooseTeamModal
-				step={step}
-				show={show}
-				stepConfiguration={stepConfiguration}
-			/>
-		</>
-	);
+      <ChooseTeamModal
+        step={step}
+        show={show}
+        stepConfiguration={stepConfiguration}
+      />
+    </>
+  );
 });

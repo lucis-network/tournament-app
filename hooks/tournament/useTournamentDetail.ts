@@ -49,15 +49,6 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "cache-and-network",
   });
 
-  // const {
-  //   loading: loadingBracket,
-  //   error: errorBracket,
-  //   data: dataBracket,
-  // } = useQuery(GET_BRACKET, {
-  //   variables: { tournament_uid: props?.tournament_uid },
-  //   fetchPolicy: "cache-and-network",
-  // });
-
   return {
     loading,
     loadingParticipant,
@@ -161,6 +152,8 @@ const GET_TOURNAMENT_DETAIL = gql`
         }
       }
       currency_uid
+      totalDonation
+      totalPrizePool
     }
   }
 `;

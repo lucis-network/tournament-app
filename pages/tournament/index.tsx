@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import TournamentDetail from "./[slug]";
+import TournamentDetail from "./[...slug]";
 
 /**
  * This has no function in project
@@ -9,7 +9,7 @@ import TournamentDetail from "./[slug]";
  */
 const TournamentIndex: NextPage = () => {
   //@ts-ignore
-  return <TournamentDetail />;
+  return <></>;
 };
 
 export default TournamentIndex;

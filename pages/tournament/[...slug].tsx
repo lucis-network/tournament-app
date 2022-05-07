@@ -92,9 +92,11 @@ const TournamentDetail = () => {
     name,
     sponsorSlot,
     pool_size,
-    currency,
+    currency_uid,
     cover,
     thumbnail,
+    totalDonation,
+    totalPrizePool,
   } = dataTournamentDetail;
 
   // useEffect(() => {
@@ -170,7 +172,9 @@ const TournamentDetail = () => {
             brackets={dataBracket}
             sponsorSlot={sponsorSlot}
             pool_size={pool_size}
-            currency={currency}
+            currency_uid={currency_uid}
+            totalDonation={totalDonation}
+            totalPrizePool={totalPrizePool}
           />
         </div>
         {/* ===== sponsor ===== */}
