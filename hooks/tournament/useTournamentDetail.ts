@@ -118,34 +118,50 @@ export function useClaimReward(props: Props) {
 	};
 }
 
+export function useGetAllTournament(props: Props) {
+  const { loading, error, data } = useQuery(GET_ALL_TOURNAMENT, {
+    variables: {},
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    data: data?.getAllTournament,
+  };
+}
+
 // ======= GET DATA GRAPQL
 
 const GET_TOURNAMENT_DETAIL = gql`
-	query ($tournament_uid: String!) {
-		getTournamentDetail(tournament_uid: $tournament_uid) {
-			name
-			cover
-			thumbnail
-			team_size
-			participants
-			desc
-			rules
-			game {
-				name
-			}
-			user {
-				profile {
-					display_name
-				}
-			}
-			sponsorSlot {
-				sponsor_transactions {
-					amount
-				}
-			}
-			currency_uid
-		}
-	}
+  query ($tournament_uid: String!) {
+    getTournamentDetail(tournament_uid: $tournament_uid) {
+      name
+      cover
+      thumbnail
+      team_size
+      participants
+      desc
+      rules
+      game {
+        name
+        logo
+      }
+      user {
+        profile {
+          display_name
+        }
+      }
+      sponsorSlot {
+        sponsor_transactions {
+          amount
+        }
+      }
+      currency_uid
+      totalDonation
+      totalPrizePool
+    }
+  }
 `;
 
 const GET_PARTICIPANTS_DETAIL = gql`
@@ -198,24 +214,29 @@ const GET_PRIZING_DETAIL = gql`
 `;
 
 const GET_BRACKET = gql`
-	query ($tournament_uid: String!) {
-		getBracket(tournament_uid: $tournament_uid) {
-			type
-			start_at
-			status
-
-			bracketRounds {
-				type
-				title
-				bracketMatchs {
-					team1_uid
-					team2_uid
-					score_1
-					score_2
-				}
-			}
-		}
-	}
+  query ($tournament_uid: String!) {
+    getBracket(tournament_uid: $tournament_uid) {
+      type
+      start_at
+      status
+      bracketTeams {
+        uid
+        team {
+          name
+        }
+      }
+      bracketRounds {
+        type
+        title
+        bracketMatchs {
+          team1_uid
+          team2_uid
+          score_1
+          score_2
+        }
+      }
+    }
+  }
 `;
 
 const GET_SPONSOR_DETAIL = gql`
@@ -246,4 +267,13 @@ const CLAIM_REWARD = gql`
 			is_claim
 		}
 	}
+`;
+
+const GET_ALL_TOURNAMENT = gql`
+  query {
+    getAllTournament {
+      uid
+      name
+    }
+  }
 `;

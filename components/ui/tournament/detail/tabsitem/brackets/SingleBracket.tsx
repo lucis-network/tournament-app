@@ -1,5 +1,8 @@
 import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import RoundStore from "src/store/RoundStore";
+
 import {
   Bracket,
   Seed,
@@ -9,20 +12,18 @@ import {
   RenderSeedProps,
 } from "react-brackets";
 
-import s from "../index.module.sass";
+import s from "./index.module.sass";
+import { truncate } from "lodash";
 
-interface LosingProps {
+interface Props {
   rounds: RoundProps[];
   // openModal: any;
-  // renderSeedComponent: any;
 }
 
-const WiningBracket: React.FC<LosingProps> = ({
-  rounds: wining,
-  // openModal,
-}) => {
-  const handleOpenModal = () => {
-    console.log("Hello");
+const SingleBracket = ({ rounds }: Props) => {
+  const handleOpenModal = (e: any, seed: any) => {
+    RoundStore.updateScoreModal = true;
+    RoundStore.currentMatch = seed.teams;
   };
 
   const RenderSeed = ({
@@ -57,6 +58,7 @@ const WiningBracket: React.FC<LosingProps> = ({
                     cursor: "pointer",
                   }}
                   // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  onClick={(e) => handleOpenModal(e, seed)}
                 >
                   {seed.teams[0]?.score ?? "--"}
                 </div>
@@ -82,6 +84,7 @@ const WiningBracket: React.FC<LosingProps> = ({
                     cursor: "pointer",
                   }}
                   // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  onClick={(e) => handleOpenModal(e, seed)}
                 >
                   {seed.teams[1]?.score ?? "--"}
                 </div>
@@ -96,7 +99,7 @@ const WiningBracket: React.FC<LosingProps> = ({
   return (
     <>
       <Bracket
-        rounds={wining}
+        rounds={RoundStore.singleRounds}
         roundClassName={s.wining}
         renderSeedComponent={RenderSeed}
         mobileBreakpoint={360}
@@ -108,8 +111,9 @@ const WiningBracket: React.FC<LosingProps> = ({
           },
         }}
       />
+      <UpdateScore />
     </>
   );
 };
 
-export default WiningBracket;
+export default observer(SingleBracket);
