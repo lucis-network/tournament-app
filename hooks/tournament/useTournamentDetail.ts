@@ -55,6 +55,8 @@ export function useTournamentDetail(props: Props) {
 		fetchPolicy: "cache-and-network",
 	});
 
+	const [joinTournament] = useMutation(JOIN_TOURNAMENT);
+
 	return {
 		loading,
 		loadingParticipant,
@@ -73,6 +75,8 @@ export function useTournamentDetail(props: Props) {
 		dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
 		dataPrizing: dataPrizing?.getTournamentPrizing,
 		dataBracket: dataBracket?.getBracket,
+
+		joinTournament,
 	};
 }
 
@@ -245,5 +249,11 @@ const CLAIM_REWARD = gql`
 			chain_symbol
 			is_claim
 		}
+	}
+`;
+
+const JOIN_TOURNAMENT = gql`
+	mutation joinTournament($data: GBracketTeamInput!) {
+		joinTournament(data: $data)
 	}
 `;

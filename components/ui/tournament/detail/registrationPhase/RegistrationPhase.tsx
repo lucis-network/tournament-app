@@ -8,6 +8,7 @@ import useTeamModal from "../hooks/useTeamModal";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 
 type Props = {
+	joinTournament: any;
 	participants: number;
 	brackets: any;
 	sponsorSlot: SponsorTierType[];

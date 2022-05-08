@@ -30,7 +30,11 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, isValid, onSelect }) => {
 					</div>
 				))}
 			</div>
-			<button className={s.button_select} onClick={onSelect}>
+			<button
+				className={s.button_select}
+				onClick={onSelect}
+				disabled={!isValid}
+			>
 				Select team
 			</button>
 			<div className="absolute -bottom-4 left-0 w-full text-center">

@@ -15,7 +15,6 @@ import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
-import { GetStaticPaths } from "next";
 import ClaimDonationModal from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
@@ -54,6 +53,8 @@ const TournamentDetail = () => {
 		loadingReferees,
 		loadingPrizing,
 		loadingBracket,
+
+		joinTournament,
 	} = useTournamentDetail({
 		// Change to tournamentUid after
 		tournament_uid: "cl2rdu56s18150jrswgoh73lb",
@@ -161,6 +162,7 @@ const TournamentDetail = () => {
 			{/* ==== registration phase ====  */}
 			<div className={`lucis-container`}>
 				<RegistrationPhase
+					joinTournament={joinTournament}
 					tournament={dataTournamentDetail}
 					participants={participants}
 					brackets={dataBracket}

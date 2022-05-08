@@ -12,7 +12,7 @@ import {
 import { useMutation, useQuery } from "@apollo/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 export interface TeamType extends Record<any, any> {
-	user_id: Number;
+	user_id: number;
 	user_name: string;
 	display_name: string;
 	avatar: string;
@@ -134,7 +134,7 @@ const UseControlTeam = () => {
 
 	const handleOpenRemove = (
 		team_uid: string,
-		user_id: Number,
+		user_id: number,
 		status: "remove" | "delete" | "leave",
 		isSaveDraft?: boolean
 	) => {

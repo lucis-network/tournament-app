@@ -7,7 +7,7 @@ import { useMutation, useQuery } from "@apollo/client";
 import { useCallback, useState } from "react";
 
 export interface TeamType extends Record<any, any> {
-	user_id: Number;
+	user_id: number;
 	user_name: string;
 	display_name: string;
 	avatar: string;
