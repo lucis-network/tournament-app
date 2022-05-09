@@ -1,13 +1,10 @@
 .block_card
-  :global(.ant-list-items)
-    display: flex
-    align-items: center
+  display: flex
+  flex-wrap: wrap
+  @media (max-width: 639px)
+    justify-content: center
+  @media (min-width: 640px) and (max-width: 991px)
     justify-content: space-between
-    flex-wrap: wrap
-    @media (min-width: 0)
-      justify-content: center
-    @media (min-width: 640px)
-      justify-content: space-between
   
   :global(.ant-pagination)
     display: flex
@@ -64,8 +61,6 @@
       max-width: 352px
     @media (min-width: 640px)
       width: 47%
-    @media (min-width: 992px)
-      width: 24%
 
     .container_card
       background: linear-gradient(292deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
@@ -80,9 +75,9 @@
       overflow: hidden
       border-radius: 16px
       @media (min-width: 640px)
-        min-height: 100%
+        min-height: auto
       .im_game
-        max-height: 268px
+        max-height: 260px
         height: 100%
         overflow: hidden
         position: relative
@@ -91,6 +86,17 @@
         align-items: center
         justify-content: center
         border-radius: 16px 16px 0px 0px
+        min-height: 260px
+        @media (min-width: 640px) and (max-width: 768px)
+          max-height: 180px
+          min-height: 180px
+        @media (min-width: 992px)
+          max-height: 180px
+          min-height: 180px
+        @media (min-width: 1280px)
+          max-height: 260px
+          min-height: 260px
+
         .info
           position: absolute
           top: 0
@@ -106,8 +112,6 @@
           @media (min-width: 640px)
             padding: 20px 8px
             font-size: 12px
-          @media (min-width: 992px)
-            flex-direction: column
           @media (min-width: 1440px)
             flex-direction: row
             padding: 20px
@@ -120,15 +124,18 @@
             @media (min-width: 640px)
               font-size: 12px
             @media (min-width: 992px)
-              order: -1
-            @media (min-width: 1440px)
-              order: 0
+              font-size: 10px
+            @media (min-width: 1280px)
               font-size: 14px
           .number
             display: flex
             align-items: center
             span
               padding-left: 4px
+              @media (min-width: 992px)
+                font-size: 10px
+              @media (min-width: 1280px)
+                font-size: 14px
       .heading
         color: #FFF
         @media (min-width: 0px)
@@ -139,7 +146,16 @@
           padding: 12px 8px
         @media (min-width: 1440px)
           padding: 20px
-
+        .im_logo_game
+          max-width: 60px
+          overflow: hidden
+          max-width: 60px
+          @media (min-width: 640px) and (max-width: 768px)
+            max-width: 40px
+          @media (min-width: 992px)
+            max-width: 40px
+          @media (min-width: 1280px)
+            max-width: 60px
         h2
           color: #FFF
           font-weight: 700
@@ -181,13 +197,16 @@
             .user
               display: flex
               align-items: center
-              img
+              .avt
+                max-width: 25px
+                overflow: hidden
+                border-radius: 100%
                 @media (min-width: 0px)
-                  padding: 0px 4px 0px 8px
+                  margin: 0px 4px 0px 8px
                 @media (min-width: 992px)
-                  padding: 0px 4px
+                  margin: 0px 4px
                 @media (min-width: 1440px)
-                  padding: 0px 4px 0px 8px
+                  margin: 0px 4px 0px 8px
               a
                 color: #FFF
                 text-decoration: revert
@@ -214,6 +233,8 @@
             padding-top: 8px
           @media (min-width: 1440px)
             padding-top: 28px
+          .ic_ntf
+            max-width: 20px
         .ntf > div
           display: flex
           align-items: center
@@ -221,6 +242,7 @@
             color: #0BEBD6
             font-weight: 700
             line-height: 115%
+            margin-left: 4px
             @media (min-width: 0px)
               font-size: 16px
             @media (min-width: 640px)
@@ -262,3 +284,33 @@
       mask-composite: exclude
 
 
+.btn_load
+  display: flex
+  align-items: center
+  justify-content: center
+  position: relative
+  button
+    border: none
+    background: linear-gradient(111.41deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.12) 100%)
+    border-radius: 100%
+    height: 60px
+    width: 60px
+    backdrop-filter: blur(12px)
+    color: #0bebd6
+    font-weight: 700
+  button:active,
+  button:focus
+    background: linear-gradient(111.41deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.12) 100%)
+    color: #0bebd6
+    
+.btn_load::before
+  content: ''
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  height: 100px
+  width: 100px
+  background: linear-gradient(226.29deg, rgba(59, 226, 205, 0.7) -0.17%, rgba(51, 175, 212, 0.7) 93.89%)
+  border-radius: 100%
+  filter: blur(40px)

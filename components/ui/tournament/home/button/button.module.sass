@@ -1,6 +1,10 @@
 .container
   display: flex
   align-items: center
+  position: relative
+  @media (max-width: 991px)
+    flex-direction: column
+    align-items: flex-start
   .item
     color: #FFF
     font-weight: 400
@@ -9,12 +13,19 @@
     margin: 38px 0px
     display: flex
     align-items: center
+    @media (max-width: 991px)
+      margin: 12px 0px
   .item > div
-    padding-right: 20px
+    @media (min-width: 992px)
+      padding-right: 0px
+    @media (min-width: 1280px)
+      padding-right: 20px
     img
       padding-right: 12px
+      @media (max-width: 413px)
+        padding-right: 0px
   :global(.ant-select)
-    margin: 0px 12px
+    margin: 8px 12px
   :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
     background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)

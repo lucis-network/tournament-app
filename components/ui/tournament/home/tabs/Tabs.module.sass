@@ -4,7 +4,11 @@
   background-size: cover
   background-position: top left 
   min-height: 100vh
-  margin-top: -90px
+  margin-top: -230px
+  .top_tab
+    justify-content: space-between
+    @media ( min-width: 1024px )
+      flex-wrap: nowrap
   .tabs
     display: flex
     align-items: center 
@@ -13,8 +17,6 @@
     padding-bottom: 40px
     cursor: pointer
     .tab_item
-      margin-right: 40px
-      font-size: 20px
       font-weight: 300
       transition: 0.1s
       background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
@@ -22,10 +24,24 @@
       transition: 0.2s
       box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
       border-radius: 4px
+      @media ( min-width: 0px )
+        margin-right: 8px
+        font-size: 14px
+      @media ( min-width: 414px )
+        margin-right: 20px
+        font-size: 16px
+      @media ( min-width: 1440px )
+        margin-right: 40px
+        font-size: 20px
     .active
       font-weight: 700
       backdrop-filter: blur(12px)
       position: relative 
+      .ic_tab
+        position: absolute
+        top: 0
+        right: 0
+        line-height: 0
     .active::before
       content: ''
       position: absolute
