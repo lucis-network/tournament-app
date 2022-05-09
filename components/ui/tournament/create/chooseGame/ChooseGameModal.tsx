@@ -70,11 +70,7 @@ export default observer(function ChooseGameModal(props: Props) {
 			onCancel={handleCancel}
 			className={`${s.container}`}
 		>
-			<Input
-				placeholder="Search by name"
-				onChange={onSearch}
-				ref={inputRef}
-			></Input>
+			<Input placeholder="Search by name" onChange={onSearch} ref={inputRef} />
 			<div className="mt-15px">
 				<Radio.Group
 					onChange={onChange}

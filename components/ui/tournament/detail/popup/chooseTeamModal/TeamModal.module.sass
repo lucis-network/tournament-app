@@ -1,8 +1,83 @@
 .mdl
   :global(.ant-modal-content)
-    max-width: 372px
     margin: 0 auto
-    @media (min-width: 1024px)
-      max-width: 560px
   :global(.anticon )
     color: #CD28E8
+  .button
+    display: flex
+    align-items: center
+    justify-content: center
+    background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+    padding: 4px 16px
+    border-radius: 4px
+    margin-bottom: 8px
+    color: #FFF
+    width: 100%
+    &:disabled
+      background: gray
+      opacity: 0.7
+    span
+      color: #FFF
+    img
+      padding-right: 4px
+  .button_select
+    display: flex
+    align-items: center
+    justify-content: center
+    background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+    padding: 4px 16px
+    border-radius: 4px
+    margin-top: auto
+    margin-bottom: 8px
+    color: #FFF
+    width: 100%
+    &:disabled
+      background: gray
+      opacity: 0.7
+    span
+      color: #FFF
+    img
+      padding-right: 4px
+  .table
+    :global(.ant-table-bordered)
+      background-color: #9854fe33
+      color: white
+    :global(.editable-row)
+      &:hover > td
+        background: none
+  .prize_input
+    :global(.ant-input-number-group-addon)
+      background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+      border: none
+      border-radius: 8px 0 0 8px
+      color: white
+    :global(.ant-input-number)
+      background: linear-gradient( 152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100% ) !important
+      -webkit-backdrop-filter: blur(42px)
+      backdrop-filter: blur(42px)
+      transition: 0.3s
+      border: 1px solid #d9d9d933
+      border-radius: 0 8px 8px 0px !important
+      color: #fff
+      padding: 4px 0px
+      overflow: hidden
+  .password_input
+    padding: 4px 12px
+    height: 40px
+    border-radius: 8px
+    :global(.ant-input)
+      color: rgba(0, 0, 0, 0.85) !important
+  .checkbox
+    :global(.ant-checkbox-wrapper)
+      &:first-child
+        display: none
+    :global(.ant-checkbox-group-item)
+      display: block
+      display: flex
+      font-size: 20px
+      color: white
+    :global(.ant-checkbox-inner)
+      width: 20px
+      height: 20px
+      &::after
+        left: 24%

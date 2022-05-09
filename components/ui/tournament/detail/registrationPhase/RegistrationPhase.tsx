@@ -11,15 +11,19 @@ import ConnectWalletStore from "components/Auth/ConnectWalletStore";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import { BUSD } from "utils/Enum";
 import EthersService from "../../../../../services/blockchain/Ethers";
+import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 
 type Props = {
+  joinTournament: any;
   participants: number;
   brackets: any;
   sponsorSlot: SponsorTierType[];
   pool_size: number;
   currency: any;
+  tournament: any;
   totalDonation?: any;
   totalPrizePool?: any;
+  tournamentId?: string;
 };
 
 export default observer(function RegistrationPhase(props: Props) {
@@ -30,8 +34,14 @@ export default observer(function RegistrationPhase(props: Props) {
     totalDonation,
     totalPrizePool,
   } = props;
-  const { show, step, handleOpenModal, stepConfiguration } =
-    useTeamModal(props);
+
+  const {
+    show,
+    step,
+    handleOpenModal,
+    handleCloseModal,
+    stepConfiguration,
+  } = useTeamModal(props);
 
   const claimTokenDonation = async () => {
     TournamentStore.claimDonationModalVisible = true;
@@ -106,12 +116,12 @@ export default observer(function RegistrationPhase(props: Props) {
             <span>Thetan NFTs: HeroX, Guitar</span>
             <span>1000 USDT token</span>
           </div>
-          {/* <div className={s.join}>
+          <div className={s.join}>
             <Button onClick={handleOpenModal}>Join tournament</Button>
             <p>Registration ends in 5H 45M 30S</p>
-          </div> */}
+          </div>
           {/* ===== donation ===== */}
-          <div className={s.join}>
+          {/* <div className={s.join}>
             <p>YOUR REWARDS</p>
             <div className={s.rewards}>
               <div>
@@ -132,7 +142,7 @@ export default observer(function RegistrationPhase(props: Props) {
               </div>
             </div>
             <Button>Share my victory</Button>
-          </div>
+          </div> */}
         </div>
       </div>
 
@@ -140,6 +150,7 @@ export default observer(function RegistrationPhase(props: Props) {
         step={step}
         show={show}
         stepConfiguration={stepConfiguration}
+        onCancel={handleCloseModal}
       />
     </>
   );

@@ -2,7 +2,6 @@ import s from "./TournamentDetail.module.sass";
 import { Button, Col, Row, Tabs } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import {
-  useGetAllTournament,
   useTournamentDetail,
 } from "hooks/tournament/useTournamentDetail";
 import Router, { useRouter } from "next/router";
@@ -57,6 +56,7 @@ const TournamentDetail = () => {
     loadingReferees,
     loadingPrizing,
     loadingBracket,
+    joinTournament,
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId as string,
@@ -172,6 +172,9 @@ const TournamentDetail = () => {
             currency={currency}
             totalDonation={totalDonation}
             totalPrizePool={totalPrizePool}
+            joinTournament={joinTournament}
+            tournament={dataTournamentDetail}
+            tournamentId={tournamentId as string}
           />
         </div>
         {/* ===== sponsor ===== */}

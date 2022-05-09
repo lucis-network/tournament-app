@@ -1,4 +1,10 @@
-import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
+import {
+  ApolloError,
+  ApolloQueryResult,
+  gql,
+  useMutation,
+  useQuery,
+} from "@apollo/client";
 import { SponsorSlot } from "src/generated/graphql";
 
 type Props = {
@@ -49,6 +55,8 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "cache-and-network",
   });
 
+  const [joinTournament] = useMutation(JOIN_TOURNAMENT);
+
   return {
     loading,
     loadingParticipant,
@@ -67,6 +75,8 @@ export function useTournamentDetail(props: Props) {
     dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
     dataPrizing: dataPrizing?.getTournamentPrizing,
     dataBracket: dataBracket?.getBracket,
+
+    joinTournament,
   };
 }
 
@@ -109,19 +119,6 @@ export function useClaimReward(props: Props) {
     loading,
     error,
     data: data?.getTournamentReward,
-  };
-}
-
-export function useGetAllTournament(props: Props) {
-  const { loading, error, data } = useQuery(GET_ALL_TOURNAMENT, {
-    variables: {},
-    fetchPolicy: "cache-and-network",
-  });
-
-  return {
-    loading,
-    error,
-    data: data?.getAllTournament,
   };
 }
 
@@ -217,12 +214,7 @@ const GET_BRACKET = gql`
       type
       start_at
       status
-      bracketTeams {
-        uid
-        team {
-          name
-        }
-      }
+
       bracketRounds {
         type
         title
@@ -266,11 +258,8 @@ const CLAIM_REWARD = gql`
   }
 `;
 
-const GET_ALL_TOURNAMENT = gql`
-  query {
-    getAllTournament {
-      uid
-      name
-    }
+const JOIN_TOURNAMENT = gql`
+  mutation joinTournament($data: GBracketTeamInput!) {
+    joinTournament(data: $data)
   }
 `;

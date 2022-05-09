@@ -20,7 +20,7 @@ interface CreateTeamModalType {
 	onAddOpen: (team_uid: string, isSaveDraft?: boolean) => void;
 	onOpenRemove: (
 		team_uid: string,
-		user_id: Number,
+		user_id: number,
 		status: "remove" | "delete" | "leave",
 		isSaveDraft?: boolean
 	) => void;
@@ -66,7 +66,6 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
 							value={draftData?.team_name}
 							placeholder="Enter name"
 							onChange={onChangeTeamName}
-							onError={(e) => console.log(e)}
 						/>
 						{!isEmpty(error["team_name"]) && (
 							<p className="text-[12px] text-emerald-2 mt-1">
