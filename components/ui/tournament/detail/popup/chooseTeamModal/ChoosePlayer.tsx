@@ -31,7 +31,7 @@ const ChoosePlayer: React.FC<ChoosePlayerProps> = ({
 			return {
 				label: opt.display_name,
 				value: opt.user_id,
-				disabled: values.length >= teamSize && checkUnvalidKey,
+				disabled: values.length + 1 >= teamSize && checkUnvalidKey,
 			};
 		});
 

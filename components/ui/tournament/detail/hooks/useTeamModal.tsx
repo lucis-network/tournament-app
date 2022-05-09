@@ -104,7 +104,7 @@ const UseTeamModal = (tournamentData: any) => {
 
 	const handleSelectTeam = (team: MyTeamType) => {
 		setStep("step-2");
-		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team?.team, true) });
+		setSelectedTeam({ ...team!, team: dataTeam(team?.team, true) });
 		setDraftSelectedTeam(team);
 	};
 

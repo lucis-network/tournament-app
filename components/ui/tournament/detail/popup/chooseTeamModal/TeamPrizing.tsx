@@ -51,7 +51,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	const [form] = Form.useForm();
 	const [editingKey, setEditingKey] = useState("");
 	const isEditing = (record: Item) => String(record.user_id) === editingKey;
-	const errMessage = error?.prize || error?.user || error?.size;
+	const errMessage = error?.size || error?.user || error?.prize;
 	const [editInputKey, setEditInputKey] = useState<"number" | "text">();
 	const handleEdit = (record: Partial<Item>, type: "number" | "text") => {
 		form.setFieldsValue({ prize: 0, game_member_id: "", ...record });
