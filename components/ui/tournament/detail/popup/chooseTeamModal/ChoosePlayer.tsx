@@ -3,7 +3,6 @@ import { Checkbox } from "antd";
 import { TeamType } from "../../hooks/useCreateNewTeam";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import s from "./TeamModal.module.sass";
-import { isEmpty } from "lodash";
 
 interface ChoosePlayerProps {
 	draftTeam: TeamType[];
@@ -37,14 +36,12 @@ const ChoosePlayer: React.FC<ChoosePlayerProps> = ({
 		});
 
 		setValues(values);
-		setDraftData(updateSelectedTeam(values));
+		setDraftData([draftData[0], ...updateSelectedTeam(values)]);
 		setOptions(optionConvert);
 	};
 
 	const handleConfirm = () => {
-		onConfirm(
-			isEmpty(values) ? draftData.slice(0, -(draftData.length - 1)) : draftData
-		);
+		onConfirm(draftData);
 	};
 
 	useEffect(() => {
