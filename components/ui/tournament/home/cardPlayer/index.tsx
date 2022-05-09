@@ -3,13 +3,15 @@ import GradientLinkButton from "components/ui/common/button/GradientButton";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import { Button } from "antd";
 import { useState } from "react";
+import { TournamentGql } from "src/generated/graphql";
 
 type Props = {
-  data: any;
+  data: TournamentGql[];
+  loading: any;
 };
 
 export default function CardPlayer(props: Props) {
-  const { data } = props;
+  const { data, loading } = props;
   const [isPopUp, setIsPopUp] = useState(false);
   const [newData, setNewData] = useState({});
 

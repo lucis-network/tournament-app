@@ -18,7 +18,7 @@ const PopupDonate = (props: Props) => {
 
   const handleBlur = () => {
     if (values === "") {
-      setTitleMessage("Chưa nhập money kìa mài");
+      setTitleMessage("Amount is required");
     }
   };
   const handleChange = (e: any) => {
@@ -27,7 +27,7 @@ const PopupDonate = (props: Props) => {
     if ((!isNaN(value) && reg.test(value)) || value === "" || value === "-") {
       setValues(value);
       if (value <= 0) {
-        setTitleMessage("sao ít vậy mày");
+        setTitleMessage("Amount must be greater than 0");
       } else if (value !== "") {
         setTitleMessage("");
       }
@@ -74,7 +74,7 @@ const PopupDonate = (props: Props) => {
               onBlur={handleBlur}
               value={values}
               onChange={handleChange}
-              placeholder="Amount"
+              placeholder="Enter amount"
             />
           </Col>
         </Row>
@@ -92,8 +92,8 @@ const PopupDonate = (props: Props) => {
           <Col span={13}>
             <TextArea
               showCount
-              maxLength={100}
-              placeholder="Enter Message"
+              maxLength={125}
+              placeholder="Enter message"
               className={s.editable}
             />
           </Col>

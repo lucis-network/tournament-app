@@ -1,5 +1,6 @@
 import s from "./Player.module.sass";
 import CardPlayer from "../cardPlayer";
+import { Button } from "antd";
 type Props = {};
 
 const listData = [
@@ -15,6 +16,9 @@ export default function PlayerHome() {
         <h1>PLAYER OF THE MONTH</h1>
         <div className={s.block_card}>
           <CardPlayer data={listData} />
+        </div>
+        <div className={s.btn_see_all}>
+          <Button type="primary">See All</Button>
         </div>
       </div>
     </div>
