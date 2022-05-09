@@ -11,6 +11,7 @@ import {
 } from "./../myTeamService";
 import { useMutation, useQuery } from "@apollo/client";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
 	user_name: string;
@@ -24,7 +25,7 @@ export interface MyTeamType {
 	team_name: string;
 	team_avatar: string;
 	participant: number;
-	team?: TeamType[];
+	team?: Item[];
 }
 
 const UseControlTeam = () => {
