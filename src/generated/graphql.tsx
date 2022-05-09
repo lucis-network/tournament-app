@@ -1129,12 +1129,12 @@ export type GTournament = {
 
 export type GTournamentRank = {
   __typename?: 'GTournamentRank';
+  bracket_team_uid?: Maybe<Scalars['String']>;
   lose?: Maybe<Scalars['Int']>;
   rank: Scalars['Int'];
   round?: Maybe<Scalars['String']>;
   team_avatar?: Maybe<Scalars['String']>;
   team_name?: Maybe<Scalars['String']>;
-  team_uid: Scalars['String'];
   win?: Maybe<Scalars['Int']>;
 };
 
@@ -1412,10 +1412,11 @@ export type Player = {
 
 export type Prize = {
   __typename?: 'Prize';
+  currency?: Maybe<Currency>;
   percentage?: Maybe<Scalars['Float']>;
   position?: Maybe<Scalars['Int']>;
   quantity?: Maybe<Scalars['Int']>;
-  reward?: Maybe<Scalars['String']>;
+  reward?: Maybe<Scalars['Float']>;
 };
 
 export type PrizeAllocation = {
@@ -1740,6 +1741,7 @@ export type Region = {
 export type Reward = {
   __typename?: 'Reward';
   amount?: Maybe<Scalars['Float']>;
+  is_claim?: Maybe<Scalars['Boolean']>;
   rank?: Maybe<Scalars['Int']>;
   reward_type?: Maybe<Scalars['String']>;
   symbol?: Maybe<Scalars['String']>;
@@ -2014,9 +2016,7 @@ export type TTournament = {
   additionPrize: Scalars['Decimal'];
   brackets?: Maybe<Array<Bracket>>;
   cache_tournament?: Maybe<CacheTournament>;
-  claim_donate_for_tournament_status?: Maybe<PrizeClaimStatus>;
-  claim_donate_for_you_status?: Maybe<PrizeClaimStatus>;
-  claim_donate_for_yourteam_status?: Maybe<PrizeClaimStatus>;
+  claim_donate?: Maybe<PrizeClaimStatus>;
   claim_prize_pool_status?: Maybe<PrizeClaimStatus>;
   claim_prize_system_status?: Maybe<PrizeClaimStatus>;
   claim_transactions?: Maybe<Array<ClaimTransactions>>;
@@ -2779,7 +2779,7 @@ export type TournamentLeaderBoard = {
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   total_donation?: Maybe<Scalars['Decimal']>;
-  total_eaning?: Maybe<Scalars['Decimal']>;
+  total_earning?: Maybe<Scalars['Decimal']>;
   total_prize?: Maybe<Scalars['Decimal']>;
   tournament: Tournament;
   tournament_uid: Scalars['String'];
@@ -2792,7 +2792,7 @@ export type TournamentLeaderBoardCreateManyTournamentInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   total_donation?: InputMaybe<Scalars['Decimal']>;
-  total_eaning?: InputMaybe<Scalars['Decimal']>;
+  total_earning?: InputMaybe<Scalars['Decimal']>;
   total_prize?: InputMaybe<Scalars['Decimal']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user_id: Scalars['Int'];
@@ -2807,7 +2807,7 @@ export type TournamentLeaderBoardCreateManyUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   total_donation?: InputMaybe<Scalars['Decimal']>;
-  total_eaning?: InputMaybe<Scalars['Decimal']>;
+  total_earning?: InputMaybe<Scalars['Decimal']>;
   total_prize?: InputMaybe<Scalars['Decimal']>;
   tournament_uid: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2845,7 +2845,7 @@ export type TournamentLeaderBoardCreateOrConnectWithoutUserInput = {
 export type TournamentLeaderBoardCreateWithoutTournamentInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   total_donation?: InputMaybe<Scalars['Decimal']>;
-  total_eaning?: InputMaybe<Scalars['Decimal']>;
+  total_earning?: InputMaybe<Scalars['Decimal']>;
   total_prize?: InputMaybe<Scalars['Decimal']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user?: InputMaybe<UserCreateNestedOneWithoutLeader_BoardInput>;
@@ -2854,7 +2854,7 @@ export type TournamentLeaderBoardCreateWithoutTournamentInput = {
 export type TournamentLeaderBoardCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   total_donation?: InputMaybe<Scalars['Decimal']>;
-  total_eaning?: InputMaybe<Scalars['Decimal']>;
+  total_earning?: InputMaybe<Scalars['Decimal']>;
   total_prize?: InputMaybe<Scalars['Decimal']>;
   tournament: TournamentCreateNestedOneWithoutLeader_BoardInput;
   updated_at?: InputMaybe<Scalars['DateTime']>;

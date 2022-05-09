@@ -12,7 +12,7 @@ interface TeamModalProps {
 	stepConfiguration: (
 		step: StepModalTournament
 	) => StepModalComponent | ReactElement;
-	onCancel: () => void;
+	onCancel?: () => void;
 }
 
 const ChooseTeamModal: React.FC<TeamModalProps> = ({
