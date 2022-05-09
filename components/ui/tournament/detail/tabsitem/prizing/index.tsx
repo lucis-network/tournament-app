@@ -6,14 +6,17 @@ import s from "./Prizing.module.sass";
 type Props = {
   dataPrizing: Prize[];
   loadingPrizing: any;
+  currency: any
 };
 
 export default function Prizing(props: Props) {
-  const { dataPrizing, loadingPrizing } = props;
+  const { dataPrizing, loadingPrizing, currency } = props;
   if (loadingPrizing) {
     return <></>;
   }
 
+  console.log("dataPrizing", dataPrizing);
+  
   const columnsPrize = [
     {
       title: "Place",
@@ -39,7 +42,7 @@ export default function Prizing(props: Props) {
       key: "thirdPrize",
       width: "35%",
       render: (_: any, item: any) => {
-        return <>{item.reward}</>;
+        return <>{item.reward} {currency.symbol}</>;
       },
     },
   ];

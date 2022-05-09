@@ -2,10 +2,15 @@ import { observer } from "mobx-react-lite";
 import { Button, Modal } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
+import { fomatNumber } from "utils/Number";
 
-type Props = {};
+type Props = {
+  totalPrizePool: number;
+  currency?: any;
+};
 
 export default observer(function ClaimResultModal(props: Props) {
+  const { totalPrizePool, currency } = props;
   const isModalVisible = TournamentStore.claimResultModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimResultModalVisible = v);
@@ -26,12 +31,13 @@ export default observer(function ClaimResultModal(props: Props) {
         onOk={handleOk}
         //className={`${s.container}`}
         onCancel={handleCancel}
+        footer={null}
       >
         <div className={`${s.container}`}>
           <p>Claim success</p>
-          <p>1234 USDT</p>
+          <p>{fomatNumber(totalPrizePool)} {currency.symbol}</p>
           <div>
-            You&apos;ve got a THIRD PRIZE <br />
+            You&apos;ve got a THIRD PRIZE <br/>
             from Thetan + Lucis Mid Summer Tournament
           </div>
           <Button>Share my victory</Button>

@@ -431,7 +431,7 @@ export default observer(function Prizing(props: Props) {
               {getDataCurrencies?.map((item: any, index: number) => {
                 return (
                   <Option value={item.uid} key={index}>
-                    {item.name}
+                    {item.symbol}
                   </Option>
                 );
               })}

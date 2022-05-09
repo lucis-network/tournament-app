@@ -1,25 +1,35 @@
 import { observer } from "mobx-react-lite";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
 import ChooseTeamModal from "../popup/chooseTeamModal";
 import useTeamModal from "../hooks/useTeamModal";
 import { fomatNumber } from "utils/Number";
+import AuthBoxStore from "components/Auth/components/AuthBoxStore";
+import ConnectWalletStore from "components/Auth/ConnectWalletStore";
+import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
+import { BUSD } from "utils/Enum";
+import EthersService from "../../../../../services/blockchain/Ethers";
 
 type Props = {
   participants: number;
   brackets: any;
   sponsorSlot: SponsorTierType[];
   pool_size: number;
-  currency_uid: any;
+  currency: any;
   totalDonation?: any;
   totalPrizePool?: any;
 };
 
 export default observer(function RegistrationPhase(props: Props) {
-  const { participants, brackets, currency_uid, totalDonation, totalPrizePool } =
-    props;
+  const {
+    participants,
+    brackets,
+    currency,
+    totalDonation,
+    totalPrizePool,
+  } = props;
   const { show, step, handleOpenModal, stepConfiguration } =
     useTeamModal(props);
 
@@ -28,7 +38,33 @@ export default observer(function RegistrationPhase(props: Props) {
   };
 
   const claimToken = async () => {
-    TournamentStore.claimResultModalVisible = true;
+    if (!ConnectWalletStore.address) {
+      AuthBoxStore.connectModalVisible = true;
+    } else {
+      let result = await claim();
+      if (!result?.error) {
+        TournamentStore.claimResultModalVisible = true;
+      } else {
+        //@ts-ignore
+        message.error(result?.error?.message);
+      }
+    }
+  };
+
+  const claim = async () => {
+    if (ConnectWalletStore_NonReactiveData.web3Provider) {
+      //throw makeError("Need to connect your wallet first");
+      const ethersService = new EthersService(
+        ConnectWalletStore_NonReactiveData.web3Provider
+      );
+
+      const txHash = await ethersService.transferFT(
+        "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
+        BUSD,
+        1
+      );
+      return txHash;
+    }
   };
 
   return (
@@ -41,13 +77,17 @@ export default observer(function RegistrationPhase(props: Props) {
           <div className={s.prizes}>
             <div className={s.items}>
               <img src="/assets/avatar.jpg" alt="" width={50} />
-              <span>{fomatNumber(totalPrizePool)} {currency_uid}</span>
+              <span>
+                {fomatNumber(totalPrizePool)} {currency.symbol}
+              </span>
               <span>Prize pool</span>
             </div>
           </div>
           <div className={s.items}>
             <img src="/assets/avatar.jpg" alt="" width={50} />
-            <span>{fomatNumber(totalDonation)} {currency_uid}</span>
+            <span>
+              {fomatNumber(totalDonation)} {currency.symbol}
+            </span>
             <span>Total donation</span>
             <Button>Donation</Button>
           </div>
@@ -76,14 +116,18 @@ export default observer(function RegistrationPhase(props: Props) {
             <div className={s.rewards}>
               <div>
                 <div>Prize</div>
-                <p>{fomatNumber(totalPrizePool)} {currency_uid}</p>
+                <p>
+                  {fomatNumber(totalPrizePool)} {currency.symbol}
+                </p>
                 <Button onClick={claimToken}>Claim</Button>
-                <p>{fomatNumber(totalDonation)} LUCIS</p>
+                <p>{fomatNumber(totalPrizePool)} LUCIS</p>
                 <Button onClick={claimToken}>Claim</Button>
               </div>
               <div>
                 <p>From Donation</p>
-                <p>{fomatNumber(totalDonation)} {currency_uid}</p>
+                <p>
+                  {fomatNumber(totalDonation)} {currency.symbol}
+                </p>
                 <Button onClick={claimTokenDonation}>Claim</Button>
               </div>
             </div>

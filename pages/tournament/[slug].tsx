@@ -97,11 +97,8 @@ const TournamentDetail = () => {
     thumbnail,
     totalDonation,
     totalPrizePool,
+    currency,
   } = dataTournamentDetail;
-
-  // useEffect(() => {
-  //   console.log("game", game);
-  // });
 
   return (
     <>
@@ -172,7 +169,7 @@ const TournamentDetail = () => {
             brackets={dataBracket}
             sponsorSlot={sponsorSlot}
             pool_size={pool_size}
-            currency_uid={currency_uid}
+            currency={currency}
             totalDonation={totalDonation}
             totalPrizePool={totalPrizePool}
           />
@@ -214,6 +211,7 @@ const TournamentDetail = () => {
               <Prizing
                 dataPrizing={dataPrizing}
                 loadingPrizing={loadingPrizing}
+                currency={currency}
               />
             </TabPane>
           </Tabs>
@@ -231,9 +229,9 @@ const TournamentDetail = () => {
           status={isPopupShare}
         />
 
-        <ClaimDonationModal />
+        <ClaimDonationModal tournamentId={tournamentId as string} />
         <ConnectWalletModal />
-        <ClaimResultModal />
+        <ClaimResultModal totalPrizePool={totalPrizePool} currency={currency} />
       </div>
     </>
   );

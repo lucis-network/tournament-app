@@ -160,8 +160,8 @@ export default observer(function CreateTournament(props: Props) {
         TournamentStore.name ||
         TournamentStore.cover ||
         TournamentStore.thumbnail ||
-        TournamentStore.desc ||
-        TournamentStore.rules ||
+        // TournamentStore.desc ||
+        //TournamentStore.rules ||
         //TournamentStore.bracket_type ||
         TournamentStore.team_size
         // TournamentStore.sponsor_slots
@@ -407,7 +407,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="cover"
                   url={TournamentStore?.cover}
                 ></UploadImage>
-                <p>Recommended size: 1200x300</p>
+                <p>Recommended size: 1200x400</p>
                 <div className={s.message_error}>{messageErrorCover}</div>
               </Col>
               <Col span={4} className="text-center">
@@ -421,7 +421,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="thumbnail"
                   url={TournamentStore?.thumbnail}
                 ></UploadImage>
-                <p>Recommended size: 300x200</p>
+                <p>Recommended size: 400x300</p>
                 <div className={s.message_error}>{messageErrorThumbnail}</div>
               </Col>
             </Row>

@@ -100,6 +100,8 @@ const CURRENCIES = gql`
       uid
       chain_symbol
       name
+      symbol
+      address
     }
   }
 `;

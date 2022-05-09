@@ -154,6 +154,10 @@ const GET_TOURNAMENT_DETAIL = gql`
       currency_uid
       totalDonation
       totalPrizePool
+      currency {
+        symbol
+        chain_symbol
+      }
     }
   }
 `;
@@ -257,8 +261,7 @@ const CLAIM_REWARD = gql`
       reward_type
       rank
       amount
-      chain_symbol
-      is_claim
+      symbol
     }
   }
 `;

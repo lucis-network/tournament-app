@@ -5,12 +5,13 @@ type Props = {
 }
 const Banner = (props: Props) => {
   const {cover} = props
-  console.log(cover);
+
   return (
     <div className={s.banner}>
       <div
         className={s.im_cover}
-        style={{ backgroundImage: `url(${cover})` }}
+        style={{ backgroundImage: `url(${cover})`}}
+        
       ></div>
     </div>
   );

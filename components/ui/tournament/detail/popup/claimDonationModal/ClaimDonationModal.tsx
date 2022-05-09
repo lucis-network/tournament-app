@@ -4,27 +4,24 @@ import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { useEffect, useState } from "react";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import { BUSD } from "utils/Enum";
-import GroupLink from "components/ui/common/groupLink";
 import EthersService from "../../../../../../services/blockchain/Ethers";
 import { useClaimReward } from "hooks/tournament/useTournamentDetail";
 
-type Props = {};
+type Props = {
+  tournamentId?: string;
+};
 
 export default observer(function ClaimDonationModal(props: Props) {
+  const { tournamentId } = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
 
   const { data } = useClaimReward({
-    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
+    tournament_uid: tournamentId,
   });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -81,7 +78,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {item.amount} {item.chain_symbol}
+            {item.amount} {item.symbol}
           </>
         );
       },
@@ -114,7 +111,7 @@ export default observer(function ClaimDonationModal(props: Props) {
           dataSource={data}
           columns={columns}
           bordered
-          rowKey={(record, index) => `${index}`}
+          rowKey={(record) => `${record?.reward_type}`}
           className={s.container_table}
         />
       </Modal>
