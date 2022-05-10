@@ -152,7 +152,7 @@ const GET_TOURNAMENT_DETAIL = gql`
       currency_uid
       totalDonation
       totalPrizePool
-      regions
+      region
       currency {
         symbol
         chain_symbol
