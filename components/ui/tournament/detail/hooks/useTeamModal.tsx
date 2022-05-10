@@ -268,7 +268,11 @@ const UseTeamModal = (tournamentData: any) => {
 				component: (
 					<div>
 						<div className="flex align-top justify-between w-full mb-4">
-							<p>Team you&apos;ve lead:</p>
+							<p>
+								{teamList?.length > 0
+									? "Team you&apos;ve lead:"
+									: "You are not the leader of any team"}
+							</p>
 							<div>
 								<button
 									className={s.button}

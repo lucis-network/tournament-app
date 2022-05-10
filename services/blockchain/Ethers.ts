@@ -288,7 +288,7 @@ export default class EtherContract {
       error: null,
     };
     try {
-      const contract = await this.getContractWithLPrize(contractAddress);
+      const contract = await this.getContractWithLDonation(contractAddress);
       //const decimal = await contract.decimals();
 
       console.log("contract", contract);

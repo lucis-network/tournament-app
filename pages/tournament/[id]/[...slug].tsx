@@ -18,29 +18,16 @@ import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/Tou
 import ClaimDonationModal from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
+import { isClientDevMode } from "../../../utils/Env";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
 
-const TournamentDetail = () => {
+const TournamentDetail = (props: { tournamentId: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
-  const router = useRouter();
-
-  const tournamentId = useMemo(() => {
-    const { id, slug } = router.query;
-    if (id) {
-      return id;
-    }
-    if (isClient) {
-      const paths = router.asPath.split("/").filter((item) => item !== "");
-      if (paths.length > 1) {
-        return paths[1];
-      }
-    }
-    return "";
-  }, [router]);
+  const {tournamentId} = props
 
   const {
     dataTournamentDetail,
@@ -57,11 +44,12 @@ const TournamentDetail = () => {
     joinTournament,
   } = useTournamentDetail({
     // Change to tournamentUid after
-    tournament_uid: tournamentId as string,
+    tournament_uid: tournamentId,
   });
 
+
   if (loading) {
-    return "";
+    return null;
   }
 
   const openModal = (item: string) => {
@@ -252,7 +240,7 @@ const TournamentDetail = () => {
         <PopupDonate
           closeModal={() => closeModal("Donate")}
           status={isPopupDonate}
-          tournamentId={tournamentId as string}
+          tournamentId={tournamentId}
           currency={currency}
           types={"TOURNAMENT"}
           name={name}
@@ -270,4 +258,15 @@ const TournamentDetail = () => {
   );
 };
 
-export default TournamentDetail;
+export default function TournamentDetailSafe() {
+  const router = useRouter();
+  const {id} = router.query;
+
+  if (!id) {
+    if (isClientDevMode) {
+      console.warn('{TournamentDetail} Hey tournamentId is NULL');
+    }
+  }
+
+  return id ? <TournamentDetail tournamentId={id as string} /> : null;
+};
