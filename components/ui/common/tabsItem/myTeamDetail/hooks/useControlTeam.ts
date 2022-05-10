@@ -55,13 +55,16 @@ const UseControlTeam = () => {
 			},
 		});
 
-	const [searchTeam, { data: rawSearchTeam, loading: teamLoading }] =
-		useLazyQuery(SEARCH_TEAM, {
-			variables: {
-				name: "",
-				user_id: profile?.user_id,
-			},
-		});
+	const {
+		data: rawSearchTeam,
+		loading: teamLoading,
+		refetch: searchTeam,
+	} = useQuery(SEARCH_TEAM, {
+		variables: {
+			name: "",
+			user_id: profile?.user_id,
+		},
+	});
 
 	const [createTeam] = useMutation(CREATE_TEAM);
 	const [deleteTeam] = useMutation(DELETE_TEAM);
@@ -158,10 +161,8 @@ const UseControlTeam = () => {
 		const searchValue = e.currentTarget.value;
 		setSearchValue(searchValue);
 		searchTeam({
-			variables: {
-				name: searchValue,
-				user_id: profile?.user_id,
-			},
+			name: searchValue,
+			user_id: profile?.user_id,
 		});
 	};
 
@@ -362,13 +363,6 @@ const UseControlTeam = () => {
 	}, [isSaveDraft]);
 
 	const loading = memberLoading && profileLoading && teamLoading;
-
-	useEffect(() => {
-		if (profile?.user_id) {
-			searchMember();
-			searchTeam();
-		}
-	}, [profile?.user_id, searchMember, searchTeam]);
 
 	return {
 		loading,

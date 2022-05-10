@@ -17,7 +17,6 @@ import UseCreateNewTeam, { TeamType } from "./useCreateNewTeam";
 import AddUserTeamModal from "components/ui/common/addUserTeamModal";
 import TeamPrizing from "../popup/chooseTeamModal/TeamPrizing";
 import ChoosePlayer from "../popup/chooseTeamModal/ChoosePlayer";
-import { isArray } from "lodash";
 import { checkEmptyArrayValue, checkTotalPercent, dataTeam } from "./helper";
 
 export interface Item extends TeamType {
@@ -34,7 +33,6 @@ const UseTeamModal = (tournamentData: any) => {
 	const user = getLocalAuthInfo();
 	const {
 		name,
-		game,
 		team_size,
 		password: tourPassword,
 	} = tournamentData?.tournament;
@@ -55,6 +53,8 @@ const UseTeamModal = (tournamentData: any) => {
 		memberList,
 		teamList,
 		searchMemberValue,
+		searchTeam,
+		searchMember,
 		handleAddMember,
 		handleChangeAvatar,
 		handleChangeTeamName,
@@ -132,6 +132,7 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleOpenAddMember = () => {
+		searchMember();
 		setStep("add-team");
 	};
 
@@ -223,8 +224,9 @@ const UseTeamModal = (tournamentData: any) => {
 
 	const handleOpenModal = useCallback(() => {
 		setShow(true);
+		searchTeam();
 		isSoloVersion && setStep("step-2");
-	}, [isSoloVersion]);
+	}, [isSoloVersion, searchTeam]);
 
 	useEffect(() => {
 		isSoloVersion &&
@@ -252,13 +254,13 @@ const UseTeamModal = (tournamentData: any) => {
 		const description1 = (
 			<p className="text-24px font-semibold text-white">
 				Select a valid team to join: <br />
-				{`${game?.name} + ${name}`}
+				{`${name}`}
 			</p>
 		);
 		const description2 = (
 			<p className="text-24px font-semibold text-white">
 				Configure your team Prize for this tournament: <br />
-				{`${game?.name} + ${name}`}
+				{`${name}`}
 			</p>
 		);
 		const stepModifier = {
@@ -270,7 +272,7 @@ const UseTeamModal = (tournamentData: any) => {
 						<div className="flex align-top justify-between w-full mb-4">
 							<p>
 								{teamList?.length > 0
-									? "Team you&apos;ve lead:"
+									? "Team you've lead:"
 									: "You are not the leader of any team"}
 							</p>
 							<div>
