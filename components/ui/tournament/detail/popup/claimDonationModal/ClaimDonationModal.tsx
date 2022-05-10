@@ -11,17 +11,18 @@ import { useClaimReward } from "hooks/tournament/useTournamentDetail";
 
 type Props = {
   tournamentId?: string;
+  dataDonation?: any;
 };
 
 export default observer(function ClaimDonationModal(props: Props) {
-  const { tournamentId } = props;
+  const { tournamentId, dataDonation } = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
 
-  const { data } = useClaimReward({
-    tournament_uid: tournamentId,
-  });
+  // const { data } = useClaimReward({
+  //   tournament_uid: tournamentId,
+  // });
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -108,7 +109,7 @@ export default observer(function ClaimDonationModal(props: Props) {
         onCancel={handleCancel}
       >
         <Table
-          dataSource={data}
+          dataSource={dataDonation}
           columns={columns}
           bordered
           rowKey={(record) => `${record?.reward_type}`}

@@ -334,7 +334,7 @@ export default observer(function CreateTournament(props: Props) {
     newData.forEach((item: { percent: any }, idx: number) => {
       total += item.percent;
     });
-    return total;
+    return Number.parseFloat(total.toFixed(2));
   };
 
   const scrollToTop = () => {
