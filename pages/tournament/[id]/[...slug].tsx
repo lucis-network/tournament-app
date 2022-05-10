@@ -5,7 +5,7 @@ import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import Router, { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { isClient } from "utils/DOM";
-import Bracket from "components/ui/tournament/detail/tabsitem/brackets";
+import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
 import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
@@ -195,7 +195,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
               <Rules rules={rules} />
             </TabPane>
             <TabPane tab="Bracket" key="3">
-              <Bracket
+              <Brackets
                 dataBracket={dataBracket}
                 loadingBracket={loadingBracket}
               />

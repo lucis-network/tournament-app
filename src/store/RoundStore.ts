@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { isClientDevMode } from "../../utils/Env";
 
 type Seed = {
   id: string | number;
@@ -66,4 +67,8 @@ class RoundStore {
 }
 
 const s = new RoundStore();
+if (isClientDevMode) {
+  // @ts-ignore
+  window.tmp__RoundStore = s;
+}
 export default s;

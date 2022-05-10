@@ -237,6 +237,13 @@ const GET_BRACKET = gql`
           score_2
         }
       }
+
+      bracketTeams {
+        team {
+          uid
+          name
+        }
+      }
     }
   }
 `;
