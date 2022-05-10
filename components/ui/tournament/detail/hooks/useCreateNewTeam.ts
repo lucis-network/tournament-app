@@ -1,6 +1,6 @@
 import {
 	CREATE_TEAM,
-	GET_MY_TEAM,
+	GET_USER_TEAMS,
 	SEARCH_MEMBER,
 } from "../../../common/tabsItem/myTeamDetail/myTeamService";
 import { useMutation, useLazyQuery, useQuery } from "@apollo/client";
@@ -41,7 +41,7 @@ const UseCreateNewTeam = (profile: any) => {
 		data: rawSearchTeam,
 		loading: teamLoading,
 		refetch,
-	} = useQuery(GET_MY_TEAM, {
+	} = useQuery(GET_USER_TEAMS, {
 		variables: {
 			user_id: profile?.user_id,
 		},
@@ -56,7 +56,7 @@ const UseCreateNewTeam = (profile: any) => {
 		},
 		[profile?.user_id] as string[]
 	);
-	const teamList = rawSearchTeam?.getMyTeam as MyTeamType[];
+	const teamList = rawSearchTeam?.getAllTeam as MyTeamType[];
 	const memberList = (rawSearchMember?.searchMember as TeamType[])?.filter(
 		(member) => !convertMemberId?.some((key: any) => key === member.user_id)
 	);

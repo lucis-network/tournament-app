@@ -101,11 +101,6 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
     // setMessageErrorChoosegame("");
   }
 
-  useEffect(() => {
-    console.log('getUserTeamsData?.getMyTeam: ', getUserTeamsData?.getAllTeam)
-  })
-
-
   return (
     <>
       <Row className={s.wrapper}>
