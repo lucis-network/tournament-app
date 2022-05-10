@@ -16,7 +16,7 @@ import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import { GetStaticPaths } from "next";
-import RoundStore from "src/store/RoundStore";
+import RoundStore from "src/store/SingleRoundStore";
 import ClaimDonationModal from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";

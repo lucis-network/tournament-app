@@ -14,7 +14,7 @@ import s from "./index.module.sass";
 import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
 import { useState } from "react";
 import SingleBracket from "./SingleBracket";
-import RoundStore from "src/store/RoundStore";
+import RoundStore from "src/store/SingleRoundStore";
 import FormItemLabel from "antd/lib/form/FormItemLabel";
 import { observer } from "mobx-react-lite";
 
@@ -98,10 +98,10 @@ const BracketUI = ({ dataBracket, loadingBracket }: RoundProps) => {
     listTeam,
   });
 
-  RoundStore.singleRounds = singleRounds;
-  RoundStore.loseRounds = lowerRounds;
-  RoundStore.winRounds = upperRounds;
-  RoundStore.finalRound = [...upperRounds].splice(upperRounds.length - 1, 1);
+  RoundStore.rounds = singleRounds;
+  // RoundStore.loseRounds = lowerRounds;
+  // RoundStore.winRounds = upperRounds;
+  // RoundStore.finalRound = [...upperRounds].splice(upperRounds.length - 1, 1);
 
   const doubleProps = {
     upper: upperRounds,
