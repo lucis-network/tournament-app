@@ -51,7 +51,7 @@ const PopupDonate = (props: Props) => {
     if ((!isNaN(value) && reg.test(value)) || value === "" || value === "-") {
       setValues(value);
       if (value <= 0) {
-        setTitleMessage("Amount must be > 0");
+        setTitleMessage(" Amount must be greater than 0");
       } else if (value !== "") {
         setTitleMessage("");
       }

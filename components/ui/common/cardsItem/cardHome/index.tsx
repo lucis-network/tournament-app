@@ -5,7 +5,7 @@ import { TournamentGql } from "src/generated/graphql";
 import s from "./CardHome.module.sass";
 
 type Props = {
-  datas?: TournamentGql[];
+  datas?: any;
   loading: boolean;
 };
 export default function CardHome(props: Props) {
@@ -20,34 +20,34 @@ export default function CardHome(props: Props) {
   }
   return (
     <>
-      <Row className={s.block_card} gutter={[15, 15]}>
+      <Row className={s.block_card} gutter={15}>
         {
           datas?.slice(0, isLoadMore).map((item: any) => {
             return (
-              <Col lg={6} className={s.wrapper} key={item?.uid}>
+              <Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>
                 <div className={s.card_item}>
                   <div className={s.container_card}>
                     <div className={s.im_game}>
                       <div className={s.info}>
                         <div className={s.number}>
                           <img src="/assets/home/ic_member.svg" alt="" />
-                          <span><span style={{ color: '#0BEBD6' }}>{item?.cache_tournament?.team_participated}</span>/{item?.participants}</span>
+                          <span><span style={{ color: '#0BEBD6' }}>17</span>/32</span>
                         </div>
                         <p>Single Elimination</p>
                         <div className={s.number}>
                           <img src="/assets/home/ic_control.svg" alt="" />
-                          <span style={{ color: '#0BEBD6' }}>{item?.team_size}V{item?.team_size}</span>
+                          <span style={{ color: '#0BEBD6' }}>4V4</span>
                         </div>
                       </div>
                       <img
-                        style={{ padding: 2 }}
-                        src={item?.thumbnail}
+                        style={{ padding: 2, width: "100%" }}
+                        src="assets/home/im_game.png"
                         alt=""
                       />
                     </div>
                     <div className={s.heading}>
                       <div className={s.im_logo_game}>
-                        <img src={item?.game?.logo} alt="" />
+                        <img src="assets/home/im_logo_game.png" alt="" />
                       </div>
                       <h2>
                         {item?.name.length > 42
@@ -59,23 +59,23 @@ export default function CardHome(props: Props) {
                           HOSTED BY
                           <div className={s.user}>
                             <div className={s.avt}>
-                            <img src={item?.user?.profile?.avatar || "/assets/MyProfile/defaultAvatar.png"} alt="" />
+                              <img src={item?.user?.profile?.avatar || "/assets/MyProfile/defaultAvatar.png"} alt="" />
                             </div>
-                            <a href="#">{item?.user?.profile?.display_name}</a>
+                            <a href="#">Hulk Group</a>
                           </div>
                         </div>
                         <div className={s.prize_pool}>
                           <img src="/assets/home/ic_dola.svg" alt="" />
-                          <span>{item?.join_fee <= 0 ? "FREE": item?.join_fee}</span>
+                          <span>FREE</span>
                         </div>
                       </div>
 
                       <div className={s.ntf}>
                         <div>
                           <div className={s.ic_ntf}>
-                            <img src={item?.currency?.icon} alt="" />
+                            <img src="/assets/home/ic_nft.png" alt="" />
                           </div>
-                          <span>{fomatNumber(item?.totalPrizePool)} {item?.currency?.symbol}</span>
+                          <span>10.000 USDT</span>
                         </div>
                         <span className={s.time}>April 30th 07:00</span>
                       </div>

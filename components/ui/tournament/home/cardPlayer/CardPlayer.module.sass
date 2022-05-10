@@ -1,5 +1,4 @@
 .content_card
-  box-shadow: 0px 0px 25px 4px rgba(250, 0, 255, 0.3)
   background: linear-gradient(111.03deg, rgba(239, 238, 238, 0.32) 2.82%, rgba(239, 238, 238, 0.06) 90.94%)
   backdrop-filter: blur(40px)
   border-radius: 16px
@@ -20,11 +19,11 @@
     margin: 0px 22px
   .im_top_player
     position: absolute
-    top: -28%
+    top: -24%
     width: 100%
     display: flex
     justify-content: center
-    z-index: 0
+    z-index: 4
   .content_player
     display: flex
     flex-direction: column
@@ -39,12 +38,19 @@
       overflow: hidden
       background: #FFF
       border-radius: 100%
+      position: relative
       @media (min-width: 540px)
         height: 60px
         width: 60px
       @media (min-width: 768px)
         height: 100px
         width: 100px
+      .ic_like
+        position: absolute
+        bottom: 0
+        left: 50%
+        transform: translateX(-50%)
+        cursor: pointer
     p
       padding: 16px 0px 2px 0px
       font-weight: 700
@@ -53,21 +59,21 @@
       color: #FFFFFF
     .btn
       position: relative
-      padding: 9px 6px
+      padding: 8px 6px
       @media (min-width: 540px)
         padding: 4px 2px
       @media (min-width: 768px)
-        padding: 9px 6px
+        padding: 8px 6px
       .content_btn
         font-weight: 700
-        font-size: 24px
+        font-size: 20px
         line-height: 115%
         border: none
         color: #0BEBD6
         @media (min-width: 540px)
           font-size: 18px
         @media (min-width: 768px)
-          font-size: 24px
+          font-size: 20px
       .content_btn:active
         background: transparent
       .content_btn:focus
@@ -80,7 +86,7 @@
       right:0
       bottom:0
       border-radius: 4px
-      padding: 1px
+      padding: 2px
       background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
       -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
       -webkit-mask-composite: xor
@@ -99,18 +105,19 @@
   -webkit-mask-composite: xor
   mask-composite: exclude
 .top1
+  box-shadow: 0px 0px 25px 4px rgba(250, 0, 255, 0.3)
   @media (min-width: 768px)
     margin-top: -120px
 .top2
   margin-top: 80px
+  transform: scale(0.9)
+  box-shadow: 0px 2px 40px rgba(255, 255, 255, 0.3)
   @media (min-width: 540px)
     margin-top: 0px
     order: -1
-    transform: scale(0.8)
-    filter: drop-shadow(0px 2px 40px rgba(255, 255, 255, 0.3))
 .top3  
   @media (min-width: 0)
-    transform: scale(0.8)
+    transform: scale(0.7)
     box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
   @media (min-width: 768px)
     transform: scale(0.6)

@@ -11,91 +11,91 @@ import { useHomePage } from "hooks/home/useHomePage"
 const listTabs = ["UPCOMING", "ONGOING", "CLOSED"];
 const datas = [
   {
-    id: 1,
+    uid: 1,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 2,
+    uid: 2,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 3,
+    uid: 3,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 4,
+    uid: 4,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 5,
+    uid: 5,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 6,
+    uid: 6,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 7,
+    uid: 7,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 8,
+    uid: 8,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 9,
+    uid: 9,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 10,
+    uid: 10,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 11,
+    uid: 11,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 12,
+    uid: 12,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 13,
+    uid: 13,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 14,
+    uid: 14,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
   },
   {
-    id: 15,
+    uid: 15,
     name: "Thetan",
     title:
       "DAILY TOURNAMENT the axie summer 2022 DAILY TOURNAMENT the axie summer 2022",
@@ -144,7 +144,7 @@ export default function TabHome() {
         </Row>
         <ButtonSort />
         <div>
-          <CardHome datas={dataUpcoming} loading={loadingUpcoming} />
+          <CardHome datas={datas} loading={loadingUpcoming} />
         </div>
 
         <div className={s.container_create}>
