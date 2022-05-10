@@ -8,10 +8,12 @@
   min-width: 240px
   @media (min-width: 0)
     margin: 30px 0px
+    min-height: 180px
+    min-width: 140px
   @media (min-width: 540px)
     margin: 0px 4px
-    min-height: 230px
-    min-width: 180px
+    min-height: 270px
+    min-width: 190px
   @media (min-width: 768px)
     min-height: 290px
     min-width: 240px
@@ -19,11 +21,21 @@
     margin: 0px 22px
   .im_top_player
     position: absolute
-    top: -24%
     width: 100%
     display: flex
     justify-content: center
     z-index: 4
+    @media (min-width: 0px)
+      max-width: 120px
+      left: 50%
+      top: -30%
+      transform: translateX(-50%)
+    @media (min-width: 540px)
+      max-width: 120px
+      top: -22%
+    @media (min-width: 640px)
+      max-width: 100%
+      top: -28%
   .content_player
     display: flex
     flex-direction: column
@@ -32,6 +44,8 @@
     padding-top: 50px
     z-index: 2
     position: relative
+    @media (max-width: 540px)
+      padding: 18px 0px
     .avt
       height: 100px
       width: 100px
@@ -39,27 +53,25 @@
       background: #FFF
       border-radius: 100%
       position: relative
-      @media (min-width: 540px)
-        height: 60px
-        width: 60px
-      @media (min-width: 768px)
-        height: 100px
-        width: 100px
       .ic_like
         position: absolute
         bottom: 0
         left: 50%
         transform: translateX(-50%)
-        cursor: pointer
     p
       padding: 16px 0px 2px 0px
       font-weight: 700
       font-size: 20px
       line-height: 115%
       color: #FFFFFF
+      @media (max-width: 540px)
+        font-size: 16px
+        padding: 8px 0px 2px 0px
     .btn
       position: relative
       padding: 8px 6px
+      @media (min-width: 0px)
+        padding: 0px 6px
       @media (min-width: 540px)
         padding: 4px 2px
       @media (min-width: 768px)
@@ -70,6 +82,9 @@
         line-height: 115%
         border: none
         color: #0BEBD6
+        margin: 0
+        @media (min-width: 0px)
+          font-size: 14px
         @media (min-width: 540px)
           font-size: 18px
         @media (min-width: 768px)
@@ -110,15 +125,25 @@
     margin-top: -120px
 .top2
   margin-top: 80px
-  transform: scale(0.9)
+  transform: scale(0.8)
   box-shadow: 0px 2px 40px rgba(255, 255, 255, 0.3)
-  @media (min-width: 540px)
-    margin-top: 0px
-    order: -1
+  order: -1
+  @media (max-width: 540px)
+    transform: scale(.8) translateX(22%)
+    z-index: -1
 .top3  
   @media (min-width: 0)
-    transform: scale(0.7)
+    transform: scale(0.8)
+    margin-top: 80px
     box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
+  @media (min-width: 0px)
+    transform: scale(0.8) translateX(-22%)
+    z-index: -1
+  @media (min-width: 540px)
+    transform: scale(0.7)
+    margin-top: 127px
+    margin-left: -6px
+    z-index: 0
   @media (min-width: 768px)
     transform: scale(0.6)
     margin-left: -10px

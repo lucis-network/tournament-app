@@ -90,6 +90,7 @@ const PopupDonate = (props: Props) => {
     if (types == "PLAYER") dnt.to = datas?.user?.id;
     if (types == "TEAM") dnt.to = datas?.uid;
     if (types == "TOURNAMENT") dnt.to = tournamentId ? tournamentId : "";
+    if (types == "TOPPLAYER") dnt.to = datas.name
     let tournamentService = new TournamentService();
     const response = tournamentService.donateService(dnt).then((res) => {
       if (res) {
@@ -163,6 +164,21 @@ const PopupDonate = (props: Props) => {
                       <p>{name}</p>
                     </>
                   );
+                  case "TOPPLAYER":
+                    return (
+                      <>
+                        <div className={s.avt_member}>
+                          <img
+                            className={s.avt}
+                            src={`${
+                              thumbnail || "/assets/MyProfile/defaultAvatar.png"
+                            }`}
+                            alt=""
+                          />
+                        </div>
+                        <p>{e.name}</p>
+                      </>
+                    );
                 default:
                   return null;
               }
@@ -172,7 +188,7 @@ const PopupDonate = (props: Props) => {
       ))}
       <div>
         <Row className={`${s.amount} ${s.input}`}>
-          <Col span={9}>Amount</Col>
+          <Col span={9} style={{ fontSize: 16 }}>Amount</Col>
           <Col span={10}>
             <Input
               style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
@@ -196,7 +212,7 @@ const PopupDonate = (props: Props) => {
         </Row>
 
         <Row className={`${s.message} ${s.input}`}>
-          <Col span={9}>Message</Col>
+          <Col span={9} style={{ fontSize: 16 }}>Message</Col>
           <Col span={15}>
             <TextArea
               showCount

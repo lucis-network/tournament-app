@@ -89,6 +89,7 @@ export default function CardHome(props: Props) {
 
       </ Row>
       {
+        isLoadMore > datas.length || isLoadMore < 8 ? '' :
         <div className={s.btn_load}>
           <Button onClick={handleLoadMore}>More</Button>
         </div>
