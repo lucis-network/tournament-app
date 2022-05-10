@@ -13,7 +13,7 @@ import { BUSD } from "utils/Enum";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import PopupDonate from "../popup/popupDonate";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useClaimReward } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 
@@ -45,6 +45,7 @@ export default observer(function RegistrationPhase(props: Props) {
 
   const { tournamentId } = props;
 
+  console.log("brackets", brackets);
   const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
     useTeamModal(props);
 
@@ -58,25 +59,16 @@ export default observer(function RegistrationPhase(props: Props) {
 
   const [dataPrize, setDataPrize] = useState<Reward>();
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
-  const [dataDonation, setDataDonation] = useState<Reward>();
+  const [dataDonation, setDataDonation] = useState<Reward[]>();
   const [totalFromDonation, setTotalFromDonation] = useState(0);
 
-  console.log("useClaimReward", data);
-
   useEffect(() => {
+    let arr: Array<Reward> = [];
     data?.forEach((item: any) => {
       if (item.reward_type === "PRIZE") setDataPrize(item);
-      if (item.reward_type === "SYTEMPRIZE") setDataSystemPrize(item);
+      else if (item.reward_type === "SYTEMPRIZE") setDataSystemPrize(item);
+      else arr.push(item);
     });
-
-    let arr = data?.filter((item: any) =>
-      item.reward_type.includes(
-        "DONATEFORTOURNAMENT",
-        "DONATEFORTEAM",
-        "DONATEFORPLAYER"
-      )
-    );
-    console.log("arr", arr);
     setDataDonation(arr);
     calculatorDonation(arr);
   }, [data]);
@@ -87,6 +79,14 @@ export default observer(function RegistrationPhase(props: Props) {
       total += item.amount;
     });
     setTotalFromDonation(total);
+
+    let obj: Reward = {
+      amount: total,
+      reward_type: "Total",
+      rank: 0,
+      symbol: currency?.symbol,
+    };
+    arr.push(obj);
   };
 
   const claimToken = async () => {
@@ -163,7 +163,6 @@ export default observer(function RegistrationPhase(props: Props) {
         <div className={s.footer}>
           <div className={s.prizes}>
             <span>Addtional prizes: </span>
-            <span>Thetan NFTs: HeroX, Guitar</span>
             {additionPrize ? (
               <span>
                 {fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
@@ -179,7 +178,12 @@ export default observer(function RegistrationPhase(props: Props) {
                   <>
                     <div className={s.join}>
                       <Button onClick={handleOpenModal}>Join tournament</Button>
-                      <p>Registration ends in 5H 45M 30S</p>
+                      <p>
+                        Registration ends in{" "}
+                        {moment(brackets[0]?.start_at).format(
+                          "YYYY/MM/DD"
+                        )}
+                      </p>
                     </div>
                   </>
                 );

@@ -28,11 +28,11 @@ export default observer(function ClaimDonationModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+  // const handleOk = () => {
+  //   //setIsModalVisible(false);
+  // };
 
-  const claimToken = async (item: any) => {
+  const handleOk = async (item: any) => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
     } else {
