@@ -12,7 +12,8 @@ type Props = {
   teams?: any[];
 };
 
-const UpdateScore = (props: Props) => {
+export default observer(function UpdateScore(props: Props) {
+  const updateScoreModalVisible = RoundStore.updateScoreModal;
   const handleCloseModal = () => {
     RoundStore.updateScoreModal = false;
   };
@@ -22,10 +23,13 @@ const UpdateScore = (props: Props) => {
     console.log(RoundStore.singleRounds[3].seeds);
   };
 
+  const team0 = RoundStore.currentMatch[0];
+  const team1 = RoundStore.currentMatch[1];
+
   return (
     <Modal
       centered
-      visible={RoundStore.updateScoreModal}
+      visible={updateScoreModalVisible}
       onOk={handleCloseModal}
       onCancel={handleCloseModal}
       title="Update match result"
@@ -45,7 +49,7 @@ const UpdateScore = (props: Props) => {
       <div style={{ padding: "15px 0" }}>
         <Row justify="center">
           <Col span={8} style={{ textAlign: "center" }}>
-            <p className="text-center">{RoundStore.currentMatch[0]?.name}</p>
+            <p className="text-center">{team0?.name}</p>
 
             <span
               className={`text-center ${s.score}`}
@@ -53,27 +57,25 @@ const UpdateScore = (props: Props) => {
               suppressContentEditableWarning={true}
               onInput={(e) => handleUpdateScore(e)}
             >
-              {RoundStore.currentMatch[0]?.score}
+              {team0?.score}
             </span>
           </Col>
           <Col span={6}>
             <p className="text-center">VS</p>
           </Col>
           <Col span={8} style={{ textAlign: "center" }}>
-            <p className="text-center">{RoundStore.currentMatch[1]?.name}</p>
+            <p className="text-center">{team1?.name}</p>
 
             <span
               className={`text-center ${s.score}`}
               contentEditable={true}
               suppressContentEditableWarning={true}
             >
-              {RoundStore.currentMatch[1]?.score}
+              {team1?.score}
             </span>
           </Col>
         </Row>
       </div>
     </Modal>
   );
-};
-
-export default observer(UpdateScore);
+});
