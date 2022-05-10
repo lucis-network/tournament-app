@@ -1,82 +1,98 @@
-import { Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
+import { useState } from "react";
+import { fomatNumber } from "utils/Number"
+import { TournamentGql } from "src/generated/graphql";
 import s from "./CardHome.module.sass";
-import { Pagination } from "antd";
-import { List, Avatar, Space } from "antd";
-import { MessageOutlined, LikeOutlined, StarOutlined } from "@ant-design/icons";
 
 type Props = {
-  datas?: any;
+  datas?: TournamentGql[];
+  loading: boolean;
 };
 export default function CardHome(props: Props) {
-  const { datas } = props;
+  const [isLoadMore, setIsLoadMore] = useState(8)
+  const { datas, loading } = props;
+
+  if (loading) {
+    return <></>
+  }
+  const handleLoadMore = () => {
+    setIsLoadMore(prev => prev + 8)
+  }
   return (
     <>
-      <List
-        itemLayout="vertical"
-        size="large"
-        pagination={{
-          pageSize: 8,
-        }}
-        dataSource={datas}
-        className={s.block_card}
-        renderItem={(item: any) => {
-          return (
-            <li className={s.wrapper}>
-              <div className={s.card_item}>
-                <div className={s.container_card}>
-                  <div className={s.im_game}>
-                    <div className={s.info}>
-                      <div className={s.number}>
-                        <img src="/assets/home/ic_member.svg" alt="" />
-                        <span>17/32</span>
-                      </div>
-                      <p>Single Elimination</p>
-                      <div className={s.number}>
-                        <img src="/assets/home/ic_control.svg" alt="" />
-                        <span>4v4</span>
-                      </div>
-                    </div>
-                    <img
-                      style={{ padding: 2 }}
-                      src="/assets/home/im_game.png"
-                      alt=""
-                    />
-                  </div>
-                  <div className={s.heading}>
-                    <img src="/assets/home/im_logo_game.png" alt="" />
-                    <h2>
-                      {item?.title.length > 42
-                        ? item?.title.substring(0, 42) + "..."
-                        : item?.title}
-                    </h2>
-                    <div className={s.hosted_by}>
-                      <div className={s.hosted_by_detail}>
-                        HOSTED BY
-                        <div className={s.user}>
-                          <img src="/assets/home/im_avt.png" alt="" />
-                          <a href="#">Hulk Group</a>
+      <Row className={s.block_card} gutter={[15, 15]}>
+        {
+          datas?.slice(0, isLoadMore).map((item: any) => {
+            return (
+              <Col lg={6} className={s.wrapper} key={item?.uid}>
+                <div className={s.card_item}>
+                  <div className={s.container_card}>
+                    <div className={s.im_game}>
+                      <div className={s.info}>
+                        <div className={s.number}>
+                          <img src="/assets/home/ic_member.svg" alt="" />
+                          <span><span style={{ color: '#0BEBD6' }}>{item?.cache_tournament?.team_participated}</span>/{item?.participants}</span>
+                        </div>
+                        <p>Single Elimination</p>
+                        <div className={s.number}>
+                          <img src="/assets/home/ic_control.svg" alt="" />
+                          <span style={{ color: '#0BEBD6' }}>{item?.team_size}V{item?.team_size}</span>
                         </div>
                       </div>
-                      <div className={s.prize_pool}>
-                        <img src="/assets/home/ic_dola.svg" alt="" />
-                        <span>FREE</span>
-                      </div>
+                      <img
+                        style={{ padding: 2 }}
+                        src={item?.thumbnail}
+                        alt=""
+                      />
                     </div>
-
-                    <div className={s.ntf}>
-                      <div>
-                        <img src="/assets/home/ic_nft.png" alt="" />
-                        <span>10,000 USDT</span>
+                    <div className={s.heading}>
+                      <div className={s.im_logo_game}>
+                        <img src={item?.game?.logo} alt="" />
                       </div>
-                      <span className={s.time}>April 30th 07:00</span>
+                      <h2>
+                        {item?.name.length > 42
+                          ? item?.name.substring(0, 42) + "..."
+                          : item?.name}
+                      </h2>
+                      <div className={s.hosted_by}>
+                        <div className={s.hosted_by_detail}>
+                          HOSTED BY
+                          <div className={s.user}>
+                            <div className={s.avt}>
+                            <img src={item?.user?.profile?.avatar || "/assets/MyProfile/defaultAvatar.png"} alt="" />
+                            </div>
+                            <a href="#">{item?.user?.profile?.display_name}</a>
+                          </div>
+                        </div>
+                        <div className={s.prize_pool}>
+                          <img src="/assets/home/ic_dola.svg" alt="" />
+                          <span>{item?.join_fee <= 0 ? "FREE": item?.join_fee}</span>
+                        </div>
+                      </div>
+
+                      <div className={s.ntf}>
+                        <div>
+                          <div className={s.ic_ntf}>
+                            <img src={item?.currency?.icon} alt="" />
+                          </div>
+                          <span>{fomatNumber(item?.totalPrizePool)} {item?.currency?.symbol}</span>
+                        </div>
+                        <span className={s.time}>April 30th 07:00</span>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            </li>
-          );
-        }}
-      />
+              </Col>
+            )
+          })
+        }
+
+      </ Row>
+      {
+        <div className={s.btn_load}>
+          <Button onClick={handleLoadMore}>More</Button>
+        </div>
+      }
     </>
   );
 }

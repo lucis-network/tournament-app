@@ -38,9 +38,9 @@ export default observer(function RegistrationPhase(props: Props) {
   const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
     useTeamModal(props);
 
-  const claimTokenDonation = async () => {
-    TournamentStore.claimDonationModalVisible = true;
-  };
+	const claimTokenDonation = async () => {
+		TournamentStore.claimDonationModalVisible = true;
+	};
 
   console.log("tournament_status", tournament_status);
   const claimToken = async () => {
@@ -57,21 +57,21 @@ export default observer(function RegistrationPhase(props: Props) {
     }
   };
 
-  const claim = async () => {
-    if (ConnectWalletStore_NonReactiveData.web3Provider) {
-      //throw makeError("Need to connect your wallet first");
-      const ethersService = new EthersService(
-        ConnectWalletStore_NonReactiveData.web3Provider
-      );
+	const claim = async () => {
+		if (ConnectWalletStore_NonReactiveData.web3Provider) {
+			//throw makeError("Need to connect your wallet first");
+			const ethersService = new EthersService(
+				ConnectWalletStore_NonReactiveData.web3Provider
+			);
 
-      const txHash = await ethersService.transferFT(
-        "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-        BUSD,
-        1
-      );
-      return txHash;
-    }
-  };
+			const txHash = await ethersService.transferFT(
+				"0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
+				BUSD,
+				1
+			);
+			return txHash;
+		}
+	};
 
   const closeModal = () => {
     setIsPopupDonate(false);

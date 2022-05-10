@@ -179,8 +179,8 @@ const PopupDonate = (props: Props) => {
               onBlur={handleBlur}
               value={values}
               onChange={handleChange}
-              placeholder="Amount"
               ref={inputRef}
+              placeholder="Enter amount"
             />
           </Col>
           <Col span={1}></Col>
@@ -200,8 +200,8 @@ const PopupDonate = (props: Props) => {
           <Col span={15}>
             <TextArea
               showCount
-              maxLength={100}
-              placeholder="Enter Message"
+              maxLength={125}
+              placeholder="Enter message"
               className={s.editable}
             />
           </Col>

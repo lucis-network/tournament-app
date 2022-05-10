@@ -1,22 +1,25 @@
 import React, { HTMLAttributes, useEffect, useState } from "react";
 import { Form, Input, InputNumber, Table } from "antd";
 import { StarFilled } from "@ant-design/icons";
-import { MyTeamType, TeamType } from "../../hooks/useCreateNewTeam";
+import { MyTeamType } from "../../hooks/useCreateNewTeam";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import s from "./TeamModal.module.sass";
-import { Item } from "../../hooks/useTeamModal";
+import { ErrorTourKey, Item } from "../../hooks/useTeamModal";
 import { useRef } from "react";
 
 interface TeamPrizingProps {
-	dataForm: Item[];
+	isSolo: boolean;
+	error: ErrorTourKey;
+	tourPassword?: string;
 	teamSize: any;
 	password: string;
 	selectedTeam: MyTeamType;
+	draftSelectedTeam?: MyTeamType;
 	onChooseTeam: () => void;
 	onBack: () => void;
 	onChangePassword: (e: React.FormEvent<HTMLInputElement>) => void;
 	onJoinTournament: () => void;
-	onSetDataForm: (values: Item[]) => void;
+	onSetDataForm: (team: Item[]) => void;
 }
 
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
@@ -30,36 +33,38 @@ interface EditableCellProps extends HTMLAttributes<HTMLElement> {
 }
 
 const TeamPrizing: React.FC<TeamPrizingProps> = ({
-	dataForm,
+	isSolo,
+	error,
+	tourPassword,
 	password,
 	teamSize,
 	selectedTeam,
+	draftSelectedTeam,
 	onChooseTeam,
 	onBack,
 	onJoinTournament,
 	onChangePassword,
 	onSetDataForm,
 }) => {
-	const isMatchTeamSize = selectedTeam.team?.length === teamSize;
-
+	const isMatchTeamSize = draftSelectedTeam?.team?.length === teamSize;
+	const { team = [] } = selectedTeam;
 	const [form] = Form.useForm();
-	const inputRef = useRef<any>();
-
 	const [editingKey, setEditingKey] = useState("");
 	const isEditing = (record: Item) => String(record.user_id) === editingKey;
-	const handleEdit = (record: Partial<Item>) => {
+	const errMessage = error?.size || error?.user || error?.prize;
+	const [editInputKey, setEditInputKey] = useState<"number" | "text">();
+	const handleEdit = (record: Partial<Item>, type: "number" | "text") => {
 		form.setFieldsValue({ prize: 0, game_member_id: "", ...record });
 		setEditingKey(String(record.user_id));
+		setEditInputKey(type);
 	};
 
-	const handleValuesChange = (values: Item[]) => {
-		console.log(values, editingKey);
-	};
+	const handleValuesChange = (values: Item[]) => {};
 
 	const handleSave = async (key: React.Key) => {
 		try {
 			const row = (await form.validateFields()) as Item;
-			const newData = [...dataForm];
+			const newData = [...team];
 			const index = newData.findIndex((item) => key === String(item.user_id));
 			if (index > -1) {
 				const item = newData[index];
@@ -74,18 +79,10 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				onSetDataForm(newData);
 				setEditingKey("");
 			}
-		} catch (errInfo) {
+		} catch (errInfo: any) {
 			console.log("Validate Failed:", errInfo);
 		}
 	};
-
-	const cancel = () => {
-		setEditingKey("");
-	};
-
-	useEffect(() => {
-		inputRef && inputRef.current && inputRef.current!.focus();
-	});
 
 	const columns = [
 		{
@@ -110,7 +107,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			},
 		},
 		{
-			title: "Rele",
+			title: "Role",
 			dataIndex: "is_leader",
 			width: "20%",
 			render: (_: any, record: Item) => {
@@ -129,17 +126,20 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			title: "Prize allocation",
 			dataIndex: "prize",
 			width: "20%",
-			editable: true,
+			editable: !isSolo,
 			render: (_: any, record: Item) => {
 				return (
 					<InputNumber
 						className={s.prize_input}
-						onClick={() => handleEdit(record)}
-						addonBefore="%"
+						onClick={() => handleEdit(record, "number")}
+						addonAfter="%"
 						value={record.prize}
 						placeholder="% Amount"
 						max={100}
 						min={0}
+						controls={false}
+						disabled={isSolo}
+						readOnly={isSolo}
 					/>
 				);
 			},
@@ -153,7 +153,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				return (
 					<Input
 						value={record.game_member_id}
-						onClick={() => handleEdit(record)}
+						onClick={() => handleEdit(record, "text")}
 						className="!rounded-8px"
 						placeholder="Enter member ID"
 					/>
@@ -191,18 +191,21 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 		const inputNode =
 			inputType === "number" ? (
 				<InputNumber
-					ref={inputRef}
+					autoFocus={editInputKey === "number"}
 					className={s.prize_input}
-					addonBefore="%"
+					addonAfter="%"
+					value={record?.prize}
 					onPressEnter={() => handleSave(String(record.user_id))}
 					onBlur={() => handleSave(String(record.user_id))}
 					placeholder="% Amount"
 					max={100}
 					min={0}
+					controls={false}
 				/>
 			) : (
 				<Input
-					ref={inputRef}
+					autoFocus={editInputKey === "text"}
+					value={record?.user_id}
 					className="!rounded-8px"
 					placeholder="Enter member ID"
 					onPressEnter={() => handleSave(String(record.user_id))}
@@ -213,16 +216,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 		return (
 			<td {...restProps} onBlur={() => handleSave(String(record.user_id))}>
 				{editing ? (
-					<Form.Item
-						name={dataIndex}
-						style={{ margin: 0 }}
-						rules={[
-							{
-								required: true,
-								message: `Please Input ${title}!`,
-							},
-						]}
-					>
+					<Form.Item name={dataIndex} style={{ margin: 0 }}>
 						{inputNode}
 					</Form.Item>
 				) : (
@@ -246,47 +240,60 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 							},
 						}}
 						bordered
-						dataSource={dataForm}
+						dataSource={team}
 						columns={mergedColumns}
 						rowClassName="editable-row"
-						pagination={{
-							onChange: cancel,
-						}}
+						pagination={false}
 					/>
 				</Form>
-				<button
-					className={`${s.button} !w-auto`}
-					disabled={isMatchTeamSize}
-					onClick={onChooseTeam}
-				>
-					Choose player
-				</button>
-			</div>
-			<div>
-				<div className="flex items-center align-middle mt-8 mb-4">
-					<p className="w-[250px] m-0">Tournament Password</p>
-					<div>
-						<Input.Password
-							value={password}
-							className={s.password_input}
-							onChange={onChangePassword}
-							placeholder="Enter password"
-							iconRender={(visible) =>
-								visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
-							}
-						/>
-					</div>
+
+				<div className="flex align-middle items-center mt-8 text-center">
+					{!isSolo && (
+						<button
+							className={`${s.button} !w-auto`}
+							disabled={isMatchTeamSize}
+							onClick={onChooseTeam}
+						>
+							Choose player
+						</button>
+					)}
+					<p className="text-error text-16px flex-1">{errMessage}</p>
 				</div>
+			</div>
+			<div className="mt-8 mb-4">
+				{tourPassword && (
+					<div className="flex items-center align-middle">
+						<p className="w-[250px] m-0">Tournament Password</p>
+
+						<div>
+							<Input.Password
+								value={password}
+								className={s.password_input}
+								onChange={onChangePassword}
+								placeholder="Enter password"
+								iconRender={(visible) =>
+									visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+								}
+							/>
+						</div>
+					</div>
+				)}
 				<div className="flex items-center">
 					<p className="w-[250px] m-0">Entry Fee</p>
 					<p className="m-0">Free</p>
 				</div>
 			</div>
 			<div className="flex justify-center mt-16">
-				<button className={`${s.button} !w-max mr-4`} onClick={onBack}>
-					Back to step 1
-				</button>
-				<button className={`${s.button} !w-max`} onClick={onJoinTournament}>
+				{!isSolo && (
+					<button className={`${s.button} !w-max mr-4`} onClick={onBack}>
+						Back to step 1
+					</button>
+				)}
+				<button
+					className={`${s.button} !w-max`}
+					disabled={!!errMessage}
+					onClick={onJoinTournament}
+				>
 					Complete and Join tournament
 				</button>
 			</div>
