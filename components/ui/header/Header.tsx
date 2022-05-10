@@ -57,7 +57,10 @@ export default observer(function Header(props: Props) {
                     <Image src={Logo} alt="logo" priority />
                   </a>
                 </Link>
-                {"IS_TESTNET" && <p>Testnet</p>}
+                {
+                  // @ts-ignore
+                  ("IS_TESTNET" == "true") && <p>Testnet</p>
+                }
               </Col>
               <Col span={16}>
                 <ul className={s.block_item_menu}>

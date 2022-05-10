@@ -29,9 +29,9 @@ const TournamentDetail = () => {
 	const router = useRouter();
 
 	const tournamentId = useMemo(() => {
-		const { slug } = router.query;
-		if (slug) {
-			return slug;
+		const { id, slug } = router.query;
+		if (id) {
+			return id;
 		}
 		if (isClient) {
 			const paths = router.asPath.split("/").filter((item) => item !== "");

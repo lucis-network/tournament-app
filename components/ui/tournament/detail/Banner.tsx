@@ -1,4 +1,4 @@
-import s from "../../../../pages/tournament/TournamentDetail.module.sass";
+import s from "../../../../pages/tournament/[id]/TournamentDetail.module.sass";
 
 type Props = {
   cover?: string
