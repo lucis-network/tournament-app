@@ -155,6 +155,7 @@ const GET_TOURNAMENT_DETAIL = gql`
         symbol
         chain_symbol
       }
+      tournament_status
     }
   }
 `;
@@ -165,13 +166,17 @@ const GET_PARTICIPANTS_DETAIL = gql`
       uid
       name
       avatar
-      team_members {
-        uid
-        is_leader
-        user {
-          profile {
-            display_name
-            avatar
+      BracketTeam {
+        bracket_uid
+        bracketTeamMembers {
+          uid
+          is_leader
+          user {
+            id
+            profile {
+              display_name
+              avatar
+            }
           }
         }
       }

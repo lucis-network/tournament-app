@@ -113,7 +113,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee(10%)</p>
+                  <p>Lucis fee (10%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
@@ -129,7 +129,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee(1%)</p>
+                  <p>Referee fee (1%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>

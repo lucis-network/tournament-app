@@ -1,9 +1,7 @@
 import s from "./TournamentDetail.module.sass";
 import { Button, Col, Row, Tabs } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
-import {
-  useTournamentDetail,
-} from "hooks/tournament/useTournamentDetail";
+import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import Router, { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { isClient } from "utils/DOM";
@@ -87,15 +85,10 @@ const TournamentDetail = () => {
     desc,
     rules,
     participants,
-    user,
     game,
     name,
-    sponsorSlot,
-    pool_size,
-    currency_uid,
     cover,
     thumbnail,
-    totalDonation,
     totalPrizePool,
     currency,
   } = dataTournamentDetail;
@@ -165,14 +158,6 @@ const TournamentDetail = () => {
         {/* ==== registration phase ====  */}
         <div className={`lucis-container`}>
           <RegistrationPhase
-            participants={participants}
-            brackets={dataBracket}
-            sponsorSlot={sponsorSlot}
-            pool_size={pool_size}
-            currency={currency}
-            totalDonation={totalDonation}
-            totalPrizePool={totalPrizePool}
-            joinTournament={joinTournament}
             tournament={dataTournamentDetail}
             tournamentId={tournamentId as string}
           />
@@ -202,6 +187,8 @@ const TournamentDetail = () => {
               <TableParticipant
                 dataParticipants={dataParticipants}
                 loading={loadingParticipant}
+                tournamentId={tournamentId as string}
+                currency={currency}
               />
             </TabPane>
             <TabPane tab="Referees" key="5">
@@ -221,10 +208,22 @@ const TournamentDetail = () => {
         </div>
 
         {/* ===== Modal ===== */}
+        {/* <PopupDonate
+          closeModal={() => closeModal("Donate")}
+          status={isPopupDonate}
+          tournamentId={tournamentId as string}
+          currency={currency}
+          thumbnail={thumbnail}
+        /> */}
+
         <PopupDonate
           closeModal={() => closeModal("Donate")}
           status={isPopupDonate}
-          // datas={dataReferees}
+          tournamentId={tournamentId as string}
+          currency={currency}
+          types={"TOURNAMENT"}
+          name={name}
+          thumbnail={thumbnail}
         />
 
         <PopupShare

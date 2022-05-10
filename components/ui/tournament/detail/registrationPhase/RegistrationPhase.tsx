@@ -12,41 +12,37 @@ import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Au
 import { BUSD } from "utils/Enum";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
+import PopupDonate from "../popup/popupDonate";
+import { useState } from "react";
 
 type Props = {
-  joinTournament: any;
-  participants: number;
-  brackets: any;
-  sponsorSlot: SponsorTierType[];
-  pool_size: number;
-  currency: any;
   tournament: any;
-  totalDonation?: any;
-  totalPrizePool?: any;
   tournamentId?: string;
 };
 
 export default observer(function RegistrationPhase(props: Props) {
+  const [isPopupDonate, setIsPopupDonate] = useState(false);
   const {
+    joinTournament,
     participants,
     brackets,
     currency,
     totalDonation,
     totalPrizePool,
-  } = props;
+    tournamentId,
+    name,
+    thumbnail,
+    tournament_status,
+  } = props.tournament;
 
-  const {
-    show,
-    step,
-    handleOpenModal,
-    handleCloseModal,
-    stepConfiguration,
-  } = useTeamModal(props);
+  const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
+    useTeamModal(props);
 
   const claimTokenDonation = async () => {
     TournamentStore.claimDonationModalVisible = true;
   };
 
+  console.log("tournament_status", tournament_status);
   const claimToken = async () => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
@@ -77,6 +73,14 @@ export default observer(function RegistrationPhase(props: Props) {
     }
   };
 
+  const closeModal = () => {
+    setIsPopupDonate(false);
+  };
+
+  const openModal = () => {
+    setIsPopupDonate(true);
+  };
+
   return (
     <>
       <div className={s.wrapper}>
@@ -99,7 +103,7 @@ export default observer(function RegistrationPhase(props: Props) {
               {fomatNumber(totalDonation)} {currency.symbol}
             </span>
             <span>Total donation</span>
-            <Button>Donation</Button>
+            <Button onClick={openModal}>Donation</Button>
           </div>
           <div className={s.items}>
             <img src="/assets/avatar.jpg" alt="" width={50} />
@@ -114,35 +118,71 @@ export default observer(function RegistrationPhase(props: Props) {
           <div className={s.prizes}>
             <span>Addtional prizes: </span>
             <span>Thetan NFTs: HeroX, Guitar</span>
-            <span>1000 USDT token</span>
+            <span>1000 LUCIS token</span>
           </div>
-          <div className={s.join}>
-            <Button onClick={handleOpenModal}>Join tournament</Button>
-            <p>Registration ends in 5H 45M 30S</p>
-          </div>
-          {/* ===== donation ===== */}
-          {/* <div className={s.join}>
-            <p>YOUR REWARDS</p>
-            <div className={s.rewards}>
-              <div>
-                <div>Prize</div>
-                <p>
-                  {fomatNumber(totalPrizePool)} {currency.symbol}
-                </p>
-                <Button onClick={claimToken}>Claim</Button>
-                <p>{fomatNumber(totalPrizePool)} LUCIS</p>
-                <Button onClick={claimToken}>Claim</Button>
-              </div>
-              <div>
-                <p>From Donation</p>
-                <p>
-                  {fomatNumber(totalDonation)} {currency.symbol}
-                </p>
-                <Button onClick={claimTokenDonation}>Claim</Button>
-              </div>
-            </div>
-            <Button>Share my victory</Button>
-          </div> */}
+          {(() => {
+            switch (tournament_status) {
+              case "REGISTRATION":
+                return (
+                  <>
+                    <div className={s.join}>
+                      <Button onClick={handleOpenModal}>Join tournament</Button>
+                      <p>Registration ends in 5H 45M 30S</p>
+                    </div>
+                  </>
+                );
+              case "CHECKIN":
+                return (
+                  <>
+                    <div className={s.join}>
+                      <Button onClick={handleOpenModal}>Check-in</Button>
+                      <p>Check-in ends in 5H 45M 30S</p>
+                    </div>
+                  </>
+                );
+              case "PREPARE":
+                return (
+                  <>
+                    <>
+                      <div className={s.join}>
+                        <p>Tournament in 5H 45M 30S</p>
+                      </div>
+                    </>
+                  </>
+                );
+              case "RUNNING":
+                return <></>;
+              case "CLOSED":
+                return (
+                  <>
+                    <div className={s.join}>
+                      <p>YOUR REWARDS</p>
+                      <div className={s.rewards}>
+                        <div>
+                          <div>Prize</div>
+                          <p>
+                            {fomatNumber(totalPrizePool)} {currency.symbol}
+                          </p>
+                          <Button onClick={claimToken}>Claim</Button>
+                          <p>{fomatNumber(totalPrizePool)} LUCIS</p>
+                          <Button onClick={claimToken}>Claim</Button>
+                        </div>
+                        <div>
+                          <p>From Donation</p>
+                          <p>
+                            {fomatNumber(totalDonation)} {currency.symbol}
+                          </p>
+                          <Button onClick={claimTokenDonation}>Claim</Button>
+                        </div>
+                      </div>
+                      <Button>Share my victory</Button>
+                    </div>
+                  </>
+                );
+              default:
+                return null;
+            }
+          })()}
         </div>
       </div>
 
@@ -151,6 +191,16 @@ export default observer(function RegistrationPhase(props: Props) {
         show={show}
         stepConfiguration={stepConfiguration}
         onCancel={handleCloseModal}
+      />
+
+      <PopupDonate
+        closeModal={() => closeModal()}
+        status={isPopupDonate}
+        tournamentId={tournamentId}
+        currency={currency}
+        types={"TOURNAMENT"}
+        name={name}
+        thumbnail={thumbnail}
       />
     </>
   );

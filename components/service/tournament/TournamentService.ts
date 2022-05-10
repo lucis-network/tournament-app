@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { GDonateTransaction } from "components/ui/tournament/detail/popup/popupDonate";
 import { CreateTournament } from "src/store/TournamentStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
@@ -27,6 +28,21 @@ export default class TournamentService {
     });
 
     return createTournamentRes;
+  }
+
+  public async donateService(dnt: GDonateTransaction): Promise<any> {
+    const donataResponse = await apoloClient.mutate({
+      mutation: gql`
+        mutation donate($input: GDonateTransaction!) {
+          donate(input: $input)
+        }
+      `,
+      variables: {
+        input: dnt,
+      },
+    });
+
+    return donataResponse;
   }
 }
 

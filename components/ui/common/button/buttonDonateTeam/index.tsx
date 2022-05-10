@@ -7,21 +7,28 @@ import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 
 type Props = {
   nameTeam?: any;
+  tournamentId: string;
+  currency?: any;
 };
 export default function ModalDonateTeam(props: Props) {
-  const { nameTeam } = props;
+  const { nameTeam, tournamentId, currency } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [isPopUp, setIsPopUp] = useState(false);
   const [newData, setNewData] = useState({});
+  const [types, setTypes] = useState("");
 
   const handlButtonMember = (datas: any) => {
     setIsPopUp(true);
-    setNewData(datas.user?.profile);
+    setNewData(datas);
+    setTypes("PLAYER");
   };
+
   const handlButtonTeam = (datas: any) => {
     setIsPopUp(true);
     setNewData(datas);
+    setTypes("TEAM");
   };
+
   const click = () => {
     setIsPopUp(false);
   };
@@ -81,42 +88,50 @@ export default function ModalDonateTeam(props: Props) {
 
             <div className={s.Member}>
               <h1>Member</h1>
-              {nameTeam?.team_members?.map((item: any) => (
-                <Row key={item?.uid} className={s.container}>
-                  <Col span={18} className={s.item_member}>
-                    <div className={s.avt_member}>
-                      <img
-                        className={s.avt}
-                        src={`${
-                          item.user?.profile?.avatar ??
-                          "/assets/MyProfile/defaultAvatar.png"
-                        }`}
-                        alt=""
-                      />
-                    </div>
-                    <div className={s.name_member}>
-                      {item.user?.profile?.display_name}
-                    </div>
-                    {item.is_leader && (
-                      <div className={s.rank_member}>rank</div>
-                    )}
-                  </Col>
-                  <Col>
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        handlButtonMember(item);
-                      }}
-                    >
-                      Donate
-                    </Button>
-                  </Col>
-                </Row>
-              ))}
+
+              {nameTeam?.BracketTeam
+                ? nameTeam?.BracketTeam[0]?.bracketTeamMembers?.map(
+                    (item: any) => (
+                      <Row key={item?.uid} className={s.container}>
+                        <Col span={18} className={s.item_member}>
+                          <div className={s.avt_member}>
+                            <img
+                              className={s.avt}
+                              src={`${
+                                item.user?.profile?.avatar ??
+                                "/assets/MyProfile/defaultAvatar.png"
+                              }`}
+                              alt=""
+                            />
+                          </div>
+                          <div className={s.name_member}>
+                            {item.user?.profile?.display_name}
+                          </div>
+                          {item.is_leader && (
+                            <div className={s.rank_member}>leader</div>
+                          )}
+                        </Col>
+                        <Col>
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              handlButtonMember(item);
+                            }}
+                          >
+                            Donate
+                          </Button>
+                        </Col>
+                      </Row>
+                    )
+                  )
+                : ""}
               <PopupDonate
                 closeModal={click}
                 status={isPopUp}
                 datas={newData}
+                tournamentId={tournamentId}
+                types={types}
+                currency={currency}
               />
             </div>
           </div>
