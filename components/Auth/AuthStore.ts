@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx";
 import { isClient } from "../../utils/DOM";
+import {UserFavoriteGame} from "../../src/generated/graphql";
 
 export type AuthUser = {
   id?: number;
@@ -14,12 +15,24 @@ export type AuthUser = {
   role?: UserRole;
   status?: string;
   updated_at?: string;
+  favorite_game?: UserFavoriteGame[];
 };
 
 type UserProfile = {
   user_id?: number;
   user_name?: string | null;
   country_code?: string | null;
+  display_name?: string;
+  biography?: string;
+  avatar?: string;
+  cover?: string;
+  totalEarning?: number;
+  twitter?: string;
+  facebook?: string;
+  telegram?: string;
+  twitch?: string;
+  discord?: string;
+  youtube?: string;
 }
 
 type UserRole = {
@@ -36,7 +49,7 @@ type AuthWallet = {
 
 export type TAuthInfo = AuthUser | AuthWallet;
 
-class AuthStore {
+class AuthStore implements AuthUser {
   private _id?: number;
   private _code?: string;
   private _token?: string;
@@ -51,6 +64,7 @@ class AuthStore {
   private _updated_at?: string;
   private _balance?: string;
   private _loading: boolean = false;
+  private _favorite_game?: UserFavoriteGame[];
 
   public get isLoggedIn(): boolean {
     return !!this._token;
@@ -73,6 +87,7 @@ class AuthStore {
     this._role = undefined;
     this._status = undefined;
     this._updated_at = undefined;
+    this._favorite_game = undefined;
   }
 
   setAuthUser(user: AuthUser) {
@@ -88,6 +103,7 @@ class AuthStore {
     this._role = user.role;
     this._status = user.status;
     this._updated_at = user.updated_at;
+    this._favorite_game = user.favorite_game;
   }
 
   /* ============= Getter & Setter ==============*/
@@ -202,6 +218,14 @@ class AuthStore {
 
   set loading(value: boolean) {
     this._loading = value;
+  }
+
+  get favorite_game(): UserFavoriteGame[] | undefined {
+    return this._favorite_game;
+  }
+
+  set favorite_game(games: UserFavoriteGame[] | undefined) {
+    this._favorite_game = games;
   }
 }
 

@@ -1,8 +1,12 @@
 import {observer} from "mobx-react-lite";
-import {gql, useQuery} from "@apollo/client";
-import {useEffect, useState} from "react";
+import React, {useCallback, useState} from "react";
 import MyTournamentList from "./MyTournamentList";
+import {useSearchOwnedTournament, useSearchJoinedTournament} from "../../../../../../hooks/myProfile/useMyProfile"
 import s from "./MyTournament.module.sass"
+import {Button, Col, Input, Row} from "antd";
+import {debounce} from "lodash";
+import Link from "next/link";
+import AuthStore from "../../../../../Auth/AuthStore";
 
 export type Tournament = {
   uid: string,
@@ -14,87 +18,78 @@ export type Tournament = {
   tournament_status?: string,
 }
 
-const GET_OWNED_TOURNAMENT = gql`
-  query {
-    getOwnedTournament {
-      uid
-      name
-      thumbnail
-      start_at
-      participants
-      team_participated
-      tournament_status
-    }
-  }
-`;
-
-const SEARCH_OWNED_TOURNAMENT = gql`
-  query($value: String!) {
-    searchOwnerTournament(value: $value) {
-      uid
-      name
-      thumbnail
-      start_at
-      participants
-      team_participated
-      tournament_status
-    }
-  }
-`;
-
-const GET_JOINED_TOURNAMENT = gql`
-  query {
-    getJoinedTournament {
-      uid
-      name
-      thumbnail
-      start_at
-      participants
-      team_participated
-      tournament_status
-    }
-  }
-`;
-
 const MyTournament = () => {
-  const {
-    loading: getOwnedTournamentLoading,
-    error: getOwnedTournamentError,
-    data: getOwnedTournamentData
-  } = useQuery(GET_OWNED_TOURNAMENT);
-  const {
-    loading: getJoinedTournamentLoading,
-    error: getJoinedTournamentError,
-    data: getJoinedTournamentData
-  } = useQuery(GET_JOINED_TOURNAMENT);
-  // const [searchOwnedTournament, { data }] = useQuery(SEARCH_OWNED_TOURNAMENT);
-  const [ownedTournament, setOwnedTournament] = useState<Tournament[]>([]);
-  const [joinedTournament, setJoinedTournament] = useState<Tournament[]>([]);
+  const userInfo = AuthStore;
+  const [keywordOwned, setKeywordOwned] = useState('');
+  const [keywordJoined, setKeywordJoined] = useState('');
+  const { ownedTournamentData } = useSearchOwnedTournament({
+    user_id: `${userInfo.id}`,
+    value: keywordOwned,
+  });
+  const { joinedTournamentData } = useSearchJoinedTournament({
+    user_id: `${userInfo.id}`,
+    value: keywordJoined,
+  });
 
-  const handleSearch = (value: string) => {
-    console.log(value);
+  const handleSearchOwnedTournament = (event: React.FormEvent<HTMLInputElement>) => {
+    debouncedInputTyping(setKeywordOwned, event.currentTarget.value);
   };
-
-  useEffect(() => {
-    if (getOwnedTournamentData?.getOwnedTournament) {
-      setOwnedTournament(getOwnedTournamentData.getOwnedTournament)
-    }
-  }, [getOwnedTournamentData]);
-
-  useEffect(() => {
-    if (getJoinedTournamentData?.getOwnedTournament) {
-      setJoinedTournament(getJoinedTournamentData.getOwnedTournament)
-    }
-  }, [getJoinedTournamentData]);
+  const handleSearchJoinedTournament = (event: React.FormEvent<HTMLInputElement>) => {
+    debouncedInputTyping(setKeywordJoined, event.currentTarget.value);
+  };
+  const debouncedInputTyping = useCallback(
+    debounce((fn: React.Dispatch<React.SetStateAction<string>>, value: string) => {
+      let keyword = '';
+      if (value.trim().length > 0) {
+        keyword = value;
+      }
+      console.log(keyword)
+      fn(keyword);
+    }, 500),
+    []
+  );
 
   return (
     <div>
-      {ownedTournament.length > 0 && (
-        <MyTournamentList data={ownedTournament} search={handleSearch} title="My owned tournaments" />
-      )}
-      {joinedTournament.length > 0 && (
-        <MyTournamentList data={joinedTournament} search={handleSearch} title="Joined tournaments" />
-      )}
+      <Button className="mb-5">
+        <Link href="/tournament/create">Create my tournament</Link>
+      </Button>
+      <div className={s.myTournament}>
+        <Row>
+          <Col span={24} lg={{ span: 20 }}>
+            <h2>My owned tournament</h2>
+          </Col>
+          <Col span={24} lg={{ span: 4 }}>
+            <div className="flex justify-end">
+              <Input
+                placeholder="Search"
+                onChange={handleSearchOwnedTournament}
+              />
+            </div>
+          </Col>
+        </Row>
+        {(ownedTournamentData?.searchOwnerTournament && ownedTournamentData?.searchOwnerTournament.length > 0) ? (
+          <MyTournamentList data={ownedTournamentData.searchOwnerTournament} type="owned" />
+        ) : (<div>Don&apos;t own any tournaments yet</div>)}
+      </div>
+      <div className={s.myTournament}>
+        <Row>
+          <Col span={24} lg={{ span: 20 }}>
+            <h2>Joined tournament</h2>
+          </Col>
+          <Col span={24} lg={{ span: 4 }}>
+            <div className="flex justify-end">
+              <Input
+                placeholder="Search"
+                onChange={handleSearchJoinedTournament}
+              />
+            </div>
+          </Col>
+        </Row>
+        {(joinedTournamentData?.searchJoinedTournament && joinedTournamentData?.searchJoinedTournament.length > 0) ? (
+          <MyTournamentList data={joinedTournamentData.searchJoinedTournament} type="joined" />
+        ) : (<div>Haven&apos;t participated in any tournament yet.</div>)}
+      </div>
     </div>
   )
 }

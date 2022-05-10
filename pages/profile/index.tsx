@@ -2,7 +2,7 @@ import s from "./profile.module.sass";
 import { useState } from "react";
 import InfoMyProfile from "components/ui/tournament/myProfile/infoProfile/Info";
 import EditProfile from "components/ui/tournament/myProfile/editMyProfile/EditProfile";
-import ContentTournament from "components/ui/tournament/myProfile/content/ContentTournament";
+import ContentMyProfile from "../../components/ui/tournament/myProfile/content/ContentMyProfile";
 
 const MyProfile = () => {
 	const [isShowEdit, setIsShowEdit] = useState(false);
@@ -15,7 +15,7 @@ const MyProfile = () => {
 			<InfoMyProfile click={handleClick} />
 
 			<div className="lucis-container">
-				{isShowEdit ? <EditProfile /> : <ContentTournament />}
+				{isShowEdit ? <EditProfile /> : <ContentMyProfile isOwner />}
 			</div>
 		</div>
 	);

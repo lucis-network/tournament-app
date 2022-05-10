@@ -39,16 +39,35 @@ export default class AuthService {
             address
             code
             email
+            favorite_game {
+              id
+              user_id
+              game_uid
+              enable_favorite
+              game {
+                uid
+                name
+                logo
+                desc
+              }
+              user {
+                id
+              }
+            }
             profile {
               full_name
               twitter
               facebook
               discord
               telegram
+              twitch
               phone
               avatar
               user_name
               country_code
+              display_name
+              biography
+              cover
             }
           }
         }
@@ -90,6 +109,21 @@ export default class AuthService {
               ref_code
               google_id
               status
+              favorite_game {
+                id
+                user_id
+                game_uid
+                enable_favorite
+                game {
+                  uid
+                  name
+                  logo
+                  desc
+                }
+                user {
+                  id
+                }
+              }
               profile {
                 user_id
                 given_name
@@ -99,6 +133,15 @@ export default class AuthService {
                 cover
                 user_name
                 country_code
+                twitter
+                facebook
+                discord
+                telegram
+                twitch
+                user_name
+                display_name
+                biography
+                cover
               }
             }
           }
@@ -142,6 +185,21 @@ export default class AuthService {
               ref_code
               google_id
               status
+              favorite_game {
+                id
+                user_id
+                game_uid
+                enable_favorite
+                game {
+                  uid
+                  name
+                  logo
+                  desc
+                }
+                user {
+                  id
+                }
+              }
               profile {
                 user_id
                 given_name
@@ -151,6 +209,15 @@ export default class AuthService {
                 cover
                 user_name
                 country_code
+                twitter
+                facebook
+                discord
+                telegram
+                twitch
+                user_name
+                display_name
+                biography
+                cover
               }
             }
           }

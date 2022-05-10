@@ -1,11 +1,12 @@
 import { gql } from "@apollo/client";
 
-export const GET_MY_TEAM = gql`
-	query getMyTeam {
-		getMyTeam {
+export const GET_USER_TEAMS = gql`
+	query ($user_id: String!) {
+		getAllTeam(user_id: $user_id) {
 			team_uid
 			team_name
 			team_avatar
+			participant
 			team {
 				user_id
 				display_name

@@ -1,18 +1,20 @@
 import s from "./played.module.sass"
-import {Tournament} from "../../../tournament/myProfile/tabsitem/myTournament";
 import {Button, Image} from "antd";
 import Link from "next/link";
+import {TTournament} from "../../../../../src/generated/graphql";
 
 type CardPlayedProps = {
-  tournament: Tournament,
+  tournament: TTournament,
+  type: string,
   canEdit: boolean,
 };
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-export default function CardPlayed({ tournament, canEdit = false }: CardPlayedProps) {
+
+export default function CardPlayed({ tournament, type, canEdit = false }: CardPlayedProps) {
   const tempDate = new Date(tournament?.start_at);
   const startAt = `${tempDate.getDate()} ${months[tempDate.getMonth()]} ${tempDate.getHours()}:${tempDate.getMinutes()}`;
-  console.log(tournament)
+
   return (
     <div className={s.container_card}>
       <div className={s.card_avt}>
@@ -28,14 +30,18 @@ export default function CardPlayed({ tournament, canEdit = false }: CardPlayedPr
       <div className={s.daily}>{tournament?.name}</div>
       <div className={s.member}>{`${tournament?.team_participated}/${tournament?.participants}`}</div>
       <div className={s.status}>{tournament?.tournament_status}</div>
-      {canEdit && (
+      {(canEdit && type === 'owned') && (
         <div>
           <Button>
-            <Link href="/tournament/create">Edit</Link>
+            <Link href={`/tournament/${tournament?.uid}/edit`}>Edit</Link>
           </Button>
         </div>
       )}
-
+      {(canEdit && type === 'joined') && (
+        <div>
+          <span className={s.claimStatus}>{tournament?.claim_prize_pool_status}</span>
+        </div>
+      )}
     </div>
   )
 }

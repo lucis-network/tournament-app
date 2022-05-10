@@ -58,7 +58,7 @@ export default observer(function Header(props: Props) {
                 </Link>
                 {"IS_TESTNET" && <p>Testnet</p>}
               </Col>
-              <Col span={16}>
+              <Col span={14}>
                 <ul className={s.block_item_menu}>
                   <li>TOURNAMENT</li>
                   <li>FAQ</li>
@@ -67,7 +67,7 @@ export default observer(function Header(props: Props) {
                   <li>SOCIAL</li>
                 </ul>
               </Col>
-              <Col span={4}>
+              <Col span={6} className={`${s.loginCol} justify-end`}>
                 <ul className="flex gap-4 justify-between items-center m-0">
                   <li>
                     {AuthStore.isLoggedIn ? (
