@@ -1,28 +1,39 @@
 import { makeAutoObservable } from "mobx";
 import { isClient } from "../../utils/DOM";
+import {UserFavoriteGame} from "../../src/generated/graphql";
 
 export type AuthUser = {
-	id?: number;
-	code?: string;
-	token?: string;
-	email?: string;
-	facebook_id?: string;
-	google_id?: string;
-	name?: string;
-	profile?: UserProfile;
-	ref_code?: string;
-	role?: UserRole;
-	status?: string;
-	updated_at?: string;
+  id?: number;
+  code?: string;
+  token?: string;
+  email?: string;
+  facebook_id?: string;
+  google_id?: string;
+  name?: string;
+  profile?: UserProfile;
+  ref_code?: string;
+  role?: UserRole;
+  status?: string;
+  updated_at?: string;
+  favorite_game?: UserFavoriteGame[];
 };
 
 type UserProfile = {
-	user_id?: number;
-	user_name?: string | null;
-	country_code?: string | null;
-	avatar?: string;
-	display_name?: string;
-};
+  user_id?: number;
+  user_name?: string | null;
+  country_code?: string | null;
+  display_name?: string;
+  biography?: string;
+  avatar?: string;
+  cover?: string;
+  totalEarning?: number;
+  twitter?: string;
+  facebook?: string;
+  telegram?: string;
+  twitch?: string;
+  discord?: string;
+  youtube?: string;
+}
 
 type UserRole = {
 	Admin?: string;
@@ -38,21 +49,22 @@ type AuthWallet = {
 
 export type TAuthInfo = AuthUser | AuthWallet;
 
-class AuthStore {
-	private _id?: number;
-	private _code?: string;
-	private _token?: string;
-	private _email?: string;
-	private _facebook_id?: string;
-	private _google_id?: string;
-	private _name?: string;
-	private _profile?: UserProfile;
-	private _ref_code?: string;
-	private _role?: UserRole;
-	private _status?: string;
-	private _updated_at?: string;
-	private _balance?: string;
-	private _loading: boolean = false;
+class AuthStore implements AuthUser {
+  private _id?: number;
+  private _code?: string;
+  private _token?: string;
+  private _email?: string;
+  private _facebook_id?: string;
+  private _google_id?: string;
+  private _name?: string;
+  private _profile?: UserProfile;
+  private _ref_code?: string;
+  private _role?: UserRole;
+  private _status?: string;
+  private _updated_at?: string;
+  private _balance?: string;
+  private _loading: boolean = false;
+  private _favorite_game?: UserFavoriteGame[];
 
 	public get isLoggedIn(): boolean {
 		return !!this._token;
@@ -62,35 +74,37 @@ class AuthStore {
 		makeAutoObservable(this);
 	}
 
-	resetStates() {
-		this._id = undefined;
-		this._code = undefined;
-		this._token = undefined;
-		this._email = undefined;
-		this._facebook_id = undefined;
-		this._google_id = undefined;
-		this._name = undefined;
-		this._profile = undefined;
-		this._ref_code = undefined;
-		this._role = undefined;
-		this._status = undefined;
-		this._updated_at = undefined;
-	}
+  resetStates() {
+    this._id = undefined;
+    this._code = undefined;
+    this._token = undefined;
+    this._email = undefined;
+    this._facebook_id = undefined;
+    this._google_id = undefined;
+    this._name = undefined;
+    this._profile = undefined;
+    this._ref_code = undefined;
+    this._role = undefined;
+    this._status = undefined;
+    this._updated_at = undefined;
+    this._favorite_game = undefined;
+  }
 
-	setAuthUser(user: AuthUser) {
-		this._id = user.id;
-		this._code = user.code;
-		this._token = user.token;
-		this._email = user.email;
-		this._facebook_id = user.facebook_id;
-		this._google_id = user.google_id;
-		this._name = user.name;
-		this._profile = user.profile;
-		this._ref_code = user.ref_code;
-		this._role = user.role;
-		this._status = user.status;
-		this._updated_at = user.updated_at;
-	}
+  setAuthUser(user: AuthUser) {
+    this._id = user.id;
+    this._code = user.code;
+    this._token = user.token;
+    this._email = user.email;
+    this._facebook_id = user.facebook_id;
+    this._google_id = user.google_id;
+    this._name = user.name;
+    this._profile = user.profile;
+    this._ref_code = user.ref_code;
+    this._role = user.role;
+    this._status = user.status;
+    this._updated_at = user.updated_at;
+    this._favorite_game = user.favorite_game;
+  }
 
 	/* ============= Getter & Setter ==============*/
 
@@ -202,9 +216,17 @@ class AuthStore {
 		return this._loading;
 	}
 
-	set loading(value: boolean) {
-		this._loading = value;
-	}
+  set loading(value: boolean) {
+    this._loading = value;
+  }
+
+  get favorite_game(): UserFavoriteGame[] | undefined {
+    return this._favorite_game;
+  }
+
+  set favorite_game(games: UserFavoriteGame[] | undefined) {
+    this._favorite_game = games;
+  }
 }
 
 const s = new AuthStore();

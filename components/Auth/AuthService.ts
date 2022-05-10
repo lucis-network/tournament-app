@@ -30,33 +30,50 @@ function delay(time: number) {
 }
 
 export default class AuthService {
-	async fetchUserData(): Promise<AuthUser> {
-		const res = await apoloClient.mutate({
-			mutation: gql`
-				query {
-					me {
-						id
-						address
-						code
-						email
-						profile {
-							full_name
-							twitter
-							facebook
-							discord
-							telegram
-							phone
-							avatar
-							user_name
-							country_code
-							avatar
-							display_name
-						}
-					}
-				}
-			`,
-			variables: {},
-		});
+  async fetchUserData(): Promise<AuthUser> {
+    const res = await apoloClient.mutate({
+      mutation: gql`
+        query {
+          me {
+            id
+            address
+            code
+            email
+            favorite_game {
+              id
+              user_id
+              game_uid
+              enable_favorite
+              game {
+                uid
+                name
+                logo
+                desc
+              }
+              user {
+                id
+              }
+            }
+            profile {
+              full_name
+              twitter
+              facebook
+              discord
+              telegram
+              twitch
+              phone
+              avatar
+              user_name
+              country_code
+              display_name
+              biography
+              cover
+            }
+          }
+        }
+      `,
+      variables: {},
+    });
 
 		// .req({
 		//   method: 'GET',
@@ -78,38 +95,62 @@ export default class AuthService {
 		return user;
 	}
 
-	private async loginByGoogle(token: string): Promise<AuthUser> {
-		const loginRes = await apoloClient.mutate({
-			mutation: gql`
-				mutation loginGoogle($token: String!) {
-					loginGoogle(token: $token) {
-						token
-						user {
-							id
-							email
-							role
-							code
-							ref_code
-							google_id
-							status
-							profile {
-								user_id
-								given_name
-								family_name
-								phone
-								avatar
-								cover
-								user_name
-								country_code
-							}
-						}
-					}
-				}
-			`,
-			variables: {
-				token,
-			},
-		});
+  private async loginByGoogle(token: string): Promise<AuthUser> {
+    const loginRes = await apoloClient.mutate({
+      mutation: gql`
+        mutation loginGoogle($token: String!) {
+          loginGoogle(token: $token) {
+            token
+            user {
+              id
+              email
+              role
+              code
+              ref_code
+              google_id
+              status
+              favorite_game {
+                id
+                user_id
+                game_uid
+                enable_favorite
+                game {
+                  uid
+                  name
+                  logo
+                  desc
+                }
+                user {
+                  id
+                }
+              }
+              profile {
+                user_id
+                given_name
+                family_name
+                phone
+                avatar
+                cover
+                user_name
+                country_code
+                twitter
+                facebook
+                discord
+                telegram
+                twitch
+                user_name
+                display_name
+                biography
+                cover
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        token,
+      },
+    });
 
 		const u = loginRes.data.loginGoogle.user;
 		console.log("u", loginRes.data.loginGoogle);
@@ -130,38 +171,62 @@ export default class AuthService {
 		return user;
 	}
 
-	private async loginByFacebook(accessToken: string): Promise<AuthUser> {
-		const loginRes = await apoloClient.mutate({
-			mutation: gql`
-				mutation loginFacebook($accessToken: String!) {
-					loginFacebook(accessToken: $accessToken) {
-						token
-						user {
-							id
-							email
-							role
-							code
-							ref_code
-							google_id
-							status
-							profile {
-								user_id
-								given_name
-								family_name
-								phone
-								avatar
-								cover
-								user_name
-								country_code
-							}
-						}
-					}
-				}
-			`,
-			variables: {
-				accessToken,
-			},
-		});
+  private async loginByFacebook(accessToken: string): Promise<AuthUser> {
+    const loginRes = await apoloClient.mutate({
+      mutation: gql`
+        mutation loginFacebook($accessToken: String!) {
+          loginFacebook(accessToken: $accessToken) {
+            token
+            user {
+              id
+              email
+              role
+              code
+              ref_code
+              google_id
+              status
+              favorite_game {
+                id
+                user_id
+                game_uid
+                enable_favorite
+                game {
+                  uid
+                  name
+                  logo
+                  desc
+                }
+                user {
+                  id
+                }
+              }
+              profile {
+                user_id
+                given_name
+                family_name
+                phone
+                avatar
+                cover
+                user_name
+                country_code
+                twitter
+                facebook
+                discord
+                telegram
+                twitch
+                user_name
+                display_name
+                biography
+                cover
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        accessToken,
+      },
+    });
 
 		const u = loginRes.data.loginFacebook.user;
 		const tokenID = loginRes.data.loginFacebook.token;
