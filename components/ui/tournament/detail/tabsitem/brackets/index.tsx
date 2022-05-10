@@ -3,7 +3,7 @@ import s from "./index.module.sass";
 import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
 import { useEffect, useState } from "react";
 import SingleBracket from "./SingleBracket";
-import RoundStore from "src/store/RoundStore";
+import RoundStore from "src/store/SingleRoundStore";
 import FormItemLabel from "antd/lib/form/FormItemLabel";
 import { observer } from "mobx-react-lite";
 import { BracketUiProps, createRounds } from "./BracketUtil";
@@ -29,7 +29,7 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
         bracketRounds: dataBracket.bracketRounds,
         listTeam,
       });
-      RoundStore.singleRounds = singleRounds;
+      RoundStore.rounds = singleRounds;
     } else {
       const upper = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "UPPER");
       const lower = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "LOWER");
