@@ -1,6 +1,7 @@
 import { AuthUser } from "./AuthStore";
 import { isClient } from "../../utils/DOM";
 import { setAuthToken } from "../../utils/apollo_client";
+import { isClientDevMode } from "../../utils/Env";
 
 // ----- Solution: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
 function toBinary(string: string) {
@@ -59,4 +60,12 @@ export function debug__forceToken_LocalAuthInfo(
 if (isClient) {
   // @ts-ignore
   window.tmp__debug__forceToken_LocalAuthInfo = debug__forceToken_LocalAuthInfo;
+}
+
+if (isClientDevMode) {
+  // @ts-ignore
+  window.tmp__encode = {
+    toBinary,
+    fromBinary,
+  }
 }
