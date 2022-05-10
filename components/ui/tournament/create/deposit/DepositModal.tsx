@@ -13,6 +13,7 @@ import NotifyModal from "../notify/notifyModal";
 import { LoadingOutlined } from "@ant-design/icons";
 import { fomatNumber } from "utils/Number";
 import TournamentService from "components/service/tournament/TournamentService";
+import { useGetDepositContract } from "hooks/tournament/useCreateTournament";
 
 type Props = {
   tournamentModal: any;
@@ -24,6 +25,10 @@ export default observer(function DepositModal(props: Props) {
   const isModalVisible = TournamentStore.depositModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.depositModalVisible = v);
+
+  const { getDepositContract } = useGetDepositContract({});
+
+  console.log(getDepositContract);
 
   const handleOk = async () => {
     if (!ConnectWalletStore.address) {
@@ -64,10 +69,11 @@ export default observer(function DepositModal(props: Props) {
         ConnectWalletStore_NonReactiveData.web3Provider
       );
       const total = getTotalAmount();
-      const result = await ethersService.transferFT(
-        "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
+      const result = await ethersService.initTournament(
+        "",
+        total,
         BUSD,
-        total
+        getDepositContract?.address
       );
       return result;
     }

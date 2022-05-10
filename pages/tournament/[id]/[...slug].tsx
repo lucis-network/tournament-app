@@ -93,8 +93,9 @@ const TournamentDetail = () => {
     currency,
     user,
     regions,
-	additionPrize,
-	cache_tournament
+    additionPrize,
+    cache_tournament,
+    brackets,
   } = dataTournamentDetail;
 
   return (
@@ -212,7 +213,10 @@ const TournamentDetail = () => {
                 loadingBracket={loadingBracket}
               />
             </TabPane>
-            <TabPane tab={`Participants (${cache_tournament?.team_participated}/${team_size})`} key="4">
+            <TabPane
+              tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
+              key="4"
+            >
               <TableParticipant
                 dataParticipants={dataParticipants}
                 loading={loadingParticipant}
@@ -258,7 +262,7 @@ const TournamentDetail = () => {
           closeModal={() => closeModal("Invite or Share")}
           status={isPopupShare}
         />
-        
+
         <ConnectWalletModal />
         <ClaimResultModal totalPrizePool={totalPrizePool} currency={currency} />
       </div>

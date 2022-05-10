@@ -57,6 +57,19 @@ export function useCurrencies(props: Props) {
   };
 }
 
+export function useGetDepositContract(props: Props) {
+  const { loading, error, data } = useQuery(DEPOSIT_CONTRACT, {
+    variables: {},
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    getDepositContract: data?.getDepositContract,
+  };
+}
+
 const CHOOSE_GAME = gql`
   query ($name: String!) {
     getGame(name: $name) {
@@ -102,6 +115,17 @@ const CURRENCIES = gql`
       name
       symbol
       address
+    }
+  }
+`;
+
+const DEPOSIT_CONTRACT = gql`
+  query {
+    getDepositContract {
+      uid
+      address
+      owner
+      chain_symbol
     }
   }
 `;

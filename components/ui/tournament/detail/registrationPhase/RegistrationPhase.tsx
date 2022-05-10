@@ -90,17 +90,17 @@ export default observer(function RegistrationPhase(props: Props) {
   };
 
   const claimToken = async () => {
-    if (!ConnectWalletStore.address) {
-      AuthBoxStore.connectModalVisible = true;
-    } else {
-      let result = await claim();
-      if (!result?.error) {
-        TournamentStore.claimResultModalVisible = true;
-      } else {
-        //@ts-ignore
-        message.error(result?.error?.message);
-      }
-    }
+    // if (!ConnectWalletStore.address) {
+    //   AuthBoxStore.connectModalVisible = true;
+    // } else {
+    //   let result = await claim();
+    //   if (!result?.error) {
+    //     TournamentStore.claimResultModalVisible = true;
+    //   } else {
+    //     //@ts-ignore
+    //     message.error(result?.error?.message);
+    //   }
+    // }
   };
 
   const claim = async () => {
@@ -110,12 +110,12 @@ export default observer(function RegistrationPhase(props: Props) {
         ConnectWalletStore_NonReactiveData.web3Provider
       );
 
-      const txHash = await ethersService.initTournament(
-        1,
-        "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450",
-        "0xb3097df87251D445504FA36e7E1A25079c3B49a7"
-      );
-      return txHash;
+      // const txHash = await ethersService.initTournament(
+      //   1,
+      //   "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450",
+      //   "0xb3097df87251D445504FA36e7E1A25079c3B49a7"
+      // );
+      // return txHash;
     }
   };
 

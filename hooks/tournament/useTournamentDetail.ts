@@ -163,6 +163,10 @@ const GET_TOURNAMENT_DETAIL = gql`
         team_participated
         tournament_uid
       }
+      brackets {
+        start_at
+        status
+      }
     }
   }
 `;

@@ -223,7 +223,7 @@ export default class EtherContract {
 
   async approveToken(tokenAddress: string, spender: string, amount: number) {
     const contract = await this.getContractWithSignerErc20(tokenAddress);
-    const decimal = await contract.decimals();
+    const decimal = contract.decimals();
 
     const totalAmount = new BigNumber(amount * 2)
       .multipliedBy(Math.pow(10, decimal))
@@ -233,7 +233,7 @@ export default class EtherContract {
   }
 
   async initTournament(
-    // tournamentUid: string,
+    tournamentUid: string,
     amount: number,
     paymentToken: string,
     contractAddress: string
@@ -250,22 +250,19 @@ export default class EtherContract {
       const totalAmount = new BigNumber(amount)
         .multipliedBy(Math.pow(10, 18))
         .toFormat({ groupSeparator: "" });
-      console.log("totalAmount", totalAmount);
 
-      //contract.approve(spender, amount);
       await this.approveToken(paymentToken, contractAddress, amount);
 
       await new Promise((resolve) => setTimeout(resolve, 500));
 
       const transaction = await contract.initTournament(
-        "cl2yabn5w22030imjdmz2324r",
-        amount,
+        tournamentUid,
+        totalAmount,
         paymentToken
       );
       console.log(transaction);
       const txHash = transaction.hash;
       result.txHash = txHash;
-
     } catch (error) {
       console.log("{EtherContract.initTournament} error: ", error);
 
