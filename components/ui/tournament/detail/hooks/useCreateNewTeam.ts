@@ -1,10 +1,10 @@
 import {
 	CREATE_TEAM,
+	GET_MY_TEAM,
 	SEARCH_MEMBER,
-	SEARCH_TEAM,
 } from "../../../common/tabsItem/myTeamDetail/myTeamService";
-import { useMutation, useQuery } from "@apollo/client";
-import { useCallback, useState } from "react";
+import { useMutation, useLazyQuery, useQuery } from "@apollo/client";
+import { useCallback, useEffect, useState } from "react";
 
 export interface TeamType extends Record<any, any> {
 	user_id: number;
@@ -29,24 +29,21 @@ const UseCreateNewTeam = (profile: any) => {
 	const [searchMemberValue, setSearchMemberValue] = useState<string>("");
 	const [error, setError] = useState<Record<string, string>>({});
 
-	const {
-		data: rawSearchMember,
-		loading: memberLoading,
-		refetch: searchMember,
-	} = useQuery(SEARCH_MEMBER, {
-		variables: {
-			teamId: "",
-			value: "",
-		},
-	});
+	const [searchMember, { data: rawSearchMember, loading: memberLoading }] =
+		useLazyQuery(SEARCH_MEMBER, {
+			variables: {
+				teamId: "",
+				value: "",
+			},
+		});
 
 	const {
 		data: rawSearchTeam,
 		loading: teamLoading,
-		refetch: searchTeam,
-	} = useQuery(SEARCH_TEAM, {
+		refetch,
+	} = useQuery(GET_MY_TEAM, {
 		variables: {
-			name: "",
+			user_id: profile?.user_id,
 		},
 	});
 
@@ -59,7 +56,7 @@ const UseCreateNewTeam = (profile: any) => {
 		},
 		[profile?.user_id] as string[]
 	);
-	const teamList = rawSearchTeam?.searchTeam as MyTeamType[];
+	const teamList = rawSearchTeam?.getMyTeam as MyTeamType[];
 	const memberList = (rawSearchMember?.searchMember as TeamType[])?.filter(
 		(member) => !convertMemberId?.some((key: any) => key === member.user_id)
 	);
@@ -83,8 +80,10 @@ const UseCreateNewTeam = (profile: any) => {
 		const searchValue = e.currentTarget.value;
 		setSearchMemberValue(searchValue);
 		searchMember({
-			teamId,
-			value: searchValue,
+			variables: {
+				teamId,
+				value: searchValue,
+			},
 		});
 	};
 
@@ -193,7 +192,7 @@ const UseCreateNewTeam = (profile: any) => {
 					},
 				},
 				onCompleted: () => {
-					searchTeam({ name: "" });
+					refetch();
 				},
 			});
 			setReset(true);
@@ -214,6 +213,13 @@ const UseCreateNewTeam = (profile: any) => {
 					: "Your team must have at least 2 members",
 		});
 	};
+
+	useEffect(() => {
+		if (profile?.user_id) {
+			searchMember();
+			refetch();
+		}
+	}, [profile?.user_id, refetch, searchMember]);
 
 	const loading = memberLoading && teamLoading;
 

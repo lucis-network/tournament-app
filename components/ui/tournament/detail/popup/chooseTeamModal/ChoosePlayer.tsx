@@ -3,6 +3,7 @@ import { Checkbox } from "antd";
 import { TeamType } from "../../hooks/useCreateNewTeam";
 import { CheckboxValueType } from "antd/lib/checkbox/Group";
 import s from "./TeamModal.module.sass";
+import { useLazyQuery } from "@apollo/client";
 
 interface ChoosePlayerProps {
 	draftTeam: TeamType[];
