@@ -1482,6 +1482,7 @@ export type Query = {
   checkUserName?: Maybe<Scalars['Boolean']>;
   currencies?: Maybe<Array<CurrencyGql>>;
   donateHistory?: Maybe<Array<DonateHistory>>;
+  earningHistory?: Maybe<Array<EarningHistory>>;
   getAllTournament: Array<TournamentGql>;
   getBracket?: Maybe<BracketGql>;
   getClosedTournament?: Maybe<Array<TournamentGql>>;
@@ -1496,6 +1497,7 @@ export type Query = {
   getSpotlightTournament?: Maybe<Array<GTournament>>;
   getTeam?: Maybe<Array<BracketTeamMembers>>;
   getTournamentDetail?: Maybe<TournamentGql>;
+  getTournamentListRank?: Maybe<Array<TournamentListRank>>;
   getTournamentParticipants?: Maybe<Array<Team>>;
   getTournamentPrizing?: Maybe<Array<Prize>>;
   getTournamentReferees?: Maybe<Array<Referee>>;
@@ -1560,6 +1562,11 @@ export type QueryGetTeamArgs = {
 
 
 export type QueryGetTournamentDetailArgs = {
+  tournament_uid: Scalars['String'];
+};
+
+
+export type QueryGetTournamentListRankArgs = {
   tournament_uid: Scalars['String'];
 };
 
@@ -2963,6 +2970,16 @@ export type TournamentLeaderBoardWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
 };
 
+export type TournamentListRank = {
+  __typename?: 'TournamentListRank';
+  bracket_team_uid?: Maybe<Scalars['String']>;
+  donated?: Maybe<Scalars['Float']>;
+  prize?: Maybe<Scalars['Float']>;
+  rank?: Maybe<Scalars['Int']>;
+  team_avatar?: Maybe<Scalars['String']>;
+  team_name?: Maybe<Scalars['String']>;
+};
+
 export type TournamentRank = {
   __typename?: 'TournamentRank';
   created_at: Scalars['DateTime'];
@@ -3545,7 +3562,6 @@ export type UserGraphql = {
   claim?: Maybe<Array<ClaimTransactions>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
-  earningHistory?: Maybe<Array<EarningHistory>>;
   email?: Maybe<Scalars['String']>;
   facebook_id?: Maybe<Scalars['String']>;
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
@@ -3560,7 +3576,6 @@ export type UserGraphql = {
   sponsorTransactions?: Maybe<Array<SponsorTransaction>>;
   status: UserStatus;
   teamMembers?: Maybe<Array<TeamMember>>;
-  totalEarning?: Maybe<Scalars['Float']>;
   tournament?: Maybe<Array<Tournament>>;
   tournamentSubscriber?: Maybe<Array<TournamentSubscriber>>;
   updated_at: Scalars['DateTime'];

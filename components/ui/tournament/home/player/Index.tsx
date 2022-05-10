@@ -4,9 +4,9 @@ import { Button } from "antd";
 type Props = {};
 
 const listData = [
-  { id: 1, position: 1, name: "Top1" },
-  { id: 2, position: 2, name: "Top2" },
-  { id: 3, position: 3, name: "Top3" },
+  { id: 1, position: 1, name: "Rosa Ji" },
+  { id: 2, position: 2, name: "Rosa Ji" },
+  { id: 3, position: 3, name: "Rosa Ji" },
 ];
 
 export default function PlayerHome() {
@@ -18,7 +18,7 @@ export default function PlayerHome() {
           <CardPlayer data={listData} />
         </div>
         <div className={s.btn_see_all}>
-          <Button type="primary">See All</Button>
+          <Button type="primary">SEE ALL</Button>
         </div>
       </div>
     </div>

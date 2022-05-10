@@ -15,32 +15,12 @@ export default function SilderBanner() {
     <Carousel autoplay>
       <div>
         <div className={s.im_conver}>
+          <div className={s.im_banner} style={{ backgroundImage: 'url(assets/Banner/im_slider_banner.png)' }}>
+          </div>
           <div className={s.title}>
-            <p>{element}</p>
-            <div className={s.detail}>
-              <div>
-                <p>Prize pool</p>
-                <div className={s.total}>
-                  <img src="/assets/home/ic_nft.png" alt="icon" />
-                  <span>10,000 USDT</span>
-                </div>
-              </div>
-              <GradientButton
-                type={1}
-                className={`text-white text-16px leading-28px py-2 ${s.btn}`}
-                style={{ whiteSpace: "nowrap", fontWeight: "600" }}
-              >
-                JOIN NOW
-              </GradientButton>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* slider 2 */}
-      <div>
-        <div>
-          <div className={s.im_conver}>
-            <div className={s.title}>
+            <div style={{ position: "relative" }}>
+              <div className={s.line}></div>
+              <div className={s.line}></div>
               <p>{element}</p>
               <div className={s.detail}>
                 <div>
@@ -62,58 +42,7 @@ export default function SilderBanner() {
           </div>
         </div>
       </div>
-      {/* slider 3 */}
-      <div>
-        <div>
-          <div className={s.im_conver}>
-            <div className={s.title}>
-              <p>{element}</p>
-              <div className={s.detail}>
-                <div>
-                  <p>Prize pool</p>
-                  <div className={s.total}>
-                    <img src="/assets/home/ic_nft.png" alt="icon" />
-                    <span>10,000 USDT</span>
-                  </div>
-                </div>
-                <GradientButton
-                  type={1}
-                  className={`text-white text-16px leading-28px py-2 ${s.btn}`}
-                  style={{ whiteSpace: "nowrap", fontWeight: "600" }}
-                >
-                  JOIN NOW
-                </GradientButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* slider 4 */}
-      <div>
-        <div>
-          <div className={s.im_conver}>
-            <div className={s.title}>
-              <p>{element}</p>
-              <div className={s.detail}>
-                <div>
-                  <p>Prize pool</p>
-                  <div className={s.total}>
-                    <img src="/assets/home/ic_nft.png" alt="icon" />
-                    <span>10,000 USDT</span>
-                  </div>
-                </div>
-                <GradientButton
-                  type={1}
-                  className={`text-white text-16px leading-28px py-2 ${s.btn}`}
-                  style={{ whiteSpace: "nowrap", fontWeight: "600" }}
-                >
-                  JOIN NOW
-                </GradientButton>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </Carousel>
   );
 }
