@@ -51,7 +51,7 @@ export default observer(function Header(props: Props) {
               justify="space-between"
               className={`container lucis-container items-center py-20px px-0 relative z-10 `}
             >
-              <Col span={4} className={s.logo}>
+              <Col span={2} className={s.logo}>
                 <Link href="/" passHref>
                   <a>
                     <Image src={Logo} alt="logo" priority />
@@ -62,7 +62,7 @@ export default observer(function Header(props: Props) {
                   ("IS_TESTNET" == "true") && <p>Testnet</p>
                 }
               </Col>
-              <Col span={16}>
+              <Col span={18}>
                 <ul className={s.block_item_menu}>
                   <li>TOURNAMENT</li>
                   <li>FAQ</li>
