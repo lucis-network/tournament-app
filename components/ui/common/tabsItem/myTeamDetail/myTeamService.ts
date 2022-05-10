@@ -10,8 +10,8 @@ export const GET_USER_TEAMS = gql`
 			team {
 				user_id
 				display_name
-				avatar
 				is_leader
+				avatar
 			}
 		}
 	}
@@ -79,8 +79,8 @@ export const SEARCH_MEMBER = gql`
 `;
 
 export const SEARCH_TEAM = gql`
-	query searchTeam($name: String!) {
-		searchTeam(name: $name) {
+	query searchTeam($name: String!, $user_id: String!) {
+		searchTeam(name: $name, user_id: $user_id) {
 			team_uid
 			team_name
 			team_avatar

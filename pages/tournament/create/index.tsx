@@ -69,7 +69,7 @@ export default observer(function CreateTournament(props: Props) {
   const [checkPassword, setCheckPassword] = useState(false);
   const [dataReferees, setDataReferees] = useState([]);
   const [dataChooseGame, setDataChooseGame] = useState(null);
-
+  const [tournamentModal, setTournamentModal] = useState({});
   const { getDataRegions } = useRegion({});
 
   const { getDataChooseGame } = useChooseGame({
@@ -160,8 +160,8 @@ export default observer(function CreateTournament(props: Props) {
         TournamentStore.name ||
         TournamentStore.cover ||
         TournamentStore.thumbnail ||
-        TournamentStore.desc ||
-        TournamentStore.rules ||
+        // TournamentStore.desc ||
+        //TournamentStore.rules ||
         //TournamentStore.bracket_type ||
         TournamentStore.team_size
         // TournamentStore.sponsor_slots
@@ -228,31 +228,16 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const createTournament = () => {
-    console.log("TournamentStore", TournamentStore);
     let cr = TournamentStore.getCreateTournament();
     cr.start_at = new Date();
-    if (cr.referees) cr.referees = JSON.parse(JSON.stringify(cr.referees));
     cr.sponsor_slots = combineSponsorData();
-
-    console.log("cr", cr)
 
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);
 
-    const tournamentService = new TournamentService();
     if (!validationInput(cr)) return;
-    const response = tournamentService
-      .createTournament(cr)
-      .then(async (res) => {
-        if (res.data.createTournament) {
-          TournamentStore.depositModalVisible = true;
-          window.onbeforeunload = null;
-        } else {
-          message.error("Save fail");
-          return;
-        }
-      })
-      .then(() => {});
+    setTournamentModal(cr);
+    TournamentStore.depositModalVisible = true;
   };
 
   const validationInput = (cr: any) => {
@@ -315,7 +300,7 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    if (!cr.pool_size) {
+    if (!cr.pool_size || cr.pool_size <= 0) {
       setCheckPoolSize(false);
       //@ts-ignore
       document.getElementById("prizing").scrollIntoView();
@@ -349,7 +334,7 @@ export default observer(function CreateTournament(props: Props) {
     newData.forEach((item: { percent: any }, idx: number) => {
       total += item.percent;
     });
-    return total;
+    return Number.parseFloat(total.toFixed(2));
   };
 
   const scrollToTop = () => {
@@ -422,7 +407,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="cover"
                   url={TournamentStore?.cover}
                 ></UploadImage>
-                <p>Recommended size: 1200x300</p>
+                <p>Recommended size: 1200x400</p>
                 <div className={s.message_error}>{messageErrorCover}</div>
               </Col>
               <Col span={4} className="text-center">
@@ -436,7 +421,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="thumbnail"
                   url={TournamentStore?.thumbnail}
                 ></UploadImage>
-                <p>Recommended size: 300x200</p>
+                <p>Recommended size: 400x300</p>
                 <div className={s.message_error}>{messageErrorThumbnail}</div>
               </Col>
             </Row>
@@ -792,7 +777,7 @@ export default observer(function CreateTournament(props: Props) {
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
         <RefereeModal handCallbackReferee={handCallbackReferee} />
         <TimelineModal handCallbackTimeline={handCallbackTimeline} />
-        <DepositModal />
+        <DepositModal tournamentModal={tournamentModal} />
       </div>
 
       {/* <Footer /> */}

@@ -12,14 +12,14 @@ export type StepModalComponent = {
 	titleModal: string;
 	description: ReactElement;
 	component: ReactElement;
-	modalWidth?: Number;
+	modalWidth?: number;
 };
 
 export type JoinTournamentTeamType = {
 	id_in_game: string;
 	is_leader: boolean;
-	user_id: Number;
-	prize_alloc: Number;
+	user_id: number;
+	prize_alloc: number;
 };
 
 export type JoinTournamentType =

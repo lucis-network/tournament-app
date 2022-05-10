@@ -36,15 +36,15 @@ type UserProfile = {
 }
 
 type UserRole = {
-  Admin?: string;
-  Customer?: string;
-}
+	Admin?: string;
+	Customer?: string;
+};
 
 type AuthWallet = {
-  address?: string;
-  networkId?: number;
-  chainId?: number;
-  balance?: number;
+	address?: string;
+	networkId?: number;
+	chainId?: number;
+	balance?: number;
 };
 
 export type TAuthInfo = AuthUser | AuthWallet;
@@ -66,13 +66,13 @@ class AuthStore implements AuthUser {
   private _loading: boolean = false;
   private _favorite_game?: UserFavoriteGame[];
 
-  public get isLoggedIn(): boolean {
-    return !!this._token;
-  }
+	public get isLoggedIn(): boolean {
+		return !!this._token;
+	}
 
-  constructor() {
-    makeAutoObservable(this);
-  }
+	constructor() {
+		makeAutoObservable(this);
+	}
 
   resetStates() {
     this._id = undefined;
@@ -106,115 +106,115 @@ class AuthStore implements AuthUser {
     this._favorite_game = user.favorite_game;
   }
 
-  /* ============= Getter & Setter ==============*/
+	/* ============= Getter & Setter ==============*/
 
-  get id(): number | undefined {
-    return this._id;
-  }
+	get id(): number | undefined {
+		return this._id;
+	}
 
-  set id(value: number | undefined) {
-    this._id = value;
-  }
+	set id(value: number | undefined) {
+		this._id = value;
+	}
 
-  get code(): string | undefined {
-    return this._code;
-  }
+	get code(): string | undefined {
+		return this._code;
+	}
 
-  set code(value: string | undefined) {
-    this._code = value;
-  }
+	set code(value: string | undefined) {
+		this._code = value;
+	}
 
-  get token(): string | undefined {
-    return this._token;
-  }
+	get token(): string | undefined {
+		return this._token;
+	}
 
-  set token(value: string | undefined) {
-    this._token = value;
-  }
+	set token(value: string | undefined) {
+		this._token = value;
+	}
 
-  get email(): string | undefined {
-    return this._email;
-  }
+	get email(): string | undefined {
+		return this._email;
+	}
 
-  set email(value: string | undefined) {
-    this._email = value;
-  }
+	set email(value: string | undefined) {
+		this._email = value;
+	}
 
-  get facebook_id(): string | undefined {
-    return this._facebook_id;
-  }
+	get facebook_id(): string | undefined {
+		return this._facebook_id;
+	}
 
-  set facebook_id(value: string | undefined) {
-    this._facebook_id = value;
-  }
+	set facebook_id(value: string | undefined) {
+		this._facebook_id = value;
+	}
 
-  get google_id(): string | undefined {
-    return this._google_id;
-  }
+	get google_id(): string | undefined {
+		return this._google_id;
+	}
 
-  set google_id(value: string | undefined) {
-    this._google_id = value;
-  }
+	set google_id(value: string | undefined) {
+		this._google_id = value;
+	}
 
-  get name(): string | undefined {
-    return this._name;
-  }
+	get name(): string | undefined {
+		return this._name;
+	}
 
-  set name(value: string | undefined) {
-    this._name = value;
-  }
+	set name(value: string | undefined) {
+		this._name = value;
+	}
 
-  get profile(): any {
-    return this._profile;
-  }
+	get profile(): any {
+		return this._profile;
+	}
 
-  set profile(value: UserProfile) {
-    this._profile = value;
-  }
+	set profile(value: UserProfile) {
+		this._profile = value;
+	}
 
-  get role(): any {
-    return this._role;
-  }
+	get role(): any {
+		return this._role;
+	}
 
-  set role(value: UserRole) {
-    this._role = value;
-  }
+	set role(value: UserRole) {
+		this._role = value;
+	}
 
-  get ref_code(): string | undefined {
-    return this._ref_code;
-  }
+	get ref_code(): string | undefined {
+		return this._ref_code;
+	}
 
-  set ref_code(value: string | undefined) {
-    this._ref_code = value;
-  }
+	set ref_code(value: string | undefined) {
+		this._ref_code = value;
+	}
 
-  get status(): string | undefined {
-    return this._status;
-  }
+	get status(): string | undefined {
+		return this._status;
+	}
 
-  set status(value: string | undefined) {
-    this._status = value;
-  }
+	set status(value: string | undefined) {
+		this._status = value;
+	}
 
-  get updated_at(): string | undefined {
-    return this._updated_at;
-  }
+	get updated_at(): string | undefined {
+		return this._updated_at;
+	}
 
-  set updated_at(value: string | undefined) {
-    this._updated_at = value;
-  }
+	set updated_at(value: string | undefined) {
+		this._updated_at = value;
+	}
 
-  get balance(): string | undefined {
-    return this._balance;
-  }
+	get balance(): string | undefined {
+		return this._balance;
+	}
 
-  set balance(value: string | undefined) {
-    this._balance = value;
-  }
+	set balance(value: string | undefined) {
+		this._balance = value;
+	}
 
-  get loading(): boolean {
-    return this._loading;
-  }
+	get loading(): boolean {
+		return this._loading;
+	}
 
   set loading(value: boolean) {
     this._loading = value;
@@ -231,7 +231,7 @@ class AuthStore implements AuthUser {
 
 const s = new AuthStore();
 if (isClient) {
-  // @ts-ignore
-  window.tmp__AuthStore = s;
+	// @ts-ignore
+	window.tmp__AuthStore = s;
 }
 export default s;

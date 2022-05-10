@@ -10,10 +10,12 @@ import SearchComplete from "components/ui/common/searchs";
 type Props = {
   dataParticipants: Team[];
   loading: any;
+  tournamentId: string;
+  currency?: any;
 };
 
 export default function TableParticipant(props: Props) {
-  const { dataParticipants, loading } = props;
+  const { dataParticipants, loading, tournamentId, currency } = props;
 
   const [datas, setDatas] = useState({});
   const handleClick = (e: object) => {
@@ -30,12 +32,18 @@ export default function TableParticipant(props: Props) {
       dataIndex: "getTournamentParticipants",
       key: "id",
       width: 50,
+      render: (_: any, item: any, index: number) => {
+        return <>{index + 1}</>;
+      },
     },
     {
       title: "Participant",
       dataIndex: "getTournamentParticipants",
       key: "name",
       width: 250,
+      render: (_: any, item: any, index: number) => {
+        return <>{item.name}</>;
+      },
     },
     {
       title: "Earning",
@@ -75,7 +83,11 @@ export default function TableParticipant(props: Props) {
         className={s.container_table}
         rowKey={(record) => `${record?.uid}`}
       />
-      <ModalDonateTeam nameTeam={datas} />
+      <ModalDonateTeam
+        nameTeam={datas}
+        tournamentId={tournamentId}
+        currency={currency}
+      />
     </div>
   );
 }

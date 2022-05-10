@@ -1,11 +1,17 @@
-import s from "../../../../pages/tournament/detail/TournamentDetail.module.sass";
+import s from "../../../../pages/tournament/[id]/TournamentDetail.module.sass";
 
-const Banner = () => {
+type Props = {
+  cover?: string
+}
+const Banner = (props: Props) => {
+  const {cover} = props
+
   return (
-    <div className={s.banner}>
+    <div className={s.banner}> 
       <div
         className={s.im_cover}
-        style={{ backgroundImage: "url(/profile/banner.png)" }}
+        style={{ backgroundImage: `url(${cover})`}}
+        
       ></div>
     </div>
   );

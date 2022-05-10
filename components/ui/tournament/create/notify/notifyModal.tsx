@@ -40,7 +40,7 @@ export default observer(function NotifyModal(props: Props) {
         visible={isModalVisible}
         onOk={handleOk}
         className={`${s.container}`}
-        footer={null}
+        //footer={null}
         onCancel={handleCancel}
       >
         <div style={{ textAlign: "center" }}>

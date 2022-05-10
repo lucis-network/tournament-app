@@ -1,19 +1,21 @@
 import { message, Table } from "antd";
 import { Prize } from "src/generated/graphql";
+import { fomatNumber } from "utils/Number";
 
 import s from "./Prizing.module.sass";
 
 type Props = {
   dataPrizing: Prize[];
   loadingPrizing: any;
+  currency: any
 };
 
 export default function Prizing(props: Props) {
-  const { dataPrizing, loadingPrizing } = props;
+  const { dataPrizing, loadingPrizing, currency } = props;
   if (loadingPrizing) {
     return <></>;
   }
-
+  
   const columnsPrize = [
     {
       title: "Place",
@@ -39,7 +41,7 @@ export default function Prizing(props: Props) {
       key: "thirdPrize",
       width: "35%",
       render: (_: any, item: any) => {
-        return <>{item.reward}</>;
+        return <>{fomatNumber(item.reward)} {currency.symbol}</>;
       },
     },
   ];

@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700;900&display=swap");
 
-@font-face {
-  font-family: "Transformer";
-  src: url(/font/SVN-Transformer.ttf);
-}
+/*@font-face {*/
+/*  font-family: "Transformer";*/
+/*  src: url(/font/SVN-Transformer.ttf);*/
+/*}*/
 
 @tailwind base;
 @tailwind components;

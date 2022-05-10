@@ -48,6 +48,7 @@ export default observer(function Header(props: Props) {
         {width >= 1024 ? (
           <div className={`${s.menu_container}`}>
             <Row
+              justify="space-between"
               className={`container lucis-container items-center py-20px px-0 relative z-10 `}
             >
               <Col span={4} className={s.logo}>
@@ -56,7 +57,10 @@ export default observer(function Header(props: Props) {
                     <Image src={Logo} alt="logo" priority />
                   </a>
                 </Link>
-                {"IS_TESTNET" && <p>Testnet</p>}
+                {
+                  // @ts-ignore
+                  ("IS_TESTNET" == "true") && <p>Testnet</p>
+                }
               </Col>
               <Col span={14}>
                 <ul className={s.block_item_menu}>
@@ -64,7 +68,7 @@ export default observer(function Header(props: Props) {
                   <li>FAQ</li>
                   <li>INSIGHT</li>
                   <li>RANKING</li>
-                  <li>SOCIAL</li>
+                  <li className={s.default}>SOCIAL <span>Coming Soon</span></li>
                 </ul>
               </Col>
               <Col span={6} className={`${s.loginCol} justify-end`}>

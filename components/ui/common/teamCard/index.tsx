@@ -15,7 +15,7 @@ interface TeamCardType {
 	onEdit: (isEdit: boolean, team?: any) => void;
 	onOpenRemove: (
 		team_uid: string,
-		user_id: Number,
+		user_id: number,
 		status: "remove" | "delete" | "leave",
 		isSaveDraft?: boolean
 	) => void;

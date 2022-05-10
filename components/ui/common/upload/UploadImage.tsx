@@ -65,7 +65,6 @@ export default observer(function UploadImage(props: Props) {
   };
 
   useEffect(() => {
-    console.log("TournamentStore.cover", TournamentStore.cover);
     if (props.value == "cover" && TournamentStore.cover) {
       setUrl(TournamentStore.cover);
     }

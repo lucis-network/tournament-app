@@ -1,12 +1,12 @@
-import { Button } from "antd";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
-import { useState, useCallback, useEffect, ReactElement } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { useState, useCallback, useEffect, ReactElement, useMemo } from "react";
+import { PlusOutlined, ShareAltOutlined } from "@ant-design/icons";
 import s from "../popup/chooseTeamModal/TeamModal.module.sass";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import TeamSelect from "../popup/chooseTeamModal/TeamSelect";
 import {
+	JoinTournamentTeamType,
 	JoinTournamentType,
 	StepModalComponent,
 	StepModalTournament,
@@ -16,16 +16,37 @@ import UseUploadAvatar from "components/ui/common/tabsItem/myTeamDetail/hooks/us
 import UseCreateNewTeam, { TeamType } from "./useCreateNewTeam";
 import AddUserTeamModal from "components/ui/common/addUserTeamModal";
 import TeamPrizing from "../popup/chooseTeamModal/TeamPrizing";
+import ChoosePlayer from "../popup/chooseTeamModal/ChoosePlayer";
+import { isArray } from "lodash";
+import { checkEmptyArrayValue, checkTotalPercent, dataTeam } from "./helper";
+
+export interface Item extends TeamType {
+	prize?: number;
+	game_member_id?: string;
+}
+
+export type ErrorTourKey =
+	| Record<"prize" | "user" | "size", string>
+	| undefined;
 
 const UseTeamModal = (tournamentData: any) => {
 	const router = useRouter();
 	const user = getLocalAuthInfo();
-
+	const {
+		name,
+		game,
+		team_size,
+		password: tourPassword,
+	} = tournamentData?.tournament;
+	const { tournamentId } = tournamentData;
+	const { joinTournament } = tournamentData;
+	const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
 	const [show, setShow] = useState<boolean>(false);
+	const [password, setPassword] = useState<string>("");
 	const [step, setStep] = useState<StepModalTournament>("step-1");
-	const { name, game } = tournamentData?.tournament;
-	const [draftTournament, setDraftTournament] = useState<JoinTournamentType>();
 	const [selectedTeam, setSelectedTeam] = useState<MyTeamType>();
+	const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
+	const [errorTour, setErrorTour] = useState<ErrorTourKey>();
 
 	const {
 		reset,
@@ -49,26 +70,118 @@ const UseTeamModal = (tournamentData: any) => {
 		reset
 	);
 
-	const handleManageTeam = () => {
-		router.push("/profile");
+	const handleRoutes = (route: string) => {
+		router.push(route);
 	};
+
+	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
+		setPassword(e.currentTarget.value);
+	};
+
+	const checkEmptyUserId = checkEmptyArrayValue(
+		selectedTeam?.team || [],
+		"game_member_id"
+	);
+	const checkEmptyPrize = checkEmptyArrayValue(
+		selectedTeam?.team || [],
+		"prize"
+	);
+
+	const checkTotalPrize = !checkTotalPercent(selectedTeam?.team || [], "prize");
 
 	const handleChangeStep = (step: StepModalTournament) => {
 		setStep(step);
 	};
 
+	const handleAddMemberToTeam = (member: TeamType) => {
+		setStep("create-team");
+		handleAddMember(member);
+	};
+	const handleChooseTeamConfirm = (team: TeamType[]) => {
+		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team, true) });
+		setStep("step-2");
+	};
+
 	const handleSelectTeam = (team: MyTeamType) => {
 		setStep("step-2");
-		setSelectedTeam(team);
+		setSelectedTeam({ ...team!, team: dataTeam(team?.team, true) });
+		setDraftSelectedTeam(team);
+	};
+
+	const handleSetFormData = (team: Item[]) => {
+		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team) });
+
+		const checkEmptyUserId = checkEmptyArrayValue(team, "game_member_id");
+		const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
+		const checkTotalPrize = !checkTotalPercent(team, "prize");
+
+		if (checkEmptyPrize || checkEmptyUserId || checkTotalPrize) {
+			setErrorTour({
+				...errorTour,
+				size: team_size !== team.length ? "Invalid team size to join" : "",
+				prize: checkTotalPrize
+					? "Total Allocation must be 100%"
+					: checkEmptyPrize
+					? "Please fill prize allocation input"
+					: "",
+				user: checkEmptyUserId ? "Please fill game user id input" : "",
+			});
+		} else {
+			setErrorTour({} as any);
+		}
 	};
 
 	const handleOpenAddMember = () => {
 		setStep("add-team");
 	};
 
-	const handleAddMemberToTeam = (member: TeamType) => {
-		setStep("create-team");
-		handleAddMember(member);
+	const handleJoinTournament = () => {
+		if (checkEmptyPrize || checkEmptyUserId || checkTotalPrize) {
+			setErrorTour({
+				...errorTour,
+				size:
+					team_size !== selectedTeam?.team?.length
+						? "Invalid team size to join"
+						: "",
+				prize: checkTotalPrize
+					? "Total Allocation must be 100%"
+					: checkEmptyPrize
+					? "Please fill prize allocation input"
+					: "",
+				user: checkEmptyUserId ? "Please fill game user id input" : "",
+			});
+		} else {
+			setErrorTour({} as any);
+			const convertTeamMember = selectedTeam?.team?.map((member) => ({
+				id_in_game: member.game_member_id,
+				is_leader: member.is_leader,
+				user_id: member.user_id,
+				prize_alloc: member.prize,
+			})) as JoinTournamentTeamType[];
+
+			joinTournament({
+				variables: {
+					data: {
+						tournament_uid: tournamentId,
+						tournament_password: password,
+						team_uid: selectedTeam?.team_uid,
+						member: convertTeamMember,
+					} as JoinTournamentType,
+				},
+				onCompleted: () => {
+					setPassword("");
+					setStep("success");
+				},
+				onError: (err: any) => {
+					console.log(err);
+				},
+			});
+		}
+	};
+
+	const handleCreateNewTeam = () => {
+		setStep("step-1");
+		handleSaveTeam();
 	};
 
 	const handleOpenCreateNewTeam = () => {
@@ -76,9 +189,8 @@ const UseTeamModal = (tournamentData: any) => {
 		handleCreateTeam();
 	};
 
-	const handleCreateNewTeam = () => {
-		setStep("step-1");
-		handleSaveTeam();
+	const handleChooseTeam = () => {
+		setStep("choose-player");
 	};
 
 	const handleCloseCreateNewTeam = () => {
@@ -91,13 +203,48 @@ const UseTeamModal = (tournamentData: any) => {
 		handleCloseCreateEditTeam();
 	};
 
+	const handleBack = () => {
+		setStep("step-1");
+	};
+
 	const handleCloseModal = () => {
-		setShow(false);
+		switch (step) {
+			case "step-2":
+				isSoloVersion ? setShow(false) : setStep("step-1");
+				break;
+			case "choose-player":
+				setStep("step-2");
+				break;
+			default:
+				setShow(false);
+				break;
+		}
 	};
 
 	const handleOpenModal = useCallback(() => {
 		setShow(true);
-	}, []);
+		isSoloVersion && setStep("step-2");
+	}, [isSoloVersion]);
+
+	useEffect(() => {
+		isSoloVersion &&
+			setSelectedTeam({
+				team_uid: "",
+				team_name: "",
+				team_avatar: user?.profile?.avatar || "",
+				participant: 1,
+				team: [
+					{
+						avatar: user?.profile?.avatar || "",
+						display_name: user?.profile?.display_name || "",
+						user_id: +user?.id!,
+						is_leader: true,
+						user_name: user?.profile?.user_name || "",
+						prize: 100,
+					} as any,
+				],
+			});
+	}, [isSoloVersion]);
 
 	const stepConfiguration = (
 		step: StepModalTournament
@@ -121,9 +268,16 @@ const UseTeamModal = (tournamentData: any) => {
 				component: (
 					<div>
 						<div className="flex align-top justify-between w-full mb-4">
-							<p>Team you&apos;ve lead:</p>
+							<p>
+								{teamList?.length > 0
+									? "Team you&apos;ve lead:"
+									: "You are not the leader of any team"}
+							</p>
 							<div>
-								<button className={s.button} onClick={handleManageTeam}>
+								<button
+									className={s.button}
+									onClick={() => handleRoutes("/profile")}
+								>
 									Manager your team
 								</button>
 								<button className={s.button} onClick={handleOpenCreateNewTeam}>
@@ -137,7 +291,7 @@ const UseTeamModal = (tournamentData: any) => {
 								<TeamSelect
 									key={i}
 									team={team}
-									isValid={true}
+									isValid={team.team?.length! >= team_size}
 									onSelect={() => handleSelectTeam(team)}
 								/>
 							))}
@@ -147,9 +301,28 @@ const UseTeamModal = (tournamentData: any) => {
 				modalWidth: 780,
 			},
 			["step-2"]: {
-				titleModal: "Join step 2: Prize Allocation",
+				titleModal: isSoloVersion
+					? "Prize Allocation"
+					: "Join step 2: Prize Allocation",
 				description: description2,
-				component: <TeamPrizing selectedTeam={selectedTeam!} />,
+				component: selectedTeam ? (
+					<TeamPrizing
+						isSolo={isSoloVersion}
+						error={errorTour}
+						tourPassword={tourPassword}
+						password={password}
+						teamSize={team_size}
+						selectedTeam={selectedTeam}
+						draftSelectedTeam={draftSelectedTeam}
+						onChooseTeam={handleChooseTeam}
+						onJoinTournament={handleJoinTournament}
+						onChangePassword={handleChangePassword}
+						onBack={handleBack}
+						onSetDataForm={handleSetFormData}
+					/>
+				) : (
+					<></>
+				),
 				modalWidth: 980,
 			},
 			["create-team"]: (
@@ -180,14 +353,39 @@ const UseTeamModal = (tournamentData: any) => {
 				/>
 			),
 			["choose-player"]: {
-				titleModal: "Join step 1: Choosing team",
-				description: <Button>123</Button>,
-				component: <p>1</p>,
+				titleModal: "Choose player",
+				description: (
+					<p className="text-16px font-semibold text-white">
+						The tournament team size is {team_size}. Your team exceeds of team
+						size. You need choose more {team_size - 1} members to join
+					</p>
+				),
+				component: (
+					<ChoosePlayer
+						draftTeam={draftSelectedTeam?.team || []}
+						teamSize={team_size}
+						onConfirm={handleChooseTeamConfirm}
+					/>
+				),
 			},
 			["success"]: {
-				titleModal: "Join step 1: Choosing team",
-				description: <Button>123</Button>,
-				component: <p>1</p>,
+				titleModal: "You'v successfully join this tournament",
+				description: <p>Some description here</p>,
+				component: (
+					<div className="flex justify-center align-middle items-center mt-8">
+						<button
+							className={`${s.button} mr-4 !w-max`}
+							onClick={() => handleRoutes("/tournament")}
+						>
+							Back to tournament
+						</button>
+						<button className={`${s.button} !w-max`} onClick={() => {}}>
+							<ShareAltOutlined className="mr-2" />
+							Share
+						</button>
+					</div>
+				),
+				modalWidth: 540,
 			},
 		};
 

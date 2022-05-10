@@ -12,11 +12,15 @@ import { BUSD } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
 import { LoadingOutlined } from "@ant-design/icons";
 import { fomatNumber } from "utils/Number";
+import TournamentService from "components/service/tournament/TournamentService";
 
-type Props = {};
+type Props = {
+  tournamentModal: any;
+};
 
 export default observer(function DepositModal(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
+  const { tournamentModal } = props;
   const isModalVisible = TournamentStore.depositModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.depositModalVisible = v);
@@ -28,8 +32,20 @@ export default observer(function DepositModal(props: Props) {
       let result = await deposit();
       setIsLoading(false);
       if (!result?.error) {
-        TournamentStore.notifyModalVisible = true;
-        TournamentStore.depositModalVisible = false;
+        const tournamentService = new TournamentService();
+        const response = tournamentService
+          .createTournament(tournamentModal)
+          .then(async (res) => {
+            if (res.data.createTournament) {
+              window.onbeforeunload = null;
+              TournamentStore.notifyModalVisible = true;
+              TournamentStore.depositModalVisible = false;
+            } else {
+              message.error("Save fail");
+              return;
+            }
+          })
+          .then(() => {});
       } else {
         //@ts-ignore
         message.error(result?.error?.message);
@@ -75,7 +91,7 @@ export default observer(function DepositModal(props: Props) {
         className={`${s.container}`}
         cancelButtonProps={{ style: { display: "none" } }}
         okText="Deposit"
-        //onCancel={handleCancel}
+        onCancel={handleCancel}
       >
         <Spin spinning={isLoading}>
           <div className="">
@@ -97,7 +113,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee(10%)</p>
+                  <p>Lucis fee (10%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
@@ -113,7 +129,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee(1%)</p>
+                  <p>Referee fee (1%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>

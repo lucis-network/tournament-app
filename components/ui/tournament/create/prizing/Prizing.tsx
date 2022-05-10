@@ -6,22 +6,12 @@ import {
   FormInstance,
   Input,
   InputNumber,
-  message,
-  Popconfirm,
   Row,
   Select,
 } from "antd";
 import s from "./index.module.sass";
-import { ChainOption } from "utils/Enum";
 import { Table } from "antd";
-import {
-  createContext,
-  Ref,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Item from "antd/lib/list/Item";
 import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
 import { useLocalObservable } from "mobx-react";
@@ -310,8 +300,14 @@ export default observer(function Prizing(props: Props) {
   };
 
   function onChange(value: number) {
-    setPoolSize(value);
-    setMessageErrorPoolSize("");
+    if (value < 0) {
+      setPoolSize(value);
+      setMessageErrorPoolSize("Pool size must be greater than 0");
+    } else {
+      //setPoolSize(TournamentStore.pool_size);
+      setPoolSize(value);
+      setMessageErrorPoolSize("");
+    }
   }
 
   useEffect(() => {
@@ -354,14 +350,20 @@ export default observer(function Prizing(props: Props) {
   });
 
   const handleBlur = () => {
-    if (poolSize == 0 || poolSize == null)
+    if (poolSize == null)
       setMessageErrorPoolSize("Pool size must not be empty");
+    if (poolSize <= 0) {
+      //setPoolSize(1);
+      setMessageErrorPoolSize("Pool size must be greater than 0");
+    }
   };
 
   const recalculateEstimated = () => {
     const dataSource = [...state.dataSource];
     dataSource.forEach((item) => {
-      item.estimated = Number.parseFloat(((poolSize * item.total) / 100).toFixed(2));
+      item.estimated = Number.parseFloat(
+        ((poolSize * item.total) / 100).toFixed(2)
+      );
     });
     setState({ dataSource: dataSource });
   };
@@ -407,7 +409,7 @@ export default observer(function Prizing(props: Props) {
               type="number"
               prefix="$"
               style={{ width: "99%" }}
-              min={1}
+              //min={1}
               placeholder="20,000"
               onChange={onChange}
               ref={inputRef}
@@ -421,7 +423,7 @@ export default observer(function Prizing(props: Props) {
           </Col>
           <Col span={3}>
             <Select
-              defaultValue="USDT"
+              defaultValue={TournamentStore.currency_uid}
               onChange={(value) => {
                 setChain(value);
               }}
@@ -429,7 +431,7 @@ export default observer(function Prizing(props: Props) {
               {getDataCurrencies?.map((item: any, index: number) => {
                 return (
                   <Option value={item.uid} key={index}>
-                    {item.name}
+                    {item.symbol}
                   </Option>
                 );
               })}

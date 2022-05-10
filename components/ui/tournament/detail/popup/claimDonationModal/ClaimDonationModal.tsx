@@ -4,27 +4,25 @@ import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { useEffect, useState } from "react";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import { BUSD } from "utils/Enum";
-import GroupLink from "components/ui/common/groupLink";
 import EthersService from "../../../../../../services/blockchain/Ethers";
 import { useClaimReward } from "hooks/tournament/useTournamentDetail";
 
-type Props = {};
+type Props = {
+  tournamentId?: string;
+  dataDonation?: any;
+};
 
 export default observer(function ClaimDonationModal(props: Props) {
+  const { tournamentId, dataDonation } = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
 
-  const { data } = useClaimReward({
-    tournament_uid: "cl2rdu56s18150jrswgoh73lb",
-  });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
+  // const { data } = useClaimReward({
+  //   tournament_uid: tournamentId,
+  // });
 
   const handleCancel = () => {
     setIsModalVisible(false);
@@ -79,7 +77,11 @@ export default observer(function ClaimDonationModal(props: Props) {
       key: "donated",
       width: "40%",
       render: (_: any, item: any) => {
-        return <>{item.amount} {item.chain_symbol}</>;
+        return (
+          <>
+            {item.amount} {item.symbol}
+          </>
+        );
       },
     },
     {
@@ -107,10 +109,10 @@ export default observer(function ClaimDonationModal(props: Props) {
         onCancel={handleCancel}
       >
         <Table
-          dataSource={data}
+          dataSource={dataDonation}
           columns={columns}
           bordered
-          //rowKey={(record) => `${record.user?.profile?.user_id}`}
+          rowKey={(record) => `${record?.reward_type}`}
           className={s.container_table}
         />
       </Modal>
