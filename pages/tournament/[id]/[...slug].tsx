@@ -224,6 +224,10 @@ const TournamentDetail = (props: { tournamentId: string }) => {
           </Tabs>
         </div>
 
+        <div className={s.communityC}>
+
+        </div>
+
         {/* ===== Modal ===== */}
         {/* <PopupDonate
           closeModal={() => closeModal("Donate")}
