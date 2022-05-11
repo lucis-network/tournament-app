@@ -1,7 +1,7 @@
 import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import RoundStore from "src/store/RoundStore";
+import RoundStore from "src/store/SingleRoundStore";
 
 import {
   Bracket,
@@ -13,17 +13,25 @@ import {
 } from "react-brackets";
 
 import s from "./index.module.sass";
-import { truncate } from "lodash";
 
 interface Props {
-  rounds: RoundProps[];
+  rounds?: RoundProps[];
   // openModal: any;
 }
 
 const SingleBracket = ({ rounds }: Props) => {
-  const handleOpenModal = (e: any, seed: any) => {
-    RoundStore.updateScoreModal = true;
-    RoundStore.currentMatch = seed.teams;
+  const handleOpenModal = (
+    e: any,
+    seed: any,
+    seedIndex: number,
+    roundIndex: number
+  ) => {
+    RoundStore.updateScoreModalVisible = true;
+    RoundStore.currentMatch = {
+      teams: seed.teams,
+      seedIndex,
+      roundIndex,
+    };
   };
 
   const RenderSeed = ({
@@ -58,7 +66,9 @@ const SingleBracket = ({ rounds }: Props) => {
                     cursor: "pointer",
                   }}
                   // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
-                  onClick={(e) => handleOpenModal(e, seed)}
+                  onClick={(e) =>
+                    handleOpenModal(e, seed, seedIndex, roundIndex)
+                  }
                 >
                   {seed.teams[0]?.score ?? "--"}
                 </div>
@@ -84,7 +94,9 @@ const SingleBracket = ({ rounds }: Props) => {
                     cursor: "pointer",
                   }}
                   // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
-                  onClick={(e) => handleOpenModal(e, seed)}
+                  onClick={(e) =>
+                    handleOpenModal(e, seed, seedIndex, roundIndex)
+                  }
                 >
                   {seed.teams[1]?.score ?? "--"}
                 </div>
@@ -99,7 +111,7 @@ const SingleBracket = ({ rounds }: Props) => {
   return (
     <>
       <Bracket
-        rounds={RoundStore.singleRounds}
+        rounds={RoundStore.rounds}
         roundClassName={s.wining}
         renderSeedComponent={RenderSeed}
         mobileBreakpoint={360}

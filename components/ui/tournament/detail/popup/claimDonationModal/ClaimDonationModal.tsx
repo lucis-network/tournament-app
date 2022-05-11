@@ -28,11 +28,11 @@ export default observer(function ClaimDonationModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+  // const handleOk = () => {
+  //   //setIsModalVisible(false);
+  // };
 
-  const claimToken = async (item: any) => {
+  const handleOk = async (item: any) => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
     } else {
@@ -72,7 +72,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       },
     },
     {
-      title: "Was donated",
+      title: "Donated",
       dataIndex: "donated",
       key: "donated",
       width: "40%",
@@ -84,19 +84,6 @@ export default observer(function ClaimDonationModal(props: Props) {
         );
       },
     },
-    {
-      title: "",
-      dataIndex: "",
-      key: "",
-      width: "20%",
-      render: (_: any, item: any) => (
-        <div>
-          <Button onClick={() => claimToken(item)} type="primary">
-            Donate
-          </Button>
-        </div>
-      ),
-    },
   ];
 
   return (
@@ -107,6 +94,7 @@ export default observer(function ClaimDonationModal(props: Props) {
         onOk={handleOk}
         className={`${s.container}`}
         onCancel={handleCancel}
+        okText="Claim"
       >
         <Table
           dataSource={dataDonation}
@@ -115,6 +103,9 @@ export default observer(function ClaimDonationModal(props: Props) {
           rowKey={(record) => `${record?.reward_type}`}
           className={s.container_table}
         />
+        <div style={{ marginTop: "10px" }}>
+          Lucis will take 5% each donation as fee
+        </div>
       </Modal>
     </div>
   );

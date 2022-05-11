@@ -12,12 +12,19 @@
       display: flex
       align-items: center
       justify-content: space-between
+      @media ( max-width: 639px )
+        flex-direction: column
+        align-items: flex-start
       .group_ic
         display: flex
         align-items: center
+        @media ( max-width: 639px )
+          padding: 20px 0px
         .ic_item
           max-width: 40px
           margin: 0px 15px
+          @media ( max-width: 539px )
+            margin: 0 8px
 
   .content::before
     content: ''

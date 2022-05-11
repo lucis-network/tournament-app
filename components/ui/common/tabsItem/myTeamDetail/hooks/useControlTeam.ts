@@ -10,7 +10,7 @@ import {
 	SEARCH_TEAM,
 } from "./../myTeamService";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
@@ -345,6 +345,7 @@ const UseControlTeam = () => {
 	};
 
 	const handleOpenAddMember = (team_uid: string, isSaveDraft?: boolean) => {
+		console.log("open");
 		searchMember({
 			variables: {
 				teamId: team_uid || "",
@@ -358,6 +359,7 @@ const UseControlTeam = () => {
 	};
 
 	const handleCloseAdd = useCallback(() => {
+		console.log("close");
 		if (isSaveDraft) setOpenCreateTeam(true);
 		setOpenAdd(false);
 	}, [isSaveDraft]);

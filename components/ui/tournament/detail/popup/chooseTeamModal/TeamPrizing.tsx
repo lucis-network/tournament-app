@@ -5,7 +5,6 @@ import { MyTeamType } from "../../hooks/useCreateNewTeam";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import s from "./TeamModal.module.sass";
 import { ErrorTourKey, Item } from "../../hooks/useTeamModal";
-import { useRef } from "react";
 
 interface TeamPrizingProps {
 	isSolo: boolean;
@@ -51,7 +50,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	const [form] = Form.useForm();
 	const [editingKey, setEditingKey] = useState("");
 	const isEditing = (record: Item) => String(record.user_id) === editingKey;
-	const errMessage = error?.size || error?.user || error?.prize;
+	const errMessage = error?.size || error?.prize || error?.user;
 	const [editInputKey, setEditInputKey] = useState<"number" | "text">();
 	const handleEdit = (record: Partial<Item>, type: "number" | "text") => {
 		form.setFieldsValue({ prize: 0, game_member_id: "", ...record });
@@ -101,7 +100,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 								height={30}
 							/>
 						</div>
-						<p className="mb-0 ml-2">{record.display_name}</p>
+						<p className="mb-0 ml-2 font-normal">{record.display_name}</p>
 					</div>
 				);
 			},
@@ -112,11 +111,11 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			width: "20%",
 			render: (_: any, record: Item) => {
 				return record.is_leader ? (
-					<p className="flex items-center align-middle mb-0">
+					<p className="flex items-center align-middle mb-0 font-normal">
 						<StarFilled className="text-18px mr-1" /> Leader
 					</p>
 				) : (
-					<p className="flex items-center align-middle mb-0">
+					<p className="flex items-center align-middle mb-0 font-normal">
 						<StarFilled className="!text-[transparent] text-18px mr-1" /> Member
 					</p>
 				);
@@ -214,7 +213,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			);
 
 		return (
-			<td {...restProps} onBlur={() => handleSave(String(record.user_id))}>
+			<td {...restProps}>
 				{editing ? (
 					<Form.Item name={dataIndex} style={{ margin: 0 }}>
 						{inputNode}
@@ -262,8 +261,8 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			</div>
 			<div className="mt-8 mb-4">
 				{tourPassword && (
-					<div className="flex items-center align-middle">
-						<p className="w-[250px] m-0">Tournament Password</p>
+					<div className="flex items-center align-middle mb-4">
+						<p className="w-[150px] m-0">Password:</p>
 
 						<div>
 							<Input.Password
@@ -279,7 +278,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 					</div>
 				)}
 				<div className="flex items-center">
-					<p className="w-[250px] m-0">Entry Fee</p>
+					<p className="w-[150px] m-0">Entry Fee:</p>
 					<p className="m-0">Free</p>
 				</div>
 			</div>

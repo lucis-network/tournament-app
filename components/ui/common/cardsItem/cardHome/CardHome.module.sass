@@ -54,13 +54,12 @@
     :global(.ant-pagination-item a:focus)
       color: #0BEBD6
   .wrapper
-    width: 23%
     margin: 22px 0px
-    @media (min-width: 0)
-      width: 100%
-      max-width: 352px
-    @media (min-width: 640px)
-      width: 47%
+    // @media (min-width: 0)
+    //   width: 100%
+    //   max-width: 352px
+    // @media (min-width: 640px) and (max-width: 991px)
+    //   width: 47%
 
     .container_card
       background: linear-gradient(292deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
@@ -106,7 +105,7 @@
           color: #FFF
           display: flex
           justify-content: space-between
-          align-items: flex-start
+          align-items: center
           @media (min-width: 0px)
             padding: 20px
           @media (min-width: 640px)
@@ -246,7 +245,7 @@
             @media (min-width: 0px)
               font-size: 16px
             @media (min-width: 640px)
-              font-size: 13px
+              font-size: 18px
             @media (min-width: 992px)
               font-size: 10px
             @media (min-width: 1440px)
@@ -298,6 +297,10 @@
     backdrop-filter: blur(12px)
     color: #0bebd6
     font-weight: 700
+    display: flex
+    align-items: center
+    justify-content: center
+  button:hover,
   button:active,
   button:focus
     background: linear-gradient(111.41deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.12) 100%)

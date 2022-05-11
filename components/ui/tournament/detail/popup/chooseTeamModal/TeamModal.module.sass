@@ -39,9 +39,35 @@
     img
       padding-right: 4px
   .table
+    table
+      border-radius: 8px !important
+      overflow: hidden
+      border-color: rgb(255 255 255 / 50%) !important
+      thead
+        tr
+          th
+            border-color: rgb(255 255 255 / 50%) !important
+            &:last-child
+              border-top-right-radius: 8px !important
+              overflow: hidden
+      tbody
+        tr:last-child
+          td:last-child
+            border-bottom-right-radius: 8px !important
+            overflow: hidden
+    :global(.ant-table-container)
+      border-color: rgb(255 255 255 / 50%) !important
+      border-radius: 8px !important
+      overflow: hidden
+    :global(.ant-table-cell)
+      background: #3f3279 !important
+      color: white !important
+      font-weight: 600 !important
+      border-color: rgb(255 255 255 / 50%) !important
     :global(.ant-table-bordered)
       background-color: #9854fe33
       color: white
+      border-color: rgb(255 255 255 / 50%) !important
     :global(.editable-row)
       &:hover > td
         background: none
@@ -65,8 +91,12 @@
     padding: 4px 12px
     height: 40px
     border-radius: 8px
+    background: #3f3279 !important
+    border-color: rgb(255 255 255 / 50%) !important
     :global(.ant-input)
-      color: rgba(0, 0, 0, 0.85) !important
+      background: none !important
+    :global(.anticon)
+      color: white
   .checkbox
     :global(.ant-checkbox-wrapper)
       &:first-child

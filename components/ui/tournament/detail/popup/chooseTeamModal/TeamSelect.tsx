@@ -10,7 +10,7 @@ interface TeamSelectProps {
 
 const TeamSelect: React.FC<TeamSelectProps> = ({ team, isValid, onSelect }) => {
 	return (
-		<div className="p-4 mb-4 border bg-card relative flex flex-col">
+		<div className="p-4 mb-4 border bg-card relative flex flex-col rounded-8px">
 			<p>{team.team_name}</p>
 			<div className="mb-8">
 				{team?.team?.map((user, i) => (
