@@ -683,6 +683,10 @@ body .ant-btn-default {
   border: none; */
 }
 
+body .ant-btn-default.bg-gradient-1 {
+  background-image: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%);
+}
+
 body .ant-btn-default:hover {
   background: none;
   color: white;
