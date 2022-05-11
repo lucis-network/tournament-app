@@ -47,15 +47,19 @@ export default class TournamentService {
     return donataResponse;
   }
 
-  public async donate(dnt: GDonateTransaction): Promise<any> {
+  public async depositTournament(
+    tournamentUid: string,
+    txHash: string
+  ): Promise<any> {
     const donataResponse = await apoloClient.mutate({
       mutation: gql`
-        mutation donate($input: GDonateTransaction!) {
-          donate(input: $input)
+        mutation depositTournament($tournamentUid: String!, $txHash: String!) {
+          depositTournament(tournamentUid: $tournamentUid, txHash: $txHash)
         }
       `,
       variables: {
-        input: dnt,
+        tournamentUid: tournamentUid,
+        txHash: txHash,
       },
     });
 
