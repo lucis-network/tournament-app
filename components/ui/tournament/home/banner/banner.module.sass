@@ -27,15 +27,24 @@
       img
         position: absolute
         left: 8px
+        @media (min-width: 0px)
+          max-width: 40px
+        @media (min-width: 640px)
+          max-width: 60px
       .time
         position: relative
         font-weight: 600
         font-size: 14px
         line-height: 150%
         color: #3BE2CD
-        max-width: 160px
-        padding-left: 80px
         background: linear-gradient(111.29deg, rgba(255, 255, 255, 0.13) -1.83%, rgba(255, 255, 255, 0) 109.95%)
+        @media (min-width: 0px)
+          max-width: 120px
+          padding-left: 50px
+        @media (min-width: 640px)
+          max-width: 160px
+          padding-left: 80px
+
         .line
           position: absolute
           top: 0
@@ -44,7 +53,7 @@
           box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
           width: 5px
           height: 100%
-      p
+      .marquee_title
         margin: 0 12px
         max-width: 1420px
         @media (min-width: 0px)
@@ -53,4 +62,7 @@
           font-size: 16px
         @media (min-width: 640px)
           font-size: 18px
+
+        :global(.marquee)
+          padding: 0px 100px
 
