@@ -5,13 +5,9 @@ type Props = {
 };
 
 export default function DocHead(props: Props) {
-  const titleSuffix =
-    props.title ??
-    "Buy NFT boxes easily from INO campaigns or create your INO campaign with us";
-  const title = "Lucis Social Flatform - " + titleSuffix;
-  // TODO:
-  const desc =
-    'One of the most effective investment platforms for investors. We create a hybrid platform to connect investors and skilled scholars in the world of "Play to Earn" gaming and metaverse.';
+  const titleSuffix = props.title ?? "A Platform for creating, running tournament events for both traditional games and NFT games.";
+  const title = "Lucis Tournament - " + titleSuffix;
+  const desc = 'Team will get more popular and big prizes, big donation amount from Lucis Tournament platform';
   const thumb = "https://lucis.network/assets/lucis_preview_169.jpg";
 
   return (
