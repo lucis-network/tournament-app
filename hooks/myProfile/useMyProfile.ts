@@ -3,7 +3,7 @@ import {
   ApolloQueryResult,
   gql,
   LazyQueryResult,
-  useLazyQuery,
+  useLazyQuery, useMutation,
   useQuery
 } from "@apollo/client";
 import {TTournament, UserFavoriteGame} from "../../src/generated/graphql";
@@ -20,6 +20,10 @@ type UseGetJoinedTournamentProps = {
 type UseGetFavoriteGameProps = {
   user_id: string,
 };
+
+type UseDeleteFavoriteGameProps = Partial<{
+  game_uid: string,
+}>;
 
 type UseVerifyEmailProps = {
   email: string
@@ -163,6 +167,22 @@ export function useGetFavoriteGame({ user_id }: UseGetFavoriteGameProps): {
   }
 }
 
+export function useDeleteFavoriteGame({ game_uid }: UseDeleteFavoriteGameProps): {
+  deleteFavoriteGame: () => Promise<any>;
+} {
+  const options = game_uid ? {
+    variables: {
+      game_uid: game_uid
+    }
+  } : undefined;
+
+  const [deleteFavoriteGame] = useMutation(DELETE_FAVORITE_GAME, options);
+
+  return {
+    deleteFavoriteGame
+  }
+}
+
 export function useVerifyEmail({ email }: UseVerifyEmailProps): {
   verifyEmail: () => Promise<LazyQueryResult<any, {email: string}>>;
 } {
@@ -247,6 +267,7 @@ export const GET_FAVORITE_GAME = gql`
       game {
         uid
         name
+        logo
         created_at
         updated_at
       }
@@ -257,6 +278,12 @@ export const GET_FAVORITE_GAME = gql`
 export const ADD_FAVORITE_GAME = gql`
   mutation AddFavoriteGame($input: CreateFavorite!) {
     addFavoriteGame(input: $input)
+  }
+`
+
+export const DELETE_FAVORITE_GAME = gql`
+  mutation ($game_uid: String!) {
+    deleteFavoriteGame(game_uid: $game_uid)
   }
 `
 
