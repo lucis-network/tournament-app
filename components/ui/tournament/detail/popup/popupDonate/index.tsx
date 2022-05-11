@@ -1,8 +1,14 @@
-import { Button, Col, Input, Modal, Row } from "antd";
+import { Button, Col, Input, message, Modal, Row } from "antd";
 import TournamentService from "components/service/tournament/TournamentService";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import PopupNotify from "../popupNotify";
 import s from "./PopupDonate.module.sass";
+import ConnectWalletStore, {
+  nonReactive as ConnectWalletStore_NonReactiveData,
+} from "components/Auth/ConnectWalletStore";
+import { BUSD } from "utils/Enum";
+import EthersService from "../../../../../../services/blockchain/Ethers";
+import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 
 type Props = {
   datas?: any;
@@ -20,6 +26,8 @@ export type GDonateTransaction = {
   type: string;
   tournamnent_uid: string;
   amount: number;
+  message: string;
+  tx_hash: string;
 };
 
 const { TextArea } = Input;
@@ -78,24 +86,61 @@ const PopupDonate = (props: Props) => {
     }
     return true;
   };
-  const donate = () => {
+  const donate = async () => {
     if (!checkValidation()) return;
     let dnt: GDonateTransaction = {
       to: "",
       type: types ? types : "",
       tournamnent_uid: tournamentId ? tournamentId : "",
       amount: Number.parseFloat(values),
+      message: "",
+      tx_hash: "",
     };
 
     if (types == "PLAYER") dnt.to = datas?.user?.id;
     if (types == "TEAM") dnt.to = datas?.uid;
     if (types == "TOURNAMENT") dnt.to = tournamentId ? tournamentId : "";
+
+    let txHash = await donationContract();
+    dnt.tx_hash = txHash ? txHash : "";
     let tournamentService = new TournamentService();
     const response = tournamentService.donateService(dnt).then((res) => {
       if (res) {
         setIsPopupNotify(true);
       }
     });
+  };
+
+  const donationContract = async () => {
+    if (!ConnectWalletStore.address) {
+      AuthBoxStore.connectModalVisible = true;
+    } else {
+      let txHash = await donation();
+      //console.log(txHash);
+      if (txHash) {
+        return txHash;
+      } else {
+        message.error("Donate fail. Please try again");
+      }
+    }
+  };
+
+  const donation = async () => {
+    if (ConnectWalletStore_NonReactiveData.web3Provider) {
+      //throw makeError("Need to connect your wallet first");
+      const ethersService = new EthersService(
+        ConnectWalletStore_NonReactiveData.web3Provider
+      );
+
+      const response = await ethersService.donateUser(
+        tournamentId as string,
+        datas?.user?.id,
+        Number(values),
+        BUSD,
+        "0xA7399B0A1C818aebA3f01f9DE83E9686E9E6Dbfe"
+      );
+      return response.txHash;
+    }
   };
 
   const closeModalNotify = () => {
