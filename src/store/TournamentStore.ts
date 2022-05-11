@@ -79,6 +79,8 @@ class TournamentStore {
   private _notifyModalVisible: boolean = false;
   private _claimDonationModalVisible: boolean = false;
   private _claimResultModalVisible: boolean = false;
+  private _checkDepositApprove: boolean = false;
+  private _checkDonationApprove: boolean = false;
 
   private _id?: number | undefined;
 
@@ -388,6 +390,19 @@ class TournamentStore {
   }
   public set claimResultModalVisible(value: boolean) {
     this._claimResultModalVisible = value;
+  }
+
+  public get checkDepositApprove(): boolean {
+    return this._checkDepositApprove;
+  }
+  public set checkDepositApprove(value: boolean) {
+    this._checkDepositApprove = value;
+  }
+  public get checkDonationApprove(): boolean {
+    return this._checkDonationApprove;
+  }
+  public set checkDonationApprove(value: boolean) {
+    this._checkDonationApprove = value;
   }
 }
 

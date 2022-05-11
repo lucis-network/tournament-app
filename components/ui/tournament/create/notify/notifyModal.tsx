@@ -20,6 +20,7 @@ export default observer(function NotifyModal(props: Props) {
     TournamentStore.resetStates();
     clearLocalCreateTournament();
     router.push("/");
+    TournamentStore.depositModalVisible = false;
   };
 
   const handleCancel = () => {
@@ -27,6 +28,7 @@ export default observer(function NotifyModal(props: Props) {
     TournamentStore.resetStates();
     clearLocalCreateTournament();
     router.push("/");
+    TournamentStore.depositModalVisible = false;
   };
 
   const copy = (e: any) => {

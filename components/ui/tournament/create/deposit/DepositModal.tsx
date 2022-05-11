@@ -32,12 +32,15 @@ export default observer(function DepositModal(props: Props) {
       AuthBoxStore.connectModalVisible = true;
     } else {
       let result = await deposit();
+
       setIsLoading(false);
       if (!result?.error) {
         TournamentStore.notifyModalVisible = true;
         const tournamentService = new TournamentService();
-
-        
+        tournamentService.depositTournament(
+          tournamentUid,
+          result?.txHash as string
+        );
       } else {
         //@ts-ignore
         message.error(result?.error?.message);
@@ -56,17 +59,28 @@ export default observer(function DepositModal(props: Props) {
         ConnectWalletStore_NonReactiveData.web3Provider
       );
       const total = getTotalAmount();
+
       const contractAddress = getContract.filter(
         (item: any) => item.type === "PRIZE"
       );
 
-      const result = await ethersService.initTournament(
-        tournamentUid,
-        total,
-        BUSD,
-        contractAddress[0]?.address
-      );
-      return result;
+      if (!TournamentStore.checkDepositApprove) {
+        TournamentStore.checkDepositApprove =
+          await ethersService.requestApproval(
+            contractAddress[0]?.address,
+            BUSD
+          );
+      }
+
+      if (TournamentStore.checkDepositApprove) {
+        const result = await ethersService.initTournament(
+          tournamentUid,
+          total,
+          BUSD,
+          contractAddress[0]?.address
+        );
+        return result;
+      }
     }
   };
 
@@ -87,7 +101,7 @@ export default observer(function DepositModal(props: Props) {
         onOk={handleOk}
         className={`${s.container}`}
         cancelButtonProps={{ style: { display: "none" } }}
-        okText="Deposit"
+        okText={"Deposit"}
         onCancel={handleCancel}
       >
         <Spin spinning={isLoading}>

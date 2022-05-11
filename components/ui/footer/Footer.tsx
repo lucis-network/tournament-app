@@ -8,7 +8,7 @@ export default function Footer(props: Props) {
       <div className={s.content}>
         <div className="lucis-container">
           <div className={s.r}>
-            <div>
+            <div className={s.logo}>
               <img src="/assets/footer/logo.png" alt="" />
             </div>
             <div className={s.group_ic}>
