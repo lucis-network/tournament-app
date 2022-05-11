@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import { gql, useLazyQuery } from "@apollo/client";
+import { useCallback, useState } from "react";
+import { gql, useQuery } from "@apollo/client";
 import { debounce } from "lodash";
 import { Bracket, OrderType, StatusGameType } from "utils/Enum";
 
@@ -26,7 +26,12 @@ export function useHomePage() {
 		time: OrderType.DESC,
 	});
 
-	const [getData, { loading, error, data, refetch }] = useLazyQuery(
+	const {
+		loading,
+		error,
+		data,
+		refetch: getData,
+	} = useQuery(
 		type === StatusGameType.UPCOMING
 			? GET_UPCOMING
 			: type === StatusGameType.ONGOING
@@ -35,11 +40,11 @@ export function useHomePage() {
 		{
 			fetchPolicy: "cache-and-network",
 			variables: {
-				game: filter?.game,
-				bracket: filter?.bracket,
-				team_size: filter?.team_size,
-				prize_pool: filter?.prize_pool,
-				time: filter?.time,
+				game: "",
+				bracket: "",
+				team_size: "",
+				prize_pool: "",
+				time: "",
 			},
 		}
 	);
@@ -52,15 +57,11 @@ export function useHomePage() {
 			});
 
 			type === "game"
-				? debounce(() => refetch({ ...filter, [type as any]: value }), 500)
-				: refetch({ ...filter, [type]: value });
+				? debounce(() => getData({ ...filter, [type as any]: value }), 500)
+				: getData({ ...filter, [type]: value });
 		},
-		[filter, refetch]
+		[filter, getData]
 	);
-
-	useEffect(() => {
-		getData();
-	}, []);
 
 	return {
 		type,
