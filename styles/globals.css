@@ -779,3 +779,6 @@ body .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
 body .ant-picker-cell-inner {
   color: black;
 }
+.ant-popover-message-title {
+  color: #ffffff;
+}

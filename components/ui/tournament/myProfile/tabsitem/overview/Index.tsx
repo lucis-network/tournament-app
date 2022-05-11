@@ -1,13 +1,14 @@
 import s from "./Overview.module.sass";
-import { Row, Col, Image, Button, Input } from "antd";
+import {Row, Col, Image, Button, Input, Popconfirm, message} from "antd";
 import CardTeam from "components/ui/common/cardsItem/cardTeam";
 import {
 	ADD_FAVORITE_GAME,
+	useDeleteFavoriteGame,
 	useGetFavoriteGame,
 	useGetJoinedTournament,
 } from "../../../../../../hooks/myProfile/useMyProfile";
 import MyTournamentList from "../myTournament/MyTournamentList";
-import React, { useEffect } from "react";
+import React, {EffectCallback, useEffect, useState} from "react";
 import AuthStore, { AuthUser } from "../../../../../Auth/AuthStore";
 import { useMutation, useQuery } from "@apollo/client";
 import { GET_USER_TEAMS } from "../../../../common/tabsItem/myTeamDetail/myTeamService";
@@ -16,6 +17,7 @@ import { observer } from "mobx-react-lite";
 import ConnectWalletStore from "../../../../../Auth/ConnectWalletStore";
 import MyProfileStore from "../../../../../../src/store/MyProfileStore";
 import AddFavoriteGameModal from "./AddFavoriteGameModal";
+import {DeleteOutlined, PlusCircleOutlined} from "@ant-design/icons";
 
 export default observer(function MyOverview() {
 	const userInfo = AuthStore;
@@ -26,6 +28,7 @@ export default observer(function MyOverview() {
 });
 
 export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
+	const [gameToDelete, setGameToDelete] = useState<string>('');
 	const { joinedTournamentData } = useGetJoinedTournament({
 		user_id: `${userInfo.id}`,
 	});
@@ -35,9 +38,51 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 		},
 	});
 	const [addFavoriteGame] = useMutation(ADD_FAVORITE_GAME);
-	const { refetch, getFavoriteGameData } = useGetFavoriteGame({
+	const {deleteFavoriteGame} = useDeleteFavoriteGame({
+		game_uid: gameToDelete
+	});
+	const { refetch: refetchFavoriteGameData, getFavoriteGameData } = useGetFavoriteGame({
 		user_id: `${userInfo.id}`,
 	});
+	const [favoriteGameIDs, setFavoriteGameIDs] = useState<string[]>([]);
+
+	const handleTournamentShowMore = (key: string) => {
+		MyProfileStore.tabActiveKey = key;
+	};
+
+	const handleTeamShowMore = (key: string) => {
+		MyProfileStore.tabActiveKey = key;
+	};
+
+	const handleDisconnectWallet = () => {
+		ConnectWalletStore.resetStates();
+	};
+
+	const handleAddFavoriteGame = () => {
+		MyProfileStore.chooseGameModalVisible = true;
+		console.log(1)
+	};
+
+	const handleDeleteGame = (game_uid: string) => {
+		setGameToDelete(game_uid)
+	}
+
+	const handleCallbackChooseGame = (data: any) => {
+		addFavoriteGame({
+			variables: {
+				input: {
+					game_uid: data,
+				},
+			},
+		})
+			.then(result => {
+				refetchFavoriteGameData()
+			})
+			.catch(error => {
+				message.error('Error adding favorite game.');
+			})
+	};
+
 	const userSocial = [
 		{
 			name: "discord",
@@ -66,40 +111,38 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 		},
 	].filter((item) => item.link);
 
-	const handleTournamentShowMore = (key: string) => {
-		MyProfileStore.tabActiveKey = key;
-	};
-
-	const handleTeamShowMore = (key: string) => {
-		MyProfileStore.tabActiveKey = key;
-	};
-
-	const handleDisconnectWallet = () => {
-		ConnectWalletStore.resetStates();
-	};
-
-	const handleAddFavoriteGame = () => {
-		MyProfileStore.chooseGameModalVisible = true;
-	};
-
-	const handleCallbackChooseGame = async (data: any) => {
-		console.log("data: ", data);
-		try {
-			const response = await addFavoriteGame({
-				variables: {
-					input: {
-						game_uid: data,
-					},
-				},
-			});
-			console.log("handleCallbackChooseGame: ", response);
-		} catch (error) {
-			console.log("error addFavoriteGame: ", error);
+	useEffect(() => {
+		let isSubscribed = true;
+		if (gameToDelete.length > 0) {
+			deleteFavoriteGame()
+				.then(result => {
+					if (isSubscribed) {
+						refetchFavoriteGameData();
+					}
+				})
+				.catch(error => {
+					message.error('Error deleting favorite game.');
+				})
 		}
+		console.log(isSubscribed);
+		return () => {
+			isSubscribed = false;
+		}
+	}, [gameToDelete])
 
-		// TournamentStore.game_uid = data.uid;
-		// setMessageErrorChoosegame("");
-	};
+	useEffect(() => {
+		let isSubscribed = true;
+		if (getFavoriteGameData?.getFavoriteGame) {
+			if (isSubscribed) {
+				setFavoriteGameIDs(() => {
+					return getFavoriteGameData.getFavoriteGame.map(item => item.game.uid)
+				});
+			}
+		}
+		return () => {
+			isSubscribed = false;
+		}
+	}, [getFavoriteGameData])
 
 	return (
 		<>
@@ -129,26 +172,40 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 					</div>
 					<h1>Favorite game</h1>
 					<div className={s.favorite_game}>
-						{userInfo?.favorite_game &&
-							userInfo?.favorite_game.map((item) => (
+						{getFavoriteGameData &&
+              getFavoriteGameData.getFavoriteGame.map((item) => (
 								<div key={item.id} className={s.content_favorite_game}>
 									<div className={s.img_game}>
 										<Image src={`${item.game.logo}`} preview={false} alt="" />
 									</div>
-									<p>{item.game.logo}</p>
+									<p>{item.game.name}</p>
+									<Popconfirm
+										title="Are you sure to delete this game?"
+										onConfirm={() => handleDeleteGame(item.game.uid)}
+										okText="Yes"
+										cancelText="No"
+									>
+										<button className={s.deleteFavoriteGameBtn}>
+											<DeleteOutlined />
+										</button>
+									</Popconfirm>
 								</div>
 							))}
 						<div
 							className={s.add_favorite_game}
 							onClick={handleAddFavoriteGame}
 						>
-							<p>Add favorite game</p>
+							<PlusCircleOutlined />
+							<p className="mb-0 ml-2">Add favorite game</p>
 						</div>
 					</div>
 				</Col>
 
 				{/* content right */}
 				<Col span={6} className={s.container_right}>
+					<div className="mb-5">
+						<Button>Total earnings</Button>
+					</div>
 					<div className={s.biography}>
 						<p>Biography</p>
 						<div className={s.des}>
@@ -177,8 +234,8 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 					</div>
 					<div className={s.team}>
 						<p>Team</p>
-						<div style={{ margin: "20px 0px", textAlign: "right" }}>
-							{getUserTeamsData?.getAllTeam && (
+						<div style={{ margin: "0 0 20px 0", textAlign: "right" }}>
+							{getUserTeamsData?.getAllTeam.length > 0 ? (
 								<>
 									{getUserTeamsData.getAllTeam
 										.slice(0, 3)
@@ -193,7 +250,7 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 										More
 									</Button>
 								</>
-							)}
+							) : <div className="text-left ">Haven&apos;t joined any team yet.</div>}
 						</div>
 					</div>
 					{ConnectWalletStore.address && (
@@ -211,7 +268,7 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 					)}
 				</Col>
 			</Row>
-			<AddFavoriteGameModal handCallbackAddGame={handleCallbackChooseGame} />
+			<AddFavoriteGameModal handleCallbackAddGame={handleCallbackChooseGame} favoriteGameIDs={favoriteGameIDs} />
 		</>
 	);
 }

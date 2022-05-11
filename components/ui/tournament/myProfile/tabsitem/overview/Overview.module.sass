@@ -30,16 +30,21 @@
 
     .favorite_game
       display: flex
+      flex-wrap: wrap
       align-items: flex-start
-      justify-content: space-between
+      gap: 20px
       color: #FFF
       .content_favorite_game
         display: flex
         flex-direction: column
         align-items: center
+        flex-basis: 100px
+        position: relative
+        &:hover
+          .deleteFavoriteGameBtn
+            display: block
         .img_game
           width: 100%
-          max-width: 20%
           padding: 10px
           border: 1px solid #FFF
           min-width: 200px 
@@ -47,8 +52,27 @@
           border-radius: 8px
           background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
           backdrop-filter: blur(4px)
+          display: flex
+          :global(.ant-image)
+            width: 100%
+            img
+              height: 100%
+              object-fit: contain
         p
           margin-top: 20px
+        .deleteFavoriteGameBtn
+          display: none
+          position: absolute
+          top: -15px
+          right: -15px
+          background: #FFFFFF
+          border: 1px solid #d9d9d9
+          border-radius: 50px
+          width: 30px
+          height: 30px
+          line-height: 1
+          *
+            color: red
       
       .add_favorite_game
           width: 100%
@@ -66,7 +90,7 @@
           backdrop-filter: blur(4px)
 
   .container_right
-    padding-top: 100px
+    padding-top: 30px
     padding-left: 50px
     color: #FFF
     p

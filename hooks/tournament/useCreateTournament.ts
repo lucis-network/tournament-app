@@ -57,7 +57,7 @@ export function useCurrencies(props: Props) {
   };
 }
 
-const CHOOSE_GAME = gql`
+export const CHOOSE_GAME = gql`
   query ($name: String!) {
     getGame(name: $name) {
       uid
