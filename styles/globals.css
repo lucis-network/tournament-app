@@ -775,11 +775,15 @@ body .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   display: block;
 } */
 
+.ant-popover-message-title {
+  color: #ffffff;
+}
+
 /* PICKER */
 body .ant-picker-cell-inner {
   color: black;
 }
-body .ant-modal-mask{  
+body .ant-modal-mask{
   background-color: rgba(0, 0, 0, 0.2)
 }
 body .ant-carousel .slick-list{

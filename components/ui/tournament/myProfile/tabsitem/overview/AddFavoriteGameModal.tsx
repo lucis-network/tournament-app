@@ -1,56 +1,79 @@
 import { observer } from "mobx-react-lite";
-import {Checkbox, Modal} from "antd";
+import {Checkbox, InputRef, Modal} from "antd";
 import Input from "antd/lib/input/Input";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {FormEvent, useCallback, useEffect, useRef, useState} from "react";
 import s from "./AddFavoriteGame.module.sass";
-import { useChooseGame } from "hooks/tournament/useCreateTournament";
+import {CHOOSE_GAME} from "hooks/tournament/useCreateTournament";
 import debounce from "lodash/debounce";
 import MyProfileStore from "../../../../../../src/store/MyProfileStore";
+import {Game} from "../../../../../../src/generated/graphql";
+import client from "../../../../../../utils/apollo_client";
+import {CheckboxValueType} from "antd/lib/checkbox/Group";
 
-type Props = {
-  handCallbackAddGame?: any;
+type AddFavoriteGameModalProps = {
+  handleCallbackAddGame?: any;
+  favoriteGameIDs: string[];
 };
 
-export default observer(function AddFavoriteGameModal(props: Props) {
-  const inputRef = useRef<any>(null);
-  const [name, setName] = useState("");
+export default observer(function AddFavoriteGameModal({handleCallbackAddGame, favoriteGameIDs}: AddFavoriteGameModalProps) {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedGameIDs, setSelectedGameIDs] = useState<CheckboxValueType[]>([]);
+  const [gameData, setGameData] = useState<Game[]>([]);
+  const inputRef = useRef<InputRef>(null);
 
-  const { getDataChooseGame } = useChooseGame({
-    name: name,
-  });
+  const getDataChooseGame = (gameName: string) => {
+    client.query({
+      query: CHOOSE_GAME,
+      variables: {
+        name: gameName
+      }
+    })
+      .then(response => {
+        setGameData(response.data.getGame)
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 
   const isModalVisible = MyProfileStore.chooseGameModalVisible,
-    setIsModalVisible = (v: boolean) =>
-      (MyProfileStore.chooseGameModalVisible = v);
+    setIsModalVisible = (isVisible: boolean) =>
+      (MyProfileStore.chooseGameModalVisible = isVisible);
 
   const handleCancel = () => {
+    setSearchQuery('');
+    setSelectedGameIDs([]);
     setIsModalVisible(false);
+    getDataChooseGame('');
   };
 
-  const onSearch = (e: any) => {
-    delayedSearch(e.target.value);
+  const onSearch = (event: FormEvent<HTMLInputElement>) => {
+    setSearchQuery(event.currentTarget.value);
+    setSelectedGameIDs([]);
+    delayedSearch(event.currentTarget.value);
   };
 
-  const [value, setValue] = useState([]);
-
-  const onChange = (value: any) => {
-    console.log(value);
-    setValue(value);
+  const onGameSelected = (gameIDs: CheckboxValueType[]) => {
+    setSelectedGameIDs(gameIDs);
   };
 
   const handleOk = () => {
-    setIsModalVisible(false);
-    if (getDataChooseGame && value.length > 0)
-      props.handCallbackAddGame(value);
+    if ((gameData.length > 0) && (selectedGameIDs.length > 0)) {
+      handleCallbackAddGame(selectedGameIDs);
+    }
+    handleCancel();
   };
 
   const delayedSearch = useCallback(
-    debounce((value: string) => {
-      setName(value);
-      setValue([]);
+    debounce((name: string) => {
+      getDataChooseGame(name);
     }, 600),
     []
   );
+
+  useEffect(() => {
+    getDataChooseGame(searchQuery)
+  }, []);
 
   useEffect(() => {
     if (inputRef && inputRef.current) {
@@ -67,15 +90,15 @@ export default observer(function AddFavoriteGameModal(props: Props) {
       onCancel={handleCancel}
       className={`${s.container}`}
     >
-      <Input placeholder="Search by name" onChange={onSearch} ref={inputRef} />
+      <Input placeholder="Search by name" onChange={onSearch} ref={inputRef} value={searchQuery} />
       <div className="mt-10">
         <Checkbox.Group
-          onChange={onChange}
-          value={value}
+          onChange={onGameSelected}
+          value={selectedGameIDs}
           className={`flex flex-wrap`}
         >
-          {getDataChooseGame
-            ? getDataChooseGame?.map((game: any) => {
+          {gameData.length > 0
+            ? gameData.filter((game: Game) => !favoriteGameIDs.includes(game.uid)).map((game: Game) => {
               return (
                 <div className={`${s.item}`} key={game.uid}>
                   <Checkbox className={`${s.itemRadio}`} value={game.uid}>
@@ -84,8 +107,7 @@ export default observer(function AddFavoriteGameModal(props: Props) {
                         src={game.logo}
                         width="100"
                         height="100"
-                        alt=""
-                        style={{ height: "100px" }}
+                        alt={`${game.name}`}
                       />
                     ) : (
                       <img
