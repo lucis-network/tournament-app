@@ -10,9 +10,11 @@ import s from "./Referees.module.sass";
 type Props = {
   dataRefereesDetail: Referee[];
   loadingReferees: any;
+  tournamentId: string;
+  currency?: any;
 };
 export default function Referees(props: Props) {
-  const { dataRefereesDetail, loadingReferees } = props;
+  const { dataRefereesDetail, loadingReferees, tournamentId, currency } = props;
   const [dataReferees, setDataReferees] = useState({});
   const [isPopUp, setIsPopUp] = useState(false);
 
@@ -86,7 +88,14 @@ export default function Referees(props: Props) {
         rowKey={(record) => `${record.user?.profile?.user_id}`}
         className={s.container_table}
       />
-      <PopupDonate closeModal={click} status={isPopUp} datas={dataReferees} />
+      <PopupDonate
+        closeModal={click}
+        status={isPopUp}
+        datas={dataReferees}
+        tournamentId={tournamentId}
+        types={"REFEREE"}
+        currency={currency}
+      />
     </div>
   );
 }

@@ -174,6 +174,7 @@ const GET_PARTICIPANTS_DETAIL = gql`
 			name
 			avatar
 			BracketTeam {
+				uid
 				bracket_uid
 				bracketTeamMembers {
 					uid
