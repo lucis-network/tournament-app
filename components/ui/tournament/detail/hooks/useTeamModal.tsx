@@ -316,7 +316,7 @@ const UseTeamModal = (tournamentData: any) => {
 								</button>
 								<button className={s.button} onClick={handleOpenCreateNewTeam}>
 									<PlusOutlined className="mr-2" />
-									Create a new member
+									Create a new team
 								</button>
 							</div>
 						</div>
