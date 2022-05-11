@@ -64,7 +64,7 @@ const UseTeamModal = (tournamentData: any) => {
 		handleRemove,
 		handleSaveTeam,
 		handleSearchMember,
-	} = UseCreateNewTeam(user?.profile);
+	} = UseCreateNewTeam(user?.profile, team_size);
 
 	const { url, inputKey, handleFileInput } = UseUploadAvatar(
 		handleChangeAvatar,
@@ -210,7 +210,7 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleOpenCreateNewTeam = () => {
-		setStep("create-team");
+		setStep("success");
 		handleCreateTeam();
 	};
 
@@ -249,8 +249,27 @@ const UseTeamModal = (tournamentData: any) => {
 	const handleOpenModal = useCallback(() => {
 		setShow(true);
 		searchTeam();
-		isSoloVersion && setStep("step-2");
-	}, [isSoloVersion, searchTeam]);
+		if (isSoloVersion) {
+			setStep("step-2");
+			setSelectedTeam({
+				team: [
+					{
+						user_id: user?.id,
+						display_name: user?.profile?.display_name,
+						avatar: user?.profile?.avatar,
+						is_leader: true,
+						prize: 100,
+					},
+				] as Item[],
+			} as MyTeamType);
+		}
+	}, [
+		isSoloVersion,
+		searchTeam,
+		user?.id,
+		user?.profile?.avatar,
+		user?.profile?.display_name,
+	]);
 
 	useEffect(() => {
 		if (selectedTeam && (selectedTeam?.team?.length || 0) > team_size) {
@@ -385,12 +404,14 @@ const UseTeamModal = (tournamentData: any) => {
 			},
 			["success"]: {
 				titleModal: "You'v successfully join this tournament",
-				description: <p>Some description here</p>,
+				description: <p></p>,
 				component: (
 					<div className="flex justify-center align-middle items-center mt-8">
 						<button
 							className={`${s.button} mr-4 !w-max`}
-							onClick={() => handleRoutes("/tournament")}
+							onClick={() =>
+								handleRoutes(`/tournament/${tournamentId}/${name}`)
+							}
 						>
 							Back to tournament
 						</button>

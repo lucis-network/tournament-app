@@ -5,7 +5,6 @@ import { MyTeamType } from "../../hooks/useCreateNewTeam";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import s from "./TeamModal.module.sass";
 import { ErrorTourKey, Item } from "../../hooks/useTeamModal";
-import { useRef } from "react";
 
 interface TeamPrizingProps {
 	isSolo: boolean;
@@ -58,8 +57,6 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 		setEditingKey(String(record.user_id));
 		setEditInputKey(type);
 	};
-
-	console.log(error);
 
 	const handleValuesChange = (values: Item[]) => {};
 
@@ -216,7 +213,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			);
 
 		return (
-			<td {...restProps} onBlur={() => handleSave(String(record.user_id))}>
+			<td {...restProps}>
 				{editing ? (
 					<Form.Item name={dataIndex} style={{ margin: 0 }}>
 						{inputNode}
