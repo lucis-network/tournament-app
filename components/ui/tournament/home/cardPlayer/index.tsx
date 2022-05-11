@@ -57,6 +57,7 @@ export default function CardPlayer(props: Props) {
               <div className={s.avt}>
                 <img src="/assets/home/im_avt_player.png" alt="" />
                 <div className={s.ic_like} onClick={()=> hanldeLike(e.id)}>
+                  <img src="/assets/home/ic_unlike.svg" alt="" />
                 </div>
               </div>
               <p>{e.name}</p>
@@ -69,7 +70,7 @@ export default function CardPlayer(props: Props) {
                 </Button>
               </div>
             </div>
-            <PopupDonate status={isPopUp} closeModal={click} datas={newData} />
+            <PopupDonate status={isPopUp} types={'TOPPLAYER'} closeModal={click} datas={newData} />
           </div>
         );
       })}

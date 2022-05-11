@@ -13,7 +13,7 @@ export default function SilderBanner() {
     textLength.length > 42 ? textLength.substring(0, 42) + "..." : textLength;
   return (
     <Carousel autoplay>
-      <div>
+      <div className={s.container}>
         <div className={s.im_conver}>
           <div className={s.im_banner} style={{ backgroundImage: 'url(assets/Banner/im_slider_banner.png)' }}>
           </div>
@@ -42,7 +42,6 @@ export default function SilderBanner() {
           </div>
         </div>
       </div>
-
     </Carousel>
   );
 }

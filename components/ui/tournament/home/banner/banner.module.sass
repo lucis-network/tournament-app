@@ -5,16 +5,52 @@
   position: relative
   .container
     padding-top: 70px
-    @media ( max-width: 992px )
-      padding-top: 130px
+    @media ( max-width: 1024px )
+      padding-top: 100px
+
     .marquee
       display: flex
       align-items: center
       color: #FFF
-      font-size: 18px
       line-height: 24px
       font-weight: 400
-      padding-bottom: 400px
       padding-top: 40px
-      @media (max-width: 639px)
-        padding-bottom: 500px
+      position: relative
+      @media (min-width: 0px)
+        font-size: 14px
+        padding-bottom: 460px
+      @media (min-width: 540px)
+        font-size: 16px
+      @media (min-width: 640px)
+        padding-bottom: 400px
+        font-size: 18px
+      img
+        position: absolute
+        left: 8px
+      .time
+        position: relative
+        font-weight: 600
+        font-size: 14px
+        line-height: 150%
+        color: #3BE2CD
+        max-width: 160px
+        padding-left: 80px
+        background: linear-gradient(111.29deg, rgba(255, 255, 255, 0.13) -1.83%, rgba(255, 255, 255, 0) 109.95%)
+        .line
+          position: absolute
+          top: 0
+          left: 0
+          background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+          box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
+          width: 5px
+          height: 100%
+      p
+        margin: 0 12px
+        max-width: 1420px
+        @media (min-width: 0px)
+          font-size: 14px
+        @media (min-width: 540px)
+          font-size: 16px
+        @media (min-width: 640px)
+          font-size: 18px
+
