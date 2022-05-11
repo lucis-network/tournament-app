@@ -1,7 +1,7 @@
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, ReactElement, useMemo } from "react";
-import { PlusOutlined, ShareAltOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import s from "../popup/chooseTeamModal/TeamModal.module.sass";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import TeamSelect from "../popup/chooseTeamModal/TeamSelect";

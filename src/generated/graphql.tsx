@@ -412,7 +412,7 @@ export type BracketTeam = {
   __typename?: 'BracketTeam';
   _count: BracketTeamCount;
   bracket: Bracket;
-  bracketTeamMembers?: Maybe<Array<BracketTeamMembers>>;
+  bracketTeamMembers?: Maybe<Array<BracketTeamMember>>;
   bracket_uid: Scalars['String'];
   created_at: Scalars['DateTime'];
   is_checkin?: Maybe<Scalars['Boolean']>;
@@ -489,7 +489,7 @@ export type BracketTeamCreateOrConnectWithoutTeamInput = {
 };
 
 export type BracketTeamCreateWithoutBracketInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutBracketTeamInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutBracketTeamInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   is_checkin?: InputMaybe<Scalars['Boolean']>;
   team: TeamCreateNestedOneWithoutBracketTeamInput;
@@ -508,15 +508,15 @@ export type BracketTeamCreateWithoutBracketTeamMembersInput = {
 
 export type BracketTeamCreateWithoutTeamInput = {
   bracket: BracketCreateNestedOneWithoutBracketTeamsInput;
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutBracketTeamInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutBracketTeamInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   is_checkin?: InputMaybe<Scalars['Boolean']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type BracketTeamMembers = {
-  __typename?: 'BracketTeamMembers';
+export type BracketTeamMember = {
+  __typename?: 'BracketTeamMember';
   bracketTeam: BracketTeam;
   bracket_team_uid: Scalars['String'];
   created_at: Scalars['DateTime'];
@@ -529,7 +529,7 @@ export type BracketTeamMembers = {
   user_id: Scalars['Int'];
 };
 
-export type BracketTeamMembersCreateManyBracketTeamInput = {
+export type BracketTeamMemberCreateManyBracketTeamInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_in_game?: InputMaybe<Scalars['String']>;
   is_leader?: InputMaybe<Scalars['Boolean']>;
@@ -539,12 +539,12 @@ export type BracketTeamMembersCreateManyBracketTeamInput = {
   user_id: Scalars['Int'];
 };
 
-export type BracketTeamMembersCreateManyBracketTeamInputEnvelope = {
-  data: Array<BracketTeamMembersCreateManyBracketTeamInput>;
+export type BracketTeamMemberCreateManyBracketTeamInputEnvelope = {
+  data: Array<BracketTeamMemberCreateManyBracketTeamInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type BracketTeamMembersCreateManyUserInput = {
+export type BracketTeamMemberCreateManyUserInput = {
   bracket_team_uid: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_in_game?: InputMaybe<Scalars['String']>;
@@ -554,36 +554,36 @@ export type BracketTeamMembersCreateManyUserInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type BracketTeamMembersCreateManyUserInputEnvelope = {
-  data: Array<BracketTeamMembersCreateManyUserInput>;
+export type BracketTeamMemberCreateManyUserInputEnvelope = {
+  data: Array<BracketTeamMemberCreateManyUserInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type BracketTeamMembersCreateNestedManyWithoutBracketTeamInput = {
-  connect?: InputMaybe<Array<BracketTeamMembersWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<BracketTeamMembersCreateOrConnectWithoutBracketTeamInput>>;
-  create?: InputMaybe<Array<BracketTeamMembersCreateWithoutBracketTeamInput>>;
-  createMany?: InputMaybe<BracketTeamMembersCreateManyBracketTeamInputEnvelope>;
+export type BracketTeamMemberCreateNestedManyWithoutBracketTeamInput = {
+  connect?: InputMaybe<Array<BracketTeamMemberWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<BracketTeamMemberCreateOrConnectWithoutBracketTeamInput>>;
+  create?: InputMaybe<Array<BracketTeamMemberCreateWithoutBracketTeamInput>>;
+  createMany?: InputMaybe<BracketTeamMemberCreateManyBracketTeamInputEnvelope>;
 };
 
-export type BracketTeamMembersCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<BracketTeamMembersWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<BracketTeamMembersCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<BracketTeamMembersCreateWithoutUserInput>>;
-  createMany?: InputMaybe<BracketTeamMembersCreateManyUserInputEnvelope>;
+export type BracketTeamMemberCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<BracketTeamMemberWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<BracketTeamMemberCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<BracketTeamMemberCreateWithoutUserInput>>;
+  createMany?: InputMaybe<BracketTeamMemberCreateManyUserInputEnvelope>;
 };
 
-export type BracketTeamMembersCreateOrConnectWithoutBracketTeamInput = {
-  create: BracketTeamMembersCreateWithoutBracketTeamInput;
-  where: BracketTeamMembersWhereUniqueInput;
+export type BracketTeamMemberCreateOrConnectWithoutBracketTeamInput = {
+  create: BracketTeamMemberCreateWithoutBracketTeamInput;
+  where: BracketTeamMemberWhereUniqueInput;
 };
 
-export type BracketTeamMembersCreateOrConnectWithoutUserInput = {
-  create: BracketTeamMembersCreateWithoutUserInput;
-  where: BracketTeamMembersWhereUniqueInput;
+export type BracketTeamMemberCreateOrConnectWithoutUserInput = {
+  create: BracketTeamMemberCreateWithoutUserInput;
+  where: BracketTeamMemberWhereUniqueInput;
 };
 
-export type BracketTeamMembersCreateWithoutBracketTeamInput = {
+export type BracketTeamMemberCreateWithoutBracketTeamInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_in_game?: InputMaybe<Scalars['String']>;
   is_leader?: InputMaybe<Scalars['Boolean']>;
@@ -593,7 +593,7 @@ export type BracketTeamMembersCreateWithoutBracketTeamInput = {
   user: UserCreateNestedOneWithoutBracketTeamMembersInput;
 };
 
-export type BracketTeamMembersCreateWithoutUserInput = {
+export type BracketTeamMemberCreateWithoutUserInput = {
   bracketTeam: BracketTeamCreateNestedOneWithoutBracketTeamMembersInput;
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_in_game?: InputMaybe<Scalars['String']>;
@@ -603,7 +603,7 @@ export type BracketTeamMembersCreateWithoutUserInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type BracketTeamMembersWhereUniqueInput = {
+export type BracketTeamMemberWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
@@ -621,6 +621,37 @@ export enum BracketType {
 
 export type BracketWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
+};
+
+export type CacheCurrency = {
+  __typename?: 'CacheCurrency';
+  created_at: Scalars['DateTime'];
+  currency?: Maybe<Currency>;
+  currency_uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  usd_value?: Maybe<Scalars['Float']>;
+};
+
+export type CacheCurrencyCreateNestedOneWithoutCurrencyInput = {
+  connect?: InputMaybe<CacheCurrencyWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<CacheCurrencyCreateOrConnectWithoutCurrencyInput>;
+  create?: InputMaybe<CacheCurrencyCreateWithoutCurrencyInput>;
+};
+
+export type CacheCurrencyCreateOrConnectWithoutCurrencyInput = {
+  create: CacheCurrencyCreateWithoutCurrencyInput;
+  where: CacheCurrencyWhereUniqueInput;
+};
+
+export type CacheCurrencyCreateWithoutCurrencyInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency_uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  usd_value?: InputMaybe<Scalars['Float']>;
+};
+
+export type CacheCurrencyWhereUniqueInput = {
+  currency_uid?: InputMaybe<Scalars['String']>;
 };
 
 export type CacheTournament = {
@@ -712,11 +743,12 @@ export type ChainWhereUniqueInput = {
   symbol?: InputMaybe<ChainSymbol>;
 };
 
-export type ClaimTransactions = {
-  __typename?: 'ClaimTransactions';
+export type ClaimTransaction = {
+  __typename?: 'ClaimTransaction';
   amount?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   currency_uid: Scalars['String'];
+  status: TransactionStatus;
   tournament_uid: Scalars['String'];
   tournaments: Tournament;
   tx_hash?: Maybe<Scalars['String']>;
@@ -728,10 +760,11 @@ export type ClaimTransactions = {
   user_id: Scalars['Int'];
 };
 
-export type ClaimTransactionsCreateManyTournamentsInput = {
+export type ClaimTransactionCreateManyTournamentsInput = {
   amount?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_uid: Scalars['String'];
+  status?: InputMaybe<TransactionStatus>;
   tx_hash?: InputMaybe<Scalars['String']>;
   type: ClaimType;
   uid?: InputMaybe<Scalars['String']>;
@@ -740,15 +773,16 @@ export type ClaimTransactionsCreateManyTournamentsInput = {
   user_id: Scalars['Int'];
 };
 
-export type ClaimTransactionsCreateManyTournamentsInputEnvelope = {
-  data: Array<ClaimTransactionsCreateManyTournamentsInput>;
+export type ClaimTransactionCreateManyTournamentsInputEnvelope = {
+  data: Array<ClaimTransactionCreateManyTournamentsInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ClaimTransactionsCreateManyUserInput = {
+export type ClaimTransactionCreateManyUserInput = {
   amount?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_uid: Scalars['String'];
+  status?: InputMaybe<TransactionStatus>;
   tournament_uid: Scalars['String'];
   tx_hash?: InputMaybe<Scalars['String']>;
   type: ClaimType;
@@ -757,39 +791,40 @@ export type ClaimTransactionsCreateManyUserInput = {
   usd_value?: InputMaybe<Scalars['Decimal']>;
 };
 
-export type ClaimTransactionsCreateManyUserInputEnvelope = {
-  data: Array<ClaimTransactionsCreateManyUserInput>;
+export type ClaimTransactionCreateManyUserInputEnvelope = {
+  data: Array<ClaimTransactionCreateManyUserInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ClaimTransactionsCreateNestedManyWithoutTournamentsInput = {
-  connect?: InputMaybe<Array<ClaimTransactionsWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimTransactionsCreateOrConnectWithoutTournamentsInput>>;
-  create?: InputMaybe<Array<ClaimTransactionsCreateWithoutTournamentsInput>>;
-  createMany?: InputMaybe<ClaimTransactionsCreateManyTournamentsInputEnvelope>;
+export type ClaimTransactionCreateNestedManyWithoutTournamentsInput = {
+  connect?: InputMaybe<Array<ClaimTransactionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ClaimTransactionCreateOrConnectWithoutTournamentsInput>>;
+  create?: InputMaybe<Array<ClaimTransactionCreateWithoutTournamentsInput>>;
+  createMany?: InputMaybe<ClaimTransactionCreateManyTournamentsInputEnvelope>;
 };
 
-export type ClaimTransactionsCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<ClaimTransactionsWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimTransactionsCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<ClaimTransactionsCreateWithoutUserInput>>;
-  createMany?: InputMaybe<ClaimTransactionsCreateManyUserInputEnvelope>;
+export type ClaimTransactionCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<ClaimTransactionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<ClaimTransactionCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<ClaimTransactionCreateWithoutUserInput>>;
+  createMany?: InputMaybe<ClaimTransactionCreateManyUserInputEnvelope>;
 };
 
-export type ClaimTransactionsCreateOrConnectWithoutTournamentsInput = {
-  create: ClaimTransactionsCreateWithoutTournamentsInput;
-  where: ClaimTransactionsWhereUniqueInput;
+export type ClaimTransactionCreateOrConnectWithoutTournamentsInput = {
+  create: ClaimTransactionCreateWithoutTournamentsInput;
+  where: ClaimTransactionWhereUniqueInput;
 };
 
-export type ClaimTransactionsCreateOrConnectWithoutUserInput = {
-  create: ClaimTransactionsCreateWithoutUserInput;
-  where: ClaimTransactionsWhereUniqueInput;
+export type ClaimTransactionCreateOrConnectWithoutUserInput = {
+  create: ClaimTransactionCreateWithoutUserInput;
+  where: ClaimTransactionWhereUniqueInput;
 };
 
-export type ClaimTransactionsCreateWithoutTournamentsInput = {
+export type ClaimTransactionCreateWithoutTournamentsInput = {
   amount?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_uid: Scalars['String'];
+  status?: InputMaybe<TransactionStatus>;
   tx_hash?: InputMaybe<Scalars['String']>;
   type: ClaimType;
   uid?: InputMaybe<Scalars['String']>;
@@ -798,10 +833,11 @@ export type ClaimTransactionsCreateWithoutTournamentsInput = {
   user: UserCreateNestedOneWithoutClaimInput;
 };
 
-export type ClaimTransactionsCreateWithoutUserInput = {
+export type ClaimTransactionCreateWithoutUserInput = {
   amount?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_uid: Scalars['String'];
+  status?: InputMaybe<TransactionStatus>;
   tournaments: TournamentCreateNestedOneWithoutClaim_TransactionsInput;
   tx_hash?: InputMaybe<Scalars['String']>;
   type: ClaimType;
@@ -810,14 +846,12 @@ export type ClaimTransactionsCreateWithoutUserInput = {
   usd_value?: InputMaybe<Scalars['Decimal']>;
 };
 
-export type ClaimTransactionsWhereUniqueInput = {
+export type ClaimTransactionWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
 export enum ClaimType {
   Donate = 'DONATE',
-  DonateTeam = 'DONATE_TEAM',
-  DonateTournament = 'DONATE_TOURNAMENT',
   PrizePool = 'PRIZE_POOL',
   PrizeSystem = 'PRIZE_SYSTEM'
 }
@@ -891,13 +925,19 @@ export type ContractWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
+export type CreateFavorite = {
+  game_uid?: InputMaybe<Array<Scalars['String']>>;
+};
+
 export type Currency = {
   __typename?: 'Currency';
   _count: CurrencyCount;
   address?: Maybe<Scalars['String']>;
+  cache_currency: CacheCurrency;
   chain?: Maybe<Chain>;
   chain_symbol?: Maybe<ChainSymbol>;
   created_at: Scalars['DateTime'];
+  decimals?: Maybe<Scalars['Int']>;
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   owner?: Maybe<Scalars['String']>;
@@ -925,21 +965,24 @@ export type CurrencyCreateOrConnectWithoutTournamentsInput = {
 
 export type CurrencyCreateWithoutTournamentsInput = {
   address?: InputMaybe<Scalars['String']>;
+  cache_currency?: InputMaybe<CacheCurrencyCreateNestedOneWithoutCurrencyInput>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  decimals?: InputMaybe<Scalars['Int']>;
   icon?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   owner?: InputMaybe<Scalars['String']>;
   symbol?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type CurrencyGql = {
   __typename?: 'CurrencyGql';
   address?: Maybe<Scalars['String']>;
+  cache_currency: CacheCurrency;
   chain_symbol?: Maybe<ChainSymbol>;
   created_at: Scalars['DateTime'];
+  decimals?: Maybe<Scalars['Int']>;
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   owner?: Maybe<Scalars['String']>;
@@ -971,6 +1014,8 @@ export type DonateTransaction = {
   amount?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   from: Scalars['String'];
+  has_claim?: Maybe<Scalars['Boolean']>;
+  message?: Maybe<Scalars['String']>;
   to: Scalars['String'];
   tournament_uid: Scalars['String'];
   tournaments: Tournament;
@@ -985,6 +1030,8 @@ export type DonateTransactionCreateManyTournamentsInput = {
   amount?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   from: Scalars['String'];
+  has_claim?: InputMaybe<Scalars['Boolean']>;
+  message?: InputMaybe<Scalars['String']>;
   to: Scalars['String'];
   tx_hash?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<DonateTransactionsType>;
@@ -1014,6 +1061,8 @@ export type DonateTransactionCreateWithoutTournamentsInput = {
   amount?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   from: Scalars['String'];
+  has_claim?: InputMaybe<Scalars['Boolean']>;
+  message?: InputMaybe<Scalars['String']>;
   to: Scalars['String'];
   tx_hash?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<DonateTransactionsType>;
@@ -1093,14 +1142,18 @@ export type GContract = {
   created_at: Scalars['DateTime'];
   currency_symbol?: Maybe<Scalars['String']>;
   owner?: Maybe<Scalars['String']>;
+  type: ContractType;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
 };
 
 export type GDonateTransaction = {
   amount?: InputMaybe<Scalars['Float']>;
+  has_claim?: InputMaybe<Scalars['Boolean']>;
+  message?: InputMaybe<Scalars['String']>;
   to: Scalars['String'];
   tournamnent_uid?: InputMaybe<Scalars['String']>;
+  tx_hash: Scalars['String'];
   type?: InputMaybe<DonateTransactionsType>;
 };
 
@@ -1115,7 +1168,7 @@ export type GTournament = {
   _count: TournamentCount;
   additionPrize: Scalars['Decimal'];
   cache_tournament?: Maybe<CacheTournament>;
-  claim_transactions?: Maybe<Array<ClaimTransactions>>;
+  claim_transactions?: Maybe<Array<ClaimTransaction>>;
   cover: Scalars['String'];
   created_at: Scalars['DateTime'];
   currency: Currency;
@@ -1130,7 +1183,7 @@ export type GTournament = {
   participants: Scalars['Int'];
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: Maybe<Array<TournamentRank>>;
+  ranks?: Maybe<Array<TournamentRank>>;
   reaction?: Maybe<Array<Reaction>>;
   referees: Scalars['String'];
   regions?: Maybe<Scalars['String']>;
@@ -1264,7 +1317,7 @@ export type Mutation = {
   claimPrizeSystem?: Maybe<Scalars['Boolean']>;
   confirmResult?: Maybe<Scalars['Boolean']>;
   createTeam?: Maybe<Scalars['Boolean']>;
-  createTournament?: Maybe<Scalars['String']>;
+  createTournament?: Maybe<TournamentGql>;
   deleteFavoriteGame?: Maybe<Scalars['Boolean']>;
   deleteMember?: Maybe<Scalars['Boolean']>;
   deleteTeam?: Maybe<Scalars['Boolean']>;
@@ -1276,13 +1329,13 @@ export type Mutation = {
   generateNonce: Scalars['String'];
   joinTournament?: Maybe<Scalars['Boolean']>;
   leaveTeam?: Maybe<Scalars['Boolean']>;
+  leaveTournament?: Maybe<Scalars['Boolean']>;
   /** Facebook login */
   loginFacebook: AuthGraphql;
   /** Google login */
   loginGoogle: AuthGraphql;
   reactToTournament?: Maybe<Scalars['Boolean']>;
   subscribeToTournament?: Maybe<Scalars['Boolean']>;
-  unjoinTournament?: Maybe<Scalars['Boolean']>;
   unsubscribeToTournament?: Maybe<Scalars['Boolean']>;
   /** Only referee can update match result */
   updateMatchResult?: Maybe<Scalars['String']>;
@@ -1291,7 +1344,7 @@ export type Mutation = {
 
 
 export type MutationAddFavoriteGameArgs = {
-  game_uid: Scalars['String'];
+  input: CreateFavorite;
 };
 
 
@@ -1312,11 +1365,13 @@ export type MutationCheckInTournamentArgs = {
 
 
 export type MutationClaimDonationArgs = {
+  address: Scalars['String'];
   tournamnent_uid: Scalars['String'];
 };
 
 
 export type MutationClaimPrizePoolArgs = {
+  address: Scalars['String'];
   tournament_uid: Scalars['String'];
 };
 
@@ -1389,6 +1444,12 @@ export type MutationLeaveTeamArgs = {
 };
 
 
+export type MutationLeaveTournamentArgs = {
+  team_uid: Scalars['String'];
+  tournament_uid: Scalars['String'];
+};
+
+
 export type MutationLoginFacebookArgs = {
   accessToken: Scalars['String'];
 };
@@ -1409,12 +1470,6 @@ export type MutationSubscribeToTournamentArgs = {
 };
 
 
-export type MutationUnjoinTournamentArgs = {
-  team_uid: Scalars['String'];
-  tournament_uid: Scalars['String'];
-};
-
-
 export type MutationUnsubscribeToTournamentArgs = {
   tournament_uid: Scalars['String'];
 };
@@ -1427,6 +1482,69 @@ export type MutationUpdateMatchResultArgs = {
 
 export type MutationUpdateProfileArgs = {
   data: ProfileUpdateInput;
+};
+
+export type Notification = {
+  __typename?: 'Notification';
+  content?: Maybe<Scalars['String']>;
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  image?: Maybe<Scalars['String']>;
+  is_seen: Scalars['Boolean'];
+  title?: Maybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+export type NotificationCreateManyUserInput = {
+  content?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  image?: InputMaybe<Scalars['String']>;
+  is_seen?: InputMaybe<Scalars['Boolean']>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type NotificationCreateManyUserInputEnvelope = {
+  data: Array<NotificationCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type NotificationCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<NotificationWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<NotificationCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<NotificationCreateWithoutUserInput>>;
+  createMany?: InputMaybe<NotificationCreateManyUserInputEnvelope>;
+};
+
+export type NotificationCreateOrConnectWithoutUserInput = {
+  create: NotificationCreateWithoutUserInput;
+  where: NotificationWhereUniqueInput;
+};
+
+export type NotificationCreateWithoutUserInput = {
+  content?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  image?: InputMaybe<Scalars['String']>;
+  is_seen?: InputMaybe<Scalars['Boolean']>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type NotificationType = {
+  __typename?: 'NotificationType';
+  content?: Maybe<Scalars['String']>;
+  image?: Maybe<Scalars['String']>;
+  is_seen?: Maybe<Scalars['Boolean']>;
+  time?: Maybe<Scalars['DateTime']>;
+  title?: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+export type NotificationWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -1482,11 +1600,13 @@ export type Query = {
   checkUserName?: Maybe<Scalars['Boolean']>;
   currencies?: Maybe<Array<CurrencyGql>>;
   donateHistory?: Maybe<Array<DonateHistory>>;
-  earningHistory?: Maybe<Array<EarningHistory>>;
+  getAllTeam?: Maybe<Array<UserTeam>>;
   getAllTournament: Array<TournamentGql>;
   getBracket?: Maybe<BracketGql>;
   getClosedTournament?: Maybe<Array<TournamentGql>>;
-  getDepositContract: GContract;
+  getContracts: Array<GContract>;
+  getEarningHistory?: Maybe<Array<EarningHistory>>;
+  getFavoriteGame?: Maybe<Array<UserFavoriteGame>>;
   getGame?: Maybe<Array<Game>>;
   getJoinedTournament?: Maybe<Array<TTournament>>;
   getMyTeam?: Maybe<Array<UserTeam>>;
@@ -1495,7 +1615,8 @@ export type Query = {
   getReferee?: Maybe<Array<Referee>>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
   getSpotlightTournament?: Maybe<Array<GTournament>>;
-  getTeam?: Maybe<Array<BracketTeamMembers>>;
+  getTeam?: Maybe<Array<BracketTeamMember>>;
+  getTotalEarning?: Maybe<Scalars['Float']>;
   getTournamentDetail?: Maybe<TournamentGql>;
   getTournamentListRank?: Maybe<Array<TournamentListRank>>;
   getTournamentParticipants?: Maybe<Array<Team>>;
@@ -1504,6 +1625,8 @@ export type Query = {
   getTournamentResult: Array<GTournamentRank>;
   getTournamentReward?: Maybe<Array<Reward>>;
   getUpComingTournament?: Maybe<Array<TournamentGql>>;
+  getUserProfile?: Maybe<UserGraphql>;
+  isJoinedTournament?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
   search?: Maybe<Array<TournamentGql>>;
@@ -1525,6 +1648,11 @@ export type QueryDonateHistoryArgs = {
 };
 
 
+export type QueryGetAllTeamArgs = {
+  user_id: Scalars['String'];
+};
+
+
 export type QueryGetBracketArgs = {
   tournament_uid: Scalars['String'];
 };
@@ -1535,13 +1663,38 @@ export type QueryGetClosedTournamentArgs = {
 };
 
 
+export type QueryGetEarningHistoryArgs = {
+  user_id: Scalars['String'];
+};
+
+
+export type QueryGetFavoriteGameArgs = {
+  user_id: Scalars['String'];
+};
+
+
 export type QueryGetGameArgs = {
   name: Scalars['String'];
 };
 
 
+export type QueryGetJoinedTournamentArgs = {
+  user_id: Scalars['String'];
+};
+
+
+export type QueryGetMyTeamArgs = {
+  user_id: Scalars['String'];
+};
+
+
 export type QueryGetOnGoingTournamentArgs = {
   data: TournamentFilterInput;
+};
+
+
+export type QueryGetOwnedTournamentArgs = {
+  user_id: Scalars['String'];
 };
 
 
@@ -1558,6 +1711,11 @@ export type QueryGetSponsorSlotArgs = {
 export type QueryGetTeamArgs = {
   team_uid: Scalars['String'];
   tournament_uid: Scalars['String'];
+};
+
+
+export type QueryGetTotalEarningArgs = {
+  user_id: Scalars['String'];
 };
 
 
@@ -1601,12 +1759,24 @@ export type QueryGetUpComingTournamentArgs = {
 };
 
 
+export type QueryGetUserProfileArgs = {
+  user_id: Scalars['String'];
+};
+
+
+export type QueryIsJoinedTournamentArgs = {
+  tournament_uid: Scalars['String'];
+  user_id: Scalars['String'];
+};
+
+
 export type QuerySearchArgs = {
   value: Scalars['String'];
 };
 
 
 export type QuerySearchJoinedTournamentArgs = {
+  user_id: Scalars['String'];
   value: Scalars['String'];
 };
 
@@ -1618,12 +1788,14 @@ export type QuerySearchMemberArgs = {
 
 
 export type QuerySearchOwnerTournamentArgs = {
+  user_id: Scalars['String'];
   value: Scalars['String'];
 };
 
 
 export type QuerySearchTeamArgs = {
   name: Scalars['String'];
+  user_id: Scalars['String'];
 };
 
 
@@ -1790,7 +1962,7 @@ export type SponsorInput = {
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   sponsor_slot_uid?: InputMaybe<Scalars['String']>;
-  sponsor_type?: InputMaybe<SponsorTransactionType>;
+  tx_hash: Scalars['String'];
 };
 
 export type SponsorSlot = {
@@ -2041,10 +2213,20 @@ export type SponsorTransactionWhereUniqueInput = {
 
 export enum Status {
   Closed = 'CLOSED',
-  Opening = 'OPENING',
+  Ongoing = 'ONGOING',
   Reviewing = 'REVIEWING',
   Upcoming = 'UPCOMING'
 }
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  pushNotification: NotificationType;
+};
+
+
+export type SubscriptionPushNotificationArgs = {
+  user_id: Scalars['Float'];
+};
 
 export type TTournament = {
   __typename?: 'TTournament';
@@ -2056,7 +2238,7 @@ export type TTournament = {
   claim_donate?: Maybe<PrizeClaimStatus>;
   claim_prize_pool_status?: Maybe<PrizeClaimStatus>;
   claim_prize_system_status?: Maybe<PrizeClaimStatus>;
-  claim_transactions?: Maybe<Array<ClaimTransactions>>;
+  claim_transactions?: Maybe<Array<ClaimTransaction>>;
   cover: Scalars['String'];
   created_at: Scalars['DateTime'];
   currency: Currency;
@@ -2071,7 +2253,7 @@ export type TTournament = {
   participants: Scalars['Int'];
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: Maybe<Array<TournamentRank>>;
+  ranks?: Maybe<Array<TournamentRank>>;
   reaction?: Maybe<Array<Reaction>>;
   referees: Scalars['String'];
   regions?: Maybe<Scalars['String']>;
@@ -2260,7 +2442,7 @@ export type Tournament = {
   additionPrize: Scalars['Decimal'];
   brackets?: Maybe<Array<Bracket>>;
   cache_tournament?: Maybe<CacheTournament>;
-  claim_transactions?: Maybe<Array<ClaimTransactions>>;
+  claim_transactions?: Maybe<Array<ClaimTransaction>>;
   cover: Scalars['String'];
   created_at: Scalars['DateTime'];
   currency: Currency;
@@ -2277,7 +2459,7 @@ export type Tournament = {
   password?: Maybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: Maybe<Array<TournamentRank>>;
+  ranks?: Maybe<Array<TournamentRank>>;
   reaction?: Maybe<Array<Reaction>>;
   referees: Scalars['String'];
   regions?: Maybe<Scalars['String']>;
@@ -2302,7 +2484,7 @@ export type TournamentCount = {
   claim_transactions: Scalars['Int'];
   donate_transactions: Scalars['Int'];
   leader_board: Scalars['Int'];
-  rank: Scalars['Int'];
+  ranks: Scalars['Int'];
   reaction: Scalars['Int'];
   sponsorSlot: Scalars['Int'];
   tournament_subscribes: Scalars['Int'];
@@ -2494,7 +2676,7 @@ export type TournamentCreateWithoutBracketsInput = {
   TournamentDeposit?: InputMaybe<TournamentDepositCreateNestedManyWithoutTournamentInput>;
   additionPrize?: InputMaybe<Scalars['Decimal']>;
   cache_tournament?: InputMaybe<CacheTournamentCreateNestedOneWithoutTournamentInput>;
-  claim_transactions?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutTournamentsInput>;
+  claim_transactions?: InputMaybe<ClaimTransactionCreateNestedManyWithoutTournamentsInput>;
   cover: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutTournamentsInput;
@@ -2509,7 +2691,7 @@ export type TournamentCreateWithoutBracketsInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
@@ -2545,7 +2727,7 @@ export type TournamentCreateWithoutClaim_TransactionsInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
@@ -2567,7 +2749,7 @@ export type TournamentCreateWithoutGameInput = {
   additionPrize?: InputMaybe<Scalars['Decimal']>;
   brackets?: InputMaybe<BracketCreateNestedManyWithoutTournamentInput>;
   cache_tournament?: InputMaybe<CacheTournamentCreateNestedOneWithoutTournamentInput>;
-  claim_transactions?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutTournamentsInput>;
+  claim_transactions?: InputMaybe<ClaimTransactionCreateNestedManyWithoutTournamentsInput>;
   cover: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutTournamentsInput;
@@ -2581,7 +2763,7 @@ export type TournamentCreateWithoutGameInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
@@ -2603,7 +2785,7 @@ export type TournamentCreateWithoutLeader_BoardInput = {
   additionPrize?: InputMaybe<Scalars['Decimal']>;
   brackets?: InputMaybe<BracketCreateNestedManyWithoutTournamentInput>;
   cache_tournament?: InputMaybe<CacheTournamentCreateNestedOneWithoutTournamentInput>;
-  claim_transactions?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutTournamentsInput>;
+  claim_transactions?: InputMaybe<ClaimTransactionCreateNestedManyWithoutTournamentsInput>;
   cover: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutTournamentsInput;
@@ -2617,7 +2799,7 @@ export type TournamentCreateWithoutLeader_BoardInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
@@ -2639,7 +2821,7 @@ export type TournamentCreateWithoutReactionInput = {
   additionPrize?: InputMaybe<Scalars['Decimal']>;
   brackets?: InputMaybe<BracketCreateNestedManyWithoutTournamentInput>;
   cache_tournament?: InputMaybe<CacheTournamentCreateNestedOneWithoutTournamentInput>;
-  claim_transactions?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutTournamentsInput>;
+  claim_transactions?: InputMaybe<ClaimTransactionCreateNestedManyWithoutTournamentsInput>;
   cover: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutTournamentsInput;
@@ -2654,7 +2836,7 @@ export type TournamentCreateWithoutReactionInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
   rules?: InputMaybe<Scalars['String']>;
@@ -2675,7 +2857,7 @@ export type TournamentCreateWithoutSponsorSlotInput = {
   additionPrize?: InputMaybe<Scalars['Decimal']>;
   brackets?: InputMaybe<BracketCreateNestedManyWithoutTournamentInput>;
   cache_tournament?: InputMaybe<CacheTournamentCreateNestedOneWithoutTournamentInput>;
-  claim_transactions?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutTournamentsInput>;
+  claim_transactions?: InputMaybe<ClaimTransactionCreateNestedManyWithoutTournamentsInput>;
   cover: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutTournamentsInput;
@@ -2690,7 +2872,7 @@ export type TournamentCreateWithoutSponsorSlotInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
@@ -2711,7 +2893,7 @@ export type TournamentCreateWithoutTournament_SubscribesInput = {
   additionPrize?: InputMaybe<Scalars['Decimal']>;
   brackets?: InputMaybe<BracketCreateNestedManyWithoutTournamentInput>;
   cache_tournament?: InputMaybe<CacheTournamentCreateNestedOneWithoutTournamentInput>;
-  claim_transactions?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutTournamentsInput>;
+  claim_transactions?: InputMaybe<ClaimTransactionCreateNestedManyWithoutTournamentsInput>;
   cover: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutTournamentsInput;
@@ -2726,7 +2908,7 @@ export type TournamentCreateWithoutTournament_SubscribesInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
@@ -2747,7 +2929,7 @@ export type TournamentCreateWithoutUserInput = {
   additionPrize?: InputMaybe<Scalars['Decimal']>;
   brackets?: InputMaybe<BracketCreateNestedManyWithoutTournamentInput>;
   cache_tournament?: InputMaybe<CacheTournamentCreateNestedOneWithoutTournamentInput>;
-  claim_transactions?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutTournamentsInput>;
+  claim_transactions?: InputMaybe<ClaimTransactionCreateNestedManyWithoutTournamentsInput>;
   cover: Scalars['String'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutTournamentsInput;
@@ -2762,7 +2944,7 @@ export type TournamentCreateWithoutUserInput = {
   password?: InputMaybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
+  ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees: Scalars['String'];
   regions?: InputMaybe<Scalars['String']>;
@@ -2860,10 +3042,10 @@ export type TournamentGql = {
   password?: Maybe<Scalars['String']>;
   pool_size: Scalars['Decimal'];
   prize_allocation: Scalars['JSON'];
-  rank?: Maybe<Array<TournamentRank>>;
+  ranks?: Maybe<Array<TournamentRank>>;
   reaction?: Maybe<Array<Reaction>>;
   referees: Scalars['String'];
-  regions?: Maybe<Scalars['String']>;
+  region?: Maybe<Scalars['String']>;
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -3031,6 +3213,7 @@ export enum TournamentStatus {
   Accepted = 'ACCEPTED',
   Complete = 'COMPLETE',
   Disable = 'DISABLE',
+  Finish = 'FINISH',
   Pending = 'PENDING',
   Reviewing = 'REVIEWING'
 }
@@ -3131,8 +3314,8 @@ export enum TransactionStatus {
 export type User = {
   __typename?: 'User';
   _count: UserCount;
-  bracketTeamMembers?: Maybe<Array<BracketTeamMembers>>;
-  claim?: Maybe<Array<ClaimTransactions>>;
+  bracketTeamMembers?: Maybe<Array<BracketTeamMember>>;
+  claim?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   email?: Maybe<Scalars['String']>;
@@ -3141,6 +3324,7 @@ export type User = {
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
+  notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
@@ -3161,6 +3345,7 @@ export type UserCount = {
   claim: Scalars['Int'];
   favorite_game: Scalars['Int'];
   leader_board: Scalars['Int'];
+  notification: Scalars['Int'];
   reaction: Scalars['Int'];
   referee: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
@@ -3269,7 +3454,7 @@ export type UserCreateOrConnectWithoutTournamentSubscriberInput = {
 };
 
 export type UserCreateWithoutBracketTeamMembersInput = {
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
@@ -3277,6 +3462,7 @@ export type UserCreateWithoutBracketTeamMembersInput = {
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3292,7 +3478,7 @@ export type UserCreateWithoutBracketTeamMembersInput = {
 };
 
 export type UserCreateWithoutClaimInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
@@ -3300,6 +3486,7 @@ export type UserCreateWithoutClaimInput = {
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3315,14 +3502,15 @@ export type UserCreateWithoutClaimInput = {
 };
 
 export type UserCreateWithoutFavorite_GameInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3338,14 +3526,15 @@ export type UserCreateWithoutFavorite_GameInput = {
 };
 
 export type UserCreateWithoutLeader_BoardInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3361,8 +3550,8 @@ export type UserCreateWithoutLeader_BoardInput = {
 };
 
 export type UserCreateWithoutReactionInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
@@ -3370,6 +3559,7 @@ export type UserCreateWithoutReactionInput = {
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
@@ -3384,8 +3574,8 @@ export type UserCreateWithoutReactionInput = {
 };
 
 export type UserCreateWithoutSponsorTransactionsInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
@@ -3393,6 +3583,7 @@ export type UserCreateWithoutSponsorTransactionsInput = {
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3407,8 +3598,8 @@ export type UserCreateWithoutSponsorTransactionsInput = {
 };
 
 export type UserCreateWithoutTeamMembersInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
@@ -3416,6 +3607,7 @@ export type UserCreateWithoutTeamMembersInput = {
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3430,8 +3622,8 @@ export type UserCreateWithoutTeamMembersInput = {
 };
 
 export type UserCreateWithoutTournamentInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
@@ -3439,6 +3631,7 @@ export type UserCreateWithoutTournamentInput = {
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3453,8 +3646,8 @@ export type UserCreateWithoutTournamentInput = {
 };
 
 export type UserCreateWithoutTournamentSubscriberInput = {
-  bracketTeamMembers?: InputMaybe<BracketTeamMembersCreateNestedManyWithoutUserInput>;
-  claim?: InputMaybe<ClaimTransactionsCreateNestedManyWithoutUserInput>;
+  bracketTeamMembers?: InputMaybe<BracketTeamMemberCreateNestedManyWithoutUserInput>;
+  claim?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   email?: InputMaybe<Scalars['String']>;
@@ -3462,6 +3655,7 @@ export type UserCreateWithoutTournamentSubscriberInput = {
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
@@ -3558,8 +3752,8 @@ export type UserFavoriteGameWhereUniqueInput = {
 export type UserGraphql = {
   __typename?: 'UserGraphql';
   _count: UserCount;
-  bracketTeamMembers?: Maybe<Array<BracketTeamMembers>>;
-  claim?: Maybe<Array<ClaimTransactions>>;
+  bracketTeamMembers?: Maybe<Array<BracketTeamMember>>;
+  claim?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   email?: Maybe<Scalars['String']>;
@@ -3568,6 +3762,7 @@ export type UserGraphql = {
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
+  notification?: Maybe<Array<Notification>>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
   ref_code?: Maybe<Scalars['String']>;

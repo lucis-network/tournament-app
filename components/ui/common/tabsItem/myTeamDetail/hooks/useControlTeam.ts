@@ -5,13 +5,13 @@ import {
 	DELETE_TEAM,
 	EDIT_TEAM,
 	LEAVE_TEAM,
-	MY_PROFILE,
 	SEARCH_MEMBER,
 	SEARCH_TEAM,
 } from "./../myTeamService";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
 import { useCallback, useState } from "react";
 import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
 	user_name: string;
@@ -43,9 +43,7 @@ const UseControlTeam = () => {
 	const [status, setStatus] = useState<"remove" | "delete" | "leave">("remove");
 	const [error, setError] = useState<Record<string, string>>({});
 
-	const { data: rawProfile, loading: profileLoading } = useQuery(MY_PROFILE);
-
-	const profile = rawProfile?.me?.profile;
+	const user = getLocalAuthInfo();
 
 	const [searchMember, { data: rawSearchMember, loading: memberLoading }] =
 		useLazyQuery(SEARCH_MEMBER, {
@@ -53,6 +51,7 @@ const UseControlTeam = () => {
 				teamId: "",
 				value: "",
 			},
+			fetchPolicy: "cache-and-network",
 		});
 
 	const {
@@ -62,8 +61,9 @@ const UseControlTeam = () => {
 	} = useQuery(SEARCH_TEAM, {
 		variables: {
 			name: "",
-			user_id: profile?.user_id,
+			user_id: user?.profile?.user_id,
 		},
+		fetchPolicy: "cache-and-network",
 	});
 
 	const [createTeam] = useMutation(CREATE_TEAM);
@@ -78,7 +78,7 @@ const UseControlTeam = () => {
 			acc.push(value.user_id as never);
 			return acc;
 		},
-		[profile?.user_id] as string[]
+		[user?.profile?.user_id] as any[]
 	);
 	const teamList = rawSearchTeam?.searchTeam as MyTeamType[];
 	const memberList = isSaveDraft
@@ -162,7 +162,7 @@ const UseControlTeam = () => {
 		setSearchValue(searchValue);
 		searchTeam({
 			name: searchValue,
-			user_id: profile?.user_id,
+			user_id: user?.profile?.user_id,
 		});
 	};
 
@@ -186,9 +186,9 @@ const UseControlTeam = () => {
 					participant: 1,
 					team: [
 						{
-							user_id: profile?.user_id,
-							display_name: profile?.display_name,
-							avatar: profile?.avatar,
+							user_id: user?.profile?.user_id,
+							display_name: user?.profile?.display_name,
+							avatar: user?.profile?.avatar,
 							is_leader: true,
 						},
 					],
@@ -266,7 +266,7 @@ const UseControlTeam = () => {
 			draftData?.team?.length > 1
 		) {
 			const filterDataMember = draftData?.team
-				?.filter((team) => +team.user_id !== +profile?.user_id)
+				?.filter((team) => +team.user_id !== +user?.profile?.user_id!)
 				?.map((item) => ({
 					user_id: +item.user_id,
 					is_leader: false,
@@ -280,7 +280,7 @@ const UseControlTeam = () => {
 								avatar: draftData?.team_avatar,
 								team_member: [
 									{
-										user_id: +profile?.user_id,
+										user_id: +user?.profile?.user_id!,
 										is_leader: true,
 									},
 									...(filterDataMember || []),
@@ -299,7 +299,7 @@ const UseControlTeam = () => {
 								avatar: draftData?.team_avatar,
 								team_member: [
 									{
-										user_id: +profile?.user_id,
+										user_id: +user?.profile?.user_id!,
 										is_leader: true,
 									},
 									...(filterDataMember || []),
@@ -345,7 +345,6 @@ const UseControlTeam = () => {
 	};
 
 	const handleOpenAddMember = (team_uid: string, isSaveDraft?: boolean) => {
-		console.log("open");
 		searchMember({
 			variables: {
 				teamId: team_uid || "",
@@ -364,12 +363,12 @@ const UseControlTeam = () => {
 		setOpenAdd(false);
 	}, [isSaveDraft]);
 
-	const loading = memberLoading && profileLoading && teamLoading;
+	const loading = memberLoading && teamLoading;
 
 	return {
+		profile: user?.profile,
 		loading,
 		reset,
-		profile,
 		error,
 		status,
 		isEdit,
