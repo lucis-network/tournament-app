@@ -1,4 +1,4 @@
-import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
+import UpdateScoreModal from "components/ui/tournament/detail/popup/updateScore";
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import RoundStore from "src/store/SingleRoundStore";
@@ -15,23 +15,28 @@ import {
 import s from "./index.module.sass";
 
 interface Props {
-  rounds?: RoundProps[];
-  // openModal: any;
+  canEdit: boolean
 }
 
-const SingleBracket = ({ rounds }: Props) => {
+const SingleBracket = (props: Props) => {
+  const {canEdit} = props;
+
   const handleOpenModal = (
     e: any,
     seed: any,
     seedIndex: number,
     roundIndex: number
   ) => {
-    RoundStore.updateScoreModalVisible = true;
-    RoundStore.currentMatch = {
-      teams: seed.teams,
-      seedIndex,
-      roundIndex,
-    };
+    if (canEdit) {
+      RoundStore.updateScoreModalVisible = true;
+      RoundStore.currentMatch = {
+        teams: seed.teams,
+        seedIndex,
+        roundIndex,
+      };
+    } else {
+      console.warn("User don't have perm to edit")
+    }
   };
 
   const RenderSeed = ({
@@ -40,6 +45,9 @@ const SingleBracket = ({ rounds }: Props) => {
     seedIndex,
     roundIndex,
   }: RenderSeedProps) => {
+    const team0 = seed.teams[0];
+    const team1 = seed.teams[1];
+
     return (
       <>
         <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
@@ -55,7 +63,7 @@ const SingleBracket = ({ rounds }: Props) => {
                     color: "black",
                   }}
                 >
-                  {seed.teams[0]?.name ?? `bye`}
+                  {team0?.name ?? `bye`}
                 </div>
                 <div
                   style={{
@@ -70,7 +78,7 @@ const SingleBracket = ({ rounds }: Props) => {
                     handleOpenModal(e, seed, seedIndex, roundIndex)
                   }
                 >
-                  {seed.teams[0]?.score ?? "--"}
+                  {team0?.score ?? "--"}
                 </div>
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
@@ -83,7 +91,7 @@ const SingleBracket = ({ rounds }: Props) => {
                     color: "white",
                   }}
                 >
-                  {seed.teams[1]?.name ?? `bye`}
+                  {team1?.name ?? `bye`}
                 </div>
                 <div
                   style={{
@@ -98,7 +106,7 @@ const SingleBracket = ({ rounds }: Props) => {
                     handleOpenModal(e, seed, seedIndex, roundIndex)
                   }
                 >
-                  {seed.teams[1]?.score ?? "--"}
+                  {team1?.score ?? "--"}
                 </div>
               </SeedTeam>
             </div>
@@ -123,9 +131,10 @@ const SingleBracket = ({ rounds }: Props) => {
           },
         }}
       />
-      <UpdateScore />
+      {canEdit && <UpdateScoreModal />}
     </>
   );
 };
 
+// For display bracket in tour detail screen
 export default observer(SingleBracket);

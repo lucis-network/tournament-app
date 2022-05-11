@@ -8,6 +8,7 @@ type Props = {
   // upper: any;
   // lower: any;
   // openModal: any;
+  canEdit: boolean
 };
 
 

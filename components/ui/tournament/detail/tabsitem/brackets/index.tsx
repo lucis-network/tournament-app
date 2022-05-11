@@ -2,6 +2,8 @@ import DoubleBracket from "./DoubleBracket";
 import s from "./index.module.sass";
 import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
 import { useEffect, useState } from "react";
+import { Alert } from "antd";
+
 import SingleBracket from "./SingleBracket";
 import RoundStore from "src/store/SingleRoundStore";
 import FormItemLabel from "antd/lib/form/FormItemLabel";
@@ -56,12 +58,21 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
 
   const isSingleBracket = dataBracket.type === "SINGLE";
 
+  // isRefereeOfThisTour
+  const canEditMatch = true;
+
   return (
     <div className={s.bracketContainer}>
+      {canEditMatch && <Alert
+        className={s.refereeNotice}
+        type="warning" showIcon
+        message="NOTE: You are selected to be a referee of this match so you can update the match results"
+      />}
+
       {isSingleBracket ? (
-        <SingleBracket />
+        <SingleBracket canEdit={true} />
       ) : (
-        <DoubleBracket />
+        <DoubleBracket canEdit={true} />
       )}
     </div>
   );
