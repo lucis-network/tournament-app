@@ -210,7 +210,7 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleOpenCreateNewTeam = () => {
-		setStep("success");
+		setStep("create-team");
 		handleCreateTeam();
 	};
 
