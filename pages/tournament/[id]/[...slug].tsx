@@ -4,7 +4,6 @@ import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import Router, { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-import { isClient } from "utils/DOM";
 import Bracket from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
@@ -15,7 +14,6 @@ import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
-import ClaimDonationModal from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 import { isClientDevMode } from "../../../utils/Env";
@@ -27,7 +25,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
-  const {tournamentId} = props
+  const { tournamentId } = props;
 
   const {
     dataTournamentDetail,
@@ -46,7 +44,6 @@ const TournamentDetail = (props: { tournamentId: string }) => {
     // Change to tournamentUid after
     tournament_uid: tournamentId,
   });
-
 
   if (loading) {
     return null;
@@ -83,14 +80,12 @@ const TournamentDetail = (props: { tournamentId: string }) => {
     regions,
     additionPrize,
     cache_tournament,
-    brackets,
   } = dataTournamentDetail;
 
   return (
     <>
       <div className={s.wrapper}>
         <Banner cover={cover} />
-
         <div className={`lucis-container ${s.group_button}`}>
           {ItemButton.map((item) => (
             // <Button type="primary" key={item}>
@@ -178,6 +173,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
           <RegistrationPhase
             tournament={dataTournamentDetail}
             tournamentId={tournamentId as string}
+            joinTournament={joinTournament}
           />
         </div>
         {/* ===== sponsor ===== */}
@@ -202,7 +198,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
               />
             </TabPane>
             <TabPane
-              tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
+              tab={`Participants (${cache_tournament?.team_participated}/${team_size})`}
               key="4"
             >
               <TableParticipant
@@ -260,13 +256,13 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 
 export default function TournamentDetailSafe() {
   const router = useRouter();
-  const {id} = router.query;
+  const { id } = router.query;
 
   if (!id) {
     if (isClientDevMode) {
-      console.warn('{TournamentDetail} Hey tournamentId is NULL');
+      console.warn("{TournamentDetail} Hey tournamentId is NULL");
     }
   }
 
   return id ? <TournamentDetail tournamentId={id as string} /> : null;
-};
+}

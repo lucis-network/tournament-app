@@ -4,7 +4,7 @@ import {
 	SEARCH_MEMBER,
 } from "../../../common/tabsItem/myTeamDetail/myTeamService";
 import { useMutation, useLazyQuery, useQuery } from "@apollo/client";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 export interface TeamType extends Record<any, any> {
 	user_id: number;
@@ -37,15 +37,12 @@ const UseCreateNewTeam = (profile: any) => {
 			},
 		});
 
-	const {
-		data: rawSearchTeam,
-		loading: teamLoading,
-		refetch,
-	} = useQuery(GET_MY_TEAM, {
-		variables: {
-			user_id: profile?.user_id,
-		},
-	});
+	const [searchTeam, { data: rawSearchTeam, loading: teamLoading, refetch }] =
+		useLazyQuery(GET_MY_TEAM, {
+			variables: {
+				user_id: profile?.user_id,
+			},
+		});
 
 	const [createTeam] = useMutation(CREATE_TEAM);
 
@@ -214,13 +211,6 @@ const UseCreateNewTeam = (profile: any) => {
 		});
 	};
 
-	useEffect(() => {
-		if (profile?.user_id) {
-			searchMember();
-			refetch();
-		}
-	}, [profile?.user_id, refetch, searchMember]);
-
 	const loading = memberLoading && teamLoading;
 
 	return {
@@ -231,6 +221,8 @@ const UseCreateNewTeam = (profile: any) => {
 		teamList,
 		memberList,
 		draftData,
+		searchTeam,
+		searchMember,
 		handleCloseCreateEditTeam,
 		handleCreateTeam,
 		handleChangeTeamName,

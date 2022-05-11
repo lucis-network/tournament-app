@@ -9,9 +9,7 @@ import { fomatNumber } from "utils/Number";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
-import { BUSD } from "utils/Enum";
 import EthersService from "../../../../../services/blockchain/Ethers";
-import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import PopupDonate from "../popup/popupDonate";
 import { SetStateAction, useEffect, useState } from "react";
 import { useClaimReward } from "hooks/tournament/useTournamentDetail";
@@ -20,6 +18,7 @@ import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 type Props = {
   tournament: any;
   tournamentId?: string;
+  joinTournament: any;
 };
 
 type Reward = {
@@ -31,7 +30,6 @@ type Reward = {
 export default observer(function RegistrationPhase(props: Props) {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const {
-    joinTournament,
     participants,
     brackets,
     currency,
@@ -45,7 +43,6 @@ export default observer(function RegistrationPhase(props: Props) {
 
   const { tournamentId } = props;
 
-  console.log("brackets", brackets);
   const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
     useTeamModal(props);
 
@@ -178,12 +175,7 @@ export default observer(function RegistrationPhase(props: Props) {
                   <>
                     <div className={s.join}>
                       <Button onClick={handleOpenModal}>Join tournament</Button>
-                      <p>
-                        Registration ends in{" "}
-                        {moment(brackets[0]?.start_at).format(
-                          "YYYY/MM/DD"
-                        )}
-                      </p>
+                      <p>Check-in ends in 5H 45M 30S</p>
                     </div>
                   </>
                 );

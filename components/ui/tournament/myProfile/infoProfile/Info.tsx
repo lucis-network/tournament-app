@@ -1,27 +1,32 @@
 import s from "./Info.module.sass";
 import AuthStore from "../../../../Auth/AuthStore";
+import {getLocalAuthInfo} from "../../../../Auth/AuthLocal";
+import {Image} from "antd";
+import {observer} from "mobx-react-lite";
+import {useRouter} from "next/router";
 
 type Props = {
   click: () => void;
 };
-export default function InfoMyProfile(props: Props) {
-  const { id } = AuthStore;
+export default observer(function InfoMyProfile(props: Props) {
+  const router = useRouter();
+  const { id } = router.query || AuthStore;
+  const userInfo = AuthStore;
 
   return (
     <div className={s.container}>
       <div
         className={s.banner}
-        style={{ backgroundImage: "url(/profile/banner.png)" }}
-      ></div>
+        style={{ backgroundImage: `url(${userInfo?.profile?.cover || '/profile/banner.png'})` }}
+      />
       <div className={`${s.user_information} lucis-container`}>
         <div className={s.user_information_left}>
           <div className={s.avt}>
-            <img src="/profile/im_user.png" alt="" />
+            <img src={userInfo?.profile?.avatar || '/profile/im_user.png'} alt="" />
           </div>
           <div className={s.information}>
-            <p>Shippou_chan</p>
-            <p>verified</p>
-            <p>id: {id}</p>
+            <p>{userInfo?.profile?.display_name}</p>
+            <p>Username: @{userInfo?.profile?.user_name}</p>
             <button className={s.share_info}>
               <img src="/profile/svg/ic_share.svg" alt="" />
               <span>Share</span>
@@ -34,4 +39,4 @@ export default function InfoMyProfile(props: Props) {
       </div>
     </div>
   );
-}
+});

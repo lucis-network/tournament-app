@@ -2,7 +2,7 @@
   background-image: url("/assets/Banner/bg_card_tournament.png")
   background-repeat: no-repeat
   background-size: cover
-  background-position: top left 
+  background-position: top left
   min-height: 100vh
   margin-top: -230px
   @media (max-width: 639px)
@@ -13,7 +13,7 @@
       flex-wrap: nowrap
   .tabs
     display: flex
-    align-items: center 
+    align-items: center
     color: #FFF
     min-height: 50px
     padding-bottom: 40px
@@ -38,7 +38,7 @@
     .active
       font-weight: 700
       backdrop-filter: blur(12px)
-      position: relative 
+      position: relative
       .ic_tab
         position: absolute
         top: 0
@@ -47,10 +47,10 @@
     .active::before
       content: ''
       position: absolute
-      top:0
-      left:0
-      right:0
-      bottom:0
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
       border-radius: 4px
       padding: 1px
       background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
@@ -170,3 +170,31 @@
           @media ( min-width: 1280px )
             width: auto
             font-size: 20px
+.search
+  :global(.ant-btn-primary)
+    background: transparent
+    display: flex
+    align-items: center
+    margin: 0 auto
+  :global(.ant-btn-primary:hover)
+    background: transparent
+  :global(.ant-input-search-button)
+    border: none
+    color: white !important
+  :global(.ant-btn)
+    border: none
+    color: white !important
+    outline: none
+    &:active
+      border: none
+      outline: none
+      background: none !important
+    &:focus
+      border: none
+      outline: none
+      background: none !important
+    &:hover
+      border: none
+      outline: none
+      color: none !important
+      background: none !important

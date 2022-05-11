@@ -157,7 +157,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>
-                <Image src={country.flag} width="30px" height="auto" />
+                <Image src={country.flag} preview={false} width="30px" height="auto" />
                 <span className="ml-3">
                   {country.name}
                 </span>
