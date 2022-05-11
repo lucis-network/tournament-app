@@ -59,6 +59,7 @@ const UseTeamModal = (tournamentData: any) => {
 		handleChangeAvatar,
 		handleChangeTeamName,
 		handleCloseCreateEditTeam,
+		handleCloseAddMember,
 		handleCreateTeam,
 		handleRemove,
 		handleSaveTeam,
@@ -199,9 +200,9 @@ const UseTeamModal = (tournamentData: any) => {
 		handleCloseCreateEditTeam();
 	};
 
-	const handleCloseAddMember = () => {
+	const handleCloseAdd = () => {
 		setStep("create-team");
-		handleCloseCreateEditTeam();
+		handleCloseAddMember();
 	};
 
 	const handleBack = () => {
@@ -247,6 +248,15 @@ const UseTeamModal = (tournamentData: any) => {
 				],
 			});
 	}, [isSoloVersion]);
+
+	useEffect(() => {
+		if (selectedTeam && (selectedTeam?.team?.length || 0) > team_size) {
+			setSelectedTeam({
+				...selectedTeam,
+				team: selectedTeam?.team?.slice(0, -(selectedTeam?.team.length - 1)),
+			});
+		}
+	}, [selectedTeam, team_size]);
 
 	const stepConfiguration = (
 		step: StepModalTournament
@@ -351,7 +361,7 @@ const UseTeamModal = (tournamentData: any) => {
 					showModal={true}
 					onSearch={handleSearchMember}
 					onAdd={handleAddMemberToTeam}
-					onCancel={handleCloseAddMember}
+					onCancel={handleCloseAdd}
 				/>
 			),
 			["choose-player"]: {

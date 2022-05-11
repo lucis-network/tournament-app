@@ -103,6 +103,8 @@ const UseCreateNewTeam = (profile: any) => {
 	};
 
 	const handleCloseCreateEditTeam = () => {
+		console.log("runnnnnn");
+
 		setDraftData(undefined);
 		setError({});
 		setReset(true);
@@ -211,6 +213,24 @@ const UseCreateNewTeam = (profile: any) => {
 		});
 	};
 
+	const handleCloseAddMember = () => {
+		if ((draftData?.team?.length || 0) <= 1) {
+			setDraftData({
+				team_avatar: "",
+				team_name: "",
+				participant: 1,
+				team: [
+					{
+						user_id: profile?.user_id,
+						display_name: profile?.display_name,
+						avatar: profile?.avatar,
+						is_leader: true,
+					},
+				],
+			} as any);
+		}
+	};
+
 	const loading = memberLoading && teamLoading;
 
 	return {
@@ -230,6 +250,7 @@ const UseCreateNewTeam = (profile: any) => {
 		handleSaveTeam,
 		handleSearchMember,
 		handleAddMember,
+		handleCloseAddMember,
 		handleRemove,
 	};
 };

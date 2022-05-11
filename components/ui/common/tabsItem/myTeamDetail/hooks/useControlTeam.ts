@@ -345,6 +345,7 @@ const UseControlTeam = () => {
 	};
 
 	const handleOpenAddMember = (team_uid: string, isSaveDraft?: boolean) => {
+		console.log("open");
 		searchMember({
 			variables: {
 				teamId: team_uid || "",
@@ -358,6 +359,7 @@ const UseControlTeam = () => {
 	};
 
 	const handleCloseAdd = useCallback(() => {
+		console.log("close");
 		if (isSaveDraft) setOpenCreateTeam(true);
 		setOpenAdd(false);
 	}, [isSaveDraft]);
