@@ -51,7 +51,7 @@ export default observer(function Header(props: Props) {
               justify="space-between"
               className={`container lucis-container items-center py-20px px-0 relative z-10 `}
             >
-              <Col span={4} className={s.logo}>
+              <Col span={3} className={s.logo} style={{maxWidth: 150}}>
                 <Link href="/" passHref>
                   <a>
                     <Image src={Logo} alt="logo" priority />
@@ -62,20 +62,20 @@ export default observer(function Header(props: Props) {
                   ("IS_TESTNET" == "true") && <p>Testnet</p>
                 }
               </Col>
-              <Col span={16}>
+              <Col span={17} style={{paddingLeft: 60}}>
                 <ul className={s.block_item_menu}>
                   <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
                     rel="noopener noreferrer">TOURNAMENT</a></li>
-                  <li><a href="https://insight.lucis.network/" target="_blank"
-                    rel="noopener noreferrer">FAQ</a></li>
                   <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
+                    rel="noopener noreferrer">FAQ</a></li>
+                  <li><a href="https://insight.lucis.network/" target="_blank"
                     rel="noopener noreferrer">INSIGHT</a></li>
                   <li className={s.default} style={{ margin: 0 }}><a href="#">RANKING</a></li>
                   <li className={s.default}>SOCIAL <span>Coming Soon</span></li>
                 </ul>
               </Col>
               <Col span={4}>
-                <ul className="flex gap-4 justify-between items-center m-0">
+                <ul className="flex gap-4 justify-end items-center m-0">
                   <li>
                     {AuthStore.isLoggedIn ? (
                       <>
