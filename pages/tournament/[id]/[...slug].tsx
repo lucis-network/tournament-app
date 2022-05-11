@@ -198,7 +198,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
                 loadingBracket={loadingBracket}
               />
             </TabPane>
-            <TabPane tab={`Participants (${cache_tournament?.team_participated}/${team_size})`} key="4">
+            <TabPane tab={`Participants (${cache_tournament?.team_participated}/${participants})`} key="4">
               <TableParticipant
                 dataParticipants={dataParticipants}
                 loading={loadingParticipant}
@@ -210,6 +210,8 @@ const TournamentDetail = (props: { tournamentId: string }) => {
               <Referees
                 dataRefereesDetail={dataRefereesDetail}
                 loadingReferees={loadingReferees}
+                tournamentId={tournamentId as string}
+                currency={currency}
               />
             </TabPane>
             <TabPane tab="Prizing" key="6">

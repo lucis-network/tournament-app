@@ -40,6 +40,13 @@
     display: flex
     align-items: center
     justify-content: center
+    @media (min-width: 0px)
+      margin-left: 8%
+    @media (min-width: 640px)
+      margin-left: 4%
+    @media (min-width: 992px)
+      margin-left: 0
+
   .btn_see_all
     display: flex
     align-items: center
@@ -50,8 +57,13 @@
       margin-top: -60px
     button
       font-weight: 700
-      font-size: 20px
       line-height: 115%
       border-radius: 10px
-      padding: 14px 20px
       height: auto
+      @media (min-width: 0px)
+        font-size: 16px
+        padding: 12px 20px
+      @media (min-width: 640px)
+        font-size: 20px
+        padding: 14px 20px
+

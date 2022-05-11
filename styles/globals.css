@@ -683,6 +683,10 @@ body .ant-btn-default {
   border: none; */
 }
 
+body .ant-btn-default.bg-gradient-1 {
+  background-image: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%);
+}
+
 body .ant-btn-default:hover {
   background: none;
   color: white;
@@ -785,4 +789,8 @@ body .ant-picker-cell-inner {
 }
 body .ant-modal-mask{
   background-color: rgba(0, 0, 0, 0.2)
+}
+body .ant-carousel .slick-list{
+  box-shadow: 0px 0px 25px -8px #0bebd6;
+  border-radius: 16px;
 }
