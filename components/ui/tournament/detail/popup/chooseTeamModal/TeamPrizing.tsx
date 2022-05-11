@@ -51,13 +51,15 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	const [form] = Form.useForm();
 	const [editingKey, setEditingKey] = useState("");
 	const isEditing = (record: Item) => String(record.user_id) === editingKey;
-	const errMessage = error?.size || error?.user || error?.prize;
+	const errMessage = error?.size || error?.prize || error?.user;
 	const [editInputKey, setEditInputKey] = useState<"number" | "text">();
 	const handleEdit = (record: Partial<Item>, type: "number" | "text") => {
 		form.setFieldsValue({ prize: 0, game_member_id: "", ...record });
 		setEditingKey(String(record.user_id));
 		setEditInputKey(type);
 	};
+
+	console.log(error);
 
 	const handleValuesChange = (values: Item[]) => {};
 
@@ -261,9 +263,9 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				</div>
 			</div>
 			<div className="mt-8 mb-4">
-				{tourPassword && (
-					<div className="flex items-center align-middle">
-						<p className="w-[250px] m-0">Tournament Password</p>
+				{!tourPassword && (
+					<div className="flex items-center align-middle mb-4">
+						<p className="w-[150px] m-0">Password:</p>
 
 						<div>
 							<Input.Password
@@ -279,7 +281,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 					</div>
 				)}
 				<div className="flex items-center">
-					<p className="w-[250px] m-0">Entry Fee</p>
+					<p className="w-[150px] m-0">Entry Fee:</p>
 					<p className="m-0">Free</p>
 				</div>
 			</div>

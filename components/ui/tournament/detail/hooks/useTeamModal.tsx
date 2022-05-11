@@ -88,7 +88,9 @@ const UseTeamModal = (tournamentData: any) => {
 		"prize"
 	);
 
-	const checkTotalPrize = !checkTotalPercent(selectedTeam?.team || [], "prize");
+	const checkTotalPrize = checkTotalPercent(selectedTeam?.team || [], "prize");
+
+	console.log(checkTotalPrize);
 
 	const handleChangeStep = (step: StepModalTournament) => {
 		setStep(step);
@@ -99,14 +101,35 @@ const UseTeamModal = (tournamentData: any) => {
 		handleAddMember(member);
 	};
 	const handleChooseTeamConfirm = (team: TeamType[]) => {
+		setErrorTour({} as any);
 		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team, true) });
 		setStep("step-2");
 	};
 
 	const handleSelectTeam = (team: MyTeamType) => {
+		const checkOverSize = (team.team?.length || 0) > team_size;
 		setStep("step-2");
-		setSelectedTeam({ ...team!, team: dataTeam(team?.team, true) });
+		setSelectedTeam({
+			...team!,
+			team: dataTeam(
+				checkOverSize
+					? [
+							{
+								avatar: user?.profile?.avatar || "",
+								display_name: user?.profile?.display_name || "",
+								user_id: +user?.id!,
+								is_leader: true,
+								user_name: user?.profile?.user_name || "",
+								prize: 100,
+							} as any,
+					  ]
+					: team?.team,
+				true
+			),
+		});
+
 		setDraftSelectedTeam(team);
+		setErrorTour({} as any);
 	};
 
 	const handleSetFormData = (team: Item[]) => {
@@ -114,18 +137,20 @@ const UseTeamModal = (tournamentData: any) => {
 
 		const checkEmptyUserId = checkEmptyArrayValue(team, "game_member_id");
 		const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
-		const checkTotalPrize = !checkTotalPercent(team, "prize");
+		const checkTotalPrize = checkTotalPercent(team, "prize");
 
-		if (checkEmptyPrize || checkEmptyUserId || checkTotalPrize) {
+		console.log(checkTotalPrize);
+
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
 			setErrorTour({
 				...errorTour,
 				size: team_size !== team.length ? "Invalid team size to join" : "",
-				prize: checkTotalPrize
+				prize: checkEmptyPrize
+					? "Prize allocation must not be empty"
+					: checkTotalPrize
 					? "Total Allocation must be 100%"
-					: checkEmptyPrize
-					? "Please fill prize allocation input"
 					: "",
-				user: checkEmptyUserId ? "Please fill game user id input" : "",
+				user: checkEmptyUserId ? "ID in game must not be empty" : "",
 			});
 		} else {
 			setErrorTour({} as any);
@@ -138,19 +163,19 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleJoinTournament = () => {
-		if (checkEmptyPrize || checkEmptyUserId || checkTotalPrize) {
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
 			setErrorTour({
 				...errorTour,
 				size:
 					team_size !== selectedTeam?.team?.length
 						? "Invalid team size to join"
 						: "",
-				prize: checkTotalPrize
+				prize: checkEmptyPrize
+					? "Prize allocation must not be empty"
+					: checkTotalPrize
 					? "Total Allocation must be 100%"
-					: checkEmptyPrize
-					? "Please fill prize allocation input"
 					: "",
-				user: checkEmptyUserId ? "Please fill game user id input" : "",
+				user: checkEmptyUserId ? "ID in game must not be empty" : "",
 			});
 		} else {
 			setErrorTour({} as any);
@@ -230,26 +255,6 @@ const UseTeamModal = (tournamentData: any) => {
 	}, [isSoloVersion, searchTeam]);
 
 	useEffect(() => {
-		isSoloVersion &&
-			setSelectedTeam({
-				team_uid: "",
-				team_name: "",
-				team_avatar: user?.profile?.avatar || "",
-				participant: 1,
-				team: [
-					{
-						avatar: user?.profile?.avatar || "",
-						display_name: user?.profile?.display_name || "",
-						user_id: +user?.id!,
-						is_leader: true,
-						user_name: user?.profile?.user_name || "",
-						prize: 100,
-					} as any,
-				],
-			});
-	}, [isSoloVersion]);
-
-	useEffect(() => {
 		if (selectedTeam && (selectedTeam?.team?.length || 0) > team_size) {
 			setSelectedTeam({
 				...selectedTeam,
@@ -290,7 +295,7 @@ const UseTeamModal = (tournamentData: any) => {
 									className={s.button}
 									onClick={() => handleRoutes("/profile")}
 								>
-									Manager your team
+									Manage your team
 								</button>
 								<button className={s.button} onClick={handleOpenCreateNewTeam}>
 									<PlusOutlined className="mr-2" />

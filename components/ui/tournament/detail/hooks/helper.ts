@@ -4,11 +4,10 @@ import { Item } from "./useTeamModal";
 export const dataTeam = (team?: Item[], isInit?: boolean) =>
 	team?.map((member) => ({
 		...member,
-		prize: isInit
-			? Math.ceil(+(100 / (team?.length || 1)).toFixed(2))
-			: member.prize,
+		prize: isInit ? +(100 / (team?.length || 1)).toFixed(2) : member.prize,
 		game_member_id: member.game_member_id,
 	})) || [];
+
 export const getValueInObject = (array: any[], key: string): any[] => {
 	if (Array.isArray(array)) {
 		return array.reduce((acc, value) => {
