@@ -9,6 +9,8 @@ import ConnectWalletStore, {
 import { BUSD } from "utils/Enum";
 import EthersService from "../../../../../../services/blockchain/Ethers";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
+import { useGetContract } from "hooks/tournament/useCreateTournament";
+import TournamentStore from "src/store/TournamentStore";
 
 type Props = {
   datas?: any;
@@ -43,8 +45,11 @@ const PopupDonate = (props: Props) => {
     name,
     thumbnail,
   } = props;
+  const { getContract } = useGetContract({});
+
   const [titleMessage, setTitleMessage] = useState("");
   const [values, setValues] = useState("");
+  const [desc, setDesc] = useState("");
   const [isPopupNotify, setIsPopupNotify] = useState(false);
   const inputRef = useRef<any>(null);
 
@@ -70,6 +75,7 @@ const PopupDonate = (props: Props) => {
     if (status) {
       setTitleMessage("");
       setValues("");
+      setDesc("");
     }
   }, [status]);
 
@@ -93,32 +99,40 @@ const PopupDonate = (props: Props) => {
       type: types ? types : "",
       tournamnent_uid: tournamentId ? tournamentId : "",
       amount: Number.parseFloat(values),
-      message: "",
+      message: desc,
       tx_hash: "",
     };
 
     if (types == "PLAYER") dnt.to = datas?.user?.id;
-    if (types == "TEAM") dnt.to = datas?.uid;
+    if (types == "TEAM") dnt.to = datas?.BracketTeam[0]?.uid;
     if (types == "TOURNAMENT") dnt.to = tournamentId ? tournamentId : "";
-    if (types == "TOPPLAYER") dnt.to = datas.name
-    let tournamentService = new TournamentService();
-    const response = tournamentService.donateService(dnt).then((res) => {
-      if (res) {
-        setIsPopupNotify(true);
-      }
-    });
+    if (types == "REFEREE") dnt.to = datas.user_id;
+
+    const txHash = await donationContract();
+
+    if (txHash) {
+      dnt.tx_hash = txHash;
+      let tournamentService = new TournamentService();
+      const response = tournamentService.donateService(dnt).then((res) => {
+        if (res) {
+          setIsPopupNotify(true);
+          // setValues("");
+          // setDesc("");
+        }
+      });
+    }
   };
 
   const donationContract = async () => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
     } else {
-      let txHash = await donation();
-      //console.log(txHash);
-      if (txHash) {
-        return txHash;
+      let result = await donation();
+      if (!result?.error) {
+        return result?.txHash;
       } else {
-        message.error("Donate fail. Please try again");
+        //@ts-ignore
+        message.error(result?.error?.message);
       }
     }
   };
@@ -130,14 +144,31 @@ const PopupDonate = (props: Props) => {
         ConnectWalletStore_NonReactiveData.web3Provider
       );
 
-      const response = await ethersService.donateUser(
-        tournamentId as string,
-        datas?.user?.id,
-        Number(values),
-        BUSD,
-        "0xA7399B0A1C818aebA3f01f9DE83E9686E9E6Dbfe"
+      const contractAddress = getContract.filter(
+        (item: any) => item.type === "DONATE"
       );
-      return response.txHash;
+
+      if (!TournamentStore.checkDonationApprove) {
+        TournamentStore.checkDonationApprove =
+          await ethersService.requestApproval(
+            contractAddress[0]?.address,
+            BUSD
+          );
+      }
+
+      if (TournamentStore.checkDonationApprove) {
+        const response = await ethersService.donate(
+          tournamentId as string,
+          datas?.user?.id,
+          datas?.BracketTeam[0]?.uid,
+          datas?.user_id,
+          Number(values),
+          BUSD,
+          contractAddress[0]?.address,
+          types
+        );
+        return response;
+      }
     }
   };
 
@@ -206,21 +237,21 @@ const PopupDonate = (props: Props) => {
                       <p>{name}</p>
                     </>
                   );
-                  case "TOPPLAYER":
-                    return (
-                      <>
-                        <div className={s.avt_member}>
-                          <img
-                            className={s.avt}
-                            src={`${
-                              thumbnail || "/assets/MyProfile/defaultAvatar.png"
-                            }`}
-                            alt=""
-                          />
-                        </div>
-                        <p>{e.name}</p>
-                      </>
-                    );
+                case "REFEREE":
+                  return (
+                    <>
+                      <div className={s.avt_member}>
+                        <img
+                          className={s.avt}
+                          src={`${
+                            e.avatar || "/assets/MyProfile/defaultAvatar.png"
+                          }`}
+                          alt=""
+                        />
+                      </div>
+                      <p>{e.display_name}</p>
+                    </>
+                  );
                 default:
                   return null;
               }
@@ -230,7 +261,9 @@ const PopupDonate = (props: Props) => {
       ))}
       <div>
         <Row className={`${s.amount} ${s.input}`}>
-          <Col span={9} style={{ fontSize: 16 }}>Amount</Col>
+          <Col span={9} style={{ fontSize: 16 }}>
+            Amount
+          </Col>
           <Col span={10}>
             <Input
               style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
@@ -254,13 +287,19 @@ const PopupDonate = (props: Props) => {
         </Row>
 
         <Row className={`${s.message} ${s.input}`}>
-          <Col span={9} style={{ fontSize: 16 }}>Message</Col>
+          <Col span={9} style={{ fontSize: 16 }}>
+            Message
+          </Col>
           <Col span={15}>
             <TextArea
               showCount
               maxLength={125}
               placeholder="Enter message"
               className={s.editable}
+              value={desc}
+              onChange={(e) => {
+                setDesc(e.target.value);
+              }}
             />
           </Col>
         </Row>

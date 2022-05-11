@@ -5,16 +5,33 @@
   @media (max-width: 991px)
     flex-direction: column
     align-items: flex-start
+  @media (max-width: 768px)
+    margin-top: 30px
+  .key
+    width: 110px
+    @media (max-width: 540px)
+      width: 80px
   .item
     color: #FFF
     font-weight: 400
     font-size: 16px
     line-height: 115%
-    margin: 38px 0px
     display: flex
     align-items: center
-    @media (max-width: 991px)
-      margin: 12px 0px
+    @media (min-width: 0px)
+      margin: 8px 12px
+    @media (min-width: 540px)
+      margin: 20px 12px
+    @media (min-width: 992px)
+      margin: 38px 0px
+
+    .ic
+      display: flex
+      align-items: center
+      @media (max-width: 540px)
+        flex-direction: column
+        margin-right: 8px
+        min-width: 38px
   .item > div
     @media (min-width: 992px)
       padding-right: 0px
@@ -26,6 +43,15 @@
         padding-right: 0px
   :global(.ant-select)
     margin: 8px 12px
+    @media (max-width: 540px)
+      margin: 8px 4px
+  :global(.ant-select-single .ant-select-selector .ant-select-selection-item)
+    display: flex
+    align-items: center
+    @media (max-width: 540px)
+      font-size: 10px
+      padding: 0
+
   :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
     background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)

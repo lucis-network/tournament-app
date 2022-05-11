@@ -790,3 +790,7 @@ body .ant-picker-cell-inner {
 body .ant-modal-mask{
   background-color: rgba(0, 0, 0, 0.2)
 }
+body .ant-carousel .slick-list{
+  box-shadow: 0px 0px 25px -8px #0bebd6;
+  border-radius: 16px;
+}
