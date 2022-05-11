@@ -5,7 +5,7 @@ import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import Router, { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { isClient } from "utils/DOM";
-import Bracket from "components/ui/tournament/detail/tabsitem/brackets";
+import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
 import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
@@ -185,47 +185,48 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 				</div>
 				{/* ===== end sponsor ===== */}
 
-				{/* ===== tabs ===== */}
-				<div className={`lucis-container ${s.container_Tabs}`}>
-					<Tabs defaultActiveKey="1">
-						<TabPane tab="Overview" key="1">
-							<Overview desc={desc} />
-						</TabPane>
-						<TabPane tab="Rules" key="2">
-							<Rules rules={rules} />
-						</TabPane>
-						<TabPane tab="Bracket" key="3">
-							<Bracket
-								dataBracket={dataBracket}
-								loadingBracket={loadingBracket}
-							/>
-						</TabPane>
-						<TabPane
-							tab={`Participants (${cache_tournament?.team_participated}/${team_size})`}
-							key="4"
-						>
-							<TableParticipant
-								dataParticipants={dataParticipants}
-								loading={loadingParticipant}
-								tournamentId={tournamentId as string}
-								currency={currency}
-							/>
-						</TabPane>
-						<TabPane tab="Referees" key="5">
-							<Referees
-								dataRefereesDetail={dataRefereesDetail}
-								loadingReferees={loadingReferees}
-							/>
-						</TabPane>
-						<TabPane tab="Prizing" key="6">
-							<Prizing
-								dataPrizing={dataPrizing}
-								loadingPrizing={loadingPrizing}
-								currency={currency}
-							/>
-						</TabPane>
-					</Tabs>
-				</div>
+        {/* ===== tabs ===== */}
+        <div className={`lucis-container ${s.container_Tabs}`}>
+          <Tabs defaultActiveKey="1">
+            <TabPane tab="Overview" key="1">
+              <Overview desc={desc} />
+            </TabPane>
+            <TabPane tab="Rules" key="2">
+              <Rules rules={rules} />
+            </TabPane>
+            <TabPane tab="Bracket" key="3">
+              <Brackets
+                dataBracket={dataBracket}
+                loadingBracket={loadingBracket}
+              />
+            </TabPane>
+            <TabPane tab={`Participants (${cache_tournament?.team_participated}/${team_size})`} key="4">
+              <TableParticipant
+                dataParticipants={dataParticipants}
+                loading={loadingParticipant}
+                tournamentId={tournamentId as string}
+                currency={currency}
+              />
+            </TabPane>
+            <TabPane tab="Referees" key="5">
+              <Referees
+                dataRefereesDetail={dataRefereesDetail}
+                loadingReferees={loadingReferees}
+              />
+            </TabPane>
+            <TabPane tab="Prizing" key="6">
+              <Prizing
+                dataPrizing={dataPrizing}
+                loadingPrizing={loadingPrizing}
+                currency={currency}
+              />
+            </TabPane>
+          </Tabs>
+        </div>
+
+        <div className={s.communityC}>
+
+        </div>
 
 				{/* ===== Modal ===== */}
 				{/* <PopupDonate

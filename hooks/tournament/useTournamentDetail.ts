@@ -125,45 +125,46 @@ export function useClaimReward(props: Props) {
 // ======= GET DATA GRAPQL
 
 const GET_TOURNAMENT_DETAIL = gql`
-	query ($tournament_uid: String!) {
-		getTournamentDetail(tournament_uid: $tournament_uid) {
-			name
-			cover
-			thumbnail
-			team_size
-			participants
-			desc
-			rules
-			game {
-				name
-				logo
-			}
-			user {
-				profile {
-					display_name
-					avatar
-				}
-			}
-			sponsorSlot {
-				sponsor_transactions {
-					amount
-				}
-			}
-			currency_uid
-			totalDonation
-			totalPrizePool
-			currency {
-				symbol
-				chain_symbol
-			}
-			tournament_status
-			additionPrize
-			cache_tournament {
-				team_participated
-				tournament_uid
-			}
-		}
-	}
+  query ($tournament_uid: String!) {
+    getTournamentDetail(tournament_uid: $tournament_uid) {
+      name
+      cover
+      thumbnail
+      team_size
+      participants
+      desc
+      rules
+      game {
+        name
+        logo
+      }
+      user {
+        profile {
+          display_name
+          avatar
+        }
+      }
+      sponsorSlot {
+        sponsor_transactions {
+          amount
+        }
+      }
+      currency_uid
+      totalDonation
+      totalPrizePool
+      region
+      currency {
+        symbol
+        chain_symbol
+      }
+      tournament_status
+      additionPrize
+      cache_tournament {
+        team_participated
+        tournament_uid
+      }
+    }
+  }
 `;
 
 const GET_PARTICIPANTS_DETAIL = gql`
@@ -226,18 +227,25 @@ const GET_BRACKET = gql`
 			start_at
 			status
 
-			bracketRounds {
-				type
-				title
-				bracketMatchs {
-					team1_uid
-					team2_uid
-					score_1
-					score_2
-				}
-			}
-		}
-	}
+      bracketRounds {
+        type
+        title
+        bracketMatchs {
+          team1_uid
+          team2_uid
+          score_1
+          score_2
+        }
+      }
+
+      bracketTeams {
+        team {
+          uid
+          name
+        }
+      }
+    }
+  }
 `;
 
 const GET_SPONSOR_DETAIL = gql`
