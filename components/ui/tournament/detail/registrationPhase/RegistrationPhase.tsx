@@ -39,6 +39,7 @@ export default observer(function RegistrationPhase(props: Props) {
     thumbnail,
     tournament_status,
     additionPrize,
+    cache_tournament,
   } = props.tournament;
 
   const { tournamentId } = props;
@@ -151,7 +152,7 @@ export default observer(function RegistrationPhase(props: Props) {
           <div className={s.items}>
             <img src="/assets/avatar.jpg" alt="" width={50} />
             <span>
-              {participants}/{participants}
+              {cache_tournament?.team_participated}/{participants}
             </span>
             <span>Participants</span>
             <p></p>

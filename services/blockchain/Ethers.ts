@@ -226,16 +226,18 @@ export default class EtherContract {
     return result;
   }
 
-  async approveToken(tokenAddress: string, spender: string, amount: number) {
-    const contract = await this.getContractWithSignerErc20(tokenAddress);
-    //const decimal = contract.decimals();
+  // async approveToken(tokenAddress: string, spender: string, amount: number) {
+  //   const contract = this.getContractWithSignerErc20(tokenAddress);
+  //   //const decimal = contract.decimals();
 
-    const totalAmount = new BigNumber(5 * 2)
-      .multipliedBy(Math.pow(10, 18))
-      .toFormat({ groupSeparator: "" });
+  //   const totalAmount = new BigNumber(5 * 2)
+  //     .multipliedBy(Math.pow(10, 18))
+  //     .toFormat({ groupSeparator: "" });
 
-    contract.approve(spender, totalAmount);
-  }
+  //   const bool = await contract.approve(spender, totalAmount);
+  //   console.log("bool", bool);
+  //   return bool;
+  // }
 
   async initTournament(
     tournamentUid: string,
@@ -256,10 +258,6 @@ export default class EtherContract {
         .multipliedBy(Math.pow(10, 18))
         .toFormat({ groupSeparator: "" });
 
-      await this.approveToken(paymentToken, contractAddress, amount);
-
-      await new Promise((resolve) => setTimeout(resolve, 5000));
-
       const transaction = await contract.initTournament(
         tournamentUid,
         totalAmount,
@@ -277,62 +275,15 @@ export default class EtherContract {
     return result;
   }
 
-  async claimDonation(
+  async donate(
     tournamentUid: string,
+    userId: string,
     teamUid: string,
-    userId: string,
-    tournamentAmount: number,
-    teamAmount: number,
-    userAmount: number,
-    receiver: number,
-    paymentToken: string,
-    contractAddress: string
-  ): Promise<ResultTranferFT> {
-    const result: ResultTranferFT = {
-      txHash: "",
-      error: null,
-    };
-    try {
-      const contract = await this.getContractWithLDonation(contractAddress);
-      //const decimal = await contract.decimals();
-
-      // console.log("contract", contract);
-      // const totalAmount = new BigNumber(amount)
-      //   .multipliedBy(Math.pow(10, 18))
-      //   .toFormat({ groupSeparator: "" });
-
-      // await this.approveToken(paymentToken, contractAddress, amount);
-
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      const transaction = await contract.claim(
-        tournamentUid,
-        teamUid,
-        userId,
-        tournamentAmount,
-        teamAmount,
-        userAmount,
-        receiver,
-        paymentToken
-      );
-      console.log(transaction);
-      const txHash = transaction.hash;
-      result.txHash = txHash;
-    } catch (error) {
-      console.log("{EtherContract.initTournament} error: ", error);
-
-      //@ts-ignore
-      result.error = error;
-    }
-    return result;
-  }
-
-  async donateUser(
-    tournamentUid: string,
-    userId: string,
+    refereeUid: string,
     amount: number,
     paymentToken: string,
-    contractAddress: string
+    contractAddress: string,
+    types?: string
   ): Promise<ResultTranferFT> {
     const result: ResultTranferFT = {
       txHash: "",
@@ -340,30 +291,53 @@ export default class EtherContract {
     };
     try {
       const contract = this.getContractWithLDonation(contractAddress);
-      //const decimal = await contract.decimals();
-
       console.log("contract", contract);
       const totalAmount = new BigNumber(amount)
         .multipliedBy(Math.pow(10, 18))
         .toFormat({ groupSeparator: "" });
 
-      await this.approveToken(paymentToken, contractAddress, amount);
+      let transaction;
+      if (types === "PLAYER") {
+        transaction = await contract.donateUser(
+          tournamentUid,
+          userId,
+          totalAmount,
+          paymentToken
+        );
+      }
 
-      await new Promise((resolve) => setTimeout(resolve, 5000));
+      if (types === "TEAM") {
+        transaction = await contract.donateTeam(
+          tournamentUid,
+          teamUid,
+          totalAmount,
+          paymentToken
+        );
+      }
 
-      const transaction = await contract.donateUser(
-        tournamentUid,
-        userId,
-        totalAmount,
-        paymentToken
-      );
+      if (types === "TOURNAMENT") {
+        transaction = await contract.donateTournament(
+          tournamentUid,
+          totalAmount,
+          paymentToken
+        );
+      }
+
+      if (types === "REFEREE") {
+        transaction = await contract.donateUser(
+          tournamentUid,
+          refereeUid,
+          totalAmount,
+          paymentToken
+        );
+      }
 
       console.log("transaction", transaction);
 
       const txHash = transaction.hash;
       result.txHash = txHash;
     } catch (error) {
-      console.log("{EtherContract.initTournament} error: ", error);
+      console.log("{EtherContract.donate} error: ", error);
 
       //@ts-ignore
       result.error = error;

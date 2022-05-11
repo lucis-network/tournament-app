@@ -168,27 +168,28 @@ const GET_TOURNAMENT_DETAIL = gql`
 `;
 
 const GET_PARTICIPANTS_DETAIL = gql`
-  query ($tournament_uid: String!) {
-    getTournamentParticipants(tournament_uid: $tournament_uid) {
-      uid
-      name
-      avatar
-      BracketTeam {
-        bracket_uid
-        bracketTeamMembers {
-          uid
-          is_leader
-          user {
-            id
-            profile {
-              display_name
-              avatar
-            }
-          }
-        }
-      }
-    }
-  }
+	query ($tournament_uid: String!) {
+		getTournamentParticipants(tournament_uid: $tournament_uid) {
+			uid
+			name
+			avatar
+			BracketTeam {
+				uid
+				bracket_uid
+				bracketTeamMembers {
+					uid
+					is_leader
+					user {
+						id
+						profile {
+							display_name
+							avatar
+						}
+					}
+				}
+			}
+		}
+	}
 `;
 
 const GET_REFEREES_DETAIL = gql`
