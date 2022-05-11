@@ -103,7 +103,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 								height={30}
 							/>
 						</div>
-						<p className="mb-0 ml-2">{record.display_name}</p>
+						<p className="mb-0 ml-2 font-normal">{record.display_name}</p>
 					</div>
 				);
 			},
@@ -114,11 +114,11 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			width: "20%",
 			render: (_: any, record: Item) => {
 				return record.is_leader ? (
-					<p className="flex items-center align-middle mb-0">
+					<p className="flex items-center align-middle mb-0 font-normal">
 						<StarFilled className="text-18px mr-1" /> Leader
 					</p>
 				) : (
-					<p className="flex items-center align-middle mb-0">
+					<p className="flex items-center align-middle mb-0 font-normal">
 						<StarFilled className="!text-[transparent] text-18px mr-1" /> Member
 					</p>
 				);
