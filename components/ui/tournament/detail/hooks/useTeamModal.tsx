@@ -139,8 +139,6 @@ const UseTeamModal = (tournamentData: any) => {
 		const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
 		const checkTotalPrize = checkTotalPercent(team, "prize");
 
-		console.log(checkTotalPrize);
-
 		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
 			setErrorTour({
 				...errorTour,

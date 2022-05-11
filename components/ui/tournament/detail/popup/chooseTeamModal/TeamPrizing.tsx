@@ -263,7 +263,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				</div>
 			</div>
 			<div className="mt-8 mb-4">
-				{!tourPassword && (
+				{tourPassword && (
 					<div className="flex items-center align-middle mb-4">
 						<p className="w-[150px] m-0">Password:</p>
 

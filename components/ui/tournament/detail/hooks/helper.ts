@@ -32,5 +32,5 @@ export const checkTotalPercent = (array: any[], key: string) => {
 		(acc: number, cur: number) => acc + cur,
 		0
 	);
-	return total <= 100;
+	return total !== 100;
 };

@@ -10,7 +10,7 @@ import {
 	SEARCH_TEAM,
 } from "./../myTeamService";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
