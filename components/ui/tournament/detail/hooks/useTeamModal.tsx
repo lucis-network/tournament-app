@@ -415,10 +415,10 @@ const UseTeamModal = (tournamentData: any) => {
 						>
 							Back to tournament
 						</button>
-						<button className={`${s.button} !w-max`} onClick={() => {}}>
+						{/* <button className={`${s.button} !w-max`} onClick={() => {}}>
 							<ShareAltOutlined className="mr-2" />
 							Share
-						</button>
+						</button> */}
 					</div>
 				),
 				modalWidth: 540,
