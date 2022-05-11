@@ -14,12 +14,20 @@
       justify-content: space-between
       @media ( max-width: 639px )
         flex-direction: column
-        align-items: flex-start
+        align-items: flex-end
+      .logo
+        @media (min-width: 0px)
+          display: none
+        @media (min-width: 640px)
+          display: block
       .group_ic
         display: flex
         align-items: center
+        justify-content: center
+        width: 100%
         @media ( max-width: 639px )
           padding: 20px 0px
+          justify-content: space-between
         .ic_item
           max-width: 40px
           margin: 0px 15px

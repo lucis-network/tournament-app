@@ -40,7 +40,7 @@ export default function CardHome(props: Props) {
                         </div>
                       </div>
                       <img
-                        style={{ padding: 2, width: "100%" }}
+                        style={{ padding: 1, width: "100%" }}
                         src="assets/home/im_game.png"
                         alt=""
                       />
