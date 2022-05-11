@@ -19,7 +19,9 @@ export default class TournamentService {
     const createTournamentRes = await apoloClient.mutate({
       mutation: gql`
         mutation createTournament($input: TournamentCreateInputGql!) {
-          createTournament(input: $input)
+          createTournament(input: $input) {
+            uid
+          }
         }
       `,
       variables: {

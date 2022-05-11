@@ -57,8 +57,8 @@ export function useCurrencies(props: Props) {
   };
 }
 
-export function useGetDepositContract(props: Props) {
-  const { loading, error, data } = useQuery(DEPOSIT_CONTRACT, {
+export function useGetContract(props: Props) {
+  const { loading, error, data } = useQuery(GET_CONTRACT, {
     variables: {},
     fetchPolicy: "cache-and-network",
   });
@@ -66,7 +66,7 @@ export function useGetDepositContract(props: Props) {
   return {
     loading,
     error,
-    getDepositContract: data?.getDepositContract,
+    getContract: data?.getContracts,
   };
 }
 
@@ -119,13 +119,13 @@ const CURRENCIES = gql`
   }
 `;
 
-const DEPOSIT_CONTRACT = gql`
+const GET_CONTRACT = gql`
   query {
-    getDepositContract {
+    getContracts {
       uid
+      admin
       address
-      owner
-      chain_symbol
+      type
     }
   }
 `;

@@ -258,7 +258,7 @@ export default class EtherContract {
 
       await this.approveToken(paymentToken, contractAddress, amount);
 
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 5000));
 
       const transaction = await contract.initTournament(
         tournamentUid,

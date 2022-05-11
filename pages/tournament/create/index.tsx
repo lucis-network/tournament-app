@@ -69,7 +69,7 @@ export default observer(function CreateTournament(props: Props) {
   const [checkPassword, setCheckPassword] = useState(false);
   const [dataReferees, setDataReferees] = useState([]);
   const [dataChooseGame, setDataChooseGame] = useState(null);
-  const [tournamentModal, setTournamentModal] = useState({});
+  const [tournamentUid, setTournamentUid] = useState("");
   const { getDataRegions } = useRegion({});
 
   const { getDataChooseGame } = useChooseGame({
@@ -236,8 +236,23 @@ export default observer(function CreateTournament(props: Props) {
     TournamentStore.setCreateTournament(cr);
 
     if (!validationInput(cr)) return;
-    setTournamentModal(cr);
-    TournamentStore.depositModalVisible = true;
+
+    const tournamentService = new TournamentService();
+    if (!validationInput(cr)) return;
+    const response = tournamentService
+      .createTournament(cr)
+      .then(async (res) => {
+        console.log("Res", res);
+        if (res.data.createTournament.uid) {
+          setTournamentUid(res.data.createTournament.uid);
+          TournamentStore.depositModalVisible = true;
+          window.onbeforeunload = null;
+        } else {
+          message.error("Save fail");
+          return;
+        }
+      })
+      .then(() => {});
   };
 
   const validationInput = (cr: any) => {
@@ -777,7 +792,7 @@ export default observer(function CreateTournament(props: Props) {
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
         <RefereeModal handCallbackReferee={handCallbackReferee} />
         <TimelineModal handCallbackTimeline={handCallbackTimeline} />
-        <DepositModal tournamentModal={tournamentModal} />
+        <DepositModal tournamentUid={tournamentUid} />
       </div>
 
       {/* <Footer /> */}
