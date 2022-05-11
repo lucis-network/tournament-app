@@ -109,63 +109,65 @@ function TournamentCard(props: { data: TournamentGql }) {
 
   return (
     <Link href={`/tournament/${item.uid}/${slugify(item.name)}`}>
-      <div className={s.card_item}>
-        <div className={s.container_card}>
-          <div className={s.im_game}>
-            <div className={s.info}>
-              <div className={s.number}>
-                <img src="/assets/home/ic_member.svg" alt="" />
-                <span><span style={{ color: '#0BEBD6' }}>17</span>/32</span>
+      <a>
+        <div className={s.card_item}>
+          <div className={s.container_card}>
+            <div className={s.im_game}>
+              <div className={s.info}>
+                <div className={s.number}>
+                  <img src="/assets/home/ic_member.svg" alt="" />
+                  <span><span style={{ color: '#0BEBD6' }}>17</span>/32</span>
+                </div>
+                <p>Single Elimination</p>
+                <div className={s.number}>
+                  <img src="/assets/home/ic_control.svg" alt="" />
+                  <span style={{ color: '#0BEBD6' }}>4V4</span>
+                </div>
               </div>
-              <p>Single Elimination</p>
-              <div className={s.number}>
-                <img src="/assets/home/ic_control.svg" alt="" />
-                <span style={{ color: '#0BEBD6' }}>4V4</span>
+              <img
+                style={{ padding: 2, width: "100%" }}
+                src="assets/home/im_game.png"
+                alt=""
+              />
+            </div>
+            <div className={s.heading}>
+              <div className={s.im_logo_game}>
+                <img src="assets/home/im_logo_game.png" alt="" />
               </div>
-            </div>
-            <img
-              style={{ padding: 2, width: "100%" }}
-              src="assets/home/im_game.png"
-              alt=""
-            />
-          </div>
-          <div className={s.heading}>
-            <div className={s.im_logo_game}>
-              <img src="assets/home/im_logo_game.png" alt="" />
-            </div>
-            <h2>
-              {item.name.length > 42
-                ? item.name.substring(0, 42) + "..."
-                : item.name}
-            </h2>
-            <div className={s.hosted_by}>
-              <div className={s.hosted_by_detail}>
-                HOSTED BY
-                <div className={s.user}>
-                  <div className={s.avt}>
-                    <img src={item.user?.profile?.avatar || "/assets/MyProfile/defaultAvatar.png"} alt="" />
+              <h2>
+                {item.name.length > 42
+                  ? item.name.substring(0, 42) + "..."
+                  : item.name}
+              </h2>
+              <div className={s.hosted_by}>
+                <div className={s.hosted_by_detail}>
+                  HOSTED BY
+                  <div className={s.user}>
+                    <div className={s.avt}>
+                      <img src={item.user?.profile?.avatar || "/assets/MyProfile/defaultAvatar.png"} alt="" />
+                    </div>
+                    <a href="#">Hulk Group</a>
                   </div>
-                  <a href="#">Hulk Group</a>
+                </div>
+                <div className={s.prize_pool}>
+                  <img src="/assets/home/ic_dola.svg" alt="" />
+                  <span>FREE</span>
                 </div>
               </div>
-              <div className={s.prize_pool}>
-                <img src="/assets/home/ic_dola.svg" alt="" />
-                <span>FREE</span>
-              </div>
-            </div>
 
-            <div className={s.ntf}>
-              <div>
-                <div className={s.ic_ntf}>
-                  <img src="/assets/home/ic_nft.png" alt="" />
+              <div className={s.ntf}>
+                <div>
+                  <div className={s.ic_ntf}>
+                    <img src="/assets/home/ic_nft.png" alt="" />
+                  </div>
+                  <span>10.000 USDT</span>
                 </div>
-                <span>10.000 USDT</span>
+                <span className={s.time}>April 30th 07:00</span>
               </div>
-              <span className={s.time}>April 30th 07:00</span>
             </div>
           </div>
         </div>
-      </div>
+      </a>
     </Link>
   )
 }
