@@ -5,25 +5,27 @@ import s from "./index.module.sass";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import { BUSD } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
-import { LoadingOutlined } from "@ant-design/icons";
 import { fomatNumber } from "utils/Number";
+import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 
 type Props = {
-  tournamentModal: any;
+  tournamentUid?: any;
 };
 
 export default observer(function DepositModal(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const { tournamentModal } = props;
+  const { tournamentUid } = props;
   const isModalVisible = TournamentStore.depositModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.depositModalVisible = v);
+
+  const { getContract } = useGetContract({});
 
   const handleOk = async () => {
     if (!ConnectWalletStore.address) {
@@ -32,20 +34,10 @@ export default observer(function DepositModal(props: Props) {
       let result = await deposit();
       setIsLoading(false);
       if (!result?.error) {
+        TournamentStore.notifyModalVisible = true;
         const tournamentService = new TournamentService();
-        const response = tournamentService
-          .createTournament(tournamentModal)
-          .then(async (res) => {
-            if (res.data.createTournament) {
-              window.onbeforeunload = null;
-              TournamentStore.notifyModalVisible = true;
-              TournamentStore.depositModalVisible = false;
-            } else {
-              message.error("Save fail");
-              return;
-            }
-          })
-          .then(() => {});
+
+        
       } else {
         //@ts-ignore
         message.error(result?.error?.message);
@@ -64,10 +56,15 @@ export default observer(function DepositModal(props: Props) {
         ConnectWalletStore_NonReactiveData.web3Provider
       );
       const total = getTotalAmount();
-      const result = await ethersService.transferFT(
-        "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
+      const contractAddress = getContract.filter(
+        (item: any) => item.type === "PRIZE"
+      );
+
+      const result = await ethersService.initTournament(
+        tournamentUid,
+        total,
         BUSD,
-        total
+        contractAddress[0]?.address
       );
       return result;
     }

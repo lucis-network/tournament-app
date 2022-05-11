@@ -57,6 +57,19 @@ export function useCurrencies(props: Props) {
   };
 }
 
+export function useGetContract(props: Props) {
+  const { loading, error, data } = useQuery(GET_CONTRACT, {
+    variables: {},
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    getContract: data?.getContracts,
+  };
+}
+
 const CHOOSE_GAME = gql`
   query ($name: String!) {
     getGame(name: $name) {
@@ -102,6 +115,17 @@ const CURRENCIES = gql`
       name
       symbol
       address
+    }
+  }
+`;
+
+const GET_CONTRACT = gql`
+  query {
+    getContracts {
+      uid
+      admin
+      address
+      type
     }
   }
 `;

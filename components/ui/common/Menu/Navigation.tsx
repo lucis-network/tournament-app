@@ -1,13 +1,19 @@
 import * as React from "react";
 import { motion } from "framer-motion";
 import { MenuItem, MenuItemType } from "./MenuItem";
-import GradientButton from "../button/GradientButton";
 import { useEffect, useState } from "react";
 
-import { Modal, Button, Menu } from "antd";
+import { useRouter } from "next/router";
+
+import Login from "components/Auth/Login/Login";
+import AuthService from "../../../Auth/AuthService";
+import ConnectWalletStore, {
+  nonReactive as ConnectWalletStore_NonReactiveData,
+} from "../../../Auth/ConnectWalletStore";
+import { Button } from "antd/lib/radio";
+import AuthStore from "../../../Auth/AuthStore";
+import { trim_middle } from "utils/String";
 import { AppEmitter } from "services/emitter";
-import Link from "next/link";
-import s from './MenuMobile.module.sass'
 
 const variants = {
   open: {
@@ -62,51 +68,79 @@ const variants = {
 // ]
 export const Navigation = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isSubMenu, setIsSubMenu] = useState(false);
-  const { SubMenu } = Menu
+  const [isVisible, setIsVisible] = useState(false);
+  const router = useRouter();
+  const { address, network: connected_network } = ConnectWalletStore;
 
-  const handleOk = () => {
-    setIsModalVisible(false);
+  const onClickProfile = () => {
+    router.push("/profile");
+    setIsVisible(false);
   };
+  const disconnectWallet = React.useCallback(async () => {
+    const authService = new AuthService();
+    authService.logout();
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+    AppEmitter.emit("onWalletDisconnect");
+  }, []);
 
-  const showSubmenu = () =>{
-    setIsSubMenu(!isSubMenu)
-  }
-  const hideMenu = () =>{
-    AppEmitter.emit("setMbMenuVisible", false)
-    setIsSubMenu(false)
-  }
-  const styleSub = isSubMenu == false ? 0: 272
-  
   const menuItems: MenuItemType[] = [
     {
       color: "#FF008C",
       text: "TOURNAMENT",
-      // src: "/tournaments",
+      src: "https://tournament-lucis.gitbook.io/lucis-tournament/",
     },
     {
       color: "#FF008C",
       text: "FAQ",
-      // src: "/marketplace"
+      src: "https://insight.lucis.network/"
     },
     {
       color: "#FF008C",
       text: "INSIGHT",
-      // src: "/insight"
+      src: "https://tournament-lucis.gitbook.io/lucis-tournament/"
     },
     {
       color: "#FF008C",
       text: "RANKING",
       // src: "/docs"
+      disable: true
     },
-        {
+    {
       color: "#FF008C",
       text: "SOCIAL",
+      disable: true
       // src: "/docs"
+    },
+    {
+      color: "#FF008C",
+      text: (
+        <div>
+          {
+            AuthStore.isLoggedIn ?
+              <div onClick={onClickProfile}>
+                My Profile
+              </div>
+              : <Login />
+          }
+        </div>
+      ),
+    },
+    {
+      color: "#FF008C",
+      text: (
+        <div>
+          {
+            AuthStore.isLoggedIn ?
+              <div>
+                <p>{trim_middle(address ?? "", 7, 8)}</p>
+                <div onClick={disconnectWallet}>
+                  Disconnect
+                </div>
+              </div>
+              : ''
+          }
+        </div>
+      ),
     },
     // {
     //   color: "#FF008C",
@@ -119,7 +153,7 @@ export const Navigation = () => {
     //       ))}
     //       </ul>
     //     </div>
-        
+
     //   ),
     //   src: "",
     //   subMenu: ""
