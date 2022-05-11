@@ -115,7 +115,7 @@ export default function ButtonSort({
 						))}
 					</Select>
 				</div>
-				<div className="flex items-center align-middle">
+				{/* <div className="flex items-center align-middle">
 					<div className="flex align-middle items-center mr-8">
 						<p className="mb-0 mr-4">Prize pool</p>
 						<Order
@@ -128,7 +128,7 @@ export default function ButtonSort({
 						<p className="mb-0 mr-4">Time</p>
 						<Order id="time" value={filter?.time} onClick={onOrder} />
 					</div>
-				</div>
+				</div> */}
 			</div>
 		</div>
 	);
