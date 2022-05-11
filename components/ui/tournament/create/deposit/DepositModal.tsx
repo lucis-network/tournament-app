@@ -12,6 +12,7 @@ import { BUSD } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
 import { fomatNumber } from "utils/Number";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
+import TournamentService from "components/service/tournament/TournamentService";
 
 type Props = {
   tournamentUid?: any;
@@ -34,6 +35,9 @@ export default observer(function DepositModal(props: Props) {
       setIsLoading(false);
       if (!result?.error) {
         TournamentStore.notifyModalVisible = true;
+        const tournamentService = new TournamentService();
+
+        
       } else {
         //@ts-ignore
         message.error(result?.error?.message);

@@ -46,6 +46,21 @@ export default class TournamentService {
 
     return donataResponse;
   }
+
+  public async donate(dnt: GDonateTransaction): Promise<any> {
+    const donataResponse = await apoloClient.mutate({
+      mutation: gql`
+        mutation donate($input: GDonateTransaction!) {
+          donate(input: $input)
+        }
+      `,
+      variables: {
+        input: dnt,
+      },
+    });
+
+    return donataResponse;
+  }
 }
 
 export function setLocalCreateTournamentInfo(ct: CreateTournament): void {
