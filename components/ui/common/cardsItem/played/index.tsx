@@ -4,9 +4,9 @@ import Link from "next/link";
 import {TTournament} from "../../../../../src/generated/graphql";
 
 type CardPlayedProps = {
-  tournament: TTournament,
-  type: string,
-  canEdit: boolean,
+  tournament?: TTournament,
+  type?: string,
+  canEdit?: boolean,
 };
 
 const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']

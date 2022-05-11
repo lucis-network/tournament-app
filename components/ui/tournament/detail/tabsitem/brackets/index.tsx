@@ -44,9 +44,9 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
       });
 
       console.log('{.} upperRounds, lowerRounds: ', upperRounds, lowerRounds);
-      RoundStore.finalRound = upperRounds.splice(upperRounds.length - 1, 1);
-      RoundStore.loseRounds = lowerRounds;
-      RoundStore.winRounds = upperRounds;
+      // RoundStore.finalRound = upperRounds.splice(upperRounds.length - 1, 1);
+      // RoundStore.loseRounds = lowerRounds;
+      // RoundStore.winRounds = upperRounds;
     }
   }, [dataBracket])
 

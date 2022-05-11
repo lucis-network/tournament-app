@@ -32,7 +32,6 @@ const nextConfig = withAntdLess(
       const rules = config.module.rules;
 
       inject_git_commit_id_to_page(rules)
-      show_testnet_text_on_header(rules)
 
       return config;
     },

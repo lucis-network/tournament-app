@@ -5,6 +5,8 @@
   background-position: top left
   min-height: 100vh
   margin-top: -230px
+  @media (max-width: 639px)
+    margin-top: -344px
   .top_tab
     justify-content: space-between
     @media ( min-width: 1024px )
@@ -19,7 +21,6 @@
     .tab_item
       font-weight: 300
       transition: 0.1s
-      background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
       padding: 8px 20px
       transition: 0.2s
       box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
@@ -35,6 +36,7 @@
         font-size: 20px
     .active
       font-weight: 700
+      background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
       backdrop-filter: blur(12px)
       position: relative
       .ic_tab
@@ -93,7 +95,7 @@
         max-width: 380px
     .line
       position: absolute
-      top: 100px
+      top: 40px
       left: -40px
       background: linear-gradient(111.41deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.12) 100%)
       backdrop-filter: blur(100px)

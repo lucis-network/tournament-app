@@ -62,16 +62,19 @@ export default observer(function Header(props: Props) {
                   ("IS_TESTNET" == "true") && <p>Testnet</p>
                 }
               </Col>
-              <Col span={14}>
+              <Col span={16}>
                 <ul className={s.block_item_menu}>
-                  <li>TOURNAMENT</li>
-                  <li>FAQ</li>
-                  <li>INSIGHT</li>
-                  <li>RANKING</li>
+                  <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
+                    rel="noopener noreferrer">TOURNAMENT</a></li>
+                  <li><a href="https://insight.lucis.network/" target="_blank"
+                    rel="noopener noreferrer">FAQ</a></li>
+                  <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
+                    rel="noopener noreferrer">INSIGHT</a></li>
+                  <li className={s.default} style={{ margin: 0 }}><a href="#">RANKING</a></li>
                   <li className={s.default}>SOCIAL <span>Coming Soon</span></li>
                 </ul>
               </Col>
-              <Col span={6} className={`${s.loginCol} justify-end`}>
+              <Col span={4}>
                 <ul className="flex gap-4 justify-between items-center m-0">
                   <li>
                     {AuthStore.isLoggedIn ? (
