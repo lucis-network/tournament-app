@@ -3,7 +3,7 @@ import {UserTeam} from "../../../../../src/generated/graphql";
 import {Image} from "antd";
 
 type CardTeamProps = {
-  team: UserTeam,
+  team?: UserTeam,
 }
 
 export default function CardTeam({ team }: CardTeamProps) {

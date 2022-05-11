@@ -1,8 +1,5 @@
 import s from "./index.module.sass";
 import { useMemo, useState } from "react";
-import InfoMyProfile from "components/ui/tournament/myProfile/infoProfile/Info";
-import EditProfile from "components/ui/tournament/myProfile/editMyProfile/EditProfile";
-import ContentTournament from "components/ui/tournament/myProfile/content/ContentTournament";
 
 import { isClient } from "utils/DOM";
 import { useRouter } from "next/router";

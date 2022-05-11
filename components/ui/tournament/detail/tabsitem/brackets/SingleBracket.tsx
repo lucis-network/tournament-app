@@ -15,7 +15,7 @@ import {
 import s from "./index.module.sass";
 
 interface Props {
-  rounds: RoundProps[];
+  rounds?: RoundProps[];
   // openModal: any;
 }
 
