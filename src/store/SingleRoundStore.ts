@@ -1,6 +1,7 @@
 import { ReactElement } from "react";
 import { makeAutoObservable } from "mobx";
 import { isClientDevMode } from "../../utils/Env";
+import { BracketMatchStatus } from "../generated/graphql";
 
 export type Team = {
   id: string | number;
@@ -17,6 +18,7 @@ export type Round = {
 export type RoundMatch = {
   uid: string
   teams: Team[]
+  status: BracketMatchStatus
 }
 
 export type CurrentMatch = {

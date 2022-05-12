@@ -1,5 +1,5 @@
 import React from "react";
-import { BracketGql, BracketMatch, BracketRound, BracketTeam, GBracketTeam } from "src/generated/graphql";
+import { BracketGql, BracketMatch, BracketMatchStatus, BracketRound, GBracketTeam } from "src/generated/graphql";
 import { Round, RoundMatch, Team } from "src/store/SingleRoundStore";
 
 export type BracketUiProps = {
@@ -38,6 +38,7 @@ export const createSeed = (item: BracketMatch, idx: number, listTeam: GBracketTe
   return {
     uid: item.uid,
     teams: [roundTeam1, roundTeam2],
+    status: item.status,
   };
 };
 

@@ -254,6 +254,7 @@ const GET_BRACKET = gql`
           team2_uid
           score_1
           score_2
+          status
         }
       }
 
