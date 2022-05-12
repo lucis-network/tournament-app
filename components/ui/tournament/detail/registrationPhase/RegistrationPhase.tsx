@@ -14,6 +14,9 @@ import PopupDonate from "../popup/popupDonate";
 import { SetStateAction, useEffect, useState } from "react";
 import { useClaimReward } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
+import TournamentService from "components/service/tournament/TournamentService";
+import AuthService from "components/Auth/AuthService";
+import { to_hex_str } from "utils/String";
 
 type Props = {
   tournament: any;
@@ -28,6 +31,12 @@ type Reward = {
   reward_type: string;
   symbol: string;
 };
+
+export type ClaimPrizePool = {
+  tournament_uid?: string;
+  address?: any;
+};
+
 export default observer(function RegistrationPhase(props: Props) {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const {
@@ -88,33 +97,44 @@ export default observer(function RegistrationPhase(props: Props) {
     arr.push(obj);
   };
 
-  const claimToken = async () => {
-    // if (!ConnectWalletStore.address) {
-    //   AuthBoxStore.connectModalVisible = true;
-    // } else {
-    //   let result = await claim();
-    //   if (!result?.error) {
-    //     TournamentStore.claimResultModalVisible = true;
-    //   } else {
-    //     //@ts-ignore
-    //     message.error(result?.error?.message);
-    //   }
-    // }
-  };
+  const claimToken = async (value: string) => {
+    if (!ConnectWalletStore.address) {
+      AuthBoxStore.connectModalVisible = true;
+    } else {
+      if (value === "PrizePool") {
+        const claim: ClaimPrizePool = {
+          tournament_uid: tournamentId,
+          address: ConnectWalletStore.address,
+        };
 
-  const claim = async () => {
-    if (ConnectWalletStore_NonReactiveData.web3Provider) {
-      //throw makeError("Need to connect your wallet first");
-      const ethersService = new EthersService(
-        ConnectWalletStore_NonReactiveData.web3Provider
-      );
+        let tournamentService = new TournamentService();
+        const response = tournamentService.claimPrizePool(claim).then(
+          (res) => {
+            if (res) {
+              TournamentStore.claimResultModalVisible = true;
+            }
+          },
+          (error) => {
+            message.warning("You have received prize pool.");
+          }
+        );
+      }
 
-      // const txHash = await ethersService.initTournament(
-      //   1,
-      //   "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450",
-      //   "0xb3097df87251D445504FA36e7E1A25079c3B49a7"
-      // );
-      // return txHash;
+      if (value === "PrizeSystem") {
+        let tournamentService = new TournamentService();
+        const response = tournamentService
+          .claimPrizeSystem(tournamentId as string)
+          .then(
+            (res) => {
+              if (res) {
+                TournamentStore.claimResultModalVisible = true;
+              }
+            },
+            (error) => {
+              message.warning("You have received prize system.");
+            }
+          );
+      }
     }
   };
 
@@ -219,7 +239,11 @@ export default observer(function RegistrationPhase(props: Props) {
                                   )}{" "}
                                   {dataPrize?.symbol}
                                   <br />
-                                  <Button onClick={claimToken}>Claim</Button>
+                                  <Button
+                                    onClick={() => claimToken("PrizePool")}
+                                  >
+                                    Claim
+                                  </Button>
                                 </>
                               ) : (
                                 ""
@@ -239,7 +263,11 @@ export default observer(function RegistrationPhase(props: Props) {
                                   )}{" "}
                                   {dataSystemPrize?.symbol}
                                   <br />
-                                  <Button onClick={claimToken}>Claim</Button>
+                                  <Button
+                                    onClick={() => claimToken("PrizeSystem")}
+                                  >
+                                    Claim
+                                  </Button>
                                 </>
                               ) : (
                                 ""

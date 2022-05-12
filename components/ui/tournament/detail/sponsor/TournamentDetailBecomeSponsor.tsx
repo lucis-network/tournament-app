@@ -71,7 +71,6 @@ export default function TournamentDetailBecomeSponsor(
 
   const handleFormUpdate = async (data: any) => {
     // todo submit sponsor
-    console.log("selectedTier", selectedTier);
     let sponsor: SponsorInput = {
       logo: data.logo,
       name: data.name ? data.name : "hihi",
@@ -90,6 +89,10 @@ export default function TournamentDetailBecomeSponsor(
         if (res) {
           // setIsPopupNotify(true);
           console.log("res", res);
+          if(res){
+            message.success("You haved become sponsor")
+            setIsBecome(false)
+          }
         }
       });
     }

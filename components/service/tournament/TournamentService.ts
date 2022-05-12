@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
+import { ClaimDonation } from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
 import { GDonateTransaction } from "components/ui/tournament/detail/popup/popupDonate";
+import { ClaimPrizePool } from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import { SponsorInput } from "components/ui/tournament/detail/sponsor/TournamentDetailBecomeSponsor";
 import { CreateTournament } from "src/store/TournamentStore";
 import apoloClient, {
@@ -76,6 +78,53 @@ export default class TournamentService {
       variables: {
         tournamentUid: tournamentUid,
         txHash: txHash,
+      },
+    });
+
+    return donataResponse;
+  }
+
+  public async claimDonation(claim: ClaimDonation): Promise<any> {
+    const donataResponse = await apoloClient.mutate({
+      mutation: gql`
+        mutation claimDonation($tournamnent_uid: String!, $address: String!) {
+          claimDonation(tournamnent_uid: $tournamnent_uid, address: $address)
+        }
+      `,
+      variables: {
+        tournamnent_uid: claim.tournamnent_uid,
+        address: claim.address,
+      },
+    });
+
+    return donataResponse;
+  }
+
+  public async claimPrizePool(claim: ClaimPrizePool): Promise<any> {
+    const donataResponse = await apoloClient.mutate({
+      mutation: gql`
+        mutation claimPrizePool($tournament_uid: String!, $address: String!) {
+          claimPrizePool(tournament_uid: $tournament_uid, address: $address)
+        }
+      `,
+      variables: {
+        tournament_uid: claim.tournament_uid,
+        address: claim.address,
+      },
+    });
+
+    return donataResponse;
+  }
+
+  public async claimPrizeSystem(tournamnent_uid: string): Promise<any> {
+    const donataResponse = await apoloClient.mutate({
+      mutation: gql`
+        mutation claimPrizePool($tournamnent_uid: String!) {
+          claimPrizePool(tournamnent_uid: $tournamnent_uid)
+        }
+      `,
+      variables: {
+        tournamnent_uid: tournamnent_uid,
       },
     });
 

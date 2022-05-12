@@ -79,7 +79,7 @@ TournamentDetail = (props: { tournamentId: string }) => {
     totalPrizePool,
     currency,
     user,
-    regions,
+    region,
     additionPrize,
     cache_tournament,
   } = dataTournamentDetail;
@@ -154,7 +154,7 @@ TournamentDetail = (props: { tournamentId: string }) => {
                 <p></p>
                 <div className={s.text}>
                   <p>Region</p>
-                  <span>{regions}</span>
+                  <span>{region}</span>
                 </div>
               </Col>
               {/* <div>
