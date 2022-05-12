@@ -22,8 +22,7 @@ import { isClientDevMode } from "../../../utils/Env";
 const { TabPane } = Tabs;
 const ItemButton = ["Subscribe", "Donate", "Invite or Share"];
 
-const 
-TournamentDetail = (props: { tournamentId: string }) => {
+const TournamentDetail = (props: { tournamentId: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
@@ -42,6 +41,7 @@ TournamentDetail = (props: { tournamentId: string }) => {
     loadingPrizing,
     loadingBracket,
     joinTournament,
+    refetch,
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
@@ -177,6 +177,7 @@ TournamentDetail = (props: { tournamentId: string }) => {
             tournamentId={tournamentId as string}
             joinTournament={joinTournament}
             dataBracket={dataBracket}
+            refetch={refetch}
           />
         </div>
         {/* ===== sponsor ===== */}
@@ -230,16 +231,6 @@ TournamentDetail = (props: { tournamentId: string }) => {
         </div>
 
         <div className={s.communityC}></div>
-
-        {/* ===== Modal ===== */}
-        {/* <PopupDonate
-          closeModal={() => closeModal("Donate")}
-          status={isPopupDonate}
-          tournamentId={tournamentId as string}
-          currency={currency}
-          thumbnail={thumbnail}
-        /> */}
-
         <PopupDonate
           closeModal={() => closeModal("Donate")}
           status={isPopupDonate}

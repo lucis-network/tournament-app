@@ -8,21 +8,20 @@ import useTeamModal from "../hooks/useTeamModal";
 import { fomatNumber } from "utils/Number";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
-import EthersService from "../../../../../services/blockchain/Ethers";
 import PopupDonate from "../popup/popupDonate";
-import { SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useClaimReward } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 import TournamentService from "components/service/tournament/TournamentService";
-import AuthService from "components/Auth/AuthService";
-import { to_hex_str } from "utils/String";
+import { ApolloQueryResult } from "@apollo/client";
+import timeMoment from "moment-timezone";
 
 type Props = {
   tournament: any;
   tournamentId?: string;
   joinTournament: any;
   dataBracket: any;
+  refetch: () => Promise<ApolloQueryResult<any>>;
 };
 
 type Reward = {
@@ -52,7 +51,7 @@ export default observer(function RegistrationPhase(props: Props) {
     cache_tournament,
   } = props.tournament;
 
-  const { tournamentId, dataBracket } = props;
+  const { tournamentId, dataBracket, refetch } = props;
 
   const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
     useTeamModal(props);
@@ -69,6 +68,22 @@ export default observer(function RegistrationPhase(props: Props) {
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
   const [dataDonation, setDataDonation] = useState<Reward[]>();
   const [totalFromDonation, setTotalFromDonation] = useState(0);
+
+  useEffect(() => {
+    getCurrentTime();
+  });
+
+  const getCurrentTime = () => {
+    // console.log("dataBracket", dataBracket);
+    // const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    // console.log("tzid", tzid);
+    // const dateNow = timeMoment().tz(tzid).unix();
+    // const timeStart = timeMoment(dataBracket.start_at).tz(tzid).unix();
+    // console.log("dateNow", dateNow);
+    // console.log("timeStart", timeStart);
+    // const time = (timeStart - dateNow) * 1000;
+
+  };
 
   useEffect(() => {
     let arr: Array<Reward> = [];
@@ -112,6 +127,7 @@ export default observer(function RegistrationPhase(props: Props) {
           (res) => {
             if (res) {
               TournamentStore.claimResultModalVisible = true;
+              refetch();
             }
           },
           (error) => {
@@ -128,6 +144,7 @@ export default observer(function RegistrationPhase(props: Props) {
             (res) => {
               if (res) {
                 TournamentStore.claimResultModalVisible = true;
+                refetch();
               }
             },
             (error) => {
@@ -150,7 +167,7 @@ export default observer(function RegistrationPhase(props: Props) {
     <>
       <div className={s.wrapper}>
         <div className={s.time}>
-          Start time: {moment(dataBracket?.start_at).format("YYYY/MM/DD HH:MM")}
+          {/* Start time: {moment(dataBracket.start_at).format("YYYY/MM/DD HH:MM")} */}
         </div>
         <div className={s.container}>
           <div className={s.prizes}>

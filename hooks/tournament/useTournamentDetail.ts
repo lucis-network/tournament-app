@@ -11,24 +11,27 @@ type Props = {
   tournament_uid?: string;
 };
 
-export function useTournamentDetail(props: Props) {
+export function useTournamentDetail(props: Props){
   const {
     loading,
     error,
     data: dataTournamentDetail,
+    refetch,
   } = useQuery(GET_TOURNAMENT_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "no-cache",
   });
 
   const {
     loading: loadingParticipant,
     error: errorParticipant,
     data: dataParticipants,
+    
   } = useQuery(GET_PARTICIPANTS_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "no-cache",
   });
+
   const {
     loading: loadingReferees,
     error: errorReferees,
@@ -77,6 +80,7 @@ export function useTournamentDetail(props: Props) {
     dataBracket: dataBracket?.getBracket,
 
     joinTournament,
+    refetch,
   };
 }
 
@@ -94,7 +98,7 @@ export function useTournamentBracket(tournament_uid: string) {
     loadingBracket,
     errorBracket,
     dataBracket: dataBracket?.getBracket,
-  }
+  };
 }
 
 export function useSponsors(props: Props): {
@@ -185,28 +189,28 @@ const GET_TOURNAMENT_DETAIL = gql`
 `;
 
 const GET_PARTICIPANTS_DETAIL = gql`
-	query ($tournament_uid: String!) {
-		getTournamentParticipants(tournament_uid: $tournament_uid) {
-			uid
-			name
-			avatar
-			BracketTeam {
-				uid
-				bracket_uid
-				bracketTeamMembers {
-					uid
-					is_leader
-					user {
-						id
-						profile {
-							display_name
-							avatar
-						}
-					}
-				}
-			}
-		}
-	}
+  query ($tournament_uid: String!) {
+    getTournamentParticipants(tournament_uid: $tournament_uid) {
+      uid
+      name
+      avatar
+      BracketTeam {
+        uid
+        bracket_uid
+        bracketTeamMembers {
+          uid
+          is_leader
+          user {
+            id
+            profile {
+              display_name
+              avatar
+            }
+          }
+        }
+      }
+    }
+  }
 `;
 
 const GET_REFEREES_DETAIL = gql`
