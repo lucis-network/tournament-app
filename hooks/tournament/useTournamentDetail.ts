@@ -258,6 +258,7 @@ const GET_BRACKET = gql`
       }
 
       bracketTeams {
+        uid
         team {
           uid
           name

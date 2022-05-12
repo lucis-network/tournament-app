@@ -40,7 +40,7 @@ const UpdateScoreModal = (props: Props) => {
     RoundStore.updateCurrentMatchScore(score, teamIdx);
   };
 
-  const updateMatchResult = () => {
+  const updateMatchResult = (is_final: boolean) => {
     if (!RoundStore.currentMatch) {
       console.error('{updateMatchResult} currentMatch is null');
       return
@@ -52,7 +52,7 @@ const UpdateScoreModal = (props: Props) => {
       uid: m.uid,
       score_1: m.teams[0].score,
       score_2: m.teams[1].score,
-      finish_match: false,
+      finish_match: is_final,
     }
 
     setMatchResult({
@@ -68,13 +68,11 @@ const UpdateScoreModal = (props: Props) => {
     closeModal();
   };
 
-  const updateFinishMatchResult = () => {
-    RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
-
-    // TODO: update to server
-
-
-    closeModal();
+  const persistMatchResult = () => {
+    updateMatchResult(false)
+  };
+  const finishMatchResult = () => {
+    updateMatchResult(true)
   };
 
   return (
@@ -88,7 +86,7 @@ const UpdateScoreModal = (props: Props) => {
         <Button key="back" onClick={closeModal}>
           Cancel
         </Button>,
-        <Button key="update" type="primary" onClick={updateMatchResult}>
+        <Button key="update" type="primary" onClick={persistMatchResult}>
           Update current result
         </Button>,
         <Popconfirm
@@ -96,7 +94,7 @@ const UpdateScoreModal = (props: Props) => {
           title="In case of find out the winner, this will update the final result"
           okText="Finish" cancelText="Cancel"
           placement="bottomRight"
-          onConfirm={updateFinishMatchResult}
+          onConfirm={finishMatchResult}
         >
           <Button type="ghost" className={"danger"}>
             Update and finish
