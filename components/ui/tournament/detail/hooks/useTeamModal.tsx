@@ -254,7 +254,7 @@ const UseTeamModal = (tournamentData: any) => {
 			setSelectedTeam({
 				team: [
 					{
-						user_id: user?.id,
+						user_id: +user?.profile?.user_id!,
 						display_name: user?.profile?.display_name,
 						avatar: user?.profile?.avatar,
 						is_leader: true,
@@ -428,9 +428,12 @@ const UseTeamModal = (tournamentData: any) => {
 		return stepModifier[step];
 	};
 
-	useEffect(() => {
-		if (!user) router.push("/");
-	}, [router, user]);
+	/**
+	 * This prevent anonymous user view the tour detail
+	 */
+	// useEffect(() => {
+	// 	if (!user) router.push("/");
+	// }, [router, user]);
 
 	return {
 		step,

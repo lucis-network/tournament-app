@@ -3,6 +3,7 @@ import { ChangeEvent, FormEvent } from "react";
 import s from "./UpdateScore.module.sass";
 import RoundStore from "src/store/SingleRoundStore";
 import { observer } from "mobx-react-lite";
+import { isClientDevMode } from "../../../../../../utils/Env";
 
 type Props = {
   datas?: object;
@@ -15,7 +16,7 @@ type Props = {
 const UpdateScore = (props: Props) => {
   const { seedIndex, roundIndex, teams } = RoundStore.currentMatch;
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     RoundStore.updateScoreModalVisible = false;
   };
 
@@ -23,30 +24,24 @@ const UpdateScore = (props: Props) => {
     e: ChangeEvent<HTMLInputElement>,
     teamIdx: number
   ) => {
-    // RoundStore.rounds[roundIndex].seeds[seedIndex]
-    // RoundStore.currentMatch.teams[teamIdx].score = e.target.value;
-    const score = e.target.value;
-
-    RoundStore.updateScoreCurrentMatch(score, seedIndex, roundIndex, teamIdx);
+    const score = parseInt(e.target.value);
+    RoundStore.updateCurrentMatchScore(score, teamIdx);
   };
 
   const updateButton = () => {
-    RoundStore.updateScoreMatch(roundIndex, seedIndex);
-    handleCloseModal();
-
-    // @ts-ignore
-    window.roundStore = RoundStore;
+    RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
+    closeModal();
   };
 
   return (
     <Modal
       centered
       visible={RoundStore.updateScoreModalVisible}
-      onOk={handleCloseModal}
-      onCancel={handleCloseModal}
+      onOk={closeModal}
+      onCancel={closeModal}
       title="Update match result"
       footer={[
-        <Button key="back" onClick={handleCloseModal}>
+        <Button key="back" onClick={closeModal}>
           Cancel
         </Button>,
         <Button key="submit" type="ghost" onClick={updateButton}>

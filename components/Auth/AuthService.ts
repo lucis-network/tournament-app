@@ -109,6 +109,7 @@ export default class AuthService {
               ref_code
               google_id
               status
+              facebook_id
               favorite_game {
                 id
                 user_id
@@ -185,6 +186,7 @@ export default class AuthService {
               ref_code
               google_id
               status
+              facebook_id
               favorite_game {
                 id
                 user_id

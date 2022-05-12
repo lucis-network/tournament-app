@@ -80,6 +80,23 @@ export function useTournamentDetail(props: Props) {
   };
 }
 
+export function useTournamentBracket(tournament_uid: string) {
+  const {
+    loading: loadingBracket,
+    error: errorBracket,
+    data: dataBracket,
+  } = useQuery(GET_BRACKET, {
+    variables: { tournament_uid: tournament_uid },
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loadingBracket,
+    errorBracket,
+    dataBracket: dataBracket?.getBracket,
+  }
+}
+
 export function useSponsors(props: Props): {
   loading: boolean;
   error: ApolloError | undefined;

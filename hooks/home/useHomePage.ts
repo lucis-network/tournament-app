@@ -26,6 +26,8 @@ export function useHomePage() {
 		time: OrderType.EMPTY,
 	});
 
+	console.log(filter);
+
 	const { data: gameData } = useQuery(GET_GAME, {
 		fetchPolicy: "cache-and-network",
 	});
@@ -112,12 +114,7 @@ const GET_UPCOMING = gql`
 			team_size
 			thumbnail
 			join_fee
-			brackets {
-				uid
-				type
-			}
 			team_size
-			pool_size
 			prize_allocation
 			game {
 				logo
@@ -141,6 +138,10 @@ const GET_UPCOMING = gql`
 				}
 			}
 			totalPrizePool
+			brackets {
+				type
+				start_at
+			}
 		}
 	}
 `;
