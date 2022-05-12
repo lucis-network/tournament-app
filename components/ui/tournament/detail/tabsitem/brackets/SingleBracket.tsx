@@ -30,7 +30,7 @@ const SingleBracket = (props: Props) => {
     if (canEdit) {
       RoundStore.updateScoreModalVisible = true;
       RoundStore.currentMatch = {
-        uid: "",
+        uid: seed.uid,
         teams: seed.teams,
         seedIndex,
         roundIndex,

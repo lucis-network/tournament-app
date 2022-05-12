@@ -1,12 +1,13 @@
-import { Button, Col, Modal, Popconfirm, Row } from "antd";
+import { Button, Col, Modal, Popconfirm, Row, message as antd_message } from "antd";
 import { ChangeEvent, FormEvent } from "react";
 import s from "./UpdateScore.module.sass";
 import RoundStore, { Team } from "src/store/SingleRoundStore";
 import { observer } from "mobx-react-lite";
 import { isClientDevMode } from "../../../../../../utils/Env";
-import { useMutation } from "@apollo/client";
+import { ApolloError, useMutation } from "@apollo/client";
 import { UPDATE_MATCH_RESULT } from "../../../../common/tabsItem/myTeamDetail/myTeamService";
 import { BracketMatchUpdateInputGql } from "../../../../../../src/generated/graphql";
+import { CommonError, handleGraphqlErrors, onApolloError } from "../../../../../../utils/apollo_client";
 
 type Props = {
   datas?: object;
@@ -46,9 +47,13 @@ const UpdateScoreModal = (props: Props) => {
       return
     }
 
-    RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
     const m = RoundStore.currentMatch;
-    const variables: BracketMatchUpdateInputGql  = {
+    if (!m.uid) {
+      console.error("Invalid currentMatch: ", m)
+      return;
+    }
+
+    const input: BracketMatchUpdateInputGql = {
       uid: m.uid,
       score_1: m.teams[0].score,
       score_2: m.teams[1].score,
@@ -56,16 +61,28 @@ const UpdateScoreModal = (props: Props) => {
     }
 
     setMatchResult({
-      variables,
+      variables: {input},
       onCompleted(data: string) {
-        console.log('{onCompleted} data: ', data);
+        console.log('{setMatchResult.onCompleted} data: ', data);
+        RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
       }
-    }).then((a) => {
-      console.log('{} fetch result: ', a);
+    }).then((res) => {
+      console.log('{} setMatchResult res: ', res);
+    }).catch((e: any) => {
+      handleGraphqlErrors(e, (code, message) => {
+        switch (code) {
+          case 'MATCH_COMPLETE':
+            antd_message.error('Cannot update due to the match is complete');
+            break;
+          case CommonError.Network:
+          case 'BAD_USER_INPUT':
+          default:
+            console.error('{setMatchResult} Unhandled e: ', code, message, e);
+        }
+      });
+    }).finally(() => {
+      closeModal();
     })
-
-
-    closeModal();
   };
 
   const persistMatchResult = () => {
