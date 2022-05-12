@@ -14,16 +14,7 @@ export default function Footer(props: Props) {
             <div className={s.group_ic}>
               <div className={s.ic_item}>
                 <a
-                  href="https://www.tiktok.com/@lucistvv"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src="/assets/footer/tiktok.svg" alt="" />
-                </a>
-              </div>
-              <div className={s.ic_item}>
-                <a
-                  href="https://www.facebook.com/lucistv.news"
+                  href="https://www.facebook.com/lucis.network"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -32,7 +23,7 @@ export default function Footer(props: Props) {
               </div>
               <div className={s.ic_item}>
                 <a
-                  href="https://www.youtube.com/c/LucisTVGaming"
+                  href="https://www.youtube.com/lucisnetwork"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -41,16 +32,7 @@ export default function Footer(props: Props) {
               </div>
               <div className={s.ic_item}>
                 <a
-                  href="https://t.me/sankeonft"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src="/assets/footer/tele.svg" alt="" />
-                </a>
-              </div>
-              <div className={s.ic_item}>
-                <a
-                  href="https://twitter.com/Lucis_TV"
+                  href="https://twitter.com/LucisNetwork"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -59,7 +41,7 @@ export default function Footer(props: Props) {
               </div>
               <div className={s.ic_item}>
                 <a
-                  href="https://discord.com/channels/911921072830574603/926398655093702666"
+                  href="https://discord.gg/mnPXR3ag"
                   target="_blank"
                   rel="noopener noreferrer"
                 >

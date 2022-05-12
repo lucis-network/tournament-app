@@ -25,13 +25,16 @@ export enum StatusGameType {
 export enum Bracket {
 	SINGLE = "SINGLE",
 	DOUBLE = "DOUBLE",
-	EMPTY = "",
+	ROUND_ROBIN = "ROUND_ROBIN",
+	BATTLE_ROYALE = "BATTLE_ROYALE",
+	SWISS = "SWISS",
+	ALL = "ALL",
 }
 
 export enum OrderType {
 	ASC = "ASC",
 	DESC = "DESC",
-	EMPTY = "",
+	NONE = "NONE",
 }
 
 export const orderValues = [

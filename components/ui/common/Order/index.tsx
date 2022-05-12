@@ -11,18 +11,18 @@ interface OrderProps {
 }
 
 const Order: React.FC<OrderProps> = ({ id, title, value, onClick }) => {
-	const [status, setStatus] = useState<OrderType>(value || OrderType.EMPTY);
+	const [status, setStatus] = useState<OrderType>(value || OrderType.NONE);
 
 	const handleClickChangeOrder = () => {
-		if (status === OrderType.EMPTY) {
+		if (status === OrderType.NONE) {
 			setStatus(OrderType.DESC);
 			onClick(OrderType.DESC, id);
 		} else if (status === OrderType.DESC) {
 			setStatus(OrderType.ASC);
 			onClick(OrderType.ASC, id);
 		} else {
-			setStatus(OrderType.EMPTY);
-			onClick(OrderType.EMPTY, id);
+			setStatus(OrderType.NONE);
+			onClick(OrderType.NONE, id);
 		}
 	};
 
@@ -30,7 +30,7 @@ const Order: React.FC<OrderProps> = ({ id, title, value, onClick }) => {
 		<div onClick={handleClickChangeOrder}>
 			<div className={s.sort}>
 				<p className="mb-0 mr-2">{title}</p>
-				{status === OrderType.EMPTY ? (
+				{status === OrderType.NONE ? (
 					<div className="w-[18px]" />
 				) : status === OrderType.DESC ? (
 					<CaretDownFilled id={id} className="text-18px" />

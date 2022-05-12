@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
 import { Team } from "src/generated/graphql";
 import SearchComplete from "components/ui/common/searchs";
+import PopupDonate from "../../popup/popupDonate";
 
 type Props = {
   dataParticipants: Team[];
@@ -18,9 +19,18 @@ export default function TableParticipant(props: Props) {
   const { dataParticipants, loading, tournamentId, currency } = props;
 
   const [datas, setDatas] = useState({});
+  const [isPopupDonate, setIsPopupDonate] = useState(false);
+  const closeModal = () => {
+    setIsPopupDonate(false);
+  };
+
   const handleClick = (e: object) => {
     setDatas(e);
-    AppEmitter.emit("showPopupDonate", true);
+    if (dataParticipants.length == 1) {
+      setIsPopupDonate(true);
+    } else {
+      AppEmitter.emit("showPopupDonate", true);
+    }
   };
   if (loading) {
     return <></>;
@@ -87,6 +97,14 @@ export default function TableParticipant(props: Props) {
         nameTeam={datas}
         tournamentId={tournamentId}
         currency={currency}
+      />
+      <PopupDonate
+        closeModal={() => closeModal()}
+        status={isPopupDonate}
+        tournamentId={tournamentId}
+        currency={currency}
+        types={"TEAM"}
+        datas={datas}
       />
     </div>
   );

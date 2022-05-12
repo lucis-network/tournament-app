@@ -80,7 +80,7 @@ export default function TournamentDetailBecomeSponsor(
       sponsor_slot_uid: selectedTier.uid,
       tx_hash: "",
     };
-    refetch();
+
     const txHash = await transferSponsors(data.amount);
     if (txHash) {
       sponsor.tx_hash = txHash;
@@ -88,10 +88,10 @@ export default function TournamentDetailBecomeSponsor(
       const response = tournamentService.becomeSponsor(sponsor).then((res) => {
         if (res) {
           // setIsPopupNotify(true);
-          console.log("res", res);
-          if(res){
-            message.success("You haved become sponsor")
-            setIsBecome(false)
+          if (res) {
+            message.success("You haved become sponsor");
+            setIsBecome(false);
+            refetch();
           }
         }
       });

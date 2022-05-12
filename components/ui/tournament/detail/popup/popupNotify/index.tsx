@@ -7,10 +7,14 @@ type Props = {
   currency?: any;
   status?: boolean;
   values: string;
+  name?: string;
 };
 
 const PopupNotify = (props: Props) => {
-  const { status, closeModalNotify, values, currency } = props;
+  const { status, closeModalNotify, values, currency, name } = props;
+
+  const closeModal = () => {};
+
   return (
     <Modal
       visible={status}
@@ -26,10 +30,10 @@ const PopupNotify = (props: Props) => {
       </div>
       <div>
         We&apos;ve received {fomatNumber(Number.parseFloat(values))}{" "}
-        {currency?.symbol} and will transfer it to &lt;RECEIVE&gt; after the tournament
-        finish
+        {currency?.symbol} and will transfer it to &lt;{name}&gt; after the
+        tournament finish
       </div>
-      <p>Thanks you your donation</p>
+      <p>Thanks for your donation</p>
     </Modal>
   );
 };
