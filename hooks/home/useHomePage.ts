@@ -4,7 +4,7 @@ import { debounce } from "lodash";
 import { Bracket, OrderType, StatusGameType } from "utils/Enum";
 
 export type FilterGame = {
-	game: "";
+	game: string;
 	bracket: Bracket;
 	team_size?: string;
 	prize_pool: OrderType;
@@ -21,9 +21,13 @@ export function useHomePage() {
 	const [filter, setFilter] = useState<FilterGame>({
 		game: "",
 		bracket: Bracket.EMPTY,
-		prize_pool: OrderType.DESC,
+		prize_pool: OrderType.EMPTY,
 		team_size: "",
-		time: OrderType.DESC,
+		time: OrderType.EMPTY,
+	});
+
+	const { data: gameData } = useQuery(GET_GAME, {
+		fetchPolicy: "cache-and-network",
 	});
 
 	const {
@@ -39,13 +43,7 @@ export function useHomePage() {
 			: GET_ONCLOSE,
 		{
 			fetchPolicy: "cache-and-network",
-			variables: {
-				game: "",
-				bracket: "",
-				team_size: "",
-				prize_pool: "",
-				time: "",
-			},
+			variables: filter,
 		}
 	);
 
@@ -55,18 +53,26 @@ export function useHomePage() {
 				...filter,
 				[type]: value,
 			});
-
-			type === "game"
-				? debounce(() => getData({ ...filter, [type as any]: value }), 500)
-				: getData({ ...filter, [type]: value });
+			getData({ ...filter, [type]: value });
+			// type === "game"
+			// 	? debounce(() => getData({ ...filter, [type as any]: value }), 500)
+			// 	: getData({ ...filter, [type]: value });
 		},
 		[filter, getData]
+	);
+
+	const handleOrder = useCallback(
+		(value: OrderType, id?: any) => {
+			handleChangeFilter(id, value);
+		},
+		[handleChangeFilter]
 	);
 
 	return {
 		type,
 		filter,
 		listTabs,
+		gameData: gameData?.getGame,
 		loading,
 		error,
 		data:
@@ -77,6 +83,7 @@ export function useHomePage() {
 				: data?.getClosedTournament,
 		setType,
 		handleChangeFilter,
+		handleOrder,
 	};
 }
 
@@ -250,6 +257,17 @@ const GET_ONCLOSE = gql`
 				}
 			}
 			totalPrizePool
+		}
+	}
+`;
+
+const GET_GAME = gql`
+	query {
+		getGame(name: "") {
+			uid
+			name
+			logo
+			desc
 		}
 	}
 `;

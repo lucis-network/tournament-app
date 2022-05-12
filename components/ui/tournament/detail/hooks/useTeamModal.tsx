@@ -1,7 +1,7 @@
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, ReactElement, useMemo } from "react";
-import { PlusOutlined, ShareAltOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import s from "../popup/chooseTeamModal/TeamModal.module.sass";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import TeamSelect from "../popup/chooseTeamModal/TeamSelect";
@@ -64,7 +64,7 @@ const UseTeamModal = (tournamentData: any) => {
 		handleRemove,
 		handleSaveTeam,
 		handleSearchMember,
-	} = UseCreateNewTeam(user?.profile);
+	} = UseCreateNewTeam(user?.profile, team_size);
 
 	const { url, inputKey, handleFileInput } = UseUploadAvatar(
 		handleChangeAvatar,
@@ -249,8 +249,27 @@ const UseTeamModal = (tournamentData: any) => {
 	const handleOpenModal = useCallback(() => {
 		setShow(true);
 		searchTeam();
-		isSoloVersion && setStep("step-2");
-	}, [isSoloVersion, searchTeam]);
+		if (isSoloVersion) {
+			setStep("step-2");
+			setSelectedTeam({
+				team: [
+					{
+						user_id: user?.id,
+						display_name: user?.profile?.display_name,
+						avatar: user?.profile?.avatar,
+						is_leader: true,
+						prize: 100,
+					},
+				] as Item[],
+			} as MyTeamType);
+		}
+	}, [
+		isSoloVersion,
+		searchTeam,
+		user?.id,
+		user?.profile?.avatar,
+		user?.profile?.display_name,
+	]);
 
 	useEffect(() => {
 		if (selectedTeam && (selectedTeam?.team?.length || 0) > team_size) {
@@ -297,7 +316,7 @@ const UseTeamModal = (tournamentData: any) => {
 								</button>
 								<button className={s.button} onClick={handleOpenCreateNewTeam}>
 									<PlusOutlined className="mr-2" />
-									Create a new member
+									Create a new team
 								</button>
 							</div>
 						</div>
@@ -385,19 +404,21 @@ const UseTeamModal = (tournamentData: any) => {
 			},
 			["success"]: {
 				titleModal: "You'v successfully join this tournament",
-				description: <p>Some description here</p>,
+				description: <p></p>,
 				component: (
 					<div className="flex justify-center align-middle items-center mt-8">
 						<button
 							className={`${s.button} mr-4 !w-max`}
-							onClick={() => handleRoutes("/tournament")}
+							onClick={() =>
+								handleRoutes(`/tournament/${tournamentId}/${name}`)
+							}
 						>
 							Back to tournament
 						</button>
-						<button className={`${s.button} !w-max`} onClick={() => {}}>
+						{/* <button className={`${s.button} !w-max`} onClick={() => {}}>
 							<ShareAltOutlined className="mr-2" />
 							Share
-						</button>
+						</button> */}
 					</div>
 				),
 				modalWidth: 540,

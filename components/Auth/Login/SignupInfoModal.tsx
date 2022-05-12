@@ -102,16 +102,16 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
 
   return (
     <Modal
-      title={<span className="font-[600]">Sign up info</span>}
+      title={<span className="font-[600]">Sign in info</span>}
       visible={isModalVisible}
       closable={false}
       footer={[
         <Button key={1} onClick={handleLogout}>Logout</Button>,
-        <Button key={2} onClick={handleComplete} className={s.btnComplete}>Complete</Button>
+        <Button key={2} onClick={handleComplete} className="bg-gradient-1">Complete</Button>
       ]}
       className={s.signupInfoModal}
     >
-      <h3 style={{ color: '#ffffff' }}>Enter the information below to finish the signup process</h3>
+      <h3 style={{ color: '#ffffff' }}>Enter the information below to finish the sign in process</h3>
       <Form
         form={form}
         labelCol={{ span: 5 }}

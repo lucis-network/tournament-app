@@ -22,7 +22,7 @@ export interface MyTeamType {
 	team?: TeamType[];
 }
 
-const UseCreateNewTeam = (profile: any) => {
+const UseCreateNewTeam = (profile: any, teamSize: number) => {
 	const [draftData, setDraftData] = useState<MyTeamType>();
 	const [reset, setReset] = useState<boolean>(false);
 	const [teamId, setTeamId] = useState<string>("");
@@ -103,8 +103,6 @@ const UseCreateNewTeam = (profile: any) => {
 	};
 
 	const handleCloseCreateEditTeam = () => {
-		console.log("runnnnnn");
-
 		setDraftData(undefined);
 		setError({});
 		setReset(true);
@@ -214,7 +212,7 @@ const UseCreateNewTeam = (profile: any) => {
 	};
 
 	const handleCloseAddMember = () => {
-		if ((draftData?.team?.length || 0) <= 1) {
+		if (teamSize > 1 && (draftData?.team?.length || 0) <= 1) {
 			setDraftData({
 				team_avatar: "",
 				team_name: "",

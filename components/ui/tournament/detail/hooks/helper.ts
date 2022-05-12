@@ -22,7 +22,7 @@ export const checkEmptyArrayValue = (array: any[], key: string): boolean => {
 	if (Array.isArray(array) && !isEmpty(array)) {
 		const values = getValueInObject(array, key);
 
-		return !values.every((item) => !!item);
+		return !values.every((item) => item === 0 || !!item);
 	}
 	return !!array;
 };
