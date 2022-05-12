@@ -66,6 +66,15 @@ export function useTournamentDetail(props: Props) {
     variables: { tournament_uid: props?.tournament_uid },
   });
 
+  const {
+    loading: loadingDonation,
+    error: errorDonation,
+    data: dataDonation,
+  } = useQuery(GET_DONATION_HISTORY, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "network-only",
+  });
+
   const [joinTournament] = useMutation(JOIN_TOURNAMENT);
 
   return {
@@ -75,6 +84,7 @@ export function useTournamentDetail(props: Props) {
     loadingPrizing,
     loadingBracket,
     loadingIsJoin,
+    loadingDonation,
 
     error,
     errorParticipant,
@@ -82,6 +92,7 @@ export function useTournamentDetail(props: Props) {
     errorPrizing,
     errorBracket,
     errorIsJoin,
+    errorDonation,
 
     dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
     dataParticipants: dataParticipants?.getTournamentParticipants,
@@ -89,6 +100,7 @@ export function useTournamentDetail(props: Props) {
     dataPrizing: dataPrizing?.getTournamentPrizing,
     dataBracket: dataBracket?.getBracket,
     dataIsJoin: dataIsJoin?.isJoinedTournament,
+    dataDonation: dataDonation?.donateHistory,
 
     joinTournament,
     refetch,
@@ -326,3 +338,20 @@ const IS_JOIN_TOURNAMENT = gql`
     isJoinedTournament(tournament_uid: $tournament_uid)
   }
 `;
+
+const GET_DONATION_HISTORY = gql`
+  query ($tournament_uid: String!) {
+    donateHistory(tournament_uid: $tournament_uid) {
+      donor_id
+      donor_display_name
+      donor_avatar
+      receiver_display_name
+      tx_hash
+      receiver_avatar
+      type
+      amount
+      symbol
+      time
+    }
+  }
+`
