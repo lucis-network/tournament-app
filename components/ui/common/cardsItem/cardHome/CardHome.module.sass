@@ -64,7 +64,7 @@
     .container_card
       background: linear-gradient(292deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
       backdrop-filter: blur(42px)
-      box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
+       // box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
       min-height: 500px
       display: flex
       flex-direction: column
@@ -281,7 +281,8 @@
       -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
       -webkit-mask-composite: xor
       mask-composite: exclude
-
+  .wrapper:hover .container_card
+    box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
 
 .btn_load
   display: flex

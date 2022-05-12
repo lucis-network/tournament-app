@@ -18,17 +18,23 @@
       position: relative
       @media (min-width: 0px)
         font-size: 14px
-        padding-bottom: 460px
+        padding-bottom: 380px
+        flex-direction: column
+        align-items: flex-start
+        justify-content: center
       @media (min-width: 540px)
         font-size: 16px
       @media (min-width: 640px)
-        padding-bottom: 400px
+        flex-direction: row
+        align-items: center
+        padding-bottom: 290px
         font-size: 18px
       img
         position: absolute
         left: 8px
         @media (min-width: 0px)
-          max-width: 40px
+          max-width: 30px
+          top: 8%
         @media (min-width: 640px)
           max-width: 60px
       .time
@@ -39,10 +45,12 @@
         color: #3BE2CD
         background: linear-gradient(111.29deg, rgba(255, 255, 255, 0.13) -1.83%, rgba(255, 255, 255, 0) 109.95%)
         @media (min-width: 0px)
-          max-width: 120px
+          min-width: 210px
           padding-left: 50px
+          min-height: 40px
+          display: flex
+          align-items: center
         @media (min-width: 640px)
-          max-width: 160px
           padding-left: 80px
 
         .line
@@ -56,12 +64,18 @@
       .marquee_title
         margin: 0 12px
         max-width: 1420px
+        background: none
         @media (min-width: 0px)
           font-size: 14px
         @media (min-width: 540px)
           font-size: 16px
         @media (min-width: 640px)
           font-size: 18px
+        :global(.overlay::before)
+          // background: linear-gradient(to right, rgba(0, 0, 0, 1),rgba(0, 0, 0, 0))
+          background: none
+        :global(.overlay::after)
+          background: none
 
         :global(.marquee)
           padding: 0px 100px

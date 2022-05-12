@@ -6,8 +6,10 @@ import s from "./Tabs.module.sass";
 import { useHomePage } from "hooks/home/useHomePage";
 import Search from "antd/lib/input/Search";
 import { StatusGameType } from "utils/Enum";
+import { useRouter } from "next/router";
 
 export default function TabHome() {
+	const router = useRouter()
 	const {
 		type,
 		filter,
@@ -20,6 +22,9 @@ export default function TabHome() {
 		handleOrder,
 	} = useHomePage();
 
+	const handleRouter = () => {
+		router.push('/tournament/create')
+	}
 	return (
 		<div className={`${s.container_card_tournament}`}>
 			<div className="lucis-container">
@@ -74,7 +79,7 @@ export default function TabHome() {
 								useful platform to create and manage your own tournaments with
 								ease.
 							</p>
-							<Button type="primary">CREATE NOW</Button>
+							<Button type="primary" onClick={handleRouter}>CREATE NOW</Button>
 						</Col>
 					</Row>
 				</div>
