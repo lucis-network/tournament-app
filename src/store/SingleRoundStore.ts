@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { isClientDevMode } from "../../utils/Env";
 
 type Seed = {
   id: string | number;
@@ -19,18 +20,14 @@ class SingleRoundStore {
     this._rounds = data;
   }
 
-  updateScoreCurrentMatch(
-    value: string,
-    roundIndex: number,
-    seedIndex: number,
-    teamIndex: number
-  ) {
-    this.rounds[roundIndex].seeds[seedIndex].teams[teamIndex].score = value;
-    this.currentMatch.teams[teamIndex].score = value;
+  updateCurrentMatchScore(score: number, teamIndex: number) {
+    this.currentMatch.teams[teamIndex].score = score;
   }
 
-  updateScoreMatch(roundIndex: number, seedIndex: number) {
+  reflectCurrentMatchToStore(roundIndex: number, seedIndex: number) {
     this.rounds[roundIndex].seeds[seedIndex].teams = this.currentMatch.teams;
+    // change pointer to trigger bracket re-render
+    this.rounds = [...this.rounds];
   }
 
   public get rounds(): any[] {
@@ -57,3 +54,8 @@ class SingleRoundStore {
 
 const s = new SingleRoundStore();
 export default s;
+
+if (isClientDevMode) {
+  // @ts-ignore
+  window.tmp__SingleRoundStore = s;
+}

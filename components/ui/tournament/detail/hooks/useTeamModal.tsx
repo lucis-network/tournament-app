@@ -428,9 +428,12 @@ const UseTeamModal = (tournamentData: any) => {
 		return stepModifier[step];
 	};
 
-	useEffect(() => {
-		if (!user) router.push("/");
-	}, [router, user]);
+	/**
+	 * This prevent anonymous user view the tour detail
+	 */
+	// useEffect(() => {
+	// 	if (!user) router.push("/");
+	// }, [router, user]);
 
 	return {
 		step,
