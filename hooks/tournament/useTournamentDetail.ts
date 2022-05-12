@@ -249,6 +249,7 @@ const GET_BRACKET = gql`
         type
         title
         bracketMatchs {
+          uid
           team1_uid
           team2_uid
           score_1

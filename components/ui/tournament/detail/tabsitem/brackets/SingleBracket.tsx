@@ -1,7 +1,7 @@
 import UpdateScoreModal from "components/ui/tournament/detail/popup/updateScore";
 import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import RoundStore from "src/store/SingleRoundStore";
+import RoundStore, { RoundMatch } from "src/store/SingleRoundStore";
 
 import {
   Bracket,
@@ -23,13 +23,14 @@ const SingleBracket = (props: Props) => {
 
   const handleOpenModal = (
     e: any,
-    seed: any,
+    seed: RoundMatch,
     seedIndex: number,
     roundIndex: number
   ) => {
     if (canEdit) {
       RoundStore.updateScoreModalVisible = true;
       RoundStore.currentMatch = {
+        uid: "",
         teams: seed.teams,
         seedIndex,
         roundIndex,
@@ -45,8 +46,9 @@ const SingleBracket = (props: Props) => {
     seedIndex,
     roundIndex,
   }: RenderSeedProps) => {
-    const team0 = seed.teams[0];
-    const team1 = seed.teams[1];
+    const match = seed as RoundMatch;
+    const team0 = match.teams[0];
+    const team1 = match.teams[1];
 
     return (
       <>
@@ -63,7 +65,7 @@ const SingleBracket = (props: Props) => {
                     color: "black",
                   }}
                 >
-                  {team0?.name ?? `bye`}
+                  {team0 && team0.name ? team0.name : `bye`}
                 </div>
                 <div
                   style={{
@@ -73,12 +75,12 @@ const SingleBracket = (props: Props) => {
                     width: "50px",
                     cursor: "pointer",
                   }}
-                  // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  // onClick={() => openModal(seedIndex, roundIndex, match.teams)}
                   onClick={(e) =>
-                    handleOpenModal(e, seed, seedIndex, roundIndex)
+                    handleOpenModal(e, match, seedIndex, roundIndex)
                   }
                 >
-                  {team0?.score ?? "--"}
+                  {team0 ? team0.score : "--"}
                 </div>
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
@@ -91,7 +93,7 @@ const SingleBracket = (props: Props) => {
                     color: "white",
                   }}
                 >
-                  {team1?.name ?? `bye`}
+                  {team1 && team1.name  ? team1.name : `bye`}
                 </div>
                 <div
                   style={{
@@ -101,12 +103,12 @@ const SingleBracket = (props: Props) => {
                     width: "50px",
                     cursor: "pointer",
                   }}
-                  // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  // onClick={() => openModal(seedIndex, roundIndex, match.teams)}
                   onClick={(e) =>
-                    handleOpenModal(e, seed, seedIndex, roundIndex)
+                    handleOpenModal(e, match, seedIndex, roundIndex)
                   }
                 >
-                  {team1?.score ?? "--"}
+                  {team1 ? team1.score : "--"}
                 </div>
               </SeedTeam>
             </div>
@@ -119,7 +121,7 @@ const SingleBracket = (props: Props) => {
   return (
     <>
       <Bracket
-        rounds={RoundStore.rounds}
+        rounds={RoundStore.rounds as RoundProps[]}
         roundClassName={s.wining}
         renderSeedComponent={RenderSeed}
         mobileBreakpoint={360}

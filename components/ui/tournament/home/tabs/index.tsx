@@ -1,4 +1,5 @@
 import { Button, Col, Row } from "antd";
+import Link from "next/link";
 import CardHome from "components/ui/common/cardsItem/cardHome";
 import ButtonSort from "components/ui/tournament/home/button";
 import s from "./Tabs.module.sass";
@@ -10,8 +11,6 @@ import { StatusGameType } from "utils/Enum";
 export default function TabHome() {
 	const { type, filter, listTabs, data, loading, setType, handleChangeFilter } =
 		useHomePage();
-
-	console.log(filter);
 
 	return (
 		<div className={`${s.container_card_tournament}`}>
@@ -66,7 +65,9 @@ export default function TabHome() {
 								useful platform to create and manage your own tournaments with
 								ease.
 							</p>
-							<Button type="primary">CREATE NOW</Button>
+							<Link href={`tournament/create`}>
+								<Button type="primary">CREATE NOW</Button>
+							</Link>
 						</Col>
 					</Row>
 				</div>
