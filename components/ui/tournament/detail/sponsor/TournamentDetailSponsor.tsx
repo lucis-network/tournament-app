@@ -8,18 +8,23 @@ import TournamentDetailBecomeSponsor from "./TournamentDetailBecomeSponsor";
 import TournamentDetailSponsorTier from "./TournamentDetailSponsorTier";
 
 export type TiersSelectType = {
-  uid: string,
-  name?: Maybe<string> | undefined,
-  min_deposit: number,
-  show_ads?: Maybe<boolean> | undefined,
-  show_name?: Maybe<boolean> | undefined,
-  is_full?: boolean,
-}
+  uid: string;
+  name?: Maybe<string> | undefined;
+  min_deposit: number;
+  show_ads?: Maybe<boolean> | undefined;
+  show_name?: Maybe<boolean> | undefined;
+  is_full?: boolean;
+};
 
-export default function TournamentDetailSponsor() {
+type Props = {
+  tournamentId?: string;
+};
+
+export default function TournamentDetailSponsor(props: Props) {
+  const { tournamentId } = props;
   const [isBecome, setIsBecome] = useState(false);
   const { loading, dataSponsors, refetch } = useSponsors({
-    tournament_uid: "cl2kk1jtj40610lpwk9dtfim7",
+    tournament_uid: tournamentId,
   });
 
   let tiersSelect: TiersSelectType[] = [];
@@ -27,7 +32,10 @@ export default function TournamentDetailSponsor() {
   if (dataSponsors?.getSponsorSlot) {
     tiersSelect = dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
       let slotsAvailable = tier.max;
-      tier.sponsor_transactions?.map((slot: SponsorTransaction) => (slot.order || slot.order === 0) && (slotsAvailable -= 1));
+      tier.sponsor_transactions?.map(
+        (slot: SponsorTransaction) =>
+          (slot.order || slot.order === 0) && (slotsAvailable -= 1)
+      );
 
       return {
         name: tier.name,
@@ -36,8 +44,8 @@ export default function TournamentDetailSponsor() {
         show_ads: tier.show_ads,
         show_name: tier.show_name,
         is_full: slotsAvailable <= 0,
-      }
-    })
+      };
+    });
   }
 
   return (
@@ -45,22 +53,30 @@ export default function TournamentDetailSponsor() {
       <div className={s.sponsorContainer}>
         <Row>
           <Col md={{ span: 18 }}>
-            {
-              (dataSponsors?.getSponsorSlot.length > 0) && 
-                dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
+            {dataSponsors?.getSponsorSlot.length > 0 &&
+              dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
                 const { uid: tierUid } = tier;
                 return (
                   <TournamentDetailSponsorTier key={tierUid} tier={tier} />
-                )
-              })
-            }
+                );
+              })}
           </Col>
           <Col md={{ span: 6 }}>
-            <Button onClick={() => setIsBecome(true)}>Become our sponsor</Button>
+            <Button onClick={() => setIsBecome(true)}>
+              Become our sponsor
+            </Button>
           </Col>
         </Row>
       </div>
-      {isBecome && <TournamentDetailBecomeSponsor isBecome={isBecome} setIsBecome={setIsBecome} tiersSelect={tiersSelect} refetch={refetch} />}
+      {isBecome && (
+        <TournamentDetailBecomeSponsor
+          isBecome={isBecome}
+          setIsBecome={setIsBecome}
+          tiersSelect={tiersSelect}
+          refetch={refetch}
+          tournamentId={tournamentId}
+        />
+      )}
     </>
-   );
+  );
 }

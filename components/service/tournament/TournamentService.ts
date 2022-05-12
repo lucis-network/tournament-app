@@ -1,5 +1,6 @@
 import { gql } from "@apollo/client";
 import { GDonateTransaction } from "components/ui/tournament/detail/popup/popupDonate";
+import { SponsorInput } from "components/ui/tournament/detail/sponsor/TournamentDetailBecomeSponsor";
 import { CreateTournament } from "src/store/TournamentStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
@@ -41,6 +42,21 @@ export default class TournamentService {
       `,
       variables: {
         input: dnt,
+      },
+    });
+
+    return donataResponse;
+  }
+
+  public async becomeSponsor(sponsor: SponsorInput): Promise<any> {
+    const donataResponse = await apoloClient.mutate({
+      mutation: gql`
+        mutation becomeOurSponsor($data: SponsorInput!) {
+          becomeOurSponsor(data: $data)
+        }
+      `,
+      variables: {
+        data: sponsor,
       },
     });
 

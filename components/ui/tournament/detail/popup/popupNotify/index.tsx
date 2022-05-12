@@ -25,7 +25,7 @@ const PopupNotify = (props: Props) => {
         {fomatNumber(Number.parseFloat(values))} {currency?.symbol}
       </div>
       <div>
-        we&apos;ve received {fomatNumber(Number.parseFloat(values))}{" "}
+        We&apos;ve received {fomatNumber(Number.parseFloat(values))}{" "}
         {currency?.symbol} and will transfer it to &lt;RECEIVE&gt; after the tournament
         finish
       </div>

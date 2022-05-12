@@ -54,7 +54,7 @@ export default function TableParticipant(props: Props) {
       // width: "15%",
     },
     {
-      title: "Donated",
+      title: "Was donated",
       dataIndex: "donate",
       key: "donate",
       // width: "15%",
