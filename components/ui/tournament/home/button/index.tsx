@@ -25,7 +25,7 @@ export default function ButtonSort({
 	onFilter,
 	onOrder,
 }: ButtonSort) {
-	const [type, setType] = useState<keyof FilterGame>("game");
+	const [type, setType] = useState<keyof FilterGame>("game_uid");
 
 	const handleCheckType = useCallback((type: any) => {
 		setType(type);
@@ -45,13 +45,13 @@ export default function ButtonSort({
 				<div>
 					<Select
 						onChange={handleChange}
-						onClick={() => handleCheckType("game")}
+						onClick={() => handleCheckType("game_uid")}
 						allowClear
 						placeholder="Game"
 						className="w-44"
 					>
 						{gameData?.map((item) => (
-							<Option key={item.uid} value={item.name}>
+							<Option key={item.uid} value={item.uid}>
 								{item.name}
 							</Option>
 						))}
@@ -71,7 +71,7 @@ export default function ButtonSort({
 					</Select>
 					<Select
 						onChange={handleChange}
-						onClick={() => handleCheckType("team_size")}
+						onClick={() => handleCheckType("size")}
 						allowClear
 						placeholder="Size"
 					>
