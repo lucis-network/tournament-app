@@ -254,7 +254,7 @@ const UseTeamModal = (tournamentData: any) => {
 			setSelectedTeam({
 				team: [
 					{
-						user_id: user?.id,
+						user_id: +user?.profile?.user_id!,
 						display_name: user?.profile?.display_name,
 						avatar: user?.profile?.avatar,
 						is_leader: true,

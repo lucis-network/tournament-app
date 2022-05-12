@@ -1162,6 +1162,13 @@ export type GMember = {
   team_uid?: InputMaybe<Scalars['String']>;
 };
 
+export type GTopEarning = {
+  __typename?: 'GTopEarning';
+  avatar?: Maybe<Scalars['String']>;
+  total_earning?: Maybe<Scalars['Float']>;
+  user_name?: Maybe<Scalars['String']>;
+};
+
 export type GTournament = {
   __typename?: 'GTournament';
   TournamentDeposit?: Maybe<Array<TournamentDeposit>>;
@@ -1192,6 +1199,8 @@ export type GTournament = {
   spotlight_position?: Maybe<Scalars['Int']>;
   team_size: Scalars['Int'];
   thumbnail: Scalars['String'];
+  totalDonation?: Maybe<Scalars['Float']>;
+  totalPrizePool?: Maybe<Scalars['Float']>;
   tournament_subscribes?: Maybe<Array<TournamentSubscriber>>;
   turns?: Maybe<Scalars['Int']>;
   uid: Scalars['ID'];
@@ -1231,6 +1240,7 @@ export type GUserProfile = {
   user: User;
   user_id?: Maybe<Scalars['Int']>;
   user_name?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
 };
 
 export type Game = {
@@ -1327,6 +1337,7 @@ export type Mutation = {
   editTeam?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
   generateNonce: Scalars['String'];
+  isCheckInTournament?: Maybe<Scalars['Boolean']>;
   joinTournament?: Maybe<Scalars['Boolean']>;
   leaveTeam?: Maybe<Scalars['Boolean']>;
   leaveTournament?: Maybe<Scalars['Boolean']>;
@@ -1434,6 +1445,12 @@ export type MutationGenerateNonceArgs = {
 };
 
 
+export type MutationIsCheckInTournamentArgs = {
+  team_uid: Scalars['String'];
+  tournament_uid: Scalars['String'];
+};
+
+
 export type MutationJoinTournamentArgs = {
   data: GBracketTeamInput;
 };
@@ -1482,6 +1499,21 @@ export type MutationUpdateMatchResultArgs = {
 
 export type MutationUpdateProfileArgs = {
   data: ProfileUpdateInput;
+};
+
+export type NestedStringNullableFilter = {
+  contains?: InputMaybe<Scalars['String']>;
+  endsWith?: InputMaybe<Scalars['String']>;
+  equals?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  in?: InputMaybe<Array<Scalars['String']>>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  not?: InputMaybe<NestedStringNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
+  search?: InputMaybe<Scalars['String']>;
+  startsWith?: InputMaybe<Scalars['String']>;
 };
 
 export type Notification = {
@@ -1616,6 +1648,7 @@ export type Query = {
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
   getSpotlightTournament?: Maybe<Array<GTournament>>;
   getTeam?: Maybe<Array<BracketTeamMember>>;
+  getTopEarningPlayer?: Maybe<Array<GTopEarning>>;
   getTotalEarning?: Maybe<Scalars['Float']>;
   getTournamentDetail?: Maybe<TournamentGql>;
   getTournamentListRank?: Maybe<Array<TournamentListRank>>;
@@ -1626,7 +1659,6 @@ export type Query = {
   getTournamentReward?: Maybe<Array<Reward>>;
   getUpComingTournament?: Maybe<Array<TournamentGql>>;
   getUserProfile?: Maybe<UserGraphql>;
-  isJoinedTournament?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
   search?: Maybe<Array<TournamentGql>>;
@@ -1760,12 +1792,6 @@ export type QueryGetUpComingTournamentArgs = {
 
 
 export type QueryGetUserProfileArgs = {
-  user_id: Scalars['String'];
-};
-
-
-export type QueryIsJoinedTournamentArgs = {
-  tournament_uid: Scalars['String'];
   user_id: Scalars['String'];
 };
 
@@ -2217,6 +2243,21 @@ export enum Status {
   Reviewing = 'REVIEWING',
   Upcoming = 'UPCOMING'
 }
+
+export type StringNullableFilter = {
+  contains?: InputMaybe<Scalars['String']>;
+  endsWith?: InputMaybe<Scalars['String']>;
+  equals?: InputMaybe<Scalars['String']>;
+  gt?: InputMaybe<Scalars['String']>;
+  gte?: InputMaybe<Scalars['String']>;
+  in?: InputMaybe<Array<Scalars['String']>>;
+  lt?: InputMaybe<Scalars['String']>;
+  lte?: InputMaybe<Scalars['String']>;
+  not?: InputMaybe<NestedStringNullableFilter>;
+  notIn?: InputMaybe<Array<Scalars['String']>>;
+  search?: InputMaybe<Scalars['String']>;
+  startsWith?: InputMaybe<Scalars['String']>;
+};
 
 export type Subscription = {
   __typename?: 'Subscription';
@@ -3796,6 +3837,7 @@ export type UserProfile = {
   user: User;
   user_id: Scalars['ID'];
   user_name?: Maybe<Scalars['String']>;
+  youtube?: Maybe<Scalars['String']>;
 };
 
 export type UserProfileCreateNestedOneWithoutUserInput = {
@@ -3826,6 +3868,7 @@ export type UserProfileCreateWithoutUserInput = {
   twitter?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user_name?: InputMaybe<Scalars['String']>;
+  youtube?: InputMaybe<Scalars['String']>;
 };
 
 export type UserProfileWhereUniqueInput = {
