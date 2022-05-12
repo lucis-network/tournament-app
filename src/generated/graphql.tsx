@@ -1328,8 +1328,10 @@ export type Mutation = {
   confirmResult?: Maybe<Scalars['Boolean']>;
   createTeam?: Maybe<Scalars['Boolean']>;
   createTournament?: Maybe<TournamentGql>;
+  deleteAllNotification?: Maybe<Scalars['Boolean']>;
   deleteFavoriteGame?: Maybe<Scalars['Boolean']>;
   deleteMember?: Maybe<Scalars['Boolean']>;
+  deleteNotification?: Maybe<Scalars['Boolean']>;
   deleteTeam?: Maybe<Scalars['Boolean']>;
   /** Host deposit into pool when create tournament */
   depositTournament?: Maybe<Scalars['String']>;
@@ -1337,7 +1339,7 @@ export type Mutation = {
   editTeam?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
   generateNonce: Scalars['String'];
-  isCheckInTournament?: Maybe<Scalars['Boolean']>;
+  getNotification?: Maybe<Array<NotificationType>>;
   joinTournament?: Maybe<Scalars['Boolean']>;
   leaveTeam?: Maybe<Scalars['Boolean']>;
   leaveTournament?: Maybe<Scalars['Boolean']>;
@@ -1418,6 +1420,11 @@ export type MutationDeleteMemberArgs = {
 };
 
 
+export type MutationDeleteNotificationArgs = {
+  id: Scalars['Float'];
+};
+
+
 export type MutationDeleteTeamArgs = {
   team_uid: Scalars['String'];
 };
@@ -1442,12 +1449,6 @@ export type MutationEditTeamArgs = {
 
 export type MutationGenerateNonceArgs = {
   address: Scalars['String'];
-};
-
-
-export type MutationIsCheckInTournamentArgs = {
-  team_uid: Scalars['String'];
-  tournament_uid: Scalars['String'];
 };
 
 
@@ -1659,6 +1660,7 @@ export type Query = {
   getTournamentReward?: Maybe<Array<Reward>>;
   getUpComingTournament?: Maybe<Array<TournamentGql>>;
   getUserProfile?: Maybe<UserGraphql>;
+  isCheckInTournament?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
   search?: Maybe<Array<TournamentGql>>;
@@ -1796,8 +1798,14 @@ export type QueryGetUserProfileArgs = {
 };
 
 
+export type QueryIsCheckInTournamentArgs = {
+  team_uid: Scalars['String'];
+  tournament_uid: Scalars['String'];
+};
+
+
 export type QuerySearchArgs = {
-  value: Scalars['String'];
+  input: TournamentSearchInput;
 };
 
 
@@ -1980,6 +1988,12 @@ export type Reward = {
   reward_type?: Maybe<Scalars['String']>;
   symbol?: Maybe<Scalars['String']>;
 };
+
+export enum SortType {
+  All = 'ALL',
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 export type SponsorInput = {
   ads_link?: InputMaybe<Scalars['String']>;
@@ -2262,11 +2276,23 @@ export type StringNullableFilter = {
 export type Subscription = {
   __typename?: 'Subscription';
   pushNotification: NotificationType;
+  updateTotalPrizePool: TotalPrizePool;
+  updateTotalTotalDonation: TotalDonation;
 };
 
 
 export type SubscriptionPushNotificationArgs = {
   user_id: Scalars['Float'];
+};
+
+
+export type SubscriptionUpdateTotalPrizePoolArgs = {
+  tournament_uid: Scalars['String'];
+};
+
+
+export type SubscriptionUpdateTotalTotalDonationArgs = {
+  tournament_uid: Scalars['String'];
 };
 
 export type TTournament = {
@@ -2475,6 +2501,18 @@ export enum TnmStatus {
   Registration = 'REGISTRATION',
   Running = 'RUNNING'
 }
+
+export type TotalDonation = {
+  __typename?: 'TotalDonation';
+  total_donation?: Maybe<Scalars['Float']>;
+  tournament_uid?: Maybe<Scalars['String']>;
+};
+
+export type TotalPrizePool = {
+  __typename?: 'TotalPrizePool';
+  total_prize?: Maybe<Scalars['Float']>;
+  tournament_uid?: Maybe<Scalars['String']>;
+};
 
 export type Tournament = {
   __typename?: 'Tournament';
@@ -3051,13 +3089,13 @@ export type TournamentDepositWhereUniqueInput = {
 };
 
 export type TournamentFilterInput = {
-  bracket?: InputMaybe<Scalars['String']>;
-  game?: InputMaybe<Scalars['String']>;
+  bracket?: InputMaybe<BracketType>;
+  game_uid?: InputMaybe<Scalars['String']>;
   /** ASC OR DESC */
-  prize_pool?: InputMaybe<Scalars['String']>;
-  team_size?: InputMaybe<Scalars['String']>;
+  prize_pool?: InputMaybe<SortType>;
+  size?: InputMaybe<Scalars['String']>;
   /** ASC OR DESC */
-  time?: InputMaybe<Scalars['String']>;
+  time?: InputMaybe<SortType>;
 };
 
 export type TournamentGql = {
@@ -3248,6 +3286,12 @@ export type TournamentRankCreateWithoutTournamentInput = {
 
 export type TournamentRankWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
+};
+
+export type TournamentSearchInput = {
+  tournament_uid?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Status>;
+  value?: InputMaybe<Scalars['String']>;
 };
 
 export enum TournamentStatus {
@@ -3901,3 +3945,12 @@ export type UserWhereUniqueInput = {
   google_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
 };
+
+export enum BracketType {
+  All = 'ALL',
+  BattleRoyale = 'BATTLE_ROYALE',
+  Double = 'DOUBLE',
+  RoundRobin = 'ROUND_ROBIN',
+  Single = 'SINGLE',
+  Swiss = 'SWISS'
+}
