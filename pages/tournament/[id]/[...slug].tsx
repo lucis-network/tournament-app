@@ -18,6 +18,7 @@ import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/Tou
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 import { isClientDevMode } from "../../../utils/Env";
+import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subscribe", "Donate", "Invite or Share"];
@@ -35,12 +36,14 @@ TournamentDetail = (props: { tournamentId: string }) => {
     dataRefereesDetail,
     dataPrizing,
     dataBracket,
+    dataDonation,
 
     loading,
     loadingParticipant,
     loadingReferees,
     loadingPrizing,
     loadingBracket,
+    loadingDonation,
     joinTournament,
   } = useTournamentDetail({
     // Change to tournamentUid after
@@ -224,6 +227,14 @@ TournamentDetail = (props: { tournamentId: string }) => {
                 dataPrizing={dataPrizing}
                 loadingPrizing={loadingPrizing}
                 currency={currency}
+              />
+            </TabPane>
+            <TabPane tab="Donation history" key="7">
+              <DonationHistory
+                dataDonation={dataDonation}
+                loadingDonation={loadingDonation}
+                currency={currency}
+                tournament={dataTournamentDetail}
               />
             </TabPane>
           </Tabs>

@@ -55,6 +55,15 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "cache-and-network",
   });
 
+  const {
+    loading: loadingDonation,
+    error: errorDonation,
+    data: dataDonation,
+  } = useQuery(GET_DONATION_HISTORY, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "network-only",
+  });
+
   const [joinTournament] = useMutation(JOIN_TOURNAMENT);
 
   return {
@@ -63,18 +72,21 @@ export function useTournamentDetail(props: Props) {
     loadingReferees,
     loadingPrizing,
     loadingBracket,
+    loadingDonation,
 
     error,
     errorParticipant,
     errorReferees,
     errorPrizing,
     errorBracket,
+    errorDonation,
 
     dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
     dataParticipants: dataParticipants?.getTournamentParticipants,
     dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
     dataPrizing: dataPrizing?.getTournamentPrizing,
     dataBracket: dataBracket?.getBracket,
+    dataDonation: dataDonation?.donateHistory,
 
     joinTournament,
   };
@@ -283,3 +295,20 @@ const JOIN_TOURNAMENT = gql`
     joinTournament(data: $data)
   }
 `;
+
+const GET_DONATION_HISTORY = gql`
+  query ($tournament_uid: String!) {
+    donateHistory(tournament_uid: $tournament_uid) {
+      donor_id
+      donor_display_name
+      donor_avatar
+      receiver_display_name
+      tx_hash
+      receiver_avatar
+      type
+      amount
+      symbol
+      time
+    }
+  }
+`
