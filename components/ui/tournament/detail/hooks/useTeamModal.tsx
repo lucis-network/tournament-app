@@ -1,7 +1,7 @@
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, ReactElement, useMemo } from "react";
-import { PlusOutlined, ShareAltOutlined } from "@ant-design/icons";
+import { PlusOutlined } from "@ant-design/icons";
 import s from "../popup/chooseTeamModal/TeamModal.module.sass";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import TeamSelect from "../popup/chooseTeamModal/TeamSelect";
@@ -254,7 +254,7 @@ const UseTeamModal = (tournamentData: any) => {
 			setSelectedTeam({
 				team: [
 					{
-						user_id: user?.id,
+						user_id: +user?.profile?.user_id!,
 						display_name: user?.profile?.display_name,
 						avatar: user?.profile?.avatar,
 						is_leader: true,

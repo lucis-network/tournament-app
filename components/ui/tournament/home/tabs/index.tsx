@@ -9,8 +9,17 @@ import Search from "antd/lib/input/Search";
 import { StatusGameType } from "utils/Enum";
 
 export default function TabHome() {
-	const { type, filter, listTabs, data, loading, setType, handleChangeFilter } =
-		useHomePage();
+	const {
+		type,
+		filter,
+		listTabs,
+		data,
+		gameData,
+		loading,
+		setType,
+		handleChangeFilter,
+		handleOrder,
+	} = useHomePage();
 
 	return (
 		<div className={`${s.container_card_tournament}`}>
@@ -30,7 +39,7 @@ export default function TabHome() {
 										<img src="/assets/home/ic_tab.svg" alt="" />
 									</div>
 								)}
-								{item}
+								<p className="uppercase mb-0">{item}</p>
 							</div>
 						))}
 					</Col>
@@ -39,14 +48,15 @@ export default function TabHome() {
 							className={s.search}
 							placeholder="Search by game"
 							autoFocus
-							value={filter.game}
-							onChange={(e) =>
-								handleChangeFilter("game", e.currentTarget.value)
-							}
 						/>
 					</Col>
 				</Row>
-				<ButtonSort onFilter={handleChangeFilter} />
+				<ButtonSort
+					filter={filter}
+					gameData={gameData}
+					onFilter={handleChangeFilter}
+					onOrder={handleOrder}
+				/>
 				<div>
 					<CardHome datas={data} loading={loading} />
 				</div>

@@ -1,63 +1,64 @@
 import { observer } from "mobx-react-lite";
-import { Button, message, Modal, Table } from "antd";
+import { message, Modal, Table } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
-import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
-import { BUSD } from "utils/Enum";
-import EthersService from "../../../../../../services/blockchain/Ethers";
-import { useClaimReward } from "hooks/tournament/useTournamentDetail";
+import { fomatNumber } from "utils/Number";
+import TournamentService from "components/service/tournament/TournamentService";
+import AuthBoxStore from "components/Auth/components/AuthBoxStore";
+import AuthService from "components/Auth/AuthService";
+import { to_hex_str } from "utils/String";
+import { useState } from "react";
 
 type Props = {
   tournamentId?: string;
   dataDonation?: any;
 };
 
+export type ClaimDonation = {
+  tournamnent_uid?: string;
+  address?: any;
+};
+
 export default observer(function ClaimDonationModal(props: Props) {
+  const [isLoading, setIsLoading] = useState(false);
+
   const { tournamentId, dataDonation } = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
 
-  // const { data } = useClaimReward({
-  //   tournament_uid: tournamentId,
-  // });
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  // const handleOk = () => {
-  //   //setIsModalVisible(false);
-  // };
 
   const handleOk = async (item: any) => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
     } else {
-      let txHash = await claim();
-      console.log(txHash);
-      if (txHash) message.success("Claim successfully");
-      else {
-        message.error("Claim fail. Please try again");
-      }
-    }
-  };
+      setIsLoading(true);
 
-  const claim = async () => {
-    if (ConnectWalletStore_NonReactiveData.web3Provider) {
-      //throw makeError("Need to connect your wallet first");
-      const ethersService = new EthersService(
-        ConnectWalletStore_NonReactiveData.web3Provider
+      const claim: ClaimDonation = {
+        tournamnent_uid: tournamentId,
+        address: ConnectWalletStore.address,
+      };
+      const authService = new AuthService();
+      const msg = `0x${to_hex_str(`Lucis verification`)}`;
+      console.log(msg);
+      let tournamentService = new TournamentService();
+      const response = tournamentService.claimDonation(claim).then(
+        (res) => {
+          setIsLoading(false);
+          if (res) {
+            message.success("You claim success");
+            authService.sign([msg, ConnectWalletStore.address]);
+          }
+        },
+        (error) => {
+          setIsLoading(false);
+          message.warning("You have received this donate");
+        }
       );
-
-      const txHash = await ethersService.transferFT(
-        "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-        BUSD,
-        1
-      );
-      return txHash;
     }
   };
 
@@ -79,7 +80,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {item.amount} {item.symbol}
+            {fomatNumber(item.amount)} {item.symbol}
           </>
         );
       },

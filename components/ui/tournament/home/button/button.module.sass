@@ -1,6 +1,4 @@
 .container
-  display: flex
-  align-items: center
   position: relative
   @media (max-width: 991px)
     flex-direction: column
@@ -18,12 +16,6 @@
     line-height: 115%
     display: flex
     align-items: center
-    @media (min-width: 0px)
-      margin: 8px 12px
-    @media (min-width: 540px)
-      margin: 20px 12px
-    @media (min-width: 992px)
-      margin: 38px 0px
 
     .ic
       display: flex
@@ -42,9 +34,7 @@
       @media (max-width: 413px)
         padding-right: 0px
   :global(.ant-select)
-    margin: 8px 12px
-    @media (max-width: 540px)
-      margin: 8px 4px
+    margin-right: 16px
   :global(.ant-select-single .ant-select-selector .ant-select-selection-item)
     display: flex
     align-items: center
@@ -65,10 +55,10 @@
   :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector::before)
     content: ''
     position: absolute
-    top:0
-    left:0
-    right:0
-    bottom:0
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
     border-radius: 8px
     padding: 1px
     background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)

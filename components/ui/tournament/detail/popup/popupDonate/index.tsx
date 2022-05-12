@@ -1,4 +1,4 @@
-import { Button, Col, Input, message, Modal, Row } from "antd";
+import { Button, Col, Input, message, Modal, Row, Spin } from "antd";
 import TournamentService from "components/service/tournament/TournamentService";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import PopupNotify from "../popupNotify";
@@ -51,7 +51,9 @@ const PopupDonate = (props: Props) => {
   const [values, setValues] = useState("");
   const [desc, setDesc] = useState("");
   const [isPopupNotify, setIsPopupNotify] = useState(false);
+  const [refereeUid, setRefereeUid] = useState("");
   const inputRef = useRef<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleBlur = () => {
     if (values === "") {
@@ -104,20 +106,25 @@ const PopupDonate = (props: Props) => {
     };
 
     if (types == "PLAYER") dnt.to = datas?.user?.id;
-    if (types == "TEAM") dnt.to = datas?.BracketTeam[0]?.uid;
+    if (types == "TEAM") {
+      setRefereeUid(datas?.BracketTeam[0]?.uid);
+      dnt.to = datas?.BracketTeam[0]?.uid;
+    }
     if (types == "TOURNAMENT") dnt.to = tournamentId ? tournamentId : "";
-    if (types == "REFEREE") dnt.to = datas.user_id;
+    if (types == "REFEREE") {
+      dnt.to = datas.user_id;
+    }
 
     const txHash = await donationContract();
 
+    setIsLoading(false);
+    
     if (txHash) {
       dnt.tx_hash = txHash;
       let tournamentService = new TournamentService();
       const response = tournamentService.donateService(dnt).then((res) => {
         if (res) {
           setIsPopupNotify(true);
-          // setValues("");
-          // setDesc("");
         }
       });
     }
@@ -138,6 +145,8 @@ const PopupDonate = (props: Props) => {
   };
 
   const donation = async () => {
+    setIsLoading(true);
+
     if (ConnectWalletStore_NonReactiveData.web3Provider) {
       //throw makeError("Need to connect your wallet first");
       const ethersService = new EthersService(
@@ -160,7 +169,7 @@ const PopupDonate = (props: Props) => {
         const response = await ethersService.donate(
           tournamentId as string,
           datas?.user?.id,
-          datas?.BracketTeam[0]?.uid,
+          refereeUid,
           datas?.user_id,
           Number(values),
           BUSD,
@@ -306,9 +315,11 @@ const PopupDonate = (props: Props) => {
 
         <Row className={s.btn}>
           <Col>
-            <Button type="primary" onClick={donate}>
-              Donate
-            </Button>
+            <Spin spinning={isLoading}>
+              <Button type="primary" onClick={donate}>
+                Donate
+              </Button>
+            </Spin>
           </Col>
         </Row>
       </div>

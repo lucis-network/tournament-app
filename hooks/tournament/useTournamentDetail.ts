@@ -112,7 +112,7 @@ export function useSponsors(props: Props): {
     refetch,
   } = useQuery(GET_SPONSOR_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "network-only",
     onError: (error) => {
       console.log("error: ", error);
     },
