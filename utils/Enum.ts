@@ -31,6 +31,7 @@ export enum Bracket {
 export enum OrderType {
 	ASC = "asc",
 	DESC = "desc",
+	EMPTY = "",
 }
 
 export const orderValues = [

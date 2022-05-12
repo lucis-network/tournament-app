@@ -8,6 +8,7 @@ import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Au
 import { BUSD } from "utils/Enum";
 import EthersService from "../../../../../../services/blockchain/Ethers";
 import { useClaimReward } from "hooks/tournament/useTournamentDetail";
+import { fomatNumber } from "utils/Number";
 
 type Props = {
   tournamentId?: string;
@@ -20,10 +21,6 @@ export default observer(function ClaimDonationModal(props: Props) {
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
 
-  // const { data } = useClaimReward({
-  //   tournament_uid: tournamentId,
-  // });
-
   const handleCancel = () => {
     setIsModalVisible(false);
   };
@@ -33,33 +30,35 @@ export default observer(function ClaimDonationModal(props: Props) {
   // };
 
   const handleOk = async (item: any) => {
-    if (!ConnectWalletStore.address) {
-      AuthBoxStore.connectModalVisible = true;
-    } else {
-      let txHash = await claim();
-      console.log(txHash);
-      if (txHash) message.success("Claim successfully");
-      else {
-        message.error("Claim fail. Please try again");
-      }
-    }
+    // if (!ConnectWalletStore.address) {
+    //   AuthBoxStore.connectModalVisible = true;
+    // } else {
+    //   let txHash = await claim();
+    //   console.log(txHash);
+    //   if (txHash) message.success("Claim successfully");
+    //   else {
+    //     message.error("Claim fail. Please try again");
+    //   }
+    // }
+
+
   };
 
-  const claim = async () => {
-    if (ConnectWalletStore_NonReactiveData.web3Provider) {
-      //throw makeError("Need to connect your wallet first");
-      const ethersService = new EthersService(
-        ConnectWalletStore_NonReactiveData.web3Provider
-      );
+  // const claim = async () => {
+  //   if (ConnectWalletStore_NonReactiveData.web3Provider) {
+  //     //throw makeError("Need to connect your wallet first");
+  //     const ethersService = new EthersService(
+  //       ConnectWalletStore_NonReactiveData.web3Provider
+  //     );
 
-      const txHash = await ethersService.transferFT(
-        "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
-        BUSD,
-        1
-      );
-      return txHash;
-    }
-  };
+  //     const txHash = await ethersService.transferFT(
+  //       "0x948d6D28D396Eae2F8c3459b092a85268B1bD96B",
+  //       BUSD,
+  //       1
+  //     );
+  //     return txHash;
+  //   }
+  // };
 
   const columns = [
     {
@@ -79,7 +78,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {item.amount} {item.symbol}
+            {fomatNumber(item.amount)} {item.symbol}
           </>
         );
       },

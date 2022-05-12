@@ -2,68 +2,70 @@ import { Button, Col, Row } from "antd";
 import { useState } from "react";
 import Link from "next/link";
 
-import { fomatNumber } from "utils/Number"
+import { fomatNumber } from "utils/Number";
 import { TournamentGql } from "src/generated/graphql";
 import s from "./CardHome.module.sass";
 import { slugify } from "../../../../../utils/String";
 
 type Props = {
-  datas?: TournamentGql[];
-  loading: boolean;
+	datas?: TournamentGql[];
+	loading: boolean;
 };
 export default function CardHome(props: Props) {
-  const [isLoadMore, setIsLoadMore] = useState(8)
-  const { datas, loading } = props;
+	const [isLoadMore, setIsLoadMore] = useState(8);
+	const { datas, loading } = props;
 
-  if (loading || !datas) {
-    return <></>
-  }
+	if (loading || !datas) {
+		return <></>;
+	}
 
-  const handleLoadMore = () => {
-    setIsLoadMore(prev => prev + 8)
-  }
+	const handleLoadMore = () => {
+		setIsLoadMore((prev) => prev + 8);
+	};
 
-  return (
-    <div className="tournaments-c">
-      <Row className={s.block_card} gutter={15}>
-        {
-          datas?.slice(0, isLoadMore).map((item) => {
-            return (
-              <Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>
-                {item && <TournamentCard data={item} />}
-              </Col>
-            )
-          })
-        }
-
-      </ Row>
-      {
-        isLoadMore > datas?.length || isLoadMore < 8 ? '' :
-        <div className={s.btn_load}>
-          <Button onClick={handleLoadMore}>More</Button>
-        </div>
-      }
-    </div>
-  );
+	return (
+		<div className="tournaments-c">
+			<Row className={s.block_card} gutter={15}>
+				{datas?.slice(0, isLoadMore).map((item) => {
+					return (
+						<Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>
+							{item && <TournamentCard data={item} />}
+						</Col>
+					);
+				})}
+			</Row>
+			{isLoadMore > datas?.length || isLoadMore < 8 ? (
+				""
+			) : (
+				<div className={s.btn_load}>
+					<Button onClick={handleLoadMore}>More</Button>
+				</div>
+			)}
+		</div>
+	);
 }
 
-
 function TournamentCard(props: { data: TournamentGql }) {
-  const {data: item} = props;
+	const { data: item } = props;
 
-  return (
+	return (
     <div className={s.card_item}>
       <div className={s.container_card}>
         <div className={s.im_game}>
           <div className={s.info}>
             <div className={s.number}>
               <img src="/assets/home/ic_member.svg" alt="" />
-              <span><span style={{ color: '#0BEBD6' }}>17</span>/32</span>
+              <span>
+                <span style={{ color: "#0BEBD6" }}>
+                  {item.cache_tournament?.team_participated}
+                </span>
+                /{item?.participants}
+              </span>
             </div>
             <p>Single Elimination</p>
             <div className={s.number}>
               <img src="/assets/home/ic_control.svg" alt="" />
-              <span style={{ color: '#0BEBD6' }}>4V4</span>
+              <span style={{ color: "#0BEBD6" }}>4V4</span>
             </div>
           </div>
           <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
@@ -82,9 +84,9 @@ function TournamentCard(props: { data: TournamentGql }) {
           </div>
           <h2>
             <Link href={`/tournament/${item.uid}/${slugify(item.name)}`}>
-              {item.name.length > 42
-                ? item.name.substring(0, 42) + "..."
-                : item.name}
+            {item.name.length > 42
+              ? item.name.substring(0, 42) + "..."
+              : item.name}
             </Link>
           </h2>
           <div className={s.hosted_by}>
@@ -92,7 +94,13 @@ function TournamentCard(props: { data: TournamentGql }) {
               HOSTED BY
               <div className={s.user}>
                 <div className={s.avt}>
-                  <img src={item.user?.profile?.avatar || "/assets/MyProfile/defaultAvatar.png"} alt="" />
+                  <img
+                    src={
+                      item.user?.profile?.avatar ||
+                      "/assets/MyProfile/defaultAvatar.png"
+                    }
+                    alt=""
+                  />
                 </div>
                 <Link href={`/profile/${item.user?.id}`}>Hulk Group</Link>
               </div>
@@ -102,7 +110,6 @@ function TournamentCard(props: { data: TournamentGql }) {
               <span>FREE</span>
             </div>
           </div>
-
           <div className={s.ntf}>
             <div>
               <div className={s.ic_ntf}>
@@ -115,5 +122,5 @@ function TournamentCard(props: { data: TournamentGql }) {
         </div>
       </div>
     </div>
-  )
+	);
 }

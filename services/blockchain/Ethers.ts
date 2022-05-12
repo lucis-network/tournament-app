@@ -344,4 +344,40 @@ export default class EtherContract {
     }
     return result;
   }
+
+  async becomeSponsor(
+    tournamentUid: string,
+    amount: number,
+    paymentToken: string,
+    contractAddress: string
+  ): Promise<ResultTranferFT> {
+    const result: ResultTranferFT = {
+      txHash: "",
+      error: null,
+    };
+    try {
+      const contract = await this.getContractWithLPrize(contractAddress);
+      //const decimal = await contract.decimals();
+
+      console.log("contract", contract);
+      const totalAmount = new BigNumber(amount)
+        .multipliedBy(Math.pow(10, 18))
+        .toFormat({ groupSeparator: "" });
+
+      const transaction = await contract.becomeSponsor(
+        tournamentUid,
+        totalAmount,
+        paymentToken
+      );
+      console.log(transaction);
+      const txHash = transaction.hash;
+      result.txHash = txHash;
+    } catch (error) {
+      console.log("{EtherContract.becomeSponsor} error: ", error);
+
+      //@ts-ignore
+      result.error = error;
+    }
+    return result;
+  }
 }

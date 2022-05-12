@@ -300,7 +300,7 @@ export default class AuthService {
 		ApoloClient_setAuthToken("");
 		AuthStore.resetStates();
 		clearLocalAuthInfo();
-		Router.push("/");
+		//Router.push("/");
 		LoginBoxStore.signupInfoModalVisible = false;
 	}
 }

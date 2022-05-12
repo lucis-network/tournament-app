@@ -20,9 +20,10 @@ import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultM
 import { isClientDevMode } from "../../../utils/Env";
 
 const { TabPane } = Tabs;
-const ItemButton = ["Subcribe", "Donate", "Invite or Share"];
+const ItemButton = ["Subscribe", "Donate", "Invite or Share"];
 
-const TournamentDetail = (props: { tournamentId: string }) => {
+const 
+TournamentDetail = (props: { tournamentId: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
@@ -115,9 +116,9 @@ const TournamentDetail = (props: { tournamentId: string }) => {
                   <p>Bracket type</p>
                   <span>
                     {dataBracket?.type === "SINGLE"
-                      ? "Single eliminnation"
+                      ? "Single elimination"
                       : dataBracket?.type === "DOUBLE"
-                      ? "Double eliminnation"
+                      ? "Double elimination"
                       : ""}
                   </span>
                 </div>
@@ -175,11 +176,12 @@ const TournamentDetail = (props: { tournamentId: string }) => {
             tournament={dataTournamentDetail}
             tournamentId={tournamentId as string}
             joinTournament={joinTournament}
+            dataBracket={dataBracket}
           />
         </div>
         {/* ===== sponsor ===== */}
         <div className="lucis-container">
-          <TournamentDetailSponsor />
+          <TournamentDetailSponsor tournamentId={tournamentId as string} />
         </div>
         {/* ===== end sponsor ===== */}
 
@@ -198,7 +200,10 @@ const TournamentDetail = (props: { tournamentId: string }) => {
                 loadingBracket={loadingBracket}
               />
             </TabPane>
-            <TabPane tab={`Participants (${cache_tournament?.team_participated}/${participants})`} key="4">
+            <TabPane
+              tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
+              key="4"
+            >
               <TableParticipant
                 dataParticipants={dataParticipants}
                 loading={loadingParticipant}
@@ -224,9 +229,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
           </Tabs>
         </div>
 
-        <div className={s.communityC}>
-
-        </div>
+        <div className={s.communityC}></div>
 
         {/* ===== Modal ===== */}
         {/* <PopupDonate

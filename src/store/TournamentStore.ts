@@ -81,6 +81,7 @@ class TournamentStore {
   private _claimResultModalVisible: boolean = false;
   private _checkDepositApprove: boolean = false;
   private _checkDonationApprove: boolean = false;
+  private _checkBecomeSponser: boolean = false;
 
   private _id?: number | undefined;
 
@@ -403,6 +404,12 @@ class TournamentStore {
   }
   public set checkDonationApprove(value: boolean) {
     this._checkDonationApprove = value;
+  }
+  public get checkBecomeSponser(): boolean {
+    return this._checkBecomeSponser;
+  }
+  public set checkBecomeSponser(value: boolean) {
+    this._checkBecomeSponser = value;
   }
 }
 

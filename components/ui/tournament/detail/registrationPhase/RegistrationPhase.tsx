@@ -19,6 +19,7 @@ type Props = {
   tournament: any;
   tournamentId?: string;
   joinTournament: any;
+  dataBracket: any;
 };
 
 type Reward = {
@@ -42,7 +43,7 @@ export default observer(function RegistrationPhase(props: Props) {
     cache_tournament,
   } = props.tournament;
 
-  const { tournamentId } = props;
+  const { tournamentId, dataBracket } = props;
 
   const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
     useTeamModal(props);
@@ -129,7 +130,7 @@ export default observer(function RegistrationPhase(props: Props) {
     <>
       <div className={s.wrapper}>
         <div className={s.time}>
-          Start time: {moment(brackets?.start_at).format("YYYY/MM/DD HH:MM")}
+          Start time: {moment(dataBracket?.start_at).format("YYYY/MM/DD HH:MM")}
         </div>
         <div className={s.container}>
           <div className={s.prizes}>
@@ -147,7 +148,7 @@ export default observer(function RegistrationPhase(props: Props) {
               {fomatNumber(totalDonation)} {currency.symbol}
             </span>
             <span>Total donation</span>
-            <Button onClick={openModal}>Donation</Button>
+            <Button onClick={openModal}>Donate</Button>
           </div>
           <div className={s.items}>
             <img src="/assets/avatar.jpg" alt="" width={50} />
@@ -160,7 +161,7 @@ export default observer(function RegistrationPhase(props: Props) {
         </div>
         <div className={s.footer}>
           <div className={s.prizes}>
-            <span>Addtional prizes: </span>
+            <span>Additional prizes</span>
             {additionPrize ? (
               <span>
                 {fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
