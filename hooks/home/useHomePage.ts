@@ -4,9 +4,9 @@ import { debounce } from "lodash";
 import { Bracket, OrderType, StatusGameType } from "utils/Enum";
 
 export type FilterGame = {
-	game: string;
+	game_uid: string;
 	bracket: Bracket;
-	team_size?: string;
+	size: string;
 	prize_pool: OrderType;
 	time: OrderType;
 };
@@ -19,11 +19,11 @@ const listTabs: StatusGameType[] = [
 export function useHomePage() {
 	const [type, setType] = useState<StatusGameType>(StatusGameType.UPCOMING);
 	const [filter, setFilter] = useState<FilterGame>({
-		game: "",
-		bracket: Bracket.EMPTY,
-		prize_pool: OrderType.EMPTY,
-		team_size: "",
-		time: OrderType.EMPTY,
+		game_uid: "",
+		bracket: Bracket.ALL,
+		prize_pool: OrderType.NONE,
+		size: "",
+		time: OrderType.NONE,
 	});
 
 	const { data: gameData } = useQuery(GET_GAME, {
@@ -42,18 +42,19 @@ export function useHomePage() {
 			? GET_ONGOING
 			: GET_ONCLOSE,
 		{
-			fetchPolicy: "cache-and-network",
 			variables: filter,
 		}
 	);
 
 	const handleChangeFilter = useCallback(
 		(type: keyof FilterGame, value: string) => {
+			const valueConvert = value === "" ? "ALL" : value;
+
 			setFilter({
 				...filter,
 				[type]: value,
 			});
-			getData({ ...filter, [type]: value });
+			getData({ ...filter, [type]: valueConvert });
 			// type === "game"
 			// 	? debounce(() => getData({ ...filter, [type as any]: value }), 500)
 			// 	: getData({ ...filter, [type]: value });
@@ -89,17 +90,17 @@ export function useHomePage() {
 
 const GET_UPCOMING = gql`
 	query getUpComingTournament(
-		$game: String!
-		$bracket: String!
-		$team_size: String!
-		$prize_pool: String!
-		$time: String!
+		$game_uid: String
+		$bracket: GBracketType
+		$size: String
+		$prize_pool: SortType
+		$time: SortType
 	) {
 		getUpComingTournament(
 			data: {
-				game: $game
+				game_uid: $game_uid
 				bracket: $bracket
-				team_size: $team_size
+				size: $size
 				prize_pool: $prize_pool
 				time: $time
 			}
@@ -117,7 +118,6 @@ const GET_UPCOMING = gql`
 				type
 			}
 			team_size
-			pool_size
 			prize_allocation
 			game {
 				logo
@@ -141,23 +141,27 @@ const GET_UPCOMING = gql`
 				}
 			}
 			totalPrizePool
+			brackets {
+				type
+				start_at
+			}
 		}
 	}
 `;
 
 const GET_ONGOING = gql`
 	query getOnGoingTournament(
-		$game: String!
-		$bracket: String!
-		$team_size: String!
-		$prize_pool: String!
-		$time: String!
+		$game_uid: String
+		$bracket: GBracketType
+		$size: String
+		$prize_pool: SortType
+		$time: SortType
 	) {
 		getOnGoingTournament(
 			data: {
-				game: $game
+				game_uid: $game_uid
 				bracket: $bracket
-				team_size: $team_size
+				size: $size
 				prize_pool: $prize_pool
 				time: $time
 			}
@@ -175,7 +179,6 @@ const GET_ONGOING = gql`
 				type
 			}
 			team_size
-			pool_size
 			prize_allocation
 			game {
 				logo
@@ -199,23 +202,27 @@ const GET_ONGOING = gql`
 				}
 			}
 			totalPrizePool
+			brackets {
+				type
+				start_at
+			}
 		}
 	}
 `;
 
 const GET_ONCLOSE = gql`
 	query getClosedTournament(
-		$game: String!
-		$bracket: String!
-		$team_size: String!
-		$prize_pool: String!
-		$time: String!
+		$game_uid: String
+		$bracket: GBracketType
+		$size: String
+		$prize_pool: SortType
+		$time: SortType
 	) {
 		getClosedTournament(
 			data: {
-				game: $game
+				game_uid: $game_uid
 				bracket: $bracket
-				team_size: $team_size
+				size: $size
 				prize_pool: $prize_pool
 				time: $time
 			}
@@ -233,7 +240,6 @@ const GET_ONCLOSE = gql`
 				type
 			}
 			team_size
-			pool_size
 			prize_allocation
 			game {
 				logo
@@ -257,6 +263,10 @@ const GET_ONCLOSE = gql`
 				}
 			}
 			totalPrizePool
+			brackets {
+				type
+				start_at
+			}
 		}
 	}
 `;

@@ -160,4 +160,5 @@ const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
   );
 };
 
+// For timeline setup when creating tour
 export default SingleBracket;

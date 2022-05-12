@@ -23,144 +23,147 @@ import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/d
 const { TabPane } = Tabs;
 const ItemButton = ["Subscribe", "Donate", "Invite or Share"];
 
-const 
-TournamentDetail = (props: { tournamentId: string }) => {
-  const [isPopupDonate, setIsPopupDonate] = useState(false);
-  const [isPopupShare, setIsPopupShare] = useState(false);
+const TournamentDetail = (props: { tournamentId: string }) => {
+	const [isPopupDonate, setIsPopupDonate] = useState(false);
+	const [isPopupShare, setIsPopupShare] = useState(false);
 
-  const { tournamentId } = props;
+	const { tournamentId } = props;
 
-  const {
-    dataTournamentDetail,
-    dataParticipants,
-    dataRefereesDetail,
-    dataPrizing,
-    dataBracket,
+	const {
+		dataTournamentDetail,
+		dataParticipants,
+		dataRefereesDetail,
+		dataPrizing,
+		dataBracket,
+		dataIsJoin: isJoin,
     dataDonation,
 
-    loading,
-    loadingParticipant,
-    loadingReferees,
-    loadingPrizing,
-    loadingBracket,
+		loading,
+		loadingParticipant,
+		loadingReferees,
+		loadingPrizing,
+		loadingBracket,
     loadingDonation,
-    joinTournament,
-  } = useTournamentDetail({
-    // Change to tournamentUid after
-    tournament_uid: tournamentId,
-  });
 
-  if (loading) {
-    return null;
-  }
+		joinTournament,
+		refreshParticipant,
+		refetch,
+	} = useTournamentDetail({
+		// Change to tournamentUid after
+		tournament_uid: tournamentId,
+	});
 
-  const openModal = (item: string) => {
-    if (item === "Donate") {
-      setIsPopupDonate(true);
-    } else if (item === "Invite or Share") {
-      setIsPopupShare(true);
-    }
-  };
+	if (loading) {
+		return null;
+	}
 
-  const closeModal = (item: string) => {
-    if (item === "Donate") {
-      setIsPopupDonate(false);
-    } else if (item === "Invite or Share") {
-      setIsPopupShare(false);
-    }
-  };
+	const openModal = (item: string) => {
+		if (item === "Donate") {
+			setIsPopupDonate(true);
+		} else if (item === "Invite or Share") {
+			setIsPopupShare(true);
+		}
+	};
 
-  const {
-    team_size,
-    desc,
-    rules,
-    participants,
-    game,
-    name,
-    cover,
-    thumbnail,
-    totalPrizePool,
-    currency,
-    user,
-    regions,
-    additionPrize,
-    cache_tournament,
-  } = dataTournamentDetail;
+	const closeModal = (item: string) => {
+		if (item === "Donate") {
+			setIsPopupDonate(false);
+		} else if (item === "Invite or Share") {
+			setIsPopupShare(false);
+		}
+	};
 
-  return (
-    <>
-      <div className={s.wrapper}>
-        <Banner cover={cover} />
-        <div className={`lucis-container ${s.group_button}`}>
-          {ItemButton.map((item) => (
-            // <Button type="primary" key={item}>
-            //   {item}
-            // </Button>
-            <button key={item} onClick={() => openModal(item)}>
-              {item}
-            </button>
-          ))}
-        </div>
+	const {
+		team_size,
+		desc,
+		rules,
+		participants,
+		game,
+		name,
+		cover,
+		thumbnail,
+		totalPrizePool,
+		currency,
+		user,
+		region,
+		additionPrize,
+		cache_tournament,
+	} = dataTournamentDetail;
 
-        <Row className={`lucis-container`}>
-          <Col span={6} className={s.content_top}>
-            <div className={s.img_game}>
-              <img src={thumbnail} alt="" />
-            </div>
-            <h2>{game.name}</h2>
-          </Col>
+	return (
+		<>
+			<div className={s.wrapper}>
+				<Banner cover={cover} />
+				<div className={`lucis-container ${s.group_button}`}>
+					{ItemButton.map((item) => (
+						// <Button type="primary" key={item}>
+						//   {item}
+						// </Button>
+						<button key={item} onClick={() => openModal(item)}>
+							{item}
+						</button>
+					))}
+				</div>
 
-          <Col span={16} className={s.content_center}>
-            <h1>{`${name}`}</h1>
-            <Row>
-              <Col span={6} className={s.free_entry}>
-                <p className={s.title}>Free entry</p>
-                <div className={s.text}>
-                  <p>Bracket type</p>
-                  <span>
-                    {dataBracket?.type === "SINGLE"
-                      ? "Single elimination"
-                      : dataBracket?.type === "DOUBLE"
-                      ? "Double elimination"
-                      : ""}
-                  </span>
-                </div>
-              </Col>
+				<Row className={`lucis-container`}>
+					<Col span={6} className={s.content_top}>
+						<div className={s.img_game}>
+							<img src={thumbnail} alt="" />
+						</div>
+						<h2>{game.name}</h2>
+					</Col>
 
-              <Col span={10} className={s.tournament_by}>
-                <div>
-                  <p>
-                    Tournament by{" "}
-                    {user?.profile?.avatar ? (
-                      <img src={user?.profile?.avatar} alt="" width={50} />
-                    ) : (
-                      <img src="/assets/avatar.jpg" alt="" width={50} />
-                    )}{" "}
-                    {user?.profile?.display_name}{" "}
-                  </p>
-                </div>
-                <div className={s.text}>
-                  <p>Team size</p>
-                  <span>
-                    {team_size ?? "-"}v{team_size ?? "-"}
-                  </span>
-                </div>
-              </Col>
-              <Col span={6} className={s.lucis_offical}>
-                <p></p>
-                <div className={s.text}>
-                  <p>Max participants</p>
-                  <span>{participants}</span>
-                </div>
-              </Col>
-              <Col span={2} className={s.lucis_offical}>
-                <p></p>
-                <div className={s.text}>
-                  <p>Region</p>
-                  <span>{regions}</span>
-                </div>
-              </Col>
-              {/* <div>
+					<Col span={16} className={s.content_center}>
+						<h1>{`${name}`}</h1>
+						<Row>
+							<Col span={6} className={s.free_entry}>
+								<p className={s.title}>Free entry</p>
+								<div className={s.text}>
+									<p>Bracket type</p>
+									<span>
+										{dataBracket?.type === "SINGLE"
+											? "Single elimination"
+											: dataBracket?.type === "DOUBLE"
+											? "Double elimination"
+											: ""}
+									</span>
+								</div>
+							</Col>
+
+							<Col span={10} className={s.tournament_by}>
+								<div>
+									<p>
+										Tournament by{" "}
+										{user?.profile?.avatar ? (
+											<img src={user?.profile?.avatar} alt="" width={50} />
+										) : (
+											<img src="/assets/avatar.jpg" alt="" width={50} />
+										)}{" "}
+										{user?.profile?.display_name}{" "}
+									</p>
+								</div>
+								<div className={s.text}>
+									<p>Team size</p>
+									<span>
+										{team_size ?? "-"}v{team_size ?? "-"}
+									</span>
+								</div>
+							</Col>
+							<Col span={6} className={s.lucis_offical}>
+								<p></p>
+								<div className={s.text}>
+									<p>Max participants</p>
+									<span>{participants}</span>
+								</div>
+							</Col>
+							<Col span={2} className={s.lucis_offical}>
+								<p></p>
+								<div className={s.text}>
+									<p>Region</p>
+									<span>{region}</span>
+								</div>
+							</Col>
+							{/* <div>
                 <Col span={8}>
                   <p className={s.title}>Free entry</p>
                 </Col>
@@ -168,25 +171,28 @@ TournamentDetail = (props: { tournamentId: string }) => {
                   <p className={s.title}>Free entry</p>
                 </Col>
               </div> */}
-            </Row>
-          </Col>
-          <Col span={2}></Col>
-        </Row>
+						</Row>
+					</Col>
+					<Col span={2}></Col>
+				</Row>
 
-        {/* ==== registration phase ====  */}
-        <div className={`lucis-container`}>
-          <RegistrationPhase
-            tournament={dataTournamentDetail}
-            tournamentId={tournamentId as string}
-            joinTournament={joinTournament}
-            dataBracket={dataBracket}
-          />
-        </div>
-        {/* ===== sponsor ===== */}
-        <div className="lucis-container">
-          <TournamentDetailSponsor tournamentId={tournamentId as string} />
-        </div>
-        {/* ===== end sponsor ===== */}
+				{/* ==== registration phase ====  */}
+				<div className={`lucis-container`}>
+					<RegistrationPhase
+						isJoin={isJoin}
+						tournament={dataTournamentDetail}
+						tournamentId={tournamentId as string}
+						joinTournament={joinTournament}
+						dataBracket={dataBracket}
+						refetch={refetch}
+						refreshParticipant={refreshParticipant}
+					/>
+				</div>
+				{/* ===== sponsor ===== */}
+				<div className="lucis-container">
+					<TournamentDetailSponsor tournamentId={tournamentId as string} />
+				</div>
+				{/* ===== end sponsor ===== */}
 
         {/* ===== tabs ===== */}
         <div className={`lucis-container ${s.container_Tabs}`}>
@@ -240,47 +246,37 @@ TournamentDetail = (props: { tournamentId: string }) => {
           </Tabs>
         </div>
 
-        <div className={s.communityC}></div>
+				<div className={s.communityC}></div>
+				<PopupDonate
+					closeModal={() => closeModal("Donate")}
+					status={isPopupDonate}
+					tournamentId={tournamentId}
+					currency={currency}
+					types={"TOURNAMENT"}
+					name={name}
+					thumbnail={thumbnail}
+				/>
+				<PopupShare
+					closeModal={() => closeModal("Invite or Share")}
+					status={isPopupShare}
+				/>
 
-        {/* ===== Modal ===== */}
-        {/* <PopupDonate
-          closeModal={() => closeModal("Donate")}
-          status={isPopupDonate}
-          tournamentId={tournamentId as string}
-          currency={currency}
-          thumbnail={thumbnail}
-        /> */}
-
-        <PopupDonate
-          closeModal={() => closeModal("Donate")}
-          status={isPopupDonate}
-          tournamentId={tournamentId}
-          currency={currency}
-          types={"TOURNAMENT"}
-          name={name}
-          thumbnail={thumbnail}
-        />
-        <PopupShare
-          closeModal={() => closeModal("Invite or Share")}
-          status={isPopupShare}
-        />
-
-        <ConnectWalletModal />
-        <ClaimResultModal totalPrizePool={totalPrizePool} currency={currency} />
-      </div>
-    </>
-  );
+				<ConnectWalletModal />
+				<ClaimResultModal totalPrizePool={totalPrizePool} currency={currency} />
+			</div>
+		</>
+	);
 };
 
 export default function TournamentDetailSafe() {
-  const router = useRouter();
-  const { id } = router.query;
+	const router = useRouter();
+	const { id } = router.query;
 
-  if (!id) {
-    if (isClientDevMode) {
-      console.warn("{TournamentDetail} Hey tournamentId is NULL");
-    }
-  }
+	if (!id) {
+		if (isClientDevMode) {
+			console.warn("{TournamentDetail} Hey tournamentId is NULL");
+		}
+	}
 
-  return id ? <TournamentDetail tournamentId={id as string} /> : null;
+	return id ? <TournamentDetail tournamentId={id as string} /> : null;
 }

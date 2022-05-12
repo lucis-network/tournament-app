@@ -23,23 +23,26 @@ export enum StatusGameType {
 }
 
 export enum Bracket {
-	SINGLE = "single",
-	DOUBLE = "double",
-	EMPTY = "",
+	SINGLE = "SINGLE",
+	DOUBLE = "DOUBLE",
+	ROUND_ROBIN = "ROUND_ROBIN",
+	BATTLE_ROYALE = "BATTLE_ROYALE",
+	SWISS = "SWISS",
+	ALL = "ALL",
 }
 
 export enum OrderType {
-	ASC = "asc",
-	DESC = "desc",
-	EMPTY = "",
+	ASC = "ASC",
+	DESC = "DESC",
+	NONE = "NONE",
 }
 
 export const orderValues = [
-	{ key: "asc", value: "Asc" },
-	{ key: "desc", value: "Desc" },
+	{ key: "ASC", value: "Asc" },
+	{ key: "DESC", value: "Desc" },
 ];
 
 export const bracketValues = [
-	{ key: "single", value: "Single" },
-	{ key: "double", value: "Double" },
+	{ key: "SINGLE", value: "Single Elimination" },
+	{ key: "DOUBLE", value: "Double Elimination" },
 ];

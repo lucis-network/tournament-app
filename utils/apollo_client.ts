@@ -91,9 +91,10 @@ if (isClient) {
 let countGqlErrNetwork = 0;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
-    graphQLErrors.forEach(({ message, locations, path, extensions }) => {
+    graphQLErrors.forEach((e) => {
+      const { message, path, extensions } = e;
       console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path},  extensions: ${extensions?.message}`
+        `[GraphQL error]: Message: ${message}, Path: ${path},  extensions: ${extensions?.message}`
       );
       if (message === "Unauthorized") {
         // Clean auth info in case of auth error
@@ -102,11 +103,6 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         if (_getAuthToken()) {
           clearLocalAuthInfo();
         }
-
-        // notification.error({
-        //   message: "Unauthorized",
-        //   description: "Please connect your wallet again",
-        // });
       }
     });
   }
@@ -178,7 +174,7 @@ export function handleApolloError(error: ApolloError) {
 
 export function onApolloError(
   error: ApolloError,
-  onError: (e: GraphQLError) => void,
+  onLogicError: (e: GraphQLError) => void,
   onAuthError: (e: GraphQLError) => void,
   onNetworkError: (e: Error | ServerParseError | ServerError) => void
 ) {
@@ -195,7 +191,58 @@ export function onApolloError(
       if (message === "Unauthorized") {
         onAuthError(e);
       } else {
-        onError(e);
+        onLogicError(e);
       }
     });
+}
+
+export enum CommonError {
+  Network = 'Network',
+  UnAuth = 'UnAuth',
+}
+
+function onSingleError(
+  e: any,
+  onError: (code: string, message: string, path?: string[]) => void
+) {
+  const { message, locations, path } = e;
+
+  // Inside graphQLErrors
+  if (message === "Unauthorized") {
+    onError(CommonError.UnAuth, message);
+  }
+
+  // @ts-ignore
+  if (e.code) {
+    // @ts-ignore
+    onError(e.code, message);
+  } else {
+    onError(e.extensions?.code as string, message);
+  }
+}
+
+export function handleGraphqlErrors(
+  e: ApolloError,
+  onError: (code: string, message: string, path?: string[]) => void,
+) {
+  const { graphQLErrors, networkError, clientErrors } = e;
+  // console.dir(e)
+  // console.log('{handleGraphqlErrors.handleGraphqlErrors} graphQLErrors, networkError: ', graphQLErrors, networkError);
+
+  if (networkError) {
+    // @ts-ignore
+    if (!networkError.result) {
+      onError(CommonError.Network, e.message);
+    }
+
+    // @ts-ignore
+    networkError.result.errors.forEach((e) => onSingleError(e, onError));
+  }
+
+  if (graphQLErrors) {
+    graphQLErrors.forEach((e) => onSingleError(e, onError));
+  }
+  if (clientErrors) {
+    clientErrors.forEach((e) => onSingleError(e, onError));
+  }
 }

@@ -71,7 +71,6 @@ export default function TournamentDetailBecomeSponsor(
 
   const handleFormUpdate = async (data: any) => {
     // todo submit sponsor
-    console.log("selectedTier", selectedTier);
     let sponsor: SponsorInput = {
       logo: data.logo,
       name: data.name ? data.name : "hihi",
@@ -81,7 +80,7 @@ export default function TournamentDetailBecomeSponsor(
       sponsor_slot_uid: selectedTier.uid,
       tx_hash: "",
     };
-    refetch();
+
     const txHash = await transferSponsors(data.amount);
     if (txHash) {
       sponsor.tx_hash = txHash;
@@ -89,7 +88,11 @@ export default function TournamentDetailBecomeSponsor(
       const response = tournamentService.becomeSponsor(sponsor).then((res) => {
         if (res) {
           // setIsPopupNotify(true);
-          console.log("res", res);
+          if (res) {
+            message.success("You haved become sponsor");
+            setIsBecome(false);
+            refetch();
+          }
         }
       });
     }

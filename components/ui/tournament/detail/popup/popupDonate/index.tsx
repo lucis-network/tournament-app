@@ -54,12 +54,14 @@ const PopupDonate = (props: Props) => {
   const [refereeUid, setRefereeUid] = useState("");
   const inputRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [nameReceive, setNameReceive] = useState("");
 
   const handleBlur = () => {
     if (values === "") {
       setTitleMessage("Amount must be not empty");
     }
   };
+
   const handleChange = (e: any) => {
     const value = e.target.value;
     const reg = /^-?\d*(\.\d*)?$/;
@@ -73,6 +75,12 @@ const PopupDonate = (props: Props) => {
     }
   };
 
+  useEffect(() => {
+    if (types == "PLAYER") setNameReceive(datas?.user?.profile?.display_name);
+    if (types == "TEAM") setNameReceive(datas?.name);
+    if (types == "TOURNAMENT") setNameReceive(name as string);
+    if (types == "REFEREE") setNameReceive(datas?.display_name);
+  }, []);
   useEffect(() => {
     if (status) {
       setTitleMessage("");
@@ -118,7 +126,7 @@ const PopupDonate = (props: Props) => {
     const txHash = await donationContract();
 
     setIsLoading(false);
-    
+
     if (txHash) {
       dnt.tx_hash = txHash;
       let tournamentService = new TournamentService();
@@ -180,6 +188,10 @@ const PopupDonate = (props: Props) => {
       }
     }
   };
+
+  useEffect(() => {
+    return () => {};
+  });
 
   const closeModalNotify = () => {
     setIsPopupNotify(false);
@@ -330,6 +342,7 @@ const PopupDonate = (props: Props) => {
         status={isPopupNotify}
         currency={currency}
         values={values}
+        name={nameReceive}
       />
     </Modal>
   );

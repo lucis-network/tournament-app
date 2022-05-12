@@ -25,7 +25,7 @@ export default function ButtonSort({
 	onFilter,
 	onOrder,
 }: ButtonSort) {
-	const [type, setType] = useState<keyof FilterGame>("game");
+	const [type, setType] = useState<keyof FilterGame>("game_uid");
 
 	const handleCheckType = useCallback((type: any) => {
 		setType(type);
@@ -38,30 +38,30 @@ export default function ButtonSort({
 	return (
 		<div className={s.container}>
 			<div className={`${s.item} mb-6`}>
-				<div className="w-24">
+				<div className={`w-24 ${s.ic}`}>
 					<img src="/assets/home/ic_filter.svg" alt="" />
 					Filter
 				</div>
 				<div>
 					<Select
-						defaultValue="Game"
-						style={{ width: 120 }}
 						onChange={handleChange}
-						onClick={() => handleCheckType("game")}
+						onClick={() => handleCheckType("game_uid")}
 						allowClear
+						placeholder="Game"
+						className="w-44"
 					>
 						{gameData?.map((item) => (
-							<Option key={item.uid} value={item.name}>
+							<Option key={item.uid} value={item.uid}>
 								{item.name}
 							</Option>
 						))}
 					</Select>
 					<Select
-						defaultValue="Bracket"
-						style={{ width: 120 }}
 						onChange={handleChange}
 						onClick={() => handleCheckType("bracket")}
 						allowClear
+						placeholder="Bracket Type"
+						className="w-[165px]"
 					>
 						{bracketValues.map((item) => (
 							<Option key={item.key} value={item.key}>
@@ -70,11 +70,10 @@ export default function ButtonSort({
 						))}
 					</Select>
 					<Select
-						defaultValue="Team"
-						style={{ width: 120 }}
 						onChange={handleChange}
-						onClick={() => handleCheckType("team_size")}
+						onClick={() => handleCheckType("size")}
 						allowClear
+						placeholder="Size"
 					>
 						{Participants.map((item, i) => (
 							<Option key={i} value={item}>
@@ -85,11 +84,11 @@ export default function ButtonSort({
 				</div>
 			</div>
 			<div className={s.item}>
-				<div className="w-24">
+				<div className={`w-24 ${s.ic}`}>
 					<img src="/assets/home/ic_sort.svg" alt="" />
 					Sort
 				</div>
-				<div>
+				{/* <div>
 					<Select
 						defaultValue="Prize pool"
 						style={{ width: 120 }}
@@ -114,21 +113,25 @@ export default function ButtonSort({
 							</Option>
 						))}
 					</Select>
-				</div>
-				{/* <div className="flex items-center align-middle">
-					<div className="flex align-middle items-center mr-8">
-						<p className="mb-0 mr-4">Prize pool</p>
+				</div> */}
+				<div className="flex items-center align-middle">
+					<div className="mr-4">
 						<Order
+							title="Prize pool"
 							id="prize_pool"
 							value={filter?.prize_pool}
 							onClick={onOrder}
 						/>
 					</div>
-					<div className="flex align-middle items-center">
-						<p className="mb-0 mr-4">Time</p>
-						<Order id="time" value={filter?.time} onClick={onOrder} />
+					<div>
+						<Order
+							id="time"
+							title="Time"
+							value={filter?.time}
+							onClick={onOrder}
+						/>
 					</div>
-				</div> */}
+				</div>
 			</div>
 		</div>
 	);

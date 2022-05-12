@@ -4,44 +4,54 @@
     height: auto
     position: relative
     max-height: 400px
-    overflow: hidden
     .im_banner
-      background-size: cover
+      background-size: 100%
       background-repeat: no-repeat
       background-position: center
-      min-height: 400px
+      @media (min-width: 0)
+        padding: 100px 0px
+      @media (min-width: 640px)
+        padding: 140px 0px
+        height: 0
+      @media (min-width: 1280px)
+        padding: 160px 0px
+      @media (min-width: 1600px)
+        padding: 180px 0px
+      @media (min-width: 1920px)
+        padding: 200px 0px
 
     .title
-      padding: 20px
-      margin-top: 38px
-      margin-left: 60px
       background: linear-gradient(175deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-      border-radius: 16px
       backdrop-filter: blur(12px)
-      max-width: 336px
       position: absolute
       top: 0
-      left: 0
-      @media (max-width: 992px)
+      @media (min-width: 0px)
         margin: 40px 0px 0px 0px
         padding: 12px
-        max-width: 260px
+        min-width: 260px
         border-radius: 16px
         left: 10px
+      @media (min-width: 992px)
+        left: 0
+        border-radius: 16px
+        min-width: 336px
+        padding: 20px
+        margin-top: 38px
+        margin-left: 60px
+
+      .line
+        position: absolute
+        width: 4px
+        height: 50px
+        background: #FFF
+        @media (min-width: 0px)
+          top: -67%
+        @media (min-width: 992px)
+          top: -54%
       .line:nth-child(1)
-        position: absolute
-        top: -50%
         left: 12px
-        width: 4px
-        height: 50px
-        background: #FFF
       .line:nth-child(2)
-        position: absolute
-        top: -50%
         right: 12px
-        width: 4px
-        height: 50px
-        background: #FFF
       p
         color: #FFF
         font-size: 24px

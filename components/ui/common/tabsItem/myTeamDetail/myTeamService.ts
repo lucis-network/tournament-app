@@ -111,3 +111,10 @@ export const SEARCH_TEAM = gql`
 		}
 	}
 `;
+
+
+export const UPDATE_MATCH_RESULT = gql`
+	mutation updateMatchResult($input: BracketMatchUpdateInputGql!) {
+		updateMatchResult(input: $input)
+	}
+`;

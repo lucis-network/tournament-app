@@ -2,6 +2,8 @@ import DoubleBracket from "./DoubleBracket";
 import s from "./index.module.sass";
 import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
 import { useEffect, useState } from "react";
+import { Alert } from "antd";
+
 import SingleBracket from "./SingleBracket";
 import RoundStore from "src/store/SingleRoundStore";
 import FormItemLabel from "antd/lib/form/FormItemLabel";
@@ -21,26 +23,34 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
     }
     console.log('{useEffect} dataBracket: ', dataBracket);
 
-    const listTeam = dataBracket.bracketTeams;
+    const bracketTeams = dataBracket.bracketTeams;
     const isSingleBracket = dataBracket.type === "SINGLE";
 
     if (isSingleBracket) {
+      if (!bracketTeams || !dataBracket.bracketRounds) {
+        return
+      }
+
       const singleRounds = createRounds({
         bracketRounds: dataBracket.bracketRounds,
-        listTeam,
+        bracketTeams,
       });
       RoundStore.rounds = singleRounds;
     } else {
-      const upper = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "UPPER");
-      const lower = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "LOWER");
+      if (!bracketTeams || !dataBracket.bracketRounds) {
+        return
+      }
+
+      const upper: BracketRound[] = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "UPPER");
+      const lower: BracketRound[] = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "LOWER");
 
       const upperRounds = createRounds({
         bracketRounds: upper,
-        listTeam,
+        bracketTeams,
       });
       const lowerRounds = createRounds({
         bracketRounds: lower,
-        listTeam,
+        bracketTeams,
       });
 
       console.log('{.} upperRounds, lowerRounds: ', upperRounds, lowerRounds);
@@ -56,12 +66,21 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
 
   const isSingleBracket = dataBracket.type === "SINGLE";
 
+  // isRefereeOfThisTour
+  const canEditMatch = true;
+
   return (
     <div className={s.bracketContainer}>
+      {canEditMatch && <Alert
+        className={s.refereeNotice}
+        type="warning" showIcon
+        message="NOTE: You are selected to be a referee of this match so you can update the match results"
+      />}
+
       {isSingleBracket ? (
-        <SingleBracket />
+        <SingleBracket canEdit={true} />
       ) : (
-        <DoubleBracket />
+        <DoubleBracket canEdit={true} />
       )}
     </div>
   );

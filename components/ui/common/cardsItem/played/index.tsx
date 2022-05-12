@@ -39,7 +39,7 @@ export default function CardPlayed({ tournament, type, canEdit = false }: CardPl
       )}
       {(canEdit && type === 'joined') && (
         <div>
-          <span className={s.claimStatus}>{tournament?.claim_prize_pool_status}</span>
+          <span className={s.claimStatus}>{tournament?.is_claim}</span>
         </div>
       )}
     </div>

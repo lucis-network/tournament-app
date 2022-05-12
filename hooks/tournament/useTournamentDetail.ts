@@ -16,19 +16,22 @@ export function useTournamentDetail(props: Props) {
     loading,
     error,
     data: dataTournamentDetail,
+    refetch,
   } = useQuery(GET_TOURNAMENT_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "no-cache",
   });
 
   const {
     loading: loadingParticipant,
     error: errorParticipant,
     data: dataParticipants,
+    refetch: refreshParticipant,
   } = useQuery(GET_PARTICIPANTS_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "no-cache",
   });
+
   const {
     loading: loadingReferees,
     error: errorReferees,
@@ -56,6 +59,14 @@ export function useTournamentDetail(props: Props) {
   });
 
   const {
+    loading: loadingIsJoin,
+    error: errorIsJoin,
+    data: dataIsJoin,
+  } = useQuery(IS_JOIN_TOURNAMENT, {
+    variables: { tournament_uid: props?.tournament_uid },
+  });
+
+  const {
     loading: loadingDonation,
     error: errorDonation,
     data: dataDonation,
@@ -72,6 +83,7 @@ export function useTournamentDetail(props: Props) {
     loadingReferees,
     loadingPrizing,
     loadingBracket,
+    loadingIsJoin,
     loadingDonation,
 
     error,
@@ -79,6 +91,7 @@ export function useTournamentDetail(props: Props) {
     errorReferees,
     errorPrizing,
     errorBracket,
+    errorIsJoin,
     errorDonation,
 
     dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
@@ -86,9 +99,29 @@ export function useTournamentDetail(props: Props) {
     dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
     dataPrizing: dataPrizing?.getTournamentPrizing,
     dataBracket: dataBracket?.getBracket,
+    dataIsJoin: dataIsJoin?.isJoinedTournament,
     dataDonation: dataDonation?.donateHistory,
 
     joinTournament,
+    refetch,
+    refreshParticipant,
+  };
+}
+
+export function useTournamentBracket(tournament_uid: string) {
+  const {
+    loading: loadingBracket,
+    error: errorBracket,
+    data: dataBracket,
+  } = useQuery(GET_BRACKET, {
+    variables: { tournament_uid: tournament_uid },
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loadingBracket,
+    errorBracket,
+    dataBracket: dataBracket?.getBracket,
   };
 }
 
@@ -107,7 +140,7 @@ export function useSponsors(props: Props): {
     refetch,
   } = useQuery(GET_SPONSOR_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
-    fetchPolicy: "cache-and-network",
+    fetchPolicy: "network-only",
     onError: (error) => {
       console.log("error: ", error);
     },
@@ -180,28 +213,29 @@ const GET_TOURNAMENT_DETAIL = gql`
 `;
 
 const GET_PARTICIPANTS_DETAIL = gql`
-	query ($tournament_uid: String!) {
-		getTournamentParticipants(tournament_uid: $tournament_uid) {
-			uid
-			name
-			avatar
-			BracketTeam {
-				uid
-				bracket_uid
-				bracketTeamMembers {
-					uid
-					is_leader
-					user {
-						id
-						profile {
-							display_name
-							avatar
-						}
-					}
-				}
-			}
-		}
-	}
+  query ($tournament_uid: String!) {
+    getTournamentParticipants(tournament_uid: $tournament_uid) {
+      uid
+      name
+      avatar
+      is_checkin
+      BracketTeam {
+        uid
+        bracket_uid
+        bracketTeamMembers {
+          uid
+          is_leader
+          user {
+            id
+            profile {
+              display_name
+              avatar
+            }
+          }
+        }
+      }
+    }
+  }
 `;
 
 const GET_REFEREES_DETAIL = gql`
@@ -244,14 +278,17 @@ const GET_BRACKET = gql`
         type
         title
         bracketMatchs {
+          uid
           team1_uid
           team2_uid
           score_1
           score_2
+          status
         }
       }
 
       bracketTeams {
+        uid
         team {
           uid
           name
@@ -293,6 +330,12 @@ const CLAIM_REWARD = gql`
 const JOIN_TOURNAMENT = gql`
   mutation joinTournament($data: GBracketTeamInput!) {
     joinTournament(data: $data)
+  }
+`;
+
+const IS_JOIN_TOURNAMENT = gql`
+  query isJoinedTournament($tournament_uid: String!) {
+    isJoinedTournament(tournament_uid: $tournament_uid)
   }
 `;
 

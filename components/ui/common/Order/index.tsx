@@ -1,40 +1,43 @@
 import React, { useState } from "react";
-import {
-	SortAscendingOutlined,
-	SortDescendingOutlined,
-	FontColorsOutlined,
-} from "@ant-design/icons";
+import { CaretDownFilled, CaretUpFilled } from "@ant-design/icons";
 import { OrderType } from "utils/Enum";
+import s from "./Sort.module.sass";
 
 interface OrderProps {
 	id?: string;
+	title?: string;
 	value?: OrderType;
 	onClick: (value: OrderType, id?: string) => void;
 }
 
-const Order: React.FC<OrderProps> = ({ id, value, onClick }) => {
-	const [status, setStatus] = useState<OrderType>(value || OrderType.EMPTY);
+const Order: React.FC<OrderProps> = ({ id, title, value, onClick }) => {
+	const [status, setStatus] = useState<OrderType>(value || OrderType.NONE);
 
 	const handleClickChangeOrder = () => {
-		onClick(status);
-		if (status === OrderType.EMPTY) {
+		if (status === OrderType.NONE) {
 			setStatus(OrderType.DESC);
+			onClick(OrderType.DESC, id);
 		} else if (status === OrderType.DESC) {
 			setStatus(OrderType.ASC);
+			onClick(OrderType.ASC, id);
 		} else {
-			setStatus(OrderType.EMPTY);
+			setStatus(OrderType.NONE);
+			onClick(OrderType.NONE, id);
 		}
 	};
 
 	return (
 		<div onClick={handleClickChangeOrder}>
-			{status === OrderType.EMPTY ? (
-				<FontColorsOutlined className="text-20px" />
-			) : status === OrderType.DESC ? (
-				<SortDescendingOutlined className="text-20px" />
-			) : (
-				<SortAscendingOutlined className="text-20px" />
-			)}
+			<div className={s.sort}>
+				<p className="mb-0 mr-2">{title}</p>
+				{status === OrderType.NONE ? (
+					<div className="w-[18px]" />
+				) : status === OrderType.DESC ? (
+					<CaretDownFilled id={id} className="text-18px" />
+				) : (
+					<CaretUpFilled id={id} className="text-18px" />
+				)}
+			</div>
 		</div>
 	);
 };

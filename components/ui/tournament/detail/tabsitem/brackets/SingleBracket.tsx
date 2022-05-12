@@ -1,38 +1,41 @@
-import UpdateScore from "components/ui/tournament/detail/popup/updateScore";
-import React, { useEffect, useState } from "react";
+import UpdateScoreModal from "components/ui/tournament/detail/popup/updateScore";
+import React from "react";
 import { observer } from "mobx-react-lite";
-import RoundStore from "src/store/SingleRoundStore";
+import RoundStore, { RoundMatch } from "src/store/SingleRoundStore";
+import ss from './SingleBracket.module.sass'
 
-import {
-  Bracket,
-  Seed,
-  SeedItem,
-  SeedTeam,
-  RoundProps,
-  RenderSeedProps,
-} from "react-brackets";
+import { Bracket, RenderSeedProps, RoundProps, Seed, SeedItem, SeedTeam, } from "react-brackets";
 
 import s from "./index.module.sass";
+import { BracketMatchStatus } from "../../../../../../src/generated/graphql";
 
 interface Props {
-  rounds?: RoundProps[];
-  // openModal: any;
+  canEdit: boolean
 }
 
-const SingleBracket = ({ rounds }: Props) => {
+const SingleBracket = (props: Props) => {
+  const {canEdit} = props;
+
   const handleOpenModal = (
     e: any,
-    seed: any,
+    seed: RoundMatch,
     seedIndex: number,
     roundIndex: number
   ) => {
-    RoundStore.updateScoreModalVisible = true;
-    RoundStore.currentMatch = {
-      teams: seed.teams,
-      seedIndex,
-      roundIndex,
-    };
+    if (canEdit) {
+      RoundStore.updateScoreModalVisible = true;
+      RoundStore.currentMatch = {
+        uid: seed.uid,
+        teams: seed.teams,
+        seedIndex,
+        roundIndex,
+      };
+    } else {
+      console.warn("User don't have perm to edit")
+    }
   };
+
+  const roundCount = RoundStore.rounds.length;
 
   const RenderSeed = ({
     seed,
@@ -40,66 +43,52 @@ const SingleBracket = ({ rounds }: Props) => {
     seedIndex,
     roundIndex,
   }: RenderSeedProps) => {
+    const match = seed as RoundMatch;
+    const team0 = match.teams[0];
+    const team1 = match.teams[1];
+    const isFinalRound = roundIndex >= roundCount - 1;
+
+    let finalRankIcoTeam0 = null;
+    let finalRankIcoTeam1 = null;
+    if (isFinalRound && match.status === BracketMatchStatus.Complete && team0 && team1) {
+      const champion = <img className={ss.rankIco} src={`/assets/home/im_top1.png`} alt="" />
+      const secondary = <img className={ss.rankIco} src={`/assets/home/im_top2.png`} alt="" />
+      finalRankIcoTeam0 = team0.score > team1.score ? champion : secondary;
+      finalRankIcoTeam1 = team0.score < team1.score ? champion : secondary;
+    }
+
     return (
       <>
         <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
           <SeedItem>
             <div>
               <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
-                <div
-                  style={{
-                    width: "100%",
-                    background: "#d8d899",
-                    height: "100%",
-                    padding: "5px 0",
-                    color: "black",
-                  }}
-                >
-                  {seed.teams[0]?.name ?? `bye`}
+                <div className={ss.team}>
+                  {team0 && team0.name ? team0.name : `bye`}
                 </div>
                 <div
-                  style={{
-                    background: "yellow",
-                    color: "black",
-                    padding: "5px",
-                    width: "50px",
-                    cursor: "pointer",
-                  }}
-                  // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  className={ss.score}
                   onClick={(e) =>
-                    handleOpenModal(e, seed, seedIndex, roundIndex)
+                    handleOpenModal(e, match, seedIndex, roundIndex)
                   }
                 >
-                  {seed.teams[0]?.score ?? "--"}
+                  {team0 ? team0.score : "--"}
                 </div>
+                {isFinalRound && <div className={ss.rank}>{finalRankIcoTeam0}</div>}
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
-                <div
-                  style={{
-                    width: "100%",
-                    background: "#4e89a3",
-                    height: "100%",
-                    padding: "5px 0",
-                    color: "white",
-                  }}
-                >
-                  {seed.teams[1]?.name ?? `bye`}
+                <div className={`${ss.team} ${ss.team2}`}>
+                  {team1 && team1.name ? team1.name : `bye`}
                 </div>
                 <div
-                  style={{
-                    background: "#306882",
-                    color: "white",
-                    padding: "5px",
-                    width: "50px",
-                    cursor: "pointer",
-                  }}
-                  // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+                  className={`${ss.score} ${ss.score2}`}
                   onClick={(e) =>
-                    handleOpenModal(e, seed, seedIndex, roundIndex)
+                    handleOpenModal(e, match, seedIndex, roundIndex)
                   }
                 >
-                  {seed.teams[1]?.score ?? "--"}
+                  {team1 ? team1.score : "--"}
                 </div>
+                {isFinalRound && <div className={ss.rank}>{finalRankIcoTeam1}</div>}
               </SeedTeam>
             </div>
           </SeedItem>
@@ -111,7 +100,7 @@ const SingleBracket = ({ rounds }: Props) => {
   return (
     <>
       <Bracket
-        rounds={RoundStore.rounds}
+        rounds={RoundStore.rounds as RoundProps[]}
         roundClassName={s.wining}
         renderSeedComponent={RenderSeed}
         mobileBreakpoint={360}
@@ -123,9 +112,10 @@ const SingleBracket = ({ rounds }: Props) => {
           },
         }}
       />
-      <UpdateScore />
+      {canEdit && <UpdateScoreModal />}
     </>
   );
 };
 
+// For display bracket in tour detail screen
 export default observer(SingleBracket);

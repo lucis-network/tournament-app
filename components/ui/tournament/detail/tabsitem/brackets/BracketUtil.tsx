@@ -1,48 +1,72 @@
 import React from "react";
-import { BracketRound } from "src/generated/graphql";
+import { BracketGql, BracketMatch, BracketMatchStatus, BracketRound, GBracketTeam } from "src/generated/graphql";
+import { Round, RoundMatch, Team } from "src/store/SingleRoundStore";
 
 export type BracketUiProps = {
-  //   numRounds: number;
-  //   numGames: number;
-  bracketRounds?: BracketRound[];
-  dataBracket?: any;
+  dataBracket?: BracketGql;
   loadingBracket?: any;
-  listTeam?: any;
 };
 
-export const createSeed = (item: any, idx: number, listTeam: any[]) => {
-  const team1 = listTeam.find((i) => i.uid == item.team1_uid);
-  const team2 = listTeam.find((i) => i.uid == item.team2_uid);
+function _defaultRoundTeam(): Team {
+  return {
+    id: "",
+    name: "",
+    score: 0,
+  }
+}
+
+export const createSeed = (item: BracketMatch, idx: number, listTeam: GBracketTeam[] | undefined): RoundMatch => {
+  const team1 = listTeam?.find((i) => i.uid == item.team1_uid);
+  const team2 = listTeam?.find((i) => i.uid == item.team2_uid);
+
+  const roundTeam1: Team = !team1
+    ? _defaultRoundTeam()
+    : {
+      id: item.team1_uid !== "bye" ? (item.team1_uid ?? "") : "",
+      name: item.team1_uid !== "bye" ? team1.team.name : "",
+      score: item.score_1 ?? 0,
+    };
+
+  const roundTeam2: Team = !team2
+    ? _defaultRoundTeam()
+    : {
+      id: item.team2_uid !== "bye" ? (item.team2_uid ?? "") : "",
+      name: item.team2_uid !== "bye" ? team2.team.name : "",
+      score: item.score_2 ?? 0,
+    };
 
   return {
-    teams: [
-      {
-        id: item.team1_uid !== "bye" ? item.team1_uid : null,
-        name: item.team1_uid !== "bye" ? team1?.team.name : null,
-        score: item.score_1,
-      },
-      {
-        id: item.team2_uid !== "bye" ? item.team2_uid : null,
-        name: item.team2_uid !== "bye" ? team2?.team.name : null,
-        score: item.score_2,
-      },
-    ],
+    uid: item.uid,
+    teams: [roundTeam1, roundTeam2],
+    status: item.status,
   };
 };
 
-export const createRound = (item: any, idx: any, listTeam: any[]) => {
+export const createRound = (item: BracketRound, idx: number, listTeam: GBracketTeam[] | undefined): Round => {
+  const seeds = !item.bracketMatchs
+    ? []
+    : item.bracketMatchs.map((item, idx) =>
+      createSeed(item, idx, listTeam)
+    );
+
   return {
     title: <p className="m-0 text text-white text-[24px]">{item.title}</p>,
-    seeds: item.bracketMatchs?.map((item: any, idx: any) =>
-      createSeed(item, idx, listTeam)
-    ),
+    seeds,
   };
 };
 
-export const createRounds = ({ bracketRounds, listTeam }: BracketUiProps): any => {
-  const rounds = bracketRounds?.map((item, idx) =>
-    createRound(item, idx, listTeam)
-  );
+export const createRounds = ({
+  bracketRounds,
+  bracketTeams,
+}: {
+  bracketRounds: BracketRound[],
+  bracketTeams: GBracketTeam[] | undefined,
+}): Round[] => {
+  if (!bracketRounds) {
+    return []
+  }
 
-  return rounds;
+  return bracketRounds.map((item, idx) => {
+    return createRound(item, idx, bracketTeams)
+  });
 };
