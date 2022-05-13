@@ -30,6 +30,8 @@ body {
 
 html {
   background-color: #000031;
+  --line-color: rgba(146, 146, 146, 0.5);
+  --line-color-light: rgba(199, 199, 199, 0.5);
 }
 
 body {
@@ -548,6 +550,10 @@ body .backdrop-blur-sm {
 .ant-modal-content .ant-modal-body {
   color: white;
   font-size: 18px;
+}
+
+body .ant-modal-footer {
+  border-top: 1px solid var(--line-color);
 }
 
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
