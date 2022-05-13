@@ -112,6 +112,9 @@ const Index = (props: Props) => {
         />
       </div>
       <div className={s.lucisFinalRounds}>
+        <div className={s.rbg}>
+          <img src="/assets/bracket/dragon.jpg" alt="" />
+        </div>
         <SingleBracketStateless
           canEdit={canEdit}
           rounds={finalRounds as RoundProps[]}
