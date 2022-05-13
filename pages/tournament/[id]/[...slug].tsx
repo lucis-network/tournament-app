@@ -166,7 +166,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             <div className={s.img_game}>
               <img src={thumbnail} alt="" />
             </div>
-            <h2>{game.name}</h2>
+            <h2>{game?.name}</h2>
           </Col>
 
           <Col span={16} className={s.content_center}>
@@ -243,14 +243,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             dataBracket={dataBracket}
             refetch={refetch}
             refreshParticipant={refreshParticipant}
-            tournament_status={tournament_status}
+            tournament_status={tournament_status as string}
           />
         </div>
         {/* ===== sponsor ===== */}
         <div className="lucis-container">
           <TournamentDetailSponsor
             tournamentId={tournamentId as string}
-            tournament_status={tournament_status}
+            tournament_status={tournament_status as string}
           />
         </div>
         {/* ===== end sponsor ===== */}
@@ -259,15 +259,16 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <div className={`lucis-container ${s.container_Tabs}`}>
           <Tabs defaultActiveKey="1">
             <TabPane tab="Overview" key="1">
-              <Overview desc={desc} />
+              <Overview desc={desc as string} />
             </TabPane>
             <TabPane tab="Rules" key="2">
-              <Rules rules={rules} />
+              <Rules rules={rules as string} />
             </TabPane>
             <TabPane tab="Bracket" key="3">
               <Brackets
                 dataBracket={dataBracket}
                 loadingBracket={loadingBracket}
+                refereeIds={referees ? referees.split(',') : []}
               />
             </TabPane>
             <TabPane
@@ -279,7 +280,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 loading={loadingParticipant}
                 tournamentId={tournamentId as string}
                 currency={currency}
-                tournament_status={tournament_status}
+                tournament_status={tournament_status as string}
               />
             </TabPane>
             <TabPane tab="Referees" key="5">
@@ -288,7 +289,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 loadingReferees={loadingReferees}
                 tournamentId={tournamentId as string}
                 currency={currency}
-                tournament_status={tournament_status}
+                tournament_status={tournament_status as string}
               />
             </TabPane>
             <TabPane tab="Prizing" key="6">
@@ -329,7 +330,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <ClaimResultModal
           totalPrizePool={totalPrizePool as number}
           currency={currency}
-          name={name}
+          name={name as string}
         />
       </div>
     </>
