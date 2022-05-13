@@ -116,15 +116,15 @@ export default class TournamentService {
     return donataResponse;
   }
 
-  public async claimPrizeSystem(tournamnent_uid: string): Promise<any> {
+  public async claimPrizeSystem(tournament_uid: string): Promise<any> {
     const donataResponse = await apoloClient.mutate({
       mutation: gql`
-        mutation claimPrizePool($tournamnent_uid: String!) {
-          claimPrizePool(tournamnent_uid: $tournamnent_uid)
+        mutation claimPrizePool($tournament_uid: String!) {
+          claimPrizePool(tournament_uid: $tournament_uid)
         }
       `,
       variables: {
-        tournamnent_uid: tournamnent_uid,
+        tournament_uid: tournament_uid,
       },
     });
 

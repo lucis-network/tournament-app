@@ -40,7 +40,7 @@ export default observer(function ClaimResultModal(props: Props) {
             {fomatNumber(totalPrizePool)} {currency.symbol}
           </p>
           <div>
-            You&apos;ve got a THIRD PRIZE <br />
+            You&apos;ve successfully claimed the prize <br />
             from {name}
           </div>
           <Button>Share my victory</Button>

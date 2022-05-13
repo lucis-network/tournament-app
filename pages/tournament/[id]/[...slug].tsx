@@ -20,6 +20,7 @@ import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultM
 import { isClientDevMode } from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
+import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
 
 const { TabPane } = Tabs;
 
@@ -29,15 +30,16 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const { tournamentId, asPath } = props;
   const [isLoadingSub, setIsLoadingSub] = useState(false);
 
-	const {
-		dataTournamentDetail,
-		dataParticipants,
-		dataRefereesDetail,
-		dataPrizing,
-		dataBracket,
-		dataIsJoin: isJoin,
-		dataIsCheckin: isCheckin,
-		dataDonation,
+  const {
+    dataTournamentDetail,
+    dataParticipants,
+    dataRefereesDetail,
+    dataPrizing,
+    dataBracket,
+    dataIsJoin: isJoin,
+    dataIsCheckin: isCheckin,
+    dataDonation,
+    dataListRank,
 
     loading,
     loadingParticipant,
@@ -45,12 +47,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     loadingPrizing,
     loadingBracket,
     loadingDonation,
+    loadingListRank,
 
     joinTournament,
     refreshParticipant,
     refetch,
     dataIsubscribeToTournament,
     refetchSubTournament,
+    
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
@@ -92,7 +96,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     additionPrize,
     cache_tournament,
     tournament_status,
-		referees,
+    referees,
   } = dataTournamentDetail ?? {};
 
   const handSubscribe = () => {
@@ -236,7 +240,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <div className={`lucis-container`}>
           <RegistrationPhase
             isJoin={isJoin}
-						isCheckin={isCheckin}
+            isCheckin={isCheckin}
             tournament={dataTournamentDetail}
             tournamentId={tournamentId as string}
             joinTournament={joinTournament}
@@ -268,20 +272,33 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               <Brackets
                 dataBracket={dataBracket}
                 loadingBracket={loadingBracket}
-                refereeIds={referees ? referees.split(',') : []}
+                refereeIds={referees ? referees.split(",") : []}
               />
             </TabPane>
             <TabPane
               tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
               key="4"
             >
-              <TableParticipant
-                dataParticipants={dataParticipants}
-                loading={loadingParticipant}
-                tournamentId={tournamentId as string}
-                currency={currency}
-                tournament_status={tournament_status as string}
-              />
+              <>
+                {tournament_status !== "CLOSED" && (
+                  <TableParticipant
+                    dataParticipants={dataParticipants}
+                    loading={loadingParticipant}
+                    tournamentId={tournamentId as string}
+                    currency={currency}
+                    tournament_status={tournament_status as string}
+                  />
+                )}
+
+                {tournament_status === "CLOSED" && (
+                  <ListRanks
+                    dataListRank={dataListRank}
+                    loading={loadingListRank}
+                    tournamentId={tournamentId as string}
+                    currency={currency}
+                  />
+                )}
+              </>
             </TabPane>
             <TabPane tab="Referees" key="5">
               <Referees
