@@ -102,7 +102,7 @@ function TournamentCard(props: { data: TournamentGql }) {
 					</h2>
 					<div className={s.hosted_by}>
 						<div className={s.hosted_by_detail}>
-							HOSTED BY
+							<span>HOSTED BY</span>
 							<div className={s.user}>
 								<div className={s.avt}>
 									<img
@@ -120,7 +120,7 @@ function TournamentCard(props: { data: TournamentGql }) {
 						</div>
 						<div className={s.prize_pool}>
 							<img src="/assets/home/ic_dola.svg" alt="" />
-							<span>FREE</span>
+							<span>FREE ENTRY</span>
 						</div>
 					</div>
 					<div className={s.ntf}>

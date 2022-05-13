@@ -149,7 +149,7 @@
         .im_logo_game
           max-width: 60px
           overflow: hidden
-          max-width: 60px
+          padding: 4px 0px
           @media (min-width: 640px) and (max-width: 768px)
             max-width: 40px
           @media (min-width: 992px)
@@ -157,6 +157,7 @@
           @media (min-width: 1280px)
             max-width: 60px
         h2
+          height: 53px
           a
             color: #FFF
             font-weight: 700
@@ -191,10 +192,14 @@
               font-size: 13px
             @media (min-width: 992px)
               font-size: 10px
-              line-height: 20px
+              line-height: 14px
             @media (min-width: 1440px)
               font-size: 14px
               line-height: 16px
+            span
+              @media (min-width: 992px) and (max-width: 1600px)
+                display: none
+
             .user
               display: flex
               align-items: center
@@ -207,10 +212,27 @@
                 @media (min-width: 992px)
                   margin: 0px 4px
                 @media (min-width: 1440px)
+                  margin: 0px 4px 0px 0px
+                @media (min-width: 1920px)
                   margin: 0px 4px 0px 8px
               a
                 color: #FFF
                 text-decoration: revert
+                height: 15px
+                overflow: hidden
+                @media (min-width: 0px)
+                  width: 90px
+                @media (min-width: 414px)
+                  width: 110px
+                @media (min-width: 540px)
+                  width: 180px
+                @media (min-width: 768px)
+                  width: 110px
+                @media (min-width: 992px)
+                  width: 90px
+                @media (min-width: 1280px)
+                  width: 110px
+
           .prize_pool
             display: flex
             align-items: center
@@ -218,11 +240,12 @@
               margin-right: 4px
             span
               @media (min-width: 0px)
-                font-size: 14px
+                font-size: 12px
               @media (min-width: 992px)
-                font-size: 10px
+                font-size: 9px
+                line-height: 15px
               @media (min-width: 1440px)
-                font-size: 14px
+                font-size: 12px
 
         .ntf
           display: flex
