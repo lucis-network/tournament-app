@@ -10,7 +10,7 @@ type TournamentDetailSponsorTierProps = {
 }
 
 export default function TournamentDetailSponsorTier(props: TournamentDetailSponsorTierProps) {
-  const { tier, tournament_status } = props;
+  const { tier } = props;
   const { name: tierName, max: maxSponsorSlot, sponsor_transactions } = tier;
 
   const newSlots: SponsorTransaction[] = [];
