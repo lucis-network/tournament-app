@@ -54,7 +54,7 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       // whileTap={{ scale: 0.95 }}
       onClick={click}
     >
-      <div className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`} style={{ fontSize: "20px", lineHeight: '22px' }}>
+      <div className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`} style={{ fontSize: "16px", lineHeight: '22px' }}>
         <Link href={props.item.src ?? '/'}>{props.item.text}</Link>
       </div>
     </motion.li>

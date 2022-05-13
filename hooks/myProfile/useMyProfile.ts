@@ -6,7 +6,7 @@ import {
   useLazyQuery, useMutation,
   useQuery
 } from "@apollo/client";
-import {TTournament, UserFavoriteGame} from "../../src/generated/graphql";
+import {ProfileUpdateInput, TTournament, UserFavoriteGame, UserGraphql} from "../../src/generated/graphql";
 
 type UseSearchProps = {
   user_id: string,
@@ -15,10 +15,12 @@ type UseSearchProps = {
 
 type UseGetJoinedTournamentProps = {
   user_id: string,
+  skip?: boolean,
 };
 
 type UseGetFavoriteGameProps = {
   user_id: string,
+  skip?: boolean,
 };
 
 type UseDeleteFavoriteGameProps = Partial<{
@@ -27,6 +29,14 @@ type UseDeleteFavoriteGameProps = Partial<{
 
 type UseVerifyEmailProps = {
   email: string
+}
+
+type UseGetUserProfileProps = {
+  user_id: string
+}
+
+type UseUpdateProfileProps = {
+  data: ProfileUpdateInput
 }
 
 export function useGetOwnedTournament(): {
@@ -54,7 +64,7 @@ export function useGetOwnedTournament(): {
   };
 }
 
-export function useGetJoinedTournament({ user_id }: UseGetJoinedTournamentProps): {
+export function useGetJoinedTournament({ user_id, skip }: UseGetJoinedTournamentProps): {
   loading: boolean;
   error: ApolloError | undefined;
   joinedTournamentData: {
@@ -69,6 +79,7 @@ export function useGetJoinedTournament({ user_id }: UseGetJoinedTournamentProps)
     variables: {
       user_id: user_id
     },
+    skip: skip,
     fetchPolicy: "cache-and-network",
     onError: (error) => {
       console.log("error useGetOwnedTournament: ", error);
@@ -140,7 +151,7 @@ export function useSearchJoinedTournament({ user_id, value }: UseSearchProps): {
   };
 }
 
-export function useGetFavoriteGame({ user_id }: UseGetFavoriteGameProps): {
+export function useGetFavoriteGame({ user_id, skip }: UseGetFavoriteGameProps): {
   loading: boolean;
   error: ApolloError | undefined;
   refetch: () => Promise<ApolloQueryResult<any>>;
@@ -156,7 +167,8 @@ export function useGetFavoriteGame({ user_id }: UseGetFavoriteGameProps): {
   } = useQuery(GET_FAVORITE_GAME, {
     variables: {
       user_id: user_id
-    }
+    },
+    skip: skip
   });
 
   return {
@@ -199,6 +211,49 @@ export function useVerifyEmail({ email }: UseVerifyEmailProps): {
   }
 }
 
+export function useGetUserProfile({ user_id }: UseGetUserProfileProps): {
+  loading: boolean;
+  error: ApolloError | undefined;
+  refetch: () => Promise<ApolloQueryResult<any>>;
+  getUserProfileData: {
+    getUserProfile: UserGraphql;
+  };
+} {
+  const {
+    loading,
+    error,
+    refetch,
+    data: getUserProfileData
+  } = useQuery(GET_USER_PROFILE, {
+    variables: {
+      user_id: user_id
+    }
+  });
+
+  return {
+    loading,
+    error,
+    refetch,
+    getUserProfileData
+  }
+}
+
+export function useUpdateProfile({ data }: UseUpdateProfileProps): {
+  updateProfile: () => Promise<any>;
+} {
+  const options = data ? {
+    variables: {
+      data: data
+    }
+  } : undefined;
+
+  const [updateProfile] = useMutation(UPDATE_PROFILE, options);
+
+  return {
+    updateProfile
+  }
+}
+
 export const SEARCH_OWNED_TOURNAMENT = gql`
 	query ($user_id: String!, $value: String!) {
 		searchOwnerTournament(
@@ -226,7 +281,7 @@ export const SEARCH_JOINED_TOURNAMENT = gql`
         participants
         team_participated
         tournament_status
-        claim_prize_pool_status
+        is_claim
 		}
 	}
 `;
@@ -290,5 +345,50 @@ export const DELETE_FAVORITE_GAME = gql`
 export const VERIFY_EMAIL = gql`
   query ($email: String!) {
     verifyEmail(email: $email)
+  }
+`
+
+export const GET_USER_PROFILE = gql`
+  query ($user_id: String!){
+    getUserProfile(user_id: $user_id) {
+      id
+      email
+      profile {
+        user_id
+        user_name
+        display_name
+        twitter
+        facebook
+        telegram
+        youtube
+        twitch
+        discord
+        phone
+        avatar
+        cover
+        biography
+        country_code
+      }
+    }
+  }
+`
+
+export const UPDATE_PROFILE = gql`
+  mutation ($data: ProfileUpdateInput!) {
+    updateProfile(data: $data) {
+      user_id
+      user_name
+      display_name
+      twitter
+      facebook
+      telegram
+      twitch
+      discord
+      phone
+      avatar
+      cover
+      biography
+      country_code
+    }
   }
 `

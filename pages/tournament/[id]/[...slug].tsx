@@ -18,6 +18,7 @@ import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/Tou
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 import { isClientDevMode } from "../../../utils/Env";
+import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subscribe", "Donate", "Invite or Share"];
@@ -35,12 +36,14 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 		dataPrizing,
 		dataBracket,
 		dataIsJoin: isJoin,
+    dataDonation,
 
 		loading,
 		loadingParticipant,
 		loadingReferees,
 		loadingPrizing,
 		loadingBracket,
+    loadingDonation,
 
 		joinTournament,
 		refreshParticipant,
@@ -192,50 +195,58 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 				</div>
 				{/* ===== end sponsor ===== */}
 
-				{/* ===== tabs ===== */}
-				<div className={`lucis-container ${s.container_Tabs}`}>
-					<Tabs defaultActiveKey="1">
-						<TabPane tab="Overview" key="1">
-							<Overview desc={desc as string} />
-						</TabPane>
-						<TabPane tab="Rules" key="2">
-							<Rules rules={rules as string} />
-						</TabPane>
-						<TabPane tab="Bracket" key="3">
-							<Brackets
-								dataBracket={dataBracket}
-								loadingBracket={loadingBracket}
+        {/* ===== tabs ===== */}
+        <div className={`lucis-container ${s.container_Tabs}`}>
+          <Tabs defaultActiveKey="1">
+            <TabPane tab="Overview" key="1">
+              <Overview desc={desc as string} />
+            </TabPane>
+            <TabPane tab="Rules" key="2">
+              <Rules rules={rules as string} />
+            </TabPane>
+            <TabPane tab="Bracket" key="3">
+              <Brackets
+                dataBracket={dataBracket}
+                loadingBracket={loadingBracket}
 								refereeIds={referees ? referees.split(',') : []}
-							/>
-						</TabPane>
-						<TabPane
-							tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
-							key="4"
-						>
-							<TableParticipant
-								dataParticipants={dataParticipants}
-								loading={loadingParticipant}
-								tournamentId={tournamentId as string}
-								currency={currency}
-							/>
-						</TabPane>
-						<TabPane tab="Referees" key="5">
-							<Referees
-								dataRefereesDetail={dataRefereesDetail}
-								loadingReferees={loadingReferees}
-								tournamentId={tournamentId as string}
-								currency={currency}
-							/>
-						</TabPane>
-						<TabPane tab="Prizing" key="6">
-							<Prizing
-								dataPrizing={dataPrizing}
-								loadingPrizing={loadingPrizing}
-								currency={currency}
-							/>
-						</TabPane>
-					</Tabs>
-				</div>
+              />
+            </TabPane>
+            <TabPane
+              tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
+              key="4"
+            >
+              <TableParticipant
+                dataParticipants={dataParticipants}
+                loading={loadingParticipant}
+                tournamentId={tournamentId as string}
+                currency={currency}
+              />
+            </TabPane>
+            <TabPane tab="Referees" key="5">
+              <Referees
+                dataRefereesDetail={dataRefereesDetail}
+                loadingReferees={loadingReferees}
+                tournamentId={tournamentId as string}
+                currency={currency}
+              />
+            </TabPane>
+            <TabPane tab="Prizing" key="6">
+              <Prizing
+                dataPrizing={dataPrizing}
+                loadingPrizing={loadingPrizing}
+                currency={currency}
+              />
+            </TabPane>
+            <TabPane tab="Donation history" key="7">
+              <DonationHistory
+                dataDonation={dataDonation}
+                loadingDonation={loadingDonation}
+                currency={currency}
+                tournament={dataTournamentDetail}
+              />
+            </TabPane>
+          </Tabs>
+        </div>
 
 				<div className={s.communityC}></div>
 				<PopupDonate

@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, message } from "antd";
+import { Button, message, Modal } from "antd";
 import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
@@ -16,6 +16,10 @@ import TournamentService from "components/service/tournament/TournamentService";
 import { ApolloQueryResult } from "@apollo/client";
 import timeMoment from "moment-timezone";
 import useTournament from "../hooks/useTournament";
+import { Statistic } from "antd";
+import CountdownTimer from "components/ui/common/CountDown";
+
+const { Countdown } = Statistic;
 
 type Props = {
 	isJoin: boolean;
@@ -59,6 +63,14 @@ export default observer(function RegistrationPhase(props: Props) {
 	const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
 		useTeamModal(props);
 
+	const timeDefault = moment(brackets?.[0].start_at).valueOf();
+	const timeCheckin = moment(brackets?.[0].start_at)
+		.subtract(1, "hour")
+		.valueOf();
+	const timePrepare = moment(brackets?.[0].start_at)
+		.subtract(15, "minutes")
+		.valueOf();
+
 	const claimTokenDonation = async () => {
 		TournamentStore.claimDonationModalVisible = true;
 	};
@@ -67,7 +79,14 @@ export default observer(function RegistrationPhase(props: Props) {
 		tournament_uid: tournamentId ? tournamentId : "",
 	});
 
-	const { handleLeaveTournament } = useTournament();
+	const {
+		openModal: openTournamentModal,
+		status,
+		handleCloseTourModal,
+		handleOpenLeaveTournament,
+		handleLeaveTournament,
+		handleCheckinTournament,
+	} = useTournament();
 
 	const [dataPrize, setDataPrize] = useState<Reward>();
 	const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
@@ -167,6 +186,8 @@ export default observer(function RegistrationPhase(props: Props) {
 		setIsPopupDonate(true);
 	};
 
+	console.log(tournament_status);
+
 	return (
 		<>
 			<div className={s.wrapper}>
@@ -197,7 +218,6 @@ export default observer(function RegistrationPhase(props: Props) {
 							{cache_tournament?.team_participated}/{participants}
 						</span>
 						<span>Participants</span>
-						<p></p>
 					</div>
 				</div>
 				<div className={s.footer}>
@@ -213,14 +233,27 @@ export default observer(function RegistrationPhase(props: Props) {
 					</div>
 					{isJoin ? (
 						<div className={s.join}>
-							<Button onClick={() => handleLeaveTournament("", tournamentId!)}>
+							<Button onClick={handleOpenLeaveTournament}>
 								Unjoin tournament
 							</Button>
-							<p>Check-in ends in 5H 45M 30S</p>
+							<div className="flex align-middle items-center text-white">
+								<p className="mb-0 mr-4">Checkin ends: </p>
+								<CountdownTimer targetDate={timeDefault} />
+							</div>
 						</div>
 					) : (
 						(() => {
 							switch (tournament_status) {
+								case "FINISH":
+									return (
+										<>
+											<div className={s.join}>
+												<Button onClick={() => {}}>
+													Confirm tournament result
+												</Button>
+											</div>
+										</>
+									);
 								case "REGISTRATION":
 									return (
 										<>
@@ -228,7 +261,10 @@ export default observer(function RegistrationPhase(props: Props) {
 												<Button onClick={handleOpenModal}>
 													Join tournament
 												</Button>
-												<p>Check-in ends in 5H 45M 30S</p>
+												<div className="flex align-middle items-center text-white">
+													<p className="mb-0 mr-4">Registration ends in: </p>
+													<CountdownTimer targetDate={timeDefault} />
+												</div>
 											</div>
 										</>
 									);
@@ -236,8 +272,17 @@ export default observer(function RegistrationPhase(props: Props) {
 									return (
 										<>
 											<div className={s.join}>
-												<Button onClick={handleOpenModal}>Check-in</Button>
-												<p>Check-in ends in 5H 45M 30S</p>
+												<Button
+													onClick={() =>
+														handleCheckinTournament("", tournamentId!)
+													}
+												>
+													Check-in
+												</Button>
+												<div className="flex align-middle items-center text-white">
+													<p className="mb-0 mr-4">Checkin ends in: </p>
+													<CountdownTimer targetDate={timeCheckin} />
+												</div>
 											</div>
 										</>
 									);
@@ -246,7 +291,10 @@ export default observer(function RegistrationPhase(props: Props) {
 										<>
 											<>
 												<div className={s.join}>
-													<p>Tournament in 5H 45M 30S</p>
+													<div className="flex align-middle items-center text-white">
+														<p className="mb-0 mr-4">Prepare ends in: </p>
+														<CountdownTimer targetDate={timePrepare} />
+													</div>
 												</div>
 											</>
 										</>
@@ -362,6 +410,23 @@ export default observer(function RegistrationPhase(props: Props) {
 				types={"TOURNAMENT"}
 				name={name}
 				thumbnail={thumbnail}
+			/>
+
+			<Modal
+				title={
+					<h3 className="text-16px text-white">
+						{status === "unjoin"
+							? "Are you sure to unjoin this tournament?"
+							: ""}
+					</h3>
+				}
+				centered
+				visible={openTournamentModal}
+				wrapClassName={s.mdl}
+				okText="Confirm"
+				bodyStyle={{ display: "none" }}
+				onOk={() => handleLeaveTournament("", tournamentId!)}
+				onCancel={handleCloseTourModal}
 			/>
 		</>
 	);
