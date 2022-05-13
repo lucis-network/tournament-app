@@ -23,26 +23,34 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
     }
     console.log('{useEffect} dataBracket: ', dataBracket);
 
-    const listTeam = dataBracket.bracketTeams;
+    const bracketTeams = dataBracket.bracketTeams;
     const isSingleBracket = dataBracket.type === "SINGLE";
 
     if (isSingleBracket) {
+      if (!bracketTeams || !dataBracket.bracketRounds) {
+        return
+      }
+
       const singleRounds = createRounds({
         bracketRounds: dataBracket.bracketRounds,
-        listTeam,
+        bracketTeams,
       });
       RoundStore.rounds = singleRounds;
     } else {
-      const upper = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "UPPER");
-      const lower = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "LOWER");
+      if (!bracketTeams || !dataBracket.bracketRounds) {
+        return
+      }
+
+      const upper: BracketRound[] = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "UPPER");
+      const lower: BracketRound[] = dataBracket.bracketRounds.filter((i: BracketRound) => i.type === "LOWER");
 
       const upperRounds = createRounds({
         bracketRounds: upper,
-        listTeam,
+        bracketTeams,
       });
       const lowerRounds = createRounds({
         bracketRounds: lower,
-        listTeam,
+        bracketTeams,
       });
 
       console.log('{.} upperRounds, lowerRounds: ', upperRounds, lowerRounds);

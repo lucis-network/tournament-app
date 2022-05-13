@@ -226,7 +226,7 @@ export const SEARCH_JOINED_TOURNAMENT = gql`
         participants
         team_participated
         tournament_status
-        claim_prize_pool_status
+        is_claim
 		}
 	}
 `;

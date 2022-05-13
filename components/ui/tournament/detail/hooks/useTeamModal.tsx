@@ -37,7 +37,7 @@ const UseTeamModal = (tournamentData: any) => {
 		password: tourPassword,
 	} = tournamentData?.tournament;
 	const { tournamentId } = tournamentData;
-	const { joinTournament } = tournamentData;
+	const { joinTournament, refreshParticipant } = tournamentData;
 	const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
 	const [show, setShow] = useState<boolean>(false);
 	const [password, setPassword] = useState<string>("");
@@ -73,6 +73,8 @@ const UseTeamModal = (tournamentData: any) => {
 
 	const handleRoutes = (route: string) => {
 		router.push(route);
+		setShow(false);
+		// refreshParticipant();
 	};
 
 	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
@@ -89,8 +91,6 @@ const UseTeamModal = (tournamentData: any) => {
 	);
 
 	const checkTotalPrize = checkTotalPercent(selectedTeam?.team || [], "prize");
-
-	console.log(checkTotalPrize);
 
 	const handleChangeStep = (step: StepModalTournament) => {
 		setStep(step);
@@ -403,7 +403,7 @@ const UseTeamModal = (tournamentData: any) => {
 				),
 			},
 			["success"]: {
-				titleModal: "You'v successfully join this tournament",
+				titleModal: "You’ve successfully joined this tournament",
 				description: <p></p>,
 				component: (
 					<div className="flex justify-center align-middle items-center mt-8">

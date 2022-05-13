@@ -55,20 +55,20 @@ export default function CardPlayer(props: Props) {
             </div>
             <div className={s.content_player}>
               <div className={s.avt}>
-                <img src="/assets/home/im_avt_player.png" alt="" />
+                <img src="/assets/home/avt_null.jpg" alt="" />
                 <div className={s.ic_like} onClick={()=> hanldeLike(e.id)}>
                   <img src="/assets/home/ic_unlike.svg" alt="" />
                 </div>
               </div>
-              <p>{e.name}</p>
-              <div className={s.btn}>
+              <p>_ _</p>
+              {/* <div className={s.btn}>
                 <Button
                   className={s.content_btn}
                   onClick={() => showPopUpDonate(e)}
                 >
                   DONATE
                 </Button>
-              </div>
+              </div> */}
             </div>
             <PopupDonate status={isPopUp} types={'TOPPLAYER'} closeModal={click} datas={newData} />
           </div>

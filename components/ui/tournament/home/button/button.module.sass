@@ -22,8 +22,9 @@
       align-items: center
       @media (max-width: 540px)
         flex-direction: column
+        align-items: flex-start
         margin-right: 8px
-        min-width: 38px
+        max-width: 42px
   .item > div
     @media (min-width: 992px)
       padding-right: 0px
@@ -35,6 +36,7 @@
         padding-right: 0px
   :global(.ant-select)
     margin-right: 16px
+    margin-bottom: 16px
   :global(.ant-select-single .ant-select-selector .ant-select-selection-item)
     display: flex
     align-items: center

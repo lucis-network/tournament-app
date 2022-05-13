@@ -81,6 +81,7 @@ export default function TournamentDetailBecomeSponsor(
       tx_hash: "",
     };
 
+    console.log("abc")
     const txHash = await transferSponsors(data.amount);
     if (txHash) {
       sponsor.tx_hash = txHash;

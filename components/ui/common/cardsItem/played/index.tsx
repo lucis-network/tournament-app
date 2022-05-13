@@ -14,7 +14,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 export default function CardPlayed({ tournament, type, canEdit = false }: CardPlayedProps) {
   const tempDate = new Date(tournament?.start_at);
   const startAt = `${tempDate.getDate()} ${months[tempDate.getMonth()]} ${tempDate.getHours()}:${tempDate.getMinutes()}`;
-
+  console.log('check tournament',tournament);
   return (
     <div className={s.container_card}>
       <div className={s.card_avt}>
@@ -39,7 +39,7 @@ export default function CardPlayed({ tournament, type, canEdit = false }: CardPl
       )}
       {(canEdit && type === 'joined') && (
         <div>
-          <span className={s.claimStatus}>{tournament?.claim_prize_pool_status}</span>
+          <span className={s.claimStatus}>{tournament?.is_claim}</span>
         </div>
       )}
     </div>

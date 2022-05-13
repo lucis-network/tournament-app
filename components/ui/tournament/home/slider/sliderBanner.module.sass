@@ -4,52 +4,65 @@
     height: auto
     position: relative
     max-height: 400px
-    overflow: hidden
     .im_banner
-      background-size: cover
+      background-size: 100%
       background-repeat: no-repeat
       background-position: center
-      min-height: 400px
+      @media (min-width: 0)
+        padding: 100px 0px
+      @media (min-width: 640px)
+        padding: 140px 0px
+        height: 0
+      @media (min-width: 1280px)
+        padding: 160px 0px
+      @media (min-width: 1600px)
+        padding: 180px 0px
+      @media (min-width: 1920px)
+        padding: 200px 0px
 
     .title
-      padding: 20px
-      margin-top: 38px
-      margin-left: 60px
       background: linear-gradient(175deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-      border-radius: 16px
       backdrop-filter: blur(12px)
-      max-width: 336px
       position: absolute
-      top: 0
-      left: 0
-      @media (max-width: 992px)
+      @media (min-width: 0px) and (max-width: 991px)
         margin: 40px 0px 0px 0px
-        padding: 12px
-        max-width: 260px
+        padding: 4px 8px
+        max-width: 240px
         border-radius: 16px
         left: 10px
+        bottom: 5%
+      @media (min-width: 992px)
+        left: 0
+        border-radius: 16px
+        min-width: 336px
+        padding: 20px
+        margin-top: 38px
+        margin-left: 60px
+        top: 0
+      .line
+        position: absolute
+        width: 4px
+        height: 50px
+        background: #FFF
+        @media (min-width: 0px)
+          display: none
+          top: -67%
+          min-width: 336px
+        @media (min-width: 992px)
+          top: -54%
       .line:nth-child(1)
-        position: absolute
-        top: -50%
         left: 12px
-        width: 4px
-        height: 50px
-        background: #FFF
       .line:nth-child(2)
-        position: absolute
-        top: -50%
         right: 12px
-        width: 4px
-        height: 50px
-        background: #FFF
       p
         color: #FFF
         font-size: 24px
         line-height: 28px
         font-weight: 700
         @media (max-width: 992px)
-          font-size: 18px
+          font-size: 15px
           margin-bottom: 0px
+          line-height: 20px
       .detail
         display: flex
         align-items: center
@@ -64,6 +77,8 @@
           display: flex
           align-items: center
           justify-content: space-between
+          @media (max-width: 992px)
+            margin-right: 12px
           span
             font-size: 18px
             color: #0BEBD6
@@ -71,9 +86,16 @@
             margin-left: 4px
             @media (max-width: 992px)
               font-size: 13px
+          img
+            @media (max-width: 992px)
+              width: 20px
+              height: 20px
         .btn
           padding: 4px 12px
           font-size: 14px
+          @media (max-width: 992px)
+            padding: 0px 8px
+            font-size: 12px
       .line::before
         content: ""
         position: absolute
