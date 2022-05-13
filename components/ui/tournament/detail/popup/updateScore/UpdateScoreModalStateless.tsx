@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { Button, Col, message as antd_message, Modal, Popconfirm, Row } from "antd";
 
@@ -13,10 +13,10 @@ export type UpdateScoreModalStatelessProps = {
   visible: boolean,
   seedIndex: number,
   roundIndex: number,
-  teams: Team[],
+  // teams: Team[],
   currentMatch?: CurrentMatch,
   doCloseModal: () => void,
-  doUpdateScore: (score: number, teamIdx: number) => void,
+  // onScoreChanged: (score: number, teamIdx: number) => void,
   onUpdateCompleted: (data?: string) => void,
 }
 export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps) => {
@@ -24,23 +24,38 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
     visible,
     seedIndex,
     roundIndex,
-    teams,
+    // teams,
     currentMatch,
     doCloseModal,
-    doUpdateScore,
+    // onScoreChanged,
     onUpdateCompleted,
   } = props;
+
+  const teams = currentMatch ? currentMatch.teams : [];
 
   const [setMatchResult] = useMutation(UPDATE_MATCH_RESULT);
 
 
-  const handleUpdateScore = (
-    e: ChangeEvent<HTMLInputElement>,
-    teamIdx: number
-  ) => {
-    const score = parseInt(e.target.value);
-    doUpdateScore(score, teamIdx)
-  };
+  const teamName0 = teams && teams[0] ? teams[0].name : "";
+  const teamName1 = teams && teams[1] ? teams[1].name : "";
+  const teamScore0 = teams && teams[0] ? teams[0].score : "0";
+  const teamScore1 = teams && teams[1] ? teams[1].score : "0";
+
+
+  const [score0, setScore0] = useState(teamScore0);
+  const [score1, setScore1] = useState(teamScore1);
+  const onScoreChanged = (score: string, teamIdx: number) => {
+    if (teamIdx == 0) {
+      setScore0(score ? parseInt(score) : '')
+    } else {
+      setScore1(score ? parseInt(score) : '')
+    }
+  }
+  // setup default data on modal visible
+  useEffect(() => {
+    setScore0(teamScore0)
+    setScore1(teamScore1)
+  }, [visible])
 
   const updateMatchResult = (is_final: boolean) => {
     if (!currentMatch) {
@@ -55,15 +70,17 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
 
     const input: BracketMatchUpdateInputGql = {
       uid: currentMatch.uid,
-      score_1: currentMatch.teams[0].score,
-      score_2: currentMatch.teams[1].score,
+      // @ts-ignore
+      score_1: score0 ? parseInt(score0) : 0,
+      // @ts-ignore
+      score_2: score1 ? parseInt(score1) : 0,
       finish_match: is_final,
     }
 
     setMatchResult({
       variables: {input},
       onCompleted(data: string) {
-        // console.log('{setMatchResult.onCompleted} data: ', data);
+        console.log('{setMatchResult.onCompleted} data: ', data);
         onUpdateCompleted(data);
       }
     }).then((res) => {
@@ -123,23 +140,26 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
       <div style={{ padding: "15px 0" }}>
         <Row justify="center">
           <Col span={8} style={{ textAlign: "center" }}>
-            <p className="text-center">{teams && teams[0] ? teams[0].name : ""}</p>
+            <p className="text-center">{teamName0}</p>
             <input
               className={s.inputScore}
-              value={teams && teams[0] ? teams[0].score : "0"}
-              onChange={(e) => handleUpdateScore(e, 0)}
+              type="number"
+              value={score0}
+              onChange={(e) => onScoreChanged(e.target.value, 0)}
             />
           </Col>
+
           <Col span={6}>
             <p className="text-center">VS</p>
           </Col>
-          <Col span={8} style={{ textAlign: "center" }}>
-            <p className="text-center">{teams && teams[1] ? teams[1].name : ""}</p>
 
+          <Col span={8} style={{ textAlign: "center" }}>
+            <p className="text-center">{teamName1}</p>
             <input
               className={s.inputScore}
-              value={teams && teams[1] ? teams[1].score : "0"}
-              onChange={(e) => handleUpdateScore(e, 1)}
+              type="number"
+              value={score1}
+              onChange={(e) => onScoreChanged(e.target.value, 1)}
             />
           </Col>
         </Row>

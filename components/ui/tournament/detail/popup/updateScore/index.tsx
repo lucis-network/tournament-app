@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 
-import RoundStore, { Team } from "src/store/SingleRoundStore";
+import RoundStore, { ISingleRoundStore, Team } from "src/store/SingleRoundStore";
 import { UpdateScoreModalStateless } from "./UpdateScoreModalStateless";
 
 type Props = {
@@ -40,10 +40,10 @@ const UpdateScoreModal = (props: Props) => {
     visible={visible}
     seedIndex={seedIndex}
     roundIndex={roundIndex}
-    teams={teams}
+    // teams={teams}
     currentMatch={currentMatch}
     doCloseModal={closeModal}
-    doUpdateScore={updateScore}
+    // onScoreChanged={updateScore}
     onUpdateCompleted={onUpdateCompleted}
   />
 };

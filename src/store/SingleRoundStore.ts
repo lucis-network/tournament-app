@@ -28,10 +28,18 @@ export type CurrentMatch = {
   roundIndex: number
 }
 
-class SingleRoundStore {
-  private _rounds: Round[] = [];
-  private _updateScoreModalVisible: boolean = false;
-  private _currentMatch?: CurrentMatch;
+export type ISingleRoundStore = {
+  rounds: Round[];
+  updateScoreModalVisible: boolean;
+  currentMatch?: CurrentMatch;
+
+  updateCurrentMatchScore(score: number, teamIndex: number): void
+  reflectCurrentMatchToStore(roundIndex: number, seedIndex: number): void
+}
+class SingleRoundStore implements ISingleRoundStore {
+  public _rounds: Round[] = [];
+  public _updateScoreModalVisible: boolean = false;
+  public _currentMatch?: CurrentMatch;
 
   constructor() {
     makeAutoObservable(this);

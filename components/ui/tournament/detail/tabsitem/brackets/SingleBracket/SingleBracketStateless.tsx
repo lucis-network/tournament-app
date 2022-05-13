@@ -2,8 +2,8 @@ import React, { ReactElement, useCallback, useMemo } from "react";
 import { Bracket, RoundProps } from "react-brackets";
 
 import { RoundMatch } from "src/store/SingleRoundStore";
-import s from "./index.module.sass";
-import { makeSeedComponent } from "./RoundSeed";
+import s from "../index.module.sass";
+import { makeSeedComponent } from "../RoundSeed";
 
 
 interface Props {
