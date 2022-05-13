@@ -27,13 +27,13 @@ export default observer(function ContentMyProfile({ isOwner, userInfo, getUserPr
       <TabPane tab="Overview" key="1">
         <MyOverview userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} />
       </TabPane>
-      <TabPane tab="My team" key="2">
-        <MyTeamDetail />
+      <TabPane tab="Teams" key="2">
+        <MyTeamDetail isOwnerProp={isOwner} />
       </TabPane>
       <TabPane tab="For Sponsor" disabled key="3">
         Content of Tab Pane 3
       </TabPane>
-      <TabPane tab="My Tournament" key="4">
+      <TabPane tab="Tournaments" key="4">
         <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} />
       </TabPane>
     </Tabs>

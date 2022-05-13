@@ -32,11 +32,19 @@ type UseVerifyEmailProps = {
 }
 
 type UseGetUserProfileProps = {
-  user_id: string
+  user_id?: string,
+  user_name?: string,
+  skip?: boolean,
+  onCompleted?: (data: any) => void,
 }
 
 type UseUpdateProfileProps = {
   data: ProfileUpdateInput
+}
+
+type UseGetTotalEarningProps = {
+  user_id?: string,
+  skip?: boolean,
 }
 
 export function useGetOwnedTournament(): {
@@ -211,7 +219,7 @@ export function useVerifyEmail({ email }: UseVerifyEmailProps): {
   }
 }
 
-export function useGetUserProfile({ user_id }: UseGetUserProfileProps): {
+export function useGetUserProfile({ user_id, user_name, skip, onCompleted }: UseGetUserProfileProps): {
   loading: boolean;
   error: ApolloError | undefined;
   refetch: () => Promise<ApolloQueryResult<any>>;
@@ -226,15 +234,44 @@ export function useGetUserProfile({ user_id }: UseGetUserProfileProps): {
     data: getUserProfileData
   } = useQuery(GET_USER_PROFILE, {
     variables: {
-      user_id: user_id
-    }
+      input: {
+        user_id: user_id,
+        user_name: user_name,
+      }
+    },
+    skip: skip,
+    onCompleted: onCompleted,
   });
-
   return {
     loading,
     error,
     refetch,
     getUserProfileData
+  }
+}
+
+export function useGetTotalEarning({ user_id, skip }: UseGetTotalEarningProps): {
+  loading: boolean;
+  error: ApolloError | undefined;
+  getTotalEarningData: {
+    getTotalEarning: number;
+  };
+} {
+  const {
+    loading,
+    error,
+    data: getTotalEarningData
+  } = useQuery(GET_TOTAL_EARNING, {
+    variables: {
+      user_id: user_id,
+    },
+    skip: skip,
+  });
+
+  return {
+    loading,
+    error,
+    getTotalEarningData
   }
 }
 
@@ -349,8 +386,8 @@ export const VERIFY_EMAIL = gql`
 `
 
 export const GET_USER_PROFILE = gql`
-  query ($user_id: String!){
-    getUserProfile(user_id: $user_id) {
+  query ($input: UserProfileInput!){
+    getUserProfile(input: $input) {
       id
       email
       profile {
@@ -390,5 +427,11 @@ export const UPDATE_PROFILE = gql`
       biography
       country_code
     }
+  }
+`
+
+export const GET_TOTAL_EARNING = gql`
+  query ($user_id: String!) {
+    getTotalEarning(user_id: $user_id)
   }
 `

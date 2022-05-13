@@ -11,7 +11,11 @@ import Search from "antd/lib/input/Search";
 import UseUploadAvatar from "./hooks/useUploadAvatar";
 import SpinLoading from "../../Spin";
 
-const MyTeamDetail = () => {
+type MyTeamDetailProps = {
+	isOwnerProp?: boolean,
+}
+
+const MyTeamDetail = ({ isOwnerProp }: MyTeamDetailProps) => {
 	const {
 		loading,
 		reset,
@@ -51,15 +55,17 @@ const MyTeamDetail = () => {
 		<>
 			<div className="text-white pt-8">
 				<div className="grid grid-cols-1 xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 px-2 xl:px-8 pb-8 gap-4">
-					<GradientButton
-						small={true}
-						className="text-white flex align-middle items-center col-span-1 col-start-auto"
-						type={1}
-						onClick={() => handleCreateEditTeam(false)}
-					>
-						<PlusOutlined className="mr-2" />
-						Create a new team
-					</GradientButton>
+					{isOwnerProp && (
+						<GradientButton
+							small={true}
+							className="text-white flex align-middle items-center col-span-1 col-start-auto"
+							type={1}
+							onClick={() => handleCreateEditTeam(false)}
+						>
+							<PlusOutlined className="mr-2" />
+							Create a new team
+						</GradientButton>
+					)}
 					<div className="col-span-1 col-end-auto xl:col-start-4 lg:col-start-3">
 						<div className={s.content_search}>
 							<Search
@@ -72,7 +78,7 @@ const MyTeamDetail = () => {
 					</div>
 				</div>
 				<div className="grid px-8 pb-4">
-					<h1 className="text-white">My team</h1>
+					<h1 className="text-white">{isOwnerProp ? 'My team' : `${profile.user_name}'s team`}</h1>
 				</div>
 				{loading ? (
 					<SpinLoading />
@@ -84,6 +90,7 @@ const MyTeamDetail = () => {
 							onOpenAdd={handleOpenAddMember}
 							onEdit={handleCreateEditTeam}
 							onOpenRemove={handleOpenRemove}
+							isOwnerProp={isOwnerProp}
 						/>
 					</div>
 				)}
