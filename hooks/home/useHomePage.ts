@@ -50,8 +50,6 @@ export function useHomePage() {
 				[type]:
 					type === "bracket" && value === ""
 						? Bracket.ALL
-						: type === "prize_pool" || type === "time"
-						? "NONE"
 						: value === ""
 						? ""
 						: value,
