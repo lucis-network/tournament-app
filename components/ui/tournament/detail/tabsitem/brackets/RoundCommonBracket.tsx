@@ -1,7 +1,6 @@
-import React, { useCallback, useMemo } from "react";
+import React, { ReactElement, useCallback, useMemo } from "react";
 import { Bracket, RoundProps } from "react-brackets";
 
-import UpdateScoreModal from "components/ui/tournament/detail/popup/updateScore";
 import { RoundMatch } from "src/store/SingleRoundStore";
 import s from "./index.module.sass";
 import { makeSeedComponent } from "./RoundSeed";
@@ -16,6 +15,7 @@ interface Props {
     seedIndex: number,
     roundIndex: number
   ) => void,
+  updateScoreModal: ReactElement
 }
 
 
@@ -24,6 +24,7 @@ export default function SingleBracketStateless(props: Props) {
     canEdit,
     rounds,
     openMatchEditModal,
+    updateScoreModal,
   } = props;
 
   const roundCount = rounds.length;
@@ -57,8 +58,7 @@ export default function SingleBracketStateless(props: Props) {
         }}
       />
 
-      {/* TODO: Make stateless */}
-      {canEdit && <UpdateScoreModal />}
+      {canEdit && <>{updateScoreModal}</>}
     </>
   );
 };
