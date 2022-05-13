@@ -1382,7 +1382,6 @@ export type MutationBecomeOurSponsorArgs = {
 
 
 export type MutationCheckInTournamentArgs = {
-  team_uid: Scalars['String'];
   tournament_uid: Scalars['String'];
 };
 
@@ -1400,6 +1399,7 @@ export type MutationClaimPrizePoolArgs = {
 
 
 export type MutationClaimPrizeSystemArgs = {
+  address: Scalars['String'];
   tournament_uid: Scalars['String'];
 };
 
@@ -2143,6 +2143,7 @@ export type SponsorTransaction = {
   __typename?: 'SponsorTransaction';
   ads_link?: Maybe<Scalars['String']>;
   amount: Scalars['Decimal'];
+  chain_symbol?: Maybe<ChainSymbol>;
   created_at: Scalars['DateTime'];
   home_page?: Maybe<Scalars['String']>;
   logo?: Maybe<Scalars['String']>;
@@ -2151,6 +2152,7 @@ export type SponsorTransaction = {
   sponsor_slot: SponsorSlot;
   sponsor_slot_uid: Scalars['String'];
   sponsor_type?: Maybe<SponsorTransactionType>;
+  status?: Maybe<TransactionStatus>;
   tx_hash?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -2161,10 +2163,12 @@ export type SponsorTransaction = {
 export type SponsorTransactionCreateInputGql = {
   ads_link?: InputMaybe<Scalars['String']>;
   amount: Scalars['Float'];
+  chain_symbol?: InputMaybe<ChainSymbol>;
   home_page?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   order?: InputMaybe<Scalars['Int']>;
+  status?: InputMaybe<TransactionStatus>;
 };
 
 export type SponsorTransactionCreateManySponsorGql = {
@@ -2174,12 +2178,14 @@ export type SponsorTransactionCreateManySponsorGql = {
 export type SponsorTransactionCreateManySponsor_SlotInput = {
   ads_link?: InputMaybe<Scalars['String']>;
   amount: Scalars['Decimal'];
+  chain_symbol?: InputMaybe<ChainSymbol>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   home_page?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   order?: InputMaybe<Scalars['Int']>;
   sponsor_type?: InputMaybe<SponsorTransactionType>;
+  status?: InputMaybe<TransactionStatus>;
   tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2194,6 +2200,7 @@ export type SponsorTransactionCreateManySponsor_SlotInputEnvelope = {
 export type SponsorTransactionCreateManyUserInput = {
   ads_link?: InputMaybe<Scalars['String']>;
   amount: Scalars['Decimal'];
+  chain_symbol?: InputMaybe<ChainSymbol>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   home_page?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
@@ -2201,6 +2208,7 @@ export type SponsorTransactionCreateManyUserInput = {
   order?: InputMaybe<Scalars['Int']>;
   sponsor_slot_uid: Scalars['String'];
   sponsor_type?: InputMaybe<SponsorTransactionType>;
+  status?: InputMaybe<TransactionStatus>;
   tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2242,12 +2250,14 @@ export type SponsorTransactionCreateOrConnectWithoutUserInput = {
 export type SponsorTransactionCreateWithoutSponsor_SlotInput = {
   ads_link?: InputMaybe<Scalars['String']>;
   amount: Scalars['Decimal'];
+  chain_symbol?: InputMaybe<ChainSymbol>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   home_page?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   name: Scalars['String'];
   order?: InputMaybe<Scalars['Int']>;
   sponsor_type?: InputMaybe<SponsorTransactionType>;
+  status?: InputMaybe<TransactionStatus>;
   tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2257,6 +2267,7 @@ export type SponsorTransactionCreateWithoutSponsor_SlotInput = {
 export type SponsorTransactionCreateWithoutUserInput = {
   ads_link?: InputMaybe<Scalars['String']>;
   amount: Scalars['Decimal'];
+  chain_symbol?: InputMaybe<ChainSymbol>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   home_page?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
@@ -2264,6 +2275,7 @@ export type SponsorTransactionCreateWithoutUserInput = {
   order?: InputMaybe<Scalars['Int']>;
   sponsor_slot: SponsorSlotCreateNestedOneWithoutSponsor_TransactionsInput;
   sponsor_type?: InputMaybe<SponsorTransactionType>;
+  status?: InputMaybe<TransactionStatus>;
   tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;

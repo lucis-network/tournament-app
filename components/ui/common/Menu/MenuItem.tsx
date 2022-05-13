@@ -30,7 +30,8 @@ export type MenuItemType = {
   scrollTarget?: string, // CSS selector of target scroll
   onClick?: () => void,
   subMenu?: string | ReactElement,
-  disable?: boolean
+  disable?: boolean,
+  class?: object
 }
 
 export const MenuItem = (props: { item: MenuItemType }) => {
@@ -53,6 +54,7 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       whileHover={{ scale: 1.05 }}
       // whileTap={{ scale: 0.95 }}
       onClick={click}
+      style={props.item.class}
     >
       <div className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`} style={{ fontSize: "16px", lineHeight: '22px' }}>
         <a href={props.item.src ?? '/'} target="_blank" rel="noopener noreferrer">{props.item.text}</a>
