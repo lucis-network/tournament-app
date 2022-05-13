@@ -1,10 +1,9 @@
 import s from "./TournamentDetail.module.sass";
-import { Button, Col, Row, Spin, Tabs, message } from "antd";
+import { Col, Row, Spin, Tabs, message } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
-import Router, { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import { isClient } from "utils/DOM";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
@@ -22,6 +21,7 @@ import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 import { PopupConfirm } from "components/ui/tournament/detail/popup/PopupConfirm";
 import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
+import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 
 const { TabPane } = Tabs;
 
@@ -138,10 +138,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 			});
 	};
 
+
 	return (
 		<>
 			<div className={s.wrapper}>
 				<Banner cover={cover} />
+				<TournamentDetailMarquee />
 				<div className={`lucis-container ${s.group_button}`}>
 					{/* {unsubscribe && (
             <button key={"Subscribe"} onClick={handSubscribe}>
@@ -262,97 +264,96 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 					</Col>
 					<Col span={2}></Col>
 				</Row>
-
-        {/* ==== registration phase ====  */}
-        <div className={`lucis-container`}>
-          <RegistrationPhase
-            isJoin={isJoin}
-            isCheckin={isCheckin}
-            tournament={dataTournamentDetail}
-            tournamentId={tournamentId as string}
-            joinTournament={joinTournament}
-            dataBracket={dataBracket}
-            refetch={refetch}
-            refreshParticipant={refreshParticipant}
-            tournament_status={tournament_status as string}
-          />
-        </div>
-        {/* ===== sponsor ===== */}
-        <div className="lucis-container">
-          <TournamentDetailSponsor
-            tournamentId={tournamentId as string}
-            tournament_status={tournament_status as string}
-          />
-        </div>
-        {/* ===== end sponsor ===== */}
-
-        {/* ===== tabs ===== */}
-        <div className={`lucis-container ${s.container_Tabs}`}>
-          <Tabs defaultActiveKey="1">
-            <TabPane tab="Overview" key="1">
-              <Overview desc={desc as string} />
-            </TabPane>
-            <TabPane tab="Rules" key="2">
-              <Rules rules={rules as string} />
-            </TabPane>
-            <TabPane tab="Bracket" key="3">
-              <Brackets
-                dataBracket={dataBracket}
-                loadingBracket={loadingBracket}
-                refereeIds={referees ? referees.split(",") : []}
-              />
-            </TabPane>
-            <TabPane
-              tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
-              key="4"
-            >
-              <>
-                {tournament_status !== "CLOSED" && (
-                  <TableParticipant
-                    dataParticipants={dataParticipants}
-                    loading={loadingParticipant}
-                    tournamentId={tournamentId as string}
-                    currency={currency}
-                    tournament_status={tournament_status as string}
-                  />
-                )}
-
-                {tournament_status === "CLOSED" && (
-                  <ListRanks
-                    dataListRank={dataListRank}
-                    loading={loadingListRank}
-                    tournamentId={tournamentId as string}
-                    currency={currency}
-                  />
-                )}
-              </>
-            </TabPane>
-            <TabPane tab="Referees" key="5">
-              <Referees
-                dataRefereesDetail={dataRefereesDetail}
-                loadingReferees={loadingReferees}
-                tournamentId={tournamentId as string}
-                currency={currency}
-                tournament_status={tournament_status as string}
-              />
-            </TabPane>
-            <TabPane tab="Prizing" key="6">
-              <Prizing
-                dataPrizing={dataPrizing}
-                loadingPrizing={loadingPrizing}
-                currency={currency}
-              />
-            </TabPane>
-            <TabPane tab="Donation history" key="7">
-              <DonationHistory
-                dataDonation={dataDonation}
-                loadingDonation={loadingDonation}
-                currency={currency}
-                tournament={dataTournamentDetail}
-              />
-            </TabPane>
-          </Tabs>
-        </div>
+				<div className={s.bgCharacters}>
+					{/* ==== registration phase ====  */}
+					<div className={`lucis-container`}>
+						<RegistrationPhase
+							isJoin={isJoin}
+							isCheckin={isCheckin}
+							tournament={dataTournamentDetail}
+							tournamentId={tournamentId as string}
+							joinTournament={joinTournament}
+							dataBracket={dataBracket}
+							refetch={refetch}
+							refreshParticipant={refreshParticipant}
+							tournament_status={tournament_status as string}
+						/>
+					</div>
+					{/* ===== sponsor ===== */}
+					<div className="lucis-container">
+						<TournamentDetailSponsor
+							tournamentId={tournamentId as string}
+							tournament_status={tournament_status as string}
+						/>
+					</div>
+					{/* ===== end sponsor ===== */}
+				</div>
+				{/* ===== tabs ===== */}
+				<div className={`lucis-container ${s.container_Tabs}`}>
+					<Tabs defaultActiveKey="1">
+						<TabPane tab="Overview" key="1">
+							<Overview desc={desc as string} />
+						</TabPane>
+						<TabPane tab="Rules" key="2">
+							<Rules rules={rules as string} />
+						</TabPane>
+						<TabPane tab="Bracket" key="3">
+							<Brackets
+								dataBracket={dataBracket}
+								loadingBracket={loadingBracket}
+								refereeIds={referees ? referees.split(",") : []}
+							/>
+						</TabPane>
+						<TabPane
+							tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
+							key="4"
+						>
+							<>
+								{tournament_status !== "CLOSED" && (
+									<TableParticipant
+										dataParticipants={dataParticipants}
+										loading={loadingParticipant}
+										tournamentId={tournamentId as string}
+										currency={currency}
+										tournament_status={tournament_status as string}
+									/>
+								)}
+								{tournament_status === "CLOSED" && (
+									<ListRanks
+										dataListRank={dataListRank}
+										loading={loadingListRank}
+										tournamentId={tournamentId as string}
+										currency={currency}
+									/>
+								)}
+							</>
+						</TabPane>
+						<TabPane tab="Referees" key="5">
+							<Referees
+								dataRefereesDetail={dataRefereesDetail}
+								loadingReferees={loadingReferees}
+								tournamentId={tournamentId as string}
+								currency={currency}
+								tournament_status={tournament_status as string}
+							/>
+						</TabPane>
+						<TabPane tab="Prizing" key="6">
+							<Prizing
+								dataPrizing={dataPrizing}
+								loadingPrizing={loadingPrizing}
+								currency={currency}
+							/>
+						</TabPane>
+						<TabPane tab="Donation history" key="7">
+							<DonationHistory
+								dataDonation={dataDonation}
+								loadingDonation={loadingDonation}
+								currency={currency}
+								tournament={dataTournamentDetail}
+							/>
+						</TabPane>
+					</Tabs>
+				</div>
 
 				<div className={s.communityC}></div>
 				<PopupDonate
