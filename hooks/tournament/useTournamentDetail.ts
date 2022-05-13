@@ -121,7 +121,7 @@ export function useTournamentDetail(props: Props) {
     dataDonation: dataDonation?.donateHistory,
     dataIsCheckin: dataIsCheckin?.isCheckInTournament,
     dataIsubscribeToTournament: dataIsubscribeToTournament,
-
+    loadingJoinTournament: loadingJoinTournament,
     joinTournament,
     refreshIsJoin,
     refreshIsCheckin,

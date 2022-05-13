@@ -1,5 +1,7 @@
 .container
   position: relative
+  display: flex
+  align-items: center
   @media (max-width: 991px)
     flex-direction: column
     align-items: flex-start
@@ -16,7 +18,7 @@
     line-height: 115%
     display: flex
     align-items: center
-
+    margin-bottom: 16px
     .ic
       display: flex
       align-items: center
@@ -34,9 +36,13 @@
       padding-right: 12px
       @media (max-width: 413px)
         padding-right: 0px
-  :global(.ant-select)
+  :global(.ant-select),
+  .m
     margin-right: 16px
     margin-bottom: 16px
+    @media (max-width: 414px)
+      margin-right: 10px
+
   :global(.ant-select-single .ant-select-selector .ant-select-selection-item)
     display: flex
     align-items: center
