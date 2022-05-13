@@ -3,19 +3,32 @@ import { useState } from "react";
 import InfoMyProfile from "components/ui/tournament/myProfile/infoProfile/Info";
 import EditProfile from "components/ui/tournament/myProfile/editMyProfile/EditProfile";
 import ContentMyProfile from "../../components/ui/tournament/myProfile/content/ContentMyProfile";
+import {useGetUserProfile} from "../../hooks/myProfile/useMyProfile";
+import AuthStore from "../../components/Auth/AuthStore";
+
+const localUserInfo = AuthStore;
 
 const MyProfile = () => {
+	const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData} = useGetUserProfile({
+		user_id: `${localUserInfo.id}`
+	})
 	const [isShowEdit, setIsShowEdit] = useState(false);
+
+	if (loadingUserProfile) return null
+
 	const handleClick = () => {
 		setIsShowEdit(!isShowEdit);
 	};
 	return (
 		<div className={s.wapper_profile}>
 			{/* Content */}
-			<InfoMyProfile click={handleClick} />
-
+			<InfoMyProfile click={handleClick} userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} isOwner />
 			<div className="lucis-container">
-				{isShowEdit ? <EditProfile /> : <ContentMyProfile isOwner />}
+				{
+					isShowEdit ?
+						<EditProfile userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} /> :
+						<ContentMyProfile userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} isOwner />
+				}
 			</div>
 		</div>
 	);

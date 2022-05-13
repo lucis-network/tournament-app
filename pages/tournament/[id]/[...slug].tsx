@@ -29,14 +29,15 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const { tournamentId, asPath } = props;
   const [isLoadingSub, setIsLoadingSub] = useState(false);
 
-  const {
-    dataTournamentDetail,
-    dataParticipants,
-    dataRefereesDetail,
-    dataPrizing,
-    dataBracket,
-    dataIsJoin: isJoin,
-    dataDonation,
+	const {
+		dataTournamentDetail,
+		dataParticipants,
+		dataRefereesDetail,
+		dataPrizing,
+		dataBracket,
+		dataIsJoin: isJoin,
+		dataIsCheckin: isCheckin,
+		dataDonation,
 
     loading,
     loadingParticipant,
@@ -91,7 +92,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     additionPrize,
     cache_tournament,
     tournament_status,
-  } = dataTournamentDetail;
+		referees,
+  } = dataTournamentDetail ?? {};
 
   const handSubscribe = () => {
     setIsLoadingSub(true);
@@ -127,7 +129,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           )}
           {subscribe && (
             <button key={"Subscribe"} onClick={handUnsubscribe}>
-              Subscribe 
+              Subscribe
             </button>
           )} */}
           {dataIsubscribeToTournament?.IsSubscribeToTournament && (
@@ -150,7 +152,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               Donate
             </button>
           )}
-          
+
           <button
             key={"InviteorShare"}
             onClick={() => openModal("Invite or Share")}
@@ -234,6 +236,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <div className={`lucis-container`}>
           <RegistrationPhase
             isJoin={isJoin}
+						isCheckin={isCheckin}
             tournament={dataTournamentDetail}
             tournamentId={tournamentId as string}
             joinTournament={joinTournament}
@@ -324,7 +327,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
         <ConnectWalletModal />
         <ClaimResultModal
-          totalPrizePool={totalPrizePool}
+          totalPrizePool={totalPrizePool as number}
           currency={currency}
           name={name}
         />

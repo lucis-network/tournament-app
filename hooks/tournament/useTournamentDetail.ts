@@ -5,13 +5,43 @@ import {
   useMutation,
   useQuery,
 } from "@apollo/client";
-import { SponsorSlot } from "src/generated/graphql";
+import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
 type Props = {
   tournament_uid?: string;
 };
 
-export function useTournamentDetail(props: Props) {
+export function useTournamentDetail(props: Props): {
+  loading: boolean,
+  loadingParticipant: boolean,
+  loadingReferees: boolean,
+  loadingPrizing: boolean,
+  loadingBracket: boolean,
+  loadingIsJoin: boolean,
+	loadingIsCheckin: boolean,
+	loadingDonation: boolean,
+
+  error: any,
+  errorParticipant: any,
+  errorReferees: any,
+  errorPrizing: any,
+  errorBracket: any,
+  errorIsJoin: any,
+	errorIsCheckin: any,
+	errorDonation: any,
+
+  dataTournamentDetail: TournamentGql | undefined,
+  dataParticipants: any,
+  dataRefereesDetail: any,
+  dataPrizing: any,
+  dataBracket: any,
+  dataIsJoin: any,
+  joinTournament: any,
+  refetch: any,
+  refreshParticipant: any,
+	dataDonation: any,
+	dataIsCheckin: any,
+} {
   const {
     loading,
     error,
@@ -58,13 +88,23 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "cache-and-network",
   });
 
-  const {
-    loading: loadingIsJoin,
-    error: errorIsJoin,
-    data: dataIsJoin,
-  } = useQuery(IS_JOIN_TOURNAMENT, {
-    variables: { tournament_uid: props?.tournament_uid },
-  });
+	const {
+		loading: loadingIsJoin,
+		error: errorIsJoin,
+		data: dataIsJoin,
+		refetch: refreshIsJoin,
+	} = useQuery(IS_JOIN_TOURNAMENT, {
+		variables: { tournament_uid: props?.tournament_uid },
+	});
+
+	const {
+		loading: loadingIsCheckin,
+		error: errorIsCheckin,
+		data: dataIsCheckin,
+		refetch: refreshIsCheckin,
+	} = useQuery(IS_CHECKIN_TOURNAMENT, {
+		variables: { tournament_uid: props?.tournament_uid },
+	});
 
   const {
     loading: loadingDonation,
@@ -75,45 +115,46 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "network-only",
   });
 
-  const { data: dataIsubscribeToTournament, refetch: refetchSubTournament } = useQuery(
-    IS_SUBSCRIBE_TOURNAMENT,
-    {
-      variables: { tournament_uid: props?.tournament_uid },
-    }
-  );
+	const [joinTournament, { loading: loadingJoinTournament }] =
+		useMutation(JOIN_TOURNAMENT);
 
-  const [joinTournament] = useMutation(JOIN_TOURNAMENT);
+	return {
+		loading,
+		loadingParticipant,
+		loadingReferees,
+		loadingPrizing,
+		loadingBracket,
+		loadingIsJoin,
+		loadingDonation,
+		loadingIsCheckin,
+		loadingJoinTournament,
 
-  return {
-    loading,
-    loadingParticipant,
-    loadingReferees,
-    loadingPrizing,
-    loadingBracket,
-    loadingIsJoin,
-    loadingDonation,
+		error,
+		errorParticipant,
+		errorReferees,
+		errorPrizing,
+		errorBracket,
+		errorIsJoin,
+		errorIsCheckin,
+		errorDonation,
 
-    error,
-    errorParticipant,
-    errorReferees,
-    errorPrizing,
-    errorBracket,
-    errorIsJoin,
-    errorDonation,
-
-    dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
-    dataParticipants: dataParticipants?.getTournamentParticipants,
-    dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
-    dataPrizing: dataPrizing?.getTournamentPrizing,
-    dataBracket: dataBracket?.getBracket,
-    dataIsJoin: dataIsJoin?.isJoinedTournament,
-    dataDonation: dataDonation?.donateHistory,
+		dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
+		dataParticipants: dataParticipants?.getTournamentParticipants,
+		dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
+		dataPrizing: dataPrizing?.getTournamentPrizing,
+		dataBracket: dataBracket?.getBracket,
+		dataIsJoin: dataIsJoin?.isJoinedTournament,
+		dataDonation: dataDonation?.donateHistory,
+		dataIsCheckin: dataIsCheckin?.isCheckInTournament,
     dataIsubscribeToTournament: dataIsubscribeToTournament,
-    joinTournament,
-    refetch,
-    refreshParticipant,
+
+		joinTournament,
+		refreshIsJoin,
+		refreshIsCheckin,
+		refetch,
+		refreshParticipant,
     refetchSubTournament
-  };
+	};
 }
 
 export function useTournamentBracket(tournament_uid: string) {
@@ -187,6 +228,7 @@ const GET_TOURNAMENT_DETAIL = gql`
       participants
       desc
       rules
+      referees
       game {
         name
         logo
@@ -349,6 +391,12 @@ const IS_JOIN_TOURNAMENT = gql`
   query isJoinedTournament($tournament_uid: String!) {
     isJoinedTournament(tournament_uid: $tournament_uid)
   }
+`;
+
+const IS_CHECKIN_TOURNAMENT = gql`
+	query isCheckInTournament($tournament_uid: String!) {
+		isCheckInTournament(tournament_uid: $tournament_uid)
+	}
 `;
 
 const GET_DONATION_HISTORY = gql`

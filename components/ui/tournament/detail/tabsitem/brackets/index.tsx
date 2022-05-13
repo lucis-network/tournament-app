@@ -10,11 +10,12 @@ import FormItemLabel from "antd/lib/form/FormItemLabel";
 import { observer } from "mobx-react-lite";
 import { BracketUiProps, createRounds } from "./BracketUtil";
 import { BracketRound } from "../../../../../../src/generated/graphql";
+import AuthStore from "../../../../../Auth/AuthStore";
 
 
 
 
-const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
+const BracketUI = ({ dataBracket, loadingBracket, refereeIds }: BracketUiProps) => {
   console.log('{BracketUI} dataBracket: ', dataBracket);
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
   const isSingleBracket = dataBracket.type === "SINGLE";
 
   // isRefereeOfThisTour
-  const canEditMatch = true;
+  const canEditMatch = (AuthStore.id ? AuthStore.id.toString() : '') in refereeIds;
 
   return (
     <div className={s.bracketContainer}>
@@ -78,9 +79,9 @@ const BracketUI = ({ dataBracket, loadingBracket }: BracketUiProps) => {
       />}
 
       {isSingleBracket ? (
-        <SingleBracket canEdit={true} />
+        <SingleBracket canEdit={canEditMatch} />
       ) : (
-        <DoubleBracket canEdit={true} />
+        <DoubleBracket canEdit={canEditMatch} />
       )}
     </div>
   );

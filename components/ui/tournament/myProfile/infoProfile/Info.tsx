@@ -1,18 +1,16 @@
 import s from "./Info.module.sass";
-import AuthStore from "../../../../Auth/AuthStore";
-import {getLocalAuthInfo} from "../../../../Auth/AuthLocal";
-import {Image} from "antd";
 import {observer} from "mobx-react-lite";
-import {useRouter} from "next/router";
+import {UserGraphql} from "../../../../../src/generated/graphql";
+import {ApolloQueryResult} from "@apollo/client";
 
-type Props = {
-  click: () => void;
+type InfoMyProfileProps = {
+  click?: () => void;
+  userInfo: UserGraphql,
+  getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>,
+  isOwner?: boolean,
 };
-export default observer(function InfoMyProfile(props: Props) {
-  const router = useRouter();
-  const { id } = router.query || AuthStore;
-  const userInfo = AuthStore;
 
+export default observer(function InfoMyProfile({ click, userInfo, getUserProfileRefetch, isOwner }: InfoMyProfileProps) {
   return (
     <div className={s.container}>
       <div
@@ -34,7 +32,7 @@ export default observer(function InfoMyProfile(props: Props) {
           </div>
         </div>
         <div className={s.user_information_right}>
-          <button onClick={props.click}>Edit Profile</button>
+          {isOwner && <button onClick={click}>Edit Profile</button>}
         </div>
       </div>
     </div>

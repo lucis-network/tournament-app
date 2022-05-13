@@ -8,41 +8,43 @@ import {
 	useGetJoinedTournament,
 } from "../../../../../../hooks/myProfile/useMyProfile";
 import MyTournamentList from "../myTournament/MyTournamentList";
-import React, {EffectCallback, useEffect, useState} from "react";
-import AuthStore, { AuthUser } from "../../../../../Auth/AuthStore";
-import { useMutation, useQuery } from "@apollo/client";
+import React, {useEffect, useState} from "react";
+import {ApolloQueryResult, useMutation, useQuery} from "@apollo/client";
 import { GET_USER_TEAMS } from "../../../../common/tabsItem/myTeamDetail/myTeamService";
-import { UserTeam } from "../../../../../../src/generated/graphql";
+import {UserGraphql, UserTeam} from "../../../../../../src/generated/graphql";
 import { observer } from "mobx-react-lite";
 import ConnectWalletStore from "../../../../../Auth/ConnectWalletStore";
 import MyProfileStore from "../../../../../../src/store/MyProfileStore";
 import AddFavoriteGameModal from "./AddFavoriteGameModal";
 import {DeleteOutlined, PlusCircleOutlined} from "@ant-design/icons";
+import Link from "next/link";
+import {isEmpty} from "lodash";
 
-export default observer(function MyOverview() {
-	const userInfo = AuthStore;
+type MyOverviewProps = {
+	isOwner?: boolean,
+	userInfo: UserGraphql,
+	getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>,
+}
 
-	if (!userInfo.id) return null;
-
-	return <UserOverview userInfo={userInfo} />;
-});
-
-export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
+export default observer(function MyOverview({ isOwner, userInfo, getUserProfileRefetch }: MyOverviewProps) {
 	const [gameToDelete, setGameToDelete] = useState<string>('');
 	const { joinedTournamentData } = useGetJoinedTournament({
-		user_id: `${userInfo.id}`,
+		user_id: `${userInfo?.id}`,
+		skip: isEmpty(userInfo?.id),
 	});
 	const { data: getUserTeamsData } = useQuery(GET_USER_TEAMS, {
 		variables: {
-			user_id: `${userInfo.id}`,
+			user_id: `${userInfo?.id}`,
 		},
+		skip: isEmpty(userInfo?.id),
 	});
 	const [addFavoriteGame] = useMutation(ADD_FAVORITE_GAME);
 	const {deleteFavoriteGame} = useDeleteFavoriteGame({
 		game_uid: gameToDelete
 	});
 	const { refetch: refetchFavoriteGameData, getFavoriteGameData } = useGetFavoriteGame({
-		user_id: `${userInfo.id}`,
+		user_id: `${userInfo?.id}`,
+		skip: isEmpty(userInfo?.id),
 	});
 	const [favoriteGameIDs, setFavoriteGameIDs] = useState<string[]>([]);
 
@@ -60,7 +62,6 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 
 	const handleAddFavoriteGame = () => {
 		MyProfileStore.chooseGameModalVisible = true;
-		console.log(1)
 	};
 
 	const handleDeleteGame = (game_uid: string) => {
@@ -86,30 +87,30 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 	const userSocial = [
 		{
 			name: "discord",
-			link: userInfo.profile?.discord,
+			link: userInfo?.profile?.discord,
 			logo: "/assets/footer/dis.svg",
 		},
 		{
 			name: "facebook",
-			link: userInfo.profile?.facebook,
+			link: userInfo?.profile?.facebook,
 			logo: "/assets/footer/fb.svg",
 		},
 		{
 			name: "twitch",
-			link: userInfo.profile?.twitch,
+			link: userInfo?.profile?.twitch,
 			logo: "/assets/footer/twitch.svg",
 		},
 		{
 			name: "twitter",
-			link: userInfo.profile?.twitter,
+			link: userInfo?.profile?.twitter,
 			logo: "/assets/footer/tw.svg",
 		},
 		{
 			name: "youtube",
-			link: userInfo.profile?.youtube,
+			link: userInfo?.profile?.youtube,
 			logo: "/assets/footer/ytb.svg",
 		},
-	].filter((item) => item.link);
+	].filter((item) => !isEmpty(item.link));
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -124,7 +125,6 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 					message.error('Error deleting favorite game.');
 				})
 		}
-		console.log(isSubscribed);
 		return () => {
 			isSubscribed = false;
 		}
@@ -179,25 +179,29 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 										<Image src={`${item.game.logo}`} preview={false} alt="" />
 									</div>
 									<p>{item.game.name}</p>
-									<Popconfirm
-										title="Are you sure to delete this game?"
-										onConfirm={() => handleDeleteGame(item.game.uid)}
-										okText="Yes"
-										cancelText="No"
-									>
-										<button className={s.deleteFavoriteGameBtn}>
-											<DeleteOutlined />
-										</button>
-									</Popconfirm>
+									{isOwner && (
+										<Popconfirm
+											title="Are you sure to delete this game?"
+											onConfirm={() => handleDeleteGame(item.game.uid)}
+											okText="Yes"
+											cancelText="No"
+										>
+											<button className={s.deleteFavoriteGameBtn}>
+												<DeleteOutlined />
+											</button>
+										</Popconfirm>
+									)}
 								</div>
 							))}
-						<div
-							className={s.add_favorite_game}
-							onClick={handleAddFavoriteGame}
-						>
-							<PlusCircleOutlined />
-							<p className="mb-0 ml-2">Add favorite game</p>
-						</div>
+						{isOwner && (
+							<div
+								className={s.add_favorite_game}
+								onClick={handleAddFavoriteGame}
+							>
+								<PlusCircleOutlined />
+								<p className="mb-0 ml-2">Add favorite game</p>
+							</div>
+						)}
 					</div>
 				</Col>
 
@@ -209,7 +213,7 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 					<div className={s.biography}>
 						<p>Biography</p>
 						<div className={s.des}>
-							{userInfo.profile?.biography ?? "No biography"}
+							{userInfo?.profile?.biography ?? "No biography"}
 						</div>
 					</div>
 					<div className={s.social}>
@@ -218,13 +222,14 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 							{userSocial.length > 0 ? (
 								userSocial.map((item) => (
 									<div key={item.name} className={s.ic_item}>
-										<a
-											href={item.link}
-											target="_blank"
-											rel="noopener noreferrer"
+										<Link
+											href={`${item.link}`}
+											passHref
 										>
-											<Image src={item.logo} preview={false} />
-										</a>
+											<a target="_blank">
+												<Image src={item.logo} preview={false} />
+											</a>
+										</Link>
 									</div>
 								))
 							) : (
@@ -250,7 +255,10 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 										More
 									</Button>
 								</>
-							) : <div className="text-left ">Haven&apos;t joined any team yet.</div>}
+							) : <div className="text-center">
+								No Teams<br />
+								{userInfo?.profile?.user_name} isn&apos;t part of any teams yet.
+							</div>}
 						</div>
 					</div>
 					{ConnectWalletStore.address && (
@@ -271,4 +279,4 @@ export function UserOverview({ userInfo }: { userInfo: AuthUser }) {
 			<AddFavoriteGameModal handleCallbackAddGame={handleCallbackChooseGame} favoriteGameIDs={favoriteGameIDs} />
 		</>
 	);
-}
+});

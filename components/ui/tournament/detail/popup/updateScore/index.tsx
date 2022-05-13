@@ -72,7 +72,7 @@ const UpdateScoreModal = (props: Props) => {
       handleGraphqlErrors(e, (code, message) => {
         switch (code) {
           case 'MATCH_COMPLETE':
-            antd_message.error('Cannot update due to the match is complete');
+            antd_message.error('Cannot update due to the match was completed', 10);
             break;
           case CommonError.Network:
           case 'BAD_USER_INPUT':
