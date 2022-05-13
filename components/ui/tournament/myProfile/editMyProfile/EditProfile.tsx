@@ -98,9 +98,9 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           discord: {
             set: result.discord ?? ''
           },
-          // youtube: {
-          //   set: result.youtube ?? ''
-          // },
+          youtube: {
+            set: result.youtube ?? ''
+          },
           phone: {
             set: result.phone ?? ''
           },
@@ -165,6 +165,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           telegram: userInfo?.profile?.telegram ?? '',
           twitch: userInfo?.profile?.twitch ?? '',
           discord: userInfo?.profile?.discord ?? '',
+          youtube: userInfo?.profile?.youtube ?? '',
           dial_code: userInfo?.profile?.country_code ?? '',
         }}
       >

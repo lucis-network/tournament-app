@@ -5,7 +5,7 @@ import {
 	ADD_FAVORITE_GAME,
 	useDeleteFavoriteGame,
 	useGetFavoriteGame,
-	useGetJoinedTournament,
+	useGetJoinedTournament, useGetTotalEarning,
 } from "../../../../../../hooks/myProfile/useMyProfile";
 import MyTournamentList from "../myTournament/MyTournamentList";
 import React, {useEffect, useState} from "react";
@@ -43,6 +43,10 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 		game_uid: gameToDelete
 	});
 	const { refetch: refetchFavoriteGameData, getFavoriteGameData } = useGetFavoriteGame({
+		user_id: `${userInfo?.id}`,
+		skip: isEmpty(userInfo?.id),
+	});
+	const { getTotalEarningData } = useGetTotalEarning({
 		user_id: `${userInfo?.id}`,
 		skip: isEmpty(userInfo?.id),
 	});
@@ -157,6 +161,7 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 									<MyTournamentList
 										data={joinedTournamentData.getJoinedTournament}
 										type="joined"
+										maxItems={4}
 									/>
 								</div>
 								<Button
@@ -208,7 +213,7 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 				{/* content right */}
 				<Col span={6} className={s.container_right}>
 					<div className="mb-5">
-						<Button>Total earnings</Button>
+						<Button>Total earnings ${getTotalEarningData?.getTotalEarning}</Button>
 					</div>
 					<div className={s.biography}>
 						<p>Biography</p>
@@ -261,7 +266,7 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 							</div>}
 						</div>
 					</div>
-					{ConnectWalletStore.address && (
+					{(isOwner && ConnectWalletStore.address) && (
 						<div className={s.address}>
 							<p>Address</p>
 							<Input type="text" value={ConnectWalletStore.address} disabled />

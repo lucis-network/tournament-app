@@ -8,14 +8,19 @@ type MyTournamentListProps = {
   data: TTournament[],
   type: string,
   isOwner?: boolean,
+  maxItems?: number,
 }
 
 const MyTournamentList = (props: MyTournamentListProps) => {
-  const { data, type, isOwner } = props;
+  const { data, type, isOwner, maxItems } = props;
+  let newData = [...data];
+  if (maxItems) {
+    newData = newData.splice(0, maxItems);
+  }
 
   return (
     <div className={s.tournamentList}>
-      {data.length > 0 && data.map((item: TTournament) => {
+      {newData.length > 0 && newData.map((item: TTournament) => {
         return (
           <CardPlayed key={item.uid} tournament={item} type={type} isOwner={isOwner} />
         )

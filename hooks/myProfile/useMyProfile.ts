@@ -11,6 +11,7 @@ import {ProfileUpdateInput, TTournament, UserFavoriteGame, UserGraphql} from "..
 type UseSearchProps = {
   user_id: string,
   value: string,
+  skip?: boolean,
 };
 
 type UseGetJoinedTournamentProps = {
@@ -32,11 +33,19 @@ type UseVerifyEmailProps = {
 }
 
 type UseGetUserProfileProps = {
-  user_id: string
+  user_id?: string,
+  user_name?: string,
+  skip?: boolean,
 }
 
 type UseUpdateProfileProps = {
   data: ProfileUpdateInput
+}
+
+type UseGetTotalEarningProps = {
+  user_id: string,
+  skip?: boolean,
+  onCompleted?: (data: any) => void
 }
 
 export function useGetOwnedTournament(): {
@@ -93,7 +102,7 @@ export function useGetJoinedTournament({ user_id, skip }: UseGetJoinedTournament
   };
 }
 
-export function useSearchOwnedTournament({ user_id, value }: UseSearchProps): {
+export function useSearchOwnedTournament({ user_id, value, skip }: UseSearchProps): {
   loading: boolean;
   error: ApolloError | undefined;
   ownedTournamentData: {
@@ -107,8 +116,9 @@ export function useSearchOwnedTournament({ user_id, value }: UseSearchProps): {
   } = useQuery(SEARCH_OWNED_TOURNAMENT, {
     variables: {
       user_id: user_id,
-      value: value
+      value: value,
     },
+    skip: skip,
     fetchPolicy: "cache-and-network",
     onError: (error) => {
       console.log("error useSearchOwnedTournament: ", error);
@@ -122,7 +132,7 @@ export function useSearchOwnedTournament({ user_id, value }: UseSearchProps): {
   };
 }
 
-export function useSearchJoinedTournament({ user_id, value }: UseSearchProps): {
+export function useSearchJoinedTournament({ user_id, value, skip }: UseSearchProps): {
   loading: boolean;
   error: ApolloError | undefined;
   joinedTournamentData: {
@@ -138,6 +148,7 @@ export function useSearchJoinedTournament({ user_id, value }: UseSearchProps): {
       user_id: user_id,
       value: value,
     },
+    skip: skip,
     fetchPolicy: "cache-and-network",
     onError: (error) => {
       console.log("error useSearchJoinedTournament: ", error);
@@ -211,7 +222,7 @@ export function useVerifyEmail({ email }: UseVerifyEmailProps): {
   }
 }
 
-export function useGetUserProfile({ user_id }: UseGetUserProfileProps): {
+export function useGetUserProfile({ user_id, user_name, skip }: UseGetUserProfileProps): {
   loading: boolean;
   error: ApolloError | undefined;
   refetch: () => Promise<ApolloQueryResult<any>>;
@@ -226,8 +237,12 @@ export function useGetUserProfile({ user_id }: UseGetUserProfileProps): {
     data: getUserProfileData
   } = useQuery(GET_USER_PROFILE, {
     variables: {
-      user_id: user_id
-    }
+      input: {
+        user_id: user_id,
+        user_name: user_name,
+      }
+    },
+    skip: skip,
   });
 
   return {
@@ -251,6 +266,38 @@ export function useUpdateProfile({ data }: UseUpdateProfileProps): {
 
   return {
     updateProfile
+  }
+}
+
+export function useGetTotalEarning({ user_id, skip, onCompleted }: UseGetTotalEarningProps): {
+  loading: boolean;
+  error: ApolloError | undefined;
+  refetch: () => Promise<ApolloQueryResult<any>>;
+  getTotalEarningData: {
+    getTotalEarning: number,
+  };
+  onCompleted?: (data: any) => void
+} {
+
+  const {
+    loading,
+    error,
+    refetch,
+    data: getTotalEarningData,
+  } = useQuery(GET_TOTAL_EARNING, {
+    variables: {
+      user_id: user_id
+    },
+    skip: skip,
+    onCompleted: onCompleted
+  });
+
+  return {
+    loading,
+    error,
+    refetch,
+    getTotalEarningData,
+    onCompleted
   }
 }
 
@@ -349,8 +396,8 @@ export const VERIFY_EMAIL = gql`
 `
 
 export const GET_USER_PROFILE = gql`
-  query ($user_id: String!){
-    getUserProfile(user_id: $user_id) {
+  query ($input: UserProfileInput!){
+    getUserProfile(input: $input) {
       id
       email
       profile {
@@ -384,11 +431,18 @@ export const UPDATE_PROFILE = gql`
       telegram
       twitch
       discord
+      youtube
       phone
       avatar
       cover
       biography
       country_code
     }
+  }
+`
+
+export const GET_TOTAL_EARNING = gql`
+  query ($user_id: String!) {
+    getTotalEarning(user_id: $user_id)
   }
 `
