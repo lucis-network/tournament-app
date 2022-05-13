@@ -14,7 +14,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 export default function CardPlayed({ tournament, type, canEdit = false }: CardPlayedProps) {
   const tempDate = new Date(tournament?.start_at);
   const startAt = `${tempDate.getDate()} ${months[tempDate.getMonth()]} ${tempDate.getHours()}:${tempDate.getMinutes()}`;
-
+  console.log('check tournament',tournament);
   return (
     <div className={s.container_card}>
       <div className={s.card_avt}>
