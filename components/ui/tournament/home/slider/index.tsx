@@ -4,18 +4,22 @@ import { Carousel } from "antd";
 import { GTournament } from "src/generated/graphql";
 import { orderBy } from "lodash";
 import { useState } from "react";
+import { useRouter } from "next/router";
+import { slugify } from "utils/String";
 
 interface SliderBannerProps {
 	data: GTournament[];
 }
 
 export default function SilderBanner({ data }: SliderBannerProps) {
+	const router = useRouter();
 	const orderData: GTournament[] = orderBy(data, "spotlight_position", "asc");
-	const [uidTournament, setUidTournament] = useState('')
+	const [uidTournament, setUidTournament] = useState("");
 
-	const handleJoinDetail = (e: any) => {
-		console.log(e);
-	}
+	const handleJoinDetail = (dataTournament: GTournament) => {
+		const { uid, name } = dataTournament;
+		router.push(`/tournament/${uid}/${slugify(name)}`);
+	};
 	return (
 		<Carousel autoplay>
 			{orderData?.map((item) => (
@@ -50,7 +54,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
 										type={1}
 										className={`text-white text-16px leading-28px py-2 ${s.btn}`}
 										style={{ whiteSpace: "nowrap", fontWeight: "600" }}
-										onClick={()=> handleJoinDetail(item)}
+										onClick={() => handleJoinDetail(item)}
 									>
 										JOIN NOW
 									</GradientButton>
