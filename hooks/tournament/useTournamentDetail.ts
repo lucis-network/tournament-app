@@ -11,7 +11,7 @@ type Props = {
   tournament_uid?: string;
 };
 
-export function useTournamentDetail(props: Props){
+export function useTournamentDetail(props: Props) {
   const {
     loading,
     error,
@@ -26,7 +26,6 @@ export function useTournamentDetail(props: Props){
     loading: loadingParticipant,
     error: errorParticipant,
     data: dataParticipants,
-    
   } = useQuery(GET_PARTICIPANTS_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "no-cache",
@@ -192,22 +191,22 @@ const GET_PARTICIPANTS_DETAIL = gql`
   query ($tournament_uid: String!) {
     getTournamentParticipants(tournament_uid: $tournament_uid) {
       uid
-      name
-      avatar
-      BracketTeam {
+      bracket_uid
+      bracketTeamMembers {
         uid
-        bracket_uid
-        bracketTeamMembers {
-          uid
-          is_leader
-          user {
-            id
-            profile {
-              display_name
-              avatar
-            }
+        is_leader
+        user {
+          id
+          profile {
+            display_name
+            avatar
           }
         }
+      }
+      team {
+        uid
+        name
+        avatar
       }
     }
   }
@@ -295,6 +294,7 @@ const CLAIM_REWARD = gql`
       rank
       amount
       symbol
+      is_claim
     }
   }
 `;

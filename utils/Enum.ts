@@ -43,3 +43,5 @@ export const bracketValues = [
 	{ key: "SINGLE", value: "Single Elimination" },
 	{ key: "DOUBLE", value: "Double Elimination" },
 ];
+
+export const LINK_URL = "https://lucis-lp.koolab.io/"

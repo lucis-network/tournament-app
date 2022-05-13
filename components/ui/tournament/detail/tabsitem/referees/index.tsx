@@ -12,9 +12,16 @@ type Props = {
   loadingReferees: any;
   tournamentId: string;
   currency?: any;
+  tournament_status: string;
 };
 export default function Referees(props: Props) {
-  const { dataRefereesDetail, loadingReferees, tournamentId, currency } = props;
+  const {
+    dataRefereesDetail,
+    loadingReferees,
+    tournamentId,
+    currency,
+    tournament_status,
+  } = props;
   const [dataReferees, setDataReferees] = useState({});
   const [isPopUp, setIsPopUp] = useState(false);
 
@@ -72,9 +79,13 @@ export default function Referees(props: Props) {
       key: "donate",
       render: (_: any, item: any) => (
         <div>
-          <Button onClick={() => handleClickShowPopUp(item)} type="primary">
-            Donate
-          </Button>
+          {tournament_status !== "CLOSED" ? (
+            <Button onClick={() => handleClickShowPopUp(item)} type="primary">
+              Donate
+            </Button>
+          ) : (
+            ""
+          )}
         </div>
       ),
     },

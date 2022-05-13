@@ -17,6 +17,7 @@ export default function ModalDonateTeam(props: Props) {
   const [newData, setNewData] = useState({});
   const [types, setTypes] = useState("");
 
+  console.log("nameTeam", nameTeam);
   const handlButtonMember = (datas: any) => {
     setIsPopUp(true);
     setNewData(datas);
@@ -65,13 +66,13 @@ export default function ModalDonateTeam(props: Props) {
                 <img
                   className={s.avt}
                   src={`${
-                    nameTeam?.avatar || "/assets/MyProfile/defaultAvatar.png"
+                    nameTeam?.team?.avatar || "/assets/MyProfile/defaultAvatar.png"
                   }`}
                   alt=""
                 />
               </Col>
               <Col span={10} className={s.name_team}>
-                <p>{nameTeam?.name}</p>
+                <p>{nameTeam?.team?.name}</p>
                 <span>{quantityMember}</span>
               </Col>
               <Col span={10}>
@@ -89,8 +90,8 @@ export default function ModalDonateTeam(props: Props) {
             <div className={s.Member}>
               <h1>Member</h1>
 
-              {nameTeam?.BracketTeam
-                ? nameTeam?.BracketTeam[0]?.bracketTeamMembers?.map(
+              {nameTeam?.bracketTeamMembers
+                ? nameTeam?.bracketTeamMembers?.map(
                     (item: any) => (
                       <Row key={item?.uid} className={s.container}>
                         <Col span={18} className={s.item_member}>

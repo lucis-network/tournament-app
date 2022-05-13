@@ -22,6 +22,7 @@ type Props = {
   joinTournament: any;
   dataBracket: any;
   refetch: () => Promise<ApolloQueryResult<any>>;
+  tournament_status?: any;
 };
 
 type Reward = {
@@ -51,7 +52,7 @@ export default observer(function RegistrationPhase(props: Props) {
     cache_tournament,
   } = props.tournament;
 
-  const { tournamentId, dataBracket, refetch } = props;
+  const { tournamentId, refetch } = props;
 
   const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
     useTeamModal(props);
@@ -68,22 +69,6 @@ export default observer(function RegistrationPhase(props: Props) {
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
   const [dataDonation, setDataDonation] = useState<Reward[]>();
   const [totalFromDonation, setTotalFromDonation] = useState(0);
-
-  useEffect(() => {
-    getCurrentTime();
-  });
-
-  const getCurrentTime = () => {
-    // console.log("dataBracket", dataBracket);
-    // const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    // console.log("tzid", tzid);
-    // const dateNow = timeMoment().tz(tzid).unix();
-    // const timeStart = timeMoment(dataBracket.start_at).tz(tzid).unix();
-    // console.log("dateNow", dateNow);
-    // console.log("timeStart", timeStart);
-    // const time = (timeStart - dateNow) * 1000;
-
-  };
 
   useEffect(() => {
     let arr: Array<Reward> = [];
@@ -198,11 +183,15 @@ export default observer(function RegistrationPhase(props: Props) {
         </div>
         <div className={s.footer}>
           <div className={s.prizes}>
-            <span>Additional prizes</span>
             {additionPrize ? (
-              <span>
-                {fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
-              </span>
+              <div>
+                {" "}
+                <span>Additional prizes</span>
+                <br></br>
+                <span>
+                  {fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
+                </span>
+              </div>
             ) : (
               ""
             )}
@@ -243,10 +232,19 @@ export default observer(function RegistrationPhase(props: Props) {
                 return (
                   <>
                     <div className={s.join}>
-                      <p>YOUR REWARDS</p>
+                      {(dataPrize?.amount && dataPrize?.amount > 0) ||
+                      (dataSystemPrize?.amount &&
+                        dataSystemPrize?.amount > 0) ? (
+                        <p>YOUR REWARDS</p>
+                      ) : (
+                        ""
+                      )}
                       <div className={s.rewards}>
                         <div>
-                          <div>Prize</div>
+                          {(dataPrize?.amount && dataPrize?.amount > 0) ||
+                            (dataSystemPrize?.amount &&
+                              dataSystemPrize?.amount > 0) ||
+                            (totalFromDonation > 0 && <div>Prize</div>)}
                           <div>
                             {dataPrize?.amount ? (
                               dataPrize?.amount > 0 ? (
@@ -295,11 +293,11 @@ export default observer(function RegistrationPhase(props: Props) {
                           </div>
                         </div>
                         <div>
-                          <p>From Donation</p>
                           <div>
                             {totalFromDonation ? (
                               totalFromDonation > 0 ? (
                                 <>
+                                  <p>From Donation</p>
                                   {fomatNumber(totalFromDonation)}{" "}
                                   {dataPrize?.symbol}
                                   <br />
@@ -316,7 +314,13 @@ export default observer(function RegistrationPhase(props: Props) {
                           </div>
                         </div>
                       </div>
-                      <Button>Share my victory</Button>
+                      {(dataPrize?.amount && dataPrize?.amount > 0) ||
+                      (dataSystemPrize?.amount &&
+                        dataSystemPrize?.amount > 0) ? (
+                        <Button>Share my victory</Button>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </>
                 );

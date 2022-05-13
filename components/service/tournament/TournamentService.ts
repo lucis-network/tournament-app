@@ -130,6 +130,36 @@ export default class TournamentService {
 
     return donataResponse;
   }
+
+  public async subscribeToTournament(tournament_uid: string): Promise<any> {
+    const res = await apoloClient.mutate({
+      mutation: gql`
+        mutation subscribeToTournament($tournament_uid: String!) {
+          subscribeToTournament(tournament_uid: $tournament_uid)
+        }
+      `,
+      variables: {
+        tournament_uid: tournament_uid,
+      },
+    });
+
+    return res;
+  }
+
+  public async unsubscribeToTournament(tournament_uid: string): Promise<any> {
+    const res = await apoloClient.mutate({
+      mutation: gql`
+        mutation unsubscribeToTournament($tournament_uid: String!) {
+          unsubscribeToTournament(tournament_uid: $tournament_uid)
+        }
+      `,
+      variables: {
+        tournament_uid: tournament_uid,
+      },
+    });
+
+    return res;
+  }
 }
 
 export function setLocalCreateTournamentInfo(ct: CreateTournament): void {

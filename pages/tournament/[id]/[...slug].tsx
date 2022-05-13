@@ -18,15 +18,16 @@ import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/Tou
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 import { isClientDevMode } from "../../../utils/Env";
+import TournamentService from "components/service/tournament/TournamentService";
 
 const { TabPane } = Tabs;
 const ItemButton = ["Subscribe", "Donate", "Invite or Share"];
 
-const TournamentDetail = (props: { tournamentId: string }) => {
+const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
 
-  const { tournamentId } = props;
+  const { tournamentId, asPath } = props;
 
   const {
     dataTournamentDetail,
@@ -82,21 +83,35 @@ const TournamentDetail = (props: { tournamentId: string }) => {
     region,
     additionPrize,
     cache_tournament,
+    tournament_status,
   } = dataTournamentDetail;
+
+  const handSubscribe = () => {
+    const tournamentService = new TournamentService();
+    const sub = tournamentService
+      .subscribeToTournament(tournamentId)
+      .then((res) => {
+        console.log(res);
+      });
+  };
 
   return (
     <>
       <div className={s.wrapper}>
         <Banner cover={cover} />
         <div className={`lucis-container ${s.group_button}`}>
-          {ItemButton.map((item) => (
-            // <Button type="primary" key={item}>
-            //   {item}
-            // </Button>
-            <button key={item} onClick={() => openModal(item)}>
-              {item}
-            </button>
-          ))}
+          <button key={"Subscribe"} onClick={handSubscribe}>
+            Subscribe
+          </button>
+          <button key={"Donate"} onClick={() => openModal("Donate")}>
+            Donate
+          </button>
+          <button
+            key={"InviteorShare"}
+            onClick={() => openModal("Invite or Share")}
+          >
+            Invite or Share
+          </button>
         </div>
 
         <Row className={`lucis-container`}>
@@ -178,11 +193,15 @@ const TournamentDetail = (props: { tournamentId: string }) => {
             joinTournament={joinTournament}
             dataBracket={dataBracket}
             refetch={refetch}
+            tournament_status={tournament_status}
           />
         </div>
         {/* ===== sponsor ===== */}
         <div className="lucis-container">
-          <TournamentDetailSponsor tournamentId={tournamentId as string} />
+          <TournamentDetailSponsor
+            tournamentId={tournamentId as string}
+            tournament_status={tournament_status}
+          />
         </div>
         {/* ===== end sponsor ===== */}
 
@@ -210,6 +229,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
                 loading={loadingParticipant}
                 tournamentId={tournamentId as string}
                 currency={currency}
+                tournament_status={tournament_status}
               />
             </TabPane>
             <TabPane tab="Referees" key="5">
@@ -218,6 +238,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
                 loadingReferees={loadingReferees}
                 tournamentId={tournamentId as string}
                 currency={currency}
+                tournament_status={tournament_status}
               />
             </TabPane>
             <TabPane tab="Prizing" key="6">
@@ -243,6 +264,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
         <PopupShare
           closeModal={() => closeModal("Invite or Share")}
           status={isPopupShare}
+          asPath={asPath}
         />
 
         <ConnectWalletModal />
@@ -255,12 +277,13 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 export default function TournamentDetailSafe() {
   const router = useRouter();
   const { id } = router.query;
-
   if (!id) {
     if (isClientDevMode) {
       console.warn("{TournamentDetail} Hey tournamentId is NULL");
     }
   }
 
-  return id ? <TournamentDetail tournamentId={id as string} /> : null;
+  return id ? (
+    <TournamentDetail tournamentId={id as string} asPath={router.asPath} />
+  ) : null;
 }
