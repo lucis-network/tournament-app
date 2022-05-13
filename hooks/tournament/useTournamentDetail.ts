@@ -18,6 +18,8 @@ export function useTournamentDetail(props: Props): {
   loadingPrizing: boolean,
   loadingBracket: boolean,
   loadingIsJoin: boolean,
+	loadingIsCheckin: boolean,
+	loadingDonation: boolean,
 
   error: any,
   errorParticipant: any,
@@ -25,6 +27,8 @@ export function useTournamentDetail(props: Props): {
   errorPrizing: any,
   errorBracket: any,
   errorIsJoin: any,
+	errorIsCheckin: any,
+	errorDonation: any,
 
   dataTournamentDetail: TournamentGql | undefined,
   dataParticipants: any,
@@ -35,6 +39,8 @@ export function useTournamentDetail(props: Props): {
   joinTournament: any,
   refetch: any,
   refreshParticipant: any,
+	dataDonation: any,
+	dataIsCheckin: any,
 } {
   const {
     loading,
