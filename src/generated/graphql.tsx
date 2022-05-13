@@ -1677,6 +1677,7 @@ export type Query = {
   getUpComingTournament?: Maybe<Array<TournamentGql>>;
   getUserProfile?: Maybe<UserGraphql>;
   isCheckInTournament?: Maybe<Scalars['Boolean']>;
+  isJoinedTournament?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
   search?: Maybe<Array<TournamentGql>>;
@@ -1815,6 +1816,11 @@ export type QueryGetUserProfileArgs = {
 
 
 export type QueryIsCheckInTournamentArgs = {
+  tournament_uid: Scalars['String'];
+};
+
+
+export type QueryIsJoinedTournamentArgs = {
   tournament_uid: Scalars['String'];
 };
 

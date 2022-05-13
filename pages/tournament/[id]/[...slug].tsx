@@ -85,7 +85,8 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 		region,
 		additionPrize,
 		cache_tournament,
-	} = dataTournamentDetail;
+		referees,
+	} = dataTournamentDetail ?? {};
 
 	return (
 		<>
@@ -107,7 +108,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 						<div className={s.img_game}>
 							<img src={thumbnail} alt="" />
 						</div>
-						<h2>{game.name}</h2>
+						<h2>{game?.name}</h2>
 					</Col>
 
 					<Col span={16} className={s.content_center}>
@@ -195,15 +196,16 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 				<div className={`lucis-container ${s.container_Tabs}`}>
 					<Tabs defaultActiveKey="1">
 						<TabPane tab="Overview" key="1">
-							<Overview desc={desc} />
+							<Overview desc={desc as string} />
 						</TabPane>
 						<TabPane tab="Rules" key="2">
-							<Rules rules={rules} />
+							<Rules rules={rules as string} />
 						</TabPane>
 						<TabPane tab="Bracket" key="3">
 							<Brackets
 								dataBracket={dataBracket}
 								loadingBracket={loadingBracket}
+								refereeIds={referees ? referees.split(',') : []}
 							/>
 						</TabPane>
 						<TabPane
@@ -251,7 +253,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 				/>
 
 				<ConnectWalletModal />
-				<ClaimResultModal totalPrizePool={totalPrizePool} currency={currency} />
+				<ClaimResultModal totalPrizePool={totalPrizePool as number} currency={currency} />
 			</div>
 		</>
 	);

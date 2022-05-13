@@ -5,13 +5,37 @@ import {
   useMutation,
   useQuery,
 } from "@apollo/client";
-import { SponsorSlot } from "src/generated/graphql";
+import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
 type Props = {
   tournament_uid?: string;
 };
 
-export function useTournamentDetail(props: Props) {
+export function useTournamentDetail(props: Props): {
+  loading: boolean,
+  loadingParticipant: boolean,
+  loadingReferees: boolean,
+  loadingPrizing: boolean,
+  loadingBracket: boolean,
+  loadingIsJoin: boolean,
+
+  error: any,
+  errorParticipant: any,
+  errorReferees: any,
+  errorPrizing: any,
+  errorBracket: any,
+  errorIsJoin: any,
+
+  dataTournamentDetail: TournamentGql | undefined,
+  dataParticipants: any,
+  dataRefereesDetail: any,
+  dataPrizing: any,
+  dataBracket: any,
+  dataIsJoin: any,
+  joinTournament: any,
+  refetch: any,
+  refreshParticipant: any,
+} {
   const {
     loading,
     error,
@@ -167,6 +191,7 @@ const GET_TOURNAMENT_DETAIL = gql`
       participants
       desc
       rules
+      referees
       game {
         name
         logo

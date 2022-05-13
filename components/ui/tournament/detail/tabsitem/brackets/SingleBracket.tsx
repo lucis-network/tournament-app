@@ -67,7 +67,7 @@ const SingleBracket = (props: Props) => {
                   {team0 && team0.name ? team0.name : `bye`}
                 </div>
                 <div
-                  className={ss.score}
+                  className={`${ss.score} ${canEdit ? '' : ss.disabled }`}
                   onClick={(e) =>
                     handleOpenModal(e, match, seedIndex, roundIndex)
                   }
@@ -81,7 +81,7 @@ const SingleBracket = (props: Props) => {
                   {team1 && team1.name ? team1.name : `bye`}
                 </div>
                 <div
-                  className={`${ss.score} ${ss.score2}`}
+                  className={`${ss.score} ${ss.score2} ${canEdit ? '' : ss.disabled }`}
                   onClick={(e) =>
                     handleOpenModal(e, match, seedIndex, roundIndex)
                   }
