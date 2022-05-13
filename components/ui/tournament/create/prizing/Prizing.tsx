@@ -16,6 +16,7 @@ import Item from "antd/lib/list/Item";
 import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
 import { useLocalObservable } from "mobx-react";
 import { useCurrencies } from "hooks/tournament/useCreateTournament";
+import { currency } from "../../../../../utils/Number";
 
 const LUCIS_FEE = 10;
 const REFEREER_FEE = 1;
@@ -392,11 +393,11 @@ export default observer(function Prizing(props: Props) {
   });
 
   const totalPool = () => {
-    return (
+    return currency(
       poolSize +
       (poolSize * LUCIS_FEE) / 100 +
       (poolSize * REFEREER_FEE) / 100
-    ).toFixed(2);
+    );
   };
 
   return (
@@ -471,16 +472,16 @@ export default observer(function Prizing(props: Props) {
 
       <div className="pt-4">
         <Row>
-          <Col span={2}>
+          <Col span={3}>
             <p>Lucis fee</p>
           </Col>
           <Col span={2}></Col>
-          <Col span={2}>
+          <Col span={3}>
             <p>Referees fee</p>
           </Col>
         </Row>
         <Row>
-          <Col span={2}>
+          <Col span={3}>
             <Input
               prefix="$"
               //type="number"
@@ -489,7 +490,7 @@ export default observer(function Prizing(props: Props) {
             />
           </Col>
           <Col span={2}></Col>
-          <Col span={2}>
+          <Col span={3}>
             <Input
               prefix="$"
               //type="number"
@@ -497,10 +498,10 @@ export default observer(function Prizing(props: Props) {
               disabled
             />
           </Col>
-          <Col span={12}></Col>
+          <Col span={10}></Col>
           <Col span={6}>
-            <p>
-              Total : {totalPool()} {chain}
+            <p style={{fontSize: 'larger'}}>
+              Total paid: <b style={{color: 'orange'}}>{totalPool()} {chain}</b>
             </p>
           </Col>
         </Row>

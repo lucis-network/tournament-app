@@ -16,6 +16,7 @@ export function makeSeedComponent(
     seedIndex: number,
     roundIndex: number
   ) => void,
+  showFinalMatchRank: boolean = false,
 ) {
   const RenderSeed = ({
     seed,
@@ -28,10 +29,11 @@ export function makeSeedComponent(
     const team1 = match.teams[1];
     const isFinalRound = roundIndex >= roundCount - 1;
     const matchCompleted = match.status === BracketMatchStatus.Complete;
+    const showRankIco = showFinalMatchRank && isFinalRound && matchCompleted;
 
     let finalRankIcoTeam0 = null;
     let finalRankIcoTeam1 = null;
-    if (isFinalRound && matchCompleted && team0 && team1) {
+    if (showRankIco && team0 && team1) {
       const champion = <img className={ss.rankIco} src={`/assets/home/im_top1.png`} alt="" />
       const secondary = <img className={ss.rankIco} src={`/assets/home/im_top2.png`} alt="" />
       finalRankIcoTeam0 = team0.score > team1.score ? champion : secondary;
@@ -60,7 +62,7 @@ export function makeSeedComponent(
                 >
                   {team0 ? team0.score : "--"}
                 </div>
-                {isFinalRound && matchCompleted && <div className={ss.rank}>{finalRankIcoTeam0}</div>}
+                {showRankIco && <div className={ss.rank}>{finalRankIcoTeam0}</div>}
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
                 <Tooltip title={teamName1} color="#4e89a3" placement="left" trigger="click">
@@ -77,7 +79,7 @@ export function makeSeedComponent(
                 >
                   {team1 ? team1.score : "--"}
                 </div>
-                {isFinalRound && matchCompleted && <div className={ss.rank}>{finalRankIcoTeam1}</div>}
+                {showRankIco && <div className={ss.rank}>{finalRankIcoTeam1}</div>}
               </SeedTeam>
             </div>
           </SeedItem>

@@ -37,3 +37,22 @@
   font-size: 14px
   margin-top: 4px
   color: #cb3636
+
+.containerApp
+  :global(.ant-btn-default)
+    border-color: #767295
+  :global(.ant-table-container th),
+  :global(.ant-table-container td)
+    border-color: var(--line-color-light)!important
+  :global(.ant-table.ant-table-bordered > .ant-table-container)
+    border-color: var(--line-color-light)
+
+  :global(.ql-toolbar.ql-snow),
+  :global(.ql-container.ql-snow)
+    border-color: var(--line-color)
+  :global(.ql-snow .ql-stroke)
+    stroke: #fff
+  :global(.ql-snow .ql-picker-label::before)
+    color: #fff !important
+
+

@@ -1,5 +1,6 @@
-.bracketContainer 
-    margin-top: 20px
+.bracketContainer
+    padding-top: 50px
+    padding-bottom: 50px
     overflow: auto
     color: white
     & > :first-child
@@ -21,3 +22,26 @@
 .refereeNotice
     margin-bottom: 30px
     font-size: 16px
+
+.lucisDoubleBracket
+    display: flex
+    gap: 20px
+.lucisFinalRounds
+    display: flex
+    position: relative
+    div.rbg
+        position: absolute
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        overflow: hidden
+        img
+            opacity: 0.15
+            height: 100%
+            width: auto
+            max-width: initial
+            position: absolute
+            right: -50%
+.loseRoundSpacer
+    height: 50px

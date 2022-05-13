@@ -79,7 +79,7 @@ const BracketUI = ({ dataBracket, loadingBracket, refereeIds }: BracketUiProps) 
         message="NOTE: You are selected to be a referee of this match so you can update the match results"
       />}
 
-      <div className={s.bracketContainer}>
+      <div className={`${s.bracketContainer} has-scrollbar`}>
         {isSingleBracket ? (
           <SingleBracket canEdit={canEditMatch} />
         ) : (

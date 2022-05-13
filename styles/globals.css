@@ -30,6 +30,8 @@ body {
 
 html {
   background-color: #000031;
+  --line-color: rgba(146, 146, 146, 0.5);
+  --line-color-light: rgba(199, 199, 199, 0.5);
 }
 
 body {
@@ -550,6 +552,10 @@ body .backdrop-blur-sm {
   font-size: 18px;
 }
 
+body .ant-modal-footer {
+  border-top: 1px solid var(--line-color);
+}
+
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
   border-right-width: 0px !important;
 }
@@ -701,6 +707,18 @@ body .ant-btn-default:hover {
 
 ::-webkit-scrollbar {
   display: none;
+}
+.has-scrollbar::-webkit-scrollbar {
+  display: initial;
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+  background-color: rgba(255,255,255,0.3);
+  cursor: pointer;
+}
+.has-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background: linear-gradient(290.92deg, #0bebd6, #cd28e8);
 }
 
 input::-webkit-outer-spin-button,
