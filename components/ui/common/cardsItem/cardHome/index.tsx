@@ -130,7 +130,7 @@ function TournamentCard(props: { data: TournamentGql }) {
 							</span>
 						</div>
 						<span className={s.time}>
-							{moment(item.brackets?.[0].start_at).format("MMM Do HH:MM")}{" "}
+							{moment(item.brackets?.[0].start_at).format("MMM Do HH:MM")}
 						</span>
 					</div>
 				</div>

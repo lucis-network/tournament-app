@@ -1,6 +1,7 @@
 import { gql, useMutation } from "@apollo/client";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import { useState } from "react";
+import { message as antd_message } from "antd";
 
 const useTournament = (tournamentId: string) => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
@@ -25,9 +26,10 @@ const useTournament = (tournamentId: string) => {
 			onCompleted: () => {
 				setOpenModal(false);
 				refreshIsJoin();
+				antd_message.success("Success", 10);
 			},
 			onError: (err) => {
-				console.log(err);
+				antd_message.error(err, 10);
 			},
 		});
 	};
@@ -39,9 +41,10 @@ const useTournament = (tournamentId: string) => {
 			},
 			onCompleted: () => {
 				refreshIsCheckin();
+				antd_message.success("Success", 10);
 			},
 			onError: (err) => {
-				console.log(err);
+				antd_message.error(err, 10);
 			},
 		});
 	};
