@@ -15,7 +15,7 @@ const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', '
 export default function CardPlayed({ tournament, type, isOwner }: CardPlayedProps) {
   const tempDate = new Date(tournament?.start_at);
   const startAt = `${tempDate.getDate()} ${months[tempDate.getMonth()]} ${tempDate.getHours()}:${tempDate.getMinutes()}`;
-
+  console.log('check tournament',tournament);
   return (
     <Link href={`/tournament/${tournament?.uid}/${slugify(tournament?.name)}`} passHref>
       <a>
