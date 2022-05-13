@@ -6,20 +6,16 @@ import s from "./MyTournament.module.sass"
 import {Button, Col, Input, Row} from "antd";
 import {debounce} from "lodash";
 import Link from "next/link";
-import AuthStore from "../../../../../Auth/AuthStore";
+import {UserGraphql} from "../../../../../../src/generated/graphql";
+import {ApolloQueryResult} from "@apollo/client";
 
-export type Tournament = {
-  uid: string,
-  thumbnail: string,
-  name: string,
-  start_at: string | number | Date,
-  participants: number,
-  team_participated?: number,
-  tournament_status?: string,
+type MyTournamentProps = {
+  isOwner?: boolean,
+  userInfo: UserGraphql,
+  getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>,
 }
 
-const MyTournament = () => {
-  const userInfo = AuthStore;
+const MyTournament = ({ isOwner, userInfo, getUserProfileRefetch }: MyTournamentProps) => {
   const [keywordOwned, setKeywordOwned] = useState('');
   const [keywordJoined, setKeywordJoined] = useState('');
   const { ownedTournamentData } = useSearchOwnedTournament({
@@ -43,7 +39,6 @@ const MyTournament = () => {
       if (value.trim().length > 0) {
         keyword = value;
       }
-      console.log(keyword)
       fn(keyword);
     }, 500),
     []
@@ -51,9 +46,11 @@ const MyTournament = () => {
 
   return (
     <div>
-      <Button className="mb-5">
-        <Link href="/tournament/create">Create my tournament</Link>
-      </Button>
+      {isOwner && (
+        <Button className="mb-5">
+          <Link href="/tournament/create">Create my tournament</Link>
+        </Button>
+      )}
       <div className={s.myTournament}>
         <Row>
           <Col span={24} lg={{ span: 20 }}>
@@ -69,7 +66,7 @@ const MyTournament = () => {
           </Col>
         </Row>
         {(ownedTournamentData?.searchOwnerTournament && ownedTournamentData?.searchOwnerTournament.length > 0) ? (
-          <MyTournamentList data={ownedTournamentData.searchOwnerTournament} type="owned" />
+          <MyTournamentList data={ownedTournamentData.searchOwnerTournament} type="owned" isOwner={isOwner}/>
         ) : (<div>Don&apos;t own any tournaments yet</div>)}
       </div>
       <div className={s.myTournament}>
