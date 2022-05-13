@@ -40,7 +40,10 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       method: 'GET'
     })
       .then(response => response.json())
-      .then(result => setCountryList(result.data))
+      .then(result => {
+        const sortedData = result.data.sort((a: any, b: any) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+        setCountryList(sortedData);
+      })
       .catch(error => console.log('error fetchCountryList', error));
   }
 
