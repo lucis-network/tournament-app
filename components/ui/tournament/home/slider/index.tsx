@@ -3,6 +3,7 @@ import GradientButton from "../../../common/button/GradientButton";
 import { Carousel } from "antd";
 import { GTournament } from "src/generated/graphql";
 import { orderBy } from "lodash";
+import { useState } from "react";
 
 interface SliderBannerProps {
 	data: GTournament[];
@@ -10,7 +11,11 @@ interface SliderBannerProps {
 
 export default function SilderBanner({ data }: SliderBannerProps) {
 	const orderData: GTournament[] = orderBy(data, "spotlight_position", "asc");
+	const [uidTournament, setUidTournament] = useState('')
 
+	const handleJoinDetail = (e: any) => {
+		console.log(e);
+	}
 	return (
 		<Carousel autoplay>
 			{orderData?.map((item) => (
@@ -45,6 +50,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
 										type={1}
 										className={`text-white text-16px leading-28px py-2 ${s.btn}`}
 										style={{ whiteSpace: "nowrap", fontWeight: "600" }}
+										onClick={()=> handleJoinDetail(item)}
 									>
 										JOIN NOW
 									</GradientButton>

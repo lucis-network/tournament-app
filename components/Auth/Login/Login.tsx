@@ -15,9 +15,9 @@ export default function Login(props: any) {
         type={1}
         small={!!props.small}
         className={`${s.btn} `}
-        style={{ whiteSpace: "nowrap", fontWeight: "600" }}
+        style={{ whiteSpace: "nowrap", fontWeight: "600", color: '#FFF' }}
       >
-        Login
+        Sign in
       </GradientButton>
 
       <LoginModal />
