@@ -56,7 +56,7 @@ export default observer(function ClaimDonationModal(props: Props) {
         },
         (error) => {
           setIsLoading(false);
-          message.warning("You have received this donate");
+          message.warning("You have received this donation");
         }
       );
     }

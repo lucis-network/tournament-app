@@ -131,7 +131,7 @@ export default observer(function RegistrationPhase(props: Props) {
             }
           },
           (error) => {
-            message.warning("You have received prize pool.");
+            message.warning("You have received this prize.");
           }
         );
       }
@@ -148,7 +148,7 @@ export default observer(function RegistrationPhase(props: Props) {
               }
             },
             (error) => {
-              message.warning("You have received prize system.");
+              message.warning("You have received this prize.");
             }
           );
       }
