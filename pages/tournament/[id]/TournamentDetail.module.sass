@@ -1,6 +1,7 @@
 @import styles/common
 .wrapper
   min-height: 100vh
+  background: url("/assets/Banner/bg_banner.png") top left / contain no-repeat, url("/assets/TournamentDetail/bgTournamentDetail.png") top left / cover no-repeat
   .banner
     position: relative
     min-height: 400px
@@ -89,3 +90,21 @@
   height: 50px
   margin-top: 50px
   margin-bottom: 50px
+.bgCharacters
+  position: relative
+  &::before, &::after
+    content: ''
+    display: block
+    position: absolute
+  &::before
+    width: 748px
+    height: 1180px
+    top: 0
+    left: 0
+    background: url("/assets/TournamentDetail/leftCharacter.png")
+  &::after
+    width: 789px
+    height: 880px
+    bottom: 0
+    right: -100px
+    background: url("/assets/TournamentDetail/rightCharacter.png")

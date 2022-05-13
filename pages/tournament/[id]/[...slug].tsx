@@ -1,10 +1,9 @@
 import s from "./TournamentDetail.module.sass";
-import { Button, Col, Row, Spin, Tabs, message } from "antd";
+import { Col, Row, Spin, Tabs, message } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
-import Router, { useRouter } from "next/router";
-import { useEffect, useMemo, useState } from "react";
-import { isClient } from "utils/DOM";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
@@ -21,6 +20,7 @@ import { isClientDevMode } from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 import { PopupConfirm } from "components/ui/tournament/detail/popup/PopupConfirm";
+import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 
 const { TabPane } = Tabs;
 
@@ -135,10 +135,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 			});
 	};
 
+
 	return (
 		<>
 			<div className={s.wrapper}>
 				<Banner cover={cover} />
+				<TournamentDetailMarquee />
 				<div className={`lucis-container ${s.group_button}`}>
 					{/* {unsubscribe && (
             <button key={"Subscribe"} onClick={handSubscribe}>
@@ -259,30 +261,30 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 					</Col>
 					<Col span={2}></Col>
 				</Row>
-
-				{/* ==== registration phase ====  */}
-				<div className={`lucis-container`}>
-					<RegistrationPhase
-						isJoin={isJoin}
-						isCheckin={isCheckin}
-						tournament={dataTournamentDetail}
-						tournamentId={tournamentId as string}
-						joinTournament={joinTournament}
-						dataBracket={dataBracket}
-						refetch={refetch}
-						refreshParticipant={refreshParticipant}
-						tournament_status={tournament_status as string}
-					/>
+				<div className={s.bgCharacters}>
+					{/* ==== registration phase ====  */}
+					<div className={`lucis-container`}>
+						<RegistrationPhase
+							isJoin={isJoin}
+							isCheckin={isCheckin}
+							tournament={dataTournamentDetail}
+							tournamentId={tournamentId as string}
+							joinTournament={joinTournament}
+							dataBracket={dataBracket}
+							refetch={refetch}
+							refreshParticipant={refreshParticipant}
+							tournament_status={tournament_status as string}
+						/>
+					</div>
+					{/* ===== sponsor ===== */}
+					<div className="lucis-container">
+						<TournamentDetailSponsor
+							tournamentId={tournamentId as string}
+							tournament_status={tournament_status as string}
+						/>
+					</div>
+					{/* ===== end sponsor ===== */}
 				</div>
-				{/* ===== sponsor ===== */}
-				<div className="lucis-container">
-					<TournamentDetailSponsor
-						tournamentId={tournamentId as string}
-						tournament_status={tournament_status as string}
-					/>
-				</div>
-				{/* ===== end sponsor ===== */}
-
 				{/* ===== tabs ===== */}
 				<div className={`lucis-container ${s.container_Tabs}`}>
 					<Tabs defaultActiveKey="1">
