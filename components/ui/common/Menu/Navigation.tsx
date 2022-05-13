@@ -114,7 +114,7 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: (
-        <div>
+        <div style={{position: 'absolute', bottom: "24%"}}>
           {
             AuthStore.isLoggedIn ?
               <div onClick={onClickProfile}>
@@ -128,7 +128,7 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: (
-        <div>
+        <div style={{position: 'absolute', bottom: "14%"}}>
           {
             AuthStore.isLoggedIn ?
               <div>

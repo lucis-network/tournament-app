@@ -286,13 +286,15 @@ body .ant-menu {
     top: 0;
     left: 0;
     width: 100%;
-    margin-top: 82px;
+    margin-top: 62px;
+    height: 100%
   }
 
   .nav-list li {
     display: flex;
     align-items: center;
     margin-bottom: 0px;
+    font-size: 16px;
   }
 
   /*.nav-list li:first-child {*/
@@ -793,4 +795,7 @@ body .ant-modal-mask{
 body .ant-carousel .slick-list{
   box-shadow: 0px 0px 25px -8px #0bebd6;
   border-radius: 16px;
+}
+body .ant-carousel .slick-dots-bottom{
+  bottom: -30px;
 }
