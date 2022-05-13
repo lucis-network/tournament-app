@@ -32,9 +32,6 @@ export type ISingleRoundStore = {
   rounds: Round[];
   updateScoreModalVisible: boolean;
   currentMatch?: CurrentMatch;
-
-  updateCurrentMatchScore(score: number, teamIndex: number): void
-  reflectCurrentMatchToStore(roundIndex: number, seedIndex: number): void
 }
 class SingleRoundStore implements ISingleRoundStore {
   public _rounds: Round[] = [];
@@ -49,19 +46,26 @@ class SingleRoundStore implements ISingleRoundStore {
     this._rounds = data;
   }
 
-  updateCurrentMatchScore(score: number, teamIndex: number) {
-    if (!this.currentMatch) {
-      return
-    }
+  // updateCurrentMatchScore(score: number, teamIndex: number) {
+  //   if (!this.currentMatch) {
+  //     return
+  //   }
+  //
+  //   this.currentMatch.teams[teamIndex].score = score;
+  // }
 
-    this.currentMatch.teams[teamIndex].score = score;
-  }
+  // reflectCurrentMatchToStore(roundIndex: number, seedIndex: number) {
+  //   if (!this.currentMatch) {
+  //     return
+  //   }
+  //   this.rounds[roundIndex].seeds[seedIndex].teams = this.currentMatch.teams;
+  //   // change pointer to trigger bracket re-render
+  //   this.rounds = [...this.rounds];
+  // }
 
-  reflectCurrentMatchToStore(roundIndex: number, seedIndex: number) {
-    if (!this.currentMatch) {
-      return
-    }
-    this.rounds[roundIndex].seeds[seedIndex].teams = this.currentMatch.teams;
+  setMatchScore(roundIndex: number, seedIndex: number, score0: number, score1: number) {
+    this.rounds[roundIndex].seeds[seedIndex].teams[0].score = score0;
+    this.rounds[roundIndex].seeds[seedIndex].teams[1].score = score1;
     // change pointer to trigger bracket re-render
     this.rounds = [...this.rounds];
   }

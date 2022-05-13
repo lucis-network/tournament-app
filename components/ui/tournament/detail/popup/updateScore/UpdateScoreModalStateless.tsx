@@ -11,23 +11,19 @@ import s from "./UpdateScore.module.sass";
 
 export type UpdateScoreModalStatelessProps = {
   visible: boolean,
-  seedIndex: number,
-  roundIndex: number,
-  // teams: Team[],
+  seedIndex?: number,
+  roundIndex?: number,
   currentMatch?: CurrentMatch,
   doCloseModal: () => void,
-  // onScoreChanged: (score: number, teamIdx: number) => void,
-  onUpdateCompleted: (data?: string) => void,
+  onUpdateCompleted: (score0: number, score1: number) => void,
 }
 export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps) => {
   const {
     visible,
-    seedIndex,
-    roundIndex,
-    // teams,
+    // seedIndex,
+    // roundIndex,
     currentMatch,
     doCloseModal,
-    // onScoreChanged,
     onUpdateCompleted,
   } = props;
 
@@ -53,8 +49,10 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
   }
   // setup default data on modal visible
   useEffect(() => {
-    setScore0(teamScore0)
-    setScore1(teamScore1)
+    if (visible) {
+      setScore0(teamScore0)
+      setScore1(teamScore1)
+    }
   }, [visible])
 
   const updateMatchResult = (is_final: boolean) => {
@@ -80,8 +78,8 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
     setMatchResult({
       variables: {input},
       onCompleted(data: string) {
-        console.log('{setMatchResult.onCompleted} data: ', data);
-        onUpdateCompleted(data);
+        // console.log('{setMatchResult.onCompleted} data: ', data);
+        onUpdateCompleted(input.score_1, input.score_2);
       }
     }).then((res) => {
       console.log('{} setMatchResult res: ', res);

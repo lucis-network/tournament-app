@@ -28,11 +28,8 @@ const UpdateScoreModal = (props: Props) => {
     RoundStore.updateScoreModalVisible = false;
   };
 
-  const updateScore = (score: number, teamIdx: number) => {
-    RoundStore.updateCurrentMatchScore(score, teamIdx);
-  }
-  const onUpdateCompleted = (data?: string) => {
-    RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
+  const onUpdateCompleted = (score0: number, score1: number) => {
+    RoundStore.setMatchScore(roundIndex, seedIndex, score0, score1);
   }
 
 
@@ -43,7 +40,6 @@ const UpdateScoreModal = (props: Props) => {
     // teams={teams}
     currentMatch={currentMatch}
     doCloseModal={closeModal}
-    // onScoreChanged={updateScore}
     onUpdateCompleted={onUpdateCompleted}
   />
 };

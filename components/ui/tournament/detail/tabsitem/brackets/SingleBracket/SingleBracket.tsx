@@ -32,7 +32,7 @@ const SingleBracket = (props: Props) => {
 
   // ============= FOR EDIT MODAL =================
   const currentMatch = RoundStore.currentMatch;
-  console.log('{.SingleBracket} currentMatch: ', currentMatch);
+  // console.log('{.SingleBracket} currentMatch: ', currentMatch);
 
   const updateScoreModalVisible = RoundStore.updateScoreModalVisible;
 
@@ -48,13 +48,8 @@ const SingleBracket = (props: Props) => {
     RoundStore.updateScoreModalVisible = false;
   };
 
-  // const updateScore = (score: number, teamIdx: number) => {
-  //   console.log('{.updateScore} score teamIdx: ', score, teamIdx);
-  //   RoundStore.updateCurrentMatchScore(score, teamIdx);
-  // }
-  const onUpdateCompleted = (data?: string) => {
-    console.log('{.onUpdateCompleted} data: ', data);
-    RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
+  const onUpdateCompleted = (score0: number, score1: number) => {
+    RoundStore.setMatchScore(roundIndex, seedIndex, score0, score1);
   }
   // ============= END EDIT MODAL =================
 
@@ -69,7 +64,6 @@ const SingleBracket = (props: Props) => {
       roundIndex={roundIndex}
       currentMatch={currentMatch}
       doCloseModal={closeModal}
-      // onScoreChanged={updateScore}
       onUpdateCompleted={onUpdateCompleted}
     />}
   />;

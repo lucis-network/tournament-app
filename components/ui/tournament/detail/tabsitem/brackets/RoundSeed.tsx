@@ -70,9 +70,10 @@ export function makeSeedComponent(
                 </Tooltip>
                 <div
                   className={`${ss.score} ${ss.score2} ${canEdit ? '' : ss.disabled}`}
-                  onClick={(e) =>
+                  onClick={(e) => {
+                    // console.log('{handleOpenModal} seedIndex, roundIndex: ', seedIndex, roundIndex);
                     handleOpenModal(e, match, seedIndex, roundIndex)
-                  }
+                  }}
                 >
                   {team1 ? team1.score : "--"}
                 </div>
