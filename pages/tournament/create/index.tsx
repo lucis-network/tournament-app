@@ -422,7 +422,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="cover"
                   url={TournamentStore?.cover}
                 ></UploadImage>
-                <p>Recommended size: 1200x400</p>
+                <p>Recommended size: 1600x400</p>
                 <div className={s.message_error}>{messageErrorCover}</div>
               </Col>
               <Col span={4} className="text-center">

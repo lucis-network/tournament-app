@@ -7,6 +7,7 @@ import s from "./Tabs.module.sass";
 import { useHomePage } from "hooks/home/useHomePage";
 import Search from "antd/lib/input/Search";
 import { StatusGameType } from "utils/Enum";
+import { useState } from "react";
 
 export default function TabHome() {
 	const {
@@ -20,6 +21,8 @@ export default function TabHome() {
 		handleChangeFilter,
 		handleOrder,
 	} = useHomePage();
+
+	const [creating, setCreating] = useState(false);
 
 	return (
 		<div className={`${s.container_card_tournament}`}>
@@ -76,7 +79,9 @@ export default function TabHome() {
 								ease.
 							</p>
 							<Link href={`tournament/create`}>
-								<Button type="primary">CREATE NOW</Button>
+								<Button type="primary" loading={creating} onClick={() => setCreating(true)}>
+									CREATE NOW
+								</Button>
 							</Link>
 						</Col>
 					</Row>

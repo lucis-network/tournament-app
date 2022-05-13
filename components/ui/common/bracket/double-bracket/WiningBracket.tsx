@@ -21,9 +21,9 @@ const WiningBracket: React.FC<LosingProps> = ({
   rounds: wining,
   // openModal,
 }) => {
-  const handleOpenModal = () => {
-    console.log("Hello");
-  };
+  // const handleOpenModal = () => {
+  //   console.log("Hello");
+  // };
 
   const RenderSeed = ({
     seed,
@@ -46,7 +46,7 @@ const WiningBracket: React.FC<LosingProps> = ({
                     color: "black",
                   }}
                 >
-                  {seed.teams[0]?.name ?? `bye`}
+                  {seed.teams[0]?.name ?? `Team ...`}
                 </div>
                 <div
                   style={{
@@ -54,11 +54,11 @@ const WiningBracket: React.FC<LosingProps> = ({
                     color: "black",
                     padding: "5px",
                     width: "50px",
-                    cursor: "pointer",
+                    // cursor: "pointer",
                   }}
                   // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
                 >
-                  {seed.teams[0]?.score ?? "--"}
+                  {seed.teams[0]?.score ?? "0"}
                 </div>
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
@@ -71,7 +71,7 @@ const WiningBracket: React.FC<LosingProps> = ({
                     color: "white",
                   }}
                 >
-                  {seed.teams[1]?.name ?? `bye`}
+                  {seed.teams[1]?.name ?? `Team ...`}
                 </div>
                 <div
                   style={{
@@ -79,11 +79,11 @@ const WiningBracket: React.FC<LosingProps> = ({
                     color: "white",
                     padding: "5px",
                     width: "50px",
-                    cursor: "pointer",
+                    // cursor: "pointer",
                   }}
                   // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
                 >
-                  {seed.teams[1]?.score ?? "--"}
+                  {seed.teams[1]?.score ?? "0"}
                 </div>
               </SeedTeam>
             </div>

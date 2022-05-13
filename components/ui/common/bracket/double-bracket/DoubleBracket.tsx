@@ -36,7 +36,7 @@ const createWinRounds = ({
 
   for (let i = 1; i <= numWinRounds; i++) {
     const title = (
-      <>
+      <div style={{marginBottom: 20}}>
         <p className="m-0 text-white text-[24px]">{`Round ${i}`}</p>
         <DatePicker
           // disabledDate={disabledDate}
@@ -46,7 +46,7 @@ const createWinRounds = ({
             handleSelectDate(date, dateString, i, "upper")
           }
         />
-      </>
+      </div>
     );
 
     const seeds = [];
@@ -72,8 +72,8 @@ const createLoseRounds = ({
 
   for (let i = 1; i <= numLoseRounds; i++) {
     const title = (
-      <>
-        <p className="m-0 text-white text-[24px]">{`Round ${i}`}</p>
+      <div style={{marginBottom: 20}}>
+        <p className="m-0 text-white text-[24px]">{`Loser Round ${i}`}</p>
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
@@ -82,7 +82,7 @@ const createLoseRounds = ({
             handleSelectDate(date, dateString, i, "lower")
           }
         />
-      </>
+      </div>
     );
 
     const seeds = [];
@@ -123,15 +123,15 @@ const DoubleBracket = ({
   const final: any[] = [
     {
       title: (
-        <>
-          <p className="m-0 text-[24px] text-white">Final</p>
+        <div style={{marginBottom: 20}}>
+          <p className="m-0 text-[24px] text-white">Final Round</p>
           <DatePicker
             showTime
             onChange={(date, dateString) =>
               handleSelectDate(date, dateString, "Final")
             }
           />
-        </>
+        </div>
       ),
       seeds: [
         {
@@ -150,10 +150,13 @@ const DoubleBracket = ({
         display: "flex",
         gap: "20px",
         overflow: "auto",
+        padding: "30px 0",
       }}
+      className="has-scrollbar"
     >
       <div>
         <WiningBracket rounds={winRoundsTemp} />
+        <div style={{height: 30}} />
         <LosingBracket rounds={loseRoundsTemp} />
       </div>
 
