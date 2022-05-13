@@ -63,7 +63,10 @@ function TournamentCard(props: { data: TournamentGql }) {
 							<img src="/assets/home/ic_member.svg" alt="" />
 							<span>
 								<span style={{ color: "#0BEBD6" }}>
-									{item.cache_tournament?.team_participated === undefined || null ? 0 : item.cache_tournament?.team_participated}
+									{item.cache_tournament?.team_participated === undefined ||
+									null
+										? 0
+										: item.cache_tournament?.team_participated}
 								</span>
 								/{item?.participants}
 							</span>

@@ -29,7 +29,7 @@ const useTournament = (tournamentId: string) => {
 				antd_message.success("Success", 10);
 			},
 			onError: (err) => {
-				antd_message.error(err, 10);
+				antd_message.error(err.message, 10);
 			},
 		});
 	};
@@ -44,7 +44,7 @@ const useTournament = (tournamentId: string) => {
 				antd_message.success("Success", 10);
 			},
 			onError: (err) => {
-				antd_message.error(err, 10);
+				antd_message.error(err.message, 10);
 			},
 		});
 	};

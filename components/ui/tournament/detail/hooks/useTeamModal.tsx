@@ -80,6 +80,7 @@ const UseTeamModal = (tournamentData: any) => {
 		router.push(route);
 		setShow(false);
 		refreshIsJoin();
+		isSoloVersion ? setStep("step-1") : setStep("step-1");
 		// refreshParticipant();
 	};
 
@@ -274,9 +275,9 @@ const UseTeamModal = (tournamentData: any) => {
 	}, [
 		isSoloVersion,
 		searchTeam,
-		user?.id,
 		user?.profile?.avatar,
 		user?.profile?.display_name,
+		user?.profile?.user_id,
 	]);
 
 	useEffect(() => {

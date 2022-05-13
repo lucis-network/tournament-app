@@ -9,9 +9,11 @@ import {
 	SEARCH_TEAM,
 } from "./../myTeamService";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import { useCallback, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import {useRouter} from "next/router";
+import {useGetUserProfile} from "../../../../../../hooks/myProfile/useMyProfile";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
 	user_name: string;
@@ -42,8 +44,17 @@ const UseControlTeam = () => {
 	const [isSaveDraft, setIsSaveDraft] = useState<boolean>(false);
 	const [status, setStatus] = useState<"remove" | "delete" | "leave">("remove");
 	const [error, setError] = useState<Record<string, string>>({});
-
-	const user = getLocalAuthInfo();
+	const router = useRouter();
+	const { getUserProfileData } = useGetUserProfile({
+		user_name: router.pathname === '/profile/[username]' ? `${router.query.username}` : '',
+		skip: router.pathname !== '/profile/[username]'
+	})
+	let user: any = {}
+	if (router.pathname === '/profile/[username]') {
+		user = getUserProfileData.getUserProfile
+	} else {
+		user = getLocalAuthInfo();
+	}
 
 	const [searchMember, { data: rawSearchMember, loading: memberLoading }] =
 		useLazyQuery(SEARCH_MEMBER, {

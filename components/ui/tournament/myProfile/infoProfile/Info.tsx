@@ -23,7 +23,7 @@ export default observer(function InfoMyProfile({ click, userInfo, getUserProfile
             <img src={userInfo?.profile?.avatar || '/profile/im_user.png'} alt="" />
           </div>
           <div className={s.information}>
-            <p>{userInfo?.profile?.display_name}</p>
+            <p>{userInfo?.profile?.display_name ?? userInfo?.profile?.user_name}</p>
             <p>Username: @{userInfo?.profile?.user_name}</p>
             <button className={s.share_info}>
               <img src="/profile/svg/ic_share.svg" alt="" />

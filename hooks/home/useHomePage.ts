@@ -43,43 +43,26 @@ export function useHomePage() {
     }
   );
 
-  const handleChangeFilter = useCallback(
-    (type: keyof FilterGame, value: string) => {
-      const valueConvert = {
-        ...filter,
-        [type]: 
-		// () => {
-        //   let val = "";
-        //   switch (type) {
-        //     case "bracket":
-        //       val = value;
-        //       break;
-        //     case "prize_pool":
-        //       val = value;
-        //       break;
-        //     case "time":
-        //       val = value;
-        //       break;
-        //     default:
-        //       break;
-        //   }
-        //   return val;
-        // },
-		type === "bracket" && value === ""
-		? Bracket.ALL
-		: type === "prize_pool" || type === "time"
-		? value
-		// : value === ""
-		// ? ""
-		: value,
-      };
-      console.log(valueConvert);
-      console.log(value);
-      setFilter(valueConvert);
-      getData(valueConvert);
-    },
-    [filter, getData]
-  );
+	const handleChangeFilter = useCallback(
+		(type: keyof FilterGame, value: string) => {
+			const valueConvert = {
+				...filter,
+				[type]:
+					type === "bracket" && value === ""
+						? Bracket.ALL
+						: value === ""
+						? ""
+						: value,
+			};
+
+			setFilter(valueConvert);
+			getData(valueConvert);
+			// type === "game"
+			// 	? debounce(() => getData({ ...filter, [type as any]: value }), 500)
+			// 	: getData({ ...filter, [type]: value });
+		},
+		[filter, getData]
+	);
 
   const handleOrder = useCallback(
     (value: OrderType, id?: any) => {

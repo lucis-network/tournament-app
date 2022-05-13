@@ -4,7 +4,7 @@ import MyTournamentList from "./MyTournamentList";
 import {useSearchOwnedTournament, useSearchJoinedTournament} from "../../../../../../hooks/myProfile/useMyProfile"
 import s from "./MyTournament.module.sass"
 import {Button, Col, Input, Row} from "antd";
-import {debounce} from "lodash";
+import {debounce, isEmpty} from "lodash";
 import Link from "next/link";
 import {UserGraphql} from "../../../../../../src/generated/graphql";
 import {ApolloQueryResult} from "@apollo/client";
@@ -21,10 +21,12 @@ const MyTournament = ({ isOwner, userInfo, getUserProfileRefetch }: MyTournament
   const { ownedTournamentData } = useSearchOwnedTournament({
     user_id: `${userInfo.id}`,
     value: keywordOwned,
+    skip: isEmpty(userInfo.id),
   });
   const { joinedTournamentData } = useSearchJoinedTournament({
     user_id: `${userInfo.id}`,
     value: keywordJoined,
+    skip: isEmpty(userInfo.id),
   });
 
   const handleSearchOwnedTournament = (event: React.FormEvent<HTMLInputElement>) => {
