@@ -1,7 +1,7 @@
 import { Button, Col, Modal, Popconfirm, Row, message as antd_message } from "antd";
 import { ChangeEvent, FormEvent } from "react";
 import s from "./UpdateScore.module.sass";
-import RoundStore, { Team } from "src/store/SingleRoundStore";
+import RoundStore, { CurrentMatch, Team } from "src/store/SingleRoundStore";
 import { observer } from "mobx-react-lite";
 import { isClientDevMode } from "../../../../../../utils/Env";
 import { ApolloError, useMutation } from "@apollo/client";
@@ -18,53 +18,99 @@ type Props = {
 };
 
 const UpdateScoreModal = (props: Props) => {
-  const [setMatchResult] = useMutation(UPDATE_MATCH_RESULT);
+  const currentMatch = RoundStore.currentMatch;
+  const visible = RoundStore.updateScoreModalVisible;
 
   let seedIndex = -1,
     roundIndex = -1,
     teams: Team[] = [];
-  if (RoundStore.currentMatch) {
-    seedIndex = RoundStore.currentMatch.seedIndex;
-    roundIndex = RoundStore.currentMatch.roundIndex;
-    teams = RoundStore.currentMatch.teams;
+  if (currentMatch) {
+    seedIndex = currentMatch.seedIndex;
+    roundIndex = currentMatch.roundIndex;
+    teams = currentMatch.teams;
   }
 
   const closeModal = () => {
     RoundStore.updateScoreModalVisible = false;
   };
 
+  const updateScore = (score: number, teamIdx: number) => {
+    RoundStore.updateCurrentMatchScore(score, teamIdx);
+  }
+  const onUpdateCompleted = (data?: string) => {
+    RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
+  }
+
+
+  return <UpdateScoreModalStateless
+    visible={visible}
+    seedIndex={seedIndex}
+    roundIndex={roundIndex}
+    teams={teams}
+    currentMatch={currentMatch}
+    doCloseModal={closeModal}
+    doUpdateScore={updateScore}
+    onUpdateCompleted={onUpdateCompleted}
+  />
+};
+
+
+export type UpdateScoreModalStatelessProps = {
+  visible: boolean,
+  seedIndex: number,
+  roundIndex: number,
+  teams: Team[],
+  currentMatch?: CurrentMatch,
+  doCloseModal: () => void,
+  doUpdateScore: (score: number, teamIdx: number) => void,
+  onUpdateCompleted: (data?: string) => void,
+}
+export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps) => {
+  const {
+    visible,
+    seedIndex,
+    roundIndex,
+    teams,
+    currentMatch,
+    doCloseModal,
+    doUpdateScore,
+    onUpdateCompleted,
+  } = props;
+
+  const [setMatchResult] = useMutation(UPDATE_MATCH_RESULT);
+
+
   const handleUpdateScore = (
     e: ChangeEvent<HTMLInputElement>,
     teamIdx: number
   ) => {
     const score = parseInt(e.target.value);
-    RoundStore.updateCurrentMatchScore(score, teamIdx);
+    doUpdateScore(score, teamIdx)
   };
 
   const updateMatchResult = (is_final: boolean) => {
-    if (!RoundStore.currentMatch) {
+    if (!currentMatch) {
       console.error('{updateMatchResult} currentMatch is null');
       return
     }
 
-    const m = RoundStore.currentMatch;
-    if (!m.uid) {
-      console.error("Invalid currentMatch: ", m)
+    if (!currentMatch.uid) {
+      console.error("Invalid currentMatch: ", currentMatch)
       return;
     }
 
     const input: BracketMatchUpdateInputGql = {
-      uid: m.uid,
-      score_1: m.teams[0].score,
-      score_2: m.teams[1].score,
+      uid: currentMatch.uid,
+      score_1: currentMatch.teams[0].score,
+      score_2: currentMatch.teams[1].score,
       finish_match: is_final,
     }
 
     setMatchResult({
       variables: {input},
       onCompleted(data: string) {
-        console.log('{setMatchResult.onCompleted} data: ', data);
-        RoundStore.reflectCurrentMatchToStore(roundIndex, seedIndex);
+        // console.log('{setMatchResult.onCompleted} data: ', data);
+        onUpdateCompleted(data);
       }
     }).then((res) => {
       console.log('{} setMatchResult res: ', res);
@@ -81,7 +127,7 @@ const UpdateScoreModal = (props: Props) => {
         }
       });
     }).finally(() => {
-      closeModal();
+      doCloseModal();
     })
   };
 
@@ -95,12 +141,12 @@ const UpdateScoreModal = (props: Props) => {
   return (
     <Modal
       centered
-      visible={RoundStore.updateScoreModalVisible}
-      onOk={closeModal}
-      onCancel={closeModal}
+      visible={visible}
+      onOk={doCloseModal}
+      onCancel={doCloseModal}
       title="Update match result"
       footer={[
-        <Button key="back" onClick={closeModal}>
+        <Button key="back" onClick={doCloseModal}>
           Cancel
         </Button>,
         <Button key="update" type="primary" onClick={persistMatchResult}>
@@ -146,6 +192,6 @@ const UpdateScoreModal = (props: Props) => {
       </div>
     </Modal>
   );
-};
+}
 
 export default observer(UpdateScoreModal);
