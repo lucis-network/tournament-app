@@ -1,5 +1,5 @@
 import s from "./TournamentDetail.module.sass";
-import { Button, Col, Row, Tabs } from "antd";
+import { Button, Col, Row, Spin, Tabs, message } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import Router, { useRouter } from "next/router";
@@ -18,36 +18,45 @@ import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/Tou
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 import { isClientDevMode } from "../../../utils/Env";
+import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
+import { PopupConfirm } from "components/ui/tournament/detail/popup/PopupConfirm";
+import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
 
 const { TabPane } = Tabs;
-const ItemButton = ["Subscribe", "Donate", "Invite or Share"];
 
-const TournamentDetail = (props: { tournamentId: string }) => {
+const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 	const [isPopupDonate, setIsPopupDonate] = useState(false);
 	const [isPopupShare, setIsPopupShare] = useState(false);
+	const { tournamentId, asPath } = props;
+	const [isLoadingSub, setIsLoadingSub] = useState(false);
+	const [showConfirm, setShowConfirm] = useState<boolean>(false);
 
-	const { tournamentId } = props;
-
-	const {
-		dataTournamentDetail,
-		dataParticipants,
-		dataRefereesDetail,
-		dataPrizing,
-		dataBracket,
-		dataIsJoin: isJoin,
+  const {
+    dataTournamentDetail,
+    dataParticipants,
+    dataRefereesDetail,
+    dataPrizing,
+    dataBracket,
+    dataIsJoin: isJoin,
+    dataIsCheckin: isCheckin,
     dataDonation,
+    dataListRank,
 
-		loading,
-		loadingParticipant,
-		loadingReferees,
-		loadingPrizing,
-		loadingBracket,
+    loading,
+    loadingParticipant,
+    loadingReferees,
+    loadingPrizing,
+    loadingBracket,
     loadingDonation,
+    loadingListRank,
 
 		joinTournament,
 		refreshParticipant,
 		refetch,
+		confirmResult,
+		dataIsubscribeToTournament,
+		refetchSubTournament,
 	} = useTournamentDetail({
 		// Change to tournamentUid after
 		tournament_uid: tournamentId,
@@ -73,6 +82,21 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 		}
 	};
 
+	const handleOpenConfirmResult = () => {
+		setShowConfirm(true);
+	};
+	const handleConfirmResult = () => {
+		confirmResult({
+			onCompleted: () => {
+				message.success("Success", 10);
+				setShowConfirm(false);
+			},
+			onError: (err) => {
+				message.error(err.message, 10);
+			},
+		});
+	};
+
 	const {
 		team_size,
 		desc,
@@ -88,22 +112,84 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 		region,
 		additionPrize,
 		cache_tournament,
+		tournament_status,
 		referees,
 	} = dataTournamentDetail ?? {};
+
+	const handSubscribe = () => {
+		setIsLoadingSub(true);
+		const tournamentService = new TournamentService();
+		const sub = tournamentService
+			.subscribeToTournament(tournamentId)
+			.then((res) => {
+				refetchSubTournament();
+				setIsLoadingSub(false);
+			});
+	};
+
+	const handUnsubscribe = () => {
+		setIsLoadingSub(true);
+		const tournamentService = new TournamentService();
+		const sub = tournamentService
+			.unsubscribeToTournament(tournamentId)
+			.then((res) => {
+				refetchSubTournament();
+				setIsLoadingSub(false);
+			});
+	};
 
 	return (
 		<>
 			<div className={s.wrapper}>
 				<Banner cover={cover} />
 				<div className={`lucis-container ${s.group_button}`}>
-					{ItemButton.map((item) => (
-						// <Button type="primary" key={item}>
-						//   {item}
-						// </Button>
-						<button key={item} onClick={() => openModal(item)}>
-							{item}
+					{/* {unsubscribe && (
+            <button key={"Subscribe"} onClick={handSubscribe}>
+              Subscribed
+            </button>
+          )}
+          {subscribe && (
+            <button key={"Subscribe"} onClick={handUnsubscribe}>
+              Subscribe
+            </button>
+          )} */}
+					<div>
+						<a
+							className="text-16px border text-white py-1 px-4"
+							onClick={handleOpenConfirmResult}
+						>
+							Confirm tournament result
+						</a>
+					</div>
+					<div className="flex items-center gap-4">
+						{dataIsubscribeToTournament?.IsSubscribeToTournament && (
+							<Spin spinning={isLoadingSub}>
+								<button key={"Subscribe"} onClick={handUnsubscribe}>
+									Subscribed
+								</button>
+							</Spin>
+						)}
+						{!dataIsubscribeToTournament?.IsSubscribeToTournament && (
+							<Spin spinning={isLoadingSub}>
+								<button key={"Subscribe"} onClick={handSubscribe}>
+									Subscribe
+								</button>
+							</Spin>
+						)}
+
+						{tournament_status !== "CLOSED" && (
+							<button key={"Donate"} onClick={() => openModal("Donate")}>
+								Donate
+							</button>
+						)}
+
+						<button
+							key={"InviteorShare"}
+							onClick={() => openModal("Invite or Share")}
+						>
+							Invite or Share
 						</button>
-					))}
+					</div>
 				</div>
 
 				<Row className={`lucis-container`}>
@@ -177,23 +263,28 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 					<Col span={2}></Col>
 				</Row>
 
-				{/* ==== registration phase ====  */}
-				<div className={`lucis-container`}>
-					<RegistrationPhase
-						isJoin={isJoin}
-						tournament={dataTournamentDetail}
-						tournamentId={tournamentId as string}
-						joinTournament={joinTournament}
-						dataBracket={dataBracket}
-						refetch={refetch}
-						refreshParticipant={refreshParticipant}
-					/>
-				</div>
-				{/* ===== sponsor ===== */}
-				<div className="lucis-container">
-					<TournamentDetailSponsor tournamentId={tournamentId as string} />
-				</div>
-				{/* ===== end sponsor ===== */}
+        {/* ==== registration phase ====  */}
+        <div className={`lucis-container`}>
+          <RegistrationPhase
+            isJoin={isJoin}
+            isCheckin={isCheckin}
+            tournament={dataTournamentDetail}
+            tournamentId={tournamentId as string}
+            joinTournament={joinTournament}
+            dataBracket={dataBracket}
+            refetch={refetch}
+            refreshParticipant={refreshParticipant}
+            tournament_status={tournament_status as string}
+          />
+        </div>
+        {/* ===== sponsor ===== */}
+        <div className="lucis-container">
+          <TournamentDetailSponsor
+            tournamentId={tournamentId as string}
+            tournament_status={tournament_status as string}
+          />
+        </div>
+        {/* ===== end sponsor ===== */}
 
         {/* ===== tabs ===== */}
         <div className={`lucis-container ${s.container_Tabs}`}>
@@ -208,19 +299,33 @@ const TournamentDetail = (props: { tournamentId: string }) => {
               <Brackets
                 dataBracket={dataBracket}
                 loadingBracket={loadingBracket}
-								refereeIds={referees ? referees.split(',') : []}
+                refereeIds={referees ? referees.split(",") : []}
               />
             </TabPane>
             <TabPane
               tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
               key="4"
             >
-              <TableParticipant
-                dataParticipants={dataParticipants}
-                loading={loadingParticipant}
-                tournamentId={tournamentId as string}
-                currency={currency}
-              />
+              <>
+                {tournament_status !== "CLOSED" && (
+                  <TableParticipant
+                    dataParticipants={dataParticipants}
+                    loading={loadingParticipant}
+                    tournamentId={tournamentId as string}
+                    currency={currency}
+                    tournament_status={tournament_status as string}
+                  />
+                )}
+
+                {tournament_status === "CLOSED" && (
+                  <ListRanks
+                    dataListRank={dataListRank}
+                    loading={loadingListRank}
+                    tournamentId={tournamentId as string}
+                    currency={currency}
+                  />
+                )}
+              </>
             </TabPane>
             <TabPane tab="Referees" key="5">
               <Referees
@@ -228,6 +333,7 @@ const TournamentDetail = (props: { tournamentId: string }) => {
                 loadingReferees={loadingReferees}
                 tournamentId={tournamentId as string}
                 currency={currency}
+                tournament_status={tournament_status as string}
               />
             </TabPane>
             <TabPane tab="Prizing" key="6">
@@ -261,10 +367,21 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 				<PopupShare
 					closeModal={() => closeModal("Invite or Share")}
 					status={isPopupShare}
+					asPath={asPath}
 				/>
 
 				<ConnectWalletModal />
-				<ClaimResultModal totalPrizePool={totalPrizePool as number} currency={currency} />
+				<ClaimResultModal
+					totalPrizePool={totalPrizePool as number}
+					currency={currency}
+					name={name as string}
+				/>
+
+				<PopupConfirm
+					show={showConfirm}
+					onCancel={() => setShowConfirm(false)}
+					onOk={handleConfirmResult}
+				/>
 			</div>
 		</>
 	);
@@ -273,12 +390,13 @@ const TournamentDetail = (props: { tournamentId: string }) => {
 export default function TournamentDetailSafe() {
 	const router = useRouter();
 	const { id } = router.query;
-
 	if (!id) {
 		if (isClientDevMode) {
 			console.warn("{TournamentDetail} Hey tournamentId is NULL");
 		}
 	}
 
-	return id ? <TournamentDetail tournamentId={id as string} /> : null;
+	return id ? (
+		<TournamentDetail tournamentId={id as string} asPath={router.asPath} />
+	) : null;
 }

@@ -13,10 +13,17 @@ type Props = {
   loading: any;
   tournamentId: string;
   currency?: any;
+  tournament_status: string;
 };
 
 export default function TableParticipant(props: Props) {
-  const { dataParticipants, loading, tournamentId, currency } = props;
+  const {
+    dataParticipants,
+    loading,
+    tournamentId,
+    currency,
+    tournament_status,
+  } = props;
 
   const [datas, setDatas] = useState({});
   const [isPopupDonate, setIsPopupDonate] = useState(false);
@@ -52,7 +59,7 @@ export default function TableParticipant(props: Props) {
       key: "name",
       width: 250,
       render: (_: any, item: any, index: number) => {
-        return <>{item.name}</>;
+        return <>{item.team.name}</>;
       },
     },
     {
@@ -74,18 +81,22 @@ export default function TableParticipant(props: Props) {
       // width: "15%",
       render: (_: any, item: object) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button onClick={() => handleClick(item)} type="primary">
-            Donate
-          </Button>
+          {tournament_status !== "CLOSED" ? (
+            <Button onClick={() => handleClick(item)} type="primary">
+              Donate
+            </Button>
+          ) : (
+            ""
+          )}
         </div>
       ),
     },
   ];
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "end" }}>
+      {/* <div style={{ display: "flex", justifyContent: "end" }}>
         <SearchComplete />
-      </div>
+      </div> */}
       <Table
         dataSource={dataParticipants}
         columns={columns}

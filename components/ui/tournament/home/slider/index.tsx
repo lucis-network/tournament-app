@@ -3,18 +3,32 @@ import GradientButton from "../../../common/button/GradientButton";
 import { Carousel } from "antd";
 import { GTournament } from "src/generated/graphql";
 import { orderBy } from "lodash";
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { slugify } from "utils/String";
 
 interface SliderBannerProps {
 	data: GTournament[];
 }
 
 export default function SilderBanner({ data }: SliderBannerProps) {
+	const router = useRouter();
 	const orderData: GTournament[] = orderBy(data, "spotlight_position", "asc");
+	const [uidTournament, setUidTournament] = useState("");
+
+	const handleJoinDetail = (dataTournament: GTournament) => {
+		const { uid, name } = dataTournament;
+		router.push(`/tournament/${uid}/${slugify(name)}`);
+	};
 
 	return (
 		<Carousel autoplay>
 			{orderData?.map((item) => (
-				<div key={item?.uid} className={s.container}>
+				<div
+					key={item?.uid}
+					onClick={() => handleJoinDetail(item)}
+					className={`${s.container} cursor-pointer`}
+				>
 					<div className={s.im_conver}>
 						<div
 							className={s.im_banner}
@@ -37,8 +51,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
 												alt="icon"
 											/>
 											<span>
-												{/* {item?.totalPrizePool} */}
-												10.000 {item?.currency?.symbol}
+												{item?.totalPrizePool} {item?.currency?.symbol}
 											</span>
 										</div>
 									</div>
@@ -46,6 +59,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
 										type={1}
 										className={`text-white text-16px leading-28px py-2 ${s.btn}`}
 										style={{ whiteSpace: "nowrap", fontWeight: "600" }}
+										onClick={() => handleJoinDetail(item)}
 									>
 										JOIN NOW
 									</GradientButton>

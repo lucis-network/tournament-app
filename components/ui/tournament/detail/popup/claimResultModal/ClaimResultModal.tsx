@@ -7,10 +7,11 @@ import { fomatNumber } from "utils/Number";
 type Props = {
   totalPrizePool: number;
   currency?: any;
+  name: string;
 };
 
 export default observer(function ClaimResultModal(props: Props) {
-  const { totalPrizePool, currency } = props;
+  const { totalPrizePool, currency, name } = props;
   const isModalVisible = TournamentStore.claimResultModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimResultModalVisible = v);
@@ -35,10 +36,12 @@ export default observer(function ClaimResultModal(props: Props) {
       >
         <div className={`${s.container}`}>
           <p>Claim success</p>
-          <p>{fomatNumber(totalPrizePool)} {currency.symbol}</p>
+          <p>
+            {fomatNumber(totalPrizePool)} {currency.symbol}
+          </p>
           <div>
-            You&apos;ve got a THIRD PRIZE <br/>
-            from Thetan + Lucis Mid Summer Tournament
+            You&apos;ve successfully claimed the prize <br />
+            from {name}
           </div>
           <Button>Share my victory</Button>
         </div>

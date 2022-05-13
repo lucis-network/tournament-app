@@ -23,6 +23,7 @@ const GET_SPOTLIGHT_TOURNAMENT = gql`
 			thumbnail
 			prize_allocation
 			spotlight_position
+			totalPrizePool
 			currency {
 				uid
 				symbol
@@ -31,9 +32,3 @@ const GET_SPOTLIGHT_TOURNAMENT = gql`
 		}
 	}
 `;
-
-// totalPrizePool
-// currency {
-// 	symbol
-// 	icon
-// }

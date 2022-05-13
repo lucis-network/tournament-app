@@ -5,9 +5,11 @@ import { MyTeamType } from "../../hooks/useCreateNewTeam";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import s from "./TeamModal.module.sass";
 import { ErrorTourKey, Item } from "../../hooks/useTeamModal";
+import SpinLoading from "components/ui/common/Spin";
 
 interface TeamPrizingProps {
 	isSolo: boolean;
+	loadingJoin: boolean;
 	error: ErrorTourKey;
 	tourPassword?: string;
 	teamSize: any;
@@ -32,6 +34,7 @@ interface EditableCellProps extends HTMLAttributes<HTMLElement> {
 }
 
 const TeamPrizing: React.FC<TeamPrizingProps> = ({
+	loadingJoin,
 	isSolo,
 	error,
 	tourPassword,
@@ -289,11 +292,15 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 					</button>
 				)}
 				<button
-					className={`${s.button} !w-max`}
+					className={`${s.button} !w-max min-w-[285px]`}
 					disabled={!!errMessage}
 					onClick={onJoinTournament}
 				>
-					Complete and Join tournament
+					{loadingJoin ? (
+						<SpinLoading className="pt-0" size={20} />
+					) : (
+						"Complete and Join tournament"
+					)}
 				</button>
 			</div>
 		</div>

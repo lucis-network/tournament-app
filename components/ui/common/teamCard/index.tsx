@@ -20,6 +20,7 @@ interface TeamCardType {
 		isSaveDraft?: boolean
 	) => void;
 	onOpenAdd: (team_uid: string) => void;
+	isOwnerProp?: boolean;
 }
 
 const { Item } = Menu;
@@ -30,6 +31,7 @@ const TeamCard: React.FC<TeamCardType> = ({
 	onEdit,
 	onOpenAdd,
 	onOpenRemove,
+	isOwnerProp
 }): any => {
 	const menu = (team: MyTeamType, isOwner?: boolean) =>
 		isOwner ? (
@@ -77,9 +79,11 @@ const TeamCard: React.FC<TeamCardType> = ({
 							<div className="w-[80%] ml-2">
 								<div className="flex justify-between w-full align-middle items-center">
 									<h3 className="text-18px m-0 text-white">{team.team_name}</h3>
-									<Dropdown overlay={menu(team, isOwner)} trigger={["click"]}>
-										<EllipsisOutlined style={{ fontSize: 24 }} />
-									</Dropdown>
+									{isOwnerProp && (
+										<Dropdown overlay={menu(team, isOwner)} trigger={["click"]}>
+											<EllipsisOutlined style={{ fontSize: 24 }} />
+										</Dropdown>
+									)}
 								</div>
 								<span className="flex align-middle items-center">
 									{team?.participant || 0}

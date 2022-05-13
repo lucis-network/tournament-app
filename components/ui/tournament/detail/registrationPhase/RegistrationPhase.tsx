@@ -14,12 +14,9 @@ import { useClaimReward } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 import TournamentService from "components/service/tournament/TournamentService";
 import { ApolloQueryResult } from "@apollo/client";
-import timeMoment from "moment-timezone";
 import useTournament from "../hooks/useTournament";
-import { Statistic } from "antd";
 import CountdownTimer from "components/ui/common/CountDown";
-
-const { Countdown } = Statistic;
+import { CalendarOutlined } from "@ant-design/icons";
 
 type Props = {
 	isJoin: boolean;
@@ -29,6 +26,8 @@ type Props = {
 	dataBracket: any;
 	refetch: () => Promise<ApolloQueryResult<any>>;
 	refreshParticipant: () => Promise<ApolloQueryResult<any>>;
+	tournament_status: string;
+	isCheckin: boolean;
 };
 
 type Reward = {
@@ -58,17 +57,17 @@ export default observer(function RegistrationPhase(props: Props) {
 		cache_tournament,
 	} = props.tournament;
 
-	const { isJoin, tournamentId, dataBracket, refetch } = props;
+	const { isJoin, isCheckin, tournamentId, dataBracket, refetch } = props;
 
 	const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
 		useTeamModal(props);
 
 	const timeDefault = moment(brackets?.[0].start_at).valueOf();
 	const timeCheckin = moment(brackets?.[0].start_at)
-		.subtract(1, "hour")
-		.valueOf();
-	const timePrepare = moment(brackets?.[0].start_at)
 		.subtract(15, "minutes")
+		.valueOf();
+	const timeRegistration = moment(brackets?.[0].start_at)
+		.subtract(1, "hour")
 		.valueOf();
 
 	const claimTokenDonation = async () => {
@@ -86,27 +85,12 @@ export default observer(function RegistrationPhase(props: Props) {
 		handleOpenLeaveTournament,
 		handleLeaveTournament,
 		handleCheckinTournament,
-	} = useTournament();
+	} = useTournament(tournamentId || "");
 
 	const [dataPrize, setDataPrize] = useState<Reward>();
 	const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
 	const [dataDonation, setDataDonation] = useState<Reward[]>();
 	const [totalFromDonation, setTotalFromDonation] = useState(0);
-
-	useEffect(() => {
-		getCurrentTime();
-	});
-
-	const getCurrentTime = () => {
-		// console.log("dataBracket", dataBracket);
-		// const tzid = Intl.DateTimeFormat().resolvedOptions().timeZone;
-		// console.log("tzid", tzid);
-		// const dateNow = timeMoment().tz(tzid).unix();
-		// const timeStart = timeMoment(dataBracket.start_at).tz(tzid).unix();
-		// console.log("dateNow", dateNow);
-		// console.log("timeStart", timeStart);
-		// const time = (timeStart - dateNow) * 1000;
-	};
 
 	useEffect(() => {
 		let arr: Array<Reward> = [];
@@ -145,38 +129,38 @@ export default observer(function RegistrationPhase(props: Props) {
 					address: ConnectWalletStore.address,
 				};
 
-				let tournamentService = new TournamentService();
-				const response = tournamentService.claimPrizePool(claim).then(
-					(res) => {
-						if (res) {
-							TournamentStore.claimResultModalVisible = true;
-							refetch();
-						}
-					},
-					(error) => {
-						message.warning("You have received prize pool.");
-					}
-				);
-			}
+        let tournamentService = new TournamentService();
+        const response = tournamentService.claimPrizePool(claim).then(
+          (res) => {
+            if (res) {
+              TournamentStore.claimResultModalVisible = true;
+              refetch();
+            }
+          },
+          (error) => {
+            message.warning("You have received this prize.");
+          }
+        );
+      }
 
-			if (value === "PrizeSystem") {
-				let tournamentService = new TournamentService();
-				const response = tournamentService
-					.claimPrizeSystem(tournamentId as string)
-					.then(
-						(res) => {
-							if (res) {
-								TournamentStore.claimResultModalVisible = true;
-								refetch();
-							}
-						},
-						(error) => {
-							message.warning("You have received prize system.");
-						}
-					);
-			}
-		}
-	};
+      if (value === "PrizeSystem") {
+        let tournamentService = new TournamentService();
+        const response = tournamentService
+          .claimPrizeSystem(tournamentId as string)
+          .then(
+            (res) => {
+              if (res) {
+                TournamentStore.claimResultModalVisible = true;
+                refetch();
+              }
+            },
+            (error) => {
+              message.warning("You have received this prize.");
+            }
+          );
+      }
+    }
+  };
 
 	const closeModal = () => {
 		setIsPopupDonate(false);
@@ -185,8 +169,6 @@ export default observer(function RegistrationPhase(props: Props) {
 	const openModal = () => {
 		setIsPopupDonate(true);
 	};
-
-	console.log(tournament_status);
 
 	return (
 		<>
@@ -210,9 +192,18 @@ export default observer(function RegistrationPhase(props: Props) {
 							{fomatNumber(totalDonation)} {currency.symbol}
 						</span>
 						<span>Total donation</span>
-						<Button onClick={openModal}>Donate</Button>
+						{tournament_status !== "CLOSED" && (
+							<Button onClick={openModal}>Donate</Button>
+						)}
 					</div>
 					<div className={s.items}>
+						<div className="flex align-middle items-center">
+							<CalendarOutlined className="text-24px mr-2" />
+							<p className="mb-0">
+								Start time:{" "}
+								{moment(brackets?.[0].start_at).format("YYYY/MM/DD HH:mm")}
+							</p>
+						</div>
 						<img src="/assets/avatar.jpg" alt="" width={50} />
 						<span>
 							{cache_tournament?.team_participated}/{participants}
@@ -222,171 +213,169 @@ export default observer(function RegistrationPhase(props: Props) {
 				</div>
 				<div className={s.footer}>
 					<div className={s.prizes}>
-						<span>Additional prizes</span>
 						{additionPrize ? (
-							<span>
-								{fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
-							</span>
+							additionPrize > 0 ? (
+								<div>
+									{" "}
+									<span>Additional prizes</span>
+									<br></br>
+									<span>
+										{fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
+									</span>
+								</div>
+							) : (
+								""
+							)
 						) : (
 							""
 						)}
 					</div>
-					{isJoin ? (
-						<div className={s.join}>
-							<Button onClick={handleOpenLeaveTournament}>
-								Unjoin tournament
-							</Button>
-							<div className="flex align-middle items-center text-white">
-								<p className="mb-0 mr-4">Checkin ends: </p>
-								<CountdownTimer targetDate={timeDefault} />
-							</div>
-						</div>
-					) : (
-						(() => {
-							switch (tournament_status) {
-								case "FINISH":
-									return (
-										<>
-											<div className={s.join}>
-												<Button onClick={() => {}}>
-													Confirm tournament result
-												</Button>
-											</div>
-										</>
-									);
-								case "REGISTRATION":
-									return (
-										<>
-											<div className={s.join}>
-												<Button onClick={handleOpenModal}>
-													Join tournament
-												</Button>
-												<div className="flex align-middle items-center text-white">
-													<p className="mb-0 mr-4">Registration ends in: </p>
-													<CountdownTimer targetDate={timeDefault} />
-												</div>
-											</div>
-										</>
-									);
-								case "CHECKIN":
-									return (
-										<>
-											<div className={s.join}>
-												<Button
-													onClick={() =>
-														handleCheckinTournament("", tournamentId!)
-													}
-												>
-													Check-in
-												</Button>
-												<div className="flex align-middle items-center text-white">
-													<p className="mb-0 mr-4">Checkin ends in: </p>
-													<CountdownTimer targetDate={timeCheckin} />
-												</div>
-											</div>
-										</>
-									);
-								case "PREPARE":
-									return (
-										<>
-											<>
-												<div className={s.join}>
-													<div className="flex align-middle items-center text-white">
-														<p className="mb-0 mr-4">Prepare ends in: </p>
-														<CountdownTimer targetDate={timePrepare} />
-													</div>
-												</div>
-											</>
-										</>
-									);
-								case "RUNNING":
-									return <></>;
-								case "CLOSED":
-									return (
-										<>
-											<div className={s.join}>
+					{(() => {
+						switch (tournament_status) {
+							case "REGISTRATION":
+								return (
+									<div className={s.join}>
+										{isJoin ? (
+											<Button onClick={handleOpenLeaveTournament}>
+												Unjoin tournament
+											</Button>
+										) : (
+											<Button onClick={handleOpenModal}>Join tournament</Button>
+										)}
+
+										<div className="flex align-middle items-center text-white">
+											<p className="mb-0 mr-4">
+												Registration phase will ends in:
+											</p>
+											<CountdownTimer targetDate={timeRegistration} />
+										</div>
+									</div>
+								);
+							case "CHECKIN":
+								return (
+									<div className={s.join}>
+										{!isCheckin && (
+											<Button onClick={handleCheckinTournament}>
+												Check-in
+											</Button>
+										)}
+										<div className="flex align-middle items-center text-white">
+											<p className="mb-0 mr-4">Check-in phase will ends in:</p>
+											<CountdownTimer targetDate={timeCheckin} />
+										</div>
+									</div>
+								);
+							case "PREPARE":
+								return (
+									<div className={s.join}>
+										<div className="flex align-middle items-center text-white">
+											<p className="mb-0 mr-4">Tournament will starts in:</p>
+											<CountdownTimer targetDate={timeDefault} />
+										</div>
+									</div>
+								);
+							case "RUNNING":
+								return <></>;
+							case "CLOSED":
+								return (
+									<>
+										<div className={s.join}>
+											{(dataPrize?.amount && dataPrize?.amount > 0) ||
+											(dataSystemPrize?.amount &&
+												dataSystemPrize?.amount > 0) ? (
 												<p>YOUR REWARDS</p>
-												<div className={s.rewards}>
+											) : (
+												""
+											)}
+											<div className={s.rewards}>
+												<div>
+													{(dataPrize?.amount && dataPrize?.amount > 0) ||
+														(dataSystemPrize?.amount &&
+															dataSystemPrize?.amount > 0) ||
+														(totalFromDonation > 0 && <div>Prize</div>)}
 													<div>
-														<div>Prize</div>
-														<div>
-															{dataPrize?.amount ? (
-																dataPrize?.amount > 0 ? (
-																	<>
-																		{fomatNumber(
-																			dataPrize?.amount ? dataPrize?.amount : 0
-																		)}{" "}
-																		{dataPrize?.symbol}
-																		<br />
-																		<Button
-																			onClick={() => claimToken("PrizePool")}
-																		>
-																			Claim
-																		</Button>
-																	</>
-																) : (
-																	""
-																)
+														{dataPrize?.amount ? (
+															dataPrize?.amount > 0 ? (
+																<>
+																	{fomatNumber(
+																		dataPrize?.amount ? dataPrize?.amount : 0
+																	)}{" "}
+																	{dataPrize?.symbol}
+																	<br />
+																	<Button
+																		onClick={() => claimToken("PrizePool")}
+																	>
+																		Claim
+																	</Button>
+																</>
 															) : (
 																""
-															)}
-														</div>
-														<div>
-															{dataSystemPrize?.amount ? (
-																dataSystemPrize?.amount > 0 ? (
-																	<>
-																		{fomatNumber(
-																			dataSystemPrize?.amount
-																				? dataSystemPrize?.amount
-																				: 0
-																		)}{" "}
-																		{dataSystemPrize?.symbol}
-																		<br />
-																		<Button
-																			onClick={() => claimToken("PrizeSystem")}
-																		>
-																			Claim
-																		</Button>
-																	</>
-																) : (
-																	""
-																)
-															) : (
-																""
-															)}
-														</div>
+															)
+														) : (
+															""
+														)}
 													</div>
 													<div>
-														<p>From Donation</p>
-														<div>
-															{totalFromDonation ? (
-																totalFromDonation > 0 ? (
-																	<>
-																		{fomatNumber(totalFromDonation)}{" "}
-																		{dataPrize?.symbol}
-																		<br />
-																		<Button onClick={claimTokenDonation}>
-																			Claim
-																		</Button>
-																	</>
-																) : (
-																	""
-																)
+														{dataSystemPrize?.amount ? (
+															dataSystemPrize?.amount > 0 ? (
+																<>
+																	{fomatNumber(
+																		dataSystemPrize?.amount
+																			? dataSystemPrize?.amount
+																			: 0
+																	)}{" "}
+																	{dataSystemPrize?.symbol}
+																	<br />
+																	<Button
+																		onClick={() => claimToken("PrizeSystem")}
+																	>
+																		Claim
+																	</Button>
+																</>
 															) : (
 																""
-															)}
-														</div>
+															)
+														) : (
+															""
+														)}
 													</div>
 												</div>
-												<Button>Share my victory</Button>
+												<div>
+													<div>
+														{totalFromDonation ? (
+															totalFromDonation > 0 ? (
+																<>
+																	<p>From Donation</p>
+																	{fomatNumber(totalFromDonation)}{" "}
+																	{dataPrize?.symbol}
+																	<br />
+																	<Button onClick={claimTokenDonation}>
+																		Claim
+																	</Button>
+																</>
+															) : (
+																""
+															)
+														) : (
+															""
+														)}
+													</div>
+												</div>
 											</div>
-										</>
-									);
-								default:
-									return null;
-							}
-						})()
-					)}
+											{(dataPrize?.amount && dataPrize?.amount > 0) ||
+											(dataSystemPrize?.amount &&
+												dataSystemPrize?.amount > 0) ? (
+												<Button>Share my victory</Button>
+											) : (
+												""
+											)}
+										</div>
+									</>
+								);
+							default:
+								return null;
+						}
+					})()}
 				</div>
 			</div>
 
@@ -425,7 +414,7 @@ export default observer(function RegistrationPhase(props: Props) {
 				wrapClassName={s.mdl}
 				okText="Confirm"
 				bodyStyle={{ display: "none" }}
-				onOk={() => handleLeaveTournament("", tournamentId!)}
+				onOk={handleLeaveTournament}
 				onCancel={handleCloseTourModal}
 			/>
 		</>
