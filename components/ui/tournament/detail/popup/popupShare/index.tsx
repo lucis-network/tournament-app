@@ -1,14 +1,16 @@
-import { Modal } from "antd";
+import { Input, Modal } from "antd";
+import { LINK_URL } from "utils/Enum";
 import s from "./PopupShare.module.sass";
 
 type Props = {
   datas?: object;
   status: boolean;
   closeModal: () => void;
+  asPath: string;
 };
 
 const PopupShare = (props: Props) => {
-  const { status, closeModal } = props;
+  const { status, closeModal, asPath } = props;
 
   return (
     <Modal
@@ -21,6 +23,9 @@ const PopupShare = (props: Props) => {
       footer=""
     >
       <p className="m-0">Share to:</p>
+      {/* <Input readOnly> {LINK_URL} </Input> */}
+      <input readOnly value={`${LINK_URL}${asPath}`} style={{background: "#1890ff", color: "white", width: "100%"}}>
+      </input>
     </Modal>
   );
 };

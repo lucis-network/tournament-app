@@ -128,10 +128,10 @@ export default observer(function User(props: Props) {
       {<Button onClick={showModal} className={s.chainBtn}>
         {chainNetIcoUrl ? (
           <div>
-            <img src={chainNetIcoUrl} alt="" />
+            {/* <img src={chainNetIcoUrl} alt="" />
             <span>
               {getAppNetworkFriendlyName(connected_network)}
-            </span>
+            </span> */}
           </div>
         ) : <>Connect Wallet</>}
       </Button>}

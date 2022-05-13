@@ -57,7 +57,7 @@ export default function TabHome() {
 					onFilter={handleChangeFilter}
 					onOrder={handleOrder}
 				/>
-				<div>
+				<div style={{ minHeight: '500px' }}>
 					<CardHome datas={data} loading={loading} />
 				</div>
 				<div className={s.container_create}>

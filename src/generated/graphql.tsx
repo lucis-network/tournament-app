@@ -1473,7 +1473,6 @@ export type MutationLeaveTeamArgs = {
 
 
 export type MutationLeaveTournamentArgs = {
-  team_uid: Scalars['String'];
   tournament_uid: Scalars['String'];
 };
 
@@ -1641,10 +1640,12 @@ export type ProfileUpdateInput = {
   twitch?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   twitter?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
   user_name?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
+  youtube?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
 export type Query = {
   __typename?: 'Query';
+  IsSubscribeToTournament?: Maybe<Scalars['Boolean']>;
   checkJoiningAnyTournament?: Maybe<Array<GTournament>>;
   checkUserName?: Maybe<Scalars['Boolean']>;
   currencies?: Maybe<Array<CurrencyGql>>;
@@ -1686,6 +1687,11 @@ export type Query = {
   searchOwnerTournament?: Maybe<Array<TTournament>>;
   searchTeam?: Maybe<Array<UserTeam>>;
   verifyEmail?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type QueryIsSubscribeToTournamentArgs = {
+  tournament_uid: Scalars['String'];
 };
 
 
@@ -1811,7 +1817,7 @@ export type QueryGetUpComingTournamentArgs = {
 
 
 export type QueryGetUserProfileArgs = {
-  user_id: Scalars['String'];
+  input: UserProfileInput;
 };
 
 
@@ -3350,7 +3356,6 @@ export type TournamentRankWhereUniqueInput = {
 };
 
 export type TournamentSearchInput = {
-  tournament_uid?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<Status>;
   value?: InputMaybe<Scalars['String']>;
 };
@@ -3974,6 +3979,11 @@ export type UserProfileCreateWithoutUserInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user_name?: InputMaybe<Scalars['String']>;
   youtube?: InputMaybe<Scalars['String']>;
+};
+
+export type UserProfileInput = {
+  user_id?: InputMaybe<Scalars['String']>;
+  user_name?: InputMaybe<Scalars['String']>;
 };
 
 export type UserProfileWhereUniqueInput = {

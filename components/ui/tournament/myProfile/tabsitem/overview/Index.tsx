@@ -49,7 +49,7 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 	const { getTotalEarningData } = useGetTotalEarning({
 		user_id: `${userInfo?.id}`,
 		skip: isEmpty(userInfo?.id),
-	});
+	})
 	const [favoriteGameIDs, setFavoriteGameIDs] = useState<string[]>([]);
 
 	const handleTournamentShowMore = (key: string) => {
@@ -99,11 +99,11 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 			link: userInfo?.profile?.facebook,
 			logo: "/assets/footer/fb.svg",
 		},
-		{
-			name: "twitch",
-			link: userInfo?.profile?.twitch,
-			logo: "/assets/footer/twitch.svg",
-		},
+		// {
+		// 	name: "twitch",
+		// 	link: userInfo?.profile?.twitch,
+		// 	logo: "/assets/footer/twitch.svg",
+		// },
 		{
 			name: "twitter",
 			link: userInfo?.profile?.twitter,

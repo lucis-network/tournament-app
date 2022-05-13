@@ -36,6 +36,7 @@ type UseGetUserProfileProps = {
   user_id?: string,
   user_name?: string,
   skip?: boolean,
+  onCompleted?: (data: any) => void,
 }
 
 type UseUpdateProfileProps = {
@@ -222,7 +223,7 @@ export function useVerifyEmail({ email }: UseVerifyEmailProps): {
   }
 }
 
-export function useGetUserProfile({ user_id, user_name, skip }: UseGetUserProfileProps): {
+export function useGetUserProfile({ user_id, user_name, skip, onCompleted }: UseGetUserProfileProps): {
   loading: boolean;
   error: ApolloError | undefined;
   refetch: () => Promise<ApolloQueryResult<any>>;
@@ -243,6 +244,7 @@ export function useGetUserProfile({ user_id, user_name, skip }: UseGetUserProfil
       }
     },
     skip: skip,
+    onCompleted: onCompleted,
   });
 
   return {

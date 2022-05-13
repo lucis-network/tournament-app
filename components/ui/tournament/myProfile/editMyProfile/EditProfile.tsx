@@ -35,8 +35,8 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
   const emailRef = useRef<HTMLInputElement>(null);
   const { Option } = Select;
 
-  const handleRegionChange = () => {
-
+  const handleRegionChange = (data: any) => {
+    console.log(data)
   }
 
   const fetchCountryList = async (): Promise<any> => {
@@ -76,6 +76,12 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
   const handleSaveChange = () => {
     form.validateFields()
       .then(result => {
+        let formattedPhone = '';
+        if (result.phone && result.dial_code) {
+          const dialCode = countryData.filter(country => country.code === result.dial_code)[0].dial_code;
+          formattedPhone = dialCode + result.phone
+        }
+        console.log(result.phone, formattedPhone)
         const newResult = {
           user_name: {
             set: result.user_name ?? ''
@@ -92,9 +98,9 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           telegram: {
             set: result.telegram ?? ''
           },
-          twitch: {
-            set: result.twitch ?? ''
-          },
+          // twitch: {
+          //   set: result.twitch ?? ''
+          // },
           discord: {
             set: result.discord ?? ''
           },
@@ -102,7 +108,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
             set: result.youtube ?? ''
           },
           phone: {
-            set: result.phone ?? ''
+            set: formattedPhone
           },
           biography: {
             set: result.biography ?? ''
@@ -110,13 +116,9 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
         }
         setNewProfileData(newResult)
       })
-      .then(() => {
-        getUserProfileRefetch()
-      })
       .catch(error => {
-        message.error(error.message)
         console.log(error)
-      })
+      });
   }
 
   useEffect(() => {
@@ -143,7 +145,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
     if (!isEmpty(newProfileData)) {
       updateProfile()
         .then(response => {
-          console.log('updateProfile: ', response)
+          getUserProfileRefetch()
         })
         .catch(error => {
           console.log('updateProfile error: ', error)
@@ -156,17 +158,18 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
       <Form
         form={form}
         initialValues={{
-          user_name: userInfo?.profile?.user_name ?? '',
-          display_name: userInfo?.profile?.display_name ? userInfo.profile.display_name : (userInfo?.profile?.user_name ?? ''),
-          email: userInfo?.email ?? '',
-          biography: userInfo?.profile?.biography ?? '',
-          facebook: userInfo?.profile?.facebook ?? '',
-          twitter: userInfo?.profile?.twitter ?? '',
-          telegram: userInfo?.profile?.telegram ?? '',
-          twitch: userInfo?.profile?.twitch ?? '',
-          discord: userInfo?.profile?.discord ?? '',
-          youtube: userInfo?.profile?.youtube ?? '',
-          dial_code: userInfo?.profile?.country_code ?? '',
+          user_name: !isEmpty(userInfo?.profile?.user_name) ? userInfo?.profile?.user_name : '',
+          display_name: !isEmpty(userInfo?.profile?.display_name) ? userInfo.profile?.display_name : (userInfo?.profile?.user_name ?? ''),
+          email: !isEmpty(userInfo?.email) ? userInfo?.email : '',
+          biography: !isEmpty(userInfo?.profile?.biography) ? userInfo?.profile?.biography : '',
+          facebook: !isEmpty(userInfo?.profile?.facebook) ? userInfo?.profile?.facebook : '',
+          twitter: !isEmpty(userInfo?.profile?.twitter) ? userInfo?.profile?.twitter : '',
+          telegram: !isEmpty(userInfo?.profile?.telegram) ? userInfo?.profile?.telegram : '',
+          // twitch: !isEmpty(userInfo?.profile?.twitch) ? userInfo?.profile?.twitch : '',
+          discord: !isEmpty(userInfo?.profile?.discord) ? userInfo?.profile?.discord : '',
+          youtube: !isEmpty(userInfo?.profile?.youtube) ? userInfo?.profile?.youtube : '',
+          dial_code: !isEmpty(userInfo?.profile?.country_code) ? userInfo?.profile?.country_code : '',
+          phone: !isEmpty(userInfo?.profile?.phone) ? userInfo?.profile?.phone : '',
         }}
       >
         <Row gutter={30}>
@@ -247,6 +250,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
                       filterOption={(input, option) => {
                         return option?.key.toLowerCase().indexOf(input.toLowerCase()) >= 0
                       }}
+                      onChange={handleRegionChange}
                     >
                       {countryData.length > 0 && countryData.map((item: CountryOption) => (
                         <Option key={item.name} value={item.code}>{item.name} {item.dial_code}</Option>
@@ -308,19 +312,19 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
             >
               <Input placeholder="Enter discord link" />
             </Form.Item>
-            <Form.Item
-              label="Twitch"
-              name="twitch"
-              labelCol={{ span: 24 }}
-              rules={[
-                {
-                  type: 'url',
-                  message: 'Invalid URL',
-                }
-              ]}
-            >
-              <Input placeholder="Enter twitch link" />
-            </Form.Item>
+            {/*<Form.Item*/}
+            {/*  label="Twitch"*/}
+            {/*  name="twitch"*/}
+            {/*  labelCol={{ span: 24 }}*/}
+            {/*  rules={[*/}
+            {/*    {*/}
+            {/*      type: 'url',*/}
+            {/*      message: 'Invalid URL',*/}
+            {/*    }*/}
+            {/*  ]}*/}
+            {/*>*/}
+            {/*  <Input placeholder="Enter twitch link" />*/}
+            {/*</Form.Item>*/}
             <Form.Item
               label="Youtube"
               name="youtube"
