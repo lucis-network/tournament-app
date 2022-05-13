@@ -18,10 +18,11 @@ export type TiersSelectType = {
 
 type Props = {
   tournamentId?: string;
+  tournament_status: string;
 };
 
 export default function TournamentDetailSponsor(props: Props) {
-  const { tournamentId } = props;
+  const { tournamentId, tournament_status } = props;
   const [isBecome, setIsBecome] = useState(false);
   const { loading, dataSponsors, refetch } = useSponsors({
     tournament_uid: tournamentId,
@@ -62,9 +63,13 @@ export default function TournamentDetailSponsor(props: Props) {
               })}
           </Col>
           <Col md={{ span: 6 }}>
-            <Button onClick={() => setIsBecome(true)}>
-              Become our sponsor
-            </Button>
+            {tournament_status !== "CLOSED" ? (
+              <Button onClick={() => setIsBecome(true)}>
+                Become our sponsor
+              </Button>
+            ) : (
+              ""
+            )}
           </Col>
         </Row>
       </div>

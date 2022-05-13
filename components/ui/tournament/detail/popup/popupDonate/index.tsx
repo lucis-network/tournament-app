@@ -115,8 +115,8 @@ const PopupDonate = (props: Props) => {
 
     if (types == "PLAYER") dnt.to = datas?.user?.id;
     if (types == "TEAM") {
-      setRefereeUid(datas?.BracketTeam[0]?.uid);
-      dnt.to = datas?.BracketTeam[0]?.uid;
+      setRefereeUid(datas?.uid);
+      dnt.to = datas?.uid;
     }
     if (types == "TOURNAMENT") dnt.to = tournamentId ? tournamentId : "";
     if (types == "REFEREE") {
@@ -235,12 +235,12 @@ const PopupDonate = (props: Props) => {
                         <img
                           className={s.avt}
                           src={`${
-                            e?.avatar || "/assets/MyProfile/defaultAvatar.png"
+                            e?.team?.avatar || "/assets/MyProfile/defaultAvatar.png"
                           }`}
                           alt=""
                         />
                       </div>
-                      <p>{e?.name}</p>
+                      <p>{e?.team?.name}</p>
                     </>
                   );
                 case "TOURNAMENT":
