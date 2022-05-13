@@ -67,6 +67,14 @@ export function useTournamentDetail(props: Props) {
 	});
 
 	const {
+		loading: loadingIsCheckin,
+		error: errorIsCheckin,
+		data: dataIsCheckin,
+	} = useQuery(IS_CHECKIN_TOURNAMENT, {
+		variables: { tournament_uid: props?.tournament_uid },
+	});
+
+	const {
 		loading: loadingDonation,
 		error: errorDonation,
 		data: dataDonation,
@@ -85,6 +93,7 @@ export function useTournamentDetail(props: Props) {
 		loadingBracket,
 		loadingIsJoin,
 		loadingDonation,
+		loadingIsCheckin,
 
 		error,
 		errorParticipant,
@@ -92,6 +101,7 @@ export function useTournamentDetail(props: Props) {
 		errorPrizing,
 		errorBracket,
 		errorIsJoin,
+		errorIsCheckin,
 		errorDonation,
 
 		dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
@@ -101,6 +111,7 @@ export function useTournamentDetail(props: Props) {
 		dataBracket: dataBracket?.getBracket,
 		dataIsJoin: dataIsJoin?.isJoinedTournament,
 		dataDonation: dataDonation?.donateHistory,
+		dataIsCheckin: dataIsCheckin?.isCheckInTournament,
 
 		joinTournament,
 		refetch,
@@ -340,6 +351,12 @@ const JOIN_TOURNAMENT = gql`
 const IS_JOIN_TOURNAMENT = gql`
 	query isJoinedTournament($tournament_uid: String!) {
 		isJoinedTournament(tournament_uid: $tournament_uid)
+	}
+`;
+
+const IS_CHECKIN_TOURNAMENT = gql`
+	query isCheckInTournament($tournament_uid: String!) {
+		isCheckInTournament(tournament_uid: $tournament_uid)
 	}
 `;
 

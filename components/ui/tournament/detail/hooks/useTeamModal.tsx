@@ -246,6 +246,8 @@ const UseTeamModal = (tournamentData: any) => {
 		}
 	};
 
+	const handleCheckin = useCallback(() => {}, []);
+
 	const handleOpenModal = useCallback(() => {
 		setShow(true);
 		searchTeam();
@@ -440,6 +442,7 @@ const UseTeamModal = (tournamentData: any) => {
 		show,
 		handleOpenModal,
 		handleCloseModal,
+		handleCheckin,
 		handleChangeStep,
 		stepConfiguration,
 	};
