@@ -5,16 +5,24 @@ import EditProfile from "components/ui/tournament/myProfile/editMyProfile/EditPr
 import ContentMyProfile from "../../components/ui/tournament/myProfile/content/ContentMyProfile";
 import {useGetUserProfile} from "../../hooks/myProfile/useMyProfile";
 import AuthStore from "../../components/Auth/AuthStore";
-
-const localUserInfo = AuthStore;
+import {isEmpty} from "lodash";
+import {UserGraphql} from "../../src/generated/graphql";
 
 const MyProfile = () => {
-	const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData} = useGetUserProfile({
-		user_id: `${localUserInfo.id}`
+	const localUserInfo = AuthStore;
+	const [userInfo, setUserInfo] = useState<any>(localUserInfo);
+	const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData } = useGetUserProfile({
+		user_name: `${localUserInfo?.profile?.user_name}`,
+		skip: isEmpty(localUserInfo?.profile?.user_name),
+		onCompleted: (data: {
+			getUserProfile: UserGraphql;
+		}) => {
+			setUserInfo(data.getUserProfile)
+		}
 	})
 	const [isShowEdit, setIsShowEdit] = useState(false);
 
-	if (loadingUserProfile) return null
+	if (loadingUserProfile || isEmpty(userInfo)) return null
 
 	const handleClick = () => {
 		setIsShowEdit(!isShowEdit);
@@ -22,12 +30,12 @@ const MyProfile = () => {
 	return (
 		<div className={s.wapper_profile}>
 			{/* Content */}
-			<InfoMyProfile click={handleClick} userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} isOwner />
+			<InfoMyProfile click={handleClick} userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner />
 			<div className="lucis-container">
 				{
 					isShowEdit ?
-						<EditProfile userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} /> :
-						<ContentMyProfile userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} isOwner />
+						<EditProfile userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} /> :
+						<ContentMyProfile userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner />
 				}
 			</div>
 		</div>

@@ -4,21 +4,31 @@ import ContentMyProfile from "../../components/ui/tournament/myProfile/content/C
 import { useRouter } from 'next/router'
 import {useGetUserProfile} from "../../hooks/myProfile/useMyProfile";
 import {isEmpty} from "lodash";
+import Head from "next/head";
+import DefaultErrorPage from 'next/error'
 
 const MyProfile = () => {
   const router = useRouter();
-  const user_id = router.query.id;
+  const user_name = router.query.username;
 
   const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData} = useGetUserProfile({
-    user_id: `${user_id}`
+    user_name: `${user_name}`
   })
 
-  if (loadingUserProfile) return null
+  if (loadingUserProfile || isEmpty(user_name)) return null
 
-  if (isEmpty(getUserProfileData?.getUserProfile)) router.push('/notfound')
+  if (isEmpty(getUserProfileData?.getUserProfile)) return (
+    <>
+      <Head>
+        <meta name="robots" content="noindex" />
+        <title>404 | This page could not be found.</title>
+      </Head>
+      <DefaultErrorPage statusCode={404} />
+    </>
+  )
 
   return (
-    <div className={s.wapper_profile}>
+    <div className={s.wrapper_profile}>
       {/* Content */}
       <InfoMyProfile userInfo={getUserProfileData?.getUserProfile} />
 
