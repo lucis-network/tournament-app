@@ -1,42 +1,21 @@
-import UpdateScoreModal from "components/ui/tournament/detail/popup/updateScore";
 import React from "react";
-import { observer } from "mobx-react-lite";
-import RoundStore, { RoundMatch } from "src/store/SingleRoundStore";
-import ss from './SingleBracket.module.sass'
+import { RenderSeedProps, Seed, SeedItem, SeedTeam } from "react-brackets";
 
-import { Bracket, RenderSeedProps, RoundProps, Seed, SeedItem, SeedTeam, } from "react-brackets";
-
+import { RoundMatch } from "src/store/SingleRoundStore";
+import { BracketMatchStatus } from "src/generated/graphql";
 import s from "./index.module.sass";
-import { BracketMatchStatus } from "../../../../../../src/generated/graphql";
+import ss from "./SingleBracket/SingleBracket.module.sass";
 
-interface Props {
-  canEdit: boolean
-}
-
-const SingleBracket = (props: Props) => {
-  const {canEdit} = props;
-
-  const handleOpenModal = (
+export function makeSeedComponent(
+  roundCount: number,
+  canEdit: boolean,
+  handleOpenModal: (
     e: any,
     seed: RoundMatch,
     seedIndex: number,
     roundIndex: number
-  ) => {
-    if (canEdit) {
-      RoundStore.updateScoreModalVisible = true;
-      RoundStore.currentMatch = {
-        uid: seed.uid,
-        teams: seed.teams,
-        seedIndex,
-        roundIndex,
-      };
-    } else {
-      console.warn("User don't have perm to edit")
-    }
-  };
-
-  const roundCount = RoundStore.rounds.length;
-
+  ) => void,
+) {
   const RenderSeed = ({
     seed,
     breakpoint,
@@ -97,25 +76,5 @@ const SingleBracket = (props: Props) => {
     );
   };
 
-  return (
-    <>
-      <Bracket
-        rounds={RoundStore.rounds as RoundProps[]}
-        roundClassName={s.wining}
-        renderSeedComponent={RenderSeed}
-        mobileBreakpoint={360}
-        swipeableProps={{
-          enableMouseEvents: true,
-          animateHeight: true,
-          style: {
-            padding: "0 50px 0 0",
-          },
-        }}
-      />
-      {canEdit && <UpdateScoreModal />}
-    </>
-  );
-};
-
-// For display bracket in tour detail screen
-export default observer(SingleBracket);
+  return RenderSeed
+}
