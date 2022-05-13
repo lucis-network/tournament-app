@@ -92,6 +92,7 @@ export function useTournamentDetail(props: Props): {
 		loading: loadingIsJoin,
 		error: errorIsJoin,
 		data: dataIsJoin,
+		refetch: refreshIsJoin,
 	} = useQuery(IS_JOIN_TOURNAMENT, {
 		variables: { tournament_uid: props?.tournament_uid },
 	});
@@ -100,6 +101,7 @@ export function useTournamentDetail(props: Props): {
 		loading: loadingIsCheckin,
 		error: errorIsCheckin,
 		data: dataIsCheckin,
+		refetch: refreshIsCheckin,
 	} = useQuery(IS_CHECKIN_TOURNAMENT, {
 		variables: { tournament_uid: props?.tournament_uid },
 	});
@@ -113,7 +115,8 @@ export function useTournamentDetail(props: Props): {
 		fetchPolicy: "network-only",
 	});
 
-	const [joinTournament] = useMutation(JOIN_TOURNAMENT);
+	const [joinTournament, { loading: loadingJoinTournament }] =
+		useMutation(JOIN_TOURNAMENT);
 
 	return {
 		loading,
@@ -124,6 +127,7 @@ export function useTournamentDetail(props: Props): {
 		loadingIsJoin,
 		loadingDonation,
 		loadingIsCheckin,
+		loadingJoinTournament,
 
 		error,
 		errorParticipant,
@@ -144,6 +148,8 @@ export function useTournamentDetail(props: Props): {
 		dataIsCheckin: dataIsCheckin?.isCheckInTournament,
 
 		joinTournament,
+		refreshIsJoin,
+		refreshIsCheckin,
 		refetch,
 		refreshParticipant,
 	};

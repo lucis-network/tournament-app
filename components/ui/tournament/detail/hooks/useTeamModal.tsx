@@ -18,6 +18,7 @@ import AddUserTeamModal from "components/ui/common/addUserTeamModal";
 import TeamPrizing from "../popup/chooseTeamModal/TeamPrizing";
 import ChoosePlayer from "../popup/chooseTeamModal/ChoosePlayer";
 import { checkEmptyArrayValue, checkTotalPercent, dataTeam } from "./helper";
+import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 
 export interface Item extends TeamType {
 	prize?: number;
@@ -71,9 +72,14 @@ const UseTeamModal = (tournamentData: any) => {
 		reset
 	);
 
+	const { loadingJoinTournament, refreshIsJoin } = useTournamentDetail({
+		tournament_uid: tournamentId,
+	});
+
 	const handleRoutes = (route: string) => {
 		router.push(route);
 		setShow(false);
+		refreshIsJoin();
 		// refreshParticipant();
 	};
 
@@ -343,6 +349,7 @@ const UseTeamModal = (tournamentData: any) => {
 				description: description2,
 				component: selectedTeam ? (
 					<TeamPrizing
+						loadingJoin={loadingJoinTournament}
 						isSolo={isSoloVersion}
 						error={errorTour}
 						tourPassword={tourPassword}
