@@ -799,3 +799,46 @@ body .ant-carousel .slick-list{
 body .ant-carousel .slick-dots-bottom{
   bottom: -30px;
 }
+
+/* new container */
+.lucis-container-2 {
+  padding: 0 15px;
+  margin: 0 auto;
+}
+
+@media screen and (min-width: 576px) {
+  .lucis-container-2 {
+    width: 540px;
+    padding: 0;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .lucis-container-2 {
+    width: 720px;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .lucis-container-2 {
+    width: 960px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .lucis-container-2 {
+    width: 1140px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .lucis-container-2 {
+    width: 1320px;
+  }
+}
+
+@media screen and (min-width: 1900px) {
+  .lucis-container-2 {
+    width: 1600px;
+  }
+}
