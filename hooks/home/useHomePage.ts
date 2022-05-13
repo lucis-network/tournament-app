@@ -1,6 +1,5 @@
 import { useCallback, useState } from "react";
 import { gql, useQuery } from "@apollo/client";
-import { debounce } from "lodash";
 import { Bracket, OrderType, StatusGameType } from "utils/Enum";
 
 export type FilterGame = {
@@ -26,9 +25,7 @@ export function useHomePage() {
 		time: OrderType.NONE,
 	});
 
-	const { data: gameData } = useQuery(GET_GAME, {
-		fetchPolicy: "cache-and-network",
-	});
+	const { data: gameData } = useQuery(GET_GAME);
 
 	const {
 		loading,
@@ -48,13 +45,20 @@ export function useHomePage() {
 
 	const handleChangeFilter = useCallback(
 		(type: keyof FilterGame, value: string) => {
-			const valueConvert = value === "" ? "ALL" : value;
-
-			setFilter({
+			const valueConvert = {
 				...filter,
-				[type]: value,
-			});
-			getData({ ...filter, [type]: valueConvert });
+				[type]:
+					type === "bracket" && value === ""
+						? Bracket.ALL
+						: type === "prize_pool" || type === "time"
+						? "NONE"
+						: value === ""
+						? ""
+						: value,
+			};
+
+			setFilter(valueConvert);
+			getData(valueConvert);
 			// type === "game"
 			// 	? debounce(() => getData({ ...filter, [type as any]: value }), 500)
 			// 	: getData({ ...filter, [type]: value });

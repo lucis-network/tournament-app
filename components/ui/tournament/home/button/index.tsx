@@ -1,11 +1,6 @@
 import s from "./button.module.sass";
 import { Select } from "antd";
-import {
-	bracketValues,
-	OrderType,
-	orderValues,
-	Participants,
-} from "utils/Enum";
+import { bracketValues, OrderType, Participants } from "utils/Enum";
 import { FilterGame } from "hooks/home/useHomePage";
 import { useCallback, useState } from "react";
 import Order from "components/ui/common/Order";
@@ -25,15 +20,8 @@ export default function ButtonSort({
 	onFilter,
 	onOrder,
 }: ButtonSort) {
-	const [type, setType] = useState<keyof FilterGame>("game_uid");
-
-	const handleCheckType = useCallback((type: any) => {
-		setType(type);
-	}, []);
-
-	const handleChange = (value: string) => {
+	const handleChange = (type: keyof FilterGame) => (value: string) =>
 		onFilter(type, value?.toString() || "");
-	};
 
 	return (
 		<div className={s.container}>
@@ -44,11 +32,15 @@ export default function ButtonSort({
 				</div>
 				<div>
 					<Select
-						onChange={handleChange}
-						onClick={() => handleCheckType("game_uid")}
+						id="game_uid"
+						key="game_uid"
+						onChange={handleChange("game_uid")}
 						allowClear
 						placeholder="Game"
 						className="w-44"
+						fieldNames={{
+							options: "bracket",
+						}}
 					>
 						{gameData?.map((item) => (
 							<Option key={item.uid} value={item.uid}>
@@ -57,11 +49,15 @@ export default function ButtonSort({
 						))}
 					</Select>
 					<Select
-						onChange={handleChange}
-						onClick={() => handleCheckType("bracket")}
+						id="bracket"
+						key="bracket"
+						onChange={handleChange("bracket")}
 						allowClear
 						placeholder="Bracket Type"
 						className="w-[165px]"
+						fieldNames={{
+							options: "bracket",
+						}}
 					>
 						{bracketValues.map((item) => (
 							<Option key={item.key} value={item.key}>
@@ -70,10 +66,14 @@ export default function ButtonSort({
 						))}
 					</Select>
 					<Select
-						onChange={handleChange}
-						onClick={() => handleCheckType("size")}
+						id="size"
+						key="size"
+						onChange={handleChange("size")}
 						allowClear
 						placeholder="Size"
+						fieldNames={{
+							options: "size",
+						}}
 					>
 						{Participants.map((item, i) => (
 							<Option key={i} value={item}>

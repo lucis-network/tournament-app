@@ -37,8 +37,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
 												alt="icon"
 											/>
 											<span>
-												{/* {item?.totalPrizePool} */}
-												10.000 {item?.currency?.symbol}
+												{item?.totalPrizePool} {item?.currency?.symbol}
 											</span>
 										</div>
 									</div>
