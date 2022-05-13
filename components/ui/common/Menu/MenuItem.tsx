@@ -55,7 +55,7 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       onClick={click}
     >
       <div className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`} style={{ fontSize: "16px", lineHeight: '22px' }}>
-        <Link href={props.item.src ?? '/'}>{props.item.text}</Link>
+        <a href={props.item.src ?? '/'} target="_blank" rel="noopener noreferrer">{props.item.text}</a>
       </div>
     </motion.li>
   );

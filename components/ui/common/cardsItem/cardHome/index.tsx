@@ -63,7 +63,7 @@ function TournamentCard(props: { data: TournamentGql }) {
 							<img src="/assets/home/ic_member.svg" alt="" />
 							<span>
 								<span style={{ color: "#0BEBD6" }}>
-									{item.cache_tournament?.team_participated}
+									{item.cache_tournament?.team_participated === undefined || null ? 0 : item.cache_tournament?.team_participated}
 								</span>
 								/{item?.participants}
 							</span>
@@ -79,7 +79,7 @@ function TournamentCard(props: { data: TournamentGql }) {
 					<Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
 						<a>
 							<img
-								style={{ padding: 2, width: "100%" }}
+								style={{ padding: 1, width: "100%" }}
 								src={item.thumbnail}
 								alt=""
 							/>

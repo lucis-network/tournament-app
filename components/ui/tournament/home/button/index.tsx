@@ -25,8 +25,8 @@ export default function ButtonSort({
 
 	return (
 		<div className={s.container}>
-			<div className={`${s.item} mb-6`}>
-				<div className={`w-24 ${s.ic}`}>
+			<div className={`${s.item}`}>
+				<div className={`w-24 ${s.ic} mb-4`}>
 					<img src="/assets/home/ic_filter.svg" alt="" />
 					Filter
 				</div>
@@ -41,6 +41,7 @@ export default function ButtonSort({
 						fieldNames={{
 							options: "bracket",
 						}}
+						style={{width: 130}}
 					>
 						{gameData?.map((item) => (
 							<Option key={item.uid} value={item.uid}>
@@ -58,6 +59,7 @@ export default function ButtonSort({
 						fieldNames={{
 							options: "bracket",
 						}}
+						style={{width: 130}}
 					>
 						{bracketValues.map((item) => (
 							<Option key={item.key} value={item.key}>
@@ -74,6 +76,7 @@ export default function ButtonSort({
 						fieldNames={{
 							options: "size",
 						}}
+						style={{width: 130}}
 					>
 						{Participants.map((item, i) => (
 							<Option key={i} value={item}>
@@ -84,7 +87,7 @@ export default function ButtonSort({
 				</div>
 			</div>
 			<div className={s.item}>
-				<div className={`w-24 ${s.ic}`}>
+				<div className={`w-24 ${s.ic} mb-4`}>
 					<img src="/assets/home/ic_sort.svg" alt="" />
 					Sort
 				</div>
@@ -115,7 +118,7 @@ export default function ButtonSort({
 					</Select>
 				</div> */}
 				<div className="flex items-center align-middle">
-					<div className="mr-4">
+					<div className={`mr-4 ${s.m}`}>
 						<Order
 							title="Prize pool"
 							id="prize_pool"
@@ -123,7 +126,7 @@ export default function ButtonSort({
 							onClick={onOrder}
 						/>
 					</div>
-					<div>
+					<div className={s.m}>
 						<Order
 							id="time"
 							title="Time"
