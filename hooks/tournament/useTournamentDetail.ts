@@ -5,22 +5,52 @@ import {
 	useMutation,
 	useQuery,
 } from "@apollo/client";
-import { SponsorSlot } from "src/generated/graphql";
+import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
 type Props = {
 	tournament_uid?: string;
 };
 
-export function useTournamentDetail(props: Props) {
-	const {
-		loading,
-		error,
-		data: dataTournamentDetail,
-		refetch,
-	} = useQuery(GET_TOURNAMENT_DETAIL, {
-		variables: { tournament_uid: props?.tournament_uid },
-		fetchPolicy: "no-cache",
-	});
+export function useTournamentDetail(props: Props): {
+  loading: boolean,
+  loadingParticipant: boolean,
+  loadingReferees: boolean,
+  loadingPrizing: boolean,
+  loadingBracket: boolean,
+  loadingIsJoin: boolean,
+	loadingIsCheckin: boolean,
+	loadingDonation: boolean,
+
+  error: any,
+  errorParticipant: any,
+  errorReferees: any,
+  errorPrizing: any,
+  errorBracket: any,
+  errorIsJoin: any,
+	errorIsCheckin: any,
+	errorDonation: any,
+
+  dataTournamentDetail: TournamentGql | undefined,
+  dataParticipants: any,
+  dataRefereesDetail: any,
+  dataPrizing: any,
+  dataBracket: any,
+  dataIsJoin: any,
+  joinTournament: any,
+  refetch: any,
+  refreshParticipant: any,
+	dataDonation: any,
+	dataIsCheckin: any,
+} {
+  const {
+    loading,
+    error,
+    data: dataTournamentDetail,
+    refetch,
+  } = useQuery(GET_TOURNAMENT_DETAIL, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "no-cache",
+  });
 
 	const {
 		loading: loadingParticipant,
@@ -62,7 +92,17 @@ export function useTournamentDetail(props: Props) {
 		loading: loadingIsJoin,
 		error: errorIsJoin,
 		data: dataIsJoin,
+		refetch: refreshIsJoin,
 	} = useQuery(IS_JOIN_TOURNAMENT, {
+		variables: { tournament_uid: props?.tournament_uid },
+	});
+
+	const {
+		loading: loadingIsCheckin,
+		error: errorIsCheckin,
+		data: dataIsCheckin,
+		refetch: refreshIsCheckin,
+	} = useQuery(IS_CHECKIN_TOURNAMENT, {
 		variables: { tournament_uid: props?.tournament_uid },
 	});
 
@@ -75,7 +115,8 @@ export function useTournamentDetail(props: Props) {
 		fetchPolicy: "network-only",
 	});
 
-	const [joinTournament] = useMutation(JOIN_TOURNAMENT);
+	const [joinTournament, { loading: loadingJoinTournament }] =
+		useMutation(JOIN_TOURNAMENT);
 
 	return {
 		loading,
@@ -85,6 +126,8 @@ export function useTournamentDetail(props: Props) {
 		loadingBracket,
 		loadingIsJoin,
 		loadingDonation,
+		loadingIsCheckin,
+		loadingJoinTournament,
 
 		error,
 		errorParticipant,
@@ -92,6 +135,7 @@ export function useTournamentDetail(props: Props) {
 		errorPrizing,
 		errorBracket,
 		errorIsJoin,
+		errorIsCheckin,
 		errorDonation,
 
 		dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
@@ -101,8 +145,11 @@ export function useTournamentDetail(props: Props) {
 		dataBracket: dataBracket?.getBracket,
 		dataIsJoin: dataIsJoin?.isJoinedTournament,
 		dataDonation: dataDonation?.donateHistory,
+		dataIsCheckin: dataIsCheckin?.isCheckInTournament,
 
 		joinTournament,
+		refreshIsJoin,
+		refreshIsCheckin,
 		refetch,
 		refreshParticipant,
 	};
@@ -170,50 +217,51 @@ export function useClaimReward(props: Props) {
 // ======= GET DATA GRAPQL
 
 const GET_TOURNAMENT_DETAIL = gql`
-	query ($tournament_uid: String!) {
-		getTournamentDetail(tournament_uid: $tournament_uid) {
-			name
-			cover
-			thumbnail
-			team_size
-			participants
-			desc
-			rules
-			game {
-				name
-				logo
-			}
-			user {
-				profile {
-					display_name
-					avatar
-				}
-			}
-			sponsorSlot {
-				sponsor_transactions {
-					amount
-				}
-			}
-			brackets {
-				uid
-				start_at
-			}
-			currency_uid
-			totalDonation
-			totalPrizePool
-			region
-			currency {
-				symbol
-				chain_symbol
-			}
-			tournament_status
-			additionPrize
-			cache_tournament {
-				team_participated
-				tournament_uid
-			}
-		}
-	}
+  query ($tournament_uid: String!) {
+    getTournamentDetail(tournament_uid: $tournament_uid) {
+      name
+      cover
+      thumbnail
+      team_size
+      participants
+      desc
+      rules
+      referees
+      game {
+        name
+        logo
+      }
+      user {
+        profile {
+          display_name
+          avatar
+        }
+      }
+      sponsorSlot {
+        sponsor_transactions {
+          amount
+        }
+      }
+      brackets {
+        uid
+        start_at
+      }
+      currency_uid
+      totalDonation
+      totalPrizePool
+      region
+      currency {
+        symbol
+        chain_symbol
+      }
+      tournament_status
+      additionPrize
+      cache_tournament {
+        team_participated
+        tournament_uid
+      }
+    }
+  }
 `;
 
 const GET_PARTICIPANTS_DETAIL = gql`
@@ -340,6 +388,12 @@ const JOIN_TOURNAMENT = gql`
 const IS_JOIN_TOURNAMENT = gql`
 	query isJoinedTournament($tournament_uid: String!) {
 		isJoinedTournament(tournament_uid: $tournament_uid)
+	}
+`;
+
+const IS_CHECKIN_TOURNAMENT = gql`
+	query isCheckInTournament($tournament_uid: String!) {
+		isCheckInTournament(tournament_uid: $tournament_uid)
 	}
 `;
 

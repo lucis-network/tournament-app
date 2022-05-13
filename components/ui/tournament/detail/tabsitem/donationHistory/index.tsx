@@ -8,7 +8,7 @@ import {fomatNumber} from "../../../../../../utils/Number";
 type DonationHistoryProps = {
   dataDonation: Prize[];
   loadingDonation: any;
-  currency: Currency;
+  currency?: Currency;
   tournament: any;
 };
 
@@ -46,7 +46,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
     {
       title: 'Amount',
       dataIndex: 'amount',
-      render: (text: string) => <span>{text} {currency.symbol}</span>
+      render: (text: string) => <span>{text} {currency?.symbol}</span>
     },
     {
       title: 'TxID',
@@ -72,7 +72,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
 
   return (
     <div className={s.donationWrapper}>
-      <h3 className="text-right">Total donation: {fomatNumber(totalDonation)} {currency.symbol}</h3>
+      <h3 className="text-right">Total donation: {fomatNumber(totalDonation)} {currency?.symbol}</h3>
       <Table
         dataSource={dataDonation}
         columns={columns}

@@ -1,5 +1,4 @@
 import React from "react";
-import ExpiredNotice from "./ExpiredNotice";
 import ShowCounter from "./ShowCounter";
 import { useCountdown } from "./useCountDown";
 
@@ -11,7 +10,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
 	const [days, hours, minutes, seconds] = useCountdown(targetDate);
 
 	if (days + hours + minutes + seconds <= 0) {
-		return <ExpiredNotice />;
+		return <ShowCounter days={0} hours={0} minutes={0} seconds={0} />;
 	} else {
 		return (
 			<ShowCounter

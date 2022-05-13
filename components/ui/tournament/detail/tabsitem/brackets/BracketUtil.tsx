@@ -5,6 +5,7 @@ import { Round, RoundMatch, Team } from "src/store/SingleRoundStore";
 export type BracketUiProps = {
   dataBracket?: BracketGql;
   loadingBracket?: any;
+  refereeIds: string[];
 };
 
 function _defaultRoundTeam(): Team {
