@@ -20,6 +20,7 @@ import { isClientDevMode } from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 import { PopupConfirm } from "components/ui/tournament/detail/popup/PopupConfirm";
+import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 
 const { TabPane } = Tabs;
@@ -31,22 +32,24 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 	const [isLoadingSub, setIsLoadingSub] = useState(false);
 	const [showConfirm, setShowConfirm] = useState<boolean>(false);
 
-	const {
-		dataTournamentDetail,
-		dataParticipants,
-		dataRefereesDetail,
-		dataPrizing,
-		dataBracket,
-		dataIsJoin: isJoin,
-		dataIsCheckin: isCheckin,
-		dataDonation,
+  const {
+    dataTournamentDetail,
+    dataParticipants,
+    dataRefereesDetail,
+    dataPrizing,
+    dataBracket,
+    dataIsJoin: isJoin,
+    dataIsCheckin: isCheckin,
+    dataDonation,
+    dataListRank,
 
-		loading,
-		loadingParticipant,
-		loadingReferees,
-		loadingPrizing,
-		loadingBracket,
-		loadingDonation,
+    loading,
+    loadingParticipant,
+    loadingReferees,
+    loadingPrizing,
+    loadingBracket,
+    loadingDonation,
+    loadingListRank,
 
 		joinTournament,
 		refreshParticipant,
@@ -305,13 +308,25 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 							tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
 							key="4"
 						>
-							<TableParticipant
-								dataParticipants={dataParticipants}
-								loading={loadingParticipant}
-								tournamentId={tournamentId as string}
-								currency={currency}
-								tournament_status={tournament_status as string}
-							/>
+							<>
+								{tournament_status !== "CLOSED" && (
+									<TableParticipant
+										dataParticipants={dataParticipants}
+										loading={loadingParticipant}
+										tournamentId={tournamentId as string}
+										currency={currency}
+										tournament_status={tournament_status as string}
+									/>
+								)}
+								{tournament_status === "CLOSED" && (
+									<ListRanks
+										dataListRank={dataListRank}
+										loading={loadingListRank}
+										tournamentId={tournamentId as string}
+										currency={currency}
+									/>
+								)}
+							</>
 						</TabPane>
 						<TabPane tab="Referees" key="5">
 							<Referees

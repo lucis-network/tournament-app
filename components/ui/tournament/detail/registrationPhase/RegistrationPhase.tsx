@@ -129,38 +129,38 @@ export default observer(function RegistrationPhase(props: Props) {
 					address: ConnectWalletStore.address,
 				};
 
-				let tournamentService = new TournamentService();
-				const response = tournamentService.claimPrizePool(claim).then(
-					(res) => {
-						if (res) {
-							TournamentStore.claimResultModalVisible = true;
-							refetch();
-						}
-					},
-					(error) => {
-						message.warning("You have received prize pool.");
-					}
-				);
-			}
+        let tournamentService = new TournamentService();
+        const response = tournamentService.claimPrizePool(claim).then(
+          (res) => {
+            if (res) {
+              TournamentStore.claimResultModalVisible = true;
+              refetch();
+            }
+          },
+          (error) => {
+            message.warning("You have received this prize.");
+          }
+        );
+      }
 
-			if (value === "PrizeSystem") {
-				let tournamentService = new TournamentService();
-				const response = tournamentService
-					.claimPrizeSystem(tournamentId as string)
-					.then(
-						(res) => {
-							if (res) {
-								TournamentStore.claimResultModalVisible = true;
-								refetch();
-							}
-						},
-						(error) => {
-							message.warning("You have received prize system.");
-						}
-					);
-			}
-		}
-	};
+      if (value === "PrizeSystem") {
+        let tournamentService = new TournamentService();
+        const response = tournamentService
+          .claimPrizeSystem(tournamentId as string)
+          .then(
+            (res) => {
+              if (res) {
+                TournamentStore.claimResultModalVisible = true;
+                refetch();
+              }
+            },
+            (error) => {
+              message.warning("You have received this prize.");
+            }
+          );
+      }
+    }
+  };
 
 	const closeModal = () => {
 		setIsPopupDonate(false);
