@@ -20,10 +20,15 @@ export default function SilderBanner({ data }: SliderBannerProps) {
 		const { uid, name } = dataTournament;
 		router.push(`/tournament/${uid}/${slugify(name)}`);
 	};
+
 	return (
 		<Carousel autoplay>
 			{orderData?.map((item) => (
-				<div key={item?.uid} className={s.container}>
+				<div
+					key={item?.uid}
+					onClick={() => handleJoinDetail(item)}
+					className={`${s.container} cursor-pointer`}
+				>
 					<div className={s.im_conver}>
 						<div
 							className={s.im_banner}
