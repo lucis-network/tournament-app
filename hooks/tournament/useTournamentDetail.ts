@@ -88,7 +88,7 @@ export function useTournamentDetail(props: Props) {
   const [joinTournament, { loading: loadingJoinTournament }] =
     useMutation(JOIN_TOURNAMENT);
 
-  const [confirmResult] = useMutation(CONFIRM_RESULT);
+  //const [confirmResult] = useMutation(CONFIRM_RESULT);
 
   const { data: dataIsubscribeToTournament, refetch: refetchSubTournament } =
     useQuery(IS_SUBSCRIBE_TOURNAMENT, {
@@ -103,6 +103,14 @@ export function useTournamentDetail(props: Props) {
     }
   );
 
+  const {
+    loading: loadingConfirmResult,
+    data: isCheckConfirmResult,
+    refetch: refetchConfirmResult,
+  } = useQuery(CHECK_CONFIRM_RESULT, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "network-only",
+  });
   return {
     loading,
     loadingParticipant,
@@ -134,13 +142,14 @@ export function useTournamentDetail(props: Props) {
     dataIsubscribeToTournament: dataIsubscribeToTournament,
     loadingJoinTournament: loadingJoinTournament,
     dataListRank: getTournamentListRank,
+    isCheckConfirmResult: isCheckConfirmResult?.isConfirmTournamentResult,
     joinTournament,
-    confirmResult,
     refreshIsJoin,
     refreshIsCheckin,
     refetch,
     refreshParticipant,
     refetchSubTournament,
+    refetchConfirmResult,
   };
 }
 
@@ -436,9 +445,9 @@ const IS_SUBSCRIBE_TOURNAMENT = gql`
   }
 `;
 
-const CONFIRM_RESULT = gql`
-  mutation confirmResult($tournament_uid: String!) {
-    confirmResult(tournament_uid: $tournament_uid)
+const CHECK_CONFIRM_RESULT = gql`
+  query isConfirmTournamentResult($tournament_uid: String!) {
+    isConfirmTournamentResult(tournament_uid: $tournament_uid)
   }
 `;
 

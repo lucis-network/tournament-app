@@ -7,12 +7,12 @@ import TournamentService from "components/service/tournament/TournamentService";
 interface Props {
   show: boolean;
   onCancel: () => void;
-  onOk: () => void;
   tournamentId: string;
+  refetchConfirmResult: any;
 }
 
 export default function PopupConfirm(props: Props) {
-  const { show, onOk, onCancel, tournamentId } = props;
+  const { show, onCancel, tournamentId, refetchConfirmResult } = props;
   const { error, loading, data } = useConfirmTournamentResult({
     tournament_uid: tournamentId,
   });
@@ -48,6 +48,7 @@ export default function PopupConfirm(props: Props) {
         if (res) {
           message.success("Success");
           onCancel();
+          refetchConfirmResult();
         } else {
           message.success("Fail. Plesase try again.");
         }

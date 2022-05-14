@@ -47,8 +47,6 @@ const UseTeamModal = (tournamentData: any) => {
 	const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
 	const [errorTour, setErrorTour] = useState<ErrorTourKey>();
 
-	console.log(tournamentData?.tournament);
-
 	const {
 		reset,
 		draftData,

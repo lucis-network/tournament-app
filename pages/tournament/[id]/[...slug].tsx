@@ -43,6 +43,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     dataIsCheckin: isCheckin,
     dataDonation,
     dataListRank,
+    isCheckConfirmResult,
+    dataIsubscribeToTournament,
 
     loading,
     loadingParticipant,
@@ -55,9 +57,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     joinTournament,
     refreshParticipant,
     refetch,
-    confirmResult,
-    dataIsubscribeToTournament,
+
     refetchSubTournament,
+    refetchConfirmResult,
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
@@ -85,17 +87,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
   const handleOpenConfirmResult = () => {
     setShowConfirm(true);
-  };
-  const handleConfirmResult = () => {
-    confirmResult({
-      onCompleted: () => {
-        message.success("Success", 10);
-        setShowConfirm(false);
-      },
-      onError: (err) => {
-        message.error(err.message, 10);
-      },
-    });
   };
 
   const {
@@ -156,7 +147,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             </button>
           )} */}
           <div>
-            {tournament_status === "FINISH" && (
+            {tournament_status === "FINISH" && !isCheckConfirmResult && (
               <a
                 className="text-16px border text-white py-1 px-4"
                 onClick={handleOpenConfirmResult}
@@ -383,8 +374,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <PopupConfirm
           show={showConfirm}
           onCancel={() => setShowConfirm(false)}
-          onOk={handleConfirmResult}
           tournamentId={tournamentId as string}
+          refetchConfirmResult={refetchConfirmResult}
         />
       </div>
     </>
