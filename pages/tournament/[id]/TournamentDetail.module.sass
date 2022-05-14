@@ -15,13 +15,12 @@
   .group_button
     display: flex
     align-items: center
-    margin-top: 20px
     width: 100%
     justify-content: space-between
     gap: 12px
     button
       min-width: 162px
-      padding: 12px 0
+      padding: 12px
       font-size: 20px
       font-weight: 700
       @include box-glass
@@ -34,8 +33,8 @@
     //   border-radius: 10px
   .content_top
     .img_game
-      max-width: 258px
-      min-height: 160px
+      width: 450px
+      height: auto
       overflow: hidden
       border-radius: 20px
       background: #FFF
@@ -92,10 +91,13 @@
   margin-bottom: 50px
 .bgCharacters
   position: relative
+  *
+    z-index: 1
   &::before, &::after
     content: ''
     display: block
     position: absolute
+    z-index: 0
   &::before
     width: 748px
     height: 1180px
@@ -108,3 +110,6 @@
     bottom: 0
     right: -100px
     background: url("/assets/TournamentDetail/rightCharacter.png")
+.tournamentInfo
+  *
+    color: #ffffff
