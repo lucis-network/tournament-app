@@ -46,7 +46,7 @@ const TournamentDetailMarquee = () => {
   }, [arr]);
 
   return (
-    <div className="lucis-container">
+    <div className={`lucis-container-2 ${s.marquee_section}`}>
       <div className={s.marquee}>
         <img src="/assets/Banner/ic_loudspeaker.png" alt="" />
         <div className={s.time}>
