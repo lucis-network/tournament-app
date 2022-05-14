@@ -19,7 +19,7 @@ export function useTournamentDetail(props: Props) {
     refetch,
   } = useQuery(GET_TOURNAMENT_DETAIL, {
     variables: { tournament_uid: props?.tournament_uid },
-    fetchPolicy: "no-cache",
+    fetchPolicy: "network-only",
   });
 
   const {

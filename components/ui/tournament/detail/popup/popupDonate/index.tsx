@@ -21,6 +21,7 @@ type Props = {
   currency?: any;
   name?: string;
   thumbnail?: string;
+  refetch: any;
 };
 
 export type GDonateTransaction = {
@@ -44,6 +45,7 @@ const PopupDonate = (props: Props) => {
     currency,
     name,
     thumbnail,
+    refetch,
   } = props;
   const { getContract } = useGetContract({});
 
@@ -133,6 +135,7 @@ const PopupDonate = (props: Props) => {
       const response = tournamentService.donateService(dnt).then((res) => {
         if (res) {
           setIsPopupNotify(true);
+          refetch();
         }
       });
     }
@@ -235,7 +238,8 @@ const PopupDonate = (props: Props) => {
                         <img
                           className={s.avt}
                           src={`${
-                            e?.team?.avatar || "/assets/MyProfile/defaultAvatar.png"
+                            e?.team?.avatar ||
+                            "/assets/MyProfile/defaultAvatar.png"
                           }`}
                           alt=""
                         />

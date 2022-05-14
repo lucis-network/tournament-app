@@ -23,6 +23,10 @@ import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/d
 import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import PopupConfirm from "components/ui/tournament/detail/popup/PopupConfirm";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import LoginModal from "components/Auth/Login/LoginModal";
+import LoginBoxStore from "components/Auth/Login/LoginBoxStore";
+import AuthStore from "components/Auth/AuthStore";
 
 const { TabPane } = Tabs;
 
@@ -109,6 +113,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   } = dataTournamentDetail ?? {};
 
   const handSubscribe = () => {
+    if (!AuthStore.isLoggedIn) {
+      message.info("Please sign in first");
+      return;
+    }
+
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
     const sub = tournamentService
@@ -120,6 +129,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   };
 
   const handUnsubscribe = () => {
+    if (!AuthStore.isLoggedIn) {
+      message.info("Please sign in first");
+      return;
+    }
+
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
     const sub = tournamentService
@@ -136,16 +150,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <Banner cover={cover} />
         <TournamentDetailMarquee />
         <div className={`lucis-container ${s.group_button}`}>
-          {/* {unsubscribe && (
-            <button key={"Subscribe"} onClick={handSubscribe}>
-              Subscribed
-            </button>
-          )}
-          {subscribe && (
-            <button key={"Subscribe"} onClick={handUnsubscribe}>
-              Subscribe
-            </button>
-          )} */}
           <div>
             {tournament_status === "FINISH" && !isCheckConfirmResult && (
               <a
@@ -298,7 +302,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               />
             </TabPane>
             <TabPane
-              tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
+              tab={`Participants (${
+                cache_tournament?.team_participated
+                  ? cache_tournament?.team_participated
+                  : 0
+              }/${participants})`}
               key="4"
             >
               <>
@@ -357,6 +365,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           types={"TOURNAMENT"}
           name={name}
           thumbnail={thumbnail}
+          refetch={refetch}
         />
         <PopupShare
           closeModal={() => closeModal("Invite or Share")}
@@ -378,6 +387,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           refetchConfirmResult={refetchConfirmResult}
         />
       </div>
+      <LoginModal />
     </>
   );
 };
