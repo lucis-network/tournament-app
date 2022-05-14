@@ -1,7 +1,8 @@
 import React from "react";
-import { Modal, Table } from "antd";
+import { message, Modal, Table } from "antd";
 import s from "./PopupConfirm.module.sass";
 import { useConfirmTournamentResult } from "hooks/tournament/useTournamentDetail";
+import TournamentService from "components/service/tournament/TournamentService";
 
 interface Props {
   show: boolean;
@@ -40,7 +41,17 @@ export default function PopupConfirm(props: Props) {
   ];
 
   const handOk = () => {
-
+    const tournamentService = new TournamentService();
+    const res = tournamentService
+      .confirmTournamentResult(tournamentId)
+      .then((res) => {
+        if (res) {
+          message.success("Success");
+          onCancel();
+        } else {
+          message.success("Fail. Plesase try again.");
+        }
+      });
   };
 
   return (
