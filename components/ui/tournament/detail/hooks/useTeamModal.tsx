@@ -256,6 +256,7 @@ const UseTeamModal = (tournamentData: any) => {
 				break;
 			default:
 				setShow(false);
+
 				break;
 		}
 	};
