@@ -8,21 +8,28 @@ import { useHomePage } from "hooks/home/useHomePage";
 import Search from "antd/lib/input/Search";
 import { StatusGameType } from "utils/Enum";
 import { useState } from "react";
+import SpinLoading from "components/ui/common/Spin";
 
 export default function TabHome() {
 	const {
-		type,
 		filter,
 		listTabs,
 		data,
 		gameData,
 		loading,
-		setType,
 		handleChangeFilter,
 		handleOrder,
 	} = useHomePage();
 
 	const [creating, setCreating] = useState(false);
+
+	let cardHome;
+
+	if (loading) {
+		cardHome = <SpinLoading className="min-h-[500px] pt-0" />;
+	} else {
+		cardHome = <CardHome datas={data} loading={loading} />;
+	}
 
 	return (
 		<div className={`${s.container_card_tournament}`}>
@@ -32,12 +39,14 @@ export default function TabHome() {
 						{listTabs.map((item: StatusGameType) => (
 							<div
 								key={item}
-								onClick={() => setType(item)}
+								onClick={() => handleChangeFilter("type", item)}
 								className={
-									type === item ? `${s.tab_item} ${s.active}` : `${s.tab_item}`
+									filter.type === item
+										? `${s.tab_item} ${s.active}`
+										: `${s.tab_item}`
 								}
 							>
-								{type === item && (
+								{filter.type === item && (
 									<div className={s.ic_tab}>
 										<img src="/assets/home/ic_tab.svg" alt="" />
 									</div>
@@ -51,6 +60,8 @@ export default function TabHome() {
 							className={s.search}
 							placeholder="Search by game"
 							autoFocus
+							value={filter.search}
+							onChange={(e) => handleChangeFilter("search", e.target.value)}
 						/>
 					</Col>
 				</Row>
@@ -60,9 +71,7 @@ export default function TabHome() {
 					onFilter={handleChangeFilter}
 					onOrder={handleOrder}
 				/>
-				<div style={{ minHeight: '500px' }}>
-					<CardHome datas={data} loading={loading} />
-				</div>
+				<div style={{ minHeight: "500px" }}>{cardHome}</div>
 				<div className={s.container_create}>
 					<div className={s.line}></div>
 					<div className={s.lin1}></div>
@@ -79,7 +88,11 @@ export default function TabHome() {
 								ease.
 							</p>
 							<Link href={`tournament/create`}>
-								<Button type="primary" loading={creating} onClick={() => setCreating(true)}>
+								<Button
+									type="primary"
+									loading={creating}
+									onClick={() => setCreating(true)}
+								>
 									CREATE NOW
 								</Button>
 							</Link>

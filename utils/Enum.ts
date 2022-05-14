@@ -17,9 +17,9 @@ export const BUSD = "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450";
 export enum REWARD_TYPES {}
 
 export enum StatusGameType {
-	UPCOMING = "upcoming",
-	ONGOING = "ongoing",
-	CLOSED = "closed",
+	UPCOMING = "UPCOMING",
+	ONGOING = "ONGOING",
+	CLOSED = "CLOSED",
 }
 
 export enum Bracket {

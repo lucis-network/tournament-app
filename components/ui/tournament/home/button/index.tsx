@@ -1,96 +1,85 @@
 import s from "./button.module.sass";
 import { Select } from "antd";
 import {
-  bracketValues,
-  OrderType,
-  orderValues,
-  Participants,
+	bracketValues,
+	OrderType,
+	orderValues,
+	Participants,
 } from "utils/Enum";
 import { FilterGame } from "hooks/home/useHomePage";
-import { useCallback, useState } from "react";
 import Order from "components/ui/common/Order";
 
 const { Option } = Select;
 
 interface ButtonSort {
-  filter: FilterGame;
-  gameData: any[];
-  onFilter: (type: keyof FilterGame, value: string) => void;
-  onOrder: (value: OrderType) => void;
+	filter: FilterGame;
+	gameData: any[];
+	onFilter: (type: keyof FilterGame, value: string) => void;
+	onOrder: (value: OrderType) => void;
 }
 
 export default function ButtonSort({
-  filter,
-  gameData,
-  onFilter,
-  onOrder,
+	filter,
+	gameData,
+	onFilter,
+	onOrder,
 }: ButtonSort) {
-  const [type, setType] = useState<keyof FilterGame>("game_uid");
+	const handleChange = (type: keyof FilterGame) => (value: string) => {
+		onFilter(type, value?.toString() || "");
+	};
 
-  const handleCheckType = useCallback((type: any) => {
-    setType(type);
-  }, []);
-
-  const handleChange = (value: string) => {
-    //console.log("value", value)
-    //if(value == undefined) value = "";
-    onFilter(type, value?.toString() || "");
-  };
-
-  return (
-    <div className={s.container}>
-      <div className={`${s.item} mb-6`}>
-        <div className={`w-24 ${s.ic}`}>
-          <img src="/assets/home/ic_filter.svg" alt="" />
-          Filter
-        </div>
-        <div>
-          <Select
-            onChange={handleChange}
-            //onClick={() => handleCheckType("game_uid")}
-            allowClear
-            placeholder="Game"
-            className="w-44"
-          >
-            {gameData?.map((item) => (
-              <Option key={item.uid} value={item.uid}>
-                {item.name}
-              </Option>
-            ))}
-          </Select>
-          <Select
-            onChange={handleChange}
-            onClick={() => handleCheckType("bracket")}
-            allowClear
-            placeholder="Bracket Type"
-            className="w-[165px]"
-          >
-            {bracketValues.map((item) => (
-              <Option key={item.key} value={item.key}>
-                {item.value}
-              </Option>
-            ))}
-          </Select>
-          <Select
-            onChange={handleChange}
-            onClick={() => handleCheckType("size")}
-            allowClear
-            placeholder="Size"
-          >
-            {Participants.map((item, i) => (
-              <Option key={i} value={item}>
-                {item}
-              </Option>
-            ))}
-          </Select>
-        </div>
-      </div>
-      <div className={s.item}>
-        <div className={`w-24 ${s.ic}`}>
-          <img src="/assets/home/ic_sort.svg" alt="" />
-          Sort
-        </div>
-        {/* <div>
+	return (
+		<div className={s.container}>
+			<div className={`${s.item} mb-6`}>
+				<div className={`w-24 ${s.ic}`}>
+					<img src="/assets/home/ic_filter.svg" alt="" />
+					Filter
+				</div>
+				<div>
+					<Select
+						onChange={handleChange("game_uid")}
+						allowClear
+						placeholder="Game"
+						className="w-44"
+					>
+						{gameData?.map((item) => (
+							<Option key={item.uid} value={item.uid}>
+								{item.name}
+							</Option>
+						))}
+					</Select>
+					<Select
+						onChange={handleChange("bracket")}
+						allowClear
+						placeholder="Bracket Type"
+						className="w-[165px]"
+					>
+						{bracketValues.map((item) => (
+							<Option key={item.key} value={item.key}>
+								{item.value}
+							</Option>
+						))}
+					</Select>
+					<Select
+						onChange={handleChange("size")}
+						allowClear
+						placeholder="Size"
+						className="w-20"
+					>
+						{Participants.map((item, i) => (
+							<Option key={i} value={item}>
+								{item}
+							</Option>
+						))}
+					</Select>
+				</div>
+			</div>
+			<div className={s.item}>
+				<div className={`w-24 ${s.ic}`}>
+					<img src="/assets/home/ic_sort.svg" alt="" />
+					Sort
+				</div>
+				{/* <div>
 					<Select
 						defaultValue="Prize pool"
 						style={{ width: 120 }}

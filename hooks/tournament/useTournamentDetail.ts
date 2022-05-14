@@ -95,24 +95,24 @@ export function useTournamentDetail(props: Props) {
 			variables: { tournament_uid: props?.tournament_uid },
 		});
 
-  const { loading: loadingListRank, data: getTournamentListRank } = useQuery(
-    GET_LIST_RANKS,
-    {
-      variables: { tournament_uid: props?.tournament_uid },
-      fetchPolicy: "network-only",
-    }
-  );
+	const { loading: loadingListRank, data: getTournamentListRank } = useQuery(
+		GET_LIST_RANKS,
+		{
+			variables: { tournament_uid: props?.tournament_uid },
+			fetchPolicy: "network-only",
+		}
+	);
 
-  return {
-    loading,
-    loadingParticipant,
-    loadingReferees,
-    loadingPrizing,
-    loadingBracket,
-    loadingIsJoin,
-    loadingDonation,
-    loadingIsCheckin,
-    loadingListRank,
+	return {
+		loading,
+		loadingParticipant,
+		loadingReferees,
+		loadingPrizing,
+		loadingBracket,
+		loadingIsJoin,
+		loadingDonation,
+		loadingIsCheckin,
+		loadingListRank,
 
 		error,
 		errorParticipant,
@@ -123,25 +123,25 @@ export function useTournamentDetail(props: Props) {
 		errorIsCheckin,
 		errorDonation,
 
-    dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
-    dataParticipants: dataParticipants?.getTournamentParticipants,
-    dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
-    dataPrizing: dataPrizing?.getTournamentPrizing,
-    dataBracket: dataBracket?.getBracket,
-    dataIsJoin: dataIsJoin?.isJoinedTournament,
-    dataDonation: dataDonation?.donateHistory,
-    dataIsCheckin: dataIsCheckin?.isCheckInTournament,
-    dataIsubscribeToTournament: dataIsubscribeToTournament,
-    loadingJoinTournament: loadingJoinTournament,
-    dataListRank: getTournamentListRank,
-    joinTournament,
-    confirmResult,
-    refreshIsJoin,
-    refreshIsCheckin,
-    refetch,
-    refreshParticipant,
-    refetchSubTournament,
-  };
+		dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
+		dataParticipants: dataParticipants?.getTournamentParticipants,
+		dataRefereesDetail: dataRefereesDetail?.getTournamentReferees,
+		dataPrizing: dataPrizing?.getTournamentPrizing,
+		dataBracket: dataBracket?.getBracket,
+		dataIsJoin: dataIsJoin?.isJoinedTournament,
+		dataDonation: dataDonation?.donateHistory,
+		dataIsCheckin: dataIsCheckin?.isCheckInTournament,
+		dataIsubscribeToTournament: dataIsubscribeToTournament,
+		loadingJoinTournament: loadingJoinTournament,
+		dataListRank: getTournamentListRank,
+		joinTournament,
+		confirmResult,
+		refreshIsJoin,
+		refreshIsCheckin,
+		refetch,
+		refreshParticipant,
+		refetchSubTournament,
+	};
 }
 
 export function useTournamentBracket(tournament_uid: string) {
@@ -405,16 +405,16 @@ const GET_DONATION_HISTORY = gql`
 `;
 
 const GET_LIST_RANKS = gql`
-  query ($tournament_uid: String!) {
-    getTournamentListRank(tournament_uid: $tournament_uid) {
-      team_name
-      team_avatar
-      rank
-      bracket_team_uid
-      prize
-      donated
-    }
-  }
+	query ($tournament_uid: String!) {
+		getTournamentListRank(tournament_uid: $tournament_uid) {
+			team_name
+			team_avatar
+			rank
+			bracket_team_uid
+			prize
+			donated
+		}
+	}
 `;
 
 const IS_SUBSCRIBE_TOURNAMENT = gql`
