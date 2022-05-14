@@ -17,7 +17,6 @@ export default function ModalDonateTeam(props: Props) {
   const [newData, setNewData] = useState({});
   const [types, setTypes] = useState("");
 
-  console.log("nameTeam", nameTeam);
   const handlButtonMember = (datas: any) => {
     setIsPopUp(true);
     setNewData(datas);

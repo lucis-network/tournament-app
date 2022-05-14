@@ -1,7 +1,7 @@
 import s from "./ListRank.module.sass";
 import { Table } from "antd";
 import { useState } from "react";
-import { fomatNumber } from "utils/Number";
+import { fomatNumber, format, currency as currencyFomat } from "utils/Number";
 
 type Props = {
   tournamentId: string;
@@ -11,15 +11,7 @@ type Props = {
 };
 
 export default function ListRanks(props: Props) {
-  const { tournamentId, currency, dataListRank, loading } = props;
-
-  const [datas, setDatas] = useState({});
-  const [isPopupDonate, setIsPopupDonate] = useState(false);
-  const closeModal = () => {
-    setIsPopupDonate(false);
-  };
-
-  console.log("currency", currency);
+  const { currency, dataListRank, loading } = props;
 
   if (loading) {
     return <></>;
@@ -30,7 +22,7 @@ export default function ListRanks(props: Props) {
       title: "Rank",
       dataIndex: "rank",
       key: "rank",
-      width: 50,
+      width: "15%",
       render: (_: any, item: any) => {
         return <>{item.rank}</>;
       },
@@ -39,20 +31,20 @@ export default function ListRanks(props: Props) {
       title: "Participants",
       dataIndex: "team_name",
       key: "team_name",
-      width: 250,
+      width: "35%",
       render: (_: any, item: any) => {
         return <>{item.team_name}</>;
       },
     },
     {
       title: "Earning",
-      dataIndex: "position",
-      key: "position",
-      width: 250,
+      dataIndex: "prize",
+      key: "prize",
+      width: "25%",
       render: (_: any, item: any) => {
         return (
           <>
-            {item.prize} {currency.symbol}
+            {currencyFomat(item.prize)} {currency.symbol}
           </>
         );
       },
@@ -61,17 +53,18 @@ export default function ListRanks(props: Props) {
       title: "Be donated",
       dataIndex: "donate",
       key: "donate",
+      width: "25%",
       render: (_: any, item: any) => {
         return (
           <>
-            {fomatNumber(item.donated)} {currency.symbol}
+            {currencyFomat(item.donated, 2)} {currency.symbol}
           </>
         );
       },
     },
   ];
   return (
-    <div>
+    <div className={s.wrapper}>
       <Table
         dataSource={dataListRank?.getTournamentListRank}
         columns={columns}
