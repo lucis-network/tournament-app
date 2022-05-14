@@ -54,7 +54,7 @@ export function useHomePage() {
 				}),
 			1000
 		),
-		[]
+		[filter]
 	);
 
 	const handleChangeFilter = useCallback(
