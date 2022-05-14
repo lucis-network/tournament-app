@@ -8,7 +8,7 @@ const Banner = (props: Props) => {
 
   return (
     <div className={s.wrapper_banner}>
-      <div className="lucis-container">
+      <div className="lucis-container-2">
         <div
           className={s.im_cover}
           style={{

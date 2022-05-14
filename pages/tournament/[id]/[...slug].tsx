@@ -1,5 +1,5 @@
 import s from "./TournamentDetail.module.sass";
-import { Col, Row, Spin, Tabs, message } from "antd";
+import { Col, Row, Spin, Tabs, message, Image } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
@@ -19,13 +19,11 @@ import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultM
 import { isClientDevMode } from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
-
 import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import PopupConfirm from "components/ui/tournament/detail/popup/PopupConfirm";
-import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import Link from "next/link";
 import LoginModal from "components/Auth/Login/LoginModal";
-import LoginBoxStore from "components/Auth/Login/LoginBoxStore";
 import AuthStore from "components/Auth/AuthStore";
 
 const { TabPane } = Tabs;
@@ -149,121 +147,109 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       <div className={s.wrapper}>
         <Banner cover={cover} />
         <TournamentDetailMarquee />
-        <div className={`lucis-container ${s.group_button}`}>
-          <div>
-            {tournament_status === "FINISH" && !isCheckConfirmResult && (
-              <a
-                className="text-16px border text-white py-1 px-4"
-                onClick={handleOpenConfirmResult}
-              >
-                Confirm tournament result
-              </a>
-            )}
-          </div>
-          <div className="flex items-center gap-4">
-            {dataIsubscribeToTournament?.IsSubscribeToTournament && (
-              <Spin spinning={isLoadingSub}>
-                <button key={"Subscribe"} onClick={handUnsubscribe}>
-                  Subscribed
-                </button>
-              </Spin>
-            )}
-            {!dataIsubscribeToTournament?.IsSubscribeToTournament && (
-              <Spin spinning={isLoadingSub}>
-                <button key={"Subscribe"} onClick={handSubscribe}>
-                  Subscribe
-                </button>
-              </Spin>
-            )}
+				<section className={s.tournamentInfo}>
+					<div className={`lucis-container-2`}>
+						<div className={s.group_button}>
+							<div>
+								{tournament_status === "FINISH" && !isCheckConfirmResult && (
+									<a
+										className="text-16px btn-blur"
+										onClick={handleOpenConfirmResult}
+									>
+										Confirm tournament result
+									</a>
+								)}
+							</div>
+							<div className="flex items-center gap-4">
+								{dataIsubscribeToTournament?.IsSubscribeToTournament && (
+									<Spin spinning={isLoadingSub}>
+										<button key={"Subscribe"} onClick={handUnsubscribe}>
+											<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
+											<span className="ml-2">Subscribed</span>
+										</button>
+									</Spin>
+								)}
+								{!dataIsubscribeToTournament?.IsSubscribeToTournament && (
+									<Spin spinning={isLoadingSub}>
+										<button key={"Subscribe"} onClick={handSubscribe}>
+											<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
+											<span className="ml-2">Subscribe</span>
+										</button>
+									</Spin>
+								)}
 
-            {tournament_status !== "CLOSED" && (
-              <button key={"Donate"} onClick={() => openModal("Donate")}>
-                Donate
-              </button>
-            )}
+								{tournament_status !== "CLOSED" && (
+									<button key={"Donate"} onClick={() => openModal("Donate")}>
+										<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
+										<span className="ml-2">Donate</span>
+									</button>
+								)}
 
-            <button
-              key={"InviteorShare"}
-              onClick={() => openModal("Invite or Share")}
-            >
-              Invite or Share
-            </button>
-          </div>
-        </div>
-
-        <Row className={`lucis-container`}>
-          <Col span={6} className={s.content_top}>
-            <div className={s.img_game}>
-              <img src={thumbnail} alt="" />
-            </div>
-            <h2>{game?.name}</h2>
-          </Col>
-
-          <Col span={16} className={s.content_center}>
-            <h1>{`${name}`}</h1>
-            <Row>
-              <Col span={6} className={s.free_entry}>
-                <p className={s.title}>Free entry</p>
-                <div className={s.text}>
-                  <p>Bracket type</p>
-                  <span>
-                    {dataBracket?.type === "SINGLE"
-                      ? "Single elimination"
-                      : dataBracket?.type === "DOUBLE"
-                      ? "Double elimination"
-                      : ""}
-                  </span>
-                </div>
-              </Col>
-
-              <Col span={10} className={s.tournament_by}>
-                <div>
-                  <p>
-                    Tournament by{" "}
+								<button
+									key={"InviteorShare"}
+									onClick={() => openModal("Invite or Share")}
+								>
+									<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
+									<span className="ml-2">Invite or Share</span>
+								</button>
+							</div>
+						</div>
+						<div className={s.infoWrap}>
+							<div className={s.tournamentThumbnail}>
+								<Image src={thumbnail} alt="" preview={false} />
+							</div>
+							<div className={s.tournamentMetadata}>
+								<h1 className={s.tournamentTitle}>{`${name}`}</h1>
+								<Row>
+									<Col xs={{ span: 24 }} lg={{ span: 16 }}>
+										<div>
+											<div className={s.tournamentTag}>Free entry</div>
+											<div className={s.tournamentTag}>{region}</div>
+											<Link href="#">Join our Discord server</Link>
+										</div>
+									</Col>
+								</Row>
+								<Row>
+									<Col xs={{ span: 24 }} md={{ span: 9 }}>
+										<h4 className={s.metadataTitle}>Bracket type</h4>
+										<div className={s.metadataValue}>
+											{dataBracket?.type === "SINGLE"
+												? "Single elimination"
+												: dataBracket?.type === "DOUBLE"
+													? "Double elimination"
+													: ""}
+										</div>
+									</Col>
+									<Col xs={{ span: 24 }} md={{ span: 9 }}>
+										<h4 className={s.metadataTitle}>Max participants</h4>
+										<div className={s.metadataValue}>{participants}</div>
+									</Col>
+									<Col xs={{ span: 24 }} md={{ span: 6 }}>
+										<h4 className={s.metadataTitle}>Team size</h4>
+										<div className={s.metadataValue}>{team_size ?? "-"}v{team_size ?? "-"}</div>
+									</Col>
+									<Col xs={{ span: 12 }} md={{ span: 9 }}>
+										<Image src={game.logo} className={s.gameLogo} preview={false} alt="" />
+                    <div className={s.gameName}>{game.name}</div>
+									</Col>
+									<Col xs={{ span: 12 }} md={{ span: 15 }}>
                     {user?.profile?.avatar ? (
-                      <img src={user?.profile?.avatar} alt="" width={50} />
+                      <Image src={user?.profile?.avatar} className={s.userAvatar} alt="" preview={false} />
                     ) : (
-                      <img src="/assets/avatar.jpg" alt="" width={50} />
-                    )}{" "}
-                    {user?.profile?.display_name}{" "}
-                  </p>
-                </div>
-                <div className={s.text}>
-                  <p>Team size</p>
-                  <span>
-                    {team_size ?? "-"}v{team_size ?? "-"}
-                  </span>
-                </div>
-              </Col>
-              <Col span={6} className={s.lucis_offical}>
-                <p></p>
-                <div className={s.text}>
-                  <p>Max participants</p>
-                  <span>{participants}</span>
-                </div>
-              </Col>
-              <Col span={2} className={s.lucis_offical}>
-                <p></p>
-                <div className={s.text}>
-                  <p>Region</p>
-                  <span>{region}</span>
-                </div>
-              </Col>
-              {/* <div>
-                <Col span={8}>
-                  <p className={s.title}>Free entry</p>
-                </Col>
-                <Col span={8}>
-                  <p className={s.title}>Free entry</p>
-                </Col>
-              </div> */}
-            </Row>
-          </Col>
-          <Col span={2}></Col>
-        </Row>
+                      <Image src="/assets/avatar.jpg" className={s.userAvatar} alt="" preview={false} />
+                    )}
+                    <div className={s.userName}>
+                      {user?.profile?.display_name}
+                    </div>
+									</Col>
+								</Row>
+							</div>
+						</div>
+					</div>
+				</section>
         <div className={s.bgCharacters}>
           {/* ==== registration phase ====  */}
-          <div className={`lucis-container`}>
+          <div className={`lucis-container-2`}>
             <RegistrationPhase
               isJoin={isJoin}
               isCheckin={isCheckin}
@@ -277,7 +263,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             />
           </div>
           {/* ===== sponsor ===== */}
-          <div className="lucis-container">
+          <div className="lucis-container-2">
             <TournamentDetailSponsor
               tournamentId={tournamentId as string}
               tournament_status={tournament_status as string}
@@ -286,7 +272,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           {/* ===== end sponsor ===== */}
         </div>
         {/* ===== tabs ===== */}
-        <div className={`lucis-container ${s.container_Tabs}`}>
+        <div className={`lucis-container-2 ${s.container_Tabs}`}>
           <Tabs defaultActiveKey="1">
             <TabPane tab="Overview" key="1">
               <Overview desc={desc as string} />
