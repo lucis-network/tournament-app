@@ -165,6 +165,7 @@ const SEARCH = gql`
 				profile {
 					display_name
 					avatar
+					user_name
 				}
 			}
 			totalPrizePool
