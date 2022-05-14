@@ -356,6 +356,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 tournamentId={tournamentId as string}
                 currency={currency}
                 tournament_status={tournament_status as string}
+				refetch={refetch}
               />
             </TabPane>
             <TabPane tab="Prizing" key="6">
