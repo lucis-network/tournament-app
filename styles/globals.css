@@ -32,6 +32,7 @@ html {
   background-color: #000031;
   --line-color: rgba(146, 146, 146, 0.5);
   --line-color-light: rgba(199, 199, 199, 0.5);
+  color: #ffffff;
 }
 
 body {
@@ -859,4 +860,40 @@ body .ant-carousel .slick-dots-bottom{
   .lucis-container-2 {
     width: 1600px;
   }
+}
+
+.btn-blur {
+  color: #ffffff;
+  background-image: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  background-size: auto 200%;
+  background-position: 0 100%;
+  transition: background-position 0.5s;
+  box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(70px);
+  border-radius: 10px;
+  padding: 10px 15px;
+  display: inline-block;
+  position: relative;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.btn-blur:hover {
+  background-position: 0 0;
+  color: #ffffff;
+}
+
+.btn-blur::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+  padding: 1px;
+  background: linear-gradient(115deg,#7f6bbdb3,rgba(196,44,255,0) 45%,rgba(196,44,255,0) 0,#44388b);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
 }
