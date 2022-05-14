@@ -1,6 +1,8 @@
 import React from "react";
+import moment from 'moment'
 import { BracketGql, BracketMatch, BracketMatchStatus, BracketRound, GBracketTeam } from "src/generated/graphql";
 import { Round, RoundMatch, Team } from "src/store/SingleRoundStore";
+import s from './index.module.sass'
 
 export type BracketUiProps = {
   dataBracket?: BracketGql;
@@ -51,7 +53,12 @@ export const createRound = (item: BracketRound, idx: number, listTeam: GBracketT
     );
 
   return {
-    title: <p className="m-0 text text-white text-[24px]">{item.title}</p>,
+    title: (
+      <div>
+        <p className="m-0 text text-white text-[24px]">{item.title}</p>
+        <p>{moment(item.start_at).format("MMM Do, HH:MM:SS")}</p>
+      </div>
+    ),
     seeds,
   };
 };

@@ -1,5 +1,5 @@
 .sponsorContainer
-  border: 1px solid white
+  border: 1px solid var(--line-color)
   padding: 15px
   color: white
   @media screen and (min-width: 992px)
@@ -48,7 +48,7 @@
       @media screen and (min-width: 992px)
         font-size: 14px
     .editTierWrap
-      border: 1px solid
+      border: 1px solid var(--line-color)
       padding: 20px
       margin-bottom: 20px
       :global(.ant-typography)
@@ -61,7 +61,7 @@
       font-size: 13px
       &:focus
         background: none
-        border-color: #ffffff
+        border-color: var(--line-color)
         color: #ffffff
     .slotWrap
       display: flex
@@ -101,6 +101,8 @@
   .collapse
     padding: 10px 0 10px
   :global(.ant-switch)
+    background-color: #bbb !important
+  :global(.ant-switch-checked)
     background-color: rgb(252 11 11 / 25%) !important
   :global(.ant-btn[disabled])
     background: #8b8b8b

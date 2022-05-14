@@ -16,6 +16,7 @@ interface Props {
     roundIndex: number
   ) => void,
   updateScoreModal: ReactElement
+  showFinalMatchRank?: boolean
 }
 
 
@@ -25,6 +26,7 @@ export default function SingleBracketStateless(props: Props) {
     rounds,
     openMatchEditModal,
     updateScoreModal,
+    showFinalMatchRank,
   } = props;
 
   const roundCount = rounds.length;
@@ -38,7 +40,7 @@ export default function SingleBracketStateless(props: Props) {
   }, []);
 
   const RenderSeed = useMemo(
-    () => makeSeedComponent(roundCount, canEdit, handleOpenModal),
+    () => makeSeedComponent(roundCount, canEdit, handleOpenModal, showFinalMatchRank),
     [roundCount, canEdit, handleOpenModal]
   );
 

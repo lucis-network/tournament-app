@@ -47,6 +47,8 @@ const UseTeamModal = (tournamentData: any) => {
 	const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
 	const [errorTour, setErrorTour] = useState<ErrorTourKey>();
 
+	console.log(tournamentData?.tournament);
+
 	const {
 		reset,
 		draftData,
@@ -246,6 +248,11 @@ const UseTeamModal = (tournamentData: any) => {
 				break;
 			case "choose-player":
 				setStep("step-2");
+				break;
+			case "success":
+				setStep("step-1");
+				handleRoutes(`/tournament/${tournamentId}/${name}`);
+				setShow(false);
 				break;
 			default:
 				setShow(false);

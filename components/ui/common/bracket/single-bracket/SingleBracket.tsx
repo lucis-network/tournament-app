@@ -53,7 +53,7 @@ const createRounds = ({
 
   for (let i = 1; i <= numRounds; i++) {
     const title = (
-      <>
+      <div style={{marginBottom: 20}}>
         <p className="m-0 text text-white">
           {i == numRounds ? `Final` : `Round ${i}`}
         </p>
@@ -63,7 +63,7 @@ const createRounds = ({
           showTime
           onChange={(date, dateString) => handleSelectDate(date, dateString, i)}
         />
-      </>
+      </div>
     );
 
     const seeds = [];
@@ -98,7 +98,7 @@ const CustomSeed = ({
                 color: "black",
               }}
             >
-              {seed.teams[0]?.name || `Team ---`}
+              {seed.teams[0]?.name || `Team ...`}
             </div>
             <div
               style={{
@@ -121,7 +121,7 @@ const CustomSeed = ({
                 color: "white",
               }}
             >
-              {seed.teams[1]?.name || `Team ---`}
+              {seed.teams[1]?.name || `Team ...`}
             </div>
             <div
               style={{

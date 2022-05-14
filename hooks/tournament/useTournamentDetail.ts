@@ -328,6 +328,7 @@ const GET_BRACKET = gql`
       status
 
       bracketRounds {
+        start_at
         type
         title
         bracketMatchs {

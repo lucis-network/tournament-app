@@ -386,7 +386,7 @@ export default observer(function CreateTournament(props: Props) {
       <DocHead title="Create new tournament" />
       <div className="container">
         <div className={s.containerApp}>
-          <p className="text-30px">Create your tournament</p>
+          <p className="text-30px mt-40px">Create your tournament</p>
           <div className="">
             <Row>
               <Col span={4}>
@@ -422,7 +422,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="cover"
                   url={TournamentStore?.cover}
                 ></UploadImage>
-                <p>Recommended size: 1200x400</p>
+                <p>Recommended size: 1600x400</p>
                 <div className={s.message_error}>{messageErrorCover}</div>
               </Col>
               <Col span={4} className="text-center">
@@ -778,14 +778,15 @@ export default observer(function CreateTournament(props: Props) {
                   disabled={!checkPassword}
                   max={32}
                   min={4}
+                  style={{borderColor: "var(--line-color)"}}
                 />
                 <div className={s.message_error}>{messageErrorPassword}</div>
               </Col>
             </Row>
           </div>
 
-          <div className="mt-20px text-center pb-20px">
-            <Button onClick={createTournament}>Create tournament</Button>
+          <div className="mt-100px text-center pb-100px">
+            <Button size="large" type="primary" onClick={createTournament}>Create tournament</Button>
           </div>
         </div>
 

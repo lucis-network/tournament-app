@@ -37,7 +37,7 @@ const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
                     color: "black",
                   }}
                 >
-                  {seed.teams[0]?.name || `Team ---`}
+                  {seed.teams[0]?.name || `Team ...`}
                 </div>
                 <div
                   style={{
@@ -46,9 +46,9 @@ const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
                     padding: "5px",
                     width: "50px",
                   }}
-                  onClick={() => openModal(seed.teams, roundIndex, seed.teams)}
+                  // onClick={() => openModal(seed.teams, roundIndex, seed.teams)}
                 >
-                  {seed.teams[0]?.score || "--"}
+                  {seed.teams[0]?.score || "0"}
                 </div>
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
@@ -61,7 +61,7 @@ const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
                     color: "white",
                   }}
                 >
-                  {seed.teams[1]?.name || `Team ---`}
+                  {seed.teams[1]?.name || `Team ...`}
                 </div>
                 <div
                   style={{
@@ -70,9 +70,9 @@ const FinalBracket = ({ rounds: final, openModal }: FinalProps) => {
                     padding: "5px",
                     width: "50px",
                   }}
-                  onClick={() => openModal(seed.teams, roundIndex, seed.teams)}
+                  // onClick={() => openModal(seed.teams, roundIndex, seed.teams)}
                 >
-                  {seed.teams[1]?.score || "--"}
+                  {seed.teams[1]?.score || "0"}
                 </div>
               </SeedTeam>
             </div>
