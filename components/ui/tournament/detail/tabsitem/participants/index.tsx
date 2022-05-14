@@ -14,6 +14,7 @@ type Props = {
   tournamentId: string;
   currency?: any;
   tournament_status: string;
+  refetch: any;
 };
 
 export default function TableParticipant(props: Props) {
@@ -23,6 +24,7 @@ export default function TableParticipant(props: Props) {
     tournamentId,
     currency,
     tournament_status,
+    refetch,
   } = props;
 
   const [datas, setDatas] = useState({});
@@ -108,6 +110,7 @@ export default function TableParticipant(props: Props) {
         nameTeam={datas}
         tournamentId={tournamentId}
         currency={currency}
+        refetch={refetch}
       />
       <PopupDonate
         closeModal={() => closeModal()}
@@ -116,6 +119,7 @@ export default function TableParticipant(props: Props) {
         currency={currency}
         types={"TEAM"}
         datas={datas}
+        refetch={refetch}
       />
     </div>
   );

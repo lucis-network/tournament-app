@@ -21,7 +21,7 @@ type Props = {
   currency?: any;
   name?: string;
   thumbnail?: string;
-  refetch: any;
+  refetch?: any;
 };
 
 export type GDonateTransaction = {
