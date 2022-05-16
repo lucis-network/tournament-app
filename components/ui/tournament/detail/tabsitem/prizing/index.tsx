@@ -51,14 +51,15 @@ export default function Prizing(props: Props) {
   ];
   return (
     <div className={s.wrapper}>
-      <h1>Prize distribution</h1>
-      <Table
-        dataSource={dataPrizing}
-        columns={columnsPrize}
-        bordered
-        className={s.container_table}
-        rowKey={(record) => `${record?.position}`}
-      />
+      <div className={s.containerTab}>
+        <Table
+          dataSource={dataPrizing}
+          columns={columnsPrize}
+          bordered
+          className={s.container_table}
+          rowKey={(record) => `${record?.position}`}
+        />
+      </div>
     </div>
   );
 }

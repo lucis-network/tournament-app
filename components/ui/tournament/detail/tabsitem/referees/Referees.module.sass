@@ -1,11 +1,14 @@
 .wrapper
-  border-radius: 16px
+  overflow-x: scroll
+  width: 100%
+  border-radius: 16px 16px 0px 0px
+.containerTab
+  min-width: 600px
+  border-radius: 16px 16px 0px 0px
   margin-top: 50px
   background: linear-gradient(333deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
   backdrop-filter: blur(42px)
   padding: 32px
-  :global(ant-table-wrapper)
-    overflow-x: auto
 .container_table
   :global(.ant-table)
     color: #FFF
@@ -58,3 +61,13 @@
   .avt
     max-width: 32px
     border-radius: 100%
+
+.wrapper::-webkit-scrollbar
+  width: 4px
+  height: 4px
+  border-radius: 16px
+  display: block
+  background: rgba(255,255,255,.3)
+.wrapper::-webkit-scrollbar-thumb
+  border-radius: 16px
+  background: linear-gradient(290.92deg,#0bebd6,#cd28e8)

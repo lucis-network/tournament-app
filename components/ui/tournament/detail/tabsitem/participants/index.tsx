@@ -95,32 +95,34 @@ export default function TableParticipant(props: Props) {
     },
   ];
   return (
-    <div>
-      {/* <div style={{ display: "flex", justifyContent: "end" }}>
+    <div className={s.wrapper}>
+      <div className={s.containerTab}>
+        {/* <div style={{ display: "flex", justifyContent: "end" }}>
         <SearchComplete />
       </div> */}
-      <Table
-        dataSource={dataParticipants}
-        columns={columns}
-        bordered
-        className={s.container_table}
-        rowKey={(record) => `${record?.uid}`}
-      />
-      <ModalDonateTeam
-        nameTeam={datas}
-        tournamentId={tournamentId}
-        currency={currency}
-        refetch={refetch}
-      />
-      <PopupDonate
-        closeModal={() => closeModal()}
-        status={isPopupDonate}
-        tournamentId={tournamentId}
-        currency={currency}
-        types={"TEAM"}
-        datas={datas}
-        refetch={refetch}
-      />
+        <Table
+          dataSource={dataParticipants}
+          columns={columns}
+          bordered
+          className={s.container_table}
+          rowKey={(record) => `${record?.uid}`}
+        />
+        <ModalDonateTeam
+          nameTeam={datas}
+          tournamentId={tournamentId}
+          currency={currency}
+          refetch={refetch}
+        />
+        <PopupDonate
+          closeModal={() => closeModal()}
+          status={isPopupDonate}
+          tournamentId={tournamentId}
+          currency={currency}
+          types={"TEAM"}
+          datas={datas}
+          refetch={refetch}
+        />
+      </div>
     </div>
   );
 }

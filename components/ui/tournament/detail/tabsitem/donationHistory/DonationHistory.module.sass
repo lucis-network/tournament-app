@@ -1,11 +1,14 @@
+.wrapper
+  overflow-x: scroll
+  width: 100%
+  border-radius: 16px 16px 0px 0px
 .donationWrapper
-  border-radius: 16px
+  min-width: 1200px
+  border-radius: 16px 16px 0px 0px
   margin-top: 50px
   background: linear-gradient(333deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
   backdrop-filter: blur(42px)
   padding: 32px
-  :global(ant-table-wrapper)
-    overflow-x: auto
   h3
     color: #ffffff
     font-size: 30px
@@ -23,9 +26,9 @@
     font-weight: 600
     background: transparent
     text-align: center
-    @media ( max-width: 640px )
+    @media ( min-width: 640px )
       padding: 12px 8px
-      font-size: 13px
+      font-size: 20px
   :global(.ant-table.ant-table-bordered > .ant-table-container)
     border-left: none
     :global(.ant-table-content > table)
@@ -52,3 +55,13 @@
     height: 30px
     border-radius: 50px
     margin-right: 10px
+
+.wrapper::-webkit-scrollbar
+  width: 4px
+  height: 4px
+  border-radius: 16px
+  display: block
+  background: rgba(255,255,255,.3)
+.wrapper::-webkit-scrollbar-thumb
+  border-radius: 16px
+  background: linear-gradient(290.92deg,#0bebd6,#cd28e8)

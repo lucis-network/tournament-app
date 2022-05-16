@@ -65,13 +65,15 @@ export default function ListRanks(props: Props) {
   ];
   return (
     <div className={s.wrapper}>
-      <Table
-        dataSource={dataListRank?.getTournamentListRank}
-        columns={columns}
-        bordered
-        className={s.container_table}
-        rowKey={(record) => `${record?.rank}`}
-      />
+      <div className={s.containerTab}>
+        <Table
+          dataSource={dataListRank?.getTournamentListRank}
+          columns={columns}
+          bordered
+          className={s.container_table}
+          rowKey={(record) => `${record?.rank}`}
+        />
+      </div>
     </div>
   );
 }

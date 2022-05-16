@@ -94,22 +94,24 @@ export default function Referees(props: Props) {
   ];
   return (
     <div className={s.wrapper}>
-      <Table
-        dataSource={dataRefereesDetail}
-        columns={columnsReferees}
-        bordered
-        rowKey={(record) => `${record.user?.profile?.user_id}`}
-        className={s.container_table}
-      />
-      <PopupDonate
-        closeModal={click}
-        status={isPopUp}
-        datas={dataReferees}
-        tournamentId={tournamentId}
-        types={"REFEREE"}
-        currency={currency}
-        refetch={refetch}
-      />
+      <div className={s.containerTab}>
+        <Table
+          dataSource={dataRefereesDetail}
+          columns={columnsReferees}
+          bordered
+          rowKey={(record) => `${record.user?.profile?.user_id}`}
+          className={s.container_table}
+        />
+        <PopupDonate
+          closeModal={click}
+          status={isPopUp}
+          datas={dataReferees}
+          tournamentId={tournamentId}
+          types={"REFEREE"}
+          currency={currency}
+          refetch={refetch}
+        />
+      </div>
     </div>
   );
 }
