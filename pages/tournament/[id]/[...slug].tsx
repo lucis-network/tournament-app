@@ -25,6 +25,7 @@ import PopupConfirm from "components/ui/tournament/detail/popup/PopupConfirm";
 import Link from "next/link";
 import LoginModal from "components/Auth/Login/LoginModal";
 import AuthStore from "components/Auth/AuthStore";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 
 const { TabPane } = Tabs;
 
@@ -110,6 +111,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     referees,
   } = dataTournamentDetail ?? {};
 
+  const userLocal = getLocalAuthInfo();
+
   const handSubscribe = () => {
     if (!AuthStore.isLoggedIn) {
       message.info("Please sign in first");
@@ -147,34 +150,44 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       <div className={s.wrapper}>
         <Banner cover={cover} />
         <TournamentDetailMarquee />
-				<section className={s.tournamentInfo}>
-					<div className={`lucis-container-2`}>
-						<div className={s.group_button}>
-              {tournament_status === "FINISH" && !isCheckConfirmResult && (
-                <a
-                  className="text-16px btn-blur"
-                  onClick={handleOpenConfirmResult}
-                >
-                  Confirm tournament result
-                </a>
-              )}
-							<div className={s.gradientBtnWrap}>
-								{dataIsubscribeToTournament?.IsSubscribeToTournament && (
-									<Spin spinning={isLoadingSub}>
-										<button key={"Subscribe"} onClick={handUnsubscribe}>
-											<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
-											<span className="ml-2">Subscribed</span>
-										</button>
-									</Spin>
-								)}
-								{!dataIsubscribeToTournament?.IsSubscribeToTournament && (
-									<Spin spinning={isLoadingSub}>
-										<button key={"Subscribe"} onClick={handSubscribe}>
-											<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
-											<span className="ml-2">Subscribe</span>
-										</button>
-									</Spin>
-								)}
+        <section className={s.tournamentInfo}>
+          <div className={`lucis-container-2`}>
+            <div className={s.group_button}>
+              {userLocal?.id === user.id &&
+                tournament_status === "FINISH" &&
+                !isCheckConfirmResult && (
+                  <a
+                    className="text-16px btn-blur"
+                    onClick={handleOpenConfirmResult}
+                  >
+                    Confirm tournament result
+                  </a>
+                )}
+              <div className={s.gradientBtnWrap}>
+                {dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                  <Spin spinning={isLoadingSub}>
+                    <button key={"Subscribe"} onClick={handUnsubscribe}>
+                      <Image
+                        src="/assets/TournamentDetail/signInCircle.svg"
+                        preview={false}
+                        alt=""
+                      />
+                      <span className="ml-2">Subscribed</span>
+                    </button>
+                  </Spin>
+                )}
+                {!dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                  <Spin spinning={isLoadingSub}>
+                    <button key={"Subscribe"} onClick={handSubscribe}>
+                      <Image
+                        src="/assets/TournamentDetail/signInCircle.svg"
+                        preview={false}
+                        alt=""
+                      />
+                      <span className="ml-2">Subscribe</span>
+                    </button>
+                  </Spin>
+                )}
 
                 {tournament_status !== "CLOSED" && (
                   <button key={"Donate"} onClick={() => openModal("Donate")}>
@@ -187,31 +200,60 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   </button>
                 )}
 
-								<button
-									key={"InviteorShare"}
-									onClick={() => openModal("Invite or Share")}
-								>
-									<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
-									<span className="ml-2">Invite or Share</span>
-								</button>
-							</div>
-						</div>
-						<div className={s.infoWrap}>
-							<div className={s.tournamentThumbnail}>
-								<Image src={thumbnail} alt="" preview={false} />
-							</div>
-							<div className={s.tournamentMetadataWrap}>
-								<h1 className={s.tournamentTitle}>{`${name}`}</h1>
+                <button
+                  key={"InviteorShare"}
+                  onClick={() => openModal("Invite or Share")}
+                >
+                  <Image
+                    src="/assets/TournamentDetail/signInCircle.svg"
+                    preview={false}
+                    alt=""
+                  />
+                  <span className="ml-2">Invite or Share</span>
+                </button>
+              </div>
+            </div>
+            <div className={s.infoWrap}>
+              <div className={s.tournamentThumbnail}>
+                <Image src={thumbnail} alt="" preview={false} />
+              </div>
+              <div className={s.tournamentMetadataWrap}>
+                <h1 className={s.tournamentTitle}>{`${name}`}</h1>
                 <Row>
                   {/* metadata */}
-                  <Col xs={{ span: 24 }} xl={{ span: 15 }} className={s.tournamentMetadata}>
+                  <Col
+                    xs={{ span: 24 }}
+                    xl={{ span: 15 }}
+                    className={s.tournamentMetadata}
+                  >
                     <Row className={s.tournamentTagWrap}>
                       <Col xs={{ span: 24 }}>
                         <div>
-                          <div className={s.tournamentTag}><Image src="/assets/TournamentDetail/iconMoney.svg" preview={false} alt=""/> Free entry</div>
-                          <div className={s.tournamentTag}><Image src="/assets/TournamentDetail/iconMapMark.svg" preview={false} alt=""/> {region}</div>
+                          <div className={s.tournamentTag}>
+                            <Image
+                              src="/assets/TournamentDetail/iconMoney.svg"
+                              preview={false}
+                              alt=""
+                            />{" "}
+                            Free entry
+                          </div>
+                          <div className={s.tournamentTag}>
+                            <Image
+                              src="/assets/TournamentDetail/iconMapMark.svg"
+                              preview={false}
+                              alt=""
+                            />{" "}
+                            {region}
+                          </div>
                           <Link href="#" passHref>
-                            <a className={s.joinDiscord}>Join our Discord server <Image src="/assets/TournamentDetail/discordLogo.svg" alt="" preview={false} /></a>
+                            <a className={s.joinDiscord}>
+                              Join our Discord server{" "}
+                              <Image
+                                src="/assets/TournamentDetail/discordLogo.svg"
+                                alt=""
+                                preview={false}
+                              />
+                            </a>
                           </Link>
                         </div>
                       </Col>
@@ -223,8 +265,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           {dataBracket?.type === "SINGLE"
                             ? "Single elimination"
                             : dataBracket?.type === "DOUBLE"
-                              ? "Double elimination"
-                              : ""}
+                            ? "Double elimination"
+                            : ""}
                         </div>
                       </Col>
                       <Col xs={{ span: 24 }} sm={{ span: 8 }}>
@@ -233,21 +275,45 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       </Col>
                       <Col xs={{ span: 24 }} sm={{ span: 8 }}>
                         <h4 className={s.metadataTitle}>Team size</h4>
-                        <div className={s.metadataValue}>{team_size ?? "-"}v{team_size ?? "-"}</div>
+                        <div className={s.metadataValue}>
+                          {team_size ?? "-"}v{team_size ?? "-"}
+                        </div>
                       </Col>
                       <Col xs={{ span: 24 }} sm={{ span: 8 }}>
                         <div className={s.gameInfo}>
-                          <Image src={game?.logo} className={s.gameLogo} preview={false} alt="" />
+                          <Image
+                            src={game?.logo}
+                            className={s.gameLogo}
+                            preview={false}
+                            alt=""
+                          />
                           <div className={s.gameName}>{game?.name}</div>
                         </div>
                       </Col>
                       <Col xs={{ span: 24 }} sm={{ span: 16 }}>
-                        <Link href={user?.profile?.user_name ? `/profile/${user?.profile?.user_name}` : '#'} passHref>
+                        <Link
+                          href={
+                            user?.profile?.user_name
+                              ? `/profile/${user?.profile?.user_name}`
+                              : "#"
+                          }
+                          passHref
+                        >
                           <a className={s.userInfo}>
                             {user?.profile?.avatar ? (
-                              <Image src={user?.profile?.avatar} className={s.userAvatar} alt="" preview={false} />
+                              <Image
+                                src={user?.profile?.avatar}
+                                className={s.userAvatar}
+                                alt=""
+                                preview={false}
+                              />
                             ) : (
-                              <Image src="/assets/avatar.jpg" className={s.userAvatar} alt="" preview={false} />
+                              <Image
+                                src="/assets/avatar.jpg"
+                                className={s.userAvatar}
+                                alt=""
+                                preview={false}
+                              />
                             )}
                             <div className={s.userName}>
                               {user?.profile?.display_name}
@@ -258,34 +324,52 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     </Row>
                   </Col>
                   {/* generous sponsors */}
-                  <Col xs={{ span: 24 }} xl={{ span: 9 }} className={s.generousSponsorsWrap}>
-                    <h3 className={s.generousSponsorsTitle}>Our generous sponsors</h3>
+                  <Col
+                    xs={{ span: 24 }}
+                    xl={{ span: 9 }}
+                    className={s.generousSponsorsWrap}
+                  >
+                    <h3 className={s.generousSponsorsTitle}>
+                      Our generous sponsors
+                    </h3>
                     <div className={s.generousSponsorsList}>
                       <div className={`${s.generousSponsor} ${s.vip}`}>
                         <div className={s.generousSponsorAvatar}>
-                          <Image src={'/assets/TournamentDetail/sponsorAvatar.png'} preview={false} alt="" />
+                          <Image
+                            src={"/assets/TournamentDetail/sponsorAvatar.png"}
+                            preview={false}
+                            alt=""
+                          />
                         </div>
                         <div className={s.generousSponsorName}>CEN Group</div>
                       </div>
                       <div className={`${s.generousSponsor}`}>
                         <div className={s.generousSponsorAvatar}>
-                          <Image src={'/assets/TournamentDetail/sponsorAvatar.png'} preview={false} alt="" />
+                          <Image
+                            src={"/assets/TournamentDetail/sponsorAvatar.png"}
+                            preview={false}
+                            alt=""
+                          />
                         </div>
                         <div className={s.generousSponsorName}>Steve Kruga</div>
                       </div>
                       <div className={`${s.generousSponsor}`}>
                         <div className={s.generousSponsorAvatar}>
-                          <Image src={'/assets/TournamentDetail/sponsorAvatar.png'} preview={false} alt="" />
+                          <Image
+                            src={"/assets/TournamentDetail/sponsorAvatar.png"}
+                            preview={false}
+                            alt=""
+                          />
                         </div>
                         <div className={s.generousSponsorName}>Steve Krugb</div>
                       </div>
                     </div>
                   </Col>
                 </Row>
-							</div>
-						</div>
-					</div>
-				</section>
+              </div>
+            </div>
+          </div>
+        </section>
         <section className={s.bgCharacters}>
           {/* ==== registration phase ====  */}
           <RegistrationPhase
@@ -358,7 +442,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 tournamentId={tournamentId as string}
                 currency={currency}
                 tournament_status={tournament_status as string}
-				refetch={refetch}
+                refetch={refetch}
               />
             </TabPane>
             <TabPane tab="Prizing" key="6">
