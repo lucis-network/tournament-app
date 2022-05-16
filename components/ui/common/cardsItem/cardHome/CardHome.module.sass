@@ -158,6 +158,7 @@
             max-width: 60px
         h2
           height: 53px
+          padding-top: 8px
           a
             color: #FFF
             font-weight: 700
@@ -210,7 +211,7 @@
                 @media (min-width: 0px)
                   margin: 0px 4px 0px 8px
                 @media (min-width: 992px)
-                  margin: 0px 4px
+                  margin: 0px 4px 0px 0px
                 @media (min-width: 1440px)
                   margin: 0px 4px 0px 0px
                 @media (min-width: 1920px)
@@ -292,21 +293,6 @@
     display: flex
     justify-content: center
     margin-top: 40px
-    .container_card::before
-      content: ''
-      position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
-      border-radius: 4px
-      padding: 1px
-      background: radial-gradient(54.8% 53% at 50% 50%, #151515 0%, rgba(21, 21, 21, 0) 100%),radial-gradient(60% 51.57% at 50% 50%, #9854FE 0%, rgba(152, 84, 254, 0) 100%),radial-gradient(69.43% 69.43% at 50% 50%, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%)
-      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-      -webkit-mask-composite: xor
-      mask-composite: exclude
-  .wrapper:hover .container_card
-    box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
 
 .btn_load
   display: flex
@@ -344,3 +330,23 @@
   filter: blur(40px)
 .time
   text-transform: uppercase
+
+
+
+
+.container_card::before
+  content: ''
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  border-radius: 16px
+  padding: 1px
+  background: linear-gradient(85deg, rgba(214, 84, 254, 0.4) 0%, rgba(0, 0, 0, .2) 100%)
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+  -webkit-mask-composite: xor
+  mask-composite: exclude
+  z-index: 1
+.wrapper:hover .container_card
+  box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
