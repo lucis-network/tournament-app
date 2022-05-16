@@ -35,7 +35,7 @@ const UseTeamModal = (tournamentData: any) => {
 	const {
 		name,
 		team_size,
-		password: tourPassword,
+		has_password: tourPassword,
 	} = tournamentData?.tournament;
 	const { tournamentId } = tournamentData;
 	const { joinTournament, refreshParticipant } = tournamentData;
