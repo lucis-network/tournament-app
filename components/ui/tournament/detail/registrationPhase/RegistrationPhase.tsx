@@ -19,122 +19,122 @@ import CountdownTimer from "components/ui/common/CountDown";
 import { CalendarOutlined } from "@ant-design/icons";
 
 type Props = {
-	isJoin: boolean;
-	tournament: any;
-	tournamentId?: string;
-	joinTournament: any;
-	dataBracket: any;
-	refetch: () => Promise<ApolloQueryResult<any>>;
-	refreshParticipant: () => Promise<ApolloQueryResult<any>>;
-	tournament_status: string;
-	isCheckin: boolean;
+  isJoin: boolean;
+  tournament: any;
+  tournamentId?: string;
+  joinTournament: any;
+  dataBracket: any;
+  refetch: any;
+  refreshParticipant: () => Promise<ApolloQueryResult<any>>;
+  tournament_status: string;
+  isCheckin: boolean;
 };
 
 type Reward = {
-	amount: number;
-	rank: number;
-	reward_type: string;
-	symbol: string;
+  amount: number;
+  rank: number;
+  reward_type: string;
+  symbol: string;
 };
 
 export type ClaimPrizePool = {
-	tournament_uid?: string;
-	address?: any;
+  tournament_uid?: string;
+  address?: any;
 };
 
 export default observer(function RegistrationPhase(props: Props) {
-	const [isPopupDonate, setIsPopupDonate] = useState(false);
-	const {
-		participants,
-		brackets,
-		currency,
-		totalDonation,
-		totalPrizePool,
-		name,
-		thumbnail,
-		tournament_status,
-		additionPrize,
-		cache_tournament,
-	} = props.tournament;
+  const [isPopupDonate, setIsPopupDonate] = useState(false);
+  const {
+    participants,
+    brackets,
+    currency,
+    totalDonation,
+    totalPrizePool,
+    name,
+    thumbnail,
+    tournament_status,
+    additionPrize,
+    cache_tournament,
+  } = props.tournament;
 
-	const { isJoin, isCheckin, tournamentId, dataBracket, refetch } = props;
+  const { isJoin, isCheckin, tournamentId, dataBracket, refetch } = props;
 
-	const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
-		useTeamModal(props);
+  const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
+    useTeamModal(props);
 
-	const timeDefault = moment(brackets?.[0].start_at).valueOf();
-	const timeCheckin = moment(brackets?.[0].start_at)
-		.subtract(15, "minutes")
-		.valueOf();
-	const timeRegistration = moment(brackets?.[0].start_at)
-		.subtract(1, "hour")
-		.valueOf();
+  const timeDefault = moment(brackets?.[0].start_at).valueOf();
+  const timeCheckin = moment(brackets?.[0].start_at)
+    .subtract(15, "minutes")
+    .valueOf();
+  const timeRegistration = moment(brackets?.[0].start_at)
+    .subtract(1, "hour")
+    .valueOf();
 
-	const claimTokenDonation = async () => {
-		TournamentStore.claimDonationModalVisible = true;
-	};
+  const claimTokenDonation = async () => {
+    TournamentStore.claimDonationModalVisible = true;
+  };
 
-	const { data } = useClaimReward({
-		tournament_uid: tournamentId ? tournamentId : "",
-	});
+  const { data } = useClaimReward({
+    tournament_uid: tournamentId ? tournamentId : "",
+  });
 
-	const {
-		openModal: openTournamentModal,
-		status,
-		handleCloseTourModal,
-		handleOpenLeaveTournament,
-		handleLeaveTournament,
-		handleCheckinTournament,
-	} = useTournament(tournamentId || "");
+  const {
+    openModal: openTournamentModal,
+    status,
+    handleCloseTourModal,
+    handleOpenLeaveTournament,
+    handleLeaveTournament,
+    handleCheckinTournament,
+  } = useTournament(tournamentId || "");
 
-	const [dataPrize, setDataPrize] = useState<Reward>();
-	const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
-	const [dataDonation, setDataDonation] = useState<Reward[]>();
-	const [totalFromDonation, setTotalFromDonation] = useState(0);
+  const [dataPrize, setDataPrize] = useState<Reward>();
+  const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
+  const [dataDonation, setDataDonation] = useState<Reward[]>();
+  const [totalFromDonation, setTotalFromDonation] = useState(0);
 
-	useEffect(() => {
-		let arr: Array<Reward> = [];
-		data?.forEach((item: any) => {
-			if (item.reward_type === "PRIZE") setDataPrize(item);
-			else if (item.reward_type === "SYTEMPRIZE") setDataSystemPrize(item);
-			else arr.push(item);
-		});
-		setDataDonation(arr);
-		calculatorDonation(arr);
-	}, [data]);
+  useEffect(() => {
+    let arr: Array<Reward> = [];
+    data?.forEach((item: any) => {
+      if (item.reward_type === "PRIZE") setDataPrize(item);
+      else if (item.reward_type === "SYTEMPRIZE") setDataSystemPrize(item);
+      else arr.push(item);
+    });
+    setDataDonation(arr);
+    calculatorDonation(arr);
+  }, [data]);
 
-	const calculatorDonation = (arr: any) => {
-		let total = 0;
-		arr?.forEach((item: any) => {
-			total += item.amount;
-		});
-		setTotalFromDonation(total);
+  const calculatorDonation = (arr: any) => {
+    let total = 0;
+    arr?.forEach((item: any) => {
+      total += item.amount;
+    });
+    setTotalFromDonation(total);
 
-		let obj: Reward = {
-			amount: total,
-			reward_type: "Total",
-			rank: 0,
-			symbol: currency?.symbol,
-		};
-		arr.push(obj);
-	};
+    let obj: Reward = {
+      amount: total,
+      reward_type: "Total",
+      rank: 0,
+      symbol: currency?.symbol,
+    };
+    arr.push(obj);
+  };
 
-	const claimToken = async (value: string) => {
-		if (!ConnectWalletStore.address) {
-			AuthBoxStore.connectModalVisible = true;
-		} else {
-			if (value === "PrizePool") {
-				const claim: ClaimPrizePool = {
-					tournament_uid: tournamentId,
-					address: ConnectWalletStore.address,
-				};
+  const claimToken = async (value: string) => {
+    if (!ConnectWalletStore.address) {
+      AuthBoxStore.connectModalVisible = true;
+    } else {
+      if (value === "PrizePool") {
+        const claim: ClaimPrizePool = {
+          tournament_uid: tournamentId,
+          address: ConnectWalletStore.address,
+        };
 
         let tournamentService = new TournamentService();
         const response = tournamentService.claimPrizePool(claim).then(
           (res) => {
             if (res) {
-              TournamentStore.claimResultModalVisible = true;
               refetch();
+              TournamentStore.claimResultModalVisible = true;
             }
           },
           (error) => {
@@ -150,8 +150,8 @@ export default observer(function RegistrationPhase(props: Props) {
           .then(
             (res) => {
               if (res) {
-                TournamentStore.claimResultModalVisible = true;
                 refetch();
+                TournamentStore.claimResultModalVisible = true;
               }
             },
             (error) => {
@@ -162,13 +162,13 @@ export default observer(function RegistrationPhase(props: Props) {
     }
   };
 
-	const closeModal = () => {
-		setIsPopupDonate(false);
-	};
+  const closeModal = () => {
+    setIsPopupDonate(false);
+  };
 
-	const openModal = () => {
-		setIsPopupDonate(true);
-	};
+  const openModal = () => {
+    setIsPopupDonate(true);
+  };
 
 	return (
 		<div className="lucis-container-2">
@@ -204,7 +204,9 @@ export default observer(function RegistrationPhase(props: Props) {
 							<Image src="/assets/TournamentDetail/participants.svg" alt="" preview={false} />
 						</div>
 						<h3>
-							{cache_tournament?.team_participated}/{participants}
+							{cache_tournament?.team_participated
+								? cache_tournament?.team_participated
+								: 0}/{participants}
 						</h3>
 						<p>Participants</p>
 					</div>
@@ -404,44 +406,45 @@ export default observer(function RegistrationPhase(props: Props) {
 				})()}
 			</div>
 
-			<ClaimDonationModal
-				tournamentId={tournamentId as string}
-				dataDonation={dataDonation}
-			/>
+      <ClaimDonationModal
+        tournamentId={tournamentId as string}
+        dataDonation={dataDonation}
+      />
 
-			<ChooseTeamModal
-				step={step}
-				show={show}
-				stepConfiguration={stepConfiguration}
-				onCancel={handleCloseModal}
-			/>
+      <ChooseTeamModal
+        step={step}
+        show={show}
+        stepConfiguration={stepConfiguration}
+        onCancel={handleCloseModal}
+      />
 
-			<PopupDonate
-				closeModal={() => closeModal()}
-				status={isPopupDonate}
-				tournamentId={tournamentId}
-				currency={currency}
-				types={"TOURNAMENT"}
-				name={name}
-				thumbnail={thumbnail}
-			/>
+      <PopupDonate
+        closeModal={() => closeModal()}
+        status={isPopupDonate}
+        tournamentId={tournamentId}
+        currency={currency}
+        types={"TOURNAMENT"}
+        name={name}
+        thumbnail={thumbnail}
+        refetch={refetch}
+      />
 
-			<Modal
-				title={
-					<h3 className="text-16px text-white">
-						{status === "unjoin"
-							? "Are you sure to unjoin this tournament?"
-							: ""}
-					</h3>
-				}
-				centered
-				visible={openTournamentModal}
-				wrapClassName={s.mdl}
-				okText="Confirm"
-				bodyStyle={{ display: "none" }}
-				onOk={handleLeaveTournament}
-				onCancel={handleCloseTourModal}
-			/>
-		</div>
-	);
+      <Modal
+        title={
+          <h3 className="text-16px text-white">
+            {status === "unjoin"
+              ? "Are you sure to unjoin this tournament?"
+              : ""}
+          </h3>
+        }
+        centered
+        visible={openTournamentModal}
+        wrapClassName={s.mdl}
+        okText="Confirm"
+        bodyStyle={{ display: "none" }}
+        onOk={handleLeaveTournament}
+        onCancel={handleCloseTourModal}
+      />
+    </div>
+  );
 });

@@ -35,7 +35,7 @@ const UseTeamModal = (tournamentData: any) => {
 	const {
 		name,
 		team_size,
-		password: tourPassword,
+		has_password: tourPassword,
 	} = tournamentData?.tournament;
 	const { tournamentId } = tournamentData;
 	const { joinTournament, refreshParticipant } = tournamentData;
@@ -46,8 +46,6 @@ const UseTeamModal = (tournamentData: any) => {
 	const [selectedTeam, setSelectedTeam] = useState<MyTeamType>();
 	const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
 	const [errorTour, setErrorTour] = useState<ErrorTourKey>();
-
-	console.log(tournamentData?.tournament);
 
 	const {
 		reset,

@@ -160,6 +160,21 @@ export default class TournamentService {
 
     return res;
   }
+
+  public async confirmTournamentResult(tournament_uid: string): Promise<any> {
+    const res = await apoloClient.mutate({
+      mutation: gql`
+        mutation confirmResult($tournament_uid: String!) {
+          confirmResult(tournament_uid: $tournament_uid)
+        }
+      `,
+      variables: {
+        tournament_uid: tournament_uid,
+      },
+    });
+
+    return res;
+  }
 }
 
 export function setLocalCreateTournamentInfo(ct: CreateTournament): void {

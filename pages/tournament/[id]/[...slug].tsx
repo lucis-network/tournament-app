@@ -23,6 +23,8 @@ import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import PopupConfirm from "components/ui/tournament/detail/popup/PopupConfirm";
 import Link from "next/link";
+import LoginModal from "components/Auth/Login/LoginModal";
+import AuthStore from "components/Auth/AuthStore";
 
 const { TabPane } = Tabs;
 
@@ -43,6 +45,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     dataIsCheckin: isCheckin,
     dataDonation,
     dataListRank,
+    isCheckConfirmResult,
+    dataIsubscribeToTournament,
 
     loading,
     loadingParticipant,
@@ -55,9 +59,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     joinTournament,
     refreshParticipant,
     refetch,
-    confirmResult,
-    dataIsubscribeToTournament,
+
     refetchSubTournament,
+    refetchConfirmResult,
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
@@ -86,17 +90,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const handleOpenConfirmResult = () => {
     setShowConfirm(true);
   };
-  const handleConfirmResult = () => {
-    confirmResult({
-      onCompleted: () => {
-        message.success("Success", 10);
-        setShowConfirm(false);
-      },
-      onError: (err) => {
-        message.error(err.message, 10);
-      },
-    });
-  };
 
   const {
     team_size,
@@ -118,6 +111,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   } = dataTournamentDetail ?? {};
 
   const handSubscribe = () => {
+    if (!AuthStore.isLoggedIn) {
+      message.info("Please sign in first");
+      return;
+    }
+
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
     const sub = tournamentService
@@ -129,6 +127,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   };
 
   const handUnsubscribe = () => {
+    if (!AuthStore.isLoggedIn) {
+      message.info("Please sign in first");
+      return;
+    }
+
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
     const sub = tournamentService
@@ -147,17 +150,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 				<section className={s.tournamentInfo}>
 					<div className={`lucis-container-2`}>
 						<div className={s.group_button}>
-							{/* {unsubscribe && (
-            <button key={"Subscribe"} onClick={handSubscribe}>
-              Subscribed
-            </button>
-          )}
-          {subscribe && (
-            <button key={"Subscribe"} onClick={handUnsubscribe}>
-              Subscribe
-            </button>
-          )} */}
-              {tournament_status === "FINISH" && (
+              {tournament_status === "FINISH" && !isCheckConfirmResult && (
                 <a
                   className="text-16px btn-blur"
                   onClick={handleOpenConfirmResult}
@@ -165,12 +158,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   Confirm tournament result
                 </a>
               )}
-              <a
-                className="text-16px btn-blur"
-                onClick={handleOpenConfirmResult}
-              >
-                Confirm tournament result
-              </a>
 							<div className={s.gradientBtnWrap}>
 								{dataIsubscribeToTournament?.IsSubscribeToTournament && (
 									<Spin spinning={isLoadingSub}>
@@ -189,12 +176,16 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 									</Spin>
 								)}
 
-								{tournament_status !== "CLOSED" && (
-									<button key={"Donate"} onClick={() => openModal("Donate")}>
-										<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
-										<span className="ml-2">Donate</span>
-									</button>
-								)}
+                {tournament_status !== "CLOSED" && (
+                  <button key={"Donate"} onClick={() => openModal("Donate")}>
+                    <Image
+                      src="/assets/TournamentDetail/signInCircle.svg"
+                      preview={false}
+                      alt=""
+                    />
+                    <span className="ml-2">Donate</span>
+                  </button>
+                )}
 
 								<button
 									key={"InviteorShare"}
@@ -332,7 +323,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               />
             </TabPane>
             <TabPane
-              tab={`Participants (${cache_tournament?.team_participated}/${participants})`}
+              tab={`Participants (${
+                cache_tournament?.team_participated
+                  ? cache_tournament?.team_participated
+                  : 0
+              }/${participants})`}
               key="4"
             >
               <>
@@ -343,6 +338,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     tournamentId={tournamentId as string}
                     currency={currency}
                     tournament_status={tournament_status as string}
+                    refetch={refetch}
                   />
                 )}
                 {tournament_status === "CLOSED" && (
@@ -391,6 +387,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           types={"TOURNAMENT"}
           name={name}
           thumbnail={thumbnail}
+          refetch={refetch}
         />
         <PopupShare
           closeModal={() => closeModal("Invite or Share")}
@@ -408,10 +405,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <PopupConfirm
           show={showConfirm}
           onCancel={() => setShowConfirm(false)}
-          onOk={handleConfirmResult}
           tournamentId={tournamentId as string}
+          refetchConfirmResult={refetchConfirmResult}
         />
       </div>
+      <LoginModal />
     </>
   );
 };

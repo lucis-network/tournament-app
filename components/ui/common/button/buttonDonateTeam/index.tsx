@@ -9,9 +9,10 @@ type Props = {
   nameTeam?: any;
   tournamentId: string;
   currency?: any;
+  refetch: any;
 };
 export default function ModalDonateTeam(props: Props) {
-  const { nameTeam, tournamentId, currency } = props;
+  const { nameTeam, tournamentId, currency, refetch } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [isPopUp, setIsPopUp] = useState(false);
   const [newData, setNewData] = useState({});
@@ -65,7 +66,8 @@ export default function ModalDonateTeam(props: Props) {
                 <img
                   className={s.avt}
                   src={`${
-                    nameTeam?.team?.avatar || "/assets/MyProfile/defaultAvatar.png"
+                    nameTeam?.team?.avatar ||
+                    "/assets/MyProfile/defaultAvatar.png"
                   }`}
                   alt=""
                 />
@@ -90,40 +92,38 @@ export default function ModalDonateTeam(props: Props) {
               <h1>Member</h1>
 
               {nameTeam?.bracketTeamMembers
-                ? nameTeam?.bracketTeamMembers?.map(
-                    (item: any) => (
-                      <Row key={item?.uid} className={s.container}>
-                        <Col span={18} className={s.item_member}>
-                          <div className={s.avt_member}>
-                            <img
-                              className={s.avt}
-                              src={`${
-                                item.user?.profile?.avatar ??
-                                "/assets/MyProfile/defaultAvatar.png"
-                              }`}
-                              alt=""
-                            />
-                          </div>
-                          <div className={s.name_member}>
-                            {item.user?.profile?.display_name}
-                          </div>
-                          {item.is_leader && (
-                            <div className={s.rank_member}>leader</div>
-                          )}
-                        </Col>
-                        <Col>
-                          <Button
-                            type="primary"
-                            onClick={() => {
-                              handlButtonMember(item);
-                            }}
-                          >
-                            Donate
-                          </Button>
-                        </Col>
-                      </Row>
-                    )
-                  )
+                ? nameTeam?.bracketTeamMembers?.map((item: any) => (
+                    <Row key={item?.uid} className={s.container}>
+                      <Col span={18} className={s.item_member}>
+                        <div className={s.avt_member}>
+                          <img
+                            className={s.avt}
+                            src={`${
+                              item.user?.profile?.avatar ??
+                              "/assets/MyProfile/defaultAvatar.png"
+                            }`}
+                            alt=""
+                          />
+                        </div>
+                        <div className={s.name_member}>
+                          {item.user?.profile?.display_name}
+                        </div>
+                        {item.is_leader && (
+                          <div className={s.rank_member}>leader</div>
+                        )}
+                      </Col>
+                      <Col>
+                        <Button
+                          type="primary"
+                          onClick={() => {
+                            handlButtonMember(item);
+                          }}
+                        >
+                          Donate
+                        </Button>
+                      </Col>
+                    </Row>
+                  ))
                 : ""}
               <PopupDonate
                 closeModal={click}
@@ -132,6 +132,7 @@ export default function ModalDonateTeam(props: Props) {
                 tournamentId={tournamentId}
                 types={types}
                 currency={currency}
+                refetch={refetch}
               />
             </div>
           </div>

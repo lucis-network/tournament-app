@@ -13,6 +13,7 @@ type Props = {
   tournamentId: string;
   currency?: any;
   tournament_status: string;
+  refetch: any;
 };
 export default function Referees(props: Props) {
   const {
@@ -21,6 +22,7 @@ export default function Referees(props: Props) {
     tournamentId,
     currency,
     tournament_status,
+    refetch,
   } = props;
   const [dataReferees, setDataReferees] = useState({});
   const [isPopUp, setIsPopUp] = useState(false);
@@ -106,6 +108,7 @@ export default function Referees(props: Props) {
         tournamentId={tournamentId}
         types={"REFEREE"}
         currency={currency}
+        refetch={refetch}
       />
     </div>
   );

@@ -113,7 +113,9 @@ function TournamentCard(props: { data: TournamentGql }) {
 										alt=""
 									/>
 								</div>
-								<Link href={`/profile/${item.user?.id}`}>
+								<Link
+									href={`/profile/${slugify(item.user?.profile?.user_name)}`}
+								>
 									{item.user?.profile?.display_name}
 								</Link>
 							</div>
