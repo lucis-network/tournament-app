@@ -93,7 +93,7 @@ export default function Referees(props: Props) {
     },
   ];
   return (
-    <div>
+    <div className={s.wrapper}>
       <Table
         dataSource={dataRefereesDetail}
         columns={columnsReferees}

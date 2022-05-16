@@ -1,19 +1,59 @@
+.wrapper
+  border-radius: 16px
+  margin-top: 50px
+  background: linear-gradient(333deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+  backdrop-filter: blur(42px)
+  padding: 32px
+  :global(ant-table-wrapper)
+    overflow-x: auto
 .container_table
-  margin-top: 16px
   :global(.ant-table)
     color: #FFF
-    background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-    backdrop-filter: blur(4px)
-    padding: 0px 
+    background: none
+    padding: 0px
+
+  :global(.ant-table table)
+    text-align: center
   :global(.ant-table-thead > tr > th)
-    color:#FFF
+    color: #FFF
     font-size: 18px
     font-weight: 600
     background: transparent
+    text-align: center
+    @media ( max-width: 640px )
+      padding: 12px 8px
+      font-size: 13px
+  :global(.ant-table.ant-table-bordered > .ant-table-container)
+    border-left: none
+    :global(.ant-table-content > table)
+      border-top: none
+  :global(.ant-table-container table > thead > tr > th:last-child)
+    border-right: none !important
+  :global(.ant-table-container table > tbody > tr > td:last-child)
+    border-right: none !important
+  :global(.ant-table-container table > tbody > tr > td)
+    border-color: rgb(189 189 189 / 42%) !important
+  :global(.ant-table-container table > thead > tr > th)
+    border-color: rgb(189 189 189 / 42%) !important
   :global(.ant-table-tbody > tr:hover > td)
-    background: rgba(255, 255, 255, 0.2)
+    background: rgba(255, 255, 255, 0.2) !important
   :global(.ant-pagination)
     display: none
+
+  :global(.ant-table-tbody > tr > td)
+    @media (max-width: 640px)
+      padding: 12px 8px
+      font-size: 13px
+
+  .title
+    display: flex
+    align-items: center
+    .im_team
+      max-width: 32px
+      overflow: hidden
+      border-radius: 100%
+    span
+      margin-left: 12px
 
   .avt
     max-width: 32px
