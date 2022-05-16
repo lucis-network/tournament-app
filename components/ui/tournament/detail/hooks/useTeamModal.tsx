@@ -6,10 +6,10 @@ import s from "../popup/chooseTeamModal/TeamModal.module.sass";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import TeamSelect from "../popup/chooseTeamModal/TeamSelect";
 import {
-  JoinTournamentTeamType,
-  JoinTournamentType,
-  StepModalComponent,
-  StepModalTournament,
+	JoinTournamentTeamType,
+	JoinTournamentType,
+	StepModalComponent,
+	StepModalTournament,
 } from "components/ui/common/types";
 import CreateTeamModal from "components/ui/common/createTeamModal";
 import UseUploadAvatar from "components/ui/common/tabsItem/myTeamDetail/hooks/useUploadAvatar";
@@ -23,8 +23,8 @@ import AuthStore from "components/Auth/AuthStore";
 import { message } from "antd";
 
 export interface Item extends TeamType {
-  prize?: number;
-  game_member_id?: string;
+	prize?: number;
+	game_member_id?: string;
 }
 
 export type ErrorTourKey =
@@ -32,59 +32,59 @@ export type ErrorTourKey =
 	| undefined;
 
 const UseTeamModal = (tournamentData: any) => {
-  const router = useRouter();
-  const user = getLocalAuthInfo();
-  const {
-    name,
-    team_size,
-    has_password: tourPassword,
-  } = tournamentData?.tournament;
-  const { tournamentId } = tournamentData;
-  const { joinTournament, refreshParticipant } = tournamentData;
-  const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
-  const [show, setShow] = useState<boolean>(false);
-  const [password, setPassword] = useState<string>("");
-  const [step, setStep] = useState<StepModalTournament>("step-1");
-  const [selectedTeam, setSelectedTeam] = useState<MyTeamType>();
-  const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
-  const [errorTour, setErrorTour] = useState<ErrorTourKey>();
+	const router = useRouter();
+	const user = getLocalAuthInfo();
+	const {
+		name,
+		team_size,
+		has_password: tourPassword,
+	} = tournamentData?.tournament;
+	const { tournamentId } = tournamentData;
+	const { joinTournament, refreshParticipant } = tournamentData;
+	const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
+	const [show, setShow] = useState<boolean>(false);
+	const [password, setPassword] = useState<string>("");
+	const [step, setStep] = useState<StepModalTournament>("step-1");
+	const [selectedTeam, setSelectedTeam] = useState<MyTeamType>();
+	const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
+	const [errorTour, setErrorTour] = useState<ErrorTourKey>();
 
-  const {
-    reset,
-    draftData,
-    error,
-    memberList,
-    teamList,
-    searchMemberValue,
-    searchTeam,
-    searchMember,
-    handleAddMember,
-    handleChangeAvatar,
-    handleChangeTeamName,
-    handleCloseCreateEditTeam,
-    handleCloseAddMember,
-    handleCreateTeam,
-    handleRemove,
-    handleSaveTeam,
-    handleSearchMember,
-  } = UseCreateNewTeam(user?.profile, team_size);
+	const {
+		reset,
+		draftData,
+		error,
+		memberList,
+		teamList,
+		searchMemberValue,
+		searchTeam,
+		searchMember,
+		handleAddMember,
+		handleChangeAvatar,
+		handleChangeTeamName,
+		handleCloseCreateEditTeam,
+		handleCloseAddMember,
+		handleCreateTeam,
+		handleRemove,
+		handleSaveTeam,
+		handleSearchMember,
+	} = UseCreateNewTeam(user?.profile, team_size);
 
-  const { url, inputKey, handleFileInput } = UseUploadAvatar(
-    handleChangeAvatar,
-    reset
-  );
+	const { url, inputKey, handleFileInput } = UseUploadAvatar(
+		handleChangeAvatar,
+		reset
+	);
 
-  const { loadingJoinTournament, refreshIsJoin } = useTournamentDetail({
-    tournament_uid: tournamentId,
-  });
+	const { loadingJoinTournament, refreshIsJoin } = useTournamentDetail({
+		tournament_uid: tournamentId,
+	});
 
-  const handleRoutes = (route: string) => {
-    router.push(route);
-    setShow(false);
-    refreshIsJoin();
-    isSoloVersion ? setStep("step-1") : setStep("step-1");
-    // refreshParticipant();
-  };
+	const handleRoutes = (route: string) => {
+		router.push(route);
+		setShow(false);
+		refreshIsJoin();
+		isSoloVersion ? setStep("step-1") : setStep("step-1");
+		// refreshParticipant();
+	};
 
 	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
 		const value = e.currentTarget.value;
@@ -94,67 +94,67 @@ const UseTeamModal = (tournamentData: any) => {
 	const handleBlurPassword = (e: React.FormEvent<HTMLInputElement>) => {
 		setErrorTour({
 			...errorTour,
-			pass: !password ? "Password is required" : "",
+			pass: tourPassword && !password ? "Password is required" : "",
 		} as ErrorTourKey);
 	};
 
-  const checkEmptyUserId = checkEmptyArrayValue(
-    selectedTeam?.team || [],
-    "game_member_id"
-  );
-  const checkEmptyPrize = checkEmptyArrayValue(
-    selectedTeam?.team || [],
-    "prize"
-  );
+	const checkEmptyUserId = checkEmptyArrayValue(
+		selectedTeam?.team || [],
+		"game_member_id"
+	);
+	const checkEmptyPrize = checkEmptyArrayValue(
+		selectedTeam?.team || [],
+		"prize"
+	);
 
-  const checkTotalPrize = checkTotalPercent(selectedTeam?.team || [], "prize");
+	const checkTotalPrize = checkTotalPercent(selectedTeam?.team || [], "prize");
 
-  const handleChangeStep = (step: StepModalTournament) => {
-    setStep(step);
-  };
+	const handleChangeStep = (step: StepModalTournament) => {
+		setStep(step);
+	};
 
-  const handleAddMemberToTeam = (member: TeamType) => {
-    setStep("create-team");
-    handleAddMember(member);
-  };
-  const handleChooseTeamConfirm = (team: TeamType[]) => {
-    setErrorTour({} as any);
-    setSelectedTeam({ ...selectedTeam!, team: dataTeam(team, true) });
-    setStep("step-2");
-  };
+	const handleAddMemberToTeam = (member: TeamType) => {
+		setStep("create-team");
+		handleAddMember(member);
+	};
+	const handleChooseTeamConfirm = (team: TeamType[]) => {
+		setErrorTour({} as any);
+		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team, true) });
+		setStep("step-2");
+	};
 
-  const handleSelectTeam = (team: MyTeamType) => {
-    const checkOverSize = (team.team?.length || 0) > team_size;
-    setStep("step-2");
-    setSelectedTeam({
-      ...team!,
-      team: dataTeam(
-        checkOverSize
-          ? [
-              {
-                avatar: user?.profile?.avatar || "",
-                display_name: user?.profile?.display_name || "",
-                user_id: +user?.id!,
-                is_leader: true,
-                user_name: user?.profile?.user_name || "",
-                prize: 100,
-              } as any,
-            ]
-          : team?.team,
-        true
-      ),
-    });
+	const handleSelectTeam = (team: MyTeamType) => {
+		const checkOverSize = (team.team?.length || 0) > team_size;
+		setStep("step-2");
+		setSelectedTeam({
+			...team!,
+			team: dataTeam(
+				checkOverSize
+					? [
+							{
+								avatar: user?.profile?.avatar || "",
+								display_name: user?.profile?.display_name || "",
+								user_id: +user?.id!,
+								is_leader: true,
+								user_name: user?.profile?.user_name || "",
+								prize: 100,
+							} as any,
+					  ]
+					: team?.team,
+				true
+			),
+		});
 
-    setDraftSelectedTeam(team);
-    setErrorTour({} as any);
-  };
+		setDraftSelectedTeam(team);
+		setErrorTour({} as any);
+	};
 
-  const handleSetFormData = (team: Item[]) => {
-    setSelectedTeam({ ...selectedTeam!, team: dataTeam(team) });
+	const handleSetFormData = (team: Item[]) => {
+		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team) });
 
-    const checkEmptyUserId = checkEmptyArrayValue(team, "game_member_id");
-    const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
-    const checkTotalPrize = checkTotalPercent(team, "prize");
+		const checkEmptyUserId = checkEmptyArrayValue(team, "game_member_id");
+		const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
+		const checkTotalPrize = checkTotalPercent(team, "prize");
 
 		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
 			setErrorTour({
@@ -166,17 +166,17 @@ const UseTeamModal = (tournamentData: any) => {
 					? "Total Allocation must be 100%"
 					: "",
 				user: checkEmptyUserId ? "ID in game must not be empty" : "",
-				pass: !password ? "Password is required" : "",
+				pass: tourPassword && !password ? "Password is required" : "",
 			});
 		} else {
 			setErrorTour({} as any);
 		}
 	};
 
-  const handleOpenAddMember = () => {
-    searchMember();
-    setStep("add-team");
-  };
+	const handleOpenAddMember = () => {
+		searchMember();
+		setStep("add-team");
+	};
 
 	const handleJoinTournament = () => {
 		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
@@ -192,7 +192,7 @@ const UseTeamModal = (tournamentData: any) => {
 					? "Total Allocation must be 100%"
 					: "",
 				user: checkEmptyUserId ? "ID in game must not be empty" : "",
-				pass: !password ? "Password is required" : "",
+				pass: tourPassword && !password ? "Password is required" : "",
 			});
 		} else {
 			setErrorTour({} as any);
@@ -224,94 +224,94 @@ const UseTeamModal = (tournamentData: any) => {
 		}
 	};
 
-  const handleCreateNewTeam = () => {
-    setStep("step-1");
-    handleSaveTeam();
-  };
+	const handleCreateNewTeam = () => {
+		setStep("step-1");
+		handleSaveTeam();
+	};
 
-  const handleOpenCreateNewTeam = () => {
-    setStep("create-team");
-    handleCreateTeam();
-  };
+	const handleOpenCreateNewTeam = () => {
+		setStep("create-team");
+		handleCreateTeam();
+	};
 
-  const handleChooseTeam = () => {
-    setStep("choose-player");
-  };
+	const handleChooseTeam = () => {
+		setStep("choose-player");
+	};
 
-  const handleCloseCreateNewTeam = () => {
-    setStep("step-1");
-    handleCloseCreateEditTeam();
-  };
+	const handleCloseCreateNewTeam = () => {
+		setStep("step-1");
+		handleCloseCreateEditTeam();
+	};
 
-  const handleCloseAdd = () => {
-    setStep("create-team");
-    handleCloseAddMember();
-  };
+	const handleCloseAdd = () => {
+		setStep("create-team");
+		handleCloseAddMember();
+	};
 
-  const handleBack = () => {
-    setStep("step-1");
-  };
+	const handleBack = () => {
+		setStep("step-1");
+	};
 
-  const handleCloseModal = () => {
-    switch (step) {
-      case "step-2":
-        isSoloVersion ? setShow(false) : setStep("step-1");
-        break;
-      case "choose-player":
-        setStep("step-2");
-        break;
-      case "success":
-        setStep("step-1");
-        handleRoutes(`/tournament/${tournamentId}/${name}`);
-        setShow(false);
-        break;
-      default:
-        setShow(false);
+	const handleCloseModal = () => {
+		switch (step) {
+			case "step-2":
+				isSoloVersion ? setShow(false) : setStep("step-1");
+				break;
+			case "choose-player":
+				setStep("step-2");
+				break;
+			case "success":
+				setStep("step-1");
+				handleRoutes(`/tournament/${tournamentId}/${name}`);
+				setShow(false);
+				break;
+			default:
+				setShow(false);
 
-        break;
-    }
-  };
+				break;
+		}
+	};
 
-  const handleCheckin = useCallback(() => {}, []);
+	const handleCheckin = useCallback(() => {}, []);
 
-  const handleOpenModal = useCallback(() => {
-    if (!AuthStore.isLoggedIn) {
-      message.info("Please sign in first");
-      return;
-    }
+	const handleOpenModal = useCallback(() => {
+		if (!AuthStore.isLoggedIn) {
+			message.info("Please sign in first");
+			return;
+		}
 
-    setShow(true);
-    searchTeam();
-    if (isSoloVersion) {
-      setStep("step-2");
-      setSelectedTeam({
-        team: [
-          {
-            user_id: +user?.profile?.user_id!,
-            display_name: user?.profile?.display_name,
-            avatar: user?.profile?.avatar,
-            is_leader: true,
-            prize: 100,
-          },
-        ] as Item[],
-      } as MyTeamType);
-    }
-  }, [
-    isSoloVersion,
-    searchTeam,
-    user?.profile?.avatar,
-    user?.profile?.display_name,
-    user?.profile?.user_id,
-  ]);
+		setShow(true);
+		searchTeam();
+		if (isSoloVersion) {
+			setStep("step-2");
+			setSelectedTeam({
+				team: [
+					{
+						user_id: +user?.profile?.user_id!,
+						display_name: user?.profile?.display_name,
+						avatar: user?.profile?.avatar,
+						is_leader: true,
+						prize: 100,
+					},
+				] as Item[],
+			} as MyTeamType);
+		}
+	}, [
+		isSoloVersion,
+		searchTeam,
+		user?.profile?.avatar,
+		user?.profile?.display_name,
+		user?.profile?.user_id,
+	]);
 
-  useEffect(() => {
-    if (selectedTeam && (selectedTeam?.team?.length || 0) > team_size) {
-      setSelectedTeam({
-        ...selectedTeam,
-        team: selectedTeam?.team?.slice(0, -(selectedTeam?.team.length - 1)),
-      });
-    }
-  }, [selectedTeam, team_size]);
+	useEffect(() => {
+		if (selectedTeam && (selectedTeam?.team?.length || 0) > team_size) {
+			setSelectedTeam({
+				...selectedTeam,
+				team: selectedTeam?.team?.slice(0, -(selectedTeam?.team.length - 1)),
+			});
+		}
+	}, [selectedTeam, team_size]);
 
 	const stepConfiguration = (
 		step: StepModalTournament
@@ -454,31 +454,31 @@ const UseTeamModal = (tournamentData: any) => {
 							<ShareAltOutlined className="mr-2" />
 							Share
 						</button> */}
-          </div>
-        ),
-        modalWidth: 540,
-      },
-    };
+					</div>
+				),
+				modalWidth: 540,
+			},
+		};
 
-    return stepModifier[step];
-  };
+		return stepModifier[step];
+	};
 
-  /**
-   * This prevent anonymous user view the tour detail
-   */
-  // useEffect(() => {
-  // 	if (!user) router.push("/");
-  // }, [router, user]);
+	/**
+	 * This prevent anonymous user view the tour detail
+	 */
+	// useEffect(() => {
+	// 	if (!user) router.push("/");
+	// }, [router, user]);
 
-  return {
-    step,
-    show,
-    handleOpenModal,
-    handleCloseModal,
-    handleCheckin,
-    handleChangeStep,
-    stepConfiguration,
-  };
+	return {
+		step,
+		show,
+		handleOpenModal,
+		handleCloseModal,
+		handleCheckin,
+		handleChangeStep,
+		stepConfiguration,
+	};
 };
 
 export default UseTeamModal;
