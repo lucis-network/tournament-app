@@ -2,6 +2,7 @@
 .wrapper
   min-height: 100vh
   background: url("/assets/Banner/bg_banner.png") top left / contain no-repeat, url("/assets/TournamentDetail/bgTournamentDetail.png") top left / cover no-repeat
+  padding-top: 50px
   .banner
     position: relative
     min-height: 400px
@@ -14,19 +15,45 @@
       min-height: 400px
   .group_button
     display: flex
+    flex-direction: column
     align-items: center
     width: 100%
     justify-content: space-between
     gap: 12px
-    button
-      min-width: 162px
-      padding: 12px
-      font-size: 20px
-      font-weight: 700
-      @include box-glass
-      background: rgba(0, 0, 0, 0.3)
-      @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
-
+    margin-bottom: 20px
+    @media screen and (min-width: 768px)
+      flex-direction: row
+    :global(.btn-blur)
+      width: 100%
+      font-size: 16px
+      @media screen and (min-width: 768px)
+        width: auto
+    .gradientBtnWrap
+      width: 100%
+      @media screen and (min-width: 768px)
+        max-width: 60%
+        display: flex
+        justify-content: flex-end
+      :global(.ant-spin-nested-loading)
+        display: inline-block
+        width: 100%
+        @media screen and (min-width: 768px)
+          width: auto
+          margin: 0 20px 0 0
+      button
+        width: 100%
+        padding: 12px
+        font-size: 16px
+        font-weight: 700
+        margin: 0 20px 10px 0
+        &:last-of-type
+          margin-right: 0
+        @include box-glass
+        background: rgba(0, 0, 0, 0.3)
+        @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
+        @media screen and (min-width: 768px)
+          width: auto
+          font-size: 16px
     // :global(.ant-btn-primary)
     //   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
     //   margin-left: 12px
@@ -91,6 +118,12 @@
   margin-bottom: 50px
 .bgCharacters
   position: relative
+  overflow: hidden
+  padding-top: 40px
+  margin-bottom: 30px
+  @media screen and (min-width: 768px)
+    padding-top: 70px
+    margin-top: 70px
   *
     z-index: 1
   &::before, &::after
@@ -99,17 +132,184 @@
     position: absolute
     z-index: 0
   &::before
-    width: 748px
-    height: 1180px
-    top: 0
-    left: 0
-    background: url("/assets/TournamentDetail/leftCharacter.png")
+    width: 400px
+    height: 727.75px
+    top: 160px
+    left: -60px
+    background: url("/assets/TournamentDetail/leftCharacter.png") no-repeat center
+    background-size: cover
+    @media screen and (min-width: 768px)
+      top: 0
+      left: 0
+      width: 260px
+      height: 610px
+    @media screen and (min-width: 1200px)
+      top: 0
+      left: 0
+      width: 748px
+      height: 1180px
   &::after
-    width: 789px
-    height: 880px
-    bottom: 0
-    right: -100px
-    background: url("/assets/TournamentDetail/rightCharacter.png")
+    width: 540px
+    height: 602.28px
+    bottom: 90px
+    right: -120px
+    background: url("/assets/TournamentDetail/rightCharacter.png") no-repeat center
+    background-size: cover
+    @media screen and (min-width: 768px)
+      width: 500px
+      height: 620px
+      bottom: 0
+      right: -140px
+    @media screen and (min-width: 1200px)
+      width: 789px
+      height: 980px
+      bottom: 0
+      right: -100px
 .tournamentInfo
+  margin-bottom: 20px
   *
     color: #ffffff
+  .infoWrap
+    display: flex
+    flex-direction: column
+    @media screen and (min-width: 768px)
+      flex-direction: row
+      align-items: flex-start
+    .tournamentThumbnail
+      border-radius: 16px
+      overflow: hidden
+      box-shadow: 0 0 25px -8px #0bebd6
+      width: 100%
+      margin-bottom: 20px
+      @media screen and (min-width: 768px)
+        min-width: 300px
+        height: auto
+        margin: 0 30px 0 0
+      @media screen and (min-width: 992px)
+        width: 450px
+      @media screen and (min-width: 1200px)
+        margin: 0 70px 0 0
+      :global(.ant-image)
+        width: 100%
+        img
+          width: 100%
+    .tournamentMetadataWrap
+      .tournamentTitle
+        font-weight: 700
+        font-size: 24px
+        margin-bottom: 20px
+        @media screen and (min-width: 1200px)
+          font-size: 48px
+      .tournamentMetadata
+        margin-bottom: 20px
+        .tournamentTagWrap
+          margin: 0 0 10px 0
+          .tournamentTag
+            padding: 5px 8px
+            background: linear-gradient(226.29deg, #3BE2CD -0.17%, #33AFD4 93.89%)
+            border-radius: 10px
+            display: inline-flex
+            align-items: center
+            margin: 0 10px 10px 0
+            font-size: 12px
+            line-height: 1
+            img
+              margin-right: 5px
+          .joinDiscord
+            display: inline-block
+            text-decoration: underline
+            margin: 0 10px 10px 0
+            :global(.ant-image)
+              margin-left: 5px
+        .metadataTitle
+          font-size: 16px
+          margin-bottom: 5px
+        .metadataValue
+          font-weight: 600
+          font-size: 18px
+          color: #0BEBD6
+          margin-bottom: 20px
+          @media screen and (min-width: 1600px)
+            font-size: 20px
+        .gameInfo, .userInfo
+          display: flex
+          align-items: center
+          :global(.ant-image)
+            margin-right: 10px
+            img
+              width: 30px
+              height: 30px
+        .gameInfo
+          margin-bottom: 20px
+          .gameName
+            font-size: 16px
+            font-weight: 700
+        .userInfo
+          .userAvatar
+            border-radius: 50px
+          .userName
+            font-size: 16px
+            text-decoration: underline
+      .generousSponsorsWrap
+        .generousSponsorsTitle
+          font-weight: 700
+          font-size: 20px
+        .generousSponsorsList
+          display: flex
+          flex-wrap: wrap
+          align-items: flex-end
+          padding-top: 30px
+          .generousSponsor
+            width: 70px
+            min-width: 70px
+            position: relative
+            margin-right: 20px
+            margin-bottom: 30px
+            &:last-of-type
+              margin-right: 0
+            &:before
+              content: ''
+              display: block
+              background: url("/assets/TournamentDetail/goldCoin.svg") no-repeat top center
+              background-size: cover
+              width: 30px
+              height: 30px
+              position: absolute
+              top: -18%
+              left: 50%
+              transform: translateX(-50%)
+              z-index: 1
+            &.vip
+              width: 80px
+              min-width: 80px
+              &:before
+                background: url("/assets/TournamentDetail/diamond.svg") no-repeat top center
+                background-size: cover
+                width: 40px
+                height: 37px
+              .generousSponsorAvatar
+                :global(.ant-image)
+                  height: 80px
+              .generousSponsorName
+                font-size: 20px
+                @media screen and (min-width: 1200px)
+                  font-size: 14px
+            .generousSponsorAvatar
+              border-radius: 50px
+              overflow: hidden
+              margin-bottom: 5px
+              :global(.ant-image)
+                width: 100%
+                height: 70px
+                img
+                  width: 100%
+                  height: 100%
+                  object-fit: cover
+            .generousSponsorName
+              font-size: 16px
+              font-weight: 600
+              line-height: 1.3
+              text-align: center
+              color: #0BEBD6
+              @media screen and (min-width: 1200px)
+                font-size: 12px

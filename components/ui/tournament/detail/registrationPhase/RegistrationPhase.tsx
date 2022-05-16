@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, message, Modal } from "antd";
+import {Button, Image, message, Modal} from "antd";
 import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
@@ -170,217 +170,241 @@ export default observer(function RegistrationPhase(props: Props) {
     setIsPopupDonate(true);
   };
 
-  return (
-    <>
-      <div className={s.wrapper}>
-        <div className={s.time}>
-          {/* Start time: {moment(dataBracket.start_at).format("YYYY/MM/DD HH:MM")} */}
-        </div>
-        <div className={s.container}>
-          <div className={s.prizes}>
-            <div className={s.items}>
-              <img src="/assets/avatar.jpg" alt="" width={50} />
-              <span>
-                {fomatNumber(totalPrizePool)} {currency.symbol}
-              </span>
-              <span>Prize pool</span>
-            </div>
-          </div>
-          <div className={s.items}>
-            <img src="/assets/avatar.jpg" alt="" width={50} />
-            <span>
-              {fomatNumber(totalDonation)} {currency.symbol}
-            </span>
-            <span>Total donation</span>
-            {tournament_status !== "CLOSED" && (
-              <Button onClick={openModal}>Donate</Button>
-            )}
-          </div>
-          <div className={s.items}>
-            <div className="flex align-middle items-center">
-              <CalendarOutlined className="text-24px mr-2" />
-              <p className="mb-0">
-                Start time:{" "}
-                {moment(brackets?.[0].start_at).format("YYYY/MM/DD HH:mm")}
-              </p>
-            </div>
-            <img src="/assets/avatar.jpg" alt="" width={50} />
-            <span>
-              {cache_tournament?.team_participated
-                ? cache_tournament?.team_participated
-                : 0}
-              /{participants}
-            </span>
-            <span>Participants</span>
-          </div>
-        </div>
-        <div className={s.footer}>
-          <div className={s.prizes}>
-            {additionPrize ? (
-              additionPrize > 0 ? (
-                <div>
-                  {" "}
-                  <span>Additional prizes</span>
-                  <br></br>
-                  <span>
-                    {fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
-                  </span>
-                </div>
-              ) : (
-                ""
-              )
-            ) : (
-              ""
-            )}
-          </div>
-          {(() => {
-            switch (tournament_status) {
-              case "REGISTRATION":
-                return (
-                  <div className={s.join}>
-                    {isJoin ? (
-                      <Button onClick={handleOpenLeaveTournament}>
-                        Unjoin tournament
-                      </Button>
-                    ) : (
-                      <Button onClick={handleOpenModal}>Join tournament</Button>
-                    )}
-
-                    <div className="flex align-middle items-center text-white">
-                      <p className="mb-0 mr-4">
-                        Registration phase will ends in:
-                      </p>
-                      <CountdownTimer targetDate={timeRegistration} />
-                    </div>
-                  </div>
-                );
-              case "CHECKIN":
-                return (
-                  <div className={s.join}>
-                    {!isCheckin && (
-                      <Button onClick={handleCheckinTournament}>
-                        Check-in
-                      </Button>
-                    )}
-                    <div className="flex align-middle items-center text-white">
-                      <p className="mb-0 mr-4">Check-in phase will ends in:</p>
-                      <CountdownTimer targetDate={timeCheckin} />
-                    </div>
-                  </div>
-                );
-              case "PREPARE":
-                return (
-                  <div className={s.join}>
-                    <div className="flex align-middle items-center text-white">
-                      <p className="mb-0 mr-4">Tournament will starts in:</p>
-                      <CountdownTimer targetDate={timeDefault} />
-                    </div>
-                  </div>
-                );
-              case "RUNNING":
-                return <></>;
-              case "CLOSED":
-                return (
-                  <>
-                    <div className={s.join}>
-                      {(dataPrize?.amount && dataPrize?.amount > 0) ||
-                      (dataSystemPrize?.amount &&
-                        dataSystemPrize?.amount > 0) ? (
-                        <p>YOUR REWARDS</p>
-                      ) : (
-                        ""
-                      )}
-                      <div className={s.rewards}>
-                        <div>
-                          {(dataPrize?.amount && dataPrize?.amount > 0) ||
-                            (dataSystemPrize?.amount &&
-                              dataSystemPrize?.amount > 0) ||
-                            (totalFromDonation > 0 && <div>Prize</div>)}
-                          <div>
-                            {dataPrize?.amount ? (
-                              dataPrize?.amount > 0 ? (
-                                <>
-                                  {fomatNumber(
-                                    dataPrize?.amount ? dataPrize?.amount : 0
-                                  )}{" "}
-                                  {dataPrize?.symbol}
-                                  <br />
-                                  <Button
-                                    onClick={() => claimToken("PrizePool")}
-                                  >
-                                    Claim
-                                  </Button>
-                                </>
-                              ) : (
-                                ""
-                              )
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                          <div>
-                            {dataSystemPrize?.amount ? (
-                              dataSystemPrize?.amount > 0 ? (
-                                <>
-                                  {fomatNumber(
-                                    dataSystemPrize?.amount
-                                      ? dataSystemPrize?.amount
-                                      : 0
-                                  )}{" "}
-                                  {dataSystemPrize?.symbol}
-                                  <br />
-                                  <Button
-                                    onClick={() => claimToken("PrizeSystem")}
-                                  >
-                                    Claim
-                                  </Button>
-                                </>
-                              ) : (
-                                ""
-                              )
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                        <div>
-                          <div>
-                            {totalFromDonation ? (
-                              totalFromDonation > 0 ? (
-                                <>
-                                  <p>From Donation</p>
-                                  {fomatNumber(totalFromDonation)}{" "}
-                                  {dataPrize?.symbol}
-                                  <br />
-                                  <Button onClick={claimTokenDonation}>
-                                    Claim
-                                  </Button>
-                                </>
-                              ) : (
-                                ""
-                              )
-                            ) : (
-                              ""
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                      {(dataPrize?.amount && dataPrize?.amount > 0) ||
-                      (dataSystemPrize?.amount &&
-                        dataSystemPrize?.amount > 0) ? (
-                        <Button>Share my victory</Button>
-                      ) : (
-                        ""
-                      )}
-                    </div>
-                  </>
-                );
-              default:
-                return null;
-            }
-          })()}
-        </div>
-      </div>
+	return (
+		<div className="lucis-container-2">
+			<div className={s.registrationPhase}>
+				<div className={s.startTime}>
+					<Image src="/assets/TournamentDetail/iconCalendar.svg" preview={false} alt="" />
+					<p className="mb-0">
+						<span className="font-bold">Start time: </span>
+						{moment(brackets?.[0].start_at).format("YYYY/MM/DD HH:mm")}
+					</p>
+				</div>
+				<div className={s.registrationPhaseMetadata}>
+					<div className={s.item}>
+						<div className={s.itemImg}>
+							<Image src="/assets/TournamentDetail/goldCup.svg" alt="" preview={false} />
+						</div>
+						<h3>
+							{fomatNumber(totalPrizePool)} {currency.symbol}
+						</h3>
+						<p>Prize pool</p>
+					</div>
+					<div className={s.item}>
+						<div className={s.itemImg}>
+							<Image src="/assets/TournamentDetail/diamondBox.png" alt="" preview={false} />
+						</div>
+						<h3>
+							{fomatNumber(totalDonation)} {currency.symbol}
+						</h3>
+						<p>Total donation</p>
+					</div>
+					<div className={s.item}>
+						<div className={s.itemImg}>
+							<Image src="/assets/TournamentDetail/participants.svg" alt="" preview={false} />
+						</div>
+						<h3>
+							{cache_tournament?.team_participated
+								? cache_tournament?.team_participated
+								: 0}/{participants}
+						</h3>
+						<p>Participants</p>
+					</div>
+				</div>
+				<div className={s.additionalInfo}>
+					<div className={s.additionalPrize}>
+						<div>
+							<h4>Additional prizes:</h4>
+							<p>
+								<Image src="/assets/TournamentDetail/goldCupSmall.svg" preview={false} alt="" />
+								{fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
+							</p>
+						</div>
+						{additionPrize ? (
+							additionPrize > 0 ? (
+								<div>
+									<h4>Additional prizes:</h4>
+									<p></p>
+									<p>
+										{fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
+									</p>
+								</div>
+							) : (
+								""
+							)
+						) : (
+							""
+						)}
+					</div>
+					<div className={s.donateWrap}>
+						{tournament_status !== "CLOSED" && (
+							<button onClick={openModal}>
+								<Image src="/assets/TournamentDetail/signInCircle.svg" preview={false} alt="" />
+								<span className="ml-2">Donate</span>
+							</button>
+						)}
+					</div>
+					{(() => {
+						switch (tournament_status) {
+							case "REGISTRATION":
+								return (
+									<div className={s.joinWrap}>
+										{isJoin ? (
+											<Button onClick={handleOpenLeaveTournament}>
+												Unjoin tournament
+											</Button>
+										) : (
+											<Button onClick={handleOpenModal} className="btn-cyan">
+												<Image src="/assets/TournamentDetail/iconPlay.svg" preview={false} alt="" />
+												Join tournament
+											</Button>
+										)}
+									</div>
+								);
+							case "CHECKIN":
+								return (
+									<div className={s.joinWrap}>
+										{!isCheckin && (
+											<Button onClick={handleCheckinTournament}>
+												Check-in
+											</Button>
+										)}
+									</div>
+								);
+							case "CLOSED":
+								return (
+									// todo closed
+									<div style={{ display: "none" }}>
+										<div className={s.joinWrap}>
+											{(dataPrize?.amount && dataPrize?.amount > 0) ||
+											(dataSystemPrize?.amount &&
+												dataSystemPrize?.amount > 0) ? (
+												<p>YOUR REWARDS</p>
+											) : (
+												""
+											)}
+											<div className={s.rewards}>
+												<div>
+													{(dataPrize?.amount && dataPrize?.amount > 0) ||
+														(dataSystemPrize?.amount &&
+															dataSystemPrize?.amount > 0) ||
+														(totalFromDonation > 0 && <div>Prize</div>)}
+													<div>
+														{dataPrize?.amount ? (
+															dataPrize?.amount > 0 ? (
+																<>
+																	{fomatNumber(
+																		dataPrize?.amount ? dataPrize?.amount : 0
+																	)}{" "}
+																	{dataPrize?.symbol}
+																	<br />
+																	<Button
+																		onClick={() => claimToken("PrizePool")}
+																	>
+																		Claim
+																	</Button>
+																</>
+															) : (
+																""
+															)
+														) : (
+															""
+														)}
+													</div>
+													<div>
+														{dataSystemPrize?.amount ? (
+															dataSystemPrize?.amount > 0 ? (
+																<>
+																	{fomatNumber(
+																		dataSystemPrize?.amount
+																			? dataSystemPrize?.amount
+																			: 0
+																	)}{" "}
+																	{dataSystemPrize?.symbol}
+																	<br />
+																	<Button
+																		onClick={() => claimToken("PrizeSystem")}
+																	>
+																		Claim
+																	</Button>
+																</>
+															) : (
+																""
+															)
+														) : (
+															""
+														)}
+													</div>
+												</div>
+												<div>
+													<div>
+														{totalFromDonation ? (
+															totalFromDonation > 0 ? (
+																<>
+																	<p>From Donation</p>
+																	{fomatNumber(totalFromDonation)}{" "}
+																	{dataPrize?.symbol}
+																	<br />
+																	<Button onClick={claimTokenDonation}>
+																		Claim
+																	</Button>
+																</>
+															) : (
+																""
+															)
+														) : (
+															""
+														)}
+													</div>
+												</div>
+											</div>
+											{(dataPrize?.amount && dataPrize?.amount > 0) ||
+											(dataSystemPrize?.amount &&
+												dataSystemPrize?.amount > 0) ? (
+												<Button>Share my victory</Button>
+											) : (
+												""
+											)}
+										</div>
+									</div>
+								);
+							default:
+								return null;
+						}
+					})()}
+				</div>
+				{(() => {
+					switch (tournament_status) {
+						case "REGISTRATION":
+							return (
+								<div className={s.countdownWrap}>
+									<p className="mb-0 mr-4">
+										Registration phase will ends in:
+									</p>
+									<CountdownTimer targetDate={timeRegistration} />
+								</div>
+							)
+						case "CHECKIN":
+							return (
+								<div className={s.countdownWrap}>
+									<p className="mb-0 mr-4">Check-in phase will ends in:</p>
+									<CountdownTimer targetDate={timeCheckin} />
+								</div>
+							)
+						case "PREPARE":
+							return (
+								<div className={s.countdownWrap}>
+									<p className="mb-0 mr-4">Tournament will starts in:</p>
+									<CountdownTimer targetDate={timeDefault} />
+								</div>
+							);
+						case "RUNNING":
+							return null
+						default:
+							return null
+					}
+				})()}
+			</div>
 
       <ClaimDonationModal
         tournamentId={tournamentId as string}
@@ -421,6 +445,6 @@ export default observer(function RegistrationPhase(props: Props) {
         onOk={handleLeaveTournament}
         onCancel={handleCloseTourModal}
       />
-    </>
+    </div>
   );
 });
