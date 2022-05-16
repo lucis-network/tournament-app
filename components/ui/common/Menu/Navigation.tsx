@@ -124,7 +124,7 @@ export const Navigation = () => {
           }
         </div>
       ),
-      class: {position: 'absolute', bottom: "24%"},
+      class: {position: 'absolute', bottom: "180px"},
     },
     {
       color: "#FF008C",
@@ -142,7 +142,7 @@ export const Navigation = () => {
           }
         </div>
       ),
-      class: {position: 'absolute', bottom: "17%"},
+      class: {position: 'absolute', bottom: "120px"},
     },
     // {
     //   color: "#FF008C",
