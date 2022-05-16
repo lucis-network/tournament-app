@@ -14,7 +14,7 @@ const ShowCounter: React.FC<ShowCounterProps> = ({
 	seconds,
 }) => {
 	return (
-		<div className="flex items-center">
+		<div className="flex items-center show-counter">
 			<DateTimeDisplay value={days} type={"D"} />
 			<DateTimeDisplay value={hours} type={"H"} />
 			<DateTimeDisplay value={minutes} type={"M"} />
