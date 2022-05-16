@@ -28,7 +28,7 @@ export interface Item extends TeamType {
 }
 
 export type ErrorTourKey =
-	| Record<"prize" | "user" | "size" | "pass", string>
+	| Record<"prize" | "user" | "size", string>
 	| undefined;
 
 const UseTeamModal = (tournamentData: any) => {
@@ -44,6 +44,7 @@ const UseTeamModal = (tournamentData: any) => {
 	const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
 	const [show, setShow] = useState<boolean>(false);
 	const [password, setPassword] = useState<string>("");
+	const [errorPassword, setErrorPassword] = useState<string>("");
 	const [step, setStep] = useState<StepModalTournament>("step-1");
 	const [selectedTeam, setSelectedTeam] = useState<MyTeamType>();
 	const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
@@ -89,13 +90,7 @@ const UseTeamModal = (tournamentData: any) => {
 	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
 		const value = e.currentTarget.value;
 		setPassword(value);
-	};
-
-	const handleBlurPassword = (e: React.FormEvent<HTMLInputElement>) => {
-		setErrorTour({
-			...errorTour,
-			pass: tourPassword && !password ? "Password is required" : "",
-		} as ErrorTourKey);
+		setErrorPassword("");
 	};
 
 	const checkEmptyUserId = checkEmptyArrayValue(
@@ -119,6 +114,7 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 	const handleChooseTeamConfirm = (team: TeamType[]) => {
 		setErrorTour({} as any);
+		setErrorPassword("");
 		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team, true) });
 		setStep("step-2");
 	};
@@ -147,6 +143,7 @@ const UseTeamModal = (tournamentData: any) => {
 
 		setDraftSelectedTeam(team);
 		setErrorTour({} as any);
+		setErrorPassword("");
 	};
 
 	const handleSetFormData = (team: Item[]) => {
@@ -156,7 +153,7 @@ const UseTeamModal = (tournamentData: any) => {
 		const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
 		const checkTotalPrize = checkTotalPercent(team, "prize");
 
-		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
 			setErrorTour({
 				...errorTour,
 				size: team_size !== team.length ? "Invalid team size to join" : "",
@@ -166,7 +163,6 @@ const UseTeamModal = (tournamentData: any) => {
 					? "Total Allocation must be 100%"
 					: "",
 				user: checkEmptyUserId ? "ID in game must not be empty" : "",
-				pass: tourPassword && !password ? "Password is required" : "",
 			});
 		} else {
 			setErrorTour({} as any);
@@ -179,7 +175,7 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleJoinTournament = () => {
-		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
 			setErrorTour({
 				...errorTour,
 				size:
@@ -192,10 +188,10 @@ const UseTeamModal = (tournamentData: any) => {
 					? "Total Allocation must be 100%"
 					: "",
 				user: checkEmptyUserId ? "ID in game must not be empty" : "",
-				pass: tourPassword && !password ? "Password is required" : "",
 			});
 		} else {
 			setErrorTour({} as any);
+			setErrorPassword("");
 			const convertTeamMember = selectedTeam?.team?.map((member) => ({
 				id_in_game: member.game_member_id,
 				is_leader: member.is_leader,
@@ -218,7 +214,10 @@ const UseTeamModal = (tournamentData: any) => {
 					message.success("Success", 10);
 				},
 				onError: (err: any) => {
-					message.error(err.message, 10);
+					if (!password) setErrorPassword("Password is required");
+					else if (password && err.message === "password incorrect")
+						setErrorPassword("Password incorrect");
+					else setErrorPassword(err.message);
 				},
 			});
 		}
@@ -374,6 +373,7 @@ const UseTeamModal = (tournamentData: any) => {
 				description: description2,
 				component: selectedTeam ? (
 					<TeamPrizing
+						errorPassword={errorPassword}
 						loadingJoin={loadingJoinTournament}
 						isSolo={isSoloVersion}
 						error={errorTour}
@@ -385,7 +385,6 @@ const UseTeamModal = (tournamentData: any) => {
 						onChooseTeam={handleChooseTeam}
 						onJoinTournament={handleJoinTournament}
 						onChangePassword={handleChangePassword}
-						onBlurPassword={handleBlurPassword}
 						onBack={handleBack}
 						onSetDataForm={handleSetFormData}
 					/>
