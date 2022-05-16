@@ -19,6 +19,7 @@ interface TeamPrizingProps {
 	onChooseTeam: () => void;
 	onBack: () => void;
 	onChangePassword: (e: React.FormEvent<HTMLInputElement>) => void;
+	onBlurPassword: (e: React.FormEvent<HTMLInputElement>) => void;
 	onJoinTournament: () => void;
 	onSetDataForm: (team: Item[]) => void;
 }
@@ -46,6 +47,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	onBack,
 	onJoinTournament,
 	onChangePassword,
+	onBlurPassword,
 	onSetDataForm,
 }) => {
 	const isMatchTeamSize = draftSelectedTeam?.team?.length === teamSize;
@@ -53,7 +55,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	const [form] = Form.useForm();
 	const [editingKey, setEditingKey] = useState("");
 	const isEditing = (record: Item) => String(record.user_id) === editingKey;
-	const errMessage = error?.size || error?.prize || error?.user;
+	const errMessage = error?.size || error?.prize || error?.user || error?.pass;
 	const [editInputKey, setEditInputKey] = useState<"number" | "text">();
 	const handleEdit = (record: Partial<Item>, type: "number" | "text") => {
 		form.setFieldsValue({ prize: 0, game_member_id: "", ...record });
@@ -273,6 +275,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 								className={s.password_input}
 								onChange={onChangePassword}
 								placeholder="Enter password"
+								onBlur={onBlurPassword}
 								iconRender={(visible) =>
 									visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
 								}

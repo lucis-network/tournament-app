@@ -28,8 +28,8 @@ export interface Item extends TeamType {
 }
 
 export type ErrorTourKey =
-  | Record<"prize" | "user" | "size", string>
-  | undefined;
+	| Record<"prize" | "user" | "size" | "pass", string>
+	| undefined;
 
 const UseTeamModal = (tournamentData: any) => {
   const router = useRouter();
@@ -86,9 +86,17 @@ const UseTeamModal = (tournamentData: any) => {
     // refreshParticipant();
   };
 
-  const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
-    setPassword(e.currentTarget.value);
-  };
+	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
+		const value = e.currentTarget.value;
+		setPassword(value);
+	};
+
+	const handleBlurPassword = (e: React.FormEvent<HTMLInputElement>) => {
+		setErrorTour({
+			...errorTour,
+			pass: !password ? "Password is required" : "",
+		} as ErrorTourKey);
+	};
 
   const checkEmptyUserId = checkEmptyArrayValue(
     selectedTeam?.team || [],
@@ -148,70 +156,73 @@ const UseTeamModal = (tournamentData: any) => {
     const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
     const checkTotalPrize = checkTotalPercent(team, "prize");
 
-    if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
-      setErrorTour({
-        ...errorTour,
-        size: team_size !== team.length ? "Invalid team size to join" : "",
-        prize: checkEmptyPrize
-          ? "Prize allocation must not be empty"
-          : checkTotalPrize
-          ? "Total Allocation must be 100%"
-          : "",
-        user: checkEmptyUserId ? "ID in game must not be empty" : "",
-      });
-    } else {
-      setErrorTour({} as any);
-    }
-  };
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
+			setErrorTour({
+				...errorTour,
+				size: team_size !== team.length ? "Invalid team size to join" : "",
+				prize: checkEmptyPrize
+					? "Prize allocation must not be empty"
+					: checkTotalPrize
+					? "Total Allocation must be 100%"
+					: "",
+				user: checkEmptyUserId ? "ID in game must not be empty" : "",
+				pass: !password ? "Password is required" : "",
+			});
+		} else {
+			setErrorTour({} as any);
+		}
+	};
 
   const handleOpenAddMember = () => {
     searchMember();
     setStep("add-team");
   };
 
-  const handleJoinTournament = () => {
-    if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
-      setErrorTour({
-        ...errorTour,
-        size:
-          team_size !== selectedTeam?.team?.length
-            ? "Invalid team size to join"
-            : "",
-        prize: checkEmptyPrize
-          ? "Prize allocation must not be empty"
-          : checkTotalPrize
-          ? "Total Allocation must be 100%"
-          : "",
-        user: checkEmptyUserId ? "ID in game must not be empty" : "",
-      });
-    } else {
-      setErrorTour({} as any);
-      const convertTeamMember = selectedTeam?.team?.map((member) => ({
-        id_in_game: member.game_member_id,
-        is_leader: member.is_leader,
-        user_id: member.user_id,
-        prize_alloc: member.prize,
-      })) as JoinTournamentTeamType[];
+	const handleJoinTournament = () => {
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
+			setErrorTour({
+				...errorTour,
+				size:
+					team_size !== selectedTeam?.team?.length
+						? "Invalid team size to join"
+						: "",
+				prize: checkEmptyPrize
+					? "Prize allocation must not be empty"
+					: checkTotalPrize
+					? "Total Allocation must be 100%"
+					: "",
+				user: checkEmptyUserId ? "ID in game must not be empty" : "",
+				pass: !password ? "Password is required" : "",
+			});
+		} else {
+			setErrorTour({} as any);
+			const convertTeamMember = selectedTeam?.team?.map((member) => ({
+				id_in_game: member.game_member_id,
+				is_leader: member.is_leader,
+				user_id: member.user_id,
+				prize_alloc: member.prize,
+			})) as JoinTournamentTeamType[];
 
-      joinTournament({
-        variables: {
-          data: {
-            tournament_uid: tournamentId,
-            tournament_password: password,
-            team_uid: selectedTeam?.team_uid,
-            member: convertTeamMember,
-          } as JoinTournamentType,
-        },
-        onCompleted: () => {
-          setPassword("");
-          setStep("success");
-        },
-        onError: (err: any) => {
-          console.log(err);
-        },
-      });
-    }
-  };
+			joinTournament({
+				variables: {
+					data: {
+						tournament_uid: tournamentId,
+						tournament_password: password,
+						team_uid: selectedTeam?.team_uid,
+						member: convertTeamMember,
+					} as JoinTournamentType,
+				},
+				onCompleted: () => {
+					setPassword("");
+					setStep("success");
+					message.success("Success", 10);
+				},
+				onError: (err: any) => {
+					message.error(err.message, 10);
+				},
+			});
+		}
+	};
 
   const handleCreateNewTeam = () => {
     setStep("step-1");
@@ -302,143 +313,144 @@ const UseTeamModal = (tournamentData: any) => {
     }
   }, [selectedTeam, team_size]);
 
-  const stepConfiguration = (
-    step: StepModalTournament
-  ): StepModalComponent | ReactElement => {
-    const description1 = (
-      <p className="text-24px font-semibold text-white">
-        Select a valid team to join: <br />
-        {`${name}`}
-      </p>
-    );
-    const description2 = (
-      <p className="text-24px font-semibold text-white">
-        Configure your team Prize for this tournament: <br />
-        {`${name}`}
-      </p>
-    );
-    const stepModifier = {
-      ["step-1"]: {
-        titleModal: "Join step 1: Choosing team",
-        description: description1,
-        component: (
-          <div>
-            <div className="flex align-top justify-between w-full mb-4">
-              <p>
-                {teamList?.length > 0
-                  ? "Team you've lead:"
-                  : "You are not the leader of any team"}
-              </p>
-              <div>
-                <button
-                  className={s.button}
-                  onClick={() => handleRoutes("/profile")}
-                >
-                  Manage your team
-                </button>
-                <button className={s.button} onClick={handleOpenCreateNewTeam}>
-                  <PlusOutlined className="mr-2" />
-                  Create a new team
-                </button>
-              </div>
-            </div>
-            <div className="grid grid-cols-3 gap-4">
-              {teamList?.map((team, i) => (
-                <TeamSelect
-                  key={i}
-                  team={team}
-                  isValid={team.team?.length! >= team_size}
-                  onSelect={() => handleSelectTeam(team)}
-                />
-              ))}
-            </div>
-          </div>
-        ),
-        modalWidth: 780,
-      },
-      ["step-2"]: {
-        titleModal: isSoloVersion
-          ? "Prize Allocation"
-          : "Join step 2: Prize Allocation",
-        description: description2,
-        component: selectedTeam ? (
-          <TeamPrizing
-            loadingJoin={loadingJoinTournament}
-            isSolo={isSoloVersion}
-            error={errorTour}
-            tourPassword={tourPassword}
-            password={password}
-            teamSize={team_size}
-            selectedTeam={selectedTeam}
-            draftSelectedTeam={draftSelectedTeam}
-            onChooseTeam={handleChooseTeam}
-            onJoinTournament={handleJoinTournament}
-            onChangePassword={handleChangePassword}
-            onBack={handleBack}
-            onSetDataForm={handleSetFormData}
-          />
-        ) : (
-          <></>
-        ),
-        modalWidth: 980,
-      },
-      ["create-team"]: (
-        <CreateTeamModal
-          url={url}
-          inputKey={inputKey}
-          reset={reset}
-          error={error}
-          isEdit={false}
-          draftData={draftData}
-          showModal={true}
-          onChangeAvatar={handleFileInput}
-          onChangeTeamName={handleChangeTeamName}
-          onAddOpen={handleOpenAddMember}
-          onOpenRemove={handleRemove}
-          onSave={handleCreateNewTeam}
-          onCancel={handleCloseCreateNewTeam}
-        />
-      ),
-      ["add-team"]: (
-        <AddUserTeamModal
-          searchValue={searchMemberValue}
-          memberList={memberList}
-          showModal={true}
-          onSearch={handleSearchMember}
-          onAdd={handleAddMemberToTeam}
-          onCancel={handleCloseAdd}
-        />
-      ),
-      ["choose-player"]: {
-        titleModal: "Choose player",
-        description: (
-          <p className="text-16px font-semibold text-white">
-            The tournament team size is {team_size}. Your team exceeds of team
-            size. You need choose more {team_size - 1} members to join
-          </p>
-        ),
-        component: (
-          <ChoosePlayer
-            draftTeam={draftSelectedTeam?.team || []}
-            teamSize={team_size}
-            onConfirm={handleChooseTeamConfirm}
-          />
-        ),
-      },
-      ["success"]: {
-        titleModal: "You’ve successfully joined this tournament",
-        description: <p></p>,
-        component: (
-          <div className="flex justify-center align-middle items-center mt-8">
-            <button
-              className={`${s.button} mr-4 !w-max`}
-              onClick={() =>
-                handleRoutes(`/tournament/${tournamentId}/${name}`)
-              }
-            >
-              Back to tournament
-            </button>
-            {/* <button className={`${s.button} !w-max`} onClick={() => {}}>
+	const stepConfiguration = (
+		step: StepModalTournament
+	): StepModalComponent | ReactElement => {
+		const description1 = (
+			<p className="text-24px font-semibold text-white">
+				Select a valid team to join: <br />
+				{`${name}`}
+			</p>
+		);
+		const description2 = (
+			<p className="text-24px font-semibold text-white">
+				Configure your team Prize for this tournament: <br />
+				{`${name}`}
+			</p>
+		);
+		const stepModifier = {
+			["step-1"]: {
+				titleModal: "Join step 1: Choosing team",
+				description: description1,
+				component: (
+					<div>
+						<div className="flex align-top justify-between w-full mb-4">
+							<p>
+								{teamList?.length > 0
+									? "Team you've lead:"
+									: "You are not the leader of any team"}
+							</p>
+							<div>
+								<button
+									className={s.button}
+									onClick={() => handleRoutes("/profile")}
+								>
+									Manage your team
+								</button>
+								<button className={s.button} onClick={handleOpenCreateNewTeam}>
+									<PlusOutlined className="mr-2" />
+									Create a new team
+								</button>
+							</div>
+						</div>
+						<div className="grid grid-cols-3 gap-4">
+							{teamList?.map((team, i) => (
+								<TeamSelect
+									key={i}
+									team={team}
+									isValid={team.team?.length! >= team_size}
+									onSelect={() => handleSelectTeam(team)}
+								/>
+							))}
+						</div>
+					</div>
+				),
+				modalWidth: 780,
+			},
+			["step-2"]: {
+				titleModal: isSoloVersion
+					? "Prize Allocation"
+					: "Join step 2: Prize Allocation",
+				description: description2,
+				component: selectedTeam ? (
+					<TeamPrizing
+						loadingJoin={loadingJoinTournament}
+						isSolo={isSoloVersion}
+						error={errorTour}
+						tourPassword={tourPassword}
+						password={password}
+						teamSize={team_size}
+						selectedTeam={selectedTeam}
+						draftSelectedTeam={draftSelectedTeam}
+						onChooseTeam={handleChooseTeam}
+						onJoinTournament={handleJoinTournament}
+						onChangePassword={handleChangePassword}
+						onBlurPassword={handleBlurPassword}
+						onBack={handleBack}
+						onSetDataForm={handleSetFormData}
+					/>
+				) : (
+					<></>
+				),
+				modalWidth: 980,
+			},
+			["create-team"]: (
+				<CreateTeamModal
+					url={url}
+					inputKey={inputKey}
+					reset={reset}
+					error={error}
+					isEdit={false}
+					draftData={draftData}
+					showModal={true}
+					onChangeAvatar={handleFileInput}
+					onChangeTeamName={handleChangeTeamName}
+					onAddOpen={handleOpenAddMember}
+					onOpenRemove={handleRemove}
+					onSave={handleCreateNewTeam}
+					onCancel={handleCloseCreateNewTeam}
+				/>
+			),
+			["add-team"]: (
+				<AddUserTeamModal
+					searchValue={searchMemberValue}
+					memberList={memberList}
+					showModal={true}
+					onSearch={handleSearchMember}
+					onAdd={handleAddMemberToTeam}
+					onCancel={handleCloseAdd}
+				/>
+			),
+			["choose-player"]: {
+				titleModal: "Choose player",
+				description: (
+					<p className="text-16px font-semibold text-white">
+						The tournament team size is {team_size}. Your team exceeds of team
+						size. You need choose more {team_size - 1} members to join
+					</p>
+				),
+				component: (
+					<ChoosePlayer
+						draftTeam={draftSelectedTeam?.team || []}
+						teamSize={team_size}
+						onConfirm={handleChooseTeamConfirm}
+					/>
+				),
+			},
+			["success"]: {
+				titleModal: "You’ve successfully joined this tournament",
+				description: <p></p>,
+				component: (
+					<div className="flex justify-center align-middle items-center mt-8">
+						<button
+							className={`${s.button} mr-4 !w-max`}
+							onClick={() =>
+								handleRoutes(`/tournament/${tournamentId}/${name}`)
+							}
+						>
+							Back to tournament
+						</button>
+						{/* <button className={`${s.button} !w-max`} onClick={() => {}}>
 							<ShareAltOutlined className="mr-2" />
 							Share
 						</button> */}
