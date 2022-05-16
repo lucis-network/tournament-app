@@ -19,6 +19,7 @@ import TeamPrizing from "../popup/chooseTeamModal/TeamPrizing";
 import ChoosePlayer from "../popup/chooseTeamModal/ChoosePlayer";
 import { checkEmptyArrayValue, checkTotalPercent, dataTeam } from "./helper";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
+import { message } from "antd";
 
 export interface Item extends TeamType {
 	prize?: number;
@@ -26,7 +27,7 @@ export interface Item extends TeamType {
 }
 
 export type ErrorTourKey =
-	| Record<"prize" | "user" | "size", string>
+	| Record<"prize" | "user" | "size" | "pass", string>
 	| undefined;
 
 const UseTeamModal = (tournamentData: any) => {
@@ -85,7 +86,15 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
-		setPassword(e.currentTarget.value);
+		const value = e.currentTarget.value;
+		setPassword(value);
+	};
+
+	const handleBlurPassword = (e: React.FormEvent<HTMLInputElement>) => {
+		setErrorTour({
+			...errorTour,
+			pass: !password ? "Password is required" : "",
+		} as ErrorTourKey);
 	};
 
 	const checkEmptyUserId = checkEmptyArrayValue(
@@ -146,7 +155,7 @@ const UseTeamModal = (tournamentData: any) => {
 		const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
 		const checkTotalPrize = checkTotalPercent(team, "prize");
 
-		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
 			setErrorTour({
 				...errorTour,
 				size: team_size !== team.length ? "Invalid team size to join" : "",
@@ -156,6 +165,7 @@ const UseTeamModal = (tournamentData: any) => {
 					? "Total Allocation must be 100%"
 					: "",
 				user: checkEmptyUserId ? "ID in game must not be empty" : "",
+				pass: !password ? "Password is required" : "",
 			});
 		} else {
 			setErrorTour({} as any);
@@ -168,7 +178,7 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleJoinTournament = () => {
-		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
+		if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || !password) {
 			setErrorTour({
 				...errorTour,
 				size:
@@ -181,6 +191,7 @@ const UseTeamModal = (tournamentData: any) => {
 					? "Total Allocation must be 100%"
 					: "",
 				user: checkEmptyUserId ? "ID in game must not be empty" : "",
+				pass: !password ? "Password is required" : "",
 			});
 		} else {
 			setErrorTour({} as any);
@@ -203,9 +214,10 @@ const UseTeamModal = (tournamentData: any) => {
 				onCompleted: () => {
 					setPassword("");
 					setStep("success");
+					message.success("Success", 10);
 				},
 				onError: (err: any) => {
-					console.log(err);
+					message.error(err.message, 10);
 				},
 			});
 		}
@@ -367,6 +379,7 @@ const UseTeamModal = (tournamentData: any) => {
 						onChooseTeam={handleChooseTeam}
 						onJoinTournament={handleJoinTournament}
 						onChangePassword={handleChangePassword}
+						onBlurPassword={handleBlurPassword}
 						onBack={handleBack}
 						onSetDataForm={handleSetFormData}
 					/>
