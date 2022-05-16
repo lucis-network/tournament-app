@@ -32,11 +32,11 @@ export default function TournamentDetailSponsorTier(props: TournamentDetailSpons
 
   return (
     <div key={tier.uid} className={s.tierRow}>
-      <Row align="middle">
-        <Col xs={{ span: 24 }} lg={{ span: 3 }}>
-          <div className={s.tierTitle}>{tierName}</div>
-        </Col>
-        <Col xs={{ span: 24 }} lg={{ span: 21 }}>
+      <Row align="middle" justify="center">
+        {/*<Col xs={{ span: 24 }} lg={{ span: 3 }}>*/}
+        {/*  <div className={s.tierTitle}>{tierName}</div>*/}
+        {/*</Col>*/}
+        <Col span={24}>
           <div className={s.slotWrap}>
             {
               newSlots.length > 0 && 

@@ -1,4 +1,4 @@
-import { Button, Col, Row } from "antd";
+import {Button, Col, Image, Row} from "antd";
 import { Maybe } from "graphql/jsutils/Maybe";
 import { useSponsors } from "hooks/tournament/useTournamentDetail";
 import { useState } from "react";
@@ -50,10 +50,10 @@ export default function TournamentDetailSponsor(props: Props) {
   }
 
   return (
-    <>
+    <div className="lucis-container-2">
       <div className={s.sponsorContainer}>
         <Row>
-          <Col md={{ span: 18 }}>
+          <Col xs={{ span: 24, order: 2 }} md={{ span: 16, order: 1 }} lg={{ span: 18 }}>
             {dataSponsors?.getSponsorSlot.length > 0 &&
               dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
                 const { uid: tierUid } = tier;
@@ -62,9 +62,10 @@ export default function TournamentDetailSponsor(props: Props) {
                 );
               })}
           </Col>
-          <Col md={{ span: 6 }}>
+          <Col xs={{ span: 24, order: 1 }} md={{ span: 8, order: 2 }} lg={{ span: 6 }} className="text-left">
             {tournament_status !== "CLOSED" ? (
-              <Button onClick={() => setIsBecome(true)}>
+              <Button onClick={() => setIsBecome(true)} className="btn-cyan">
+                <Image src="/assets/TournamentDetail/iconBecomeSponsor.svg" preview={false} alt="" />
                 Become our sponsor
               </Button>
             ) : (
@@ -82,6 +83,6 @@ export default function TournamentDetailSponsor(props: Props) {
           tournamentId={tournamentId}
         />
       )}
-    </>
+    </div>
   );
 }

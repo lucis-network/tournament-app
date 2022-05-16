@@ -32,7 +32,6 @@ html {
   background-color: #000031;
   --line-color: rgba(146, 146, 146, 0.5);
   --line-color-light: rgba(199, 199, 199, 0.5);
-  color: #ffffff;
 }
 
 body {
@@ -40,6 +39,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   height: auto !important;
+  color: #ffffff;
 }
 
 /* body .slick-dots {
@@ -876,6 +876,7 @@ body .ant-carousel .slick-dots-bottom{
   position: relative;
   font-size: 20px;
   font-weight: 700;
+  text-align: center;
 }
 
 .btn-blur:hover {
@@ -896,4 +897,25 @@ body .ant-carousel .slick-dots-bottom{
   -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
+}
+
+.btn-cyan {
+  background: linear-gradient(226.29deg, #3BE2CD -0.17%, #33AFD4 93.89%) !important;
+  border-radius: 10px !important;
+  height: auto !important;
+  padding: 10px 17px !important;
+  line-height: 1 !important;
+  border: none !important;
+  width: auto;
+}
+
+.btn-cyan .ant-image {
+  margin-right: 10px;
+  width: 20px;
+}
+
+@media screen and (min-width: 1200px) {
+  .btn-cyan {
+    font-size: 16px;
+  }
 }

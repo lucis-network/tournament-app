@@ -13,7 +13,7 @@ type Props = {
   tournamentId: string;
   currency?: any;
   tournament_status: string;
-  refetch: any;
+  refetch?: any;
 };
 export default function Referees(props: Props) {
   const {
