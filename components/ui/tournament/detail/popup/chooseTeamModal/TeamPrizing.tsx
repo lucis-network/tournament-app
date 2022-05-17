@@ -304,7 +304,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 					onClick={onJoinTournament}
 				>
 					{loadingJoin ? (
-						<SpinLoading className="pt-0" size={20} />
+						<SpinLoading className="pt-0 py-1 h-[28px]" size={24} />
 					) : (
 						"Complete and Join tournament"
 					)}
