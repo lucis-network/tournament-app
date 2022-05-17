@@ -155,7 +155,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <section className={s.tournamentInfo}>
           <div className={`lucis-container-2`}>
             <div className={s.group_button}>
-              {userLocal?.id === user.id &&
+              {userLocal?.id === user?.id &&
                 tournament_status === "FINISH" &&
                 !isCheckConfirmResult && (
                   <a
@@ -192,7 +192,16 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 )}
 
                 {tournament_status !== "CLOSED" && (
-                  <button key={"Donate"} onClick={() => openModal("Donate")}>
+                  <button
+                    key={"Donate"}
+                    onClick={() => {
+                      if (!AuthStore.isLoggedIn) {
+                        message.info("Please sign in first");
+                        return;
+                      }
+                      openModal("Donate");
+                    }}
+                  >
                     <Image
                       src="/assets/TournamentDetail/signInCircle.svg"
                       preview={false}
@@ -396,7 +405,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         </div>
         {/* ===== tabs ===== */}
         <div className={`lucis-container-2 ${s.container_Tabs}`}>
-          <Tabs defaultActiveKey="1">
+          <Tabs defaultActiveKey="1" className={s.block_tabs}>
             <TabPane tab="Overview" key="1">
               <Overview desc={desc as string} />
             </TabPane>

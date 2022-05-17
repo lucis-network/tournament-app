@@ -1,4 +1,5 @@
-import {Button, Col, Image, Row} from "antd";
+import { Button, Col, Image, message, Row } from "antd";
+import AuthStore from "components/Auth/AuthStore";
 import { Maybe } from "graphql/jsutils/Maybe";
 import { useSponsors } from "hooks/tournament/useTournamentDetail";
 import { useState } from "react";
@@ -53,7 +54,11 @@ export default function TournamentDetailSponsor(props: Props) {
     <>
       <div className={s.sponsorContainer}>
         <Row>
-          <Col xs={{ span: 24, order: 2 }} md={{ span: 16, order: 1 }} lg={{ span: 18 }}>
+          <Col
+            xs={{ span: 24, order: 2 }}
+            md={{ span: 16, order: 1 }}
+            lg={{ span: 18 }}
+          >
             {dataSponsors?.getSponsorSlot.length > 0 &&
               dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
                 const { uid: tierUid } = tier;
@@ -62,10 +67,28 @@ export default function TournamentDetailSponsor(props: Props) {
                 );
               })}
           </Col>
-          <Col xs={{ span: 24, order: 1 }} md={{ span: 8, order: 2 }} lg={{ span: 6 }} className="text-left">
+          <Col
+            xs={{ span: 24, order: 1 }}
+            md={{ span: 8, order: 2 }}
+            lg={{ span: 6 }}
+            className="text-left"
+          >
             {tournament_status !== "CLOSED" ? (
-              <Button onClick={() => setIsBecome(true)} className="btn-cyan">
-                <Image src="/assets/TournamentDetail/iconBecomeSponsor.svg" preview={false} alt="" />
+              <Button
+                onClick={() => {
+                  if (!AuthStore.isLoggedIn) {
+                    message.info("Please sign in first");
+                    return;
+                  }
+                  setIsBecome(true);
+                }}
+                className="btn-cyan"
+              >
+                <Image
+                  src="/assets/TournamentDetail/iconBecomeSponsor.svg"
+                  preview={false}
+                  alt=""
+                />
                 Become our sponsor
               </Button>
             ) : (

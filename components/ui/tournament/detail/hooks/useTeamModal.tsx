@@ -19,6 +19,8 @@ import TeamPrizing from "../popup/chooseTeamModal/TeamPrizing";
 import ChoosePlayer from "../popup/chooseTeamModal/ChoosePlayer";
 import { checkEmptyArrayValue, checkTotalPercent, dataTeam } from "./helper";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
+import AuthStore from "components/Auth/AuthStore";
+import { message } from "antd";
 
 export interface Item extends TeamType {
 	prize?: number;
@@ -42,6 +44,7 @@ const UseTeamModal = (tournamentData: any) => {
 	const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
 	const [show, setShow] = useState<boolean>(false);
 	const [password, setPassword] = useState<string>("");
+	const [errorPassword, setErrorPassword] = useState<string>("");
 	const [step, setStep] = useState<StepModalTournament>("step-1");
 	const [selectedTeam, setSelectedTeam] = useState<MyTeamType>();
 	const [draftSelectedTeam, setDraftSelectedTeam] = useState<MyTeamType>();
@@ -85,7 +88,9 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {
-		setPassword(e.currentTarget.value);
+		const value = e.currentTarget.value;
+		setPassword(value);
+		setErrorPassword("");
 	};
 
 	const checkEmptyUserId = checkEmptyArrayValue(
@@ -109,6 +114,7 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 	const handleChooseTeamConfirm = (team: TeamType[]) => {
 		setErrorTour({} as any);
+		setErrorPassword("");
 		setSelectedTeam({ ...selectedTeam!, team: dataTeam(team, true) });
 		setStep("step-2");
 	};
@@ -137,6 +143,7 @@ const UseTeamModal = (tournamentData: any) => {
 
 		setDraftSelectedTeam(team);
 		setErrorTour({} as any);
+		setErrorPassword("");
 	};
 
 	const handleSetFormData = (team: Item[]) => {
@@ -184,6 +191,7 @@ const UseTeamModal = (tournamentData: any) => {
 			});
 		} else {
 			setErrorTour({} as any);
+			setErrorPassword("");
 			const convertTeamMember = selectedTeam?.team?.map((member) => ({
 				id_in_game: member.game_member_id,
 				is_leader: member.is_leader,
@@ -203,16 +211,32 @@ const UseTeamModal = (tournamentData: any) => {
 				onCompleted: () => {
 					setPassword("");
 					setStep("success");
+					message.success("Success", 10);
 				},
 				onError: (err: any) => {
-					console.log(err);
+					if (tourPassword && !password)
+						setErrorPassword("Password is required");
+					else if (
+						tourPassword &&
+						password &&
+						err.message === "password incorrect"
+					)
+						setErrorPassword("Password incorrect");
+					else setErrorPassword(err.message);
 				},
 			});
 		}
 	};
 
 	const handleCreateNewTeam = () => {
-		setStep("step-1");
+		if (
+			draftData?.team_avatar &&
+			draftData?.team_name &&
+			draftData?.team &&
+			draftData?.team?.length > 1
+		) {
+			setStep("step-1");
+		}
 		handleSaveTeam();
 	};
 
@@ -262,6 +286,11 @@ const UseTeamModal = (tournamentData: any) => {
 	const handleCheckin = useCallback(() => {}, []);
 
 	const handleOpenModal = useCallback(() => {
+		if (!AuthStore.isLoggedIn) {
+			message.info("Please sign in first");
+			return;
+		}
+
 		setShow(true);
 		searchTeam();
 		if (isSoloVersion) {
@@ -356,6 +385,7 @@ const UseTeamModal = (tournamentData: any) => {
 				description: description2,
 				component: selectedTeam ? (
 					<TeamPrizing
+						errorPassword={errorPassword}
 						loadingJoin={loadingJoinTournament}
 						isSolo={isSoloVersion}
 						error={errorTour}

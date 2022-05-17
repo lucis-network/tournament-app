@@ -3,7 +3,7 @@ import {
 	GET_MY_TEAM,
 	SEARCH_MEMBER,
 } from "../../../common/tabsItem/myTeamDetail/myTeamService";
-import { useMutation, useLazyQuery, useQuery } from "@apollo/client";
+import { useMutation, useLazyQuery } from "@apollo/client";
 import { useCallback, useState } from "react";
 
 export interface TeamType extends Record<any, any> {

@@ -17,6 +17,7 @@ import { ApolloQueryResult } from "@apollo/client";
 import useTournament from "../hooks/useTournament";
 import CountdownTimer from "components/ui/common/CountDown";
 import { CalendarOutlined } from "@ant-design/icons";
+import AuthStore from "components/Auth/AuthStore";
 
 type Props = {
   isJoin: boolean;
@@ -167,6 +168,11 @@ export default observer(function RegistrationPhase(props: Props) {
   };
 
   const openModal = () => {
+	if (!AuthStore.isLoggedIn) {
+		message.info("Please sign in first");
+		return;
+	}
+	  
     setIsPopupDonate(true);
   };
 

@@ -9,6 +9,7 @@ import SpinLoading from "components/ui/common/Spin";
 
 interface TeamPrizingProps {
 	isSolo: boolean;
+	errorPassword: string;
 	loadingJoin: boolean;
 	error: ErrorTourKey;
 	tourPassword?: string;
@@ -38,6 +39,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	isSolo,
 	error,
 	tourPassword,
+	errorPassword,
 	password,
 	teamSize,
 	selectedTeam,
@@ -277,6 +279,11 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 									visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
 								}
 							/>
+							{errorPassword && (
+								<p className="text-error text-16px mt-1 flex-1">
+									{errorPassword}
+								</p>
+							)}
 						</div>
 					</div>
 				)}
@@ -293,7 +300,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				)}
 				<button
 					className={`${s.button} !w-max min-w-[285px]`}
-					disabled={!!errMessage}
+					disabled={!!errMessage || !!errorPassword}
 					onClick={onJoinTournament}
 				>
 					{loadingJoin ? (

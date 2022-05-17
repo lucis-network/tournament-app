@@ -7,6 +7,7 @@ import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
 import { Team } from "src/generated/graphql";
 import SearchComplete from "components/ui/common/searchs";
 import PopupDonate from "../../popup/popupDonate";
+import AuthStore from "components/Auth/AuthStore";
 
 type Props = {
   dataParticipants: Team[];
@@ -84,7 +85,16 @@ export default function TableParticipant(props: Props) {
       render: (_: any, item: object) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
           {tournament_status !== "CLOSED" ? (
-            <Button onClick={() => handleClick(item)} type="primary">
+            <Button
+              onClick={() => {
+                if (!AuthStore.isLoggedIn) {
+                  message.info("Please sign in first");
+                  return;
+                }
+                handleClick(item);
+              }}
+              type="primary"
+            >
               Donate
             </Button>
           ) : (

@@ -6,6 +6,7 @@ import { Referee } from "src/generated/graphql";
 import { useState } from "react";
 
 import s from "./Referees.module.sass";
+import AuthStore from "components/Auth/AuthStore";
 
 type Props = {
   dataRefereesDetail: Referee[];
@@ -82,7 +83,16 @@ export default function Referees(props: Props) {
       render: (_: any, item: any) => (
         <div>
           {tournament_status !== "CLOSED" ? (
-            <Button onClick={() => handleClickShowPopUp(item)} type="primary">
+            <Button
+              onClick={() => {
+                if (!AuthStore.isLoggedIn) {
+                  message.info("Please sign in first");
+                  return;
+                }
+                handleClickShowPopUp(item);
+              }}
+              type="primary"
+            >
               Donate
             </Button>
           ) : (

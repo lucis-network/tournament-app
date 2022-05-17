@@ -26,6 +26,7 @@ import EthersService from "../../../../../services/blockchain/Ethers";
 import { BUSD } from "utils/Enum";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
+import AuthStore from "components/Auth/AuthStore";
 
 type TournamentDetailBecomeSponsorProps = {
   isBecome: boolean;
@@ -81,7 +82,6 @@ export default function TournamentDetailBecomeSponsor(
       tx_hash: "",
     };
 
-    console.log("abc");
     const txHash = await transferSponsors(data.amount);
     if (txHash) {
       sponsor.tx_hash = txHash;
