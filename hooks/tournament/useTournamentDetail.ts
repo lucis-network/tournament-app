@@ -244,6 +244,7 @@ const GET_TOURNAMENT_DETAIL = gql`
 				logo
 			}
 			user {
+				id
 				profile {
 					display_name
 					user_name
