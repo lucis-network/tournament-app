@@ -374,12 +374,13 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     </h3>
                     <div className={s.generousSponsorsList}>
                       {dataRankSponsors &&
-                        dataRankSponsors.map((item: any) => {
+                        dataRankSponsors.map((item: any, index: number) => {
                           return (
                             <div
                               className={`${s.generousSponsor} ${
                                 item?.name === "Diamond" ? s.vip : ""
                               }`}
+                              key={index}
                             >
                               <div className={s.generousSponsorAvatar}>
                                 {item?.data?.logo ? (
