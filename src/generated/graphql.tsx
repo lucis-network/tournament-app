@@ -299,6 +299,8 @@ export enum BracketMatchStatus {
 export type BracketMatchUpdateInputGql = {
   /** Finish match */
   finish_match?: InputMaybe<Scalars['Boolean']>;
+  /** Link stream */
+  link_stream?: InputMaybe<Scalars['String']>;
   /** Score of team 1 */
   score_1: Scalars['Int'];
   /** Score of team 2 */
@@ -1150,8 +1152,8 @@ export type GMember = {
 export type GTopEarning = {
   __typename?: 'GTopEarning';
   avatar?: Maybe<Scalars['String']>;
+  display_name?: Maybe<Scalars['String']>;
   total_earning?: Maybe<Scalars['Float']>;
-  user_name?: Maybe<Scalars['String']>;
 };
 
 export type GTournament = {
@@ -3980,7 +3982,7 @@ export type UserProfileCreateWithoutUserInput = {
 };
 
 export type UserProfileInput = {
-  user_id?: InputMaybe<Scalars['String']>;
+  user_id?: InputMaybe<Scalars['Int']>;
   user_name?: InputMaybe<Scalars['String']>;
 };
 

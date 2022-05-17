@@ -89,12 +89,17 @@
           max-height: 180px
           min-height: 180px
         @media (min-width: 992px)
-          max-height: 180px
-          min-height: 180px
+          max-height: 150px
+          min-height: 150px
         @media (min-width: 1280px)
+          max-height: 200px
+          min-height: 200px
+        @media (min-width: 1440px)
+          max-height: 220px
+          min-height: 220px
+        @media (min-width: 1600px)
           max-height: 260px
           min-height: 260px
-
         .info
           position: absolute
           top: 0
@@ -141,21 +146,37 @@
         @media (min-width: 0px)
           padding: 20px
         @media (min-width: 640px)
-          padding: 20px 12px
+          padding: 16px 12px
         @media (min-width: 992px)
           padding: 0px 8px 12px 8px
         @media (min-width: 1440px)
           padding: 20px
         .im_logo_game
-          max-width: 60px
           overflow: hidden
           padding: 4px 0px
-          @media (min-width: 640px) and (max-width: 768px)
-            max-width: 40px
-          @media (min-width: 992px)
-            max-width: 40px
-          @media (min-width: 1280px)
-            max-width: 60px
+          display: flex
+          justify-content: space-between
+          align-items: center
+          img
+            height: 60px
+            @media (min-width: 640px) and (max-width: 768px)
+              height: 40px
+            @media (min-width: 992px)
+              height: 40px
+              margin-top: 10px
+            @media (min-width: 1280px)
+              height: 60px
+              margin-top: 0px
+          .time
+            text-transform: uppercase
+            @media ( min-width: 992px )
+              font-weight: 600
+              font-size: 10px
+              line-height: 115%
+            @media ( min-width: 1280px )
+              font-size: 14px
+            @media ( min-width: 1440px )
+              font-size: 16px
         h2
           height: 53px
           padding-top: 8px
@@ -170,7 +191,7 @@
               padding-top: 8px
               font-size: 18px
             @media (min-width: 992px)
-              font-size: 15px
+              font-size: 16px
               line-height: 20px
             @media (min-width: 1440px)
               font-size: 20px
@@ -205,7 +226,8 @@
               display: flex
               align-items: center
               .avt
-                max-width: 25px
+                width: 25px
+                height: 25px
                 overflow: hidden
                 border-radius: 100%
                 @media (min-width: 0px)
@@ -213,7 +235,7 @@
                 @media (min-width: 992px)
                   margin: 0px 4px 0px 0px
                 @media (min-width: 1440px)
-                  margin: 0px 4px 0px 0px
+                  margin: 0px 4px 0px 4px
                 @media (min-width: 1920px)
                   margin: 0px 4px 0px 8px
               a
@@ -272,8 +294,8 @@
             @media (min-width: 640px)
               font-size: 20px
             @media (min-width: 992px)
-              font-size: 10px
-            @media (min-width: 1440px)
+              font-size: 12px
+            @media (min-width: 1280px)
               font-size: 14px
             @media (min-width: 1600px)
               font-size: 20px
@@ -289,6 +311,33 @@
             font-size: 14px
           @media (min-width: 1600px)
             font-size: 16px
+        .btn_join_now
+          border-radius: 8px
+          font-weight: 600
+          moz-transition: all .3s ease-in-out
+          -o-transition: all .3s ease-in-out
+          -webkit-transition: all .3s ease-in-out
+          transition: all .3s ease-in-out
+          background-size: 140% 50%
+          @media (min-width: 992px)
+            padding: 0px 12px
+            font-size: 12px
+          @media (min-width: 1280px)
+            padding: 0px 16px
+            font-size: 14px
+          @media (min-width: 1600px)
+            padding: 4px 16px
+            font-size: 16px
+            height: auto
+          @media (min-width: 1920px)
+            padding: 4px 16px
+            font-size: 20px
+        .btn_join_now:hover
+          background-position: 50% 0% 
+          moz-transition: all .3s ease-in-out
+          -o-transition: all .3s ease-in-out
+          -webkit-transition: all .3s ease-in-out
+          transition: all .3s ease-in-out
   .pagination
     display: flex
     justify-content: center
@@ -328,11 +377,6 @@
   background: linear-gradient(226.29deg, rgba(59, 226, 205, 0.7) -0.17%, rgba(51, 175, 212, 0.7) 93.89%)
   border-radius: 100%
   filter: blur(40px)
-.time
-  text-transform: uppercase
-
-
-
 
 .container_card::before
   content: ''
@@ -343,7 +387,7 @@
   bottom: 0
   border-radius: 16px
   padding: 1px
-  background: linear-gradient(85deg, rgba(214, 84, 254, 0.4) 0%, rgba(0, 0, 0, .2) 100%)
+  background: linear-gradient(85deg, rgb(205 168 217 / 33%) 0%, rgba(0, 0, 0, 0.2) 100%)
   -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
   -webkit-mask-composite: xor
   mask-composite: exclude
