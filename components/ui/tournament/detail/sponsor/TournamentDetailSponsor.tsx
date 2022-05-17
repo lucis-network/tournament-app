@@ -7,6 +7,7 @@ import { SponsorSlot, SponsorTransaction } from "src/generated/graphql";
 import s from "../../../../../styles/tournament/sponsor/index.module.sass";
 import TournamentDetailBecomeSponsor from "./TournamentDetailBecomeSponsor";
 import TournamentDetailSponsorTier from "./TournamentDetailSponsorTier";
+import {isEmpty} from "lodash";
 
 export type TiersSelectType = {
   uid: string;
@@ -53,11 +54,32 @@ export default function TournamentDetailSponsor(props: Props) {
   return (
     <>
       <div className={s.sponsorContainer}>
+        {tournament_status !== "CLOSED" ? (
+          <div className={s.becomeWrap}>
+            <Button
+              onClick={() => {
+                if (!AuthStore.isLoggedIn) {
+                  message.info("Please sign in first");
+                  return;
+                }
+                setIsBecome(true);
+              }}
+              className="btn-cyan"
+            >
+              <Image
+                src="/assets/TournamentDetail/iconBecomeSponsor.svg"
+                preview={false}
+                alt=""
+              />
+              Become our sponsor
+            </Button>
+          </div>
+        ) : (
+          ""
+        )}
         <Row>
           <Col
-            xs={{ span: 24, order: 2 }}
-            md={{ span: 16, order: 1 }}
-            lg={{ span: 18 }}
+            span={24}
           >
             {dataSponsors?.getSponsorSlot.length > 0 &&
               dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
@@ -66,34 +88,6 @@ export default function TournamentDetailSponsor(props: Props) {
                   <TournamentDetailSponsorTier key={tierUid} tier={tier} />
                 );
               })}
-          </Col>
-          <Col
-            xs={{ span: 24, order: 1 }}
-            md={{ span: 8, order: 2 }}
-            lg={{ span: 6 }}
-            className="text-left"
-          >
-            {tournament_status !== "CLOSED" ? (
-              <Button
-                onClick={() => {
-                  if (!AuthStore.isLoggedIn) {
-                    message.info("Please sign in first");
-                    return;
-                  }
-                  setIsBecome(true);
-                }}
-                className="btn-cyan"
-              >
-                <Image
-                  src="/assets/TournamentDetail/iconBecomeSponsor.svg"
-                  preview={false}
-                  alt=""
-                />
-                Become our sponsor
-              </Button>
-            ) : (
-              ""
-            )}
           </Col>
         </Row>
       </div>

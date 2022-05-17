@@ -7,6 +7,15 @@
     @media screen and (min-width: 1200px)
       width: 900px
       margin: auto
+  .becomeWrap
+    text-align: center
+    @media screen and (min-width: 768px)
+      text-align: right
+      margin-bottom: 50px
+    button
+      width: 100%
+      @media screen and (min-width: 576px)
+        width: auto
   .tierRow
     width: 100%
     &:last-of-type
@@ -18,25 +27,27 @@
           padding-top: 0
         .sponsorSlot
           width: 150px
-          max-width: 50%
+          position: relative
+          margin-bottom: 40px
+          @media screen and (min-width: 992px)
+            width: 200px
+          @media screen and (min-width: 1200px)
+            width: 230px
+          &:after
+            content: ""
+            display: block
+            width: 180px
+            height: 180px
+            position: absolute
+            background: url("/assets/TournamentDetail/polygon.png") no-repeat center
+            background-size: 135%
+            top: -35px
+            left: 50%
+            transform: translateX(-50%)
+            z-index: -1
           .sponsorLogoWrap
-            position: relative
             margin-bottom: 40px
-            &:after
-              content: ""
-              display: block
-              width: 140px
-              height: 140px
-              position: absolute
-              background: url("/assets/TournamentDetail/polygon.png") no-repeat center
-              background-size: 135%
-              top: -28px
-              left: 50%
-              transform: translateX(-50%)
-              z-index: -1
-            img
-              width: 110px
-              height: 110px
+            width: 110px
           .sponsorName
             font-size: 16px
             position: relative
@@ -45,14 +56,24 @@
       .slotWrap
         .sponsorSlot
           width: 120px
-          max-width: calc(100% / 3)
+          @media screen and (min-width: 992px)
+            width: 160px
+          @media screen and (min-width: 1200px)
+            width: 180px
+          .sponsorLogoWrap
+            width: 95px
           .sponsorName
             font-size: 14px
     &:nth-of-type(3)
       .slotWrap
         .sponsorSlot
           width: 90px
-          max-width: calc(100% / 4)
+          @media screen and (min-width: 992px)
+            width: 130px
+          @media screen and (min-width: 1200px)
+            width: 160px
+          .sponsorLogoWrap
+            width: 72px
           .sponsorName
             font-size: 12px
     :global(.ant-input-group-addon)
@@ -90,7 +111,6 @@
       display: flex
       flex-wrap: wrap
       justify-content: center
-      padding-top: 20px
       margin: 0 -5px
       @media screen and (min-width: 992px)
         margin: 0 -10px
@@ -98,15 +118,26 @@
         padding: 0 5px
         margin-bottom: 20px
         width: 70px
-        max-width: calc(100% / 5)
-        @media screen and (min-width: 768px)
+        display: flex
+        flex-direction: column
+        align-items: center
+        @media screen and (min-width: 992px)
+          width: 100px
+        @media screen and (min-width: 1200px)
+          width: 130px
         .sponsorLogoWrap
           position: relative
           margin-bottom: 10px
           text-align: center
+          border-radius: 50%
+          overflow: hidden
+          background: #ffffff
+          aspect-ratio: 1 / 1
+          width: 50px
           img
             aspect-ratio: 1 / 1
             object-fit: cover
+            width: 100%
         .sponsorEdit
           display: block
           width: 40px
@@ -122,6 +153,7 @@
           height: auto
         .sponsorLogo
           width: 100%
+          margin-bottom: 0
         .sponsorName
           text-align: center
           font-size: 10px

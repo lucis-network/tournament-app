@@ -32,24 +32,21 @@
     display: flex
     flex-direction: column
     align-items: center
-    @media screen and (min-width: 576px)
+    @media screen and (min-width: 768px)
       flex-direction: row
       justify-content: center
-      align-items: flex-end
+      align-items: flex-start
     @media screen and (min-width: 1200px)
-      width: 700px
-      margin: auto
       justify-content: space-between
-    @media screen and (min-width: 1600px)
-      width: 900px
     .item
       text-align: center
       margin-bottom: 10px
+      width: 100%
       @media screen and (min-width: 576px)
-        min-width: calc(100% / 3)
-        max-width: calc(100% / 3)
         padding: 0 10px
       @media screen and (min-width: 768px)
+        min-width: calc(100% / 3)
+        max-width: calc(100% / 3)
         padding: 0 15px
       &:first-of-type
         .itemImg
@@ -73,6 +70,11 @@
               right: -10px
       .itemImg
         margin-bottom: 30px
+        @media screen and (min-width: 576px)
+          height: 180px
+          display: flex
+          align-items: center
+          justify-content: center
         :global(.ant-image)
           position: relative
           img
@@ -102,28 +104,9 @@
       p
         font-size: 20px
   .additionalInfo
-    display: flex
-    flex-direction: column
-    @media screen and (min-width: 768px)
-      flex-direction: row
-      justify-content: center
-    @media screen and (min-width: 1200px)
-      width: 700px
-      margin: auto
-      justify-content: space-between
-    @media screen and (min-width: 1600px)
-      width: 900px
-    > div
-      margin-bottom: 20px
+    &.additionalPrize
       @media screen and (min-width: 768px)
-        min-width: calc(100% / 3)
-        max-width: calc(100% / 3)
-        padding: 0 10px
-        text-align: center
-        &:last-child
-          text-align: right
-      @media screen and (min-width: 768px)
-        padding: 0 15px
+        text-align: left
     h4
       font-weight: 700
       font-size: 20px
@@ -134,20 +117,19 @@
         margin-right: 10px
     button
       width: 100%
-      @media screen and (min-width: 768px)
+      @media screen and (min-width: 576px)
         width: auto
+      @media screen and (min-width: 768px)
         font-size: 18px
   .countdownWrap
+    margin-top: 20px
+    *
+      color: #0BEBD6
     @media screen and (min-width: 768px)
-      width: 900px
-      margin: 0 auto
-      text-align: right
-    p, :global(.show-counter)
+      text-align: left
+    :global(.show-counter)
       display: inline-flex
       font-weight: 700
-      color: #0BEBD6
-      *
-        color: #0BEBD6
     p
       font-size: 14px
     :global(.show-counter)
