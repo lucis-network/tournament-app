@@ -51,7 +51,7 @@ export default function CardPlayer(props: Props) {
                   <img src="/assets/home/ic_unlike.svg" alt="" />
                 </div>
               </div>
-              <p>{e.display_name}</p>
+              <p>{e.display_name || "_ _"}</p>
               <div className={s.btn}>
                 <Button
                   className={s.content_btn}
