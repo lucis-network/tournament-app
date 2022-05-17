@@ -284,12 +284,12 @@ const PopupDonate = (props: Props) => {
                         <img
                           className={s.avt}
                           src={`${
-                            e.avatar || "/assets/MyProfile/defaultAvatar.png"
+                            e.avatar || "/assets/home/avt_null.jpg"
                           }`}
                           alt=""
                         />
                       </div>
-                      <p>{e.display_name}</p>
+                      <p>{e?.display_name || "_ _"}</p>
                     </>
                   );
                 default:
