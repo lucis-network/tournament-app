@@ -26,6 +26,7 @@ import Link from "next/link";
 import LoginModal from "components/Auth/Login/LoginModal";
 import AuthStore from "components/Auth/AuthStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import {isEmpty} from "lodash";
 
 const { TabPane } = Tabs;
 
@@ -66,6 +67,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId)
   });
 
   if (loading) {
@@ -370,26 +372,28 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             </div>
           </div>
         </section>
-        <section className={s.bgCharacters}>
-          {/* ==== registration phase ====  */}
-          <RegistrationPhase
-            isJoin={isJoin}
-            isCheckin={isCheckin}
-            tournament={dataTournamentDetail}
-            tournamentId={tournamentId as string}
-            joinTournament={joinTournament}
-            dataBracket={dataBracket}
-            refetch={refetch}
-            refreshParticipant={refreshParticipant}
-            tournament_status={tournament_status as string}
-          />
-          {/* ===== sponsor ===== */}
-          <TournamentDetailSponsor
-            tournamentId={tournamentId as string}
-            tournament_status={tournament_status as string}
-          />
-          {/* ===== end sponsor ===== */}
-        </section>
+        <div className={`lucis-container-2 ${s.bgCharacters}`}>
+          <div className={s.container900}>
+            {/* ==== registration phase ====  */}
+            <RegistrationPhase
+              isJoin={isJoin}
+              isCheckin={isCheckin}
+              tournament={dataTournamentDetail}
+              tournamentId={tournamentId as string}
+              joinTournament={joinTournament}
+              dataBracket={dataBracket}
+              refetch={refetch}
+              refreshParticipant={refreshParticipant}
+              tournament_status={tournament_status as string}
+            />
+            {/* ===== sponsor ===== */}
+            <TournamentDetailSponsor
+              tournamentId={tournamentId as string}
+              tournament_status={tournament_status as string}
+            />
+            {/* ===== end sponsor ===== */}
+          </div>
+        </div>
         {/* ===== tabs ===== */}
         <div className={`lucis-container-2 ${s.container_Tabs}`}>
           <Tabs defaultActiveKey="1">

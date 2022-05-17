@@ -50,7 +50,7 @@ export default function TournamentDetailSponsor(props: Props) {
   }
 
   return (
-    <div className="lucis-container-2">
+    <>
       <div className={s.sponsorContainer}>
         <Row>
           <Col xs={{ span: 24, order: 2 }} md={{ span: 16, order: 1 }} lg={{ span: 18 }}>
@@ -83,6 +83,6 @@ export default function TournamentDetailSponsor(props: Props) {
           tournamentId={tournamentId}
         />
       )}
-    </div>
+    </>
   );
 }

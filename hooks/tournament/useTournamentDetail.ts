@@ -9,6 +9,7 @@ import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
 type Props = {
 	tournament_uid?: string;
+	skip?: boolean;
 };
 
 export function useTournamentDetail(props: Props) {
@@ -19,6 +20,7 @@ export function useTournamentDetail(props: Props) {
 		refetch,
 	} = useQuery(GET_TOURNAMENT_DETAIL, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 		fetchPolicy: "network-only",
 	});
 
@@ -29,6 +31,7 @@ export function useTournamentDetail(props: Props) {
 		refetch: refreshParticipant,
 	} = useQuery(GET_PARTICIPANTS_DETAIL, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 		fetchPolicy: "no-cache",
 	});
 
@@ -38,6 +41,7 @@ export function useTournamentDetail(props: Props) {
 		data: dataRefereesDetail,
 	} = useQuery(GET_REFEREES_DETAIL, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 		fetchPolicy: "cache-and-network",
 	});
 	const {
@@ -46,6 +50,7 @@ export function useTournamentDetail(props: Props) {
 		data: dataPrizing,
 	} = useQuery(GET_PRIZING_DETAIL, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 		fetchPolicy: "cache-and-network",
 	});
 
@@ -55,6 +60,7 @@ export function useTournamentDetail(props: Props) {
 		data: dataBracket,
 	} = useQuery(GET_BRACKET, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 		fetchPolicy: "cache-and-network",
 	});
 
@@ -65,6 +71,7 @@ export function useTournamentDetail(props: Props) {
 		refetch: refreshIsJoin,
 	} = useQuery(IS_JOIN_TOURNAMENT, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 	});
 
 	const {
@@ -74,6 +81,7 @@ export function useTournamentDetail(props: Props) {
 		refetch: refreshIsCheckin,
 	} = useQuery(IS_CHECKIN_TOURNAMENT, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 	});
 
 	const {
@@ -82,6 +90,7 @@ export function useTournamentDetail(props: Props) {
 		data: dataDonation,
 	} = useQuery(GET_DONATION_HISTORY, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 		fetchPolicy: "network-only",
 	});
 
@@ -93,12 +102,14 @@ export function useTournamentDetail(props: Props) {
 	const { data: dataIsubscribeToTournament, refetch: refetchSubTournament } =
 		useQuery(IS_SUBSCRIBE_TOURNAMENT, {
 			variables: { tournament_uid: props?.tournament_uid },
+			skip: props?.skip,
 		});
 
 	const { loading: loadingListRank, data: getTournamentListRank } = useQuery(
 		GET_LIST_RANKS,
 		{
 			variables: { tournament_uid: props?.tournament_uid },
+			skip: props?.skip,
 			fetchPolicy: "network-only",
 		}
 	);
@@ -109,6 +120,7 @@ export function useTournamentDetail(props: Props) {
 		refetch: refetchConfirmResult,
 	} = useQuery(CHECK_CONFIRM_RESULT, {
 		variables: { tournament_uid: props?.tournament_uid },
+		skip: props?.skip,
 		fetchPolicy: "network-only",
 	});
 	return {

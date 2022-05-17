@@ -171,7 +171,7 @@ export default observer(function RegistrationPhase(props: Props) {
   };
 
 	return (
-		<div className="lucis-container-2">
+		<>
 			<div className={s.registrationPhase}>
 				<div className={s.startTime}>
 					<Image src="/assets/TournamentDetail/iconCalendar.svg" preview={false} alt="" />
@@ -213,19 +213,12 @@ export default observer(function RegistrationPhase(props: Props) {
 				</div>
 				<div className={s.additionalInfo}>
 					<div className={s.additionalPrize}>
-						<div>
-							<h4>Additional prizes:</h4>
-							<p>
-								<Image src="/assets/TournamentDetail/goldCupSmall.svg" preview={false} alt="" />
-								{fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
-							</p>
-						</div>
 						{additionPrize ? (
 							additionPrize > 0 ? (
 								<div>
 									<h4>Additional prizes:</h4>
-									<p></p>
 									<p>
+                    <Image src="/assets/TournamentDetail/goldCupSmall.svg" preview={false} alt="" />
 										{fomatNumber(Number.parseFloat(additionPrize))} LUCIS token
 									</p>
 								</div>
@@ -445,6 +438,6 @@ export default observer(function RegistrationPhase(props: Props) {
         onOk={handleLeaveTournament}
         onCancel={handleCloseTourModal}
       />
-    </div>
+    </>
   );
 });
