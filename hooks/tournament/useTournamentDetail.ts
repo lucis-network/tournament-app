@@ -188,13 +188,13 @@ export function useSponsors(props: Props): {
 	dataSponsors: {
 		getSponsorSlot: SponsorSlot[];
 	};
-	refetch: () => Promise<ApolloQueryResult<any>>;
+	refetchSponsor: () => Promise<ApolloQueryResult<any>>;
 } {
 	const {
 		loading,
 		error,
 		data: dataSponsors,
-		refetch,
+		refetch: refetchSponsor,
 	} = useQuery(GET_SPONSOR_DETAIL, {
 		variables: { tournament_uid: props?.tournament_uid },
 		fetchPolicy: "network-only",
@@ -207,7 +207,7 @@ export function useSponsors(props: Props): {
 		loading,
 		error,
 		dataSponsors,
-		refetch,
+		refetchSponsor
 	};
 }
 
@@ -256,6 +256,7 @@ const GET_TOURNAMENT_DETAIL = gql`
 				logo
 			}
 			user {
+				id
 				profile {
 					display_name
 					user_name

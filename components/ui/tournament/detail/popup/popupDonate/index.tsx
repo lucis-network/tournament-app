@@ -277,6 +277,21 @@ const PopupDonate = (props: Props) => {
                       <p>{e.display_name}</p>
                     </>
                   );
+                  case "TOPPLAYER":
+                  return (
+                    <>
+                      <div className={s.avt_member}>
+                        <img
+                          className={s.avt}
+                          src={`${
+                            e.avatar || "/assets/home/avt_null.jpg"
+                          }`}
+                          alt=""
+                        />
+                      </div>
+                      <p>{e?.display_name || "_ _"}</p>
+                    </>
+                  );
                 default:
                   return null;
               }

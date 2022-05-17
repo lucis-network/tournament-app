@@ -6,12 +6,9 @@ import { message as antd_message } from "antd";
 const useTournament = (tournamentId: string) => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [status, setStatus] = useState<"unjoin" | "">("");
-	const [leaveTournament, { loading: loadingUnjoin }] =
-		useMutation(LEAVE_TOURNAMENT);
-	const [checkinTournament, { loading: loadingCheckin }] =
-		useMutation(CHECKIN_TOURNAMENT);
-
-	console.log(loadingUnjoin, loadingCheckin);
+	const [loading, setLoading] = useState<boolean>(false);
+	const [leaveTournament] = useMutation(LEAVE_TOURNAMENT);
+	const [checkinTournament] = useMutation(CHECKIN_TOURNAMENT);
 
 	const { refreshIsJoin, refreshIsCheckin } = useTournamentDetail({
 		tournament_uid: tournamentId,
@@ -39,6 +36,7 @@ const useTournament = (tournamentId: string) => {
 	};
 
 	const handleCheckinTournament = () => {
+		setLoading(true);
 		checkinTournament({
 			variables: {
 				tournament_uid: tournamentId,
@@ -46,9 +44,11 @@ const useTournament = (tournamentId: string) => {
 			onCompleted: () => {
 				refreshIsCheckin();
 				antd_message.success("Success", 10);
+				setLoading(false);
 			},
 			onError: (err) => {
 				antd_message.error(err.message, 10);
+				setLoading(false);
 			},
 		});
 	};
@@ -60,6 +60,7 @@ const useTournament = (tournamentId: string) => {
 	return {
 		openModal,
 		status,
+		loadingCheckin: loading,
 		handleOpenLeaveTournament,
 		handleCloseTourModal,
 		handleLeaveTournament,

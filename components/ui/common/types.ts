@@ -6,7 +6,8 @@ export type StepModalTournament =
 	| "create-team"
 	| "add-team"
 	| "choose-player"
-	| "success";
+	| "success"
+	| "profile";
 
 export type StepModalComponent = {
 	titleModal: string;
