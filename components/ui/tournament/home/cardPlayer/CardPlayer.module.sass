@@ -54,6 +54,8 @@
       background: #FFF
       border-radius: 100%
       position: relative
+      display: flex
+      justify-content: center
       .ic_like
         position: absolute
         bottom: 0
@@ -66,7 +68,7 @@
       line-height: 115%
       color: #FFFFFF
       @media (max-width: 540px)
-        font-size: 16px
+        font-size: 12px
         padding: 8px 0px 2px 0px
     .btn
       position: relative
@@ -122,6 +124,7 @@
   mask-composite: exclude
 .top1
   box-shadow: 0px 0px 25px 4px rgba(250, 0, 255, 0.3)
+  z-index: 2
   @media (min-width: 640px)
     margin-left: 26px
   @media (min-width: 768px)
@@ -130,7 +133,7 @@
   margin-top: 90px
   box-shadow: 0px 2px 40px rgba(255, 255, 255, 0.3)
   order: -1
-  z-index: -1
+  z-index: 1
   @media (min-width: 0)
     transform: scale(0.8) translateX(22%)
   @media (min-width: 640px)
@@ -141,7 +144,7 @@
   @media (min-width: 0)
     box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
     transform: scale(0.6) translateX(-42%)
-    z-index: -1
+    z-index: 1
     margin-top: 140px
   @media (min-width: 540px)
     transform: scale(0.6) translateX(-45%)

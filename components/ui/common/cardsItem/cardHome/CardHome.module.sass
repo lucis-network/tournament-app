@@ -157,16 +157,20 @@
           display: flex
           justify-content: space-between
           align-items: center
+          @media (min-width: 992px)
+            margin-top: 6px
+          @media (min-width: 1440px)
+            margin-top: 0px
           img
-            height: 60px
+            height: 50px
             @media (min-width: 640px) and (max-width: 768px)
               height: 40px
             @media (min-width: 992px)
               height: 40px
-              margin-top: 10px
             @media (min-width: 1280px)
-              height: 60px
-              margin-top: 0px
+              height: 40px
+            @media (min-width: 1440px)
+              height: 50px
           .time
             text-transform: uppercase
             @media ( min-width: 992px )
