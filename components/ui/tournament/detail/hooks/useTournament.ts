@@ -6,8 +6,12 @@ import { message as antd_message } from "antd";
 const useTournament = (tournamentId: string) => {
 	const [openModal, setOpenModal] = useState<boolean>(false);
 	const [status, setStatus] = useState<"unjoin" | "">("");
-	const [leaveTournament] = useMutation(LEAVE_TOURNAMENT);
-	const [checkinTournament] = useMutation(CHECKIN_TOURNAMENT);
+	const [leaveTournament, { loading: loadingUnjoin }] =
+		useMutation(LEAVE_TOURNAMENT);
+	const [checkinTournament, { loading: loadingCheckin }] =
+		useMutation(CHECKIN_TOURNAMENT);
+
+	console.log(loadingUnjoin, loadingCheckin);
 
 	const { refreshIsJoin, refreshIsCheckin } = useTournamentDetail({
 		tournament_uid: tournamentId,

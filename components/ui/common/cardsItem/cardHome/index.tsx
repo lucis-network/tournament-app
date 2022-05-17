@@ -2,12 +2,13 @@ import { Button, Col, Row } from "antd";
 import { useState } from "react";
 import Link from "next/link";
 
-import { fomatNumber } from "utils/Number";
+import { currency } from "utils/Number";
 import { TournamentGql } from "src/generated/graphql";
 import s from "./CardHome.module.sass";
 import { slugify } from "../../../../../utils/String";
 import { BracketType } from "utils/Enum";
 import moment from "moment";
+import { useRouter } from "next/router";
 
 type Props = {
   datas?: TournamentGql[];
@@ -49,7 +50,11 @@ export default function CardHome(props: Props) {
 
 function TournamentCard(props: { data: TournamentGql }) {
   const { data: item } = props;
+  const router = useRouter();
 
+  const handleJoinNowDetail = () => {
+    router.push(`/tournament/${item.uid}/${slugify(item.name)}`)
+  }
   const elimination = BracketType.find(
     (bracket) => bracket.value === item.brackets?.[0].type
   )?.label;
@@ -80,7 +85,7 @@ function TournamentCard(props: { data: TournamentGql }) {
             </div>
           </div>
           <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
-            <a>
+            <a style={{ width: "100%" }}>
               <img
                 style={{ padding: 1, width: "100%" }}
                 src={item.thumbnail}
@@ -92,6 +97,9 @@ function TournamentCard(props: { data: TournamentGql }) {
         <div className={s.heading}>
           <div className={s.im_logo_game}>
             <img src={item.game.logo as string} alt="" />
+            <span className={s.time}>
+              {moment(item.brackets?.[0].start_at).format("MMM Do HH:MM")}
+            </span>
           </div>
           <h2>
             <Link href={`/tournament/${item.uid}/${slugify(item.name)}`}>
@@ -133,14 +141,14 @@ function TournamentCard(props: { data: TournamentGql }) {
               <span>
                 {
                   //@ts-ignore
-                  fomatNumber(item?.totalPrizePool)
+                  currency(item?.totalPrizePool)
                 }{" "}
                 {item.currency.symbol}
               </span>
             </div>
-            <span className={s.time}>
-              {moment(item.brackets?.[0].start_at).format("MMM Do HH:MM")}
-            </span>
+            <Button type="primary" className={s.btn_join_now} onClick={handleJoinNowDetail}>
+              Join Now
+            </Button>
           </div>
         </div>
       </div>

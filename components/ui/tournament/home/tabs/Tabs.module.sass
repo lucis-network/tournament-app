@@ -171,7 +171,22 @@
           @media ( min-width: 1280px )
             width: auto
             font-size: 20px
+        .btn_create_now
+          moz-transition: all .3s ease-in-out
+          -o-transition: all .3s ease-in-out
+          -webkit-transition: all .3s ease-in-out
+          transition: all .3s ease-in-out
+          background-size: 140% 50%
+        .btn_create_now:hover
+          background-position: 60% 0% 
+          moz-transition: all .3s ease-in-out
+          -o-transition: all .3s ease-in-out
+          -webkit-transition: all .3s ease-in-out
+          transition: all .3s ease-in-out
 .search
+  :global(.ant-input-group .ant-input:hover),
+  :global(.ant-input-group .ant-input:focus)
+    border-color: transparent
   :global(.ant-btn-primary)
     background: transparent
     display: flex
