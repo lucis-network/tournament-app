@@ -74,7 +74,7 @@ export default function TournamentDetailBecomeSponsor(
     // todo submit sponsor
     let sponsor: SponsorInput = {
       logo: data.logo,
-      name: data.name ? data.name : "hihi",
+      name: data.name ? data.name : "",
       home_page: data.home_page,
       ads_link: data.ads_link ? data.ads_link : "",
       amount: data.amount,
@@ -134,6 +134,7 @@ export default function TournamentDetailBecomeSponsor(
           );
       }
 
+      console.log("TournamentStore.checkBecomeSponser", TournamentStore.checkBecomeSponser)
       if (TournamentStore.checkBecomeSponser) {
         const result = await ethersService.becomeSponsor(
           tournamentId as string,

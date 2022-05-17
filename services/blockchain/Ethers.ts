@@ -358,7 +358,6 @@ export default class EtherContract {
         .multipliedBy(Math.pow(10, 18))
         .toFormat({ groupSeparator: "" });
 
-      console.log(tournamentUid);
       const transaction = await contract.becomeSponsor(
         tournamentUid,
         totalAmount,
