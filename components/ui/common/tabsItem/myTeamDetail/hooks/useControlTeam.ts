@@ -9,11 +9,11 @@ import {
 	SEARCH_TEAM,
 } from "./../myTeamService";
 import { useMutation, useQuery, useLazyQuery } from "@apollo/client";
-import {useCallback, useEffect, useState} from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
-import {useRouter} from "next/router";
-import {useGetUserProfile} from "../../../../../../hooks/myProfile/useMyProfile";
+import { useRouter } from "next/router";
+import { useGetUserProfile } from "../../../../../../hooks/myProfile/useMyProfile";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
 	user_name: string;
@@ -46,12 +46,15 @@ const UseControlTeam = () => {
 	const [error, setError] = useState<Record<string, string>>({});
 	const router = useRouter();
 	const { getUserProfileData } = useGetUserProfile({
-		user_name: router.pathname === '/profile/[username]' ? `${router.query.username}` : '',
-		skip: router.pathname !== '/profile/[username]'
-	})
-	let user: any = {}
-	if (router.pathname === '/profile/[username]') {
-		user = getUserProfileData.getUserProfile
+		user_name:
+			router.pathname === "/profile/[username]"
+				? `${router.query.username}`
+				: "",
+		skip: router.pathname !== "/profile/[username]",
+	});
+	let user: any = {};
+	if (router.pathname === "/profile/[username]") {
+		user = getUserProfileData.getUserProfile;
 	} else {
 		user = getLocalAuthInfo();
 	}
@@ -369,7 +372,6 @@ const UseControlTeam = () => {
 	};
 
 	const handleCloseAdd = useCallback(() => {
-		console.log("close");
 		if (isSaveDraft) setOpenCreateTeam(true);
 		setOpenAdd(false);
 	}, [isSaveDraft]);

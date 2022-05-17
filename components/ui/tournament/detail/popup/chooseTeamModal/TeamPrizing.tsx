@@ -9,6 +9,7 @@ import SpinLoading from "components/ui/common/Spin";
 
 interface TeamPrizingProps {
 	isSolo: boolean;
+	errorPassword: string;
 	loadingJoin: boolean;
 	error: ErrorTourKey;
 	tourPassword?: string;
@@ -19,7 +20,6 @@ interface TeamPrizingProps {
 	onChooseTeam: () => void;
 	onBack: () => void;
 	onChangePassword: (e: React.FormEvent<HTMLInputElement>) => void;
-	onBlurPassword: (e: React.FormEvent<HTMLInputElement>) => void;
 	onJoinTournament: () => void;
 	onSetDataForm: (team: Item[]) => void;
 }
@@ -39,6 +39,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	isSolo,
 	error,
 	tourPassword,
+	errorPassword,
 	password,
 	teamSize,
 	selectedTeam,
@@ -47,7 +48,6 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	onBack,
 	onJoinTournament,
 	onChangePassword,
-	onBlurPassword,
 	onSetDataForm,
 }) => {
 	const isMatchTeamSize = draftSelectedTeam?.team?.length === teamSize;
@@ -55,7 +55,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	const [form] = Form.useForm();
 	const [editingKey, setEditingKey] = useState("");
 	const isEditing = (record: Item) => String(record.user_id) === editingKey;
-	const errMessage = error?.size || error?.prize || error?.user || error?.pass;
+	const errMessage = error?.size || error?.prize || error?.user;
 	const [editInputKey, setEditInputKey] = useState<"number" | "text">();
 	const handleEdit = (record: Partial<Item>, type: "number" | "text") => {
 		form.setFieldsValue({ prize: 0, game_member_id: "", ...record });
@@ -275,11 +275,15 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 								className={s.password_input}
 								onChange={onChangePassword}
 								placeholder="Enter password"
-								onBlur={onBlurPassword}
 								iconRender={(visible) =>
 									visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
 								}
 							/>
+							{errorPassword && (
+								<p className="text-error text-16px mt-1 flex-1">
+									{errorPassword}
+								</p>
+							)}
 						</div>
 					</div>
 				)}
@@ -296,7 +300,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				)}
 				<button
 					className={`${s.button} !w-max min-w-[285px]`}
-					disabled={!!errMessage}
+					disabled={!!errMessage || !!errorPassword}
 					onClick={onJoinTournament}
 				>
 					{loadingJoin ? (
