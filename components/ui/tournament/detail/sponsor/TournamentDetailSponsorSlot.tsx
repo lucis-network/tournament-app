@@ -20,7 +20,7 @@ export default function TournamentDetailSponsorSlot(props: TournamentDetailSpons
           className={s.sponsorLogo}
         />
       </div>
-      {show_name && <div className={s.sponsorName}>{(sponsorName && (sponsorName.length > 0)) ? sponsorName : 'Sponsor name'}</div>}
+      {(show_name && (sponsorName && (sponsorName.length > 0))) && <div className={s.sponsorName}>{sponsorName}</div>}
     </div>
   )
 }

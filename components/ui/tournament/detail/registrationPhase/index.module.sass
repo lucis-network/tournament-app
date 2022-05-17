@@ -32,62 +32,71 @@
     display: flex
     flex-direction: column
     align-items: center
-    @media screen and (min-width: 576px)
+    @media screen and (min-width: 768px)
       flex-direction: row
       justify-content: center
-      align-items: flex-end
+      align-items: flex-start
     @media screen and (min-width: 1200px)
-      width: 700px
-      margin: auto
       justify-content: space-between
-    @media screen and (min-width: 1600px)
-      width: 900px
     .item
       text-align: center
       margin-bottom: 10px
+      width: 100%
       @media screen and (min-width: 576px)
-        min-width: calc(100% / 3)
-        max-width: calc(100% / 3)
         padding: 0 10px
       @media screen and (min-width: 768px)
+        min-width: calc(100% / 3)
+        max-width: calc(100% / 3)
         padding: 0 15px
       &:first-of-type
         .itemImg
-          &:after
-            bottom: -30px
-            right: -10px
+          :global(.ant-image)
+            &:after
+              bottom: -30px
+              right: -10px
       &:nth-of-type(2)
         .itemImg
-          &:after
-            top: 50%
-            right: -30px
-            transform: translateY(-50%)
+          :global(.ant-image)
+            &:after
+              top: 50%
+              right: -30px
+              transform: translateY(-50%)
       &:nth-of-type(3)
         .itemImg
           padding-top: 30px
-          &:after
-            top: 0
-            right: -10px
+          :global(.ant-image)
+            &:after
+              top: -30px
+              right: -10px
       .itemImg
-        position: relative
         margin-bottom: 30px
-        &:before, &:after
-          content: ''
-          display: block
-          position: absolute
-        &:before
-          top: 0
-          left: 0
-          right: 0
-          bottom: 0
-          background: linear-gradient(180deg, #2FD4C5 0.31%, rgba(47, 138, 212, 0.6) 100%)
-          filter: blur(55px)
-          border-radius: 50%
-        &:after
-          background: url("/assets/TournamentDetail/ellipse.svg") no-repeat top center
-          background-size: cover
-          width: 74px
-          height: 71px
+        @media screen and (min-width: 576px)
+          height: 180px
+          display: flex
+          align-items: center
+          justify-content: center
+        :global(.ant-image)
+          position: relative
+          img
+            position: relative
+          &:before, &:after
+            content: ''
+            display: block
+            position: absolute
+            z-index: -1
+          &:before
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+            background: linear-gradient(180deg, #2FD4C5 0.31%, rgba(47, 138, 212, 0.6) 100%)
+            filter: blur(55px)
+            border-radius: 50%
+          &:after
+            background: url("/assets/TournamentDetail/ellipse.svg") no-repeat top center
+            background-size: cover
+            width: 74px
+            height: 71px
       h3
         font-weight: 700
         font-size: 20px
@@ -95,29 +104,9 @@
       p
         font-size: 20px
   .additionalInfo
-    display: flex
-    flex-direction: column
-    @media screen and (min-width: 768px)
-      flex-direction: row
-      justify-content: center
-      gap: 30px
-    @media screen and (min-width: 1200px)
-      width: 700px
-      margin: auto
-      justify-content: space-between
-    @media screen and (min-width: 1600px)
-      width: 900px
-    > div
-      margin-bottom: 20px
+    &.additionalPrize
       @media screen and (min-width: 768px)
-        min-width: calc(100% / 3)
-        max-width: calc(100% / 3)
-        padding: 0 10px
-        text-align: center
-        &:last-child
-          text-align: right
-      @media screen and (min-width: 768px)
-        padding: 0 15px
+        text-align: left
     h4
       font-weight: 700
       font-size: 20px
@@ -128,18 +117,19 @@
         margin-right: 10px
     button
       width: 100%
-      @media screen and (min-width: 768px)
+      @media screen and (min-width: 576px)
         width: auto
+      @media screen and (min-width: 768px)
         font-size: 18px
   .countdownWrap
+    margin-top: 20px
+    *
+      color: #0BEBD6
     @media screen and (min-width: 768px)
-      text-align: right
-    p, :global(.show-counter)
+      text-align: left
+    :global(.show-counter)
       display: inline-flex
       font-weight: 700
-      color: #0BEBD6
-      *
-        color: #0BEBD6
     p
       font-size: 14px
     :global(.show-counter)

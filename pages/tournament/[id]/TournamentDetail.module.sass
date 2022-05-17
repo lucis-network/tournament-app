@@ -3,6 +3,7 @@
   min-height: 100vh
   background: url("/assets/Banner/bg_banner.png") top left / contain no-repeat, url("/assets/TournamentDetail/bgTournamentDetail.png") top left / cover no-repeat
   padding-top: 50px
+  overflow-x: hidden
   .banner
     position: relative
     min-height: 400px
@@ -127,7 +128,6 @@
   margin-bottom: 50px
 .bgCharacters
   position: relative
-  overflow: hidden
   padding-top: 40px
   margin-bottom: 30px
   @media screen and (min-width: 768px)
@@ -141,37 +141,31 @@
     position: absolute
     z-index: 0
   &::before
-    width: 400px
-    height: 727.75px
+    height: 40%
+    aspect-ratio: 647 / 979
     top: 160px
     left: -60px
     background: url("/assets/TournamentDetail/leftCharacter.png") no-repeat center
     background-size: cover
     @media screen and (min-width: 768px)
       top: 0
-      left: 0
-      width: 260px
-      height: 610px
+      left: -50px
+      height: 70%
     @media screen and (min-width: 1200px)
       top: 0
       left: 0
-      width: 748px
-      height: 1180px
   &::after
-    width: 540px
-    height: 602.28px
+    aspect-ratio: 537 / 679
+    height: 40%
     bottom: 90px
     right: -120px
     background: url("/assets/TournamentDetail/rightCharacter.png") no-repeat center
     background-size: cover
     @media screen and (min-width: 768px)
-      width: 500px
-      height: 620px
-      bottom: 0
+      bottom: -170px
       right: -140px
+      height: 70%
     @media screen and (min-width: 1200px)
-      width: 789px
-      height: 980px
       bottom: 0
       right: -100px
 .tournamentInfo
@@ -222,7 +216,7 @@
             margin: 0 10px 10px 0
             font-size: 12px
             line-height: 1
-            img
+            :global(.ant-image)
               margin-right: 5px
           .joinDiscord
             display: inline-block
@@ -322,3 +316,7 @@
               color: #0BEBD6
               @media screen and (min-width: 1200px)
                 font-size: 12px
+.container900
+  @media screen and (min-width: 1200px)
+    width: 900px
+    margin: 0 auto
