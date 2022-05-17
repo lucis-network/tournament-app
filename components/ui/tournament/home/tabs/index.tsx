@@ -92,6 +92,7 @@ export default function TabHome() {
 									type="primary"
 									loading={creating}
 									onClick={() => setCreating(true)}
+									className={s.btn_create_now}
 								>
 									CREATE NOW
 								</Button>
