@@ -214,8 +214,13 @@ const UseTeamModal = (tournamentData: any) => {
 					message.success("Success", 10);
 				},
 				onError: (err: any) => {
-					if (!password) setErrorPassword("Password is required");
-					else if (password && err.message === "password incorrect")
+					if (tourPassword && !password)
+						setErrorPassword("Password is required");
+					else if (
+						tourPassword &&
+						password &&
+						err.message === "password incorrect"
+					)
 						setErrorPassword("Password incorrect");
 					else setErrorPassword(err.message);
 				},
@@ -224,7 +229,14 @@ const UseTeamModal = (tournamentData: any) => {
 	};
 
 	const handleCreateNewTeam = () => {
-		setStep("step-1");
+		if (
+			draftData?.team_avatar &&
+			draftData?.team_name &&
+			draftData?.team &&
+			draftData?.team?.length > 1
+		) {
+			setStep("step-1");
+		}
 		handleSaveTeam();
 	};
 
