@@ -3,10 +3,10 @@ import GradientLinkButton from "components/ui/common/button/GradientButton";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import { Button } from "antd";
 import { useState } from "react";
-import { TournamentGql } from "src/generated/graphql";
+import { GTopEarning } from "src/generated/graphql";
 
 type Props = {
-  data: any;
+  data: GTopEarning[];
   loading?: any;
 };
 
@@ -15,6 +15,9 @@ export default function CardPlayer(props: Props) {
   const [isPopUp, setIsPopUp] = useState(false);
   const [newData, setNewData] = useState({});
 
+  if (loading) {
+    return <></>;
+  }
   const showPopUpDonate = (e: any) => {
     setNewData(e);
     setIsPopUp(true);
@@ -22,55 +25,48 @@ export default function CardPlayer(props: Props) {
   const click = () => {
     setIsPopUp(false);
   };
-  const hanldeLike = (id: any) => {
-  }
+  const hanldeLike = (id: any) => {};
   return (
     <>
-      {data.map((e: any) => {
+      {data.map((e: any, i: number) => {
         const positionPlayer =
-          e.position === 1
-            ? `im_top1.png`
-            : e.position === 2
-              ? "im_top2.png"
-              : "im_top3.png";
-        const styleCard =
-          e.position === 1
-            ? { marginTop: -120 }
-            : e.position === 2
-              ? {
-                transform: "scale(0.8)",
-                order: -1,
-                filter: "drop-shadow(0px 2px 40px rgba(255, 255, 255, 0.3))",
-              }
-              : {
-                transform: "scale(0.6)",
-                marginTop: 80,
-                boxShadow: "inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)",
-                marginLeft: -10,
-              };
+          i === 0 ? `im_top1.png` : i === 1 ? "im_top2.png" : "im_top3.png";
         return (
-          <div className={`${s.content_card} ${e.position === 1 ? s.top1 : e.position === 2 ? s.top2 : s.top3}`} key={e.id}>
+          <div
+            className={`${s.content_card} ${
+              i === 0 ? s.top1 : i === 1 ? s.top2 : s.top3
+            }`}
+            key={i}
+          >
             <div className={s.im_top_player}>
               <img src={`/assets/home/${positionPlayer}`} alt="" />
             </div>
             <div className={s.content_player}>
               <div className={s.avt}>
-                <img src="/assets/home/avt_null.jpg" alt="" />
-                <div className={s.ic_like} onClick={()=> hanldeLike(e.id)}>
+                <img
+                  src={e?.avatar ? `${e.avatar}` : `/assets/home/avt_null.jpg`}
+                  alt=""
+                />
+                <div className={s.ic_like} onClick={() => hanldeLike(e.id)}>
                   <img src="/assets/home/ic_unlike.svg" alt="" />
                 </div>
               </div>
-              <p>_ _</p>
-              {/* <div className={s.btn}>
+              <p>{e.display_name}</p>
+              <div className={s.btn}>
                 <Button
                   className={s.content_btn}
                   onClick={() => showPopUpDonate(e)}
                 >
                   DONATE
                 </Button>
-              </div> */}
+              </div>
             </div>
-            <PopupDonate status={isPopUp} types={'TOPPLAYER'} closeModal={click} datas={newData} />
+            <PopupDonate
+              status={isPopUp}
+              types={"TOPPLAYER"}
+              closeModal={click}
+              datas={newData}
+            />
           </div>
         );
       })}
