@@ -9,6 +9,7 @@ import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
 type Props = {
 	tournament_uid?: string;
+	skip?: boolean;
 };
 
 export function useTournamentDetail(props: Props) {
@@ -176,13 +177,13 @@ export function useSponsors(props: Props): {
 	dataSponsors: {
 		getSponsorSlot: SponsorSlot[];
 	};
-	refetch: () => Promise<ApolloQueryResult<any>>;
+	refetchSponsor: () => Promise<ApolloQueryResult<any>>;
 } {
 	const {
 		loading,
 		error,
 		data: dataSponsors,
-		refetch,
+		refetch: refetchSponsor,
 	} = useQuery(GET_SPONSOR_DETAIL, {
 		variables: { tournament_uid: props?.tournament_uid },
 		fetchPolicy: "network-only",
@@ -195,7 +196,7 @@ export function useSponsors(props: Props): {
 		loading,
 		error,
 		dataSponsors,
-		refetch,
+		refetchSponsor
 	};
 }
 

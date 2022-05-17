@@ -1,7 +1,10 @@
 import s from "./TournamentDetail.module.sass";
 import { Col, Row, Spin, Tabs, message, Image } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
-import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
+import {
+  useSponsors,
+  useTournamentDetail,
+} from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
@@ -26,6 +29,7 @@ import Link from "next/link";
 import LoginModal from "components/Auth/Login/LoginModal";
 import AuthStore from "components/Auth/AuthStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import { isEmpty } from "lodash";
 
 const { TabPane } = Tabs;
 
@@ -35,6 +39,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const { tournamentId, asPath } = props;
   const [isLoadingSub, setIsLoadingSub] = useState(false);
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
+  const [dataRankSponsors, setDataRankSponsors] = useState([]);
 
   const {
     dataTournamentDetail,
@@ -67,6 +72,32 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     // Change to tournamentUid after
     tournament_uid: tournamentId,
   });
+
+  const { dataSponsors, refetchSponsor } = useSponsors({
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
+
+  useEffect(() => {
+    let obj: any = [];
+    if (dataSponsors) {
+      dataSponsors.getSponsorSlot?.forEach((item) => {
+        let object = {
+          name: "",
+          data: {},
+        };
+        object.name = item?.name ? item?.name : "";
+
+        if (item?.sponsor_transactions) {
+          item?.sponsor_transactions?.forEach((itm) => {
+            object.data = itm;
+            obj.push(object);
+          });
+        }
+      });
+    }
+    setDataRankSponsors(obj);
+  }, [dataSponsors]);
 
   if (loading) {
     return null;
@@ -342,36 +373,37 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       Our generous sponsors
                     </h3>
                     <div className={s.generousSponsorsList}>
-                      <div className={`${s.generousSponsor} ${s.vip}`}>
-                        <div className={s.generousSponsorAvatar}>
-                          <Image
-                            src={"/assets/TournamentDetail/sponsorAvatar.png"}
-                            preview={false}
-                            alt=""
-                          />
-                        </div>
-                        <div className={s.generousSponsorName}>CEN Group</div>
-                      </div>
-                      <div className={`${s.generousSponsor}`}>
-                        <div className={s.generousSponsorAvatar}>
-                          <Image
-                            src={"/assets/TournamentDetail/sponsorAvatar.png"}
-                            preview={false}
-                            alt=""
-                          />
-                        </div>
-                        <div className={s.generousSponsorName}>Steve Kruga</div>
-                      </div>
-                      <div className={`${s.generousSponsor}`}>
-                        <div className={s.generousSponsorAvatar}>
-                          <Image
-                            src={"/assets/TournamentDetail/sponsorAvatar.png"}
-                            preview={false}
-                            alt=""
-                          />
-                        </div>
-                        <div className={s.generousSponsorName}>Steve Krugb</div>
-                      </div>
+                      {dataRankSponsors &&
+                        dataRankSponsors.map((item: any) => {
+                          return (
+                            <div
+                              className={`${s.generousSponsor} ${
+                                item?.name === "Diamond" ? s.vip : ""
+                              }`}
+                            >
+                              <div className={s.generousSponsorAvatar}>
+                                {item?.data?.logo ? (
+                                  <Image
+                                    src={item?.data?.logo}
+                                    preview={false}
+                                    alt=""
+                                  />
+                                ) : (
+                                  <Image
+                                    src={
+                                      "/assets/TournamentDetail/sponsorAvatar.png"
+                                    }
+                                    preview={false}
+                                    alt=""
+                                  />
+                                )}
+                              </div>
+                              <div className={s.generousSponsorName}>
+                                {item?.data?.name}
+                              </div>
+                            </div>
+                          );
+                        })}
                     </div>
                   </Col>
                 </Row>

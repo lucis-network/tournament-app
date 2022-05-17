@@ -15,6 +15,8 @@ export type TiersSelectType = {
   show_ads?: Maybe<boolean> | undefined;
   show_name?: Maybe<boolean> | undefined;
   is_full?: boolean;
+  dataSponsors?: any;
+  refetchSponsor?: any;
 };
 
 type Props = {
@@ -25,7 +27,11 @@ type Props = {
 export default function TournamentDetailSponsor(props: Props) {
   const { tournamentId, tournament_status } = props;
   const [isBecome, setIsBecome] = useState(false);
-  const { loading, dataSponsors, refetch } = useSponsors({
+  const {
+    loading,
+    dataSponsors,
+    refetchSponsor: refetch,
+  } = useSponsors({
     tournament_uid: tournamentId,
   });
 

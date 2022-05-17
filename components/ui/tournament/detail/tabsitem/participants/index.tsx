@@ -36,7 +36,8 @@ export default function TableParticipant(props: Props) {
 
   const handleClick = (e: object) => {
     setDatas(e);
-    if (dataParticipants.length == 1) {
+    //@ts-ignore
+    if (e?.bracketTeamMembers?.length == 1) {
       setIsPopupDonate(true);
     } else {
       AppEmitter.emit("showPopupDonate", true);
@@ -104,6 +105,9 @@ export default function TableParticipant(props: Props) {
       ),
     },
   ];
+
+  console.log("dataParticipants", dataParticipants)
+  
   return (
     <div className={s.wrapper}>
       <div className={s.containerTab}>
