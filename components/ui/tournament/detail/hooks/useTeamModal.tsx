@@ -1,7 +1,7 @@
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, ReactElement, useMemo } from "react";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, WarningOutlined } from "@ant-design/icons";
 import s from "../popup/chooseTeamModal/TeamModal.module.sass";
 import { MyTeamType } from "components/ui/common/tabsItem/myTeamDetail/hooks/useControlTeam";
 import TeamSelect from "../popup/chooseTeamModal/TeamSelect";
@@ -43,6 +43,7 @@ const UseTeamModal = (tournamentData: any) => {
 	const { joinTournament, refreshParticipant } = tournamentData;
 	const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
 	const [show, setShow] = useState<boolean>(false);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [password, setPassword] = useState<string>("");
 	const [errorPassword, setErrorPassword] = useState<string>("");
 	const [step, setStep] = useState<StepModalTournament>("step-1");
@@ -75,7 +76,7 @@ const UseTeamModal = (tournamentData: any) => {
 		reset
 	);
 
-	const { loadingJoinTournament, refreshIsJoin } = useTournamentDetail({
+	const { refreshIsJoin } = useTournamentDetail({
 		tournament_uid: tournamentId,
 	});
 
@@ -192,6 +193,7 @@ const UseTeamModal = (tournamentData: any) => {
 		} else {
 			setErrorTour({} as any);
 			setErrorPassword("");
+			setLoading(true);
 			const convertTeamMember = selectedTeam?.team?.map((member) => ({
 				id_in_game: member.game_member_id,
 				is_leader: member.is_leader,
@@ -212,8 +214,10 @@ const UseTeamModal = (tournamentData: any) => {
 					setPassword("");
 					setStep("success");
 					message.success("Success", 10);
+					setLoading(false);
 				},
 				onError: (err: any) => {
+					setLoading(false);
 					if (tourPassword && !password)
 						setErrorPassword("Password is required");
 					else if (
@@ -283,11 +287,15 @@ const UseTeamModal = (tournamentData: any) => {
 		}
 	};
 
-	const handleCheckin = useCallback(() => {}, []);
-
 	const handleOpenModal = useCallback(() => {
 		if (!AuthStore.isLoggedIn) {
 			message.info("Please sign in first");
+			return;
+		}
+
+		if (!AuthStore.isHasMail) {
+			setStep("profile");
+			setShow(true);
 			return;
 		}
 
@@ -386,7 +394,7 @@ const UseTeamModal = (tournamentData: any) => {
 				component: selectedTeam ? (
 					<TeamPrizing
 						errorPassword={errorPassword}
-						loadingJoin={loadingJoinTournament}
+						loadingJoin={loading}
 						isSolo={isSoloVersion}
 						error={errorTour}
 						tourPassword={tourPassword}
@@ -469,6 +477,32 @@ const UseTeamModal = (tournamentData: any) => {
 				),
 				modalWidth: 540,
 			},
+			["profile"]: {
+				titleModal: "",
+				description: (
+					<div>
+						<div className="flex align-middle">
+							<div className="w-8 mr-4">
+								<WarningOutlined className="text-28px !text-white" />
+							</div>
+							<p>
+								You need to fill in your email first. We will notify you when
+								the tournament has any updates
+							</p>
+						</div>
+					</div>
+				),
+				component: (
+					<div className="flex justify-end align-middle items-center mt-8">
+						<button
+							className={`${s.button} mr-4 !w-max`}
+							onClick={() => handleRoutes(`/profile`)}
+						>
+							Go to my profile
+						</button>
+					</div>
+				),
+			},
 		};
 
 		return stepModifier[step];
@@ -486,7 +520,6 @@ const UseTeamModal = (tournamentData: any) => {
 		show,
 		handleOpenModal,
 		handleCloseModal,
-		handleCheckin,
 		handleChangeStep,
 		stepConfiguration,
 	};
