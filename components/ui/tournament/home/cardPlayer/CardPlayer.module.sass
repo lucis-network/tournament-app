@@ -26,9 +26,9 @@
     justify-content: center
     z-index: 4
     @media (min-width: 0px)
-      max-width: 120px
+      max-width: 100px
       left: 50%
-      top: -30%
+      top: -64px
       transform: translateX(-50%)
     @media (min-width: 540px)
       max-width: 120px
@@ -56,6 +56,10 @@
       position: relative
       display: flex
       justify-content: center
+      @media ( max-width: 539px )
+        height: 70px
+        width: 70px
+        
       .ic_like
         position: absolute
         bottom: 0

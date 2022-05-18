@@ -332,8 +332,6 @@ const PopupDonate = (props: Props) => {
           </Col>
           <Col span={15}>
             <TextArea
-              showCount
-              maxLength={125}
               placeholder="Enter message"
               className={s.editable}
               value={desc}

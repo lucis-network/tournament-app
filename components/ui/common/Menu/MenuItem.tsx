@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactElement, useCallback } from "react";
-import s from "./MenuMobile.module.sass"
+import s from "./MenuMobile.module.sass";
 
 import { motion } from "framer-motion";
 import { AppEmitter } from "services/emitter";
@@ -24,30 +24,31 @@ const variants = {
 };
 
 export type MenuItemType = {
-  color: string,
-  src?: string,
-  text: string | ReactElement,
-  scrollTarget?: string, // CSS selector of target scroll
-  onClick?: () => void,
-  subMenu?: string | ReactElement,
-  disable?: boolean,
-  class?: object
-}
+  color: string;
+  src?: string;
+  text: string | ReactElement;
+  scrollTarget?: string; // CSS selector of target scroll
+  onClick?: () => void;
+  subMenu?: string | ReactElement;
+  disable?: boolean;
+  class?: object;
+  isBlank?: boolean;
+};
 
 export const MenuItem = (props: { item: MenuItemType }) => {
   const click = useCallback(() => {
     // if (props.item.scrollTarget) {
     //   scrollToSection(props.item.scrollTarget ?? '', true, -90)
-    // 
+    //
     if (props.item.onClick) {
-      props.item.onClick()
+      props.item.onClick();
     }
     if (props.item.subMenu == undefined) {
-      AppEmitter.emit("setMbMenuVisible", false)
+      AppEmitter.emit("setMbMenuVisible", false);
     }
-  }, [])
+  }, []);
 
-  const disable = props.item.disable && s.disable
+  const disable = props.item.disable && s.disable;
   return (
     <motion.li
       variants={variants}
@@ -56,8 +57,21 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       onClick={click}
       style={props.item.class}
     >
-      <div className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`} style={{ fontSize: "16px", lineHeight: '22px' }}>
-        <a href={props.item.src ?? '/'} target="_blank" rel="noopener noreferrer">{props.item.text}</a>
+      <div
+        className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`}
+        style={{ fontSize: "16px", lineHeight: "22px" }}
+      >
+        {
+          props.item.isBlank ? 
+        <a
+          href={props.item.src ?? "/"}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {props.item.text}
+        </a>
+        : props.item.text
+        }
       </div>
     </motion.li>
   );

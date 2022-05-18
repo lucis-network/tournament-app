@@ -53,8 +53,8 @@ function TournamentCard(props: { data: TournamentGql }) {
   const router = useRouter();
 
   const handleJoinNowDetail = () => {
-    router.push(`/tournament/${item.uid}/${slugify(item.name)}`)
-  }
+    router.push(`/tournament/${item.uid}/${slugify(item.name)}`);
+  };
   const elimination = BracketType.find(
     (bracket) => bracket.value === item.brackets?.[0].type
   )?.label;
@@ -85,13 +85,7 @@ function TournamentCard(props: { data: TournamentGql }) {
             </div>
           </div>
           <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
-            <a style={{ width: "100%" }}>
-              <img
-                style={{ padding: 1, width: "100%" }}
-                src={item.thumbnail}
-                alt=""
-              />
-            </a>
+            <div style={{backgroundImage: `url(${item.thumbnail})`}} className={s.thumbnail}></div>
           </Link>
         </div>
         <div className={s.heading}>
@@ -103,8 +97,8 @@ function TournamentCard(props: { data: TournamentGql }) {
           </div>
           <h2>
             <Link href={`/tournament/${item.uid}/${slugify(item.name)}`}>
-              {item.name.length > 42
-                ? item.name.substring(0, 42) + "..."
+              {item?.name.length > 40
+                ? item.name.slice(0, 40) + "..."
                 : item.name}
             </Link>
           </h2>
@@ -146,8 +140,12 @@ function TournamentCard(props: { data: TournamentGql }) {
                 {item.currency.symbol}
               </span>
             </div>
-            <Button type="primary" className={s.btn_join_now} onClick={handleJoinNowDetail}>
-              Join Now
+            <Button
+              type="primary"
+              className={s.btn_join_now}
+              onClick={handleJoinNowDetail}
+            >
+              JOIN NOW
             </Button>
           </div>
         </div>
