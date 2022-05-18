@@ -85,7 +85,7 @@ const UseTeamModal = (tournamentData: any) => {
 		setShow(false);
 		refreshIsJoin();
 		isSoloVersion ? setStep("step-1") : setStep("step-1");
-		// refreshParticipant();
+		refreshParticipant();
 	};
 
 	const handleChangePassword = (e: React.FormEvent<HTMLInputElement>) => {

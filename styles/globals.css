@@ -909,6 +909,10 @@ body .ant-carousel .slick-dots-bottom{
   width: auto;
 }
 
+.btn-cyan:disabled {
+  background: gray !important;
+}
+
 .btn-cyan .ant-image {
   margin-right: 10px;
   width: 20px;
