@@ -50,7 +50,9 @@ export default function Footer(props: Props) {
               </div>
             </div>
 
-            <Button type="primary">NEED HELP?</Button>
+            <div className={s.btn_help}>
+              <Button>NEED HELP?</Button>
+            </div>
           </div>
         </div>
       </div>

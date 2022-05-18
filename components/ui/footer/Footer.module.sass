@@ -11,10 +11,7 @@
     .r
       display: flex
       align-items: center
-      justify-content: space-between
-      @media ( max-width: 639px )
-        flex-direction: column
-        align-items: flex-end
+      // justify-content: space-between
       .logo
         @media (min-width: 0px)
           display: none
@@ -25,15 +22,42 @@
         align-items: center
         justify-content: center
         width: 100%
+        margin-right: 20px
+
         @media ( max-width: 639px )
           padding: 20px 0px
-          justify-content: space-between
+          justify-content: flex-start
         .ic_item
           max-width: 40px
           margin: 0px 15px
+          
           @media ( max-width: 539px )
             margin: 0 8px
-
+      .btn_help
+        position: relative
+        button
+          border: none
+          color: #0BEBD6
+          font-weight: 700
+          line-height: 115%
+          @media ( min-width: 0px )
+            font-size: 16px
+          @media ( min-width: 640px )
+            font-size: 20px
+      .btn_help::before
+        content: ''
+        position: absolute
+        top:0
+        left:0
+        right:0
+        bottom:0
+        border-radius: 4px
+        padding: 1px
+        background: linear-gradient(111.03deg, rgba(239, 238, 238, 0.32) 2.82%, rgba(239, 238, 238, 0.06) 90.94%)
+        -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+        -webkit-mask-composite: xor
+        mask-composite: exclude
+        z-index: -1
   .content::before
     content: ''
     position: absolute

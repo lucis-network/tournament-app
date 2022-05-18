@@ -125,6 +125,7 @@ export const Navigation = () => {
         </div>
       ),
       class: {position: 'absolute', bottom: "180px"},
+      isBlank: false
     },
     {
       color: "#FF008C",
@@ -143,6 +144,7 @@ export const Navigation = () => {
         </div>
       ),
       class: {position: 'absolute', bottom: "120px"},
+      isBlank: false
     },
     // {
     //   color: "#FF008C",

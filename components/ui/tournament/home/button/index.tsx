@@ -31,7 +31,7 @@ export default function ButtonSort({
 	return (
 		<div className={s.container}>
 			<div className={`${s.item} mb-6`}>
-				<div className={`w-24 ${s.ic}`}>
+				<div className={`w-24 ${s.ic} mb-4`}>
 					<img src="/assets/home/ic_filter.svg" alt="" />
 					Filter
 				</div>
@@ -75,7 +75,7 @@ export default function ButtonSort({
 				</div>
 			</div>
 			<div className={s.item}>
-				<div className={`w-24 ${s.ic}`}>
+				<div className={`w-24 ${s.ic} mb-4`}>
 					<img src="/assets/home/ic_sort.svg" alt="" />
 					Sort
 				</div>

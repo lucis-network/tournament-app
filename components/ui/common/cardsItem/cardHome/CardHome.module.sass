@@ -85,6 +85,7 @@
         justify-content: center
         border-radius: 16px 16px 0px 0px
         min-height: 260px
+        padding: 1px
         @media (min-width: 640px) and (max-width: 768px)
           max-height: 180px
           min-height: 180px
@@ -100,6 +101,12 @@
         @media (min-width: 1600px)
           max-height: 260px
           min-height: 260px
+        .thumbnail
+          background-size: cover
+          background-position: center
+          background-repeat: no-repeat
+          padding: 150px 0px
+          width: 100%
         .info
           position: absolute
           top: 0
@@ -162,15 +169,7 @@
           @media (min-width: 1440px)
             margin-top: 0px
           img
-            height: 50px
-            @media (min-width: 640px) and (max-width: 768px)
-              height: 40px
-            @media (min-width: 992px)
-              height: 40px
-            @media (min-width: 1280px)
-              height: 40px
-            @media (min-width: 1440px)
-              height: 50px
+            height: 32px
           .time
             text-transform: uppercase
             @media ( min-width: 992px )
@@ -182,14 +181,21 @@
             @media ( min-width: 1440px )
               font-size: 16px
         h2
-          height: 53px
           padding-top: 8px
+          overflow: hidden
+          height: 64px
+          @media (min-width: 992px)
+            height: 54px
+            margin: 0px
+          @media (min-width: 1440px)
+            height: 68px
+            margin: 0px
           a
             color: #FFF
             font-weight: 700
             padding-top: 24px
             @media (min-width: 0px)
-              font-size: 24px
+              font-size: 22px
               line-height: 28px 
             @media (min-width: 640px)
               padding-top: 8px
@@ -207,6 +213,7 @@
           display: flex
           align-items: center
           justify-content: space-between
+          padding-top: 12px
           .hosted_by_detail
             display: flex
             align-items: center
@@ -223,9 +230,10 @@
               font-size: 14px
               line-height: 16px
             span
-              @media (min-width: 992px) and (max-width: 1600px)
+              @media (min-width: 992px) and (max-width: 1599px)
                 display: none
-
+              @media (min-width: 0) and (max-width: 359px)
+                display: none
             .user
               display: flex
               align-items: center
@@ -235,10 +243,12 @@
                 overflow: hidden
                 border-radius: 100%
                 @media (min-width: 0px)
+                  margin: 0px 4px 0px 0px
+                @media (min-width: 360px)
                   margin: 0px 4px 0px 8px
                 @media (min-width: 992px)
                   margin: 0px 4px 0px 0px
-                @media (min-width: 1440px)
+                @media (min-width: 1600px)
                   margin: 0px 4px 0px 4px
                 @media (min-width: 1920px)
                   margin: 0px 4px 0px 8px
@@ -282,16 +292,17 @@
           @media (min-width: 992px)
             padding-top: 8px
           @media (min-width: 1440px)
-            padding-top: 28px
+            padding-top: 16px
           .ic_ntf
             max-width: 20px
+            line-height: 0
         .ntf > div
           display: flex
           align-items: center
         .ntf > div span
           color: #0BEBD6
           font-weight: 700
-          line-height: 115%
+          line-height: 120%
           margin-left: 4px
           @media (min-width: 0px)
             font-size: 16px
@@ -327,14 +338,12 @@
             padding: 0px 12px
             font-size: 12px
           @media (min-width: 1280px)
-            padding: 0px 16px
+            padding: 6px 20px
             font-size: 14px
           @media (min-width: 1600px)
-            padding: 4px 16px
             font-size: 16px
             height: auto
           @media (min-width: 1920px)
-            padding: 4px 16px
             font-size: 20px
         .btn_join_now:hover
           background-position: 50% 0% 
@@ -381,6 +390,7 @@
   background: linear-gradient(226.29deg, rgba(59, 226, 205, 0.7) -0.17%, rgba(51, 175, 212, 0.7) 93.89%)
   border-radius: 100%
   filter: blur(40px)
+
 
 .container_card::before
   content: ''
