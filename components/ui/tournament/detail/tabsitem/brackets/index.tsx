@@ -23,7 +23,7 @@ const BracketUI = ({ dataBracket, loadingBracket, refereeIds }: BracketUiProps) 
     }
     console.log('{useEffect} dataBracket: ', dataBracket);
 
-    const bracketTeams = dataBracket.bracketTeams;
+    const bracketTeams = dataBracket.playTeams;
     const isSingleBracket = dataBracket.type === "SINGLE";
 
     if (isSingleBracket) {

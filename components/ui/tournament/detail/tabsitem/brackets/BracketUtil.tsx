@@ -19,22 +19,22 @@ function _defaultRoundTeam(): Team {
 }
 
 export const createSeed = (item: BracketMatch, idx: number, listTeam: GBracketTeam[] | undefined): RoundMatch => {
-  const team1 = listTeam?.find((i) => i.uid == item.team1_uid);
-  const team2 = listTeam?.find((i) => i.uid == item.team2_uid);
+  const team1 = listTeam?.find((i) => i.uid == item.playteam1_uid);
+  const team2 = listTeam?.find((i) => i.uid == item.playteam2_uid);
 
   const roundTeam1: Team = !team1
     ? _defaultRoundTeam()
     : {
-      id: item.team1_uid !== "bye" ? (item.team1_uid ?? "") : "",
-      name: item.team1_uid !== "bye" ? team1.team.name : "",
+      id: item.playteam1_uid !== "bye" ? (item.playteam1_uid ?? "") : "",
+      name: item.playteam1_uid !== "bye" ? team1.team.name : "",
       score: item.score_1 ?? 0,
     };
 
   const roundTeam2: Team = !team2
     ? _defaultRoundTeam()
     : {
-      id: item.team2_uid !== "bye" ? (item.team2_uid ?? "") : "",
-      name: item.team2_uid !== "bye" ? team2.team.name : "",
+      id: item.playteam2_uid !== "bye" ? (item.playteam2_uid ?? "") : "",
+      name: item.playteam2_uid !== "bye" ? team2.team.name : "",
       score: item.score_2 ?? 0,
     };
 
