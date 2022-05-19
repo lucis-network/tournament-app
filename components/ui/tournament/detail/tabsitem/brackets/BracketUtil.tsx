@@ -1,6 +1,6 @@
 import React from "react";
 import moment from 'moment'
-import { BracketGql, BracketMatch, BracketMatchStatus, BracketRound, GBracketTeam } from "src/generated/graphql";
+import { BracketGql, BracketMatch, BracketMatchStatus, BracketRound, PlayTeam, PlayTeamGql } from "src/generated/graphql";
 import { Round, RoundMatch, Team } from "src/store/SingleRoundStore";
 import s from './index.module.sass'
 
@@ -18,7 +18,7 @@ function _defaultRoundTeam(): Team {
   }
 }
 
-export const createSeed = (item: BracketMatch, idx: number, listTeam: GBracketTeam[] | undefined): RoundMatch => {
+export const createSeed = (item: BracketMatch, idx: number, listTeam: PlayTeamGql[] | undefined): RoundMatch => {
   const team1 = listTeam?.find((i) => i.uid == item.playteam1_uid);
   const team2 = listTeam?.find((i) => i.uid == item.playteam2_uid);
 
@@ -45,7 +45,7 @@ export const createSeed = (item: BracketMatch, idx: number, listTeam: GBracketTe
   };
 };
 
-export const createRound = (item: BracketRound, idx: number, listTeam: GBracketTeam[] | undefined): Round => {
+export const createRound = (item: BracketRound, idx: number, listTeam: PlayTeamGql[] | undefined): Round => {
   const seeds = !item.bracketMatchs
     ? []
     : item.bracketMatchs.map((item, idx) =>
@@ -68,7 +68,7 @@ export const createRounds = ({
   bracketTeams,
 }: {
   bracketRounds: BracketRound[],
-  bracketTeams: GBracketTeam[] | undefined,
+  bracketTeams: PlayTeamGql[] | undefined,
 }): Round[] => {
   if (!bracketRounds) {
     return []
