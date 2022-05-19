@@ -370,43 +370,46 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     xl={{ span: 9 }}
                     className={s.generousSponsorsWrap}
                   >
-                    <h3 className={s.generousSponsorsTitle}>
-                      Our generous sponsors
-                    </h3>
-                    <div className={s.generousSponsorsList}>
-                      {dataRankSponsors &&
-                        dataRankSponsors.map((item: any, index: number) => {
-                          return (
-                            <div
-                              className={`${s.generousSponsor} ${
-                                item?.name === "Diamond" ? s.vip : ""
-                              }`}
-                              key={index}
-                            >
-                              <div className={s.generousSponsorAvatar}>
-                                {item?.data?.logo ? (
-                                  <Image
-                                    src={item?.data?.logo}
-                                    preview={false}
-                                    alt=""
-                                  />
-                                ) : (
-                                  <Image
-                                    src={
-                                      "/assets/TournamentDetail/sponsorAvatar.png"
-                                    }
-                                    preview={false}
-                                    alt=""
-                                  />
-                                )}
-                              </div>
-                              <div className={s.generousSponsorName}>
-                                {item?.data?.name}
-                              </div>
-                            </div>
-                          );
-                        })}
-                    </div>
+                    {dataRankSponsors && (
+                      <>
+                        <h3 className={s.generousSponsorsTitle}>
+                          Our generous sponsors
+                        </h3>
+                        <div className={s.generousSponsorsList}>
+                          {dataRankSponsors.map((item: any, index: number) => {
+                              return (
+                                <div
+                                  className={`${s.generousSponsor} ${
+                                    item?.name === "Diamond" ? s.vip : ""
+                                  }`}
+                                  key={index}
+                                >
+                                  <div className={s.generousSponsorAvatar}>
+                                    {item?.data?.logo ? (
+                                      <Image
+                                        src={item?.data?.logo}
+                                        preview={false}
+                                        alt=""
+                                      />
+                                    ) : (
+                                      <Image
+                                        src={
+                                          "/assets/TournamentDetail/sponsorAvatar.png"
+                                        }
+                                        preview={false}
+                                        alt=""
+                                      />
+                                    )}
+                                  </div>
+                                  <div className={s.generousSponsorName}>
+                                    {item?.data?.name}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      </>
+                    )}
                   </Col>
                 </Row>
               </div>
