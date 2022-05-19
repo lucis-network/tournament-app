@@ -28,7 +28,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
       title: "Donors",
       dataIndex: ["donor_avatar", "donor_display_name"],
       render: (text: string, row: any) => (
-        <span>
+        <div className="text-left">
           {row.donor_avatar && (
             <Image
               className={s.avatar}
@@ -38,14 +38,14 @@ export default function DonationHistory(props: DonationHistoryProps) {
             />
           )}
           {row.donor_display_name}
-        </span>
+        </div>
       ),
     },
     {
       title: "Receiver",
       dataIndex: ["receiver_avatar", "receiver_display_name"],
       render: (text: string, row: any) => (
-        <span>
+        <div className="text-left">
           {row.receiver_avatar && (
             <Image
               className={s.avatar}
@@ -55,7 +55,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
             />
           )}
           {row.receiver_display_name}
-        </span>
+        </div>
       ),
     },
     {
@@ -83,7 +83,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
         <span>
           {hash && (
             <Link href={`https://testnet.bscscan.com/tx/${hash}`} passHref>
-              <a>
+              <a target="_blank">
                 <LinkOutlined />
               </a>
             </Link>
@@ -111,7 +111,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
   return (
     <div className={s.wrapper}>
       <div className={s.donationWrapper}>
-        <h3 className="text-right">
+        <h3>
           Total donation: {fomatNumber(totalDonation)} {currency?.symbol}
         </h3>
         <Table
