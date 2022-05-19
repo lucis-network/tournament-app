@@ -13,6 +13,7 @@ import NotifyModal from "../notify/notifyModal";
 import { fomatNumber } from "utils/Number";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
+import AuthStore from "../../../../Auth/AuthStore";
 
 type Props = {
   tournamentUid?: any;
@@ -39,7 +40,8 @@ export default observer(function DepositModal(props: Props) {
         const tournamentService = new TournamentService();
         tournamentService.depositTournament(
           tournamentUid,
-          result?.txHash as string
+          result?.txHash as string,
+          result?.blockNumber as number
         );
       } else {
         //@ts-ignore
@@ -71,16 +73,22 @@ export default observer(function DepositModal(props: Props) {
             BUSD
           );
       }
-
-      if (TournamentStore.checkDepositApprove) {
-        const result = await ethersService.initTournament(
-          tournamentUid,
-          total,
-          BUSD,
-          contractAddress[0]?.address
-        );
-        return result;
+      if(!AuthStore.id) {
+        console.log('User not exist in sotre');
+        return;
       }
+      if(!TournamentStore.checkDepositApprove) {
+        return
+      }
+      
+      const result = await ethersService.initTournament(
+        AuthStore.id + '',
+        tournamentUid,
+        total,
+        BUSD,
+        contractAddress[0]?.address
+      );
+      return result;
     }
   };
 

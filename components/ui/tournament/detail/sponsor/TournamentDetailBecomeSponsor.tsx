@@ -133,10 +133,15 @@ export default function TournamentDetailBecomeSponsor(
             BUSD
           );
       }
+      if(!AuthStore.id) {
+        console.log('User not exist in sotre');
+        return;
+      }
 
       console.log("TournamentStore.checkBecomeSponser", TournamentStore.checkBecomeSponser)
       if (TournamentStore.checkBecomeSponser) {
         const result = await ethersService.becomeSponsor(
+          AuthStore.id + '',
           tournamentId as string,
           amount,
           BUSD,

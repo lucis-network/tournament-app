@@ -21,6 +21,7 @@ const address = await ethersService.getMyAddress();
 
 type ResultTranferFT = {
   txHash: string;
+  blockNumber: number;
   error: null;
 };
 
@@ -204,6 +205,7 @@ export default class EtherContract {
   ): Promise<ResultTranferFT> {
     const result: ResultTranferFT = {
       txHash: "",
+      blockNumber: 0,
       error: null,
     };
     try {
@@ -216,6 +218,7 @@ export default class EtherContract {
 
       const transaction = await contract.transfer(toAddress, totalAmount);
       const txHash = transaction.hash;
+      result.blockNumber = transaction.blockNumber;
       result.txHash = txHash;
     } catch (error) {
       console.log("{EtherContract.transferNft} error: ", error);
@@ -240,6 +243,7 @@ export default class EtherContract {
   // }
 
   async initTournament(
+    userId: string,
     tournamentUid: string,
     amount: number,
     paymentToken: string,
@@ -247,6 +251,7 @@ export default class EtherContract {
   ): Promise<ResultTranferFT> {
     const result: ResultTranferFT = {
       txHash: "",
+      blockNumber: 0,
       error: null,
     };
     try {
@@ -257,12 +262,17 @@ export default class EtherContract {
         .toFormat({ groupSeparator: "" });
 
       const transaction = await contract.initTournament(
+        userId,
         tournamentUid,
         totalAmount,
         paymentToken
       );
+      await transaction.wait();
+      console.log("transaction:", transaction);
 
       const txHash = transaction.hash;
+      result.blockNumber = transaction.blockNumber;
+
       result.txHash = txHash;
     } catch (error) {
       console.log("{EtherContract.initTournament} error: ", error);
@@ -285,6 +295,7 @@ export default class EtherContract {
   ): Promise<ResultTranferFT> {
     const result: ResultTranferFT = {
       txHash: "",
+      blockNumber: 0,
       error: null,
     };
     try {
@@ -329,9 +340,12 @@ export default class EtherContract {
           paymentToken
         );
       }
+      await transaction.wait();
+      console.log("transaction:", transaction);
 
       const txHash = transaction.hash;
       result.txHash = txHash;
+      result.blockNumber = transaction.blockNumber;
     } catch (error) {
       console.log("{EtherContract.donate} error: ", error);
 
@@ -342,6 +356,7 @@ export default class EtherContract {
   }
 
   async becomeSponsor(
+    userId: string,
     tournamentUid: string,
     amount: number,
     paymentToken: string,
@@ -349,6 +364,7 @@ export default class EtherContract {
   ): Promise<ResultTranferFT> {
     const result: ResultTranferFT = {
       txHash: "",
+      blockNumber: 0,
       error: null,
     };
     try {
@@ -359,13 +375,17 @@ export default class EtherContract {
         .toFormat({ groupSeparator: "" });
 
       const transaction = await contract.becomeSponsor(
+        userId,
         tournamentUid,
         totalAmount,
         paymentToken
       );
+      await transaction.wait();
+      console.log("transaction:", transaction);
 
       const txHash = transaction.hash;
       result.txHash = txHash;
+      result.blockNumber = transaction.blockNumber;
     } catch (error) {
       console.log("{EtherContract.becomeSponsor} error: ", error);
 
