@@ -76,6 +76,15 @@ export default function DonationHistory(props: DonationHistoryProps) {
       ),
     },
     {
+      title: "Message",
+      dataIndex: "message",
+      render: (message: string) => (
+        <>
+          {message}
+        </>
+      ),
+    },
+    {
       title: "TxID",
       dataIndex: "tx_hash",
       render: (hash: string) => (
