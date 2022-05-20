@@ -437,6 +437,7 @@ const GET_DONATION_HISTORY = gql`
       amount
       symbol
       time
+      message
     }
   }
 `;
