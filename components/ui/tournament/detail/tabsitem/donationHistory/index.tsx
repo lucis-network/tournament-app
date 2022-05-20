@@ -4,6 +4,7 @@ import s from "./DonationHistory.module.sass";
 import Link from "next/link";
 import { LinkOutlined } from "@ant-design/icons";
 import { currency as formatCurrency } from "../../../../../../utils/Number";
+import {isEmpty} from "lodash";
 
 type DonationHistoryProps = {
   dataDonation: DonateHistory[];
@@ -13,10 +14,16 @@ type DonationHistoryProps = {
 
 export default function DonationHistory(props: DonationHistoryProps) {
   const { dataDonation, loadingDonation, currency } = props;
-  if (loadingDonation) {
+  if (loadingDonation || isEmpty(dataDonation)) {
     return <></>;
   }
-  const totalDonation = dataDonation.reduce((a, b) => ((a?.amount && b?.amount) && a?.amount + b?.amount) as DonateHistory) as number
+  let totalDonation = 0
+  dataDonation.map(item => {
+    if (item.amount as number >= 0) {
+      totalDonation += item.amount as number
+    }
+  })
+
   const columns = [
     {
       title: "No",
