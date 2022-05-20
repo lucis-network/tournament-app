@@ -1,10 +1,12 @@
 @import styles/common
 .wrapper
   min-height: 100vh
-  background: url("/assets/Banner/bg_banner.png") top left / contain no-repeat, url("/assets/TournamentDetail/bgTournamentDetail.png") top left / cover no-repeat
-  padding-top: 50px
+  background: url("/assets/TournamentDetail/bgTournamentDetail.png") top left / cover no-repeat
+  padding-top: 70px
   overflow-x: hidden
   word-break: break-word
+  @media screen and (min-width: 1024px)
+    margin-top: 0
   .banner
     position: relative
     min-height: 400px
@@ -251,13 +253,16 @@
             margin-right: 10px
             img
               width: 30px
+          .gameName, .userName
+            font-size: 12px
+            @media screen and (min-width: 992px)
+              font-size: 16px
         .gameInfo
           margin-bottom: 20px
           :global(.ant-image)
             img
               height: auto
           .gameName
-            font-size: 16px
             font-weight: 700
         .userInfo
           :global(.ant-image)
@@ -266,7 +271,6 @@
           .userAvatar
             border-radius: 50px
           .userName
-            font-size: 16px
             text-decoration: underline
       .generousSponsorsWrap
         .generousSponsorsTitle
