@@ -35,9 +35,10 @@ export default function TableParticipant(props: Props) {
   };
 
   const handleClick = (e: object) => {
+    console.log('e: ', e)
     setDatas(e);
     //@ts-ignore
-    if (e?.bracketTeamMembers?.length == 1) {
+    if (e?.playTeamMembers?.length == 1) {
       setIsPopupDonate(true);
     } else {
       AppEmitter.emit("showPopupDonate", true);
@@ -52,7 +53,7 @@ export default function TableParticipant(props: Props) {
       title: "No",
       dataIndex: "getTournamentParticipants",
       key: "id",
-      width: 50,
+      width: 60,
       render: (_: any, item: any, index: number) => {
         return <>{index + 1}</>;
       },

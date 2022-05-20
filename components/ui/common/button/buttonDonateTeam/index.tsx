@@ -91,8 +91,8 @@ export default function ModalDonateTeam(props: Props) {
             <div className={s.Member}>
               <h1>Member</h1>
 
-              {nameTeam?.bracketTeamMembers
-                ? nameTeam?.bracketTeamMembers?.map((item: any) => (
+              {nameTeam?.playTeamMembers
+                ? nameTeam?.playTeamMembers?.map((item: any) => (
                     <Row key={item?.uid} className={s.container}>
                       <Col span={18} className={s.item_member}>
                         <div className={s.avt_member}>
