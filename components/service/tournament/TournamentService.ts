@@ -3,6 +3,7 @@ import { ClaimDonation } from "components/ui/tournament/detail/popup/claimDonati
 import { GDonateTransaction } from "components/ui/tournament/detail/popup/popupDonate";
 import { ClaimPrizePool } from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import { SponsorInput } from "components/ui/tournament/detail/sponsor/TournamentDetailBecomeSponsor";
+import { SponsorCreateInputGql } from "src/generated/graphql";
 import { CreateTournament } from "src/store/TournamentStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
@@ -50,10 +51,10 @@ export default class TournamentService {
     return donataResponse;
   }
 
-  public async becomeSponsor(sponsor: SponsorInput): Promise<any> {
+  public async becomeSponsor(sponsor: SponsorCreateInputGql): Promise<any> {
     const donataResponse = await apoloClient.mutate({
       mutation: gql`
-        mutation becomeOurSponsor($data: SponsorInput!) {
+        mutation becomeOurSponsor($data: SponsorCreateInputGql!) {
           becomeOurSponsor(data: $data)
         }
       `,
@@ -68,14 +69,14 @@ export default class TournamentService {
   public async depositTournament(
     tournamentUid: string,
     txHash: string,
-    block: number
+    block?: number
   ): Promise<any> {
     const donataResponse = await apoloClient.mutate({
       mutation: gql`
         mutation depositTournament(
           $tournamentUid: String!
           $txHash: String!
-          $block: Int!
+          $block: Int
         ) {
           depositTournament(
             tournamentUid: $tournamentUid

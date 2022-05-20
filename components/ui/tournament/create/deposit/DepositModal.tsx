@@ -5,7 +5,7 @@ import s from "./index.module.sass";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
 import { BUSD } from "utils/Enum";
@@ -22,8 +22,9 @@ type Props = {
 export default observer(function DepositModal(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const { tournamentUid } = props;
-  const isModalVisible = TournamentStore.depositModalVisible,
-    setIsModalVisible = (v: boolean) =>
+  const isModalVisible = TournamentStore.depositModalVisible;
+    
+  const setIsModalVisible = (v: boolean) =>
       (TournamentStore.depositModalVisible = v);
 
   const { getContract } = useGetContract({});
@@ -33,8 +34,8 @@ export default observer(function DepositModal(props: Props) {
       AuthBoxStore.connectModalVisible = true;
     } else {
       let result = await deposit();
-
       setIsLoading(false);
+
       if (!result?.error) {
         TournamentStore.notifyModalVisible = true;
         const tournamentService = new TournamentService();
@@ -61,7 +62,6 @@ export default observer(function DepositModal(props: Props) {
         ConnectWalletStore_NonReactiveData.web3Provider
       );
       const total = getTotalAmount();
-
       const contractAddress = getContract.filter(
         (item: any) => item.type === "PRIZE"
       );

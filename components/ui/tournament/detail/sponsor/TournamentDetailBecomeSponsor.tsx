@@ -27,6 +27,7 @@ import { BUSD } from "utils/Enum";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "components/Auth/AuthStore";
+import { SponsorCreateInputGql } from "src/generated/graphql";
 
 type TournamentDetailBecomeSponsorProps = {
   isBecome: boolean;
@@ -72,7 +73,7 @@ export default function TournamentDetailBecomeSponsor(
 
   const handleFormUpdate = async (data: any) => {
     // todo submit sponsor
-    let sponsor: SponsorInput = {
+    let sponsor: SponsorCreateInputGql = {
       logo: data.logo,
       name: data.name ? data.name : "",
       home_page: data.home_page,
