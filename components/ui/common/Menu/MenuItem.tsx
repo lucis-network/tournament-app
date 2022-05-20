@@ -5,6 +5,7 @@ import s from "./MenuMobile.module.sass";
 import { motion } from "framer-motion";
 import { AppEmitter } from "services/emitter";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 const variants = {
   open: {
@@ -36,6 +37,12 @@ export type MenuItemType = {
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
+  const router = useRouter();
+  const handleGoToLinkMenu = (src: any) => {
+    if (src) {
+      router.push(src)
+    }
+  };
   const click = useCallback(() => {
     // if (props.item.scrollTarget) {
     //   scrollToSection(props.item.scrollTarget ?? '', true, -90)
@@ -60,18 +67,9 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       <div
         className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`}
         style={{ fontSize: "16px", lineHeight: "22px" }}
+        onClick={() => handleGoToLinkMenu(props.item.src)}
       >
-        {
-          props.item.isBlank ? 
-        <a
-          href={props.item.src ?? "/"}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {props.item.text}
-        </a>
-        : props.item.text
-        }
+        {props.item.text}
       </div>
     </motion.li>
   );

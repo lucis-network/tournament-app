@@ -86,17 +86,18 @@ export const Navigation = () => {
   const menuItems: MenuItemType[] = [
     {
       color: "#FF008C",
-      text: "TOURNAMENT",
-      src: "https://tournament-lucis.gitbook.io/lucis-tournament/",
-    },
-    {
-      color: "#FF008C",
-      text: "FAQ",
-      src: "https://insight.lucis.network/"
+      text: "HOME",
+      src: "/",
+      isBlank: false
     },
     {
       color: "#FF008C",
       text: "INSIGHT",
+      src: "https://insight.lucis.network/"
+    },
+    {
+      color: "#FF008C",
+      text: "FAQ",
       src: "https://tournament-lucis.gitbook.io/lucis-tournament/"
     },
     {
