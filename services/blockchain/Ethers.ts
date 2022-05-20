@@ -265,6 +265,7 @@ export default class EtherContract {
         totalAmount,
         paymentToken
       );
+
       // const waitResult = await transaction.wait();
       // console.log("waitResult_initTournament : ", waitResult);
       // console.log("transaction:", transaction);
@@ -338,8 +339,8 @@ export default class EtherContract {
           paymentToken
         );
       }
-      await transaction.wait();
-      console.log("transaction:", transaction);
+      // await transaction.wait();
+      // console.log("transaction:", transaction);
 
       const txHash = transaction.hash;
       result.txHash = txHash;
