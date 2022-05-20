@@ -1,23 +1,22 @@
-import { Currency, Prize } from "../../../../../../src/generated/graphql";
+import { Currency, DonateHistory } from "../../../../../../src/generated/graphql";
 import { Image, Table } from "antd";
 import s from "./DonationHistory.module.sass";
 import Link from "next/link";
 import { LinkOutlined } from "@ant-design/icons";
-import { fomatNumber } from "../../../../../../utils/Number";
+import { currency as formatCurrency } from "../../../../../../utils/Number";
 
 type DonationHistoryProps = {
-  dataDonation: Prize[];
+  dataDonation: DonateHistory[];
   loadingDonation: any;
   currency?: Currency;
-  tournament: any;
 };
 
 export default function DonationHistory(props: DonationHistoryProps) {
-  const { dataDonation, loadingDonation, currency, tournament } = props;
+  const { dataDonation, loadingDonation, currency } = props;
   if (loadingDonation) {
     return <></>;
   }
-  const { totalDonation } = tournament;
+  const totalDonation = dataDonation.reduce((a, b) => ((a?.amount && b?.amount) && a?.amount + b?.amount) as DonateHistory) as number
   const columns = [
     {
       title: "No",
@@ -70,9 +69,9 @@ export default function DonationHistory(props: DonationHistoryProps) {
     {
       title: "Amount",
       dataIndex: "amount",
-      render: (text: string) => (
+      render: (amount: number) => (
         <span>
-          {text} {currency?.symbol}
+          {formatCurrency(amount)} {currency?.symbol}
         </span>
       ),
     },
@@ -112,7 +111,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
     <div className={s.wrapper}>
       <div className={s.donationWrapper}>
         <h3>
-          Total donation: {fomatNumber(totalDonation)} {currency?.symbol}
+          Total donation: {formatCurrency(totalDonation)} {currency?.symbol}
         </h3>
         <Table
           dataSource={dataDonation}

@@ -84,9 +84,11 @@ function TournamentCard(props: { data: TournamentGql }) {
               </span>
             </div>
           </div>
-          <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
-            <div style={{backgroundImage: `url(${item.thumbnail})`}} className={s.thumbnail}></div>
-          </Link>
+          <a
+            href={`/tournament/${item.uid}/${slugify(item.name)}`}
+            style={{ backgroundImage: `url(${item.thumbnail})` }}
+            className={s.thumbnail}
+          ></a>
         </div>
         <div className={s.heading}>
           <div className={s.im_logo_game}>
@@ -143,9 +145,10 @@ function TournamentCard(props: { data: TournamentGql }) {
             <Button
               type="primary"
               className={s.btn_join_now}
-              onClick={handleJoinNowDetail}
             >
-              JOIN NOW
+              <a href={`/tournament/${item.uid}/${slugify(item.name)}`}>
+                JOIN NOW
+              </a>
             </Button>
           </div>
         </div>

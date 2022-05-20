@@ -55,7 +55,7 @@ export default function TabHome() {
 							</div>
 						))}
 					</Col>
-					<Col>
+					<Col className={s.container_search}>
 						<Search
 							className={s.search}
 							placeholder="Search by game"

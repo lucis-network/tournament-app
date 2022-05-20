@@ -23,13 +23,13 @@ import { isClientDevMode } from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
-import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import PopupConfirm from "components/ui/tournament/detail/popup/PopupConfirm";
 import Link from "next/link";
 import LoginModal from "components/Auth/Login/LoginModal";
 import AuthStore from "components/Auth/AuthStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
+import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 
 const { TabPane } = Tabs;
 
@@ -505,7 +505,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 dataDonation={dataDonation}
                 loadingDonation={loadingDonation}
                 currency={currency}
-                tournament={dataTournamentDetail}
               />
             </TabPane>
           </Tabs>

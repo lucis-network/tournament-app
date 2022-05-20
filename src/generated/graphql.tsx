@@ -818,7 +818,7 @@ export type DonateHistory = {
 export type DonateTransaction = {
   __typename?: 'DonateTransaction';
   amount: Scalars['Decimal'];
-  block: Scalars['Int'];
+  block?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
   currency: Currency;
   currency_uid: Scalars['String'];
@@ -837,7 +837,7 @@ export type DonateTransaction = {
 
 export type DonateTransactionCreateManyCurrencyInput = {
   amount: Scalars['Decimal'];
-  block: Scalars['Int'];
+  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   from: Scalars['String'];
   message?: InputMaybe<Scalars['String']>;
@@ -858,7 +858,7 @@ export type DonateTransactionCreateManyCurrencyInputEnvelope = {
 
 export type DonateTransactionCreateManyTournamentsInput = {
   amount: Scalars['Decimal'];
-  block: Scalars['Int'];
+  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_uid: Scalars['String'];
   from: Scalars['String'];
@@ -903,7 +903,7 @@ export type DonateTransactionCreateOrConnectWithoutTournamentsInput = {
 
 export type DonateTransactionCreateWithoutCurrencyInput = {
   amount: Scalars['Decimal'];
-  block: Scalars['Int'];
+  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   from: Scalars['String'];
   message?: InputMaybe<Scalars['String']>;
@@ -919,7 +919,7 @@ export type DonateTransactionCreateWithoutCurrencyInput = {
 
 export type DonateTransactionCreateWithoutTournamentsInput = {
   amount: Scalars['Decimal'];
-  block: Scalars['Int'];
+  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency: CurrencyCreateNestedOneWithoutDonateTransactionsInput;
   from: Scalars['String'];
@@ -994,7 +994,7 @@ export type GContract = {
 
 export type GDonateTransaction = {
   amount?: InputMaybe<Scalars['Float']>;
-  block: Scalars['Int'];
+  block?: InputMaybe<Scalars['Int']>;
   message?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TransactionStatus>;
   to: Scalars['String'];
@@ -1280,7 +1280,7 @@ export type MutationDeleteTeamArgs = {
 
 
 export type MutationDepositTournamentArgs = {
-  block: Scalars['Int'];
+  block?: InputMaybe<Scalars['Int']>;
   tournamentUid: Scalars['String'];
   txHash: Scalars['String'];
 };
@@ -2472,7 +2472,7 @@ export type SubscriptionUpdateTotalPrizePoolArgs = {
 export type SystemSponsor = {
   __typename?: 'SystemSponsor';
   amount: Scalars['Decimal'];
-  block: Scalars['Int'];
+  block?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
   status: TransactionStatus;
   tournament: Tournament;
@@ -2495,7 +2495,7 @@ export type SystemSponsorCreateOrConnectWithoutTournamentInput = {
 
 export type SystemSponsorCreateWithoutTournamentInput = {
   amount: Scalars['Decimal'];
-  block: Scalars['Int'];
+  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   status?: InputMaybe<TransactionStatus>;
   tx_hash: Scalars['String'];

@@ -35,12 +35,12 @@ export default function ButtonSort({
 					<img src="/assets/home/ic_filter.svg" alt="" />
 					Filter
 				</div>
-				<div>
+				<div className="flex items-center flex-wrap justify-between w-full">
 					<Select
 						onChange={handleChange("game_uid")}
 						allowClear
 						placeholder="Game"
-						className="w-44"
+						className="w-[165px]"
 					>
 						{gameData?.map((item) => (
 							<Option key={item.uid} value={item.uid}>
@@ -52,7 +52,7 @@ export default function ButtonSort({
 						onChange={handleChange("bracket")}
 						allowClear
 						placeholder="Bracket Type"
-						className="w-[165px]"
+						className={`w-[165px] ${s.item_bracket}`}
 					>
 						{bracketValues.map((item) => (
 							<Option key={item.key} value={item.key}>
@@ -105,8 +105,8 @@ export default function ButtonSort({
 						))}
 					</Select>
 				</div> */}
-				<div className="flex items-center align-middle">
-					<div className={`mr-4 ${s.m}`}>
+				<div className="flex items-center align-middle justify-between w-full">
+					<div className={`mr-4 w-[165px] ${s.m}`}>
 						<Order
 							title="Prize pool"
 							id="prize_pool"
