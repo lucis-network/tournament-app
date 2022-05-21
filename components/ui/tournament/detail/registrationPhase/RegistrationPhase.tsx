@@ -203,10 +203,12 @@ export default observer(function RegistrationPhase(props: Props) {
 								preview={false}
 							/>
 						</div>
-						<h3>
-							{fomatNumber(totalPrizePool)} {currency.symbol}
-						</h3>
-						<p>Prize pool</p>
+						<div className={s.itemText}>
+							<h3>
+								{fomatNumber(totalPrizePool)} {currency.symbol}
+							</h3>
+							<p>Prize pool</p>
+						</div>
 						<div className={`${s.additionalInfo} ${s.additionalPrize}`}>
 							{additionPrize ? (
 								additionPrize > 0 ? (
@@ -238,10 +240,12 @@ export default observer(function RegistrationPhase(props: Props) {
 								preview={false}
 							/>
 						</div>
-						<h3>
-							{fomatNumber(totalDonation)} {currency.symbol}
-						</h3>
-						<p>Total donation</p>
+						<div className={s.itemText}>
+							<h3>
+								{fomatNumber(totalDonation)} {currency.symbol}
+							</h3>
+							<p>Total donation</p>
+						</div>
 						<div className={s.additionalInfo}>
 							{tournament_status !== "CLOSED" && (
 								<button onClick={openModal}>
@@ -263,13 +267,15 @@ export default observer(function RegistrationPhase(props: Props) {
 								preview={false}
 							/>
 						</div>
-						<h3>
-							{cache_tournament?.team_participated
-								? cache_tournament?.team_participated
-								: 0}
-							/{participants}
-						</h3>
-						<p>Participants</p>
+						<div className={s.itemText}>
+							<h3>
+								{cache_tournament?.team_participated
+									? cache_tournament?.team_participated
+									: 0}
+								/{participants}
+							</h3>
+							<p>Participants</p>
+						</div>
 						<div className={s.additionalInfo}>
 							{(() => {
 								switch (tournament_status) {
