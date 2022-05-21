@@ -16,7 +16,7 @@ export default function TournamentDetailSponsorSlot(props: TournamentDetailSpons
     <div className={s.sponsorSlot}>
       <div className={s.sponsorLogoWrap}>
         <CircleImage
-          src={sponsorLogo || '/assets/TournamentDetail/sponsorAvatar.png'}
+          src={sponsorLogo || '/assets/avatar.jpg'}
           className={s.sponsorLogo}
         />
       </div>
