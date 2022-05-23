@@ -35,7 +35,9 @@
     .gradientBtnWrap
       width: 100%
       margin-left: auto
+      text-align: center
       @media screen and (min-width: 768px)
+        text-align: unset
         max-width: 60%
         display: flex
         justify-content: flex-end
@@ -218,6 +220,9 @@
         width: 100%
         img
           width: 100%
+          aspect-ratio: 450 / 300
+          object-fit: cover
+          object-position: center
     .tournamentMetadataWrap
       .tournamentTitle
         font-weight: 700
