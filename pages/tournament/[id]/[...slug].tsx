@@ -183,7 +183,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         <Banner cover={cover} />
         <TournamentDetailMarquee />
         <section className={s.tournamentInfo}>
-          <div className={`lucis-container-2`}>
+          <div className="lucis-container-2">
             <div className={s.group_button}>
               {userLocal?.id === user?.id &&
                 tournament_status === "FINISH" &&
