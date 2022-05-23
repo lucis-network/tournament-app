@@ -50,9 +50,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     dataIsJoin: isJoin,
     dataIsCheckin: isCheckin,
     dataDonation,
-    dataListRank,
-    isCheckConfirmResult,
     dataIsubscribeToTournament,
+    isCheckConfirmResult,
 
     loading,
     loadingParticipant,
@@ -60,7 +59,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     loadingPrizing,
     loadingBracket,
     loadingDonation,
-    loadingListRank,
 
     joinTournament,
     refreshParticipant,
@@ -71,7 +69,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
-    skip: isEmpty(tournamentId)
+    skip: isEmpty(tournamentId),
   });
 
   const { dataSponsors, refetchSponsor } = useSponsors({
@@ -83,21 +81,24 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     let obj: any = [];
     if (dataSponsors) {
       dataSponsors.getSponsorSlot?.forEach((item) => {
-        let object = {
-          name: "",
-          data: {},
-        };
-        object.name = item?.name ? item?.name : "";
-
         if (item?.sponsor_transactions) {
           item?.sponsor_transactions?.forEach((itm) => {
-            object.data = itm;
+            //Object.assign(object.data, itm);
+            let object = {
+              name: item?.name ? item?.name : "",
+              data: itm,
+            };
             obj.push(object);
           });
         }
       });
     }
-    setDataRankSponsors(obj);
+    if (obj?.length > 2) {
+      let ob = obj.slice(0, 3);
+      setDataRankSponsors(ob);
+    } else {
+      setDataRankSponsors(obj);
+    }
   }, [dataSponsors]);
 
   if (loading) {
@@ -141,6 +142,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     cache_tournament,
     tournament_status,
     referees,
+    turns,
   } = dataTournamentDetail ?? {};
 
   const userLocal = getLocalAuthInfo();
@@ -153,12 +155,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
-    const sub = tournamentService
-      .subscribeToTournament(tournamentId)
-      .then((res) => {
-        refetchSubTournament();
-        setIsLoadingSub(false);
-      });
+    setTimeout(() => {
+      const sub = tournamentService
+        .subscribeToTournament(tournamentId)
+        .then((res) => {
+          refetchSubTournament();
+          setIsLoadingSub(false);
+        });
+    }, 800);
   };
 
   const handUnsubscribe = () => {
@@ -169,12 +173,15 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
-    const sub = tournamentService
-      .unsubscribeToTournament(tournamentId)
-      .then((res) => {
-        refetchSubTournament();
-        setIsLoadingSub(false);
-      });
+
+    setTimeout(() => {
+      const sub = tournamentService
+        .unsubscribeToTournament(tournamentId)
+        .then((res) => {
+          refetchSubTournament();
+          setIsLoadingSub(false);
+        });
+    }, 800);
   };
 
   return (
@@ -200,7 +207,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   <Spin spinning={isLoadingSub}>
                     <button key={"Subscribe"} onClick={handUnsubscribe}>
                       <Image
-                        src="/assets/TournamentDetail/signInCircle.svg"
+                        src="/assets/Campaign/Banner/svg/subcribed.svg"
                         preview={false}
                         alt=""
                       />
@@ -331,7 +338,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           <div className={s.gameName}>{game?.name}</div>
                         </div>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 15 }}>
+                      <Col xs={{ span: 24 }} sm={{ span: 8 }}>
                         <Link
                           href={
                             user?.profile?.user_name
@@ -362,8 +369,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           </a>
                         </Link>
                       </Col>
+                      <Col xs={{ span: 24 }} sm={{ span: 7 }}>
+                        <div className={s.metadataValue}>BO{turns}</div>
+                      </Col>
                     </Row>
                   </Col>
+
                   {/* generous sponsors */}
                   <Col
                     xs={{ span: 24 }}
@@ -377,36 +388,36 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         </h3>
                         <div className={s.generousSponsorsList}>
                           {dataRankSponsors.map((item: any, index: number) => {
-                              return (
-                                <div
-                                  className={`${s.generousSponsor} ${
-                                    item?.name === "Diamond" ? s.vip : ""
-                                  }`}
-                                  key={index}
-                                >
-                                  <div className={s.generousSponsorAvatar}>
-                                    {item?.data?.logo ? (
-                                      <Image
-                                        src={item?.data?.logo}
-                                        preview={false}
-                                        alt=""
-                                      />
-                                    ) : (
-                                      <Image
-                                        src={
-                                          "/assets/TournamentDetail/sponsorAvatar.png"
-                                        }
-                                        preview={false}
-                                        alt=""
-                                      />
-                                    )}
-                                  </div>
-                                  <div className={s.generousSponsorName}>
-                                    {item?.data?.name}
-                                  </div>
+                            return (
+                              <div
+                                className={`${s.generousSponsor} ${
+                                  item?.name === "Diamond" ? s.vip : ""
+                                }`}
+                                key={index}
+                              >
+                                <div className={s.generousSponsorAvatar}>
+                                  {item?.data?.logo ? (
+                                    <Image
+                                      src={item?.data?.logo}
+                                      preview={false}
+                                      alt=""
+                                    />
+                                  ) : (
+                                    <Image
+                                      src={
+                                        "/assets/TournamentDetail/sponsorAvatar.png"
+                                      }
+                                      preview={false}
+                                      alt=""
+                                    />
+                                  )}
                                 </div>
-                              );
-                            })}
+                                <div className={s.generousSponsorName}>
+                                  {item?.data?.name}
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </>
                     )}
@@ -434,13 +445,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             <TournamentDetailSponsor
               tournamentId={tournamentId as string}
               tournament_status={tournament_status as string}
+              refetchTounament={refetch}
             />
             {/* ===== end sponsor ===== */}
           </div>
         </div>
         {/* ===== tabs ===== */}
         <div className={`lucis-container-2 ${s.container_Tabs}`}>
-          <Tabs defaultActiveKey="1" className={s.block_tabs}>
+          <Tabs defaultActiveKey="1" className={s.block_tabs} tabPosition={'top'}>
             <TabPane tab="Overview" key="1">
               <Overview desc={desc as string} />
             </TabPane>
@@ -475,8 +487,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 )}
                 {tournament_status === "CLOSED" && (
                   <ListRanks
-                    dataListRank={dataListRank}
-                    loading={loadingListRank}
                     tournamentId={tournamentId as string}
                     currency={currency}
                   />
@@ -539,6 +549,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           onCancel={() => setShowConfirm(false)}
           tournamentId={tournamentId as string}
           refetchConfirmResult={refetchConfirmResult}
+          tournament_status={tournament_status}
         />
       </div>
       <LoginModal />

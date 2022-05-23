@@ -79,10 +79,11 @@ const PopupDonate = (props: Props) => {
 
   useEffect(() => {
     if (types == "PLAYER") setNameReceive(datas?.user?.profile?.display_name);
-    if (types == "TEAM") setNameReceive(datas?.name);
+    if (types == "TEAM") setNameReceive(datas?.team?.name);
     if (types == "TOURNAMENT") setNameReceive(name as string);
     if (types == "REFEREE") setNameReceive(datas?.display_name);
-  }, []);
+  }, [datas]);
+
   useEffect(() => {
     if (status) {
       setTitleMessage("");
@@ -168,15 +169,15 @@ const PopupDonate = (props: Props) => {
         (item: any) => item.type === "DONATE"
       );
 
-      if (!TournamentStore.checkDonationApprove) {
-        TournamentStore.checkDonationApprove =
-          await ethersService.requestApproval(
-            contractAddress[0]?.address,
-            BUSD
-          );
+      if (!localStorage.getItem("checkDonationApprove")) {
+        let bool = await ethersService.requestApproval(
+          contractAddress[0]?.address,
+          BUSD
+        );
+        if (bool) localStorage.setItem("checkDonationApprove", "true");
       }
 
-      if (TournamentStore.checkDonationApprove) {
+      if (localStorage.getItem("checkDonationApprove")) {
         const response = await ethersService.donate(
           tournamentId as string,
           datas?.user?.id,
@@ -277,15 +278,13 @@ const PopupDonate = (props: Props) => {
                       <p>{e.display_name}</p>
                     </>
                   );
-                  case "TOPPLAYER":
+                case "TOPPLAYER":
                   return (
                     <>
                       <div className={s.avt_member}>
                         <img
                           className={s.avt}
-                          src={`${
-                            e.avatar || "/assets/home/avt_null.jpg"
-                          }`}
+                          src={`${e.avatar || "/assets/home/avt_null.jpg"}`}
                           alt=""
                         />
                       </div>
@@ -338,6 +337,7 @@ const PopupDonate = (props: Props) => {
               onChange={(e) => {
                 setDesc(e.target.value);
               }}
+              maxLength={125}
             />
           </Col>
         </Row>
@@ -360,6 +360,7 @@ const PopupDonate = (props: Props) => {
         currency={currency}
         values={values}
         name={nameReceive}
+        desc={desc}
       />
     </Modal>
   );

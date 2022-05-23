@@ -105,15 +105,6 @@ export function useTournamentDetail(props: Props) {
       skip: props?.skip,
     });
 
-  const { loading: loadingListRank, data: getTournamentListRank } = useQuery(
-    GET_LIST_RANKS,
-    {
-      variables: { tournament_uid: props?.tournament_uid },
-      skip: props?.skip,
-      fetchPolicy: "network-only",
-    }
-  );
-
   const {
     loading: loadingConfirmResult,
     data: isCheckConfirmResult,
@@ -132,7 +123,6 @@ export function useTournamentDetail(props: Props) {
     loadingIsJoin,
     loadingDonation,
     loadingIsCheckin,
-    loadingListRank,
 
     error,
     errorParticipant,
@@ -153,7 +143,6 @@ export function useTournamentDetail(props: Props) {
     dataIsCheckin: dataIsCheckin?.isCheckInTournament,
     dataIsubscribeToTournament: dataIsubscribeToTournament,
     loadingJoinTournament: loadingJoinTournament,
-    dataListRank: getTournamentListRank,
     isCheckConfirmResult: isCheckConfirmResult?.isConfirmTournamentResult,
     joinTournament,
     refreshIsJoin,
@@ -212,28 +201,50 @@ export function useSponsors(props: Props): {
 }
 
 export function useClaimReward(props: Props) {
-  const { loading, error, data } = useQuery(CLAIM_REWARD, {
+  const { loading, error, data, refetch } = useQuery(CLAIM_REWARD, {
     variables: { tournament_uid: props?.tournament_uid },
     fetchPolicy: "cache-and-network",
+    skip: props?.skip,
   });
 
   return {
     loading,
     error,
     data: data?.getTournamentReward,
+    refetch,
   };
 }
 
 export function useConfirmTournamentResult(props: Props) {
-  const { loading, error, data } = useQuery(CONFIRM_TOURNAMENT_RESULT, {
-    variables: { tournament_uid: props?.tournament_uid },
-    fetchPolicy: "cache-and-network",
-  });
+  const { loading, error, data, refetch } = useQuery(
+    CONFIRM_TOURNAMENT_RESULT,
+    {
+      variables: { tournament_uid: props?.tournament_uid },
+      fetchPolicy: "cache-and-network",
+      skip: props?.skip,
+    }
+  );
 
   return {
     loading,
     error,
     data: data?.getTournamentResult,
+    refetch,
+  };
+}
+
+export function useGetListRank(props: Props) {
+  const { loading, error, data, refetch } = useQuery(GET_LIST_RANKS, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "cache-and-network",
+    skip: props?.skip,
+  });
+
+  return {
+    loading,
+    error,
+    data: data?.getTournamentListRank,
+    refetch,
   };
 }
 
@@ -251,6 +262,7 @@ const GET_TOURNAMENT_DETAIL = gql`
       rules
       has_password
       referees
+      turns
       game {
         name
         logo
@@ -295,6 +307,7 @@ const GET_PARTICIPANTS_DETAIL = gql`
     getTournamentParticipants(tournament_uid: $tournament_uid) {
       uid
       tournament_uid
+      is_checkin
       playTeamMembers {
         uid
         is_leader
@@ -303,6 +316,7 @@ const GET_PARTICIPANTS_DETAIL = gql`
           profile {
             display_name
             avatar
+            user_name
           }
         }
       }
@@ -327,6 +341,7 @@ const GET_REFEREES_DETAIL = gql`
           facebook
           telegram
           discord
+          user_name
         }
       }
     }

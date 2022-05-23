@@ -2,20 +2,45 @@ import s from "./ListRank.module.sass";
 import { Table } from "antd";
 import { useState } from "react";
 import { fomatNumber, format, currency as currencyFomat } from "utils/Number";
+import { useGetListRank } from "hooks/tournament/useTournamentDetail";
+import { isEmpty } from "lodash";
+import { AppEmitter } from "services/emitter";
+import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
+import PopupDonate from "../../popup/popupDonate";
 
 type Props = {
   tournamentId: string;
   currency?: any;
-  dataListRank?: any;
-  loading?: any;
+  tournament_status?: string;
 };
 
 export default function ListRanks(props: Props) {
-  const { currency, dataListRank, loading } = props;
+  const { currency, tournamentId, tournament_status } = props;
+  const [isCheck, setIsCheck] = useState(false);
+  const [isPopupDonate, setIsPopupDonate] = useState(false);
+  const [datas, setDatas] = useState({});
+  const { data, loading, refetch } = useGetListRank({
+    tournament_uid: tournamentId,
+    skip: tournament_status !== "CLOSED" || isEmpty(tournamentId),
+  });
 
   if (loading) {
     return <></>;
   }
+
+  const handleClick = (e: object) => {
+    setDatas(e);
+    //@ts-ignore
+    if (e?.bracketTeamMembers?.length == 1) {
+      setIsPopupDonate(true);
+    } else {
+      AppEmitter.emit("showPopupDonate", true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsPopupDonate(false);
+  };
 
   const columns = [
     {
@@ -24,7 +49,26 @@ export default function ListRanks(props: Props) {
       key: "rank",
       width: "15%",
       render: (_: any, item: any) => {
-        return <>{item.rank}</>;
+        return item?.playTeamMembers?.length == 1 ? (
+          <a
+            style={{ color: "white" }}
+            href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {item.team_name}
+          </a>
+        ) : (
+          <a
+            style={{ color: "white" }}
+            onClick={() => {
+              handleClick(item);
+              setIsCheck(false);
+            }}
+          >
+            {item.team_name}
+          </a>
+        );
       },
     },
     {
@@ -67,11 +111,27 @@ export default function ListRanks(props: Props) {
     <div className={s.wrapper}>
       <div className={s.containerTab}>
         <Table
-          dataSource={dataListRank?.getTournamentListRank}
+          dataSource={data}
           columns={columns}
           bordered
           className={s.container_table}
           rowKey={(record) => `${record?.rank}`}
+        />
+        <ModalDonateTeam
+          nameTeam={datas}
+          tournamentId={tournamentId}
+          currency={currency}
+          refetch={refetch}
+          isCheck={isCheck}
+        />
+        <PopupDonate
+          closeModal={() => closeModal()}
+          status={isPopupDonate}
+          tournamentId={tournamentId}
+          currency={currency}
+          types={"TEAM"}
+          datas={datas}
+          refetch={refetch}
         />
       </div>
     </div>

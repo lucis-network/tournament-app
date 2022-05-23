@@ -308,7 +308,7 @@ export default observer(function RegistrationPhase(props: Props) {
 									case "CHECKIN":
 										return (
 											<div className={s.joinWrap}>
-												{isJoin ? (
+												{isJoin ? !isCheckin ? (
 													<Button
 														className="btn-cyan"
 														onClick={handleCheckinTournament}
@@ -319,7 +319,7 @@ export default observer(function RegistrationPhase(props: Props) {
 															"Check-in"
 														)}
 													</Button>
-												) : isCheckin && isJoin ? (
+												) : (
 													<Button disabled className="btn-cyan">
 														Checked
 													</Button>
