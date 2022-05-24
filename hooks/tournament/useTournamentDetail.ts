@@ -491,7 +491,7 @@ const CONFIRM_TOURNAMENT_RESULT = gql`
       team_avatar
       round
       win
-      bracket_team_uid
+      player_team_uid
     }
   }
 `;
