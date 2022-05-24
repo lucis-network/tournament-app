@@ -1,11 +1,11 @@
-import {Button, Form, Image, Input, Modal, Select} from "antd";
+import {Button, Form, FormInstance, Image, Input, Modal, Select} from "antd";
 import LoginBoxStore from "./LoginBoxStore";
 import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 import s from "./Login.module.sass"
-import { gql, useMutation } from "@apollo/client";
-import { debounce } from "lodash";
+import { gql, useMutation, useQuery } from "@apollo/client";
+import {debounce, isEmpty} from "lodash";
 import AuthService from "../AuthService";
 
 type SignupInfoModalProps = {};
@@ -27,12 +27,43 @@ const UPDATE_PROFILE = gql`
   }
 `;
 
+const CHECK_USERNAME = gql`
+  query ($value: String!) {
+    checkUserName(value: $value)
+  }
+`;
+
 export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   const [countryList, setCountryList] = useState<Country[]>([]);
   const [updateProfileMutation] = useMutation(UPDATE_PROFILE);
+  const [username, setUsername] = useState<string>('');
+  const [userNameExisted, setUserNameExisted] = useState(false)
+  const [form] = Form.useForm();
+  const {
+    loading: checkUsernameLoading,
+    error: checkUsernameError,
+    data: checkUsernameData
+  } = useQuery(CHECK_USERNAME, {
+    variables: {
+      value: username
+    },
+    skip: isEmpty(username),
+    onCompleted: (data) => {
+      setUserNameExisted(data.checkUserName)
+    }
+  })
+  useEffect(() => {
+    if (!isEmpty(username) && userNameExisted) {
+      form.setFields([
+        {
+          name: 'user_name',
+          errors: ['This username already exists.'],
+        },
+      ]);
+    }
+  }, [username, userNameExisted])
   const isModalVisible = LoginBoxStore.signupInfoModalVisible,
     setIsModalVisible = (value: boolean) => (LoginBoxStore.signupInfoModalVisible = value);
-  const [form] = Form.useForm();
   const { Option } = Select;
 
   const fetchCountryList = (): void => {
@@ -88,14 +119,15 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   }
 
   const debouncedInputTyping = useCallback(
-    debounce((value) => {
+    debounce((value: string) => {
       // chaupa todo check if username already exists
-      console.log(value);
+      setUsername(value);
     }, 500),
     []
   );
 
   const handleUsernameInput = (event: React.FormEvent<HTMLInputElement>) => {
+    setUserNameExisted(false)
     debouncedInputTyping(event.currentTarget.value)
   };
   
@@ -141,7 +173,15 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             {
               pattern: /^[a-zA-Z0-9]*$/g,
               message: "Valid characters are A-Z a-z 0-9."
-            }
+            },
+            {
+              async validator(rule, value) {
+                if (userNameExisted) {
+                  return Promise.reject('This username already exists.');
+                }
+              },
+              validateTrigger: "onSubmit"
+            },
           ]}
         >
           <Input placeholder="Enter username" onChange={handleUsernameInput} />
