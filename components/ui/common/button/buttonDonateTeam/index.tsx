@@ -114,7 +114,7 @@ export default function ModalDonateTeam(props: Props) {
                             style={{ color: "white" }}
                             href={`/profile/${item.user?.profile?.user_name}`}
                             target="_blank"
-                            rel="snoreferrer"
+                            rel="noreferrer"
                           >
                             {item.user?.profile?.display_name}
                           </a>
