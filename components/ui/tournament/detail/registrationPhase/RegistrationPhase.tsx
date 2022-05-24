@@ -328,8 +328,8 @@ export default observer(function RegistrationPhase(props: Props) {
 										);
 									case "CLOSED":
 										return (
-											// todo closed
-											<div style={{ display: "none" }}>
+											// todo closeds
+											<div>
 												<div className={s.joinWrap}>
 													{(dataPrize?.amount && dataPrize?.amount > 0) ||
 													(dataSystemPrize?.amount &&
@@ -417,13 +417,13 @@ export default observer(function RegistrationPhase(props: Props) {
 															</div>
 														</div>
 													</div>
-													{(dataPrize?.amount && dataPrize?.amount > 0) ||
+													{/* {(dataPrize?.amount && dataPrize?.amount > 0) ||
 													(dataSystemPrize?.amount &&
 														dataSystemPrize?.amount > 0) ? (
 														<Button>Share my victory</Button>
 													) : (
 														""
-													)}
+													)} */}
 												</div>
 											</div>
 										);

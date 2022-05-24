@@ -4,8 +4,7 @@ import s from "./Button.module.sass";
 
 import { AppEmitter } from "services/emitter";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
-import Link from "next/link";
-import { slugify } from "utils/String";
+import { StarFilled } from "@ant-design/icons";
 
 type Props = {
   nameTeam?: any;
@@ -121,7 +120,7 @@ export default function ModalDonateTeam(props: Props) {
                           </a>
                         </div>
                         {item.is_leader && (
-                          <div className={s.rank_member}>leader</div>
+                          <div className={s.leader}><StarFilled className="text-18px"/></div>
                         )}
                       </Col>
                       <Col>

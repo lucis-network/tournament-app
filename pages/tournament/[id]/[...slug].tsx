@@ -146,8 +146,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     discord
   } = dataTournamentDetail ?? {};
 
-  console.log(discord);
-
   const userLocal = getLocalAuthInfo();
 
   const handSubscribe = () => {
@@ -384,7 +382,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     xl={{ span: 9 }}
                     className={s.generousSponsorsWrap}
                   >
-                    {dataRankSponsors && (
+                    {dataRankSponsors.length > 0 && (
                       <>
                         <h3 className={s.generousSponsorsTitle}>
                           Our generous sponsors

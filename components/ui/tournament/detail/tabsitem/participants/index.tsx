@@ -65,35 +65,48 @@ export default function TableParticipant(props: Props) {
       key: "name",
       width: 250,
       render: (_: any, item: any, index: number) => {
+        console.log(item);
         return (
           <div className="text-left">
-            {item?.playTeamMembers[0]?.user?.profile?.avatar && (
-              <Image
-                className={s.avatar}
-                src={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
-                preview={false}
-                alt={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
-              />
-            )}
             {item?.playTeamMembers?.length == 1 ? (
-              <a
-                style={{ color: "white" }}
-                href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {item.team.name}
-              </a>
+              <div>
+                {item?.playTeamMembers[0]?.user?.profile?.avatar && (
+                  <Image
+                    className={s.avatar}
+                    src={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+                    preview={false}
+                    alt={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+                  />
+                )}
+                <a
+                  style={{ color: "white" }}
+                  href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {item.team.name}
+                </a>
+              </div>
             ) : (
-              <a
-                style={{ color: "white" }}
-                onClick={() => {
-                  handleClick(item);
-                  setIsCheck(false);
-                }}
-              >
-                {item.team.name}
-              </a>
+              <div>
+                {item?.team?.avatar && (
+                  <Image
+                    className={s.avatar}
+                    src={`${item?.team?.avatar}`}
+                    preview={false}
+                    alt={`${item?.team?.avatar}`}
+                  />
+                )}
+                <a
+                  style={{ color: "white" }}
+                  onClick={() => {
+                    handleClick(item);
+                    setIsCheck(false);
+                  }}
+                >
+                  {item.team.name}
+                </a>
+              </div>
             )}
           </div>
         );

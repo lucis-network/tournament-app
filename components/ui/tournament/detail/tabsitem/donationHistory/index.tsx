@@ -134,6 +134,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
           columns={columns}
           bordered
           className={s.container_table}
+          rowKey={(record) => `${record.tx_hash}`}
           pagination={false}
         />
       </div>

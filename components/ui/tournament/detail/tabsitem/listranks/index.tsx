@@ -21,7 +21,7 @@ export default function ListRanks(props: Props) {
   const [datas, setDatas] = useState({});
   const { data, loading, refetch } = useGetListRank({
     tournament_uid: tournamentId,
-    skip: tournament_status !== "CLOSED" || isEmpty(tournamentId),
+    skip: isEmpty(tournamentId),
   });
 
   if (loading) {

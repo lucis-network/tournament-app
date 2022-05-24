@@ -22,7 +22,7 @@ export default function PopupConfirm(props: Props) {
   } = props;
   const { error, loading, data } = useConfirmTournamentResult({
     tournament_uid: tournamentId,
-    skip: tournament_status !== "CLOSED" || isEmpty(tournamentId),
+    skip: isEmpty(tournamentId),
   });
 
   if (loading) return null;

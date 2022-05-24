@@ -464,7 +464,7 @@ const GET_LIST_RANKS = gql`
       team_name
       team_avatar
       rank
-      bracket_team_uid
+      player_team_uid
       prize
       donated
     }
@@ -491,7 +491,7 @@ const CONFIRM_TOURNAMENT_RESULT = gql`
       team_avatar
       round
       win
-      bracket_team_uid
+      player_team_uid
     }
   }
 `;

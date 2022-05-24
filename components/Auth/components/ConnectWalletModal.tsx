@@ -240,7 +240,7 @@ export default observer(function ConnectWalletModal(props: Props) {
        * If success, it will set auth info to AuthStore
        */
       if (!network) {
-        console.error("{changeWallet} ERROR: network is null");
+        console.error("{changeWallet} ERROR: network is null. Please reload the page");
         return;
       }
 
