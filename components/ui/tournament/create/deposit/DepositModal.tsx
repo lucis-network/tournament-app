@@ -23,9 +23,9 @@ export default observer(function DepositModal(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
   const { tournamentUid } = props;
   const isModalVisible = TournamentStore.depositModalVisible;
-    
+
   const setIsModalVisible = (v: boolean) =>
-      (TournamentStore.depositModalVisible = v);
+    (TournamentStore.depositModalVisible = v);
 
   const { getContract } = useGetContract({});
 
@@ -73,21 +73,22 @@ export default observer(function DepositModal(props: Props) {
             BUSD
           );
       }
-      if(!AuthStore.id) {
-        console.log('User not exist in sotre');
+      if (!AuthStore.id) {
+        console.log("User not exist in sotre");
         return;
       }
-      if(!TournamentStore.checkDepositApprove) {
-        return
+      if (!TournamentStore.checkDepositApprove) {
+        return;
       }
-      
+
       const result = await ethersService.initTournament(
-        AuthStore.id + '',
+        AuthStore.id + "",
         tournamentUid,
         total,
         BUSD,
         contractAddress[0]?.address
       );
+      console.log("result", result)
       return result;
     }
   };

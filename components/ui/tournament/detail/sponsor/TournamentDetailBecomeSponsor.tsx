@@ -35,6 +35,7 @@ type TournamentDetailBecomeSponsorProps = {
   tiersSelect: TiersSelectType[];
   refetch: () => Promise<ApolloQueryResult<any>>;
   tournamentId?: string;
+  refetchTounament?: any;
 };
 
 const { Option } = Select;
@@ -53,7 +54,7 @@ export default function TournamentDetailBecomeSponsor(
   props: TournamentDetailBecomeSponsorProps
 ) {
   const { getContract } = useGetContract({});
-  const { isBecome, setIsBecome, tiersSelect, refetch, tournamentId } = props;
+  const { isBecome, setIsBecome, tiersSelect, refetch, tournamentId, refetchTounament } = props;
   const [selectedTier, setSelectedTier] = useState(tiersSelect[0]);
   const [currentMinAmount, setCurrentMinAmount] = useState(
     tiersSelect[0].min_deposit
@@ -94,6 +95,7 @@ export default function TournamentDetailBecomeSponsor(
             message.success("You haved become sponsor");
             setIsBecome(false);
             refetch();
+            refetchTounament();
           }
         }
       });
@@ -127,22 +129,21 @@ export default function TournamentDetailBecomeSponsor(
         (item: any) => item.type === "PRIZE"
       );
 
-      if (!TournamentStore.checkBecomeSponser) {
-        TournamentStore.checkBecomeSponser =
-          await ethersService.requestApproval(
-            contractAddress[0]?.address,
-            BUSD
-          );
+      if (!localStorage.getItem("checkBecomeSponser")) {
+        let bool = await ethersService.requestApproval(
+          contractAddress[0]?.address,
+          BUSD
+        );
+        if (bool) localStorage.setItem("checkBecomeSponser", "true");
       }
-      if(!AuthStore.id) {
-        console.log('User not exist in sotre');
+      if (!AuthStore.id) {
+        console.log("User not exist in store");
         return;
       }
 
-      console.log("TournamentStore.checkBecomeSponser", TournamentStore.checkBecomeSponser)
-      if (TournamentStore.checkBecomeSponser) {
+      if (localStorage.getItem("checkBecomeSponser")) {
         const result = await ethersService.becomeSponsor(
-          AuthStore.id + '',
+          AuthStore.id + "",
           tournamentId as string,
           amount,
           BUSD,

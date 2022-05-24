@@ -11,7 +11,8 @@ export default function GroupLink(props: Props) {
       <div className={s.ic_item}>
         {datas?.facebook && (
           <a
-            href="https://www.facebook.com/lucistv.news"
+            // href="https://www.facebook.com/lucistv.news"
+            href={datas?.facebook}
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -30,33 +31,21 @@ export default function GroupLink(props: Props) {
       </div> */}
       <div className={s.ic_item}>
         {datas?.telegram && (
-          <a
-            href="https://t.me/sankeonft"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={datas?.telegram} target="_blank" rel="noopener noreferrer">
             <img src="/assets/footer/tele.svg" alt="" />
           </a>
         )}
       </div>
       <div className={s.ic_item}>
         {datas?.twitter && (
-          <a
-            href="https://twitter.com/Lucis_TV"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={datas?.twitter} target="_blank" rel="noopener noreferrer">
             <img src="/assets/footer/tw.svg" alt="" />
           </a>
         )}
       </div>
       <div className={s.ic_item}>
         {datas.discord && (
-          <a
-            href="https://discord.com/channels/911921072830574603/926398655093702666"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={datas.discord} target="_blank" rel="noopener noreferrer">
             <img src="/assets/footer/dis.svg" alt="" />
           </a>
         )}

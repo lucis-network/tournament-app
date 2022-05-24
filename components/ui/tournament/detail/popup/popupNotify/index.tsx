@@ -8,10 +8,11 @@ type Props = {
   status?: boolean;
   values: string;
   name?: string;
+  desc?: string;
 };
 
 const PopupNotify = (props: Props) => {
-  const { status, closeModalNotify, values, currency, name } = props;
+  const { status, closeModalNotify, values, currency, name, desc } = props;
 
   const closeModal = () => {};
 
@@ -27,6 +28,9 @@ const PopupNotify = (props: Props) => {
     >
       <div style={{ fontSize: 25 }}>
         {fomatNumber(Number.parseFloat(values))} {currency?.symbol}
+      </div>
+      <div style={{ fontSize: 16, marginBottom: "10px"}}>
+        &quot;{desc}&quot;
       </div>
       <div>
         We&apos;ve received {fomatNumber(Number.parseFloat(values))}{" "}
