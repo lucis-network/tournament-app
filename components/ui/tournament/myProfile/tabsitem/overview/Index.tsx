@@ -99,11 +99,11 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 			link: userInfo?.profile?.facebook,
 			logo: "/assets/footer/fb.svg",
 		},
-		// {
-		// 	name: "twitch",
-		// 	link: userInfo?.profile?.twitch,
-		// 	logo: "/assets/footer/twitch.svg",
-		// },
+		{
+			name: "twitch",
+			link: userInfo?.profile?.twitch,
+			logo: "/assets/footer/twitch.svg",
+		},
 		{
 			name: "twitter",
 			link: userInfo?.profile?.twitter,
@@ -114,7 +114,7 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 			link: userInfo?.profile?.youtube,
 			logo: "/assets/footer/ytb.svg",
 		},
-	].filter((item) => !isEmpty(item.link));
+	];
 
 	useEffect(() => {
 		let isSubscribed = true;
@@ -226,9 +226,9 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 						<div className={s.group_ic}>
 							{userSocial.length > 0 ? (
 								userSocial.map((item) => (
-									<div key={item.name} className={s.ic_item}>
+									<div key={item.name} className={`${s.ic_item}${isEmpty(item.link) ? (' ' + s.social_disabled) : ''}`}>
 										<Link
-											href={`${item.link}`}
+											href={`${item.link ?? '#'}`}
 											passHref
 										>
 											<a target="_blank">
