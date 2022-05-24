@@ -263,6 +263,7 @@ const GET_TOURNAMENT_DETAIL = gql`
       has_password
       referees
       turns
+      discord
       game {
         name
         logo

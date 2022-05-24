@@ -571,7 +571,22 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
             </Row>
             <Row className="pt-4">
-              <Col span={12}></Col>
+              <Col span={4} className={s.textColor}>
+                Discord
+              </Col>
+              <Col span={6}>
+                <Input
+                  value={TournamentStore.discord}
+                  type="text"
+                  placeholder="Discord"
+                  onChange={(e) => {
+                    TournamentStore.discord = e.target.value;
+                  }}
+                  max={32}
+                  style={{ borderColor: "var(--line-color)" }}
+                />
+              </Col>
+              <Col span={2}></Col>
               <Col span={4}>
                 <p className="ml-[10px]">Best of for all rounds</p>
               </Col>
@@ -778,7 +793,7 @@ export default observer(function CreateTournament(props: Props) {
                   disabled={!checkPassword}
                   max={32}
                   min={4}
-                  style={{borderColor: "var(--line-color)"}}
+                  style={{ borderColor: "var(--line-color)" }}
                 />
                 <div className={s.message_error}>{messageErrorPassword}</div>
               </Col>
@@ -786,7 +801,9 @@ export default observer(function CreateTournament(props: Props) {
           </div>
 
           <div className="mt-100px text-center pb-100px">
-            <Button size="large" type="primary" onClick={createTournament}>Create tournament</Button>
+            <Button size="large" type="primary" onClick={createTournament}>
+              Create tournament
+            </Button>
           </div>
         </div>
 

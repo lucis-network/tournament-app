@@ -143,7 +143,10 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_status,
     referees,
     turns,
+    discord
   } = dataTournamentDetail ?? {};
+
+  console.log(discord);
 
   const userLocal = getLocalAuthInfo();
 
@@ -293,8 +296,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             />{" "}
                             {region}
                           </div>
-                          <Link href="#" passHref>
-                            <a className={s.joinDiscord}>
+                          <Link href={discord} passHref>
+                            <a className={s.joinDiscord} target="_blank">
                               Join our Discord server{" "}
                               <Image
                                 src="/assets/TournamentDetail/discordLogo.svg"

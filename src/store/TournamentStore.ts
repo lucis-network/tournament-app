@@ -22,6 +22,7 @@ export type CreateTournament = {
   sponsor_slots?: SponsorTierType[];
   start_at?: Date;
   rounds?: Rounds[];
+  discord?: string;
 };
 
 export type PrizeAllocation = {
@@ -66,7 +67,7 @@ export type Rounds = {
 
 const DEFAULT_PARTICIPANTS = 8;
 const DEFAULT_TURNS = 1;
-const DEFAULT_CURRENCY_UID = "BUSD";
+const DEFAULT_CURRENCY_UID = "BSC_BUSD";
 const DEFAULT_JOIN_FEE = 0;
 const DEFAULT_REGIONS = ["AA"];
 class TournamentStore {
@@ -125,6 +126,8 @@ class TournamentStore {
 
   private _rounds?: Rounds[] | undefined;
 
+  private _discord?: string | undefined;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -150,6 +153,7 @@ class TournamentStore {
     this._sponsor_slots = cr.sponsor_slots;
     this._start_at = cr.start_at;
     this._rounds = cr.rounds;
+    this._discord = cr.discord;
   }
 
   resetStates() {
@@ -173,6 +177,7 @@ class TournamentStore {
     this._sponsor_slots = undefined;
     this._start_at = undefined;
     this._rounds = undefined;
+    this._discord = undefined;
   }
 
   getCreateTournament() {
@@ -197,6 +202,7 @@ class TournamentStore {
     cr.sponsor_slots = this._sponsor_slots;
     cr.start_at = this._start_at;
     cr.rounds = this._rounds;
+    cr.discord = this._discord;
     return cr;
   }
 
@@ -410,6 +416,13 @@ class TournamentStore {
   }
   public set checkBecomeSponser(value: boolean) {
     this._checkBecomeSponser = value;
+  }
+
+  public get discord(): string | undefined {
+    return this._discord;
+  }
+  public set discord(value: string | undefined) {
+    this._discord = value;
   }
 }
 

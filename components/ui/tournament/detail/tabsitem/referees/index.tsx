@@ -64,7 +64,6 @@ export default function Referees(props: Props) {
       key: "user",
       width: "40%",
       render: (_: any, item: any) => {
-        console.log(item)
         return (
           <>
             <a

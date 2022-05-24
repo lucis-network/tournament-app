@@ -66,18 +66,18 @@ export default observer(function DepositModal(props: Props) {
         (item: any) => item.type === "PRIZE"
       );
 
-      if (!localStorage.getItem("checkDepositApprove")) {
-        let bool = await ethersService.requestApproval(
-          contractAddress[0]?.address,
-          BUSD
-        );
-        if (bool) localStorage.setItem("checkDepositApprove", "true");
+      if (!TournamentStore.checkDepositApprove) {
+        TournamentStore.checkDepositApprove =
+          await ethersService.requestApproval(
+            contractAddress[0]?.address,
+            BUSD
+          );
       }
       if (!AuthStore.id) {
-        console.log("User not exist in store");
+        console.log("User not exist in sotre");
         return;
       }
-      if (localStorage.getItem("checkDepositApprove")) {
+      if (!TournamentStore.checkDepositApprove) {
         return;
       }
 
@@ -88,6 +88,7 @@ export default observer(function DepositModal(props: Props) {
         BUSD,
         contractAddress[0]?.address
       );
+      console.log("result", result)
       return result;
     }
   };
