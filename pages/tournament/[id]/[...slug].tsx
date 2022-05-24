@@ -296,7 +296,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             />{" "}
                             {region}
                           </div>
-                          <Link href={discord} passHref>
+                          <Link href={discord ? discord : `https://discord.com/`} passHref>
                             <a className={s.joinDiscord} target="_blank">
                               Join our Discord server{" "}
                               <Image
