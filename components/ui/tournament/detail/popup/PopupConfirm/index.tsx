@@ -3,18 +3,26 @@ import { message, Modal, Table } from "antd";
 import s from "./PopupConfirm.module.sass";
 import { useConfirmTournamentResult } from "hooks/tournament/useTournamentDetail";
 import TournamentService from "components/service/tournament/TournamentService";
-
+import { isEmpty } from "lodash";
 interface Props {
   show: boolean;
   onCancel: () => void;
   tournamentId: string;
   refetchConfirmResult: any;
+  tournament_status?: string;
 }
 
 export default function PopupConfirm(props: Props) {
-  const { show, onCancel, tournamentId, refetchConfirmResult } = props;
+  const {
+    show,
+    onCancel,
+    tournamentId,
+    refetchConfirmResult,
+    tournament_status,
+  } = props;
   const { error, loading, data } = useConfirmTournamentResult({
     tournament_uid: tournamentId,
+    skip: tournament_status !== "CLOSED" || isEmpty(tournamentId),
   });
 
   if (loading) return null;

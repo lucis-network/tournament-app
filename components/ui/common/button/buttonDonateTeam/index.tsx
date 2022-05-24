@@ -4,15 +4,18 @@ import s from "./Button.module.sass";
 
 import { AppEmitter } from "services/emitter";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
+import Link from "next/link";
+import { slugify } from "utils/String";
 
 type Props = {
   nameTeam?: any;
   tournamentId: string;
   currency?: any;
   refetch: any;
+  isCheck?: boolean;
 };
 export default function ModalDonateTeam(props: Props) {
-  const { nameTeam, tournamentId, currency, refetch } = props;
+  const { nameTeam, tournamentId, currency, refetch, isCheck } = props;
   const [modalVisible, setModalVisible] = useState(false);
   const [isPopUp, setIsPopUp] = useState(false);
   const [newData, setNewData] = useState({});
@@ -77,14 +80,16 @@ export default function ModalDonateTeam(props: Props) {
                 <span>{quantityMember}</span>
               </Col>
               <Col span={10}>
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    handlButtonTeam(nameTeam);
-                  }}
-                >
-                  Donate for team
-                </Button>
+                {isCheck && (
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      handlButtonTeam(nameTeam);
+                    }}
+                  >
+                    Donate for team
+                  </Button>
+                )}
               </Col>
             </Row>
 
@@ -106,21 +111,30 @@ export default function ModalDonateTeam(props: Props) {
                           />
                         </div>
                         <div className={s.name_member}>
-                          {item.user?.profile?.display_name}
+                          <a
+                            style={{ color: "white" }}
+                            href={`/profile/${item.user?.profile?.user_name}`}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {item.user?.profile?.display_name}
+                          </a>
                         </div>
                         {item.is_leader && (
                           <div className={s.rank_member}>leader</div>
                         )}
                       </Col>
                       <Col>
-                        <Button
-                          type="primary"
-                          onClick={() => {
-                            handlButtonMember(item);
-                          }}
-                        >
-                          Donate
-                        </Button>
+                        {isCheck && (
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              handlButtonMember(item);
+                            }}
+                          >
+                            Donate
+                          </Button>
+                        )}
                       </Col>
                     </Row>
                   ))
@@ -137,12 +151,6 @@ export default function ModalDonateTeam(props: Props) {
             </div>
           </div>
         }
-
-        {/* {nameTeam.name}
-
-        {nameTeam?.team_members.map((item: any) => {
-          console.log(item);
-        })} */}
       </Modal>
     </div>
   );

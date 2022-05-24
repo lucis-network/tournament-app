@@ -64,7 +64,18 @@ export default function Referees(props: Props) {
       key: "user",
       width: "40%",
       render: (_: any, item: any) => {
-        return <>{item.user.profile.display_name}</>;
+        return (
+          <>
+            <a
+              style={{ color: "white" }}
+              href={`/profile/${item?.user?.profile?.user_name}`}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {item.user.profile.display_name}
+            </a>
+          </>
+        );
       },
     },
     {

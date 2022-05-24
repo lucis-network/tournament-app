@@ -1,7 +1,7 @@
 import s from "./Participants.module.sass";
 
 import { AppEmitter } from "services/emitter";
-import { Button, message, Table } from "antd";
+import { Image, Button, message, Table } from "antd";
 import { useEffect, useState } from "react";
 import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
 import { Team } from "src/generated/graphql";
@@ -30,13 +30,14 @@ export default function TableParticipant(props: Props) {
 
   const [datas, setDatas] = useState({});
   const [isPopupDonate, setIsPopupDonate] = useState(false);
+  const [isCheck, setIsCheck] = useState(false);
   const closeModal = () => {
     setIsPopupDonate(false);
   };
 
   const handleClick = (e: object) => {
-    console.log('e: ', e)
     setDatas(e);
+    setIsCheck(true);
     //@ts-ignore
     if (e?.playTeamMembers?.length == 1) {
       setIsPopupDonate(true);
@@ -64,7 +65,38 @@ export default function TableParticipant(props: Props) {
       key: "name",
       width: 250,
       render: (_: any, item: any, index: number) => {
-        return <>{item.team.name}</>;
+        return (
+          <div className="text-left">
+            {item?.playTeamMembers[0]?.user?.profile?.avatar && (
+              <Image
+                className={s.avatar}
+                src={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+                preview={false}
+                alt={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+              />
+            )}
+            {item?.playTeamMembers?.length == 1 ? (
+              <a
+                style={{ color: "white" }}
+                href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                {item.team.name}
+              </a>
+            ) : (
+              <a
+                style={{ color: "white" }}
+                onClick={() => {
+                  handleClick(item);
+                  setIsCheck(false);
+                }}
+              >
+                {item.team.name}
+              </a>
+            )}
+          </div>
+        );
       },
     },
     {
@@ -80,6 +112,18 @@ export default function TableParticipant(props: Props) {
       dataIndex: "donate",
       key: "donate",
       // width: "15%",
+    },
+    {
+      title: "Checked in",
+      dataIndex: "checkin",
+      key: "donate",
+      render: (_: any, item: any) => {
+        return (
+          <div style={{ display: "flex", justifyContent: "center" }}>
+            {item.is_checkin ? "Yes" : "No"}
+          </div>
+        );
+      },
     },
     {
       title: "",
@@ -107,8 +151,6 @@ export default function TableParticipant(props: Props) {
     },
   ];
 
-  console.log("dataParticipants", dataParticipants)
-  
   return (
     <div className={s.wrapper}>
       <div className={s.containerTab}>
@@ -127,6 +169,7 @@ export default function TableParticipant(props: Props) {
           tournamentId={tournamentId}
           currency={currency}
           refetch={refetch}
+          isCheck={isCheck}
         />
         <PopupDonate
           closeModal={() => closeModal()}

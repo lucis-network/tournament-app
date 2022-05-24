@@ -23,10 +23,11 @@ export type TiersSelectType = {
 type Props = {
   tournamentId?: string;
   tournament_status: string;
+  refetchTounament?: any;
 };
 
 export default function TournamentDetailSponsor(props: Props) {
-  const { tournamentId, tournament_status } = props;
+  const { tournamentId, tournament_status, refetchTounament } = props;
   const [isBecome, setIsBecome] = useState(false);
   const {
     loading,
@@ -104,6 +105,7 @@ export default function TournamentDetailSponsor(props: Props) {
           tiersSelect={tiersSelect}
           refetch={refetch}
           tournamentId={tournamentId}
+          refetchTounament={refetchTounament}
         />
       )}
     </>
