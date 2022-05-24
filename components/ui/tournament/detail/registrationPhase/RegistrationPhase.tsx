@@ -19,6 +19,7 @@ import CountdownTimer from "components/ui/common/CountDown";
 import { CalendarOutlined } from "@ant-design/icons";
 import AuthStore from "components/Auth/AuthStore";
 import SpinLoading from "components/ui/common/Spin";
+import { isEmpty } from "lodash";
 
 type Props = {
 	isJoin: boolean;
@@ -80,6 +81,7 @@ export default observer(function RegistrationPhase(props: Props) {
 
 	const { data } = useClaimReward({
 		tournament_uid: tournamentId ? tournamentId : "",
+		skip: isEmpty(tournamentId)
 	});
 
 	const {
@@ -327,6 +329,9 @@ export default observer(function RegistrationPhase(props: Props) {
 											</div>
 										);
 									case "CLOSED":
+										console.log("dataPrize", dataPrize)
+										console.log("dataSystemPrize", dataSystemPrize)
+										console.log("totalFromDonation", totalFromDonation)
 										return (
 											// todo closeds
 											<div>

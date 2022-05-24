@@ -551,6 +551,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           tournamentId={tournamentId as string}
           refetchConfirmResult={refetchConfirmResult}
           tournament_status={tournament_status}
+          refetchTounament={refetch}
         />
       </div>
       <LoginModal />

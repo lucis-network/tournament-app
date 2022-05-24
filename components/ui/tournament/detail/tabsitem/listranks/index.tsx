@@ -1,5 +1,5 @@
 import s from "./ListRank.module.sass";
-import { Table } from "antd";
+import { Image, Table } from "antd";
 import { useState } from "react";
 import { fomatNumber, format, currency as currencyFomat } from "utils/Number";
 import { useGetListRank } from "hooks/tournament/useTournamentDetail";
@@ -48,27 +48,8 @@ export default function ListRanks(props: Props) {
       dataIndex: "rank",
       key: "rank",
       width: "15%",
-      render: (_: any, item: any) => {
-        return item?.playTeamMembers?.length == 1 ? (
-          <a
-            style={{ color: "white" }}
-            href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {item.team_name}
-          </a>
-        ) : (
-          <a
-            style={{ color: "white" }}
-            onClick={() => {
-              handleClick(item);
-              setIsCheck(false);
-            }}
-          >
-            {item.team_name}
-          </a>
-        );
+      render: (_: any, item: any, index: number) => {
+        return <>{item.rank}</>;
       },
     },
     {
@@ -76,8 +57,74 @@ export default function ListRanks(props: Props) {
       dataIndex: "team_name",
       key: "team_name",
       width: "35%",
-      render: (_: any, item: any) => {
-        return <>{item.team_name}</>;
+      // render: (_: any, item: any) => {
+      //   return item?.playTeamMembers?.length == 1 ? (
+      //     <a
+      //       style={{ color: "white" }}
+      //       href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
+      //       target="_blank"
+      //       rel="noreferrer"
+      //     >
+      //       {item.team_name}
+      //     </a>
+      //   ) : (
+      //     <a
+      //       style={{ color: "white" }}
+      //       onClick={() => {
+      //         handleClick(item);
+      //         setIsCheck(false);
+      //       }}
+      //     >
+      //       {item.team_name}
+      //     </a>
+      //   );
+      // },
+      render: (_: any, item: any, index: number) => {
+        console.log(item);
+        return (
+          <div className="text-left">
+            {item?.playTeamMembers?.length == 1 ? (
+              <div>
+                {item?.playTeamMembers[0]?.user?.profile?.avatar && (
+                  <Image
+                    className={s.avatar}
+                    src={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+                    preview={false}
+                    alt={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+                  />
+                )}
+                <a
+                  style={{ color: "white" }}
+                  href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {item.team_name}
+                </a>
+              </div>
+            ) : (
+              <div>
+                {item?.team_avatar && (
+                  <Image
+                    className={s.avatar}
+                    src={`${item?.team_avatar}`}
+                    preview={false}
+                    alt={`${item?.team_avatar}`}
+                  />
+                )}
+                <a
+                  style={{ color: "white" }}
+                  onClick={() => {
+                    handleClick(item);
+                    setIsCheck(false);
+                  }}
+                >
+                  {item.team_name}
+                </a>
+              </div>
+            )}
+          </div>
+        );
       },
     },
     {
