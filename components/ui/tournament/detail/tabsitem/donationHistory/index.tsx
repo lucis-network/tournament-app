@@ -134,6 +134,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
           columns={columns}
           bordered
           className={s.container_table}
+          pagination={false}
         />
       </div>
     </div>
