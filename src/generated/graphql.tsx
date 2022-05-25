@@ -1008,7 +1008,7 @@ export type GDonateTransaction = {
   message?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TransactionStatus>;
   to: Scalars['String'];
-  tournamnent_uid?: InputMaybe<Scalars['String']>;
+  tournament_uid?: InputMaybe<Scalars['String']>;
   tx_hash: Scalars['String'];
   type: DonateTransactionsType;
 };
@@ -1237,7 +1237,7 @@ export type MutationCheckInTournamentArgs = {
 
 export type MutationClaimDonationArgs = {
   address: Scalars['String'];
-  tournamnent_uid: Scalars['String'];
+  tournament_uid: Scalars['String'];
 };
 
 

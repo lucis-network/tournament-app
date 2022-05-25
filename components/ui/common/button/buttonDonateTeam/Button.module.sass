@@ -3,15 +3,24 @@
   justify-content: center
   align-items: center
 .content_modal
-  max-width: 450px
+  max-width: calc(100% - 30px)
+  @media screen and (min-width: 576px)
+    max-width: 450px
+  :global(.ant-modal-body)
+    padding: 15px
+    @media screen and (min-width: 576px)
+      padding: 24px
   :global(.ant-modal-footer)
     display: none
   .top
     display: flex
     align-items: center
     justify-content: space-between
-    flex-wrap: nowrap
-    margin-top: 12px
+    padding-top: 25px
+    .avtRow
+      margin-bottom: 20px
+      @media screen and (min-width: 576px)
+        margin-bottom: 0
     .avt
       max-width: 50px
       width: 100%
@@ -21,8 +30,11 @@
       margin-left: 20px
       p
         margin: 0px
+    .donateTeam
+      @media screen and (min-width: 576px)
+        text-align: right
     button
-      width: 100%
+      width: auto
       height: 40px
   :global(.ant-btn-primary:active)
     background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
@@ -33,15 +45,18 @@
     margin: 12px 0px
     h1
       color: #FFF
-    .container
-      justify-content: space-between
+    .memberContainer
+      display: flex
+      align-items: center
+      margin-bottom: 20px
       .item_member
         display: flex
         align-items: center
-        margin-bottom: 12px
+        flex: 1
         border: 1px solid #FFF
-        padding: 4px 12px
+        padding: 7px
         border-radius: 4px
+        margin-right: 10px
         .avt_member
           flex: 32px 0 0
           height: 32px
@@ -49,9 +64,13 @@
           border-radius: 100%
           overflow: hidden
         .name_member
-          margin-left: 12px
-          flex: 70% 0 0
-          font-size: 16px
+          margin-left: 5px
+          flex: 1
+          font-size: 12px
+          @media screen and (min-width: 576px)
+            font-size: 16px
         .leader
           display: flex
-    
+          width: 14px
+          span
+            font-size: 14px
