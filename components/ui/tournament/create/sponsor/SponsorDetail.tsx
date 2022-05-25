@@ -196,8 +196,16 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
             <label>Name</label>
           </Col>
           <Col xs={{ span: 24 }} md={{ span: 16 }}>
-            <Form.Item name="name">
-              <Input placeholder="Sponsor name" maxLength={45} />
+            <Form.Item
+              name="name"
+              rules={[
+                {
+                  max: 45,
+                  message: "Sponsor name must be maximum 45 characters.",
+                },
+              ]}
+            >
+              <Input placeholder="Sponsor name" />
             </Form.Item>
           </Col>
         </Row>

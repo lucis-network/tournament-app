@@ -332,8 +332,6 @@ export default observer(function RegistrationPhase(props: Props) {
 											</div>
 										);
 									case "CLOSED":
-										// console.log("dataPrize", dataPrize);
-										// console.log("dataSystemPrize", dataSystemPrize);
 										return (
 											// todo closeds
 											<div>
