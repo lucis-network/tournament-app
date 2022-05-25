@@ -199,6 +199,7 @@ export default observer(function Prizing(props: Props) {
   const [state, setState] = useState(dataTable);
   const [poolSize, setPoolSize] = useState(0);
   const [chain, setChain] = useState(TournamentStore.currency_uid);
+  const [symbol, setSymbol] = useState(TournamentStore.currency_symbol);
   const { getDataCurrencies } = useCurrencies({});
   const [messageErrorPoolSize, setMessageErrorPoolSize] = useState("");
 
@@ -227,7 +228,7 @@ export default observer(function Prizing(props: Props) {
       dataIndex: "estimated",
       render: (_: any, record: { key: React.Key; estimated: number }) => (
         <span>
-          {record.estimated} {chain}
+          {record.estimated} {symbol}
         </span>
       ),
     },
@@ -394,9 +395,7 @@ export default observer(function Prizing(props: Props) {
 
   const totalPool = () => {
     return currency(
-      poolSize +
-      (poolSize * LUCIS_FEE) / 100 +
-      (poolSize * REFEREER_FEE) / 100
+      poolSize + (poolSize * LUCIS_FEE) / 100 + (poolSize * REFEREER_FEE) / 100
     );
   };
 
@@ -427,6 +426,12 @@ export default observer(function Prizing(props: Props) {
               defaultValue={TournamentStore.currency_uid}
               onChange={(value) => {
                 setChain(value);
+
+                let obj = getDataCurrencies.filter((item: any) => {
+                  return item.uid == value;
+                });
+
+                setSymbol(obj[0]?.symbol);
               }}
             >
               {getDataCurrencies?.map((item: any, index: number) => {
@@ -500,8 +505,11 @@ export default observer(function Prizing(props: Props) {
           </Col>
           <Col span={10}></Col>
           <Col span={6}>
-            <p style={{fontSize: 'larger'}}>
-              Total paid: <b style={{color: 'orange'}}>{totalPool()} {chain}</b>
+            <p style={{ fontSize: "larger" }}>
+              Total paid:{" "}
+              <b style={{ color: "orange" }}>
+                {totalPool()} {symbol}
+              </b>
             </p>
           </Col>
         </Row>

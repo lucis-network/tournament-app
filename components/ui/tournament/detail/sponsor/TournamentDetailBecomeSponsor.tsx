@@ -92,7 +92,7 @@ export default function TournamentDetailBecomeSponsor(
         if (res) {
           // setIsPopupNotify(true);
           if (res) {
-            message.success("You haved become sponsor");
+            message.success("You have become our sponsor");
             setIsBecome(false);
             refetch();
             refetchTounament();

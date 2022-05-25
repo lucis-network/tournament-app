@@ -372,6 +372,13 @@ export default observer(function CreateTournament(props: Props) {
       setMessageErrorName("Tournament name cannot exceeds 125 characters");
   };
 
+  const checkOpenModalTimeLine = () => {
+    if (!TournamentStore.bracket_type) setMessageErrorTimeline("Choose bracket type first");
+    else {
+      openModal("timeline");
+    }
+  };
+
   const user = getLocalAuthInfo();
 
   useEffect(() => {
@@ -484,6 +491,7 @@ export default observer(function CreateTournament(props: Props) {
                   onChange={(e) => {
                     TournamentStore.bracket_type = e.target.value;
                     setMessageErrorBracketType("");
+                    setMessageErrorTimeline("");
                   }}
                 >
                   {BracketType.map((item, index) => {
@@ -571,22 +579,15 @@ export default observer(function CreateTournament(props: Props) {
               </Col>
             </Row>
             <Row className="pt-4">
-              <Col span={4} className={s.textColor}>
-                Discord
+              <Col span={4}>
+                <p>Timeline</p>
               </Col>
-              <Col span={6}>
-                <Input
-                  value={TournamentStore.discord}
-                  type="text"
-                  placeholder="Discord"
-                  onChange={(e) => {
-                    TournamentStore.discord = e.target.value;
-                  }}
-                  max={32}
-                  style={{ borderColor: "var(--line-color)" }}
-                />
+              <Col span={8}>
+                <Button onClick={checkOpenModalTimeLine}>Setup Timeline</Button>
+                <div className={`${s.message_error} ml-[10px]`}>
+                  {messageErrorTimeline}
+                </div>
               </Col>
-              <Col span={2}></Col>
               <Col span={4}>
                 <p className="ml-[10px]">Best of for all rounds</p>
               </Col>
@@ -603,41 +604,6 @@ export default observer(function CreateTournament(props: Props) {
                     return (
                       <Option value={item} key={index}>
                         {item}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </Col>
-            </Row>
-            <Row className="pt-4">
-              <Col span={4}>
-                <p>Timeline</p>
-              </Col>
-              <Col span={8}>
-                <Button onClick={() => openModal("timeline")}>
-                  Setup Timeline
-                </Button>
-                <div className={`${s.message_error} ml-[10px]`}>
-                  {messageErrorTimeline}
-                </div>
-              </Col>
-
-              <Col span={4}>
-                <p className="ml-[10px]">Region</p>
-              </Col>
-              <Col span={8}>
-                <Select
-                  value={TournamentStore.regions[0]}
-                  defaultValue={"Global"}
-                  style={{ width: 200 }}
-                  onChange={(value) => {
-                    TournamentStore.regions[0] = value;
-                  }}
-                >
-                  {getDataRegions?.map((item: any, index: number) => {
-                    return (
-                      <Option value={item.uid} key={index}>
-                        {item.name}
                       </Option>
                     );
                   })}
@@ -674,6 +640,46 @@ export default observer(function CreateTournament(props: Props) {
                   </Radio>
                 </Radio.Group>
               </Col>
+
+              <Col span={4}>
+                <p className="ml-[10px]">Region</p>
+              </Col>
+              <Col span={8}>
+                <Select
+                  value={TournamentStore.regions[0]}
+                  defaultValue={"Global"}
+                  style={{ width: 200 }}
+                  onChange={(value) => {
+                    TournamentStore.regions[0] = value;
+                  }}
+                >
+                  {getDataRegions?.map((item: any, index: number) => {
+                    return (
+                      <Option value={item.uid} key={index}>
+                        {item.name}
+                      </Option>
+                    );
+                  })}
+                </Select>
+              </Col>
+            </Row>
+            <Row className="pt-4">
+              <Col span={4} className={s.textColor}>
+                Discord link
+              </Col>
+              <Col span={6}>
+                <Input
+                  value={TournamentStore.discord}
+                  type="text"
+                  placeholder="Discord link"
+                  onChange={(e) => {
+                    TournamentStore.discord = e.target.value;
+                  }}
+                  max={32}
+                  style={{ borderColor: "var(--line-color)" }}
+                />
+              </Col>
+              <Col span={2}></Col>
               <Col span={12}>
                 <p className="ml-[10px]">Referee(s)</p>
                 <div className="flex flex-row">

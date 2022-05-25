@@ -42,20 +42,12 @@ export default function Referees(props: Props) {
 
   const columnsReferees = [
     {
-      title: "",
-      dataIndex: "user",
-      key: "number",
+      title: "NO",
+      dataIndex: "no",
+      key: "no",
       width: "10%",
-      render: (_: any, item: any) => {
-        return (
-          <img
-            className={s.avt}
-            src={`${
-              item.user.profile.avatar ?? "/assets/MyProfile/defaultAvatar.png"
-            }`}
-            alt=""
-          />
-        );
+      render: (_: any, item: any, index: number) => {
+        return <>{index + 1}</>;
       },
     },
     {
@@ -65,16 +57,24 @@ export default function Referees(props: Props) {
       width: "40%",
       render: (_: any, item: any) => {
         return (
-          <>
+          <div className="text-left">
+            <img
+              className={s.avt}
+              src={`${
+                item.user.profile.avatar ??
+                "/assets/MyProfile/defaultAvatar.png"
+              }`}
+              alt=""
+            />
             <a
-              style={{ color: "white" }}
+              style={{ color: "white", marginLeft: "10px" }}
               href={`/profile/${item?.user?.profile?.user_name}`}
               target="_blank"
               rel="noreferrer"
             >
               {item.user.profile.display_name}
             </a>
-          </>
+          </div>
         );
       },
     },

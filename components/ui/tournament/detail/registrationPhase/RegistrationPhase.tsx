@@ -60,7 +60,7 @@ export default observer(function RegistrationPhase(props: Props) {
 		cache_tournament,
 	} = props.tournament;
 
-	const { isJoin, isCheckin, tournamentId, dataBracket, refetch } = props;
+	const { isJoin, isCheckin, tournamentId, dataBracket, refetch, refreshParticipant } = props;
 
 	const isFullParticipant = cache_tournament?.team_participated >= participants;
 
@@ -329,9 +329,6 @@ export default observer(function RegistrationPhase(props: Props) {
 											</div>
 										);
 									case "CLOSED":
-										console.log("dataPrize", dataPrize)
-										console.log("dataSystemPrize", dataSystemPrize)
-										console.log("totalFromDonation", totalFromDonation)
 										return (
 											// todo closeds
 											<div>

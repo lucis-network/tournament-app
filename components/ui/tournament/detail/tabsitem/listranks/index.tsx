@@ -57,28 +57,6 @@ export default function ListRanks(props: Props) {
       dataIndex: "team_name",
       key: "team_name",
       width: "35%",
-      // render: (_: any, item: any) => {
-      //   return item?.playTeamMembers?.length == 1 ? (
-      //     <a
-      //       style={{ color: "white" }}
-      //       href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
-      //       target="_blank"
-      //       rel="noreferrer"
-      //     >
-      //       {item.team_name}
-      //     </a>
-      //   ) : (
-      //     <a
-      //       style={{ color: "white" }}
-      //       onClick={() => {
-      //         handleClick(item);
-      //         setIsCheck(false);
-      //       }}
-      //     >
-      //       {item.team_name}
-      //     </a>
-      //   );
-      // },
       render: (_: any, item: any, index: number) => {
         console.log(item);
         return (
@@ -112,7 +90,7 @@ export default function ListRanks(props: Props) {
                     alt={`${item?.team_avatar}`}
                   />
                 )}
-                <a
+                {/* <a
                   style={{ color: "white" }}
                   onClick={() => {
                     handleClick(item);
@@ -120,7 +98,8 @@ export default function ListRanks(props: Props) {
                   }}
                 >
                   {item.team_name}
-                </a>
+                </a> */}
+                {item.team_name}
               </div>
             )}
           </div>
