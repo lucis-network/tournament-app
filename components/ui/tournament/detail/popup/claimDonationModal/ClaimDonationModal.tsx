@@ -16,7 +16,7 @@ type Props = {
 };
 
 export type ClaimDonation = {
-  tournamnent_uid?: string;
+  tournament_uid?: string;
   address?: any;
 };
 
@@ -39,7 +39,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       setIsLoading(true);
 
       const claim: ClaimDonation = {
-        tournamnent_uid: tournamentId,
+        tournament_uid: tournamentId,
         address: ConnectWalletStore.address,
       };
       const authService = new AuthService();
