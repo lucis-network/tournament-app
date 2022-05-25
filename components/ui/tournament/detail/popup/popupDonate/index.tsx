@@ -212,8 +212,8 @@ const PopupDonate = (props: Props) => {
     >
       {Object.values([datas]).map((e: any, index: number) => (
         <Row key={index}>
-          <Col span={10}>Donate to</Col>
-          <Col className={s.information}>
+          <Col xs={{ span: 24 }} md={{ span:7 }}>Donate to</Col>
+          <Col xs={{ span: 24 }} md={{ span: 17 }} className={s.information}>
             {(() => {
               switch (types) {
                 case "PLAYER":
@@ -298,61 +298,55 @@ const PopupDonate = (props: Props) => {
           </Col>
         </Row>
       ))}
-      <div>
-        <Row className={`${s.amount} ${s.input}`}>
-          <Col span={9} style={{ fontSize: 16 }}>
-            Amount
-          </Col>
-          <Col span={10}>
-            <Input
-              style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
-              onBlur={handleBlur}
-              value={values}
-              onChange={handleChange}
-              ref={inputRef}
-              placeholder="Enter amount"
-            />
-          </Col>
-          <Col span={1}></Col>
-          <Col span={4}>{currency?.symbol}</Col>
-        </Row>
-
-        {/* Message Error */}
-        <Row>
-          <Col span={9}></Col>
-          <Col span={15} className={s.message_error}>
+      <Row className={`${s.amount} ${s.input}`}>
+        <Col xs={{ span: 24 }} md={{ span: 7 }} style={{ fontSize: 16 }}>
+          Amount
+        </Col>
+        <Col xs={{ span: 24 }} md={{ span: 17 }}>
+          <Row align={"middle"}>
+            <Col span={18}>
+              <Input
+                style={titleMessage !== "" ? { borderColor: "#cb3636" } : {}}
+                onBlur={handleBlur}
+                value={values}
+                onChange={handleChange}
+                ref={inputRef}
+                placeholder="Enter amount"
+              />
+            </Col>
+            <Col span={6} className="pl-2">{currency?.symbol}</Col>
+          </Row>
+          {/* Message Error */}
+          <div className={s.message_error}>
             {titleMessage}
-          </Col>
-        </Row>
-
-        <Row className={`${s.message} ${s.input}`}>
-          <Col span={9} style={{ fontSize: 16 }}>
-            Message
-          </Col>
-          <Col span={15}>
-            <TextArea
-              placeholder="Enter message"
-              className={s.editable}
-              value={desc}
-              onChange={(e) => {
-                setDesc(e.target.value);
-              }}
-              maxLength={125}
-            />
-          </Col>
-        </Row>
-
-        <Row className={s.btn}>
-          <Col>
-            <Spin spinning={isLoading}>
-              <Button type="primary" onClick={donate}>
-                Donate
-              </Button>
-            </Spin>
-          </Col>
-        </Row>
-      </div>
-
+          </div>
+        </Col>
+      </Row>
+      <Row className={`${s.message} ${s.input}`}>
+        <Col xs={{ span: 24 }} md={{ span: 7 }} style={{ fontSize: 16 }}>
+          Message
+        </Col>
+        <Col xs={{ span: 24 }} md={{ span: 17 }}>
+          <TextArea
+            placeholder="Enter message"
+            className={s.editable}
+            value={desc}
+            onChange={(e) => {
+              setDesc(e.target.value);
+            }}
+            maxLength={125}
+          />
+        </Col>
+      </Row>
+      <Row className={s.btn}>
+        <Col>
+          <Spin spinning={isLoading}>
+            <Button type="primary" onClick={donate}>
+              Donate
+            </Button>
+          </Spin>
+        </Col>
+      </Row>
       {/* ===== Modal ===== */}
       <PopupNotify
         closeModalNotify={() => closeModalNotify()}

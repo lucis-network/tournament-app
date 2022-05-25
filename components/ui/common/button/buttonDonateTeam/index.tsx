@@ -64,21 +64,25 @@ export default function ModalDonateTeam(props: Props) {
         {
           <div>
             <Row className={s.top}>
-              <Col span={4} className={s.avt}>
-                <img
-                  className={s.avt}
-                  src={`${
-                    nameTeam?.team?.avatar ||
-                    "/assets/MyProfile/defaultAvatar.png"
-                  }`}
-                  alt=""
-                />
+              <Col xs={{ span: 24 }} sm={{ span: 14 }}>
+                <Row align={"middle"} className={s.avtRow}>
+                  <Col span={4} className={s.avtWrap}>
+                    <img
+                      className={s.avt}
+                      src={`${
+                        nameTeam?.team?.avatar ||
+                        "/assets/MyProfile/defaultAvatar.png"
+                      }`}
+                      alt=""
+                    />
+                  </Col>
+                  <Col span={10} className={s.name_team}>
+                    <p>{nameTeam?.team?.name}</p>
+                    <span>{quantityMember}</span>
+                  </Col>
+                </Row>
               </Col>
-              <Col span={10} className={s.name_team}>
-                <p>{nameTeam?.team?.name}</p>
-                <span>{quantityMember}</span>
-              </Col>
-              <Col span={10}>
+              <Col xs={{ span: 24 }} sm={{ span: 10 }} className={s.donateTeam}>
                 {isCheck && (
                   <Button
                     type="primary"
@@ -94,11 +98,10 @@ export default function ModalDonateTeam(props: Props) {
 
             <div className={s.Member}>
               <h1>Member</h1>
-
               {nameTeam?.playTeamMembers
                 ? nameTeam?.playTeamMembers?.map((item: any) => (
-                    <Row key={item?.uid} className={s.container}>
-                      <Col span={18} className={s.item_member}>
+                    <div key={item?.uid} className={s.memberContainer}>
+                      <div className={s.item_member}>
                         <div className={s.avt_member}>
                           <img
                             className={s.avt}
@@ -122,8 +125,8 @@ export default function ModalDonateTeam(props: Props) {
                         {item.is_leader && (
                           <div className={s.leader}><StarFilled className="text-18px"/></div>
                         )}
-                      </Col>
-                      <Col>
+                      </div>
+                      <div className={s.itemDonate}>
                         {isCheck && (
                           <Button
                             type="primary"
@@ -134,8 +137,8 @@ export default function ModalDonateTeam(props: Props) {
                             Donate
                           </Button>
                         )}
-                      </Col>
-                    </Row>
+                      </div>
+                    </div>
                   ))
                 : ""}
               <PopupDonate

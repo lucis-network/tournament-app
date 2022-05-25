@@ -1,11 +1,19 @@
 .content_modal
-  max-width: 400px
+  max-width: calc(100% - 30px)
+  @media screen and (min-width: 768px)
+    width: 500px
+  :global(.ant-modal-body)
+    padding: 15px
+    @media screen and (min-width: 576px)
+      padding: 24px
   :global(.ant-modal-footer)
     display: none
   .information
     display: flex
     flex-direction: column
     align-items: center
+    @media screen and (min-width: 768px)
+      align-items: flex-start
     .avt_member
       max-width: 100px
       min-width: 100px
@@ -25,7 +33,6 @@
   
   .input
     justify-content: space-between
-    flex-wrap: nowrap
     align-items: center
     :global(.ant-input)
       border-radius: 8px
