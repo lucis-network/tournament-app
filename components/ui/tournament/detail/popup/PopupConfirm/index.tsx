@@ -10,6 +10,7 @@ interface Props {
   tournamentId: string;
   refetchConfirmResult: any;
   tournament_status?: string;
+  refetchTounament: any;
 }
 
 export default function PopupConfirm(props: Props) {
@@ -19,7 +20,9 @@ export default function PopupConfirm(props: Props) {
     tournamentId,
     refetchConfirmResult,
     tournament_status,
+    refetchTounament
   } = props;
+  
   const { error, loading, data } = useConfirmTournamentResult({
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
@@ -57,6 +60,7 @@ export default function PopupConfirm(props: Props) {
           message.success("Success");
           onCancel();
           refetchConfirmResult();
+          refetchTounament();
         } else {
           message.success("Fail. Plesase try again.");
         }

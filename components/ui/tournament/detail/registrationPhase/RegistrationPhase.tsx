@@ -19,6 +19,7 @@ import CountdownTimer from "components/ui/common/CountDown";
 import { CalendarOutlined } from "@ant-design/icons";
 import AuthStore from "components/Auth/AuthStore";
 import SpinLoading from "components/ui/common/Spin";
+import { isEmpty } from "lodash";
 
 type Props = {
 	isJoin: boolean;
@@ -59,7 +60,7 @@ export default observer(function RegistrationPhase(props: Props) {
 		cache_tournament,
 	} = props.tournament;
 
-	const { isJoin, isCheckin, tournamentId, dataBracket, refetch } = props;
+	const { isJoin, isCheckin, tournamentId, dataBracket, refetch, refreshParticipant } = props;
 
 	const isFullParticipant = cache_tournament?.team_participated >= participants;
 
@@ -80,6 +81,7 @@ export default observer(function RegistrationPhase(props: Props) {
 
 	const { data } = useClaimReward({
 		tournament_uid: tournamentId ? tournamentId : "",
+		skip: isEmpty(tournamentId)
 	});
 
 	const {

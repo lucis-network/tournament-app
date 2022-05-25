@@ -68,6 +68,7 @@ export type Rounds = {
 const DEFAULT_PARTICIPANTS = 8;
 const DEFAULT_TURNS = 1;
 const DEFAULT_CURRENCY_UID = "BSC_BUSD";
+const DEFAULT_CURRENCY_SYMBOL = "BUSD";
 const DEFAULT_JOIN_FEE = 0;
 const DEFAULT_REGIONS = ["AA"];
 class TournamentStore {
@@ -107,6 +108,8 @@ class TournamentStore {
   private _game_uid?: string | undefined;
 
   private _currency_uid?: string = DEFAULT_CURRENCY_UID;
+
+  private _currency_symbol?: string | undefined = DEFAULT_CURRENCY_SYMBOL;
 
   private _join_fee?: number = DEFAULT_JOIN_FEE;
 
@@ -423,6 +426,13 @@ class TournamentStore {
   }
   public set discord(value: string | undefined) {
     this._discord = value;
+  }
+
+  public get currency_symbol(): string | undefined {
+    return this._currency_symbol;
+  }
+  public set currency_symbol(value: string | undefined) {
+    this._currency_symbol = value;
   }
 }
 
