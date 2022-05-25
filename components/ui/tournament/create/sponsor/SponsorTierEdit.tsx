@@ -11,10 +11,11 @@ type SponsorTierEditProps = {
   data: SponsorTierStore;
   currencyUid?: string;
   minAmountInit: number;
+  currency_symbol?: string;
 };
 
 export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
-  const { data, currencyUid, minAmountInit } = props;
+  const { data, currencyUid, minAmountInit, currency_symbol } = props;
 
   const maxSponsorOptions = [];
   for (let i = 1; i <= 20; i++) {
@@ -143,7 +144,7 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
               min={minAmountInit}
               max={999999999999999}
               onChange={handleMinSponsorAmountChange}
-              addonAfter={currencyUid}
+              addonAfter={currency_symbol}
               placeholder={`${minAmountInit}`}
             />
           </Col>
