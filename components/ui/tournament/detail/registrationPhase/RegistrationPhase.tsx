@@ -334,8 +334,8 @@ export default observer(function RegistrationPhase(props: Props) {
 									case "CLOSED":
 										return (
 											// todo closeds
-											<div>
-												<div className={s.joinWrap}>
+											<div className="pt-5">
+												<div className={s.claimWrap}>
 													{(dataPrize?.amount && dataPrize?.amount > 0) ||
 													(dataSystemPrize?.amount &&
 														dataSystemPrize?.amount > 0) ? (
@@ -343,8 +343,8 @@ export default observer(function RegistrationPhase(props: Props) {
 													) : (
 														""
 													)}
-													<div className={s.rewards}>
-														<div>
+													<div className={`${s.rewards} pt-5`}>
+														<div className="mb-7">
 															{(dataPrize?.amount && dataPrize?.amount > 0) ||
 																(dataSystemPrize?.amount &&
 																	dataSystemPrize?.amount > 0) ||
@@ -352,20 +352,23 @@ export default observer(function RegistrationPhase(props: Props) {
 															<div>
 																{dataPrize?.amount ? (
 																	dataPrize?.amount > 0 ? (
-																		<>
-																			{fomatNumber(
-																				dataPrize?.amount
-																					? dataPrize?.amount
-																					: 0
-																			)}{" "}
-																			{dataPrize?.symbol}
-																			<br />
+																		<div className="mb-5">
+																			<p>Prize</p>
+																			<h3>
+																				{fomatNumber(
+																					dataPrize?.amount
+																						? dataPrize?.amount
+																						: 0
+																				)}{" "}
+																				{dataPrize?.symbol}
+																			</h3>
 																			<Button
 																				onClick={() => claimToken("PrizePool")}
+																				className={`${s.btnClaim} btn-cyan`}
 																			>
 																				Claim
 																			</Button>
-																		</>
+																		</div>
 																	) : (
 																		""
 																	)
@@ -377,17 +380,19 @@ export default observer(function RegistrationPhase(props: Props) {
 																{dataSystemPrize?.amount ? (
 																	dataSystemPrize?.amount > 0 ? (
 																		<>
-																			{fomatNumber(
-																				dataSystemPrize?.amount
-																					? dataSystemPrize?.amount
-																					: 0
-																			)}{" "}
-																			{dataSystemPrize?.symbol}
-																			<br />
+																			<h3>
+																				{fomatNumber(
+																					dataSystemPrize?.amount
+																						? dataSystemPrize?.amount
+																						: 0
+																				)}{" "}
+																				{dataSystemPrize?.symbol}
+																			</h3>
 																			<Button
 																				onClick={() =>
 																					claimToken("PrizeSystem")
 																				}
+																				className={`${s.btnClaim} btn-cyan`}
 																			>
 																				Claim
 																			</Button>
@@ -406,10 +411,11 @@ export default observer(function RegistrationPhase(props: Props) {
 																	totalFromDonation > 0 ? (
 																		<>
 																			<p>From Donation</p>
-																			{fomatNumber(totalFromDonation)}{" "}
-																			{dataPrize?.symbol}
-																			<br />
-																			<Button onClick={claimTokenDonation}>
+																			<h3>
+																				{fomatNumber(totalFromDonation)}{" "}
+																				{dataPrize?.symbol}
+																			</h3>
+																			<Button onClick={claimTokenDonation} className={`${s.btnClaim} btn-cyan`}>
 																				Claim
 																			</Button>
 																		</>
@@ -425,7 +431,7 @@ export default observer(function RegistrationPhase(props: Props) {
 													{/* {(dataPrize?.amount && dataPrize?.amount > 0) ||
 													(dataSystemPrize?.amount &&
 														dataSystemPrize?.amount > 0) ? (
-														<Button>Share my victory</Button>
+														<Button className={`${s.btnClaim} btn-cyan`}>Share my victory</Button>
 													) : (
 														""
 													)} */}
