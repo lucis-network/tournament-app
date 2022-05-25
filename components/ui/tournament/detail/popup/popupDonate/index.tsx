@@ -27,7 +27,7 @@ type Props = {
 export type GDonateTransaction = {
   to: string;
   type: string;
-  tournamnent_uid: string;
+  tournament_uid: string;
   amount: number;
   message: string;
   tx_hash: string;
@@ -110,7 +110,7 @@ const PopupDonate = (props: Props) => {
     let dnt: GDonateTransaction = {
       to: "",
       type: types ? types : "",
-      tournamnent_uid: tournamentId ? tournamentId : "",
+      tournament_uid: tournamentId ? tournamentId : "",
       amount: Number.parseFloat(values),
       message: desc,
       tx_hash: "",
