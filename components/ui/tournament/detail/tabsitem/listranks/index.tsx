@@ -31,7 +31,7 @@ export default function ListRanks(props: Props) {
   const handleClick = (e: object) => {
     setDatas(e);
     //@ts-ignore
-    if (e?.bracketTeamMembers?.length == 1) {
+    if (e?.playTeamMembers?.length == 1) {
       setIsPopupDonate(true);
     } else {
       AppEmitter.emit("showPopupDonate", true);
@@ -90,7 +90,7 @@ export default function ListRanks(props: Props) {
                     alt={`${item?.team_avatar}`}
                   />
                 )}
-                {/* <a
+                <a
                   style={{ color: "white" }}
                   onClick={() => {
                     handleClick(item);
@@ -98,8 +98,7 @@ export default function ListRanks(props: Props) {
                   }}
                 >
                   {item.team_name}
-                </a> */}
-                {item.team_name}
+                </a>
               </div>
             )}
           </div>

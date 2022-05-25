@@ -443,7 +443,7 @@ export default observer(function CreateTournament(props: Props) {
                   value="thumbnail"
                   url={TournamentStore?.thumbnail}
                 ></UploadImage>
-                <p>Recommended size: 400x300</p>
+                <p>Recommended size: 450x300</p>
                 <div className={s.message_error}>{messageErrorThumbnail}</div>
               </Col>
             </Row>

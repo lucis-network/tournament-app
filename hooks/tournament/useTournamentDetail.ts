@@ -467,6 +467,15 @@ const GET_LIST_RANKS = gql`
       player_team_uid
       prize
       donated
+      playTeamMembers {
+        uid
+        user{
+          profile {
+            user_name
+            user_id
+          }
+        }
+      }
     }
   }
 `;

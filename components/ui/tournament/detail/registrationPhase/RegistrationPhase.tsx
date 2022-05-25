@@ -38,6 +38,7 @@ type Reward = {
 	rank: number;
 	reward_type: string;
 	symbol: string;
+	is_claim: boolean;
 };
 
 export type ClaimPrizePool = {
@@ -101,6 +102,7 @@ export default observer(function RegistrationPhase(props: Props) {
 
 	useEffect(() => {
 		let arr: Array<Reward> = [];
+		console.log("console", data)
 		data?.forEach((item: any) => {
 			if (item.reward_type === "PRIZE") setDataPrize(item);
 			else if (item.reward_type === "SYTEMPRIZE") setDataSystemPrize(item);
@@ -122,6 +124,7 @@ export default observer(function RegistrationPhase(props: Props) {
 			reward_type: "Total",
 			rank: 0,
 			symbol: currency?.symbol,
+			is_claim: false
 		};
 		arr.push(obj);
 	};
@@ -329,6 +332,8 @@ export default observer(function RegistrationPhase(props: Props) {
 											</div>
 										);
 									case "CLOSED":
+										// console.log("dataPrize", dataPrize);
+										// console.log("dataSystemPrize", dataSystemPrize);
 										return (
 											// todo closeds
 											<div>

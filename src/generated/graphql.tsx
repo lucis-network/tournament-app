@@ -3708,12 +3708,9 @@ export type TournamentLeaderBoardWhereUniqueInput = {
 export type TournamentListRank = {
   __typename?: 'TournamentListRank';
   donated?: Maybe<Scalars['Float']>;
-  playTeamMembers?: Maybe<Array<PlayTeamMember>>;
-  player_team_uid?: Maybe<Scalars['String']>;
+  playTeam?: Maybe<PlayTeam>;
   prize?: Maybe<Scalars['Float']>;
   rank?: Maybe<Scalars['Int']>;
-  team_avatar?: Maybe<Scalars['String']>;
-  team_name?: Maybe<Scalars['String']>;
 };
 
 export type TournamentRank = {

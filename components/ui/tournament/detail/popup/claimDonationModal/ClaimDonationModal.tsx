@@ -50,7 +50,7 @@ export default observer(function ClaimDonationModal(props: Props) {
         (res) => {
           setIsLoading(false);
           if (res) {
-            message.success("You claim success");
+            //message.success("You claim success");
             authService.sign([msg, ConnectWalletStore.address]);
           }
         },
@@ -69,7 +69,16 @@ export default observer(function ClaimDonationModal(props: Props) {
       key: "reward_type",
       width: "40%",
       render: (_: any, item: any) => {
-        return <>{item.reward_type}</>;
+        return (
+          <>
+            {item.reward_type == "DONATEFORTOURNAMENT" && (
+              <>For our tournament</>
+            )}
+            {item.reward_type == "DONATEFORPLAYER" && <>For you</>}
+            {item.reward_type == "DONATEFORTEAM" && <>For your team</>}
+            {item.reward_type == "Total" && <>Total</>}
+          </>
+        );
       },
     },
     {
