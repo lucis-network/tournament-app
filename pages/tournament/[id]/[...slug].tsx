@@ -308,7 +308,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       </Col>
                     </Row>
                     <Row gutter={{ sm: 20, lg: 30 }}>
-                      <Col xs={{ span: 24 }} sm={{ span: 9 }}>
+                      <Col xs={{ span: 24 }} sm={{ span: 9 }} className={s.metadataBlock}>
                         <h4 className={s.metadataTitle}>Bracket type</h4>
                         <div className={s.metadataValue}>
                           {dataBracket?.type === "SINGLE"
@@ -318,11 +318,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             : ""}
                         </div>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 8 }}>
+                      <Col xs={{ span: 24 }} sm={{ span: 8 }} className={s.metadataBlock}>
                         <h4 className={s.metadataTitle}>Max participants</h4>
                         <div className={s.metadataValue}>{participants}</div>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 7 }}>
+                      <Col xs={{ span: 24 }} sm={{ span: 7 }} className={s.metadataBlock}>
                         <h4 className={s.metadataTitle}>Team size</h4>
                         <div className={s.metadataValue}>
                           {team_size ?? "-"}v{team_size ?? "-"}
