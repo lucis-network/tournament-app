@@ -274,7 +274,7 @@ export default function TournamentDetailBecomeSponsor(
                   {
                     type: "number",
                     min: minAmount,
-                    message: `Sponsor amount must be greater than ${minAmount} ${TournamentStore.currency_uid}.`,
+                    message: `Sponsor amount must be greater than ${minAmount} ${TournamentStore.currency_symbol}.`,
                   },
                 ]}
               >
@@ -284,7 +284,7 @@ export default function TournamentDetailBecomeSponsor(
                   ref={inputSponsorAmountRef}
                   min={0}
                   max={999999999999999}
-                  placeholder={`Min ${minAmount} ${TournamentStore.currency_uid}`}
+                  placeholder={`Min ${minAmount} ${TournamentStore.currency_symbol}`}
                   onChange={handleSponsorAmountChange}
                   disabled={is_full}
                 />
@@ -337,11 +337,14 @@ export default function TournamentDetailBecomeSponsor(
                     required: true,
                     message: "Sponsor name is required.",
                   },
+                  {
+                    max: 45,
+                    message: "Sponsor name must be maximum 45 characters.",
+                  },
                 ]}
               >
                 <Input
                   placeholder="Sponsor name"
-                  maxLength={45}
                   disabled={is_full}
                 />
               </Form.Item>
@@ -355,10 +358,10 @@ export default function TournamentDetailBecomeSponsor(
               <Form.Item
                 name="home_page"
                 rules={[
-                  {
-                    required: true,
-                    message: "Home page is required.",
-                  },
+                  // {
+                  //   required: true,
+                  //   message: "Home page is required.",
+                  // },
                   {
                     type: "url",
                     message: "Not a valid url",
