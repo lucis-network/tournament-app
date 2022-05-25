@@ -308,7 +308,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       </Col>
                     </Row>
                     <Row gutter={{ sm: 20, lg: 30 }}>
-                      <Col xs={{ span: 24 }} sm={{ span: 9 }} className={s.metadataBlock}>
+                      <Col xs={{ span: 12 }} sm={{ span: 9 }} className={s.metadataBlock}>
                         <h4 className={s.metadataTitle}>Bracket type</h4>
                         <div className={s.metadataValue}>
                           {dataBracket?.type === "SINGLE"
@@ -318,17 +318,17 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             : ""}
                         </div>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 8 }} className={s.metadataBlock}>
+                      <Col xs={{ span: 12 }} sm={{ span: 8 }} className={`${s.metadataBlock} ${s.alignRightMb}`}>
                         <h4 className={s.metadataTitle}>Max participants</h4>
                         <div className={s.metadataValue}>{participants}</div>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 7 }} className={s.metadataBlock}>
+                      <Col xs={{ span: 12 }} sm={{ span: 7 }} className={s.metadataBlock}>
                         <h4 className={s.metadataTitle}>Team size</h4>
                         <div className={s.metadataValue}>
                           {team_size ?? "-"}v{team_size ?? "-"}
                         </div>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 9 }}>
+                      <Col xs={{ span: 12 }} sm={{ span: 9 }} className={s.gameInfoBlock}>
                         <div className={s.gameInfo}>
                           <Image
                             src={game?.logo}
@@ -339,7 +339,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           <div className={s.gameName}>{game?.name}</div>
                         </div>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 8 }}>
+                      <Col xs={{ span: 12 }} sm={{ span: 8 }} className={s.userInfoBlock}>
                         <Link
                           href={
                             user?.profile?.user_name
@@ -348,7 +348,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           }
                           passHref
                         >
-                          <a className={s.userInfo}>
+                          <a className={`${s.userInfo} ${s.alignRightMb}`}>
                             {user?.profile?.avatar ? (
                               <Image
                                 src={user?.profile?.avatar}
@@ -370,7 +370,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           </a>
                         </Link>
                       </Col>
-                      <Col xs={{ span: 24 }} sm={{ span: 7 }}>
+                      <Col xs={{ span: 12 }} sm={{ span: 7 }} className={s.alignRightMb}>
                         <div className={s.metadataValue}>BO{turns}</div>
                       </Col>
                     </Row>
