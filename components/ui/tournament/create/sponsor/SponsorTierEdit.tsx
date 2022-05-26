@@ -18,7 +18,7 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
   const { data, currencyUid, minAmountInit, currency_symbol } = props;
 
   const maxSponsorOptions = [];
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 0; i <= 20; i++) {
     maxSponsorOptions.push(<Option value={i} key={i}>{i}</Option>);
   }
   

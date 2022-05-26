@@ -32,6 +32,7 @@ type SponsorDetailProps = {
   show_ads?: boolean;
   tier_ids: string[];
   minAmountInit: number;
+  index: number;
 };
 
 const { Option } = Select;
@@ -46,16 +47,24 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
     show_ads,
     tier_ids,
     minAmountInit,
+    index,
   } = props;
+
   const [logoUrl, setLogoUrl] = useState("");
   const [form] = Form.useForm();
   const inputFileRef = useRef<any>(null);
 
+  useEffect(() => {
+    if (tier?.slots[index]?.logo) {
+      //@ts-ignore
+      setLogoUrl(tier?.slots[index]?.logo);
+    }
+  }, [tier]);
+
   const handleFormUpdate = (data: any) => {
     const newSlotState: ISponsorSlot = {};
-    if (data.logo) {
-      newSlotState.logo = data.logo;
-    }
+
+    newSlotState.logo = data.logo;
     newSlotState.ads_link = data.ads_video;
     newSlotState.amount = data.amount;
     newSlotState.home_page = data.home_page;
@@ -86,13 +95,37 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
     });
   };
 
+  const doSave = () => {
+    form
+      .validateFields()
+      .then((data) => {
+        data.logo = logoUrl;
+        handleFormUpdate(data);
+        setIsEdit(false);
+      })
+      .catch((error) => {
+        console.log("Validate Failed:", error);
+      });
+  };
+
+  const doDelete = () => {
+    setLogoUrl("");
+    form.setFieldsValue({
+      name: '',
+      amount: '',
+      home_page: '',
+  });
+  }
+  
   return (
     <Modal
       title="Add existing sponsor"
       visible={isEdit}
       onCancel={() => setIsEdit(false)}
-      cancelButtonProps={{ style: { display: "none" } }}
+      //cancelButtonProps={{ style: { display: "none" } }}
+      footer={null}
       okText="Update"
+      cancelText="Delete"
       onOk={() => {
         form
           .validateFields()
@@ -109,7 +142,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       <Form
         form={form}
         initialValues={{
-          //amount: slot?.amount || min_deposit,
+          amount: slot?.amount,
           name: slot?.name || "",
           home_page: slot?.home_page || "",
           ads_video: slot?.ads_link || "",
@@ -152,7 +185,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
               <InputNumber
                 prefix="$"
                 style={{ width: "100%" }}
-                //min={min_deposit || minAmountInit}
+                min={0}
                 max={999999999999999}
                 placeholder={`Sponsor amount`}
               />
@@ -258,6 +291,16 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
             </Col>
           </Row>
         )}
+        <Row className={s.btn}>
+          <Col>
+            <Button className="mr-10px" onClick={doDelete}>Delete</Button>
+          </Col>
+          <Col>
+            <Button type="primary" onClick={doSave}>
+              Donate
+            </Button>
+          </Col>
+        </Row>
       </Form>
     </Modal>
   );

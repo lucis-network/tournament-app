@@ -432,6 +432,7 @@ export default observer(function Prizing(props: Props) {
                 });
 
                 setSymbol(obj[0]?.symbol);
+                TournamentStore.currency_symbol = obj[0]?.symbol;
               }}
             >
               {getDataCurrencies?.map((item: any, index: number) => {

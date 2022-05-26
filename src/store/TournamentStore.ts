@@ -172,6 +172,7 @@ class TournamentStore {
     this._password = undefined;
     this._game_uid = undefined;
     this._currency_uid = DEFAULT_CURRENCY_UID;
+    this._currency_symbol = DEFAULT_CURRENCY_SYMBOL;
     this._join_fee = DEFAULT_JOIN_FEE;
     this._pool_size = undefined;
     this._referees = undefined;

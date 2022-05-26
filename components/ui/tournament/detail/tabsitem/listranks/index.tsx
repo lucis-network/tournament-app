@@ -24,6 +24,7 @@ export default function ListRanks(props: Props) {
     skip: isEmpty(tournamentId),
   });
 
+  console.log("data", data)
   if (loading) {
     return <></>;
   }
@@ -58,7 +59,6 @@ export default function ListRanks(props: Props) {
       key: "team_name",
       width: "35%",
       render: (_: any, item: any, index: number) => {
-        console.log(item);
         return (
           <div className="text-left">
             {item?.playTeamMembers?.length == 1 ? (
@@ -77,17 +77,17 @@ export default function ListRanks(props: Props) {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  {item.team_name}
+                  {item.team?.name}
                 </a>
               </div>
             ) : (
               <div>
-                {item?.team_avatar && (
+                {item?.team?.avatar && (
                   <Image
                     className={s.avatar}
-                    src={`${item?.team_avatar}`}
+                    src={`${item?.team?.avatar}`}
                     preview={false}
-                    alt={`${item?.team_avatar}`}
+                    alt={`${item?.team?.avatar}`}
                   />
                 )}
                 <a
@@ -97,7 +97,7 @@ export default function ListRanks(props: Props) {
                     setIsCheck(false);
                   }}
                 >
-                  {item.team_name}
+                  {item?.team?.name}
                 </a>
               </div>
             )}

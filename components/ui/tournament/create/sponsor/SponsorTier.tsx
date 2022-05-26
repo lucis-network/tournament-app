@@ -54,6 +54,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
                 min_deposit={min_deposit}
                 show_ads={show_ads}
                 minAmountInit={minAmountInit}
+                index={index}
               />
             ))}
           </div>

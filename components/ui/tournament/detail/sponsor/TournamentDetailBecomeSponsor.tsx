@@ -23,11 +23,12 @@ import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
 import EthersService from "../../../../../services/blockchain/Ethers";
-import { BUSD } from "utils/Enum";
+import { BUSD, LUCIS, USDT } from "utils/Enum";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "components/Auth/AuthStore";
 import { SponsorCreateInputGql } from "src/generated/graphql";
+import BigNumber from "bignumber.js";
 
 type TournamentDetailBecomeSponsorProps = {
   isBecome: boolean;
@@ -36,6 +37,7 @@ type TournamentDetailBecomeSponsorProps = {
   refetch: () => Promise<ApolloQueryResult<any>>;
   tournamentId?: string;
   refetchTounament?: any;
+  currency?: any;
 };
 
 const { Option } = Select;
@@ -54,7 +56,15 @@ export default function TournamentDetailBecomeSponsor(
   props: TournamentDetailBecomeSponsorProps
 ) {
   const { getContract } = useGetContract({});
-  const { isBecome, setIsBecome, tiersSelect, refetch, tournamentId, refetchTounament } = props;
+  const {
+    isBecome,
+    setIsBecome,
+    tiersSelect,
+    refetch,
+    tournamentId,
+    refetchTounament,
+    currency,
+  } = props;
   const [selectedTier, setSelectedTier] = useState(tiersSelect[0]);
   const [currentMinAmount, setCurrentMinAmount] = useState(
     tiersSelect[0].min_deposit
@@ -71,8 +81,14 @@ export default function TournamentDetailBecomeSponsor(
   const inputFileRef = useRef<any>(null);
   const inputSponsorAmountRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [messageError, setMessageError] = useState("");
 
   const handleFormUpdate = async (data: any) => {
+    if (!data.logo) {
+      setMessageError("Logo is required");
+      return;
+    }
+
     // todo submit sponsor
     let sponsor: SponsorCreateInputGql = {
       logo: data.logo,
@@ -119,34 +135,61 @@ export default function TournamentDetailBecomeSponsor(
 
   const transfer = async (amount: any) => {
     setIsLoading(true);
+
     if (ConnectWalletStore_NonReactiveData.web3Provider) {
       //throw makeError("Need to connect your wallet first");
       const ethersService = new EthersService(
         ConnectWalletStore_NonReactiveData.web3Provider
       );
 
+      let token_address = "";
+
+      if (currency.symbol === "BUSD") token_address = BUSD;
+      if (currency.symbol === "USDT") token_address = USDT;
+      if (currency.symbol === "LUCIS") token_address = LUCIS;
+      
       const contractAddress = getContract.filter(
         (item: any) => item.type === "PRIZE"
       );
 
-      if (!localStorage.getItem("checkBecomeSponser")) {
-        let bool = await ethersService.requestApproval(
-          contractAddress[0]?.address,
-          BUSD
-        );
-        if (bool) localStorage.setItem("checkBecomeSponser", "true");
-      }
+      // if (!localStorage.getItem("checkBecomeSponser")) {
+      //   let bool = await ethersService.requestApproval(
+      //     contractAddress[0]?.address,
+      //     token_address
+      //   );
+      //   if (bool) localStorage.setItem("checkBecomeSponser", "true");
+      // }      
       if (!AuthStore.id) {
         console.log("User not exist in store");
         return;
       }
 
-      if (localStorage.getItem("checkBecomeSponser")) {
+      const getMyAllowance = await ethersService.getMyAllowanceOf(
+        contractAddress[0]?.address,
+        token_address
+      );
+
+      let bool = false;
+
+      const totalAmount = new BigNumber(Number(amount))
+        .multipliedBy(Math.pow(10, 18))
+        .toFormat({ groupSeparator: "" });
+
+      if (getMyAllowance && getMyAllowance < Number(totalAmount)) {
+        bool = await ethersService.requestApproval(
+          contractAddress[0]?.address,
+          token_address
+        );
+      } else {
+        bool = true;
+      }
+      
+      if (bool) {
         const result = await ethersService.becomeSponsor(
           AuthStore.id + "",
           tournamentId as string,
           amount,
-          BUSD,
+          token_address,
           contractAddress[0]?.address
         );
         return result;
@@ -205,7 +248,7 @@ export default function TournamentDetailBecomeSponsor(
       onCancel={() => setIsBecome(false)}
       cancelButtonProps={{ style: { display: "none" } }}
       okButtonProps={{ disabled: is_full }}
-      okText={`Sponsor with ${currentMinAmount} USDT`}
+      okText={`Sponsor with ${currentMinAmount} ${currency.symbol}`}
       onOk={() => {
         form
           .validateFields()
@@ -274,7 +317,7 @@ export default function TournamentDetailBecomeSponsor(
                   {
                     type: "number",
                     min: minAmount,
-                    message: `Sponsor amount must be greater than ${minAmount} ${TournamentStore.currency_symbol}.`,
+                    message: `Sponsor amount must be greater than ${minAmount} ${currency.symbol}.`,
                   },
                 ]}
               >
@@ -284,7 +327,7 @@ export default function TournamentDetailBecomeSponsor(
                   ref={inputSponsorAmountRef}
                   min={0}
                   max={999999999999999}
-                  placeholder={`Min ${minAmount} ${TournamentStore.currency_symbol}`}
+                  placeholder={`Min ${minAmount} ${currency.symbol}`}
                   onChange={handleSponsorAmountChange}
                   disabled={is_full}
                 />
@@ -321,6 +364,7 @@ export default function TournamentDetailBecomeSponsor(
                   >
                     Recommended size: 200x200px
                   </Text>
+                  <div className={s.message_error}>{messageError}</div>
                 </Col>
               </Row>
             </Col>
@@ -343,10 +387,7 @@ export default function TournamentDetailBecomeSponsor(
                   },
                 ]}
               >
-                <Input
-                  placeholder="Sponsor name"
-                  disabled={is_full}
-                />
+                <Input placeholder="Sponsor name" disabled={is_full} />
               </Form.Item>
             </Col>
           </Row>

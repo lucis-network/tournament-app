@@ -14,6 +14,7 @@ type SponsorSlotProps = {
   show_ads?: boolean;
   tier_ids: string[];
   minAmountInit: number;
+  index: number;
 }
 
 export default observer(
@@ -26,6 +27,7 @@ export default observer(
       show_ads,
       tier_ids,
       minAmountInit,
+      index
     } = props
     const [isEdit, setIsEdit] = useState(false)
 
@@ -57,6 +59,7 @@ export default observer(
             slot={slot}
             tier_ids={tier_ids}
             minAmountInit={minAmountInit}
+            index={index}
           />
         )}
       </>
