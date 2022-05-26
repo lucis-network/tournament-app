@@ -16,10 +16,16 @@
     input
       color: #ffffff
   .container_left
-    h1
+    h2
       margin: 20px 0px
       color: #FFF
       font-size: 32px
+      svg
+        display: inline-block
+        width: 26px
+        margin-right: 10px
+      span
+        display: inline-block
     .player_tournament
       margin-left: 30px
       button
@@ -111,10 +117,15 @@
         justify-content: space-between
         .ic_item
           margin: 20px 8px 20px 0px
+          &:last-of-type
+            margin-right: 0
           a
             display: block
           img
-            width: 50px
+            width: 35px
+            height: 35px
+            max-width: 35px
+            max-height: 35px
           &.social_disabled
             opacity: 0.6
             a
