@@ -77,9 +77,9 @@ const MyTeamDetail = ({ isOwnerProp }: MyTeamDetailProps) => {
 						</div>
 					</div>
 				</div>
-				<div className="grid px-8 pb-4">
-					<h1 className="text-white">{isOwnerProp ? 'My team' : `${profile.user_name}'s team`}</h1>
-				</div>
+				{/*<div className="grid px-8 pb-4">*/}
+				{/*	<h1 className="text-white">{isOwnerProp ? 'My team' : `${profile.user_name}'s team`}</h1>*/}
+				{/*</div>*/}
 				{loading ? (
 					<SpinLoading />
 				) : (
