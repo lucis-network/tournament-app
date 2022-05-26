@@ -227,13 +227,26 @@
       .tournamentTitle
         font-weight: 700
         font-size: 24px
-        margin-bottom: 20px
+        margin-bottom: 10px
+        @media screen and (min-width: 768px)
+          margin: -7px 0 15px
         @media screen and (min-width: 1200px)
+          margin: -17px 0 15px
           font-size: 48px
       .tournamentMetadata
         margin-bottom: 20px
+        @media screen and (max-width: 575px)
+          .gameInfoBlock
+            order: 1
+          .userInfoBlock
+            order: 2
+        .metadataBlock
+          @media screen and (min-width: 768px)
+            margin-bottom: 15px
         .tournamentTagWrap
-          margin: 0 0 10px 0
+          margin-bottom: 10px
+          @media screen and (min-width: 768px)
+            margin-bottom: 20px
           .tournamentTag
             padding: 5px 8px
             background: linear-gradient(226.29deg, #3BE2CD -0.17%, #33AFD4 93.89%)
@@ -245,6 +258,8 @@
             line-height: 1
             :global(.ant-image)
               margin-right: 5px
+            &:last-of-type
+              margin-right: 15px
           .joinDiscord
             display: inline-block
             text-decoration: underline
@@ -252,22 +267,31 @@
             :global(.ant-image)
               margin-left: 5px
         .metadataTitle
-          font-size: 16px
+          font-size: 14px
           margin-bottom: 5px
+          @media screen and (min-width: 576px)
+            font-size: 16px
         .metadataValue
           font-weight: 600
-          font-size: 18px
+          font-size: 16px
           color: #0BEBD6
           margin-bottom: 20px
+          @media screen and (min-width: 576px)
+            font-size: 18px
           @media screen and (min-width: 1600px)
             font-size: 20px
+        .alignRightMb
+          @media screen and (max-width: 575px)
+            justify-content: flex-end
+            text-align: right
         .gameInfo, .userInfo
           display: flex
           align-items: center
           :global(.ant-image)
             margin-right: 10px
             img
-              width: 30px
+              min-width: 30px
+              max-width: 30px
           .gameName, .userName
             font-size: 12px
             @media screen and (min-width: 992px)
