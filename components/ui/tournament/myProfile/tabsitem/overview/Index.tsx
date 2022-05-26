@@ -19,6 +19,8 @@ import AddFavoriteGameModal from "./AddFavoriteGameModal";
 import {DeleteOutlined, PlusCircleOutlined} from "@ant-design/icons";
 import Link from "next/link";
 import {isEmpty} from "lodash";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHandHoldingHeart, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 type MyOverviewProps = {
 	isOwner?: boolean,
@@ -92,27 +94,27 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 		{
 			name: "discord",
 			link: userInfo?.profile?.discord,
-			logo: "/assets/footer/dis.svg",
+			logo: "/assets/MyProfile/iconDiscordWhite.svg",
 		},
 		{
 			name: "facebook",
 			link: userInfo?.profile?.facebook,
-			logo: "/assets/footer/fb.svg",
+			logo: "/assets/MyProfile/iconFacebookWhite.svg",
 		},
 		{
 			name: "twitch",
 			link: userInfo?.profile?.twitch,
-			logo: "/assets/footer/twitch.svg",
+			logo: "/assets/MyProfile/iconTwitchWhite.svg",
 		},
 		{
 			name: "twitter",
 			link: userInfo?.profile?.twitter,
-			logo: "/assets/footer/tw.svg",
+			logo: "/assets/MyProfile/iconTwitterWhite.svg",
 		},
 		{
 			name: "youtube",
 			link: userInfo?.profile?.youtube,
-			logo: "/assets/footer/ytb.svg",
+			logo: "/assets/MyProfile/iconYoutubeWhite.svg",
 		},
 	];
 
@@ -152,7 +154,10 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 		<>
 			<Row className={s.wrapper}>
 				<Col span={18} className={s.container_left}>
-					<h1>Joined tournament</h1>
+					<h2>
+						<FontAwesomeIcon icon={faPlay} />
+						<span>Joined tournament</span>
+					</h2>
 					<div className={s.player_tournament}>
 						{joinedTournamentData?.getJoinedTournament &&
 						joinedTournamentData?.getJoinedTournament.length > 0 ? (
@@ -161,7 +166,7 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 									<MyTournamentList
 										data={joinedTournamentData.getJoinedTournament}
 										type="joined"
-										maxItems={4}
+										maxItems={3}
 									/>
 								</div>
 								<Button
@@ -175,7 +180,10 @@ export default observer(function MyOverview({ isOwner, userInfo, getUserProfileR
 							<div>Haven&apos;t participated in any tournament yet.</div>
 						)}
 					</div>
-					<h1>Favorite game</h1>
+					<h2>
+						<FontAwesomeIcon icon={faHandHoldingHeart} />
+						<span>Favorite game</span>
+					</h2>
 					<div className={s.favorite_game}>
 						{getFavoriteGameData &&
               getFavoriteGameData.getFavoriteGame.map((item) => (

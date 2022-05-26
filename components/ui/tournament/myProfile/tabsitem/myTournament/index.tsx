@@ -8,6 +8,8 @@ import {debounce, isEmpty} from "lodash";
 import Link from "next/link";
 import {UserGraphql} from "../../../../../../src/generated/graphql";
 import {ApolloQueryResult} from "@apollo/client";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay } from '@fortawesome/free-solid-svg-icons'
 
 type MyTournamentProps = {
   isOwner?: boolean,
@@ -56,38 +58,52 @@ const MyTournament = ({ isOwner, userInfo, getUserProfileRefetch }: MyTournament
       <div className={s.myTournament}>
         <Row>
           <Col span={24} lg={{ span: 20 }}>
-            <h2>My owned tournament</h2>
+            <h2>
+              <FontAwesomeIcon icon={faPlay} />
+              <span>My owned tournament</span>
+            </h2>
           </Col>
           <Col span={24} lg={{ span: 4 }}>
-            <div className="flex justify-end">
-              <Input
-                placeholder="Search"
-                onChange={handleSearchOwnedTournament}
-              />
-            </div>
+            {(ownedTournamentData?.searchOwnerTournament && ownedTournamentData?.searchOwnerTournament.length > 0) && (
+              <div className="flex justify-end">
+                <Input
+                  placeholder="Search"
+                  onChange={handleSearchOwnedTournament}
+                />
+              </div>
+            )}
           </Col>
         </Row>
         {(ownedTournamentData?.searchOwnerTournament && ownedTournamentData?.searchOwnerTournament.length > 0) ? (
-          <MyTournamentList data={ownedTournamentData.searchOwnerTournament} type="owned" isOwner={isOwner}/>
+          <MyTournamentList data={ownedTournamentData.searchOwnerTournament} type="owned" isOwner={isOwner} maxItems={4}/>
         ) : (<div>Don&apos;t own any tournaments yet</div>)}
       </div>
       <div className={s.myTournament}>
         <Row>
           <Col span={24} lg={{ span: 20 }}>
-            <h2>Joined tournament</h2>
+            <h2>
+              <FontAwesomeIcon icon={faPlay} />
+              <span>Joined tournament</span>
+            </h2>
           </Col>
           <Col span={24} lg={{ span: 4 }}>
-            <div className="flex justify-end">
-              <Input
-                placeholder="Search"
-                onChange={handleSearchJoinedTournament}
-              />
-            </div>
+            {(joinedTournamentData?.searchJoinedTournament && joinedTournamentData?.searchJoinedTournament.length > 0) && (
+              <div className="flex justify-end">
+                <Input
+                  placeholder="Search"
+                  onChange={handleSearchJoinedTournament}
+                />
+              </div>
+            )}
           </Col>
         </Row>
         {(joinedTournamentData?.searchJoinedTournament && joinedTournamentData?.searchJoinedTournament.length > 0) ? (
-          <MyTournamentList data={joinedTournamentData.searchJoinedTournament} type="joined" />
-        ) : (<div>Haven&apos;t participated in any tournament yet.</div>)}
+          isOwner ? (
+            <MyTournamentList data={joinedTournamentData.searchJoinedTournament.filter(item => item.is_claim === "CLAIM")} type="owned" isOwner={isOwner} maxItems={4} isMyTournament/>
+          ) : (
+            <MyTournamentList data={joinedTournamentData.searchJoinedTournament} type="owned" isOwner={isOwner} maxItems={4} isMyTournament/>
+          )
+        ) : (<div>Don&apos;t own any tournaments yet</div>)}
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import s from "./profile.module.sass";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import InfoMyProfile from "components/ui/tournament/myProfile/infoProfile/Info";
 import EditProfile from "components/ui/tournament/myProfile/editMyProfile/EditProfile";
 import ContentMyProfile from "../../components/ui/tournament/myProfile/content/ContentMyProfile";
@@ -7,8 +7,11 @@ import {useGetUserProfile} from "../../hooks/myProfile/useMyProfile";
 import AuthStore from "../../components/Auth/AuthStore";
 import {isEmpty} from "lodash";
 import {UserGraphql} from "../../src/generated/graphql";
+import {useRouter} from "next/router";
+import {observer} from "mobx-react-lite";
 
-const MyProfile = () => {
+export default observer(function MyProfile() {
+	const router = useRouter();
 	const localUserInfo = AuthStore;
 	const [userInfo, setUserInfo] = useState<any>(localUserInfo);
 	const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData } = useGetUserProfile({
@@ -22,11 +25,18 @@ const MyProfile = () => {
 	})
 	const [isShowEdit, setIsShowEdit] = useState(false);
 
+	useEffect(() => {
+		if (!AuthStore.isLoggedIn) {
+			router.push('/')
+		}
+	}, [AuthStore.isLoggedIn])
+
 	if (loadingUserProfile || isEmpty(userInfo)) return null
 
 	const handleClick = () => {
 		setIsShowEdit(!isShowEdit);
 	};
+
 	return (
 		<div className={s.wrapper_profile}>
 			{/* Content */}
@@ -40,5 +50,4 @@ const MyProfile = () => {
 			</div>
 		</div>
 	);
-};
-export default MyProfile;
+})
