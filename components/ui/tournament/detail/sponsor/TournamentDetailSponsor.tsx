@@ -7,7 +7,7 @@ import { SponsorSlot, SponsorTransaction } from "src/generated/graphql";
 import s from "../../../../../styles/tournament/sponsor/index.module.sass";
 import TournamentDetailBecomeSponsor from "./TournamentDetailBecomeSponsor";
 import TournamentDetailSponsorTier from "./TournamentDetailSponsorTier";
-import {isEmpty} from "lodash";
+import { isEmpty } from "lodash";
 
 export type TiersSelectType = {
   uid: string;
@@ -24,10 +24,11 @@ type Props = {
   tournamentId?: string;
   tournament_status: string;
   refetchTounament?: any;
+  currency: any;
 };
 
 export default function TournamentDetailSponsor(props: Props) {
-  const { tournamentId, tournament_status, refetchTounament } = props;
+  const { tournamentId, tournament_status, refetchTounament, currency } = props;
   const [isBecome, setIsBecome] = useState(false);
   const {
     loading,
@@ -85,9 +86,7 @@ export default function TournamentDetailSponsor(props: Props) {
           ""
         )}
         <Row>
-          <Col
-            span={24}
-          >
+          <Col span={24}>
             {dataSponsors?.getSponsorSlot.length > 0 &&
               dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
                 const { uid: tierUid } = tier;
@@ -106,6 +105,7 @@ export default function TournamentDetailSponsor(props: Props) {
           refetch={refetch}
           tournamentId={tournamentId}
           refetchTounament={refetchTounament}
+          currency={currency}
         />
       )}
     </>

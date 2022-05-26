@@ -88,7 +88,6 @@ export default observer(function DepositModal(props: Props) {
         BUSD,
         contractAddress[0]?.address
       );
-      console.log("result", result)
       return result;
     }
   };
@@ -127,7 +126,7 @@ export default observer(function DepositModal(props: Props) {
                     {fomatNumber(
                       TournamentStore.pool_size ? TournamentStore.pool_size : 0
                     )}{" "}
-                    {TournamentStore.currency_uid}
+                    {TournamentStore.currency_symbol}
                   </p>
                 </Col>
               </Row>
@@ -143,7 +142,7 @@ export default observer(function DepositModal(props: Props) {
                         ? TournamentStore.pool_size / 10
                         : 0
                     )}{" "}
-                    {TournamentStore.currency_uid}
+                    {TournamentStore.currency_symbol}
                   </p>
                 </Col>
               </Row>
@@ -159,7 +158,7 @@ export default observer(function DepositModal(props: Props) {
                         ? TournamentStore.pool_size / 100
                         : 0
                     )}{" "}
-                    {TournamentStore.currency_uid}
+                    {TournamentStore.currency_symbol}
                   </p>
                 </Col>
               </Row>
@@ -171,7 +170,7 @@ export default observer(function DepositModal(props: Props) {
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
-                    {getTotalAmount().toFixed(2)} {TournamentStore.currency_uid}
+                    {getTotalAmount().toFixed(2)} {TournamentStore.currency_symbol}
                   </p>
                 </Col>
               </Row>

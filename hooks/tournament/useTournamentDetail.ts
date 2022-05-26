@@ -461,10 +461,7 @@ const GET_DONATION_HISTORY = gql`
 const GET_LIST_RANKS = gql`
   query ($tournament_uid: String!) {
     getTournamentListRank(tournament_uid: $tournament_uid) {
-      team_name
-      team_avatar
       rank
-      player_team_uid
       prize
       donated
       playTeamMembers {
@@ -473,8 +470,14 @@ const GET_LIST_RANKS = gql`
           profile {
             user_name
             user_id
+            avatar
+            display_name
           }
         }
+      }
+      team {
+        name
+        avatar
       }
     }
   }

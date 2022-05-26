@@ -36,6 +36,7 @@ type TournamentDetailBecomeSponsorProps = {
   refetch: () => Promise<ApolloQueryResult<any>>;
   tournamentId?: string;
   refetchTounament?: any;
+  currency?: any;
 };
 
 const { Option } = Select;
@@ -54,7 +55,15 @@ export default function TournamentDetailBecomeSponsor(
   props: TournamentDetailBecomeSponsorProps
 ) {
   const { getContract } = useGetContract({});
-  const { isBecome, setIsBecome, tiersSelect, refetch, tournamentId, refetchTounament } = props;
+  const {
+    isBecome,
+    setIsBecome,
+    tiersSelect,
+    refetch,
+    tournamentId,
+    refetchTounament,
+    currency,
+  } = props;
   const [selectedTier, setSelectedTier] = useState(tiersSelect[0]);
   const [currentMinAmount, setCurrentMinAmount] = useState(
     tiersSelect[0].min_deposit
@@ -71,8 +80,14 @@ export default function TournamentDetailBecomeSponsor(
   const inputFileRef = useRef<any>(null);
   const inputSponsorAmountRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [messageError, setMessageError] = useState("");
 
   const handleFormUpdate = async (data: any) => {
+    if (!data.logo) {
+      setMessageError("Logo is required");
+      return;
+    }
+
     // todo submit sponsor
     let sponsor: SponsorCreateInputGql = {
       logo: data.logo,
@@ -205,7 +220,7 @@ export default function TournamentDetailBecomeSponsor(
       onCancel={() => setIsBecome(false)}
       cancelButtonProps={{ style: { display: "none" } }}
       okButtonProps={{ disabled: is_full }}
-      okText={`Sponsor with ${currentMinAmount} USDT`}
+      okText={`Sponsor with ${currentMinAmount} ${currency.symbol}`}
       onOk={() => {
         form
           .validateFields()
@@ -274,7 +289,7 @@ export default function TournamentDetailBecomeSponsor(
                   {
                     type: "number",
                     min: minAmount,
-                    message: `Sponsor amount must be greater than ${minAmount} ${TournamentStore.currency_symbol}.`,
+                    message: `Sponsor amount must be greater than ${minAmount} ${currency.symbol}.`,
                   },
                 ]}
               >
@@ -284,7 +299,7 @@ export default function TournamentDetailBecomeSponsor(
                   ref={inputSponsorAmountRef}
                   min={0}
                   max={999999999999999}
-                  placeholder={`Min ${minAmount} ${TournamentStore.currency_symbol}`}
+                  placeholder={`Min ${minAmount} ${currency.symbol}`}
                   onChange={handleSponsorAmountChange}
                   disabled={is_full}
                 />
@@ -321,6 +336,7 @@ export default function TournamentDetailBecomeSponsor(
                   >
                     Recommended size: 200x200px
                   </Text>
+                  <div className={s.message_error}>{messageError}</div>
                 </Col>
               </Row>
             </Col>
@@ -343,10 +359,7 @@ export default function TournamentDetailBecomeSponsor(
                   },
                 ]}
               >
-                <Input
-                  placeholder="Sponsor name"
-                  disabled={is_full}
-                />
+                <Input placeholder="Sponsor name" disabled={is_full} />
               </Form.Item>
             </Col>
           </Row>

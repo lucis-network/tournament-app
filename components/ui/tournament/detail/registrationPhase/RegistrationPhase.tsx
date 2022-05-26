@@ -102,7 +102,6 @@ export default observer(function RegistrationPhase(props: Props) {
 
 	useEffect(() => {
 		let arr: Array<Reward> = [];
-		console.log("console", data)
 		data?.forEach((item: any) => {
 			if (item.reward_type === "PRIZE") setDataPrize(item);
 			else if (item.reward_type === "SYTEMPRIZE") setDataSystemPrize(item);

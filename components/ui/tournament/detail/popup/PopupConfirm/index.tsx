@@ -87,7 +87,7 @@ export default function PopupConfirm(props: Props) {
         />
       </div>
       <div className={s.text}>
-        Please review the tournament result first. If you do not agree with
+        Please review the tournament result first. If you do not agree with this
         result, please contact to the referee(s) to resolve your problem
       </div>
     </Modal>
