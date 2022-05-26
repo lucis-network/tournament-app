@@ -23,7 +23,7 @@ import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
 import EthersService from "../../../../../services/blockchain/Ethers";
-import { BUSD } from "utils/Enum";
+import { BUSD, LUCIS, USDT } from "utils/Enum";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "components/Auth/AuthStore";
@@ -134,12 +134,19 @@ export default function TournamentDetailBecomeSponsor(
 
   const transfer = async (amount: any) => {
     setIsLoading(true);
+
     if (ConnectWalletStore_NonReactiveData.web3Provider) {
       //throw makeError("Need to connect your wallet first");
       const ethersService = new EthersService(
         ConnectWalletStore_NonReactiveData.web3Provider
       );
 
+      let token_address = "";
+
+      if (currency.symbol === "BUSD") token_address = BUSD;
+      if (currency.symbol === "USDT") token_address = USDT;
+      if (currency.symbol === "LUCIS") token_address = LUCIS;
+      
       const contractAddress = getContract.filter(
         (item: any) => item.type === "PRIZE"
       );
@@ -147,7 +154,7 @@ export default function TournamentDetailBecomeSponsor(
       if (!localStorage.getItem("checkBecomeSponser")) {
         let bool = await ethersService.requestApproval(
           contractAddress[0]?.address,
-          BUSD
+          token_address
         );
         if (bool) localStorage.setItem("checkBecomeSponser", "true");
       }
@@ -161,7 +168,7 @@ export default function TournamentDetailBecomeSponsor(
           AuthStore.id + "",
           tournamentId as string,
           amount,
-          BUSD,
+          token_address,
           contractAddress[0]?.address
         );
         return result;

@@ -6,7 +6,7 @@ import s from "./PopupDonate.module.sass";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
-import { BUSD } from "utils/Enum";
+import { BUSD, LUCIS, USDT } from "utils/Enum";
 import EthersService from "../../../../../../services/blockchain/Ethers";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
@@ -158,6 +158,11 @@ const PopupDonate = (props: Props) => {
 
   const donation = async () => {
     setIsLoading(true);
+    let token_address = "";
+
+    if (currency.symbol === "BUSD") token_address = BUSD;
+    if (currency.symbol === "USDT") token_address = USDT;
+    if (currency.symbol === "LUCIS") token_address = LUCIS;
 
     if (ConnectWalletStore_NonReactiveData.web3Provider) {
       //throw makeError("Need to connect your wallet first");
@@ -172,7 +177,7 @@ const PopupDonate = (props: Props) => {
       if (!localStorage.getItem("checkDonationApprove")) {
         let bool = await ethersService.requestApproval(
           contractAddress[0]?.address,
-          BUSD
+          token_address
         );
         if (bool) localStorage.setItem("checkDonationApprove", "true");
       }
@@ -184,7 +189,7 @@ const PopupDonate = (props: Props) => {
           refereeUid,
           datas?.user_id,
           Number(values),
-          BUSD,
+          token_address,
           contractAddress[0]?.address,
           types
         );
