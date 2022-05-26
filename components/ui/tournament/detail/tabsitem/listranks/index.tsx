@@ -59,7 +59,6 @@ export default function ListRanks(props: Props) {
       key: "team_name",
       width: "35%",
       render: (_: any, item: any, index: number) => {
-        console.log(item);
         return (
           <div className="text-left">
             {item?.playTeamMembers?.length == 1 ? (

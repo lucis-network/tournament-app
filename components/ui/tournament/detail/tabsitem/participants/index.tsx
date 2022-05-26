@@ -65,7 +65,6 @@ export default function TableParticipant(props: Props) {
       key: "name",
       width: 250,
       render: (_: any, item: any, index: number) => {
-        console.log(item);
         return (
           <div className="text-left">
             {item?.playTeamMembers?.length == 1 ? (

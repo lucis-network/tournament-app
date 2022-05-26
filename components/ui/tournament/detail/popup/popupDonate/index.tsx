@@ -11,6 +11,7 @@ import EthersService from "../../../../../../services/blockchain/Ethers";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentStore from "src/store/TournamentStore";
+import BigNumber from "bignumber.js";
 
 type Props = {
   datas?: any;
@@ -151,7 +152,7 @@ const PopupDonate = (props: Props) => {
         return result?.txHash;
       } else {
         //@ts-ignore
-        message.error(result?.error?.message);
+        message.error(result?.error?.data?.message);
       }
     }
   };
@@ -165,7 +166,6 @@ const PopupDonate = (props: Props) => {
     if (currency.symbol === "LUCIS") token_address = LUCIS;
 
     if (ConnectWalletStore_NonReactiveData.web3Provider) {
-      //throw makeError("Need to connect your wallet first");
       const ethersService = new EthersService(
         ConnectWalletStore_NonReactiveData.web3Provider
       );
@@ -174,15 +174,27 @@ const PopupDonate = (props: Props) => {
         (item: any) => item.type === "DONATE"
       );
 
-      if (!localStorage.getItem("checkDonationApprove")) {
-        let bool = await ethersService.requestApproval(
+      const getMyAllowance = await ethersService.getMyAllowanceOf(
+        contractAddress[0]?.address,
+        token_address
+      );
+
+      let bool = false;
+
+      const amount = new BigNumber(Number(values))
+        .multipliedBy(Math.pow(10, 18))
+        .toFormat({ groupSeparator: "" });
+
+      if (getMyAllowance && getMyAllowance < Number(amount)) {
+        bool = await ethersService.requestApproval(
           contractAddress[0]?.address,
           token_address
         );
-        if (bool) localStorage.setItem("checkDonationApprove", "true");
+      } else {
+        bool = true;
       }
 
-      if (localStorage.getItem("checkDonationApprove")) {
+      if (bool) {
         const response = await ethersService.donate(
           tournamentId as string,
           datas?.user?.id,
@@ -197,10 +209,6 @@ const PopupDonate = (props: Props) => {
       }
     }
   };
-
-  useEffect(() => {
-    return () => {};
-  });
 
   const closeModalNotify = () => {
     setIsPopupNotify(false);
@@ -217,7 +225,9 @@ const PopupDonate = (props: Props) => {
     >
       {Object.values([datas]).map((e: any, index: number) => (
         <Row key={index}>
-          <Col xs={{ span: 24 }} md={{ span:7 }}>Donate to</Col>
+          <Col xs={{ span: 24 }} md={{ span: 7 }}>
+            Donate to
+          </Col>
           <Col xs={{ span: 24 }} md={{ span: 17 }} className={s.information}>
             {(() => {
               switch (types) {
@@ -319,12 +329,12 @@ const PopupDonate = (props: Props) => {
                 placeholder="Enter amount"
               />
             </Col>
-            <Col span={6} className="pl-2">{currency?.symbol}</Col>
+            <Col span={6} className="pl-2">
+              {currency?.symbol}
+            </Col>
           </Row>
           {/* Message Error */}
-          <div className={s.message_error}>
-            {titleMessage}
-          </div>
+          <div className={s.message_error}>{titleMessage}</div>
         </Col>
       </Row>
       <Row className={`${s.message} ${s.input}`}>

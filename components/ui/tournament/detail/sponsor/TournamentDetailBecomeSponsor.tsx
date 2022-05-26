@@ -28,6 +28,7 @@ import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "components/Auth/AuthStore";
 import { SponsorCreateInputGql } from "src/generated/graphql";
+import BigNumber from "bignumber.js";
 
 type TournamentDetailBecomeSponsorProps = {
   isBecome: boolean;
@@ -151,19 +152,39 @@ export default function TournamentDetailBecomeSponsor(
         (item: any) => item.type === "PRIZE"
       );
 
-      if (!localStorage.getItem("checkBecomeSponser")) {
-        let bool = await ethersService.requestApproval(
-          contractAddress[0]?.address,
-          token_address
-        );
-        if (bool) localStorage.setItem("checkBecomeSponser", "true");
-      }
+      // if (!localStorage.getItem("checkBecomeSponser")) {
+      //   let bool = await ethersService.requestApproval(
+      //     contractAddress[0]?.address,
+      //     token_address
+      //   );
+      //   if (bool) localStorage.setItem("checkBecomeSponser", "true");
+      // }      
       if (!AuthStore.id) {
         console.log("User not exist in store");
         return;
       }
 
-      if (localStorage.getItem("checkBecomeSponser")) {
+      const getMyAllowance = await ethersService.getMyAllowanceOf(
+        contractAddress[0]?.address,
+        token_address
+      );
+
+      let bool = false;
+
+      const totalAmount = new BigNumber(Number(amount))
+        .multipliedBy(Math.pow(10, 18))
+        .toFormat({ groupSeparator: "" });
+
+      if (getMyAllowance && getMyAllowance < Number(totalAmount)) {
+        bool = await ethersService.requestApproval(
+          contractAddress[0]?.address,
+          token_address
+        );
+      } else {
+        bool = true;
+      }
+      
+      if (bool) {
         const result = await ethersService.becomeSponsor(
           AuthStore.id + "",
           tournamentId as string,
