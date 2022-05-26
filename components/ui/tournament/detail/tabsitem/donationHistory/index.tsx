@@ -31,7 +31,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
       render: (text: string, record: any, index: number) => index + 1,
     },
     {
-      title: "Donors",
+      title: "Donor",
       dataIndex: ["donor_avatar", "donor_display_name"],
       render: (text: string, row: any) => (
         <div className="text-left">

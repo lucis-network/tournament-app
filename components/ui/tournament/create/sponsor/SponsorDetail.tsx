@@ -53,12 +53,15 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
   const [logoUrl, setLogoUrl] = useState("");
   const [form] = Form.useForm();
   const inputFileRef = useRef<any>(null);
+  const [isCheck, setIsCheck] = useState(false);
 
   useEffect(() => {
     if (tier?.slots[index]?.logo) {
       //@ts-ignore
       setLogoUrl(tier?.slots[index]?.logo);
     }
+
+    if (!form.getFieldValue("name")) setIsCheck(true);
   }, [tier]);
 
   const handleFormUpdate = (data: any) => {
@@ -109,14 +112,24 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
   };
 
   const doDelete = () => {
-    setLogoUrl("");
-    form.setFieldsValue({
-      name: '',
-      amount: '',
-      home_page: '',
-  });
-  }
-  
+    // setLogoUrl("");
+    // form.setFieldsValue({
+    //   name: "",
+    //   amount: "",
+    //   home_page: "",
+    // });
+    const newSlotState: ISponsorSlot = {};
+
+    newSlotState.logo = "";
+    newSlotState.ads_link = "";
+    //@ts-ignore
+    newSlotState.amount = "";
+    newSlotState.home_page = "";
+    newSlotState.name = "";
+    slot.setState(newSlotState);
+    setIsEdit(false);
+  };
+
   return (
     <Modal
       title="Add existing sponsor"
@@ -293,11 +306,13 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
         )}
         <Row className={s.btn}>
           <Col>
-            <Button className="mr-10px" onClick={doDelete}>Delete</Button>
+            <Button className="mr-10px" onClick={doDelete} disabled={isCheck}>
+              Delete
+            </Button>
           </Col>
           <Col>
             <Button type="primary" onClick={doSave}>
-              Donate
+              Update
             </Button>
           </Col>
         </Row>
