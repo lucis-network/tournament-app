@@ -64,18 +64,16 @@ const MyTournament = ({ isOwner, userInfo, getUserProfileRefetch }: MyTournament
             </h2>
           </Col>
           <Col span={24} lg={{ span: 4 }}>
-            {(ownedTournamentData?.searchOwnerTournament && ownedTournamentData?.searchOwnerTournament.length > 0) && (
-              <div className="flex justify-end">
-                <Input
-                  placeholder="Search"
-                  onChange={handleSearchOwnedTournament}
-                />
-              </div>
-            )}
+            <div className="flex justify-end">
+              <Input
+                placeholder="Search"
+                onChange={handleSearchOwnedTournament}
+              />
+            </div>
           </Col>
         </Row>
         {(ownedTournamentData?.searchOwnerTournament && ownedTournamentData?.searchOwnerTournament.length > 0) ? (
-          <MyTournamentList data={ownedTournamentData.searchOwnerTournament} type="owned" isOwner={isOwner} maxItems={4}/>
+          <MyTournamentList data={ownedTournamentData.searchOwnerTournament} type="owned" isOwner={isOwner} maxItems={4} isMyTournament/>
         ) : (<div>Don&apos;t own any tournaments yet</div>)}
       </div>
       <div className={s.myTournament}>
@@ -87,14 +85,12 @@ const MyTournament = ({ isOwner, userInfo, getUserProfileRefetch }: MyTournament
             </h2>
           </Col>
           <Col span={24} lg={{ span: 4 }}>
-            {(joinedTournamentData?.searchJoinedTournament && joinedTournamentData?.searchJoinedTournament.length > 0) && (
-              <div className="flex justify-end">
-                <Input
-                  placeholder="Search"
-                  onChange={handleSearchJoinedTournament}
-                />
-              </div>
-            )}
+            <div className="flex justify-end">
+              <Input
+                placeholder="Search"
+                onChange={handleSearchJoinedTournament}
+              />
+            </div>
           </Col>
         </Row>
         {(joinedTournamentData?.searchJoinedTournament && joinedTournamentData?.searchJoinedTournament.length > 0) ? (
