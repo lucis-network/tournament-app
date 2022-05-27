@@ -9,6 +9,9 @@ import debounce from "lodash/debounce";
 import {ProfileUpdateInput, UserGraphql} from "../../../../../src/generated/graphql";
 import {isEmpty} from "lodash";
 import {ApolloQueryResult} from "@apollo/client";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { isPhoneNumber } from 'class-validator';
 
 type EditProfileProps = {
   userInfo: UserGraphql,
@@ -25,6 +28,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
   const [newProfileData, setNewProfileData] = useState<ProfileUpdateInput>({});
   const [emailValue, setEmailValue] = useState<string>('');
   const [countryData, setCountryData] = useState<CountryOption[]>([]);
+  const [phone, setPhone] = useState<string>(userInfo?.profile?.phone as string);
   const { verifyEmail } = useVerifyEmail({
     email: emailValue
   });
@@ -81,7 +85,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           const dialCode = countryData.filter(country => country.code === result.dial_code)[0].dial_code;
           formattedPhone = dialCode + result.phone
         }
-        console.log(result.phone, formattedPhone)
+
         const newResult = {
           user_name: {
             set: result.user_name ?? ''
@@ -95,12 +99,12 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           facebook: {
             set: result.facebook ?? ''
           },
-          telegram: {
-            set: result.telegram ?? ''
-          },
-          // twitch: {
-          //   set: result.twitch ?? ''
+          // telegram: {
+          //   set: result.telegram ?? ''
           // },
+          twitch: {
+            set: result.twitch ?? ''
+          },
           discord: {
             set: result.discord ?? ''
           },
@@ -108,7 +112,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
             set: result.youtube ?? ''
           },
           phone: {
-            set: formattedPhone
+            set: !phone.includes('+') ? '+' + phone : phone
           },
           biography: {
             set: result.biography ?? ''
@@ -119,6 +123,10 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
       .catch(error => {
         console.log(error)
       });
+  }
+
+  const handlePhoneChange = (phone: string) => {
+    console.log(phone)
   }
 
   useEffect(() => {
@@ -164,8 +172,8 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           biography: !isEmpty(userInfo?.profile?.biography) ? userInfo?.profile?.biography : '',
           facebook: !isEmpty(userInfo?.profile?.facebook) ? userInfo?.profile?.facebook : '',
           twitter: !isEmpty(userInfo?.profile?.twitter) ? userInfo?.profile?.twitter : '',
-          telegram: !isEmpty(userInfo?.profile?.telegram) ? userInfo?.profile?.telegram : '',
-          // twitch: !isEmpty(userInfo?.profile?.twitch) ? userInfo?.profile?.twitch : '',
+          // telegram: !isEmpty(userInfo?.profile?.telegram) ? userInfo?.profile?.telegram : '',
+          twitch: !isEmpty(userInfo?.profile?.twitch) ? userInfo?.profile?.twitch : '',
           discord: !isEmpty(userInfo?.profile?.discord) ? userInfo?.profile?.discord : '',
           youtube: !isEmpty(userInfo?.profile?.youtube) ? userInfo?.profile?.youtube : '',
           dial_code: !isEmpty(userInfo?.profile?.country_code) ? userInfo?.profile?.country_code : '',
@@ -212,24 +220,29 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
             >
               <Input />
             </Form.Item>
-            <div className="flex" style={{ alignItems: 'end' }}>
-              <Space>
-                <Form.Item
-                  label="Email"
-                  name="email"
-                  labelCol={{ span: 24 }}
-                  style={{ marginBottom: 0 }}
-                  rules={[
-                    {
-                      type: "email",
-                      message: 'Not a valid email.',
-                    }
-                  ]}
-                >
-                  <Input placeholder="Enter email" onChange={handleEmailChange} />
-                </Form.Item>
-                <Button onClick={handleVerifyEmail} disabled={(emailValue.length <= 0) || (emailValue === userInfo.email)}>Verify</Button>
-              </Space>
+            <div className={s.emailFieldWrap}>
+              <Form.Item
+                label="Email"
+                name="email"
+                labelCol={{ span: 24 }}
+                style={{ marginBottom: 0 }}
+                className={s.emailField}
+                rules={[
+                  {
+                    type: "email",
+                    message: 'Not a valid email.',
+                  }
+                ]}
+              >
+                <Input placeholder="Enter email" onChange={handleEmailChange} />
+              </Form.Item>
+              <Button
+                onClick={handleVerifyEmail}
+                disabled={(emailValue.length <= 0) || (emailValue === userInfo.email)}
+                className={s.btnVerify}
+              >
+                Verify
+              </Button>
             </div>
             <Form.Item
               label="Biography"
@@ -242,30 +255,40 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
               label="Phone"
               labelCol={{ span: 24 }}
             >
-              <Row>
-                <Col span={8}>
-                  <Form.Item name="dial_code">
-                    <Select
-                      showSearch
-                      filterOption={(input, option) => {
-                        return option?.key.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                      }}
-                      onChange={handleRegionChange}
-                    >
-                      {countryData.length > 0 && countryData.map((item: CountryOption) => (
-                        <Option key={item.name} value={item.code}>{item.name} {item.dial_code}</Option>
-                      ))}
-                    </Select>
-                  </Form.Item>
-                </Col>
-                <Col span={16}>
-                  <Form.Item
-                    name="phone"
-                  >
-                    <InputNumber controls={false} type="number" placeholder="Enter phone number" style={{ width: "100%" }} />
-                  </Form.Item>
-                </Col>
-              </Row>
+              <PhoneInput
+                country={`${userInfo?.profile?.country_code?.toLowerCase()}`}
+                enableSearch
+                value={phone}
+                // isValid={(value) => {
+                //   return isPhoneNumber(value)
+                // }}
+                onChange={(phone) => setPhone(phone)}
+                placeholder="Enter phone number"
+              />
+              {/*<Row>*/}
+              {/*  <Col span={8}>*/}
+              {/*    <Form.Item name="dial_code">*/}
+              {/*      <Select*/}
+              {/*        showSearch*/}
+              {/*        filterOption={(input, option) => {*/}
+              {/*          return option?.key.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
+              {/*        }}*/}
+              {/*        onChange={handleRegionChange}*/}
+              {/*      >*/}
+              {/*        {countryData.length > 0 && countryData.map((item: CountryOption) => (*/}
+              {/*          <Option key={item.name} value={item.code}>{item.name} {item.dial_code}</Option>*/}
+              {/*        ))}*/}
+              {/*      </Select>*/}
+              {/*    </Form.Item>*/}
+              {/*  </Col>*/}
+              {/*  <Col span={16}>*/}
+              {/*    <Form.Item*/}
+              {/*      name="phone"*/}
+              {/*    >*/}
+              {/*      <InputNumber controls={false} type="number" placeholder="Enter phone number" style={{ width: "100%" }} />*/}
+              {/*    </Form.Item>*/}
+              {/*  </Col>*/}
+              {/*</Row>*/}
             </Form.Item>
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
@@ -312,19 +335,19 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
             >
               <Input placeholder="Enter discord link" />
             </Form.Item>
-            {/*<Form.Item*/}
-            {/*  label="Twitch"*/}
-            {/*  name="twitch"*/}
-            {/*  labelCol={{ span: 24 }}*/}
-            {/*  rules={[*/}
-            {/*    {*/}
-            {/*      type: 'url',*/}
-            {/*      message: 'Invalid URL',*/}
-            {/*    }*/}
-            {/*  ]}*/}
-            {/*>*/}
-            {/*  <Input placeholder="Enter twitch link" />*/}
-            {/*</Form.Item>*/}
+            <Form.Item
+              label="Twitch"
+              name="twitch"
+              labelCol={{ span: 24 }}
+              rules={[
+                {
+                  type: 'url',
+                  message: 'Invalid URL',
+                }
+              ]}
+            >
+              <Input placeholder="Enter twitch link" />
+            </Form.Item>
             <Form.Item
               label="Youtube"
               name="youtube"

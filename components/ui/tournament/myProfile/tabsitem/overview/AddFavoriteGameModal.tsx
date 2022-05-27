@@ -102,22 +102,24 @@ export default observer(function AddFavoriteGameModal({handleCallbackAddGame, fa
               return (
                 <div className={`${s.item}`} key={game.uid}>
                   <Checkbox className={`${s.itemRadio}`} value={game.uid}>
-                    {game.logo ? (
-                      <img
-                        src={game.logo}
-                        width="100"
-                        height="100"
-                        alt={`${game.name}`}
-                      />
-                    ) : (
-                      <img
-                        src="/assets/avatar.jpg"
-                        width="100"
-                        height="100"
-                        alt=""
-                      />
-                    )}
-                    <p className="mt-5px">{game.name}</p>
+                    <div className={s.gameLogo}>
+                      {game.logo ? (
+                        <img
+                          src={game.logo}
+                          width="100"
+                          height="100"
+                          alt={`${game.name}`}
+                        />
+                      ) : (
+                        <img
+                          src="/assets/avatar.jpg"
+                          width="100"
+                          height="100"
+                          alt=""
+                        />
+                      )}
+                    </div>
+                    <p className={s.gameName}>{game.name}</p>
                   </Checkbox>
                 </div>
               );
