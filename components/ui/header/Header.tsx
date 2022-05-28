@@ -65,6 +65,7 @@ export default observer(function Header(props: Props) {
               <Col span={17} style={{paddingLeft: 60}}>
                 <ul className={s.block_item_menu}>
                   <li><Link href="/">HOME</Link></li>
+                  <li><Link href="/tournament">Tournament</Link></li>
                   <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
                     rel="noopener noreferrer">FAQ</a></li>
                   <li><a href="https://insight.lucis.network/" target="_blank"
