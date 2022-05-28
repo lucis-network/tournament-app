@@ -1312,7 +1312,7 @@ export type Mutation = {
   reactToTournament?: Maybe<Scalars['Boolean']>;
   subscribeToTournament?: Maybe<Scalars['Boolean']>;
   unsubscribeToTournament?: Maybe<Scalars['Boolean']>;
-  updateDailyMission?: Maybe<Scalars['Boolean']>;
+  updateDailyMission?: Maybe<Array<Mission>>;
   /** Only referee can update match result */
   updateMatchResult?: Maybe<Scalars['String']>;
   updateProfile?: Maybe<UserProfile>;

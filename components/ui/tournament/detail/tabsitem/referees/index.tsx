@@ -84,7 +84,11 @@ export default function Referees(props: Props) {
       key: "contact",
       width: "40%",
       render: (_: any, item: any) => {
-        return <GroupLink datas={item.user.profile} />;
+        return (
+          <div className={s.contact}>
+            <GroupLink datas={item.user.profile} />
+          </div>
+        );
       },
     },
     {

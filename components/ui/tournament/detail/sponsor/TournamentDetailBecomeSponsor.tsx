@@ -147,7 +147,7 @@ export default function TournamentDetailBecomeSponsor(
       if (currency.symbol === "BUSD") token_address = BUSD;
       if (currency.symbol === "USDT") token_address = USDT;
       if (currency.symbol === "LUCIS") token_address = LUCIS;
-      
+
       const contractAddress = getContract.filter(
         (item: any) => item.type === "PRIZE"
       );
@@ -158,7 +158,7 @@ export default function TournamentDetailBecomeSponsor(
       //     token_address
       //   );
       //   if (bool) localStorage.setItem("checkBecomeSponser", "true");
-      // }      
+      // }
       if (!AuthStore.id) {
         console.log("User not exist in store");
         return;
@@ -183,7 +183,7 @@ export default function TournamentDetailBecomeSponsor(
       } else {
         bool = true;
       }
-      
+
       if (bool) {
         const result = await ethersService.becomeSponsor(
           AuthStore.id + "",
@@ -413,7 +413,7 @@ export default function TournamentDetailBecomeSponsor(
               </Form.Item>
             </Col>
           </Row>
-          <Row align="middle">
+          <Row align="middle" className="mb-4">
             <Col xs={{ span: 24 }} md={{ span: 8 }}>
               <label>Ads Video</label>
             </Col>
@@ -432,7 +432,7 @@ export default function TournamentDetailBecomeSponsor(
               >
                 <Input
                   placeholder="https://youtube.com/v/12345678"
-                  disabled={is_full}
+                  disabled={true}
                 />
               </Form.Item>
               <Text
@@ -443,6 +443,22 @@ export default function TournamentDetailBecomeSponsor(
                 This ads video will be display on the tournament detail screen{" "}
                 {">"} Cover Section
               </Text>
+            </Col>
+          </Row>
+          <Row align="middle" className="mb-4">
+            <Col xs={{ span: 24 }} md={{ span: 8 }}>
+              <label>Lucis fee</label>
+            </Col>
+            <Col xs={{ span: 24 }} md={{ span: 16 }}>
+              <span style={{ color: "white", marginTop: "10px" }}>10%</span>
+            </Col>
+          </Row>
+          <Row align="middle">
+            <Col xs={{ span: 24 }} md={{ span: 8 }}>
+              <label>Referees fee</label>
+            </Col>
+            <Col xs={{ span: 24 }} md={{ span: 16 }}>
+              <span style={{ color: "white", marginTop: "10px" }}>1%</span>
             </Col>
           </Row>
         </Form>

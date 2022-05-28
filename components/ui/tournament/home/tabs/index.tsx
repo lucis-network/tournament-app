@@ -22,13 +22,18 @@ export default function TabHome() {
 	} = useHomePage();
 
 	const [creating, setCreating] = useState(false);
+	const [typeTab, setTypeTab] = useState('UPCOMING');
 
+	const handleChangeTab = (item: string) => {
+		setTypeTab(item);
+		handleChangeFilter("type", item)
+	}
 	let cardHome;
 
 	if (loading) {
 		cardHome = <SpinLoading className="min-h-[500px] pt-0" />;
 	} else {
-		cardHome = <CardHome datas={data} loading={loading} />;
+		cardHome = <CardHome datas={data} loading={loading} type={typeTab} />;
 	}
 
 	return (
@@ -39,7 +44,7 @@ export default function TabHome() {
 						{listTabs.map((item: StatusGameType) => (
 							<div
 								key={item}
-								onClick={() => handleChangeFilter("type", item)}
+								onClick={() => handleChangeTab(item)}
 								className={
 									filter.type === item
 										? `${s.tab_item} ${s.active}`
