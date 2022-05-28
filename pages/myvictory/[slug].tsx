@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 
 import { isClient } from "utils/DOM";
 import { useRouter } from "next/router";
-import PlayerHome from "components/ui/tournament/home/player/Index";
+import PlayerHome from "components/ui/tournament/home/player";
 import CardPlayer from "components/ui/tournament/home/cardPlayer";
 
 const listData = [
