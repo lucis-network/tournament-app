@@ -23,7 +23,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
   };
 
   return (
-    <Carousel autoplay>
+    <Carousel autoplay className={s.wrapper}>
       {orderData?.map((item) => {
         const getName = item?.name
         const name = item?.name.length > 40 ?  getName.slice(0, 40) + '...':  getName

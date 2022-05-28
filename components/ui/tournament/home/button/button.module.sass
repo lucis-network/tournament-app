@@ -18,7 +18,7 @@
     line-height: 115%
     display: flex
     align-items: center
-    margin-bottom: 16px
+    margin-bottom: 4px
     @media (max-width: 540px)
       width: 100%
       align-items: flex-start
@@ -40,10 +40,10 @@
         order: 1
   :global(.ant-select),
   .m
-    margin-right: 16px
-    margin-bottom: 16px
-    @media (max-width: 414px)
-      margin-right: 0
+    margin-right: 0
+    @media (min-width: 640px)
+      margin-right: 0px
+      margin-bottom: 16px
 
   :global(.ant-select-single .ant-select-selector .ant-select-selection-item)
     display: flex
@@ -58,6 +58,7 @@
     border-radius: 8px
     border: none
     position: relative
+    margin: 4px 0px
   :global(.ant-select-arrow)
     color: #FFF
 
