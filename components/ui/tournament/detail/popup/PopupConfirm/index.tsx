@@ -1,5 +1,5 @@
 import React from "react";
-import { message, Modal, Table } from "antd";
+import { message, Modal, Table, Image } from "antd";
 import s from "./PopupConfirm.module.sass";
 import { useConfirmTournamentResult } from "hooks/tournament/useTournamentDetail";
 import TournamentService from "components/service/tournament/TournamentService";
@@ -20,9 +20,9 @@ export default function PopupConfirm(props: Props) {
     tournamentId,
     refetchConfirmResult,
     tournament_status,
-    refetchTounament
+    refetchTounament,
   } = props;
-  
+
   const { error, loading, data } = useConfirmTournamentResult({
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
@@ -46,7 +46,19 @@ export default function PopupConfirm(props: Props) {
       key: "team_name",
       width: "35%",
       render: (_: any, item: any) => {
-        return <>{item.team_name}</>;
+        return (
+          <div className="text-left">
+            {item?.team_avatar && (
+              <Image
+                className={s.avatar}
+                src={`${item?.team_avatar}`}
+                preview={false}
+                alt={`${item?.team_avatar}`}
+              />
+            )}
+            {item?.team_name}
+          </div>
+        );
       },
     },
   ];

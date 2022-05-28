@@ -343,6 +343,8 @@ const GET_REFEREES_DETAIL = gql`
           telegram
           discord
           user_name
+          youtube
+          twitch
         }
       }
     }

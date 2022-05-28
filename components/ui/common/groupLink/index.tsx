@@ -6,50 +6,56 @@ type Props = {
 export default function GroupLink(props: Props) {
   const { datas } = props;
 
+  console.log(datas);
   return (
     <div className={s.group_ic}>
-      <div className={s.ic_item}>
-        {datas?.facebook && (
-          <a
-            // href="https://www.facebook.com/lucistv.news"
-            href={datas?.facebook}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/footer/fb.svg" alt="" />
+      {datas?.facebook && (
+        <div className={s.ic_item}>
+          <a href={datas?.facebook} target="_blank" rel="noopener noreferrer">
+            <img src="/assets/MyProfile/iconFacebookWhite.svg" alt="" />
           </a>
-        )}
-      </div>
+        </div>
+      )}
+
+      {datas?.youtube && (
+        <div className={s.ic_item}>
+          <a href={datas?.youtube} target="_blank" rel="noopener noreferrer">
+            <img src="/assets/MyProfile/iconYoutubeWhite.svg" alt="" />
+          </a>
+        </div>
+      )}
+
       {/* <div className={s.ic_item}>
-        <a
-          href="https://www.youtube.com/c/LucisTVGaming"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="/assets/footer/ytb.svg" alt="" />
-        </a>
-      </div> */}
-      <div className={s.ic_item}>
         {datas?.telegram && (
           <a href={datas?.telegram} target="_blank" rel="noopener noreferrer">
             <img src="/assets/footer/tele.svg" alt="" />
           </a>
         )}
-      </div>
-      <div className={s.ic_item}>
-        {datas?.twitter && (
-          <a href={datas?.twitter} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/footer/tw.svg" alt="" />
+      </div> */}
+
+      {datas?.twitch && (
+        <div className={s.ic_item}>
+          <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
+            <img src="/assets/MyProfile/iconTwitchWhite.svg" alt="" />
           </a>
-        )}
-      </div>
-      <div className={s.ic_item}>
-        {datas.discord && (
+        </div>
+      )}
+
+      {datas?.twitch && (
+        <div className={s.ic_item}>
+          <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
+            <img src="/assets/MyProfile/iconTwitterWhite.svg" alt="" />
+          </a>
+        </div>
+      )}
+
+      {datas.discord && (
+        <div className={s.ic_item}>
           <a href={datas.discord} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/footer/dis.svg" alt="" />
+            <img src="/assets/MyProfile/iconDiscordWhite.svg" alt="" />
           </a>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
