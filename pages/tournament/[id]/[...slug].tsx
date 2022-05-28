@@ -30,6 +30,7 @@ import AuthStore from "components/Auth/AuthStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
+import { useWindowSize } from "hooks/useWindowSize";
 
 const { TabPane } = Tabs;
 
@@ -40,7 +41,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const [isLoadingSub, setIsLoadingSub] = useState(false);
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const [dataRankSponsors, setDataRankSponsors] = useState([]);
+  const [width] = useWindowSize();
 
+  const positiontabs = width >= 1024 ? 'top': 'left'
   const {
     dataTournamentDetail,
     dataParticipants,
@@ -143,7 +146,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_status,
     referees,
     turns,
-    discord
+    discord,
   } = dataTournamentDetail ?? {};
 
   const userLocal = getLocalAuthInfo();
@@ -294,7 +297,10 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             />{" "}
                             {region}
                           </div>
-                          <Link href={discord ? discord : `https://discord.com/`} passHref>
+                          <Link
+                            href={discord ? discord : `https://discord.com/`}
+                            passHref
+                          >
                             <a className={s.joinDiscord} target="_blank">
                               Join our Discord server{" "}
                               <Image
@@ -454,7 +460,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         </div>
         {/* ===== tabs ===== */}
         <div className={`lucis-container-2 ${s.container_Tabs}`}>
-          <Tabs defaultActiveKey="1" className={s.block_tabs} tabPosition={'top'}>
+          <Tabs
+            defaultActiveKey="1"
+            className={s.block_tabs}
+            tabPosition={positiontabs}
+          >
             <TabPane tab="Overview" key="1">
               <Overview desc={desc as string} />
             </TabPane>

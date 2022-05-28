@@ -1,0 +1,27 @@
+.group_ic
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-wrap: wrap
+  padding: 12px 20px
+  border-radius: 12px
+  margin: 12px 0px
+  position: relative
+  .ic_item
+    max-width: 54px
+    margin: 12px
+
+
+.group_ic::before
+  content: ''
+  position: absolute
+  top:0
+  left:0
+  right:0
+  bottom:0
+  border-radius: 12px
+  padding: 2px
+  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+  -webkit-mask-composite: xor
+  mask-composite: exclude
