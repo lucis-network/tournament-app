@@ -12,14 +12,18 @@ import {PlatformAccount} from "../src/generated/graphql";
 
 const { TabPane } = Tabs;
 
-
-
 const Home: NextPage = () => {
   const [connectFaceit] = useMutation(CONNECT_FACEIT)
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
+  const [tabActiveKey, setTabActiveKey] = useState<string>('p2e')
   const {getPlatformAccountData} = useGetPlatformAccount()
 
+  const handleTabClick = (key: string) => {
+    setTabActiveKey(key)
+  }
+
   useEffect(() => {
+    let isSubscribed = true
     const handleHashChange = () => {
       let hashData = window.location.hash
       if (hashData.startsWith('#token=') && hashData.includes('id_token')) {
@@ -31,12 +35,16 @@ const Home: NextPage = () => {
         connectFaceit({
           variables: tokenData
         }).then(response => {
-          history.replaceState(null, '', ' ')
-          setFaceitUser(response.data.connectFaceit)
-          console.log(response);
+          if (isSubscribed) {
+            history.replaceState(null, '', ' ')
+            setFaceitUser(response.data.connectFaceit)
+            setTabActiveKey('daily')
+          }
         }).catch(error => {
-          history.replaceState(null, '', ' ')
-          console.log(error)
+          if (isSubscribed) {
+            history.replaceState(null, '', ' ')
+            console.log(error)
+          }
         })
       }
     }
@@ -45,12 +53,15 @@ const Home: NextPage = () => {
 
     return () => {
       window.removeEventListener('hashchange', handleHashChange)
+      isSubscribed = false
     }
   }, [])
 
   useEffect(() => {
     let isSubscribed = true
-    setFaceitUser(getPlatformAccountData?.getPlatformAccount)
+    if (isSubscribed) {
+      setFaceitUser(getPlatformAccountData?.getPlatformAccount)
+    }
     return () => {
       isSubscribed = false
     }
@@ -60,8 +71,8 @@ const Home: NextPage = () => {
     <>
       <DocHead />
       <main style={{minHeight: "100vh"}} className={s.homeWrap}>
-        <div className="lucis-container-2">
-          <Tabs defaultActiveKey="p2e">
+        <div className={`${s.p2eWrap} lucis-container-2`}>
+          <Tabs defaultActiveKey={tabActiveKey} activeKey={tabActiveKey} onTabClick={handleTabClick}>
             <TabPane tab="P2E 2.0" key="p2e">
               <P2EOverview faceitUser={faceitUser} />
             </TabPane>
