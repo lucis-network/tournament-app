@@ -261,6 +261,7 @@ export default function TournamentDetailBecomeSponsor(
             console.log("Validate Failed:", error);
           });
       }}
+      className={s.becomeSponsor}
     >
       <Spin spinning={isLoading}>
         <Form
@@ -303,7 +304,7 @@ export default function TournamentDetailBecomeSponsor(
             </Col>
           </Row>
           <Row align="middle" className="mb-4">
-            <Col xs={{ span: 24 }} md={{ span: 8 }}>
+            <Col xs={{ span: 24 }} md={{ span: 8 }} >
               <label>Sponsor amount</label>
             </Col>
             <Col xs={{ span: 24 }} md={{ span: 16 }}>
@@ -416,6 +417,8 @@ export default function TournamentDetailBecomeSponsor(
           <Row align="middle" className="mb-4">
             <Col xs={{ span: 24 }} md={{ span: 8 }}>
               <label>Ads Video</label>
+              <br></br>
+              <span style={{color: "white"}}>(Coming soon)</span>
             </Col>
             <Col xs={{ span: 24 }} md={{ span: 16 }}>
               <Text strong style={{ color: "#ffffff", fontSize: 12 }}>
@@ -449,18 +452,24 @@ export default function TournamentDetailBecomeSponsor(
             <Col xs={{ span: 24 }} md={{ span: 8 }}>
               <label>Lucis fee</label>
             </Col>
-            <Col xs={{ span: 24 }} md={{ span: 16 }}>
+            <Col xs={{ span: 24 }} md={{ span: 4 }}>
               <span style={{ color: "white", marginTop: "10px" }}>10%</span>
             </Col>
+            <Col xs={{ span: 24 }} md={{ span: 8 }}>
+              <label>Referees fee</label>
+            </Col>
+            <Col xs={{ span: 24 }} md={{ span: 4 }}>
+              <span style={{ color: "white", marginTop: "10px" }}>1%</span>
+            </Col>
           </Row>
-          <Row align="middle">
+          {/* <Row align="middle">
             <Col xs={{ span: 24 }} md={{ span: 8 }}>
               <label>Referees fee</label>
             </Col>
             <Col xs={{ span: 24 }} md={{ span: 16 }}>
               <span style={{ color: "white", marginTop: "10px" }}>1%</span>
             </Col>
-          </Row>
+          </Row> */}
         </Form>
       </Spin>
     </Modal>

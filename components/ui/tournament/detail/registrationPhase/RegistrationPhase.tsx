@@ -364,6 +364,7 @@ export default observer(function RegistrationPhase(props: Props) {
 																			<Button
 																				onClick={() => claimToken("PrizePool")}
 																				className={`${s.btnClaim} btn-cyan`}
+																				disabled={dataPrize?.is_claim}
 																			>
 																				Claim
 																			</Button>
@@ -392,6 +393,7 @@ export default observer(function RegistrationPhase(props: Props) {
 																					claimToken("PrizeSystem")
 																				}
 																				className={`${s.btnClaim} btn-cyan`}
+																				disabled={dataSystemPrize?.is_claim}
 																			>
 																				Claim
 																			</Button>

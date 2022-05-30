@@ -61,7 +61,7 @@ export default observer(function DepositModal(props: Props) {
       const ethersService = new EthersService(
         ConnectWalletStore_NonReactiveData.web3Provider
       );
-      const total = getTotalAmount();
+      //const total = getTotalAmount();
       const contractAddress = getContract.filter(
         (item: any) => item.type === "PRIZE"
       );
@@ -90,7 +90,7 @@ export default observer(function DepositModal(props: Props) {
       const result = await ethersService.initTournament(
         AuthStore.id + "",
         tournamentUid,
-        total,
+        TournamentStore.pool_size,
         token_address,
         contractAddress[0]?.address
       );

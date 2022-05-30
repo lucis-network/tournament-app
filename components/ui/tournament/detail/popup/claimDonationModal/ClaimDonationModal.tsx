@@ -96,6 +96,7 @@ export default observer(function ClaimDonationModal(props: Props) {
     },
   ];
 
+  console.log("dataDonation", dataDonation);
   return (
     <div style={{ width: "400px" }}>
       <Modal
@@ -105,6 +106,7 @@ export default observer(function ClaimDonationModal(props: Props) {
         className={`${s.container}`}
         onCancel={handleCancel}
         okText="Claim"
+        
       >
         <Table
           dataSource={dataDonation}

@@ -33,7 +33,8 @@ const useTournament = (tournamentId: string) => {
         refreshParticipant();
       },
       onError: (err) => {
-        antd_message.error(err.message, 10);
+        // antd_message.error(err.message, 10);
+        antd_message.error("You are not leader team", 10);
       },
     });
   };
@@ -52,7 +53,8 @@ const useTournament = (tournamentId: string) => {
         refreshParticipant();
       },
       onError: (err) => {
-        antd_message.error(err.message, 10);
+        // antd_message.error(err.message, 10);
+        antd_message.error("You are not leader team", 10);
         setLoading(false);
       },
     });

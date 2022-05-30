@@ -6,7 +6,6 @@ type Props = {
 export default function GroupLink(props: Props) {
   const { datas } = props;
 
-  console.log(datas);
   return (
     <div className={s.group_ic}>
       {datas?.facebook && (
