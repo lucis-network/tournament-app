@@ -4,6 +4,7 @@ import {Button, Col, Image, Row} from "antd";
 import {isEmpty} from "lodash";
 import {useGetPlatformAccount} from "../../../../hooks/p2e/useP2E";
 import {PlatformAccount} from "../../../../src/generated/graphql";
+import {isDevMode} from "../../../../utils/Env";
 
 type P2EOverviewProps = {
   faceitUser: PlatformAccount,
@@ -40,7 +41,7 @@ const P2EOverview = ({ faceitUser }: P2EOverviewProps) => {
             alert('The id token is not valid, something went wrong')
           }
           const initParams = {
-            client_id: '18060616-4f25-4761-bca3-d7704dda283a',
+            client_id: isDevMode ? '18060616-4f25-4761-bca3-d7704dda283a' : '4a4c0bd5-27fb-479d-9361-49492a3784d6',
             response_type: 'token',
           }
           FACEIT.init(initParams, callback)
