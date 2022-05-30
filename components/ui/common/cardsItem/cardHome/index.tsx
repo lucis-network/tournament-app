@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "antd";
-import { useState } from "react";
+import { memo, useState } from "react";
 import Link from "next/link";
 
 import { currency } from "utils/Number";
@@ -13,10 +13,11 @@ import { useRouter } from "next/router";
 type Props = {
   datas?: TournamentGql[];
   loading: boolean;
+  type?: string;
 };
-export default function CardHome(props: Props) {
+function CardHome(props: Props) {
   const [isLoadMore, setIsLoadMore] = useState(8);
-  const { datas, loading } = props;
+  const { datas, loading, type } = props;
 
   if (loading || !datas) {
     return <></>;
@@ -32,7 +33,7 @@ export default function CardHome(props: Props) {
         {datas?.slice(0, isLoadMore).map((item) => {
           return (
             <Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>
-              {item ? <TournamentCard data={item} /> : null}
+              {item ? <TournamentCard data={item} type={type} /> : null}
             </Col>
           );
         })}
@@ -47,9 +48,10 @@ export default function CardHome(props: Props) {
     </div>
   );
 }
+export default memo(CardHome);
 
-function TournamentCard(props: { data: TournamentGql }) {
-  const { data: item } = props;
+function TournamentCard(props: { data: TournamentGql, type?: string }) {
+  const { data: item, type } = props;
   const router = useRouter();
 
   const handleJoinNowDetail = () => {
@@ -142,14 +144,13 @@ function TournamentCard(props: { data: TournamentGql }) {
                 {item.currency.symbol}
               </span>
             </div>
-            <Button
-              type="primary"
-              className={s.btn_join_now}
-            >
-              <a href={`/tournament/${item.uid}/${slugify(item.name)}`}>
-                JOIN NOW
-              </a>
-            </Button>
+            {type === "UPCOMING" && (
+              <Button type="primary" className={s.btn_join_now}>
+                <a href={`/tournament/${item.uid}/${slugify(item.name)}`}>
+                  JOIN NOW
+                </a>
+              </Button>
+            )}
           </div>
         </div>
       </div>
