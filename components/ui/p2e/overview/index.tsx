@@ -1,8 +1,7 @@
-import React, {MouseEventHandler, useEffect, useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import s from './P2EOverview.module.sass'
 import {Button, Col, Image, Row} from "antd";
 import {isEmpty} from "lodash";
-import {useGetPlatformAccount} from "../../../../hooks/p2e/useP2E";
 import {PlatformAccount} from "../../../../src/generated/graphql";
 import {isDevMode} from "../../../../utils/Env";
 
@@ -41,7 +40,7 @@ const P2EOverview = ({ faceitUser }: P2EOverviewProps) => {
             alert('The id token is not valid, something went wrong')
           }
           const initParams = {
-            client_id: isDevMode ? '18060616-4f25-4761-bca3-d7704dda283a' : '4a4c0bd5-27fb-479d-9361-49492a3784d6',
+            client_id: isDevMode ? process.env.NEXT_PUBLIC_FACEIT_CLIENT_ID_DEV : process.env.NEXT_PUBLIC_FACEIT_CLIENT_ID_TEST,
             response_type: 'token',
           }
           FACEIT.init(initParams, callback)
