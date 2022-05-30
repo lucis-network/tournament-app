@@ -394,6 +394,48 @@ export type BracketWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
+export type CachePlayerStatistic = {
+  __typename?: 'CachePlayerStatistic';
+  assists: Scalars['Int'];
+  created_at: Scalars['DateTime'];
+  headshot: Scalars['Int'];
+  id: Scalars['ID'];
+  kills: Scalars['Int'];
+  matches: Scalars['Int'];
+  player_game: PlayerGame;
+  player_game_uid: Scalars['String'];
+  round: Scalars['Int'];
+  updated_at: Scalars['DateTime'];
+  wins: Scalars['Int'];
+};
+
+export type CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput = {
+  connect?: InputMaybe<CachePlayerStatisticWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<CachePlayerStatisticCreateOrConnectWithoutPlayer_GameInput>;
+  create?: InputMaybe<CachePlayerStatisticCreateWithoutPlayer_GameInput>;
+};
+
+export type CachePlayerStatisticCreateOrConnectWithoutPlayer_GameInput = {
+  create: CachePlayerStatisticCreateWithoutPlayer_GameInput;
+  where: CachePlayerStatisticWhereUniqueInput;
+};
+
+export type CachePlayerStatisticCreateWithoutPlayer_GameInput = {
+  assists?: InputMaybe<Scalars['Int']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  headshot?: InputMaybe<Scalars['Int']>;
+  kills?: InputMaybe<Scalars['Int']>;
+  matches?: InputMaybe<Scalars['Int']>;
+  round?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  wins?: InputMaybe<Scalars['Int']>;
+};
+
+export type CachePlayerStatisticWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
+  player_game_uid?: InputMaybe<Scalars['String']>;
+};
+
 export type CacheTournament = {
   __typename?: 'CacheTournament';
   created_at: Scalars['DateTime'];
@@ -1266,8 +1308,12 @@ export type MissionCreateWithoutUser_Daily_MissionInput = {
 };
 
 export enum MissionType {
-  Kda = 'KDA',
-  Kills = 'KILLS'
+  Assists = 'ASSISTS',
+  Headshot = 'HEADSHOT',
+  Kills = 'KILLS',
+  Matches = 'MATCHES',
+  Round = 'ROUND',
+  Wins = 'WINS'
 }
 
 export type MissionWhereUniqueInput = {
@@ -1903,6 +1949,7 @@ export type Player = {
 export type PlayerGame = {
   __typename?: 'PlayerGame';
   _count: PlayerGameCount;
+  cache_player_statistic?: Maybe<CachePlayerStatistic>;
   created_at: Scalars['DateTime'];
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
@@ -1955,6 +2002,7 @@ export type PlayerGameCreateOrConnectWithoutPlayer_MissionInput = {
 };
 
 export type PlayerGameCreateWithoutPlatform_AccountInput = {
+  cache_player_statistic?: InputMaybe<CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
@@ -1964,6 +2012,7 @@ export type PlayerGameCreateWithoutPlatform_AccountInput = {
 };
 
 export type PlayerGameCreateWithoutPlayer_MissionInput = {
+  cache_player_statistic?: InputMaybe<CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
@@ -1978,7 +2027,7 @@ export type PlayerGameWhereUniqueInput = {
 
 export type PlayerMission = {
   __typename?: 'PlayerMission';
-  achived?: Maybe<Scalars['String']>;
+  achieved?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
   mission: Mission;
   mission_uid: Scalars['String'];
@@ -1989,7 +2038,7 @@ export type PlayerMission = {
 };
 
 export type PlayerMissionCreateManyMissionInput = {
-  achived?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   player_game_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
@@ -2002,7 +2051,7 @@ export type PlayerMissionCreateManyMissionInputEnvelope = {
 };
 
 export type PlayerMissionCreateManyPlayer_GameInput = {
-  achived?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   mission_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
@@ -2039,7 +2088,7 @@ export type PlayerMissionCreateOrConnectWithoutPlayer_GameInput = {
 };
 
 export type PlayerMissionCreateWithoutMissionInput = {
-  achived?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
@@ -2047,7 +2096,7 @@ export type PlayerMissionCreateWithoutMissionInput = {
 };
 
 export type PlayerMissionCreateWithoutPlayer_GameInput = {
-  achived?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
