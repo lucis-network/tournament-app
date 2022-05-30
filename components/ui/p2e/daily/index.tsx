@@ -64,8 +64,8 @@ const DailyMission = () => {
         <div className={s.missionsList}>
           {isEmpty(dailyMission) ? <SpinLoading /> : (
             dailyMission.map((mission: Mission) => {
-              const achived = (mission?.player_mission && (mission?.player_mission?.length > 0)) ? (mission?.player_mission[0]?.achived as unknown as number) : 0
-              const currentPercent = ((achived/(mission?.goal as unknown as number)) * 100)
+              const achieved = (mission?.player_mission && (mission?.player_mission?.length > 0)) ? (mission?.player_mission[0]?.achieved as unknown as number) : 0
+              const currentPercent = ((achieved/(mission?.goal as unknown as number)) * 100)
               return (
                 <div className={s.missionItem} key={mission?.uid}>
                   <div className={s.missionLogo}>
@@ -81,7 +81,7 @@ const DailyMission = () => {
                       </Col>
                     </Row>
                     <div className={s.missionProgress}>
-                      <div>0</div>
+                      <div>{achieved}</div>
                       <Progress percent={currentPercent} format={percent => ''} />
                       <div>{mission?.goal}</div>
                     </div>
