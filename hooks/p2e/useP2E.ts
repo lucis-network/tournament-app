@@ -75,7 +75,7 @@ export const GET_DAILY_MISSION = gql`
       lucis_token
       player_mission {
         player_game_uid
-        achived
+        achieved
         mission_uid
       }
     }
@@ -94,7 +94,7 @@ export const UPDATE_DAILY_MISSION = gql`
       lucis_token
       player_mission {
         player_game_uid
-        achived
+        achieved
         mission_uid
       }
     }
