@@ -58,7 +58,7 @@ const DailyMission = () => {
           <h2>Daily missions</h2>
           <Button onClick={handleUpdateMissions}>
             <FontAwesomeIcon icon={faRepeat} />
-            <span>Update</span>
+            <span style={{ paddingLeft: '5px' }}>Update</span>
           </Button>
         </div>
         <div className={s.missionsList}>
@@ -66,8 +66,9 @@ const DailyMission = () => {
             dailyMission.map((mission: Mission) => {
               const achieved = (mission?.player_mission && (mission?.player_mission?.length > 0)) ? (mission?.player_mission[0]?.achieved as unknown as number) : 0
               const currentPercent = ((achieved/(mission?.goal as unknown as number)) * 100)
+
               return (
-                <div className={s.missionItem} key={mission?.uid}>
+                <div className={s.missionItem} key={mission?.game_uid}>
                   <div className={s.missionLogo}>
                     <Image src="/assets/P2E/gun.png" preview={false} alt="" />
                   </div>
@@ -101,6 +102,7 @@ const DailyMission = () => {
           {getRecentMatchesLoading ? <SpinLoading /> : (
             !isEmpty(getRecentMatchesData?.getRecentlyMatch) && getRecentMatchesData?.getRecentlyMatch.map(match => {
               const endAt = moment.unix(match?.end_at as number).fromNow()
+
               return (
                 <div className={s.recentMatchesItem} key={match?.match_uid}>
                   <div className={s.recentMatchesLogo}>
