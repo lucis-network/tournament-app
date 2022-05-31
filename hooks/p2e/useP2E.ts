@@ -1,18 +1,12 @@
-import {ApolloError, ApolloQueryResult, gql, useMutation, useQuery} from "@apollo/client";
-import boolean from "async-validator/dist-types/validator/boolean";
-import {Mission, PlatformAccount, Match} from "../../src/generated/graphql";
-
-type UseGetDailyMissionProp = {
-  game_uid: string,
-  skip?: boolean
-}
+import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
+import {Match, PlatformAccount} from "../../src/generated/graphql_p2e";
 
 export const useGetPlatformAccount = (): {
   getPlatformAccountLoading: boolean,
   getPlatformAccountError: ApolloError | undefined,
   refetchPlatformAccount: () => Promise<ApolloQueryResult<any>>,
   getPlatformAccountData: {
-    getPlatformAccount: PlatformAccount
+    getPlatformAccount: PlatformAccount[]
   },
 } => {
   const {
@@ -20,7 +14,11 @@ export const useGetPlatformAccount = (): {
     error: getPlatformAccountError,
     refetch: refetchPlatformAccount,
     data: getPlatformAccountData,
-  } = useQuery(GET_PLATFORM_ACCOUNT)
+  } = useQuery(GET_PLATFORM_ACCOUNT, {
+    context: {
+      endpoint: 'p2e'
+    }
+  })
 
   return {
     getPlatformAccountLoading,
@@ -43,7 +41,11 @@ export const useGetRecentMatches = (): {
     error: getRecentMatchesError,
     refetch: refetchRecentMatches,
     data: getRecentMatchesData,
-  } = useQuery(GET_RECENT_MATCHES)
+  } = useQuery(GET_RECENT_MATCHES, {
+    context: {
+      endpoint: 'p2e'
+    }
+  })
 
   return {
     getRecentMatchesLoading,
@@ -54,8 +56,8 @@ export const useGetRecentMatches = (): {
 }
 
 export const CONNECT_FACEIT = gql`
-  mutation ($accessToken: String!, $IdToken: String!) {
-    connectFaceit (accessToken: $accessToken, IdToken: $IdToken) {
+  mutation ($accessToken: String!, $idToken: String!) {
+    connectFaceit (accessToken: $accessToken, idToken: $idToken) {
       player_uid
       avatar
       nick_name
@@ -66,17 +68,17 @@ export const CONNECT_FACEIT = gql`
 export const GET_DAILY_MISSION = gql`
   mutation ($game_uid: String!) {
     getDailyMission(game_uid: $game_uid) {
-      game_uid
-      title
-      img
-      goal
-      type
-      lucis_point
-      lucis_token
-      player_mission {
-        player_game_uid
-        achieved
-        mission_uid
+      achieved
+      mission_uid
+      mission {
+        uid
+        title
+        game_uid
+        img
+        goal
+        type
+        lucis_point
+        lucis_token
       }
     }
   }
@@ -85,17 +87,17 @@ export const GET_DAILY_MISSION = gql`
 export const UPDATE_DAILY_MISSION = gql`
   mutation ($game_uid: String!) {
     updateDailyMission(game_uid: $game_uid) {
-      game_uid
-      title
-      img
-      goal
-      type
-      lucis_point
-      lucis_token
-      player_mission {
-        player_game_uid
-        achieved
-        mission_uid
+      achieved
+      mission_uid
+      mission {
+        uid
+        title
+        game_uid
+        img
+        goal
+        type
+        lucis_point
+        lucis_token
       }
     }
   }
@@ -104,8 +106,6 @@ export const UPDATE_DAILY_MISSION = gql`
 const GET_PLATFORM_ACCOUNT = gql`
   query {
     getPlatformAccount {
-      uid
-      user_id
       player_uid
       avatar
       nick_name

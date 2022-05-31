@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "codegen": "graphql-codegen --config codegen.yml",
+    "codegen": "yarn codegen-tour && yarn codegen-p2e",
+    "codegen-tour": "graphql-codegen --config codegen_p2e.yml",
+    "codegen-p2e": "graphql-codegen --config codegen_p2e.yml",
     "dev": "next dev",
     "build": "next build",
     "start": "node server.js",
