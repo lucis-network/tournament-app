@@ -19,7 +19,7 @@ export default observer(function NotifyModal(props: Props) {
     setIsModalVisible(false);
     TournamentStore.resetStates();
     clearLocalCreateTournament();
-    router.push("/");
+    router.push("/tournament");
     TournamentStore.depositModalVisible = false;
   };
 
@@ -27,7 +27,7 @@ export default observer(function NotifyModal(props: Props) {
     setIsModalVisible(false);
     TournamentStore.resetStates();
     clearLocalCreateTournament();
-    router.push("/");
+    router.push("/tournament");
     TournamentStore.depositModalVisible = false;
   };
 
