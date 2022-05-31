@@ -8,12 +8,18 @@ import DailyMission from "components/ui/p2e/daily"
 import s from './Home.module.sass'
 import {useMutation} from "@apollo/client"
 import {CONNECT_FACEIT, useGetPlatformAccount} from "../hooks/p2e/useP2E"
-import {PlatformAccount} from "../src/generated/graphql";
+import {PlatformAccount} from "../src/generated/graphql_p2e";
+import Missions from "../components/ui/p2e/missions";
+import {isEmpty} from "lodash";
 
 const { TabPane } = Tabs;
 
 const Home: NextPage = () => {
-  const [connectFaceit] = useMutation(CONNECT_FACEIT)
+  const [connectFaceit] = useMutation(CONNECT_FACEIT, {
+    context: {
+      endpoint: 'p2e'
+    }
+  })
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
   const [tabActiveKey, setTabActiveKey] = useState<string>('p2e')
   const {getPlatformAccountData} = useGetPlatformAccount()
@@ -30,7 +36,7 @@ const Home: NextPage = () => {
         const newHashData = new URLSearchParams(hashData.replace('#token=', '?token='))
         const tokenData = {
           accessToken: newHashData.get('token'),
-          IdToken: newHashData.get('id_token')
+          idToken: newHashData.get('id_token')
         }
         connectFaceit({
           variables: tokenData
@@ -60,7 +66,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     let isSubscribed = true
     if (isSubscribed) {
-      setFaceitUser(getPlatformAccountData?.getPlatformAccount)
+      setFaceitUser(getPlatformAccountData?.getPlatformAccount[0])
     }
     return () => {
       isSubscribed = false
@@ -76,11 +82,11 @@ const Home: NextPage = () => {
             <TabPane tab="P2E 2.0" key="p2e">
               <P2EOverview faceitUser={faceitUser} />
             </TabPane>
-            <TabPane tab="Daily" key="daily">
+            <TabPane tab="Daily" key="daily" disabled={isEmpty(faceitUser)}>
               <DailyMission />
             </TabPane>
-            <TabPane tab="Missions" key="missions" disabled>
-              Content of Missions
+            <TabPane tab="Missions" key="missions" disabled={isEmpty(faceitUser)}>
+              <Missions />
             </TabPane>
             <TabPane tab="Raffles" key="raffles" disabled>
               Content of Raffles

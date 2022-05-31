@@ -66,7 +66,27 @@ const httpLink = createHttpLink({
   // You should use an absolute URL here
   uri: process.env.NEXT_PUBLIC_GRAPHQL_URL,
 });
-var splitLink: any;
+
+const p2eEndpoint = createHttpLink({
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_P2E_URL
+})
+
+let splitLink: any;
+
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = _getAuthToken();
+
+  //console.log("{apolo.authLink} token: ", token);
+
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: `Bearer ${token}`,
+    },
+  };
+});
 
 if (isClient) {
   const wsLink = new GraphQLWsLink(
@@ -76,15 +96,22 @@ if (isClient) {
   );
 
   splitLink = split(
-    ({ query }) => {
-      const definition = getMainDefinition(query);
-      return (
-        definition.kind === "OperationDefinition" &&
-        definition.operation === "subscription"
-      );
+    (op) => {
+      const endpoint = op.getContext().endpoint;
+      return endpoint === 'p2e'
     },
-    wsLink,
-    httpLink
+    authLink.concat(p2eEndpoint),
+    split(
+      ({query}) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      authLink.concat(wsLink),
+      authLink.concat(httpLink)
+    )
   );
 }
 
@@ -113,25 +140,10 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
-const authLink = setContext((_, { headers }) => {
-  // get the authentication token from local storage if it exists
-  const token = _getAuthToken();
-
-  //console.log("{apolo.authLink} token: ", token);
-
-  // return the headers to the context so httpLink can read them
-  return {
-    headers: {
-      ...headers,
-      authorization: `Bearer ${token}`,
-    },
-  };
-});
-
 const client = new ApolloClient({
   link: from([
     errorLink,
-    authLink.concat(splitLink != null ? splitLink : httpLink),
+    splitLink != null ? splitLink : httpLink,
   ]),
   cache,
   connectToDevTools: true,
