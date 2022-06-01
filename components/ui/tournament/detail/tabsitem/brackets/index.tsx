@@ -76,7 +76,7 @@ const BracketUI = ({ dataBracket, loadingBracket, refereeIds }: BracketUiProps) 
       {canEditMatch && <Alert
         className={s.refereeNotice}
         type="warning" showIcon
-        message="NOTE: You are selected to be a referee of this match so you can update the match results"
+        message="NOTE: You are selected to be a referee of this tournament so you can update the match results."
       />}
 
       <div className={`${s.bracketContainer} has-scrollbar`}>
