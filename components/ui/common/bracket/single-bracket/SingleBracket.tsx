@@ -52,16 +52,17 @@ const createRounds = ({
   }
 
   for (let i = 1; i <= numRounds; i++) {
+    const roundName = i === numRounds ? `Final` : `Round ${i}`
     const title = (
       <div style={{marginBottom: 20}}>
         <p className="m-0 text text-white">
-          {i == numRounds ? `Final` : `Round ${i}`}
+          {roundName}
         </p>
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
           showTime
-          onChange={(date, dateString) => handleSelectDate(date, dateString, i)}
+          onChange={(date, dateString) => handleSelectDate('single', date, dateString, i, roundName)}
         />
       </div>
     );
@@ -88,7 +89,7 @@ const CustomSeed = ({
     <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
       <SeedItem>
         <div>
-          <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
+          <SeedTeam className={s.topSeed} style={{ padding: 0, opacity: 0.6 }}>
             <div
               style={{
                 width: "100%",
@@ -98,7 +99,7 @@ const CustomSeed = ({
                 color: "black",
               }}
             >
-              {seed.teams[0]?.name || `Team ...`}
+              {seed.teams[0]?.name || `--`}
             </div>
             <div
               style={{
@@ -121,7 +122,7 @@ const CustomSeed = ({
                 color: "white",
               }}
             >
-              {seed.teams[1]?.name || `Team ...`}
+              {seed.teams[1]?.name || `--`}
             </div>
             <div
               style={{
