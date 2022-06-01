@@ -1,28 +1,31 @@
 import React, {useEffect, useState} from 'react'
 import s from './Daily.module.sass'
-import {Button, Col, Image, Progress, Row} from "antd"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {faRepeat} from '@fortawesome/free-solid-svg-icons'
-import AuthStore from "../../../Auth/AuthStore";
+import {Button, Image} from "antd"
 import {GET_DAILY_MISSION, UPDATE_DAILY_MISSION, useGetRecentMatches} from "../../../../hooks/p2e/useP2E";
 import {isEmpty} from "lodash";
-import {Mission} from "../../../../src/generated/graphql";
 import moment from "moment";
 import SpinLoading from "../../common/Spin";
 import {useMutation} from "@apollo/client";
+import MissionsList from "../MissionsList";
+import {PlayerMission} from "../../../../src/generated/graphql_p2e";
 
 const DailyMission = () => {
-  const userInfo = AuthStore
-  const [dailyMission, setDailyMission] = useState([])
+  const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
   const [getDailyMission] = useMutation(GET_DAILY_MISSION, {
     variables: {
       game_uid: '3',
     },
+    context: {
+      endpoint: 'p2e'
+    }
   })
   const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
     variables: {
       game_uid: '3',
     },
+    context: {
+      endpoint: 'p2e'
+    }
   })
 
   const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentMatches()
@@ -53,49 +56,7 @@ const DailyMission = () => {
         <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
         <h3>CS:GO FACEIT</h3>
       </div>
-      <div className={s.missionsWrap}>
-        <div className={s.missionsWrapHeader}>
-          <h2>Daily missions</h2>
-          <Button onClick={handleUpdateMissions}>
-            <FontAwesomeIcon icon={faRepeat} />
-            <span style={{ paddingLeft: '5px' }}>Update</span>
-          </Button>
-        </div>
-        <div className={s.missionsList}>
-          {isEmpty(dailyMission) ? <SpinLoading /> : (
-            dailyMission.map((mission: Mission) => {
-              const achieved = (mission?.player_mission && (mission?.player_mission?.length > 0)) ? (mission?.player_mission[0]?.achieved as unknown as number) : 0
-              const currentPercent = ((achieved/(mission?.goal as unknown as number)) * 100)
-
-              return (
-                <div className={s.missionItem} key={mission?.game_uid}>
-                  <div className={s.missionLogo}>
-                    <Image src="/assets/P2E/gun.png" preview={false} alt="" />
-                  </div>
-                  <div className={s.missionInfo}>
-                    <h4>{mission?.title}</h4>
-                    <Row className={s.missionReward}>
-                      <Col xs={{ span: 3 }}>Reward</Col>
-                      <Col xs={{ span: 21 }}>
-                        <p>{mission?.lucis_point} Lucis point</p>
-                        <p>{mission?.lucis_token} Lucis token</p>
-                      </Col>
-                    </Row>
-                    <div className={s.missionProgress}>
-                      <div>{achieved}</div>
-                      <Progress percent={currentPercent} format={percent => ''} />
-                      <div>{mission?.goal}</div>
-                    </div>
-                  </div>
-                  <div className={s.missionAction}>
-                    <Button disabled>Claim</Button>
-                  </div>
-                </div>
-              )
-            })
-          )}
-        </div>
-      </div>
+      <MissionsList title="Daily missions" missions={dailyMission} handleUpdateMissions={handleUpdateMissions} />
       <div className={s.recentMatchesWrap}>
         <h2>Recent matches</h2>
         <div className={s.recentMatchesList}>
