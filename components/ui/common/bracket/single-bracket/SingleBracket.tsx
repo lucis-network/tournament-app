@@ -89,7 +89,7 @@ const CustomSeed = ({
     <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
       <SeedItem>
         <div>
-          <SeedTeam className={s.topSeed} style={{ padding: 0, opacity: 0.6 }}>
+          <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
             <div
               style={{
                 width: "100%",

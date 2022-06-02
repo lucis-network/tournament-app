@@ -43,6 +43,7 @@ import sponsorStore, {
   ISponsorTierStore,
 } from "components/ui/tournament/create/sponsor/SponsorStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import {isEmpty} from "lodash";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -229,16 +230,15 @@ export default observer(function CreateTournament(props: Props) {
 
   const createTournament = () => {
     let cr = TournamentStore.getCreateTournament();
-    cr.start_at = new Date();
+    if (!validationInput(cr)) return;
+
+    cr.start_at = (cr?.rounds && cr?.rounds[0]?.title === 'Round 1') ? cr?.rounds[0].start_at : new Date();
     cr.sponsor_slots = combineSponsorData();
 
     setLocalCreateTournamentInfo(cr);
     TournamentStore.setCreateTournament(cr);
 
-    if (!validationInput(cr)) return;
-
     const tournamentService = new TournamentService();
-    if (!validationInput(cr)) return;
     const response = tournamentService
       .createTournament(cr)
       .then(async (res) => {
@@ -298,7 +298,22 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    if (!cr.rounds) {
+    const isTimelineValid = () => {
+      let valid = true
+      if (isEmpty(cr.rounds)) {
+        valid = false
+      } else {
+        for (let i = 0, c = cr.rounds.length; i < c; i++) {
+          if (isEmpty(cr.rounds[i])) {
+            valid = false
+            break
+          }
+        }
+      }
+      return valid
+    }
+
+    if (!isTimelineValid()) {
       setMessageErrorTimeline("Timeline must not be empty");
       inputRef.current!.focus();
       return false;
