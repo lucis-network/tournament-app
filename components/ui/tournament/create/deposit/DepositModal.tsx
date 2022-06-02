@@ -16,12 +16,12 @@ import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "../../../../Auth/AuthStore";
 
 type Props = {
-  tournamentUid?: any;
+  tournamentRes?: any;
 };
 
 export default observer(function DepositModal(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const { tournamentUid } = props;
+  const { tournamentRes } = props;
   const isModalVisible = TournamentStore.depositModalVisible;
 
   const setIsModalVisible = (v: boolean) =>
@@ -40,7 +40,7 @@ export default observer(function DepositModal(props: Props) {
         TournamentStore.notifyModalVisible = true;
         const tournamentService = new TournamentService();
         tournamentService.depositTournament(
-          tournamentUid,
+          tournamentRes?.uid,
           result?.txHash as string,
           result?.blockNumber as number
         );
@@ -66,11 +66,12 @@ export default observer(function DepositModal(props: Props) {
         (item: any) => item.type === "PRIZE"
       );
 
-      let token_address = "";
-
-      if (TournamentStore.currency_symbol === "BUSD") token_address = BUSD;
-      if (TournamentStore.currency_symbol === "USDT") token_address = USDT;
-      if (TournamentStore.currency_symbol === "LUCIS") token_address = LUCIS;
+      let token_address = TournamentStore?.currency_address ? TournamentStore?.currency_address : "";
+      
+      console.log("token_address", token_address);
+      // if (TournamentStore.currency_symbol === "BUSD") token_address = BUSD;
+      // if (TournamentStore.currency_symbol === "USDT") token_address = USDT;
+      // if (TournamentStore.currency_symbol === "LUCIS") token_address = LUCIS;
 
       if (!TournamentStore.checkDepositApprove) {
         TournamentStore.checkDepositApprove =
@@ -89,7 +90,7 @@ export default observer(function DepositModal(props: Props) {
 
       const result = await ethersService.initTournament(
         AuthStore.id + "",
-        tournamentUid,
+        tournamentRes?.uid,
         TournamentStore.pool_size,
         token_address,
         contractAddress[0]?.address

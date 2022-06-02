@@ -47,7 +47,7 @@ export default observer(function RefereeModal(props: Props) {
     const dataCallback: number[] = [];
     const dataRefereeCallback: any[] = [];
     checkedValue.forEach((item: any) => {
-      dataCallback.push(Number.parseInt(getDataReferees[item].user_id));
+      dataCallback.push(Number.parseInt(getDataReferees[item].id));
       dataRefereeCallback.push(getDataReferees[item]);
     });
     props.handCallbackReferee(dataRefereeCallback, dataCallback);
@@ -96,8 +96,8 @@ export default observer(function RefereeModal(props: Props) {
               return (
                 <div className={`${s.item}`} key={index}>
                   <div className={`${s.avatar} ${s.avBig}`}>
-                    {ele.user?.profile.avatar ? (
-                      <img src={ele.user.profile.avatar} alt="" />
+                    {ele?.profile?.avatar ? (
+                      <img src={ele?.profile?.avatar} alt="" />
                     ) : (
                       <img src="/assets/avatar.jpg" alt="" />
                     )}
@@ -106,7 +106,7 @@ export default observer(function RefereeModal(props: Props) {
                     className={`${s.itemCheckbox}`}
                     value={index}
                   ></Checkbox>
-                  <p className="mt-5px">{ele.user.profile.display_name}</p>
+                  <p className="mt-5px">{ele?.profile?.display_name}</p>
                 </div>
               );
             })

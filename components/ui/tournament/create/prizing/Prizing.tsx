@@ -192,6 +192,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
 
 type Props = {
   checkPoolSize?: boolean;
+  checkCurrency?: boolean;
 };
 
 export default observer(function Prizing(props: Props) {
@@ -202,6 +203,7 @@ export default observer(function Prizing(props: Props) {
   const [symbol, setSymbol] = useState(TournamentStore.currency_symbol);
   const { getDataCurrencies } = useCurrencies({});
   const [messageErrorPoolSize, setMessageErrorPoolSize] = useState("");
+  const [messageErrorCurrency, setMessageErrorCurrency] = useState("");
 
   let columnsHeader = [
     {
@@ -349,7 +351,11 @@ export default observer(function Prizing(props: Props) {
           setMessageErrorPoolSize("Pool size must not be empty");
         }
     }
-  });
+
+    if (!props.checkCurrency) {
+      setMessageErrorCurrency("Currency is required");
+    }
+  }, [props.checkPoolSize, props.checkCurrency]);
 
   const handleBlur = () => {
     if (poolSize == null)
@@ -420,20 +426,23 @@ export default observer(function Prizing(props: Props) {
                   : undefined
               }
             />
+            <div className={s.message_error}>{messageErrorPoolSize}</div>
           </Col>
           <Col span={3}>
             <Select
-              defaultValue={TournamentStore.currency_uid}
+              defaultValue={"Choose currency"}
               onChange={(value) => {
                 setChain(value);
-
                 let obj = getDataCurrencies.filter((item: any) => {
                   return item.uid == value;
                 });
-
                 setSymbol(obj[0]?.symbol);
+                setMessageErrorCurrency("");
+                TournamentStore.currency_uid = obj[0]?.uid;
                 TournamentStore.currency_symbol = obj[0]?.symbol;
+                TournamentStore.currency_address = obj[0]?.address;
               }}
+              style={{ minWidth: "150px" }}
             >
               {getDataCurrencies?.map((item: any, index: number) => {
                 return (
@@ -443,9 +452,9 @@ export default observer(function Prizing(props: Props) {
                 );
               })}
             </Select>
+            <div className={s.message_error}>{messageErrorCurrency}</div>
           </Col>
         </Row>
-        <div className={s.message_error}>{messageErrorPoolSize}</div>
       </div>
 
       <div className="pt-4">

@@ -84,16 +84,13 @@ export const CHOOSE_GAME = gql`
 const REFEREES = gql`
   query ($name: String!) {
     getReferee(name: $name) {
-      user_id
-      user {
-        code
-        email
-        profile {
-          display_name
-          avatar
-        }
+      id
+      code
+      email
+      profile {
+        display_name
+        avatar
       }
-      desc
     }
   }
 `;

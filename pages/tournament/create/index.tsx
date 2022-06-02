@@ -43,7 +43,7 @@ import sponsorStore, {
   ISponsorTierStore,
 } from "components/ui/tournament/create/sponsor/SponsorStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
-import {isEmpty} from "lodash";
+import { isEmpty } from "lodash";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -67,10 +67,11 @@ export default observer(function CreateTournament(props: Props) {
   const [messageErrorReferee, setMessageErrorReferee] = useState("");
   const [messageErrorTimeline, setMessageErrorTimeline] = useState("");
   const [checkPoolSize, setCheckPoolSize] = useState(true);
+  const [checkCurrency, setCheckCurrency] = useState(true);
   const [checkPassword, setCheckPassword] = useState(false);
   const [dataReferees, setDataReferees] = useState([]);
   const [dataChooseGame, setDataChooseGame] = useState(null);
-  const [tournamentUid, setTournamentUid] = useState("");
+  const [tournamentRes, setTournamentRes] = useState(null);
   const { getDataRegions } = useRegion({});
 
   const { getDataChooseGame } = useChooseGame({
@@ -145,7 +146,7 @@ export default observer(function CreateTournament(props: Props) {
       const dataRefereeRes = [];
       getDataReferees?.forEach((item: any) => {
         cr?.referees?.forEach((itm: number) => {
-          if (item.user_id == itm) dataRefereeRes.push(item);
+          if (item.id == itm) dataRefereeRes.push(item);
         });
       });
       //@ts-ignore
@@ -232,7 +233,10 @@ export default observer(function CreateTournament(props: Props) {
     let cr = TournamentStore.getCreateTournament();
     if (!validationInput(cr)) return;
 
-    cr.start_at = (cr?.rounds && cr?.rounds[0]?.title === 'Round 1') ? cr?.rounds[0].start_at : new Date();
+    cr.start_at =
+      cr?.rounds && cr?.rounds[0]?.title === "Round 1"
+        ? cr?.rounds[0].start_at
+        : new Date();
     cr.sponsor_slots = combineSponsorData();
 
     setLocalCreateTournamentInfo(cr);
@@ -244,7 +248,7 @@ export default observer(function CreateTournament(props: Props) {
       .then(async (res) => {
         console.log("Res", res);
         if (res.data.createTournament.uid) {
-          setTournamentUid(res.data.createTournament.uid);
+          setTournamentRes(res.data.createTournament);
           TournamentStore.depositModalVisible = true;
           window.onbeforeunload = null;
         } else {
@@ -286,12 +290,23 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    if (!cr.bracket_type) {
-      setMessageErrorBracketType("Bracket type is required");
-      scrollToTop();
+    // if (!cr.bracket_type) {
+    //   setMessageErrorBracketType("Bracket type is required");
+    //   scrollToTop();
+    //   return false;
+    // }
+
+    if (!cr.currency_uid) {
+      setCheckCurrency(false);
+      //setMessageErrorChoosegame("Currency is required");
+      //@ts-ignore
+      document.getElementById("prizing").scrollIntoView();
       return false;
+    } else {
+      setCheckCurrency(true);
     }
 
+    console.log("cr", cr);
     if (!cr.team_size) {
       setMessageErrorTeamSize("Teamsize must not be empty");
       inputRef.current!.focus();
@@ -299,19 +314,19 @@ export default observer(function CreateTournament(props: Props) {
     }
 
     const isTimelineValid = () => {
-      let valid = true
+      let valid = true;
       if (isEmpty(cr.rounds)) {
-        valid = false
+        valid = false;
       } else {
         for (let i = 0, c = cr.rounds.length; i < c; i++) {
           if (isEmpty(cr.rounds[i])) {
-            valid = false
-            break
+            valid = false;
+            break;
           }
         }
       }
-      return valid
-    }
+      return valid;
+    };
 
     if (!isTimelineValid()) {
       setMessageErrorTimeline("Timeline must not be empty");
@@ -388,7 +403,8 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const checkOpenModalTimeLine = () => {
-    if (!TournamentStore.bracket_type) setMessageErrorTimeline("Choose bracket type first");
+    if (!TournamentStore.bracket_type)
+      setMessageErrorTimeline("Choose bracket type first");
     else {
       openModal("timeline");
     }
@@ -705,11 +721,11 @@ export default observer(function CreateTournament(props: Props) {
                         className="flex flex-col items-center mr-15px"
                         key={index}
                       >
-                        {item.user?.profile?.avatar ? (
+                        {item?.profile?.avatar ? (
                           <img
                             width="50"
                             height="50"
-                            src={item.user.profile.avatar}
+                            src={item?.profile?.avatar}
                             alt=""
                           />
                         ) : (
@@ -720,9 +736,7 @@ export default observer(function CreateTournament(props: Props) {
                             alt=""
                           />
                         )}
-                        <p className="mt-5px">
-                          {item.user.profile.display_name}
-                        </p>
+                        <p className="mt-5px">{item?.profile?.display_name}</p>
                       </div>
                     );
                   })}
@@ -743,12 +757,15 @@ export default observer(function CreateTournament(props: Props) {
             <p id="prizing" className="text-30px mt-20px">
               Prizing
             </p>
-            <Prizing checkPoolSize={checkPoolSize}></Prizing>
+            <Prizing
+              checkPoolSize={checkPoolSize}
+              checkCurrency={checkCurrency}
+            ></Prizing>
           </div>
 
           <div>
             <p className="text-30px mt-20px">Tournament Overview</p>
-            <div style={{ minHeight: 50, color:"white" }}>
+            <div style={{ minHeight: 50, color: "white" }}>
               <ReactQuill
                 theme="snow"
                 value={TournamentStore.desc}
@@ -761,7 +778,7 @@ export default observer(function CreateTournament(props: Props) {
 
           <div>
             <p className="text-30px mt-20px">Rules</p>
-            <div style={{ minHeight: 50, color:"white" }}>
+            <div style={{ minHeight: 50, color: "white" }}>
               <ReactQuill
                 theme="snow"
                 value={TournamentStore.rules}
@@ -832,7 +849,7 @@ export default observer(function CreateTournament(props: Props) {
         <ChooseGameModal handCallbackChooseGame={handCallbackChooseGame} />
         <RefereeModal handCallbackReferee={handCallbackReferee} />
         <TimelineModal handCallbackTimeline={handCallbackTimeline} />
-        <DepositModal tournamentUid={tournamentUid} />
+        <DepositModal tournamentRes={tournamentRes} />
       </div>
 
       {/* <Footer /> */}
