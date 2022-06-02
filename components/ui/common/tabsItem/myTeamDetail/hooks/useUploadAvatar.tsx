@@ -49,7 +49,7 @@ const UseUploadAvatar = (
 			ACL: "public-read",
 			Body: file,
 			Bucket: S3_BUCKET,
-			Key: file.name,
+			Key: 'tournaments/' + file.name,
 			ContentType: file.type,
 		};
 

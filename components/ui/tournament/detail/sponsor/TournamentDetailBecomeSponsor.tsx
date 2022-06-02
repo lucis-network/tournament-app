@@ -82,6 +82,7 @@ export default function TournamentDetailBecomeSponsor(
   const inputSponsorAmountRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
+  const [totalPayment, setTotalPayment] = useState("0");
 
   const handleFormUpdate = async (data: any) => {
     if (!data.logo) {
@@ -213,9 +214,15 @@ export default function TournamentDetailBecomeSponsor(
   const handleSponsorAmountChange = (value: number) => {
     if (value !== null && value.toString().trim().length > 0) {
       setCurrentMinAmount(value);
+      setTotalPayment(calTotalPayment(value));
     } else {
       setCurrentMinAmount(minAmount);
+      setTotalPayment(calTotalPayment(minAmount));
     }
+  };
+
+  const calTotalPayment = (value: number) => {
+    return ((value * 111) / 100).toFixed(2);
   };
 
   const handleFileInput = (e: any) => {
@@ -230,7 +237,7 @@ export default function TournamentDetailBecomeSponsor(
       ACL: "public-read",
       Body: file,
       Bucket: S3_BUCKET,
-      Key: file.name,
+      Key: 'tournaments/' + file.name,
       ContentType: "image/jpeg",
     };
 
@@ -304,7 +311,7 @@ export default function TournamentDetailBecomeSponsor(
             </Col>
           </Row>
           <Row align="middle" className="mb-4">
-            <Col xs={{ span: 24 }} md={{ span: 8 }} >
+            <Col xs={{ span: 24 }} md={{ span: 8 }}>
               <label>Sponsor amount</label>
             </Col>
             <Col xs={{ span: 24 }} md={{ span: 16 }}>
@@ -418,7 +425,7 @@ export default function TournamentDetailBecomeSponsor(
             <Col xs={{ span: 24 }} md={{ span: 8 }}>
               <label>Ads Video</label>
               <br></br>
-              <span style={{color: "white"}}>(Coming soon)</span>
+              <span style={{ color: "white" }}>(Coming soon)</span>
             </Col>
             <Col xs={{ span: 24 }} md={{ span: 16 }}>
               <Text strong style={{ color: "#ffffff", fontSize: 12 }}>
@@ -462,14 +469,16 @@ export default function TournamentDetailBecomeSponsor(
               <span style={{ color: "white", marginTop: "10px" }}>1%</span>
             </Col>
           </Row>
-          {/* <Row align="middle">
+          <Row align="middle">
             <Col xs={{ span: 24 }} md={{ span: 8 }}>
-              <label>Referees fee</label>
+              <label>Total payment</label>
             </Col>
             <Col xs={{ span: 24 }} md={{ span: 16 }}>
-              <span style={{ color: "white", marginTop: "10px" }}>1%</span>
+              <span style={{ color: "white", marginTop: "10px" }}>
+                {totalPayment} {currency.symbol}
+              </span>
             </Col>
-          </Row> */}
+          </Row>
         </Form>
       </Spin>
     </Modal>

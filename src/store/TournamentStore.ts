@@ -107,9 +107,11 @@ class TournamentStore {
 
   private _game_uid?: string | undefined;
 
-  private _currency_uid?: string = DEFAULT_CURRENCY_UID;
+  private _currency_uid?: string | undefined;
 
-  private _currency_symbol?: string | undefined = DEFAULT_CURRENCY_SYMBOL;
+  private _currency_symbol?: string | undefined;
+
+  private _currency_address?: string | undefined;
 
   private _join_fee?: number = DEFAULT_JOIN_FEE;
 
@@ -171,8 +173,8 @@ class TournamentStore {
     this._prize_allocation = undefined;
     this._password = undefined;
     this._game_uid = undefined;
-    this._currency_uid = DEFAULT_CURRENCY_UID;
-    this._currency_symbol = DEFAULT_CURRENCY_SYMBOL;
+    this._currency_uid = undefined;
+    this._currency_symbol = undefined;
     this._join_fee = DEFAULT_JOIN_FEE;
     this._pool_size = undefined;
     this._referees = undefined;
@@ -434,6 +436,13 @@ class TournamentStore {
   }
   public set currency_symbol(value: string | undefined) {
     this._currency_symbol = value;
+  }
+
+  public get currency_address(): string | undefined {
+    return this._currency_address;
+  }
+  public set currency_address(value: string | undefined) {
+    this._currency_address = value;
   }
 }
 

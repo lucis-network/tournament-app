@@ -54,6 +54,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
   const [form] = Form.useForm();
   const inputFileRef = useRef<any>(null);
   const [isCheck, setIsCheck] = useState(false);
+  const [messageError, setMessageError] = useState("");
 
   useEffect(() => {
     if (tier?.slots[index]?.logo) {
@@ -65,6 +66,11 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
   }, [tier]);
 
   const handleFormUpdate = (data: any) => {
+    if (!data.logo) {
+      setMessageError("Logo is required");
+      return;
+    }
+
     const newSlotState: ISponsorSlot = {};
 
     newSlotState.logo = data.logo;
@@ -73,6 +79,8 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
     newSlotState.home_page = data.home_page;
     newSlotState.name = data.name;
     slot.setState(newSlotState);
+
+    setIsEdit(false);
   };
 
   const handleFileInput = (e: any) => {
@@ -87,7 +95,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       ACL: "public-read",
       Body: file,
       Bucket: S3_BUCKET,
-      Key: file.name,
+      Key: 'tournaments/' + file.name,
       ContentType: "image/jpeg",
     };
 
@@ -95,6 +103,8 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       var s3url = myBucket.getSignedUrl("getObject", { Key: params.Key });
       const str = s3url.split("?")[0];
       setLogoUrl(str);
+
+      if (str) setMessageError("");
     });
   };
 
@@ -103,11 +113,11 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       .validateFields()
       .then((data) => {
         data.logo = logoUrl;
+        console.log(data.logo);
         handleFormUpdate(data);
-        setIsEdit(false);
       })
       .catch((error) => {
-        console.log("Validate Failed:", error);
+        //console.log("Validate Failed:", error);
       });
   };
 
@@ -139,18 +149,19 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       footer={null}
       okText="Update"
       cancelText="Delete"
-      onOk={() => {
-        form
-          .validateFields()
-          .then((data) => {
-            data.logo = logoUrl;
-            handleFormUpdate(data);
-            setIsEdit(false);
-          })
-          .catch((error) => {
-            console.log("Validate Failed:", error);
-          });
-      }}
+      className={s.becomeSponsor}
+      // onOk={() => {
+      //   form
+      //     .validateFields()
+      //     .then((data) => {
+      //       data.logo = logoUrl;
+      //       handleFormUpdate(data);
+      //       setIsEdit(false);
+      //     })
+      //     .catch((error) => {
+      //       console.log("Validate Failed:", error);
+      //     });
+      // }}
     >
       <Form
         form={form}
@@ -233,6 +244,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 >
                   Recommended size: 200x200px
                 </Text>
+                <div className={s.message_error}>{messageError}</div>
               </Col>
             </Row>
           </Col>
@@ -245,6 +257,10 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
             <Form.Item
               name="name"
               rules={[
+                {
+                  required: true,
+                  message: "Sponsor name is required.",
+                },
                 {
                   max: 45,
                   message: "Sponsor name must be maximum 45 characters.",
@@ -277,6 +293,8 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
           <Row align="middle">
             <Col xs={{ span: 24 }} md={{ span: 8 }}>
               <label>Ads Video</label>
+              <br></br>
+              <span style={{ color: "white" }}>(Coming soon)</span>
             </Col>
             <Col xs={{ span: 24 }} md={{ span: 16 }}>
               <Text strong style={{ color: "#ffffff", fontSize: 12 }}>
@@ -291,7 +309,10 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                   },
                 ]}
               >
-                <Input placeholder="https://youtube.com/v/12345678" />
+                <Input
+                  placeholder="https://youtube.com/v/12345678"
+                  disabled={true}
+                />
               </Form.Item>
               <Text
                 italic
