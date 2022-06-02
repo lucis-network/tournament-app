@@ -21,7 +21,7 @@ const REGION = process.env.NEXT_PUBLIC_REGION;
 const ACCESS_KEY = process.env.NEXT_PUBLIC_ACCESS_KEY;
 const SECRET_ACCESS_KEY = process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY;
 const LINK_URL =
-  "https://image-upload-s3-demo.s3.ap-southeast-1.amazonaws.com/";
+  "https://lucis-tour-01.s3.ap-southeast-1.amazonaws.com/tournaments/";
 AWS.config.update({
   accessKeyId: ACCESS_KEY,
   secretAccessKey: SECRET_ACCESS_KEY,
@@ -46,7 +46,7 @@ export default observer(function UploadImage(props: Props) {
       ACL: "public-read",
       Body: file,
       Bucket: S3_BUCKET,
-      Key: file.name,
+      Key: 'tournaments/' + file.name,
       ContentType: "image/jpeg",
     };
 

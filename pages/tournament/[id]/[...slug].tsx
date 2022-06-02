@@ -79,7 +79,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-
+  
   useEffect(() => {
     let obj: any = [];
     if (dataSponsors) {

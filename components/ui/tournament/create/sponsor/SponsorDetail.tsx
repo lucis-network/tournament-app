@@ -95,7 +95,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       ACL: "public-read",
       Body: file,
       Bucket: S3_BUCKET,
-      Key: file.name,
+      Key: 'tournaments/' + file.name,
       ContentType: "image/jpeg",
     };
 
