@@ -35,15 +35,16 @@ const createWinRounds = ({
   let numGames = numParticipants / 2;
 
   for (let i = 1; i <= numWinRounds; i++) {
+    const roundName = `Round ${i}`
     const title = (
       <div style={{marginBottom: 20}}>
-        <p className="m-0 text-white text-[24px]">{`Round ${i}`}</p>
+        <p className="m-0 text-white text-[24px]">{roundName}</p>
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
           showTime
           onChange={(date, dateString) =>
-            handleSelectDate(date, dateString, i, "upper")
+            handleSelectDate('double', date, dateString, i, roundName, "upper")
           }
         />
       </div>
@@ -71,15 +72,16 @@ const createLoseRounds = ({
   let numGames = numParticipants / 4;
 
   for (let i = 1; i <= numLoseRounds; i++) {
+    const roundName = `Loser round ${i}`
     const title = (
       <div style={{marginBottom: 20}}>
-        <p className="m-0 text-white text-[24px]">{`Loser Round ${i}`}</p>
+        <p className="m-0 text-white text-[24px]">{roundName}</p>
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
           showTime
           onChange={(date, dateString) =>
-            handleSelectDate(date, dateString, i, "lower")
+            handleSelectDate('double', date, dateString, i, roundName, "lower")
           }
         />
       </div>
@@ -128,7 +130,7 @@ const DoubleBracket = ({
           <DatePicker
             showTime
             onChange={(date, dateString) =>
-              handleSelectDate(date, dateString, "Final")
+              handleSelectDate('double', date, dateString, 0, "Final")
             }
           />
         </div>

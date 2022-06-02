@@ -697,8 +697,8 @@ body .ant-btn-default.bg-gradient-1 {
 }
 
 body .ant-btn-default:hover, body .ant-btn-default:focus, body .ant-btn-default:active {
-  color: inherit;
-  border-color: inherit;
+  color: #ffffff;
+  border-color: #ffffff;
   background: none;
 }
 

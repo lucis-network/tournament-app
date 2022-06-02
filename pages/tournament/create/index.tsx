@@ -554,6 +554,7 @@ export default observer(function CreateTournament(props: Props) {
                   style={{ width: 150 }}
                   onChange={(value) => {
                     TournamentStore.participants = value;
+                    TournamentStore.bracket_type = undefined;
                     if (
                       TournamentStore.participants / 2 <
                       TournamentStore.referees.length

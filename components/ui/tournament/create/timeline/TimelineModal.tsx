@@ -1,10 +1,8 @@
-import { Modal, DatePicker, Row, Col } from "antd";
-import { observer } from "mobx-react-lite";
-import moment from "moment";
-import { useEffect, useState } from "react";
-import timeMoment from "moment-timezone";
+import {Col, DatePicker, Modal, Row} from "antd";
+import {observer} from "mobx-react-lite";
+import {useEffect, useState} from "react";
 
-import TournamentStore, { Rounds } from "src/store/TournamentStore";
+import TournamentStore, {Rounds} from "src/store/TournamentStore";
 import SingleBracket from "components/ui/common/bracket/single-bracket/SingleBracket";
 import DoubleBracket from "components/ui/common/bracket/double-bracket/DoubleBracket";
 
@@ -51,7 +49,16 @@ const TimelineModal = (props: Props) => {
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.timelineModalVisible = v);
 
+  const [upperRounds, setUpperRounds] = useState<Rounds[]>([]);
+  const [lowerRounds, setLowerRounds] = useState<Rounds[]>([]);
+  const [doubleBracketFinal, setDoubleBracketFinal] = useState<Rounds | undefined>(undefined);
   const [listTimeRounds, setListTimeRounds] = useState<Rounds[]>([]);
+
+  useEffect(() => {
+    setUpperRounds([])
+    setLowerRounds([])
+    setListTimeRounds([])
+  }, [TournamentStore.bracket_type])
 
   const numberParticipants = TournamentStore.participants ?? 0;
   const bracketType = TournamentStore.bracket_type === "DOUBLE" ? 2 : 1;
@@ -91,17 +98,20 @@ const TimelineModal = (props: Props) => {
   };
 
   const handleSelectDate = (
+    bracketType: string,
     date: any,
     dateString: string,
-    round: number | string,
-    branch: any
+    round: number,
+    roundName: string,
+    branch: string,
   ) => {
     const datePickerRound: Rounds = {
       // title: `Round: ${round == calculateRoundsSingle ? "Final" : round}`,
-      title: `${round == "Final" ? round : `Round ${round}`}`,
+      title: roundName,
       start_at: date._d ?? "",
       // type: TournamentStore.bracket_type === "SINGLE" ? "UPPER" : "LOWER" ,
       type:
+        roundName === "Final" ? "UPPER" :
         TournamentStore.bracket_type === "DOUBLE" && branch == "lower"
           ? "LOWER"
           : TournamentStore.bracket_type === "DOUBLE" && branch == "upper"
@@ -111,7 +121,55 @@ const TimelineModal = (props: Props) => {
           : "LOWER",
     };
 
-    setListTimeRounds([...listTimeRounds, datePickerRound]);
+    if (bracketType === 'single') {
+      let newState = [...listTimeRounds]
+      if (round > 0) {
+        newState[round - 1] = datePickerRound
+      }
+      if (roundName === 'Final') {
+        if (newState.length === 0) {
+          newState.push(datePickerRound)
+        } else {
+          if (newState[newState.length - 1]?.title === 'Final') {
+            newState[newState.length - 1] = datePickerRound
+          } else {
+            newState.push(datePickerRound)
+          }
+        }
+      }
+      setListTimeRounds(newState)
+    }
+
+    if (bracketType === 'double') {
+      let newUpperRounds = [...upperRounds]
+      let newLowerRounds = [...lowerRounds]
+      if (branch === 'upper') {
+        if (newUpperRounds[round - 1]?.title === 'Final') {
+          newUpperRounds[round] = newUpperRounds[round - 1]
+          newUpperRounds[round - 1] = datePickerRound
+        } else {
+          newUpperRounds[round - 1] = datePickerRound
+        }
+      }
+      if (branch === 'lower') {
+        newLowerRounds[round - 1] = datePickerRound
+      }
+      if (roundName === 'Final') {
+        if (newUpperRounds.length === 0) {
+          newUpperRounds.push(datePickerRound)
+        } else {
+          if (newUpperRounds[newUpperRounds.length - 1]?.title === "Final") {
+            newUpperRounds[newUpperRounds.length - 1] = datePickerRound
+          } else {
+            newUpperRounds.push(datePickerRound)
+          }
+        }
+      }
+      const newState = newUpperRounds.concat(newLowerRounds)
+      setUpperRounds(newUpperRounds)
+      setLowerRounds(newLowerRounds)
+      setListTimeRounds(newState)
+    }
   };
 
   const selectTimeRoundsSingle = createElements(
