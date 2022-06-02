@@ -67,6 +67,7 @@ export default observer(function CreateTournament(props: Props) {
   const [messageErrorReferee, setMessageErrorReferee] = useState("");
   const [messageErrorTimeline, setMessageErrorTimeline] = useState("");
   const [checkPoolSize, setCheckPoolSize] = useState(true);
+  const [checkCurrency, setCheckCurrency] = useState(true);
   const [checkPassword, setCheckPassword] = useState(false);
   const [dataReferees, setDataReferees] = useState([]);
   const [dataChooseGame, setDataChooseGame] = useState(null);
@@ -337,6 +338,16 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     } else {
       setCheckPoolSize(true);
+    }
+
+    if (!cr.currency_uid) {
+      setCheckCurrency(false);
+      //setMessageErrorChoosegame("Currency is required");
+      //@ts-ignore
+      document.getElementById("prizing").scrollIntoView();
+      return false;
+    } else {
+      setCheckCurrency(true);
     }
 
     if (calculateTotalAllocation(cr.prize_allocation) != 1) {
@@ -743,7 +754,7 @@ export default observer(function CreateTournament(props: Props) {
             <p id="prizing" className="text-30px mt-20px">
               Prizing
             </p>
-            <Prizing checkPoolSize={checkPoolSize}></Prizing>
+            <Prizing checkPoolSize={checkPoolSize} checkCurrency={checkCurrency}></Prizing>
           </div>
 
           <div>
