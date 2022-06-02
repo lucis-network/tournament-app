@@ -72,7 +72,7 @@ const createLoseRounds = ({
   let numGames = numParticipants / 4;
 
   for (let i = 1; i <= numLoseRounds; i++) {
-    const roundName = `Loser Round ${i}`
+    const roundName = `Loser round ${i}`
     const title = (
       <div style={{marginBottom: 20}}>
         <p className="m-0 text-white text-[24px]">{roundName}</p>
