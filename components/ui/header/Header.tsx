@@ -52,7 +52,7 @@ export default observer(function Header(props: Props) {
               className={`container lucis-container items-center py-20px px-0 relative z-10 `}
             >
               <Col span={3} className={s.logo} style={{maxWidth: 150}}>
-                <Link href="/" passHref>
+                <Link href="/tournament" passHref>
                   <a>
                     <Image src={Logo} alt="logo" priority />
                   </a>
@@ -64,7 +64,7 @@ export default observer(function Header(props: Props) {
               </Col>
               <Col span={17} style={{paddingLeft: 60}}>
                 <ul className={s.block_item_menu}>
-                  <li><Link href="/">HOME</Link></li>
+                  {/*<li><Link href="/">HOME</Link></li>*/}
                   <li><Link href="/tournament">Tournament</Link></li>
                   <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
                     rel="noopener noreferrer">FAQ</a></li>

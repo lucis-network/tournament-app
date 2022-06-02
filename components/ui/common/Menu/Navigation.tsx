@@ -84,12 +84,12 @@ export const Navigation = () => {
   }, []);
 
   const menuItems: MenuItemType[] = [
-    {
-      color: "#FF008C",
-      text: "HOME",
-      src: "/",
-      isBlank: false
-    },
+    // {
+    //   color: "#FF008C",
+    //   text: "HOME",
+    //   src: "/",
+    //   isBlank: false
+    // },
     {
       color: "#FF008C",
       text: "TOURNAMENT",

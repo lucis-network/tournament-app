@@ -77,7 +77,7 @@ export const MenuMobile = (props: any) => {
       >
         <div className={`${s.menuMobile} flex justify-between items-center`}>
           <div style={{width: 120, height: 42}}>
-            <Link href={'/'}>
+            <Link href={'/tournament'}>
               <img src="/assets/home/logo.png" alt="" />
             </Link>
           </div>
