@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react'
 import s from './P2EOverview.module.sass'
 import {Button, Col, Image, Row} from "antd";
 import {isEmpty} from "lodash";
-import {PlatformAccount} from "../../../../src/generated/graphql";
 import {isDevMode} from "../../../../utils/Env";
+import {PlatformAccount} from "../../../../src/generated/graphql_p2e";
 
 type P2EOverviewProps = {
   faceitUser: PlatformAccount,
