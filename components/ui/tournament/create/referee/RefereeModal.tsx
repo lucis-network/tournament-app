@@ -112,7 +112,7 @@ export default observer(function RefereeModal(props: Props) {
                 //   ></Checkbox>
                 //   <p className="mt-5px">{ele?.profile?.display_name}</p>
                 // </div>
-                <div className={`${s.item} border p-2 mt-2`}>
+                <div className={`${s.item} border p-2 mt-2`} key={ele.id}>
                   <div className="flex align-middle items-center mb-2">
                     <div className="rounded-[30px] overflow-hidden h-full bg-white">
                       <img
