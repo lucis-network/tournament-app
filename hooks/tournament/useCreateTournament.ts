@@ -90,6 +90,7 @@ const REFEREES = gql`
       profile {
         display_name
         avatar
+        user_name
       }
     }
   }

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import s from "./index.module.sass";
 import { useReferees } from "hooks/tournament/useCreateTournament";
 import debounce from "lodash/debounce";
+import { UserAddOutlined, UserOutlined } from "@ant-design/icons";
 
 type Props = {
   handCallbackReferee?: any;
@@ -90,23 +91,62 @@ export default observer(function RefereeModal(props: Props) {
         className={`${s.searchText}`}
         ref={inputRef}
       ></Input>
-      <Checkbox.Group onChange={onChange} className={`${s.container}`}>
+      <Checkbox.Group
+        onChange={onChange}
+        className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-2 mt-4"
+      >
         {getDataReferees
           ? getDataReferees.map((ele: any, index: number) => {
               return (
-                <div className={`${s.item}`} key={index}>
-                  <div className={`${s.avatar} ${s.avBig}`}>
-                    {ele?.profile?.avatar ? (
-                      <img src={ele?.profile?.avatar} alt="" />
-                    ) : (
-                      <img src="/assets/avatar.jpg" alt="" />
-                    )}
+                // <div className={`${s.item}`} key={index}>
+                //   <div className={`${s.avatar} ${s.avBig}`}>
+                //     {ele?.profile?.avatar ? (
+                //       <img src={ele?.profile?.avatar} alt="" />
+                //     ) : (
+                //       <img src="/assets/avatar.jpg" alt="" />
+                //     )}
+                //   </div>
+                //   <Checkbox
+                //     className={`${s.itemCheckbox}`}
+                //     value={index}
+                //   ></Checkbox>
+                //   <p className="mt-5px">{ele?.profile?.display_name}</p>
+                // </div>
+                <div className={`${s.item} border p-2 mt-2`}>
+                  <div className="flex align-middle items-center mb-2">
+                    <div className="rounded-[30px] overflow-hidden h-full bg-white">
+                      <img
+                        alt=""
+                        src={ele?.profile?.avatar}
+                        width={50}
+                        height={50}
+                      />
+                    </div>
+                    <div className="w-full ml-2">
+                      <h3 className="text-18px m-0 text-white">
+                        {ele?.profile?.display_name}
+                      </h3>
+                      <p className="mb-0 text-[12px]">
+                        Username: @{ele?.profile?.user_name}
+                      </p>
+                    </div>
                   </div>
+                  <button className={s.button_add} onClick={() => {}}>
+                    <UserOutlined className="mr-2" />
+
+                    <a
+                      target="_blank"
+                      href={`/profile/${ele?.user_name}`}
+                      rel="noopener noreferrer"
+                      style={{ color: "white" }}
+                    >
+                      Profile
+                    </a>
+                  </button>
                   <Checkbox
                     className={`${s.itemCheckbox}`}
                     value={index}
                   ></Checkbox>
-                  <p className="mt-5px">{ele?.profile?.display_name}</p>
                 </div>
               );
             })

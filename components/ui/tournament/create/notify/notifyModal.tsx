@@ -48,7 +48,7 @@ export default observer(function NotifyModal(props: Props) {
         <div style={{ textAlign: "center" }}>
           <p>
             Lucis will review and approve your tournament in less than 24h then
-            your tournament can be visiable to everyone
+            your tournament can be visible to everyone
           </p>
           {/* <p>Here your invite link to invite team to join your tournaments:</p>
           <Input
