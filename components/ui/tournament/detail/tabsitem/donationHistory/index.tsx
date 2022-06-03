@@ -97,7 +97,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
       render: (hash: string) => (
         <span>
           {hash && (
-            <Link href={`https://testnet.bscscan.com/tx/${hash}`} passHref>
+            <Link href={`https://bscscan.com/tx/${hash}`} passHref>
               <a target="_blank">
                 <LinkOutlined />
               </a>
