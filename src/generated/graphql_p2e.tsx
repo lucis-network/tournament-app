@@ -59,6 +59,7 @@ export type BracketMatch = {
   created_at: Scalars['DateTime'];
   first_match_uid?: Maybe<Scalars['String']>;
   link_stream?: Maybe<Scalars['String']>;
+  link_stream_enable?: Maybe<Scalars['Boolean']>;
   lower_match_uid?: Maybe<Scalars['String']>;
   playteam1_uid: Scalars['String'];
   playteam2_uid: Scalars['String'];

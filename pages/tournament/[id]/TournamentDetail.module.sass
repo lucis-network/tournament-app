@@ -394,3 +394,36 @@
 .container_Tabs::-webkit-scrollbar-thumb
   border-radius: 16px
   background: linear-gradient(290.92deg,#0bebd6,#cd28e8)
+
+
+
+
+.block_tabs
+  display: flex
+  align-items: center
+  justify-content: space-between
+  color: #FFF
+  overflow: scroll
+  padding-bottom: 8px
+  .tab_item
+    font-size: 20px
+    cursor: pointer
+    transition: 0.3s
+    min-width: 180px
+    @media (min-width: 0px)
+      min-width: 140px
+      font-size: 16px
+    @media (min-width: 768px)
+      font-size: 18px
+    @media (min-width: 1280px)
+      font-size: 20px
+
+.block_tabs::-webkit-scrollbar
+  width: 0px
+  height: 3px
+  border-radius: 16px
+  display: block
+  background: rgba(255,255,255,.3)
+.block_tabs::-webkit-scrollbar-thumb
+  border-radius: 16px
+  background: linear-gradient(290.92deg,#0bebd6,#cd28e8)
