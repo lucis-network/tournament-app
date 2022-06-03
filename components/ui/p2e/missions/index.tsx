@@ -1,9 +1,11 @@
-import React, {useEffect, useState} from 'react'
-import {useMutation} from "@apollo/client";
-import {GET_DAILY_MISSION, UPDATE_DAILY_MISSION} from "../../../../hooks/p2e/useP2E";
+import React, { useEffect, useState } from 'react'
+import { useMutation } from "@apollo/client";
+import { GET_DAILY_MISSION, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
 import s from "../daily/Daily.module.sass";
-import { Image} from "antd";
+import { Image } from "antd";
 import MissionsList from "../MissionsList";
+import OnUsingNFTs from '../OnUsingNFTs';
+import Statistics from '../Statistics';
 
 const Missions = () => {
   const [dailyMission, setDailyMission] = useState([])
@@ -47,6 +49,8 @@ const Missions = () => {
         <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
         <h3>CS:GO FACEIT</h3>
       </div>
+      <Statistics />
+      <OnUsingNFTs />
       <MissionsList
         title="Lucis missions"
         description="Complete the missions to get reward and up level"

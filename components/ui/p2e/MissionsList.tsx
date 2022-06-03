@@ -39,12 +39,12 @@ const MissionsList = ({ title, description, missions, handleUpdateMissions, canC
       </div>
       <div className={s.missionsList}>
         {isEmpty(missions) ? <SpinLoading /> : (
-          missions?.map((mission: PlayerMission) => {
+          missions?.map((mission: PlayerMission, index) => {
             const achieved = mission?.achieved
             const currentPercent = (((achieved as number)/(mission?.mission?.goal as unknown as number)) * 100)
 
             return (
-              <div className={s.missionItem} key={mission?.mission?.game_uid}>
+              <div className={s.missionItem} key={`${mission?.mission?.game_uid}-${index}`}>
                 <div className={s.missionLogo}>
                   <Image src="/assets/P2E/gun.png" preview={false} alt="" />
                 </div>

@@ -1,5 +1,5 @@
-import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
-import {Match, PlatformAccount} from "../../src/generated/graphql_p2e";
+import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
+import { Match, PlatformAccount } from "../../src/generated/graphql_p2e";
 
 export const useGetPlatformAccount = (): {
   getPlatformAccountLoading: boolean,
@@ -123,6 +123,15 @@ const GET_RECENT_MATCHES = gql`
       score
       is_win
       end_at
+    }
+  }
+`
+
+export const GET_STATISTICS = gql`
+  query {
+    getBalance {
+      lucis_point
+      lucis_token
     }
   }
 `
