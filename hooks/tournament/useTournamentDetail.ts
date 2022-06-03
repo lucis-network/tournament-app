@@ -292,6 +292,7 @@ const GET_TOURNAMENT_DETAIL = gql`
       currency {
         symbol
         chain_symbol
+        address
       }
       tournament_status
       additionPrize
