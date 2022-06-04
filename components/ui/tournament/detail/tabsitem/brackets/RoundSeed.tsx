@@ -95,9 +95,15 @@ export function makeSeedComponent(
             </div>
             {(match.linkStreamEnable && match.linkStream) && (
               <Link href={match.linkStream ? match.linkStream : '#'} passHref>
-                <a className={s.liveStream} target="_blank">
-                  <Image src="/assets/TournamentDetail/iconBroadcast.svg" preview={false} alt="" />
-                  Live
+                <a className={`${s.liveStream} ${matchCompleted ? s.liveStreamEnded : '' }`} target="_blank">
+                  {matchCompleted ? (
+                    <>
+                      <Image src="/assets/TournamentDetail/iconBroadcast.svg" preview={false} alt="" />
+                      Live
+                    </>
+                  ) : (
+                    <Image src="/assets/TournamentDetail/iconOpenNewtab.svg" preview={false} alt="" />
+                  )}
                 </a>
               </Link>
             )}
