@@ -11,9 +11,6 @@ import { BracketRound } from "src/generated/graphql";
 import AuthStore from "../../../../../Auth/AuthStore";
 import DoubleBracketStore from "./DoubleBracket/DoubleBracketStore";
 
-
-
-
 const BracketUI = ({ dataBracket, loadingBracket, refereeIds, refetchBracket }: BracketUiProps) => {
   console.log('{BracketUI} dataBracket: ', dataBracket);
 
