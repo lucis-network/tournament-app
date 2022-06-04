@@ -2,14 +2,14 @@ import { Button, message, Table } from "antd";
 import GroupLink from "components/ui/common/groupLink";
 import PopupDonate from "../../popup/popupDonate";
 
-import { Referee } from "src/generated/graphql";
+import {User} from "src/generated/graphql";
 import { useState } from "react";
 
 import s from "./Referees.module.sass";
 import AuthStore from "components/Auth/AuthStore";
 
 type Props = {
-  dataRefereesDetail: Referee[];
+  dataRefereesDetail: User[];
   loadingReferees: any;
   tournamentId: string;
   currency?: any;
@@ -61,7 +61,7 @@ export default function Referees(props: Props) {
             <img
               className={s.avt}
               src={`${
-                item.user.profile.avatar ??
+                item.profile.avatar ??
                 "/assets/MyProfile/defaultAvatar.png"
               }`}
               alt=""
@@ -72,7 +72,7 @@ export default function Referees(props: Props) {
               target="_blank"
               rel="noreferrer"
             >
-              {item.user.profile.display_name}
+              {item.profile.display_name}
             </a>
           </div>
         );
@@ -86,7 +86,7 @@ export default function Referees(props: Props) {
       render: (_: any, item: any) => {
         return (
           <div className={s.contact}>
-            <GroupLink datas={item.user.profile} />
+            <GroupLink datas={item.profile} />
           </div>
         );
       },
@@ -124,7 +124,7 @@ export default function Referees(props: Props) {
           dataSource={dataRefereesDetail}
           columns={columnsReferees}
           bordered
-          rowKey={(record) => `${record.user?.profile?.user_id}`}
+          rowKey={(record) => `${record?.profile?.user_id}`}
           className={s.container_table}
         />
         <PopupDonate

@@ -108,7 +108,7 @@ const TimelineModal = (props: Props) => {
     const datePickerRound: Rounds = {
       // title: `Round: ${round == calculateRoundsSingle ? "Final" : round}`,
       title: roundName,
-      start_at: date?._d ?? "",
+      start_at: date?._d.toISOString() ?? "",
       // type: TournamentStore.bracket_type === "SINGLE" ? "UPPER" : "LOWER" ,
       type:
         roundName === "Final" ? "UPPER" :
