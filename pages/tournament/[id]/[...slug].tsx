@@ -32,6 +32,7 @@ import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import { useWindowSize } from "hooks/useWindowSize";
+import DocHead from "../../../components/DocHead";
 
 const { TabPane } = Tabs;
 
@@ -79,6 +80,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
     refetchSubTournament,
     refetchConfirmResult,
+    refetchBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
@@ -211,6 +213,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
   return (
     <>
+      <DocHead title={name} />
       <div className={s.wrapper}>
         <Banner cover={cover} />
         <TournamentDetailMarquee />
@@ -521,6 +524,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 dataBracket={dataBracket}
                 loadingBracket={loadingBracket}
                 refereeIds={referees ? referees.split(",") : []}
+                refetchBracket={refetchBracket}
               />
             </TabPane>
             <TabPane

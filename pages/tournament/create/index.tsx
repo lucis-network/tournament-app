@@ -288,11 +288,11 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    // if (!cr.bracket_type) {
-    //   setMessageErrorBracketType("Bracket type is required");
-    //   scrollToTop();
-    //   return false;
-    // }
+    if (!cr.bracket_type) {
+      setMessageErrorBracketType("Bracket type is required");
+      scrollToTop();
+      return false;
+    }
 
     if (!cr.currency_uid) {
       setCheckCurrency(false);

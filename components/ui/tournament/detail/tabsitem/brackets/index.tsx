@@ -14,7 +14,7 @@ import DoubleBracketStore from "./DoubleBracket/DoubleBracketStore";
 
 
 
-const BracketUI = ({ dataBracket, loadingBracket, refereeIds }: BracketUiProps) => {
+const BracketUI = ({ dataBracket, loadingBracket, refereeIds, refetchBracket }: BracketUiProps) => {
   console.log('{BracketUI} dataBracket: ', dataBracket);
 
   useEffect(() => {

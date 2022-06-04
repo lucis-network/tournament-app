@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { RoundProps } from "react-brackets";
 import { observer } from "mobx-react-lite";
 
@@ -25,6 +25,8 @@ const SingleBracket = (props: Props) => {
       teams: seed.teams,
       seedIndex,
       roundIndex,
+      linkStreamEnabled: seed.linkStreamEnable,
+      linkStream: seed.linkStream,
     };
   }
 
@@ -58,14 +60,12 @@ const SingleBracket = (props: Props) => {
     canEdit={canEdit}
     rounds={rounds}
     openMatchEditModal={openMatchEditModal}
-    updateScoreModal={<UpdateScoreModalStateless
-      visible={updateScoreModalVisible}
-      seedIndex={seedIndex}
-      roundIndex={roundIndex}
-      currentMatch={currentMatch}
-      doCloseModal={closeModal}
-      onUpdateCompleted={onUpdateCompleted}
-    />}
+    modalVisible={updateScoreModalVisible}
+    seedIndex={seedIndex}
+    roundIndex={roundIndex}
+    currentMatch={currentMatch}
+    doCloseModal={closeModal}
+    onUpdateCompleted={onUpdateCompleted}
   />;
 };
 
