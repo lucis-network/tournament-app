@@ -61,7 +61,7 @@ export const createRound = (item: BracketRound, idx: number, listTeam: PlayTeamG
     title: (
       <div>
         <p className="m-0 text text-white text-[24px]">{item.title}</p>
-        <p>{startAt}</p>
+        <p className="text-[18px]">{startAt}</p>
       </div>
     ),
     seeds,
