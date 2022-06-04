@@ -58,6 +58,7 @@ export function useTournamentDetail(props: Props) {
     loading: loadingBracket,
     error: errorBracket,
     data: dataBracket,
+    refetch: refetchBracket,
   } = useQuery(GET_BRACKET, {
     variables: { tournament_uid: props?.tournament_uid },
     skip: props?.skip,
@@ -152,6 +153,7 @@ export function useTournamentDetail(props: Props) {
     refreshParticipant,
     refetchSubTournament,
     refetchConfirmResult,
+    refetchBracket,
   };
 }
 
@@ -334,19 +336,17 @@ const GET_PARTICIPANTS_DETAIL = gql`
 const GET_REFEREES_DETAIL = gql`
   query ($tournament_uid: String!) {
     getTournamentReferees(tournament_uid: $tournament_uid) {
-      user {
-        profile {
-          user_id
-          display_name
-          avatar
-          twitter
-          facebook
-          telegram
-          discord
-          user_name
-          youtube
-          twitch
-        }
+      profile {
+        user_id
+        display_name
+        avatar
+        twitter
+        facebook
+        telegram
+        discord
+        user_name
+        youtube
+        twitch
       }
     }
   }
@@ -381,6 +381,8 @@ const GET_BRACKET = gql`
           score_1
           score_2
           status
+          link_stream
+          link_stream_enable
         }
       }
 

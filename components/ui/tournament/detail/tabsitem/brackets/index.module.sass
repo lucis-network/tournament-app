@@ -39,9 +39,32 @@
         img
             opacity: 0.15
             height: 100%
-            width: auto
+            width: 100%
             max-width: initial
             position: absolute
-            right: -50%
+            top: 0
+            left: 0
+            object-fit: cover
 .loseRoundSpacer
     height: 50px
+.liveStream
+    position: absolute
+    top: -40px
+    right: 0
+    background: rgb(181, 82, 100)
+    padding: 5px 10px
+    border-radius: 5px
+    color: #ffffff
+    &:hover
+        background: rgb(227, 134, 149)
+        color: #ffffff
+        &:after
+            border-top-color: rgb(227, 134, 149)
+    &:after
+        content: ""
+        border-top: 5px solid rgb(181, 82, 100)
+        border-left: 5px solid transparent
+        border-right: 5px solid transparent
+        position: absolute
+        left: 11px
+        bottom: -5px

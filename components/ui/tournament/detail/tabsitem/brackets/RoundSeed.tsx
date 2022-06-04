@@ -6,6 +6,8 @@ import { RoundMatch } from "src/store/SingleRoundStore";
 import { BracketMatchStatus } from "src/generated/graphql";
 import s from "./index.module.sass";
 import ss from "./SingleBracket/SingleBracket.module.sass";
+import {isEmpty} from "lodash";
+import Link from "next/link";
 
 export function makeSeedComponent(
   roundCount: number,
@@ -40,48 +42,62 @@ export function makeSeedComponent(
       finalRankIcoTeam1 = team0.score < team1.score ? champion : secondary;
     }
 
-    const teamName0 = team0 && team0.name ? team0.name : `bye`;
-    const teamName1 = team1 && team1.name ? team1.name : `bye`;
+    const teamName0 = team0 && team0.name ? team0.name : 'TBD';
+    const teamName1 = team1 && team1.name ? team1.name : 'TBD';
+    const notStartedYet = (isEmpty(team0.id) || isEmpty(team1.id));
+    const canUpdate = canEdit && !notStartedYet && (!matchCompleted);
+    const team0joined = !isEmpty(team0.id) && (team0.id !== 'bye');
+    const team1joined = !isEmpty(team1.id) && (team1.id !== 'bye');
+    const team0win = team0.score > team1.score;
+    const team1win = team0.score < team1.score;
 
     return (
       <>
-        <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16 }}>
+        <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16, paddingBottom: '25px', paddingTop: '25px' }}>
           <SeedItem>
             <div>
-              <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
+              <SeedTeam className={s.topSeed} style={{ padding: 0, marginBottom: '1px' }}>
                 <Tooltip title={teamName0} color="#4e89a3" placement="left" trigger="click">
-                  <div className={ss.team}>
+                  <div className={`${ss.team} ${team0joined ? ss.teamJoined : ''} ${team0win ? ss.teamWin : ''}`}>
                     {teamName0}
                   </div>
                 </Tooltip>
                 <div
-                  className={`${ss.score} ${canEdit ? '' : ss.disabled }`}
+                  className={`${ss.score} ${team0joined ? ss.scoreJoined : ''} ${team0win ? ss.scoreWin : ''} ${canUpdate ? '' : ss.disabled }`}
                   onClick={(e) =>
-                    handleOpenModal(e, match, seedIndex, roundIndex)
+                    canUpdate ?
+                      handleOpenModal(e, match, seedIndex, roundIndex) :
+                      undefined
                   }
                 >
-                  {team0 ? team0.score : "--"}
+                  {(team0 && !notStartedYet) ? team0.score : "--"}
                 </div>
                 {showRankIco && <div className={ss.rank}>{finalRankIcoTeam0}</div>}
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
                 <Tooltip title={teamName1} color="#4e89a3" placement="left" trigger="click">
-                  <div className={`${ss.team} ${ss.team2}`}>
+                  <div className={`${ss.team} ${team1joined ? ss.teamJoined : ''} ${team1win ? ss.teamWin : ''}`}>
                     {teamName1}
                   </div>
                 </Tooltip>
                 <div
-                  className={`${ss.score} ${ss.score2} ${canEdit ? '' : ss.disabled}`}
-                  onClick={(e) => {
-                    // console.log('{handleOpenModal} seedIndex, roundIndex: ', seedIndex, roundIndex);
-                    handleOpenModal(e, match, seedIndex, roundIndex)
-                  }}
+                  className={`${ss.score} ${team0joined ? ss.scoreJoined : ''} ${team1win ? ss.scoreWin : ''} ${canUpdate ? '' : ss.disabled}`}
+                  onClick={(e) =>
+                    canUpdate ?
+                      handleOpenModal(e, match, seedIndex, roundIndex) :
+                      undefined
+                  }
                 >
-                  {team1 ? team1.score : "--"}
+                  {(team1 && !notStartedYet) ? team1.score : "--"}
                 </div>
                 {showRankIco && <div className={ss.rank}>{finalRankIcoTeam1}</div>}
               </SeedTeam>
             </div>
+            {(match.linkStreamEnable && match.linkStream) && (
+              <Link href={match.linkStream ? match.linkStream : '#'} passHref>
+                <a className={s.liveStream} target="_blank">Live</a>
+              </Link>
+            )}
           </SeedItem>
         </Seed>
       </>
