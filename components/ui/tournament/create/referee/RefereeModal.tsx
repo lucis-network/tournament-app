@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Checkbox, Input, Modal, Radio } from "antd";
+import { Checkbox, Input, Modal, Pagination, Radio } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Search from "antd/lib/input/Search";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -12,15 +12,28 @@ type Props = {
   handCallbackReferee?: any;
 };
 
+export type GetRefereeInput = {
+  name?: String;
+  page?: number;
+  limit?: number;
+};
+
+const LIMIT = 10;
+
 export default observer(function RefereeModal(props: Props) {
   const inputRef = useRef<any>(null);
   const [name, setName] = useState("");
   const [checkedValue, setCheckedValue] = useState([]);
   const [messageError, setMessageError] = useState("");
   const [checkedParticipants, setCheckedParticipants] = useState(false);
+  const [input, setInput] = useState<GetRefereeInput>({
+    name: "",
+    page: 1,
+    limit: LIMIT,
+  });
 
   const { getDataReferees } = useReferees({
-    name: name,
+    input: input,
   });
 
   const isModalVisible = TournamentStore.refereeModalVisible,
@@ -32,9 +45,19 @@ export default observer(function RefereeModal(props: Props) {
   };
 
   const delayedSearch = useCallback(
-    debounce((value: string) => setName(value), 600),
+    debounce((value: string) => {
+      setName(value);
+      //setInput(...input; name: value)
+      let inputSearch: GetRefereeInput = { name: value, page: 1, limit: LIMIT };
+      setInput(inputSearch);
+    }, 600),
     []
   );
+
+  const changePage = (page: number) => {
+    let inputSearch: GetRefereeInput = { name: name, page: page, limit: LIMIT };
+    setInput(inputSearch);
+  };
 
   const onSearch = (e: any) => {
     delayedSearch(e.target.value);
@@ -153,6 +176,9 @@ export default observer(function RefereeModal(props: Props) {
           : ""}
       </Checkbox.Group>
       <div className={s.message_error}>{messageError}</div>
+      <div style={{textAlign: "center"}}>
+        <Pagination defaultCurrent={1} total={50} onChange={changePage} />
+      </div>
     </Modal>
   );
 });

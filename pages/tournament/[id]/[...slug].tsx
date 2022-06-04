@@ -4,6 +4,7 @@ import Banner from "components/ui/tournament/detail/Banner";
 import {
   useSponsors,
   useTournamentDetail,
+  useUpdateTotalDonation,
 } from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -88,6 +89,13 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
+  
+  const { dataUpdateTotalDonation } = useUpdateTotalDonation({
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
+
+  console.log("dataUpdateTotalDonation", dataUpdateTotalDonation);
   
   useEffect(() => {
     let obj: any = [];

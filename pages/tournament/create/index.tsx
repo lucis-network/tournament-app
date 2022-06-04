@@ -78,9 +78,7 @@ export default observer(function CreateTournament(props: Props) {
     name: "",
   });
 
-  const { getDataReferees } = useReferees({
-    name: "",
-  });
+  const { getDataReferees } = useReferees({});
 
   const router = useRouter();
 

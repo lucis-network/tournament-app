@@ -4,6 +4,7 @@ import {
   gql,
   useMutation,
   useQuery,
+  useSubscription,
 } from "@apollo/client";
 import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
@@ -94,8 +95,10 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "network-only",
   });
 
-  const [joinTournament, { loading: loadingJoinTournament, error: errorJoinTournament }] =
-    useMutation(JOIN_TOURNAMENT);
+  const [
+    joinTournament,
+    { loading: loadingJoinTournament, error: errorJoinTournament },
+  ] = useMutation(JOIN_TOURNAMENT);
 
   //const [confirmResult] = useMutation(CONFIRM_RESULT);
 
@@ -213,6 +216,23 @@ export function useClaimReward(props: Props) {
     error,
     data: data?.getTournamentReward,
     refetch,
+  };
+}
+
+export function useUpdateTotalDonation(props: Props) {
+  const {
+    loading,
+    error,
+    data: dataUpdateTotalDonation,
+  } = useSubscription(UPDATE_TOTAL_DONATION, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "no-cache",
+  });
+
+  return {
+    loading,
+    error,
+    dataUpdateTotalDonation,
   };
 }
 
@@ -469,7 +489,7 @@ const GET_LIST_RANKS = gql`
       donated
       playTeamMembers {
         uid
-        user{
+        user {
           profile {
             user_name
             user_id
@@ -507,6 +527,34 @@ const CONFIRM_TOURNAMENT_RESULT = gql`
       round
       win
       player_team_uid
+    }
+  }
+`;
+
+const UPDATE_TOTAL_DONATION = gql`
+  subscription ($tournament_uid: String!) {
+    updateTotalDonation(tournament_uid: $tournament_uid) {
+      total_donation
+    }
+  }
+`;
+
+const UPDATE_TOTAL_PRIZE_POOL = gql`
+  subscription ($tournament_uid: String!) {
+    updateTotalPrizePool(tournament_uid: $tournament_uid) {
+      total_prize_pool
+    }
+  }
+`;
+
+const UPDATE_PARTICIPANT = gql`
+  subscription ($tournament_uid: String!) {
+    updateParticipant(tournament_uid: $tournament_uid) {
+      participant
+      team {
+        uid
+        user_id
+      }
     }
   }
 `;
