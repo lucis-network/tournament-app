@@ -95,7 +95,7 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "network-only",
   });
 
-  const [joinTournament, { loading: loadingJoinTournament }] =
+  const [joinTournament, { loading: loadingJoinTournament, error: errorJoinTournament }] =
     useMutation(JOIN_TOURNAMENT);
 
   //const [confirmResult] = useMutation(CONFIRM_RESULT);
@@ -133,6 +133,7 @@ export function useTournamentDetail(props: Props) {
     errorIsJoin,
     errorIsCheckin,
     errorDonation,
+    errorJoinTournament,
 
     dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
     dataParticipants: dataParticipants?.getTournamentParticipants,

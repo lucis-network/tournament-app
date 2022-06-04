@@ -208,7 +208,7 @@ export default observer(function CreateTournament(props: Props) {
 
   const handCallbackReferee = (data: any, arr: any) => {
     setDataReferees(data);
-    TournamentStore.referees = arr;
+    TournamentStore.referees = arr ? arr : [];
     setMessageErrorReferee("");
   };
 
@@ -334,11 +334,11 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    if (!cr.referees) {
-      setMessageErrorReferee("Referee(s) is required");
-      scrollToTop();
-      return false;
-    }
+    // if (!cr.referees) {
+    //   setMessageErrorReferee("Referee(s) is required");
+    //   scrollToTop();
+    //   return false;
+    // }
 
     if (cr.participants / 2 < cr.referees?.length) {
       scrollToTop();
@@ -413,7 +413,7 @@ export default observer(function CreateTournament(props: Props) {
   const user = getLocalAuthInfo();
 
   useEffect(() => {
-    if (!user) Router.push("/");
+    if (!user) Router.push("/tournament");
   }, [user]);
 
   return (

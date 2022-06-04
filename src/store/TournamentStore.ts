@@ -121,7 +121,7 @@ class TournamentStore {
 
   private _pool_size?: number | undefined;
 
-  private _referees?: number[] | undefined;
+  private _referees?: number[] | undefined = [];
 
   private _regions?: string[] = DEFAULT_REGIONS;
 
