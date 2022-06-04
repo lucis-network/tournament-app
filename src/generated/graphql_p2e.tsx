@@ -119,15 +119,25 @@ export enum BracketType {
 
 export type CachePlayerStatistic = {
   __typename?: 'CachePlayerStatistic';
+  aces: Scalars['Int'];
   assists: Scalars['Int'];
+  average_headshots: Scalars['Int'];
   created_at: Scalars['DateTime'];
-  headshot: Scalars['Int'];
+  current_win_streak: Scalars['Int'];
+  deaths: Scalars['Int'];
+  double_kills: Scalars['Int'];
   id: Scalars['ID'];
+  kd_ratio: Scalars['Decimal'];
   kills: Scalars['Int'];
+  kr_ratio: Scalars['Decimal'];
+  longest_win_streak: Scalars['Int'];
   matches: Scalars['Int'];
+  mvps: Scalars['Int'];
   player_game: PlayerGame;
   player_game_uid: Scalars['String'];
-  round: Scalars['Int'];
+  quadra_kill: Scalars['Int'];
+  total_headshots: Scalars['Int'];
+  tripble_kills: Scalars['Int'];
   updated_at: Scalars['DateTime'];
   wins: Scalars['Int'];
 };
