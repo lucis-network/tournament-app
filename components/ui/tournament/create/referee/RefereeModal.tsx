@@ -136,7 +136,7 @@ export default observer(function RefereeModal(props: Props) {
 
                     <a
                       target="_blank"
-                      href={`/profile/${ele?.user_name}`}
+                      href={`/profile/${ele?.profile?.user_name}`}
                       rel="noopener noreferrer"
                       style={{ color: "white" }}
                     >
