@@ -608,6 +608,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       dataBracket={dataBracket}
                       loadingBracket={loadingBracket}
                       refereeIds={referees ? referees.split(",") : []}
+                      refetchBracket={refetchBracket}
                     />
                   );
                 case "Participants":

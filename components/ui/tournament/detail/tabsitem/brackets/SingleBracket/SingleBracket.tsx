@@ -6,8 +6,9 @@ import RoundStore, { RoundMatch, Team } from "src/store/SingleRoundStore";
 import SingleBracketStateless from "./SingleBracketStateless";
 import { UpdateScoreModalStateless } from "../../../popup/updateScore/UpdateScoreModalStateless";
 import {ApolloQueryResult} from "@apollo/client";
+import {message} from "antd";
 
-interface Props {
+type Props =  {
   canEdit: boolean
   refetchBracket?: () => Promise<ApolloQueryResult<any>>
 }
@@ -54,7 +55,12 @@ const SingleBracket = (props: Props) => {
 
   const onUpdateCompleted = (score0: number, score1: number) => {
     RoundStore.setMatchScore(roundIndex, seedIndex, score0, score1);
-    refetchBracket && refetchBracket()
+    message.success('Success')
+      .then(() => {
+        if (refetchBracket) {
+          refetchBracket()
+        }
+      })
   }
   // ============= END EDIT MODAL =================
 
