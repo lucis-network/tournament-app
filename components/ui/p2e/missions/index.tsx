@@ -8,7 +8,8 @@ import OnUsingNFTs from '../OnUsingNFTs';
 import Statistics from '../Statistics';
 
 const Missions = () => {
-  const [dailyMission, setDailyMission] = useState([])
+  const [dailyMission, setDailyMission] = useState([]);
+
   const [getDailyMission] = useMutation(GET_DAILY_MISSION, {
     variables: {
       game_uid: '3',
@@ -49,6 +50,7 @@ const Missions = () => {
         <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
         <h3>CS:GO FACEIT</h3>
       </div>
+
       <Statistics />
       <OnUsingNFTs />
       <MissionsList
