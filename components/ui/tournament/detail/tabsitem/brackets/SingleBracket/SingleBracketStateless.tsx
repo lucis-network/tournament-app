@@ -17,12 +17,7 @@ interface Props {
     roundIndex: number
   ) => void,
   showFinalMatchRank?: boolean
-  modalVisible: boolean
-  seedIndex: number
-  roundIndex: number
-  currentMatch?: CurrentMatch
-  doCloseModal: () => void
-  onUpdateCompleted: (score0: number, score1: number) => void
+  updateScoreModal?: ReactElement
 }
 
 
@@ -32,12 +27,7 @@ export default function SingleBracketStateless(props: Props) {
     rounds,
     openMatchEditModal,
     showFinalMatchRank,
-    modalVisible,
-    seedIndex,
-    roundIndex,
-    currentMatch,
-    doCloseModal,
-    onUpdateCompleted,
+    updateScoreModal,
   } = props;
 
   const roundCount = rounds.length;
@@ -71,14 +61,7 @@ export default function SingleBracketStateless(props: Props) {
         }}
       />
 
-      {canEdit && <UpdateScoreModalStateless
-          visible={modalVisible}
-          seedIndex={seedIndex}
-          roundIndex={roundIndex}
-          currentMatch={currentMatch}
-          doCloseModal={doCloseModal}
-          onUpdateCompleted={onUpdateCompleted}
-      />}
+      {canEdit && <>{updateScoreModal}</>}
     </>
   );
 };

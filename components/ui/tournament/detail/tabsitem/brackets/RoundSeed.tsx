@@ -1,6 +1,6 @@
 import React from "react";
 import { RenderSeedProps, Seed, SeedItem, SeedTeam } from "react-brackets";
-import { Tooltip } from "antd";
+import {Image, Tooltip} from "antd";
 
 import { RoundMatch } from "src/store/SingleRoundStore";
 import { BracketMatchStatus } from "src/generated/graphql";
@@ -95,7 +95,10 @@ export function makeSeedComponent(
             </div>
             {(match.linkStreamEnable && match.linkStream) && (
               <Link href={match.linkStream ? match.linkStream : '#'} passHref>
-                <a className={s.liveStream} target="_blank">Live</a>
+                <a className={s.liveStream} target="_blank">
+                  <Image src="/assets/TournamentDetail/iconBroadcast.svg" preview={false} alt="" />
+                  Live
+                </a>
               </Link>
             )}
           </SeedItem>

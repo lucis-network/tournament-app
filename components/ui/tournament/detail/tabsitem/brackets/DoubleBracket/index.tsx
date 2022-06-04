@@ -10,13 +10,15 @@ import { UpdateScoreModalStateless } from "../../../popup/updateScore/UpdateScor
 import SingleBracketStateless from "../SingleBracket/SingleBracketStateless";
 import { CurrentMatch, RoundMatch } from "src/store/SingleRoundStore";
 import s from '../index.module.sass'
+import {ApolloQueryResult} from "@apollo/client";
 
 type Props = {
   canEdit: boolean
+  refetchBracket?: () => Promise<ApolloQueryResult<any>>
 };
 
 const Index = (props: Props) => {
-  const {canEdit} = props;
+  const {canEdit, refetchBracket} = props;
   const {
     winRounds, loseRounds, finalRounds,
     updateScoreModalVisible,
@@ -53,12 +55,15 @@ const Index = (props: Props) => {
 
   const onWinnerRoundUpdateCompleted = (score0: number, score1: number) => {
     DoubleBracketStore.setWinnerRoundMatchScore(roundIndex, seedIndex, score0, score1);
+    refetchBracket && refetchBracket()
   }
   const onLoserRoundWinUpdateCompleted = (score0: number, score1: number) => {
     DoubleBracketStore.setLoserRoundMatchScore(roundIndex, seedIndex, score0, score1);
+    refetchBracket && refetchBracket()
   }
   const onFinalRoundWinUpdateCompleted = (score0: number, score1: number) => {
     DoubleBracketStore.setFinalRoundMatchScore(roundIndex, seedIndex, score0, score1);
+    refetchBracket && refetchBracket()
   }
 
 
