@@ -18,7 +18,6 @@ type Props = {
 function CardHome(props: Props) {
   const [isLoadMore, setIsLoadMore] = useState(8);
   const { datas, loading, type } = props;
-  console.log('datas: ', datas);
 
   if (loading || !datas) {
     return <></>;
