@@ -205,7 +205,7 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
           <Col xs={{ span: 24 }} sm={{ span: 14 }}>
             <Form
               form={form}
-              validateTrigger="onBlur"
+              validateTrigger="onSubmit"
               initialValues={{
                 link_stream: linkStream
               }}
@@ -227,7 +227,6 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
                 }
               >
                 <Input
-                  value={linkStream}
                   onChange={handleLinkStreamChange}
                   disabled={!enableLinkStream}
                   id="link-stream"

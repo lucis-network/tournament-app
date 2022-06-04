@@ -81,9 +81,9 @@ const BracketUI = ({ dataBracket, loadingBracket, refereeIds, refetchBracket }: 
 
       <div className={`${s.bracketContainer} has-scrollbar`}>
         {isSingleBracket ? (
-          <SingleBracket canEdit={canEditMatch} />
+          <SingleBracket canEdit={canEditMatch} refetchBracket={refetchBracket} />
         ) : (
-          <DoubleBracket canEdit={canEditMatch} />
+          <DoubleBracket canEdit={canEditMatch} refetchBracket={refetchBracket} />
         )}
       </div>
     </div>
