@@ -439,7 +439,7 @@ export type Mission = {
   claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   created_at: Scalars['DateTime'];
   game_uid: Scalars['String'];
-  goal?: Maybe<Scalars['String']>;
+  goal?: Maybe<Scalars['Decimal']>;
   img?: Maybe<Scalars['String']>;
   is_daily_mission: Scalars['Boolean'];
   lucis_point: Scalars['Int'];
@@ -689,7 +689,7 @@ export type PlayerGameCount = {
 
 export type PlayerMission = {
   __typename?: 'PlayerMission';
-  achieved?: Maybe<Scalars['String']>;
+  achieved?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   daily_mission?: Maybe<UserDailyMission>;
   mission: Mission;

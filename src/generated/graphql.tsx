@@ -1711,7 +1711,7 @@ export type Mission = {
   claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   created_at: Scalars['DateTime'];
   game_uid: Scalars['String'];
-  goal?: Maybe<Scalars['String']>;
+  goal?: Maybe<Scalars['Decimal']>;
   img?: Maybe<Scalars['String']>;
   is_daily_mission: Scalars['Boolean'];
   lucis_point: Scalars['Int'];
@@ -1768,7 +1768,7 @@ export type MissionCreateOrConnectWithoutUser_Daily_MissionInput = {
 export type MissionCreateWithoutClaim_MissionInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_uid: Scalars['String'];
-  goal?: InputMaybe<Scalars['String']>;
+  goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   lucis_point: Scalars['Int'];
@@ -1786,7 +1786,7 @@ export type MissionCreateWithoutPlayer_MissionInput = {
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutMissionInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_uid: Scalars['String'];
-  goal?: InputMaybe<Scalars['String']>;
+  goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   lucis_point: Scalars['Int'];
@@ -1803,7 +1803,7 @@ export type MissionCreateWithoutUser_Daily_MissionInput = {
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutMissionInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_uid: Scalars['String'];
-  goal?: InputMaybe<Scalars['String']>;
+  goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   lucis_point: Scalars['Int'];
@@ -2667,7 +2667,7 @@ export type PlayerGameWhereUniqueInput = {
 
 export type PlayerMission = {
   __typename?: 'PlayerMission';
-  achieved?: Maybe<Scalars['String']>;
+  achieved?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   daily_mission?: Maybe<UserDailyMission>;
   mission: Mission;
@@ -2679,7 +2679,7 @@ export type PlayerMission = {
 };
 
 export type PlayerMissionCreateManyMissionInput = {
-  achieved?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   player_game_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
@@ -2692,7 +2692,7 @@ export type PlayerMissionCreateManyMissionInputEnvelope = {
 };
 
 export type PlayerMissionCreateManyPlayer_GameInput = {
-  achieved?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   mission_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
@@ -2740,7 +2740,7 @@ export type PlayerMissionCreateOrConnectWithoutPlayer_GameInput = {
 };
 
 export type PlayerMissionCreateWithoutDaily_MissionInput = {
-  achieved?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
@@ -2749,7 +2749,7 @@ export type PlayerMissionCreateWithoutDaily_MissionInput = {
 };
 
 export type PlayerMissionCreateWithoutMissionInput = {
-  achieved?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput>;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
@@ -2758,7 +2758,7 @@ export type PlayerMissionCreateWithoutMissionInput = {
 };
 
 export type PlayerMissionCreateWithoutPlayer_GameInput = {
-  achieved?: InputMaybe<Scalars['String']>;
+  achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
