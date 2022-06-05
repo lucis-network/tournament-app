@@ -90,48 +90,18 @@ const CustomSeed = ({
       <SeedItem>
         <div>
           <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
-            <div
-              style={{
-                width: "100%",
-                background: "#d8d899",
-                height: "100%",
-                padding: "5px 0",
-                color: "black",
-              }}
-            >
-              {seed.teams[0]?.name || `--`}
+            <div className={s.team}>
+              {seed.teams[0]?.name || `Team ...`}
             </div>
-            <div
-              style={{
-                background: "yellow",
-                color: "black",
-                padding: "5px",
-                width: "50px",
-              }}
-            >
+            <div className={s.score}>
               {seed.teams[0]?.score || "--"}
             </div>
           </SeedTeam>
           <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
-            <div
-              style={{
-                width: "100%",
-                background: "#4e89a3",
-                height: "100%",
-                padding: "5px 0",
-                color: "white",
-              }}
-            >
-              {seed.teams[1]?.name || `--`}
+            <div className={s.team}>
+              {seed.teams[1]?.name || `Team ...`}
             </div>
-            <div
-              style={{
-                background: "#306882",
-                color: "white",
-                padding: "5px",
-                width: "50px",
-              }}
-            >
+            <div className={s.score}>
               {seed.teams[1]?.score || "--"}
             </div>
           </SeedTeam>
