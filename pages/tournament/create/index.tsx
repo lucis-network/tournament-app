@@ -146,7 +146,7 @@ export default observer(function CreateTournament(props: Props) {
       //Getdata dataReferee from localstorage
       // @ts-ignore
       const dataRefereeRes = [];
-      getDataReferees?.forEach((item: any) => {
+      getDataReferees?.users?.forEach((item: any) => {
         cr?.referees?.forEach((itm: number) => {
           if (item.id == itm) dataRefereeRes.push(item);
         });
