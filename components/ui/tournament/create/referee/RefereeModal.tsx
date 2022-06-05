@@ -119,7 +119,7 @@ export default observer(function RefereeModal(props: Props) {
         className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-2 mt-4"
       >
         {getDataReferees
-          ? getDataReferees.map((ele: any, index: number) => {
+          ? getDataReferees.users.map((ele: any, index: number) => {
               return (
                 // <div className={`${s.item}`} key={index}>
                 //   <div className={`${s.avatar} ${s.avBig}`}>

@@ -89,14 +89,17 @@ export const CHOOSE_GAME = gql`
 const REFEREES = gql`
   query ($input: GetRefereeInput!) {
     getReferee(input: $input) {
-      id
-      code
-      email
-      profile {
-        display_name
-        avatar
-        user_name
+      users {
+        id
+        code
+        email
+        profile {
+          display_name
+          avatar
+          user_name
+        }
       }
+      total
     }
   }
 `;
