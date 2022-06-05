@@ -125,11 +125,12 @@ export type CachePlayerStatistic = {
   created_at: Scalars['DateTime'];
   current_win_streak: Scalars['Int'];
   deaths: Scalars['Int'];
-  double_kills: Scalars['Int'];
+  double_kill: Scalars['Int'];
   id: Scalars['ID'];
   kd_ratio: Scalars['Decimal'];
   kills: Scalars['Int'];
   kr_ratio: Scalars['Decimal'];
+  lastest_match_uid?: Maybe<Scalars['String']>;
   longest_win_streak: Scalars['Int'];
   matches: Scalars['Int'];
   mvps: Scalars['Int'];
@@ -137,7 +138,7 @@ export type CachePlayerStatistic = {
   player_game_uid: Scalars['String'];
   quadra_kill: Scalars['Int'];
   total_headshots: Scalars['Int'];
-  tripble_kills: Scalars['Int'];
+  triple_kill: Scalars['Int'];
   updated_at: Scalars['DateTime'];
   wins: Scalars['Int'];
 };
@@ -437,15 +438,14 @@ export type Mission = {
   _count: MissionCount;
   claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   created_at: Scalars['DateTime'];
-  end_at?: Maybe<Scalars['DateTime']>;
   game_uid: Scalars['String'];
-  goal?: Maybe<Scalars['Int']>;
+  goal?: Maybe<Scalars['String']>;
   img?: Maybe<Scalars['String']>;
   is_daily_mission: Scalars['Boolean'];
   lucis_point: Scalars['Int'];
   lucis_token?: Maybe<Scalars['Decimal']>;
+  mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
-  start_at?: Maybe<Scalars['DateTime']>;
   title?: Maybe<Scalars['String']>;
   type: MissionType;
   uid: Scalars['ID'];
@@ -460,12 +460,28 @@ export type MissionCount = {
   user_daily_mission: Scalars['Int'];
 };
 
+export enum MissionStatus {
+  Finish = 'FINISH',
+  Ongoing = 'ONGOING',
+  Upcoming = 'UPCOMING'
+}
+
 export enum MissionType {
+  Aces = 'ACES',
   Assists = 'ASSISTS',
-  Headshot = 'HEADSHOT',
+  Averageheadshot = 'AVERAGEHEADSHOT',
+  Curentwinstreak = 'CURENTWINSTREAK',
+  Deaths = 'DEATHS',
+  Doublekill = 'DOUBLEKILL',
+  Kda = 'KDA',
   Kills = 'KILLS',
+  Kr = 'KR',
+  Longestwinstreak = 'LONGESTWINSTREAK',
   Matches = 'MATCHES',
-  Round = 'ROUND',
+  Mvps = 'MVPS',
+  Quadrakill = 'QUADRAKILL',
+  Totalheadshots = 'TOTALHEADSHOTS',
+  Triplekill = 'TRIPLEKILL',
   Wins = 'WINS'
 }
 
@@ -673,7 +689,7 @@ export type PlayerGameCount = {
 
 export type PlayerMission = {
   __typename?: 'PlayerMission';
-  achieved?: Maybe<Scalars['Int']>;
+  achieved?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   daily_mission?: Maybe<UserDailyMission>;
   mission: Mission;
@@ -881,6 +897,16 @@ export enum SponsorTransactionType {
   Existing = 'EXISTING'
 }
 
+export type SpotlightAnnouncement = {
+  __typename?: 'SpotlightAnnouncement';
+  content?: Maybe<Scalars['String']>;
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  tournament: Tournament;
+  tournament_uid: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type Staked = {
   __typename?: 'Staked';
   _count: StakedCount;
@@ -986,6 +1012,7 @@ export type Tournament = {
   __typename?: 'Tournament';
   _count: TournamentCount;
   additionPrize: Scalars['Decimal'];
+  annoucement?: Maybe<Array<SpotlightAnnouncement>>;
   brackets?: Maybe<Array<Bracket>>;
   cache_tournament?: Maybe<CacheTournament>;
   claim_transactions?: Maybe<Array<ClaimTransaction>>;
@@ -1029,6 +1056,7 @@ export type Tournament = {
 
 export type TournamentCount = {
   __typename?: 'TournamentCount';
+  annoucement: Scalars['Int'];
   brackets: Scalars['Int'];
   claim_transactions: Scalars['Int'];
   donate_transactions: Scalars['Int'];
