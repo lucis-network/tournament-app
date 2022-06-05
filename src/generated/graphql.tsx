@@ -440,15 +440,25 @@ export type BracketWhereUniqueInput = {
 
 export type CachePlayerStatistic = {
   __typename?: 'CachePlayerStatistic';
+  aces: Scalars['Int'];
   assists: Scalars['Int'];
+  average_headshots: Scalars['Int'];
   created_at: Scalars['DateTime'];
-  headshot: Scalars['Int'];
+  current_win_streak: Scalars['Int'];
+  deaths: Scalars['Int'];
+  double_kills: Scalars['Int'];
   id: Scalars['ID'];
+  kd_ratio: Scalars['Decimal'];
   kills: Scalars['Int'];
+  kr_ratio: Scalars['Decimal'];
+  longest_win_streak: Scalars['Int'];
   matches: Scalars['Int'];
+  mvps: Scalars['Int'];
   player_game: PlayerGame;
   player_game_uid: Scalars['String'];
-  round: Scalars['Int'];
+  quadra_kill: Scalars['Int'];
+  total_headshots: Scalars['Int'];
+  tripble_kills: Scalars['Int'];
   updated_at: Scalars['DateTime'];
   wins: Scalars['Int'];
 };
@@ -465,12 +475,22 @@ export type CachePlayerStatisticCreateOrConnectWithoutPlayer_GameInput = {
 };
 
 export type CachePlayerStatisticCreateWithoutPlayer_GameInput = {
+  aces?: InputMaybe<Scalars['Int']>;
   assists?: InputMaybe<Scalars['Int']>;
+  average_headshots?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  headshot?: InputMaybe<Scalars['Int']>;
+  current_win_streak?: InputMaybe<Scalars['Int']>;
+  deaths?: InputMaybe<Scalars['Int']>;
+  double_kills?: InputMaybe<Scalars['Int']>;
+  kd_ratio?: InputMaybe<Scalars['Decimal']>;
   kills?: InputMaybe<Scalars['Int']>;
+  kr_ratio?: InputMaybe<Scalars['Decimal']>;
+  longest_win_streak?: InputMaybe<Scalars['Int']>;
   matches?: InputMaybe<Scalars['Int']>;
-  round?: InputMaybe<Scalars['Int']>;
+  mvps?: InputMaybe<Scalars['Int']>;
+  quadra_kill?: InputMaybe<Scalars['Int']>;
+  total_headshots?: InputMaybe<Scalars['Int']>;
+  tripble_kills?: InputMaybe<Scalars['Int']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   wins?: InputMaybe<Scalars['Int']>;
 };
@@ -2879,6 +2899,7 @@ export type Query = {
   getPlatformAccount?: Maybe<PlatformAccount>;
   getReferee?: Maybe<Array<User>>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
+  getSpotlightAnnouncement?: Maybe<Array<Scalars['String']>>;
   getSpotlightTournament?: Maybe<Array<GTournament>>;
   getTeam?: Maybe<Array<PlayTeamMember>>;
   getTopEarningPlayer?: Maybe<Array<GTopEarning>>;

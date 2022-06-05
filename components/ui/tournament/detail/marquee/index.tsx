@@ -1,49 +1,33 @@
 import s from "./Marquee.module.sass";
 import Marquee from "react-fast-marquee";
-import {useEffect, useState} from "react";
-
-const Spotlight = [
-  {
-    id: 1,
-    title:
-      "Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-  {
-    id: 2,
-    title:
-      "Spotlight2  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-  {
-    id: 3,
-    title:
-      "Spotlight3  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-  {
-    id: 4,
-    title:
-      "Spotlight4  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-];
+import { useEffect, useState } from "react";
+import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 
 const TournamentDetailMarquee = () => {
-  const [titleSpotlight, setTitleSpotlight] = useState(Spotlight[0].title);
+  const { loading, error, data, refetch } = useGetSpotlightAnnouncement();
+
+  const [titleSpotlight, setTitleSpotlight] = useState("");
   const [arr, setArr] = useState(0);
 
   useEffect(() => {
-    const length = Spotlight.length;
-    const interval = setInterval(() => {
-      if (arr >= length) {
-        setArr(0);
-      } else {
-        setArr((prve) => prve + 1);
-        const title = Spotlight[arr].title;
-        setTitleSpotlight(title);
-      }
-    }, 20000);
+    let interval: NodeJS.Timer;
+    if (data) {
+      const length = data.length;
+      interval = setInterval(() => {
+        if (arr >= length) {
+          setArr(0);
+        } else {
+          setArr((prve) => prve + 1);
+          const title = data[arr];
+          setTitleSpotlight(title);
+        }
+      }, 10000);
+    }
+
     return () => {
       clearInterval(interval);
     };
-  }, [arr]);
+  }, [arr, data]);
 
   return (
     <div className={`lucis-container-2 ${s.marquee_section}`}>
@@ -63,7 +47,7 @@ const TournamentDetailMarquee = () => {
         </Marquee>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default TournamentDetailMarquee;

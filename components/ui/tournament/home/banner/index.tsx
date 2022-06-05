@@ -4,50 +4,35 @@ import Marquee from "react-fast-marquee";
 import SilderBanner from "../slider";
 import { useEffect, useState } from "react";
 import useBanner from "../hooks/useBanner";
-
-const Spotlight = [
-	{
-		id: 1,
-		title:
-			"Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-	{
-		id: 2,
-		title:
-			"Spotlight2  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-	{
-		id: 3,
-		title:
-			"Spotlight3  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-	{
-		id: 4,
-		title:
-			"Spotlight4  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-];
+import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 
 export default function BannerPage() {
 	const { dataBanner } = useBanner();
-	const [titleSpotlight, setTitleSpotlight] = useState(Spotlight[0].title);
-	const [arr, setArr] = useState(0);
+	const { loading, error, data, refetch } = useGetSpotlightAnnouncement();
 
+	const [titleSpotlight, setTitleSpotlight] = useState("");
+	const [arr, setArr] = useState(0);
+  
 	useEffect(() => {
-		const length = Spotlight.length;
-		const interval = setInterval(() => {
-			if (arr >= length) {
-				setArr(0);
-			} else {
-				setArr((prve) => prve + 1);
-				const title = Spotlight[arr].title;
-				setTitleSpotlight(title);
-			}
-		}, 20000);
-		return () => {
-			clearInterval(interval);
-		};
-	}, [arr]);
+	  let interval: NodeJS.Timer;
+	  if (data) {
+		const length = data.length;
+		interval = setInterval(() => {
+		  if (arr >= length) {
+			setArr(0);
+			setTitleSpotlight(data[0]);
+		  } else {
+			setArr((prve) => prve + 1);
+			const title = data[arr];
+			setTitleSpotlight(title);
+		  }
+		}, 10000);
+	  }
+  
+	  return () => {
+		clearInterval(interval);
+	  };
+	}, [arr, data]);
 
 	return (
 		<div className={s.wrapper_banner}>
