@@ -11,9 +11,6 @@ import { BracketRound } from "src/generated/graphql";
 import AuthStore from "../../../../../Auth/AuthStore";
 import DoubleBracketStore from "./DoubleBracket/DoubleBracketStore";
 
-
-
-
 const BracketUI = ({ dataBracket, loadingBracket, refereeIds, refetchBracket }: BracketUiProps) => {
   console.log('{BracketUI} dataBracket: ', dataBracket);
 
@@ -81,9 +78,9 @@ const BracketUI = ({ dataBracket, loadingBracket, refereeIds, refetchBracket }: 
 
       <div className={`${s.bracketContainer} has-scrollbar`}>
         {isSingleBracket ? (
-          <SingleBracket canEdit={canEditMatch} />
+          <SingleBracket canEdit={canEditMatch} refetchBracket={refetchBracket} />
         ) : (
-          <DoubleBracket canEdit={canEditMatch} />
+          <DoubleBracket canEdit={canEditMatch} refetchBracket={refetchBracket} />
         )}
       </div>
     </div>

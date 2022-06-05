@@ -56,7 +56,6 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
       setScore1(teamScore1)
       setEnableLinkStream(currentMatch?.linkStreamEnabled ?? false)
       setLinkStream(currentMatch?.linkStream ?? '')
-      form.validateFields()
     }
     return () => {
       const input: HTMLInputElement = document.getElementById('link-stream') as HTMLInputElement
@@ -171,16 +170,10 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
       ]}
     >
       {/* <p className="text-center">Round {roundIdx + 1}</p> */}
-      <div style={{ padding: "15px 0" }}>
+      <div style={{ padding: "15px 0 0" }}>
         <Row justify="center">
           <Col span={8} style={{ textAlign: "center" }}>
             <p className="text-center">{teamName0}</p>
-            <input
-              className={s.inputScore}
-              type="number"
-              value={score0}
-              onChange={(e) => onScoreChanged(e.target.value, 0)}
-            />
           </Col>
 
           <Col span={6}>
@@ -189,6 +182,19 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
 
           <Col span={8} style={{ textAlign: "center" }}>
             <p className="text-center">{teamName1}</p>
+          </Col>
+        </Row>
+        <Row justify="center">
+          <Col span={8} style={{ textAlign: "center" }}>
+            <input
+              className={s.inputScore}
+              type="number"
+              value={score0}
+              onChange={(e) => onScoreChanged(e.target.value, 0)}
+            />
+          </Col>
+          <Col span={6} />
+          <Col span={8} style={{ textAlign: "center" }}>
             <input
               className={s.inputScore}
               type="number"
@@ -198,14 +204,14 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
           </Col>
         </Row>
         <Row className="mt-5" align="middle">
-          <Col xs={{ span: 24 }} sm={{ span: 10 }}>
+          <Col xs={{ span: 24 }} sm={{ span: 10 }} className="mb-3">
             <span className="pr-3">Livestream link:</span>
             <Switch checked={enableLinkStream} onChange={handleEnableLinkStream} />
           </Col>
-          <Col xs={{ span: 24 }} sm={{ span: 14 }}>
+          <Col xs={{ span: 24 }} sm={{ span: 14 }} className="mb-3">
             <Form
               form={form}
-              validateTrigger="onBlur"
+              validateTrigger="onSubmit"
               initialValues={{
                 link_stream: linkStream
               }}
@@ -227,7 +233,6 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
                 }
               >
                 <Input
-                  value={linkStream}
                   onChange={handleLinkStreamChange}
                   disabled={!enableLinkStream}
                   id="link-stream"
