@@ -17,7 +17,7 @@ import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
 import { useLocalObservable } from "mobx-react";
 import { useCurrencies } from "hooks/tournament/useCreateTournament";
 import { currency } from "../../../../../utils/Number";
-import { LUCIS_FEE, REFEREES_FEE} from "utils/Enum";
+import { LUCIS_FEE, REFEREES_FEE } from "utils/Enum";
 
 const { Option } = Select;
 
@@ -338,12 +338,14 @@ export default observer(function Prizing(props: Props) {
   }, [chain]);
 
   useEffect(() => {
-    if(TournamentStore.currency_uid) {
-      let obj = getDataCurrencies.filter((item: any) => {
+    if (TournamentStore.currency_uid) {
+      let obj = getDataCurrencies?.filter((item: any) => {
         return item.uid == TournamentStore.currency_uid;
       });
-      TournamentStore.currency_symbol = obj[0]?.symbol;
-      TournamentStore.currency_address = obj[0]?.address;
+      if (obj) {
+        TournamentStore.currency_symbol = obj[0]?.symbol;
+        TournamentStore.currency_address = obj[0]?.address;
+      }
     }
   }, [TournamentStore.currency_uid]);
 
@@ -435,10 +437,14 @@ export default observer(function Prizing(props: Props) {
           </Col>
           <Col span={3}>
             <Select
-              defaultValue={TournamentStore.currency_uid ? TournamentStore.currency_uid : "Choose currency"}
+              defaultValue={
+                TournamentStore.currency_uid
+                  ? TournamentStore.currency_uid
+                  : "Choose currency"
+              }
               onChange={(value) => {
                 setChain(value);
-                let obj = getDataCurrencies.filter((item: any) => {
+                let obj = getDataCurrencies?.filter((item: any) => {
                   return item.uid == value;
                 });
                 setSymbol(obj[0]?.symbol);
