@@ -177,7 +177,7 @@ export default observer(function RefereeModal(props: Props) {
       </Checkbox.Group>
       <div className={s.message_error}>{messageError}</div>
       <div style={{textAlign: "center"}}>
-        <Pagination defaultCurrent={1} total={50} onChange={changePage} />
+        <Pagination defaultCurrent={1} total={getDataReferees?.total} onChange={changePage} />
       </div>
     </Modal>
   );
