@@ -14,6 +14,8 @@ export type CreateTournament = {
   password?: string;
   game_uid?: string;
   currency_uid?: string;
+  currency_symbol?: string;
+  currency_address?: string;
   join_fee?: number;
   pool_size?: number;
   referees?: number[];
@@ -121,7 +123,7 @@ class TournamentStore {
 
   private _pool_size?: number | undefined;
 
-  private _referees?: number[] | undefined;
+  private _referees?: number[] | undefined = [];
 
   private _regions?: string[] = DEFAULT_REGIONS;
 

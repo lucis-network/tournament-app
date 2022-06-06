@@ -4,6 +4,7 @@ import {
   gql,
   useMutation,
   useQuery,
+  useSubscription,
 } from "@apollo/client";
 import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
@@ -58,6 +59,7 @@ export function useTournamentDetail(props: Props) {
     loading: loadingBracket,
     error: errorBracket,
     data: dataBracket,
+    refetch: refetchBracket,
   } = useQuery(GET_BRACKET, {
     variables: { tournament_uid: props?.tournament_uid },
     skip: props?.skip,
@@ -94,8 +96,10 @@ export function useTournamentDetail(props: Props) {
     fetchPolicy: "network-only",
   });
 
-  const [joinTournament, { loading: loadingJoinTournament }] =
-    useMutation(JOIN_TOURNAMENT);
+  const [
+    joinTournament,
+    { loading: loadingJoinTournament, error: errorJoinTournament },
+  ] = useMutation(JOIN_TOURNAMENT);
 
   //const [confirmResult] = useMutation(CONFIRM_RESULT);
 
@@ -132,6 +136,7 @@ export function useTournamentDetail(props: Props) {
     errorIsJoin,
     errorIsCheckin,
     errorDonation,
+    errorJoinTournament,
 
     dataTournamentDetail: dataTournamentDetail?.getTournamentDetail,
     dataParticipants: dataParticipants?.getTournamentParticipants,
@@ -151,6 +156,7 @@ export function useTournamentDetail(props: Props) {
     refreshParticipant,
     refetchSubTournament,
     refetchConfirmResult,
+    refetchBracket,
   };
 }
 
@@ -215,6 +221,23 @@ export function useClaimReward(props: Props) {
   };
 }
 
+export function useUpdateTotalDonation(props: Props) {
+  const {
+    loading,
+    error,
+    data: dataUpdateTotalDonation,
+  } = useSubscription(UPDATE_TOTAL_DONATION, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "no-cache",
+  });
+
+  return {
+    loading,
+    error,
+    dataUpdateTotalDonation,
+  };
+}
+
 export function useConfirmTournamentResult(props: Props) {
   const { loading, error, data, refetch } = useQuery(
     CONFIRM_TOURNAMENT_RESULT,
@@ -244,6 +267,23 @@ export function useGetListRank(props: Props) {
     loading,
     error,
     data: data?.getTournamentListRank,
+    refetch,
+  };
+}
+
+export function useGetSpotlightAnnouncement() {
+  const { loading, error, data, refetch } = useQuery(
+    GET_SPOTLIGHT_ANNOUNCEMENT,
+    {
+      variables: {},
+      fetchPolicy: "no-cache",
+    }
+  );
+
+  return {
+    loading,
+    error,
+    data: data?.getSpotlightAnnouncement,
     refetch,
   };
 }
@@ -333,19 +373,17 @@ const GET_PARTICIPANTS_DETAIL = gql`
 const GET_REFEREES_DETAIL = gql`
   query ($tournament_uid: String!) {
     getTournamentReferees(tournament_uid: $tournament_uid) {
-      user {
-        profile {
-          user_id
-          display_name
-          avatar
-          twitter
-          facebook
-          telegram
-          discord
-          user_name
-          youtube
-          twitch
-        }
+      profile {
+        user_id
+        display_name
+        avatar
+        twitter
+        facebook
+        telegram
+        discord
+        user_name
+        youtube
+        twitch
       }
     }
   }
@@ -380,6 +418,8 @@ const GET_BRACKET = gql`
           score_1
           score_2
           status
+          link_stream
+          link_stream_enable
         }
       }
 
@@ -468,7 +508,7 @@ const GET_LIST_RANKS = gql`
       donated
       playTeamMembers {
         uid
-        user{
+        user {
           profile {
             user_name
             user_id
@@ -507,5 +547,39 @@ const CONFIRM_TOURNAMENT_RESULT = gql`
       win
       player_team_uid
     }
+  }
+`;
+
+const UPDATE_TOTAL_DONATION = gql`
+  subscription ($tournament_uid: String!) {
+    updateTotalDonation(tournament_uid: $tournament_uid) {
+      total_donation
+    }
+  }
+`;
+
+const UPDATE_TOTAL_PRIZE_POOL = gql`
+  subscription ($tournament_uid: String!) {
+    updateTotalPrizePool(tournament_uid: $tournament_uid) {
+      total_prize_pool
+    }
+  }
+`;
+
+const UPDATE_PARTICIPANT = gql`
+  subscription ($tournament_uid: String!) {
+    updateParticipant(tournament_uid: $tournament_uid) {
+      participant
+      team {
+        uid
+        user_id
+      }
+    }
+  }
+`;
+
+const GET_SPOTLIGHT_ANNOUNCEMENT = gql`
+  query getSpotlightAnnouncement {
+    getSpotlightAnnouncement
   }
 `;

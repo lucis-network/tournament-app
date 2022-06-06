@@ -1,9 +1,10 @@
-import React, { ReactElement, useCallback, useMemo } from "react";
+import React, {ReactElement, useCallback, useEffect, useMemo} from "react";
 import { Bracket, RoundProps } from "react-brackets";
 
-import { RoundMatch } from "src/store/SingleRoundStore";
+import {CurrentMatch, RoundMatch} from "src/store/SingleRoundStore";
 import s from "../index.module.sass";
 import { makeSeedComponent } from "../RoundSeed";
+import {UpdateScoreModalStateless} from "../../../popup/updateScore/UpdateScoreModalStateless";
 
 
 interface Props {
@@ -15,8 +16,8 @@ interface Props {
     seedIndex: number,
     roundIndex: number
   ) => void,
-  updateScoreModal: ReactElement
   showFinalMatchRank?: boolean
+  updateScoreModal?: ReactElement
 }
 
 
@@ -25,8 +26,8 @@ export default function SingleBracketStateless(props: Props) {
     canEdit,
     rounds,
     openMatchEditModal,
-    updateScoreModal,
     showFinalMatchRank,
+    updateScoreModal,
   } = props;
 
   const roundCount = rounds.length;

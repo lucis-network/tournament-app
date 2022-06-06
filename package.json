@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "codegen": "yarn codegen-tour && yarn codegen-p2e",
-    "codegen-tour": "graphql-codegen --config codegen_p2e.yml",
+    "codegen-tour": "graphql-codegen --config codegen.yml",
     "codegen-p2e": "graphql-codegen --config codegen_p2e.yml",
     "dev": "next dev",
     "build": "next build",

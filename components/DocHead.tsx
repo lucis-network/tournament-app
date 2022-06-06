@@ -2,12 +2,13 @@ import Head from "next/head";
 
 type Props = {
   title?: string;
+  description?: string;
 };
 
 export default function DocHead(props: Props) {
   const titleSuffix = props.title ?? "A Platform for creating, running tournament events for both traditional games and NFT games.";
   const title = "Lucis Tournament - " + titleSuffix;
-  const desc = 'Team will get more popular and big prizes, big donation amount from Lucis Tournament platform';
+  const desc = props.description ?? 'Team will get more popular and big prizes, big donation amount from Lucis Tournament platform';
   const thumb = "https://lucis.network/assets/lucis_preview_169.jpg";
 
   return (

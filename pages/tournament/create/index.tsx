@@ -44,6 +44,7 @@ import sponsorStore, {
 } from "components/ui/tournament/create/sponsor/SponsorStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
+import AuthStore from "components/Auth/AuthStore";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -79,7 +80,9 @@ export default observer(function CreateTournament(props: Props) {
   });
 
   const { getDataReferees } = useReferees({
-    name: "",
+    input: {
+      name: ''
+    }
   });
 
   const router = useRouter();
@@ -144,7 +147,7 @@ export default observer(function CreateTournament(props: Props) {
       //Getdata dataReferee from localstorage
       // @ts-ignore
       const dataRefereeRes = [];
-      getDataReferees?.forEach((item: any) => {
+      getDataReferees?.users?.forEach((item: any) => {
         cr?.referees?.forEach((itm: number) => {
           if (item.id == itm) dataRefereeRes.push(item);
         });
@@ -208,7 +211,7 @@ export default observer(function CreateTournament(props: Props) {
 
   const handCallbackReferee = (data: any, arr: any) => {
     setDataReferees(data);
-    TournamentStore.referees = arr;
+    TournamentStore.referees = arr ? arr : [];
     setMessageErrorReferee("");
   };
 
@@ -290,11 +293,11 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    // if (!cr.bracket_type) {
-    //   setMessageErrorBracketType("Bracket type is required");
-    //   scrollToTop();
-    //   return false;
-    // }
+    if (!cr.bracket_type) {
+      setMessageErrorBracketType("Bracket type is required");
+      scrollToTop();
+      return false;
+    }
 
     if (!cr.currency_uid) {
       setCheckCurrency(false);
@@ -334,18 +337,18 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    if (!cr.referees) {
-      setMessageErrorReferee("Referee(s) is required");
-      scrollToTop();
-      return false;
-    }
+    // if (!cr.referees) {
+    //   setMessageErrorReferee("Referee(s) is required");
+    //   scrollToTop();
+    //   return false;
+    // }
 
     if (cr.participants / 2 < cr.referees?.length) {
       scrollToTop();
       return false;
     }
 
-    if (!cr.pool_size || cr.pool_size <= 0) {
+    if (cr.pool_size == null || cr.pool_size < 0) {
       setCheckPoolSize(false);
       //@ts-ignore
       document.getElementById("prizing").scrollIntoView();
@@ -413,11 +416,12 @@ export default observer(function CreateTournament(props: Props) {
   const user = getLocalAuthInfo();
 
   useEffect(() => {
-    if (!user) Router.push("/");
-  }, [user]);
+    console.log(AuthStore)
+    if (!AuthStore.isLoggedIn) Router.push("/tournament");
+  }, [AuthStore]);
 
   return (
-    <>
+    <> 
       {/* <DocHead />
       <div className="pt-28 min-h-screen"></div>
       <Footer /> */}

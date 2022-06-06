@@ -4,6 +4,7 @@ import Banner from "components/ui/tournament/detail/Banner";
 import {
   useSponsors,
   useTournamentDetail,
+  useUpdateTotalDonation,
 } from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -31,8 +32,19 @@ import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import { useWindowSize } from "hooks/useWindowSize";
+import DocHead from "../../../components/DocHead";
 
 const { TabPane } = Tabs;
+
+const tabList = [
+  "Overview",
+  "Rules",
+  "Brackets",
+  "Participants",
+  "Referees",
+  "Prizing",
+  "Donation history",
+];
 
 const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
@@ -40,10 +52,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const { tournamentId, asPath } = props;
   const [isLoadingSub, setIsLoadingSub] = useState(false);
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("Overview");
   const [dataRankSponsors, setDataRankSponsors] = useState([]);
-  const [width] = useWindowSize();
 
-  const positiontabs = width >= 1024 ? 'top': 'left'
   const {
     dataTournamentDetail,
     dataParticipants,
@@ -69,6 +80,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
     refetchSubTournament,
     refetchConfirmResult,
+    refetchBracket,
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
@@ -79,6 +91,13 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
+  
+  const { dataUpdateTotalDonation } = useUpdateTotalDonation({
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
+
+  console.log("dataUpdateTotalDonation", dataUpdateTotalDonation);
   
   useEffect(() => {
     let obj: any = [];
@@ -188,8 +207,13 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     }, 800);
   };
 
+  const handleActiveTab = (item: string) => {
+    setActiveTab(item);
+  };
+
   return (
     <>
+      <DocHead title={name} />
       <div className={s.wrapper}>
         <Banner cover={cover} />
         <TournamentDetailMarquee />
@@ -314,7 +338,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       </Col>
                     </Row>
                     <Row gutter={{ sm: 20, lg: 30 }}>
-                      <Col xs={{ span: 12 }} sm={{ span: 9 }} className={s.metadataBlock}>
+                      <Col
+                        xs={{ span: 12 }}
+                        sm={{ span: 9 }}
+                        className={s.metadataBlock}
+                      >
                         <h4 className={s.metadataTitle}>Bracket type</h4>
                         <div className={s.metadataValue}>
                           {dataBracket?.type === "SINGLE"
@@ -324,17 +352,29 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             : ""}
                         </div>
                       </Col>
-                      <Col xs={{ span: 12 }} sm={{ span: 8 }} className={`${s.metadataBlock} ${s.alignRightMb}`}>
+                      <Col
+                        xs={{ span: 12 }}
+                        sm={{ span: 8 }}
+                        className={`${s.metadataBlock} ${s.alignRightMb}`}
+                      >
                         <h4 className={s.metadataTitle}>Max participants</h4>
                         <div className={s.metadataValue}>{participants}</div>
                       </Col>
-                      <Col xs={{ span: 12 }} sm={{ span: 7 }} className={s.metadataBlock}>
+                      <Col
+                        xs={{ span: 12 }}
+                        sm={{ span: 7 }}
+                        className={s.metadataBlock}
+                      >
                         <h4 className={s.metadataTitle}>Team size</h4>
                         <div className={s.metadataValue}>
                           {team_size ?? "-"}v{team_size ?? "-"}
                         </div>
                       </Col>
-                      <Col xs={{ span: 12 }} sm={{ span: 9 }} className={s.gameInfoBlock}>
+                      <Col
+                        xs={{ span: 12 }}
+                        sm={{ span: 9 }}
+                        className={s.gameInfoBlock}
+                      >
                         <div className={s.gameInfo}>
                           <Image
                             src={game?.logo}
@@ -345,7 +385,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           <div className={s.gameName}>{game?.name}</div>
                         </div>
                       </Col>
-                      <Col xs={{ span: 12 }} sm={{ span: 8 }} className={s.userInfoBlock}>
+                      <Col
+                        xs={{ span: 12 }}
+                        sm={{ span: 8 }}
+                        className={s.userInfoBlock}
+                      >
                         <Link
                           href={
                             user?.profile?.user_name
@@ -376,7 +420,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           </a>
                         </Link>
                       </Col>
-                      <Col xs={{ span: 12 }} sm={{ span: 7 }} className={s.alignRightMb}>
+                      <Col
+                        xs={{ span: 12 }}
+                        sm={{ span: 7 }}
+                        className={s.alignRightMb}
+                      >
                         <div className={s.metadataValue}>BO{turns}</div>
                       </Col>
                     </Row>
@@ -460,10 +508,10 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         </div>
         {/* ===== tabs ===== */}
         <div className={`lucis-container-2 ${s.container_Tabs}`}>
-          <Tabs
+          {/* <Tabs
             defaultActiveKey="1"
             className={s.block_tabs}
-            tabPosition={positiontabs}
+            tabPosition="top"
           >
             <TabPane tab="Overview" key="1">
               <Overview desc={desc as string} />
@@ -476,6 +524,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 dataBracket={dataBracket}
                 loadingBracket={loadingBracket}
                 refereeIds={referees ? referees.split(",") : []}
+                refetchBracket={refetchBracket}
               />
             </TabPane>
             <TabPane
@@ -529,7 +578,92 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 currency={currency}
               />
             </TabPane>
-          </Tabs>
+          </Tabs> */}
+
+          <div className={s.block_tabs}>
+            {tabList.map((item: string) => {
+              return (
+                <div
+                  className={s.tab_item}
+                  style= {item === activeTab ? {opacity: 1} : {opacity: 0.5}}
+                  key={item}
+                  onClick={() => handleActiveTab(item)}
+                >
+                  {item}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className={s.content_tab}>
+            {(() => {
+              switch (activeTab) {
+                case "Overview":
+                  return <Overview desc={desc as string} />;
+                case "Rules":
+                  return <Rules rules={rules as string} />;
+                case "Brackets":
+                  return (
+                    <Brackets
+                      dataBracket={dataBracket}
+                      loadingBracket={loadingBracket}
+                      refereeIds={referees ? referees.split(",") : []}
+                      refetchBracket={refetchBracket}
+                    />
+                  );
+                case "Participants":
+                  return (
+                    <>
+                      {tournament_status !== "CLOSED" && (
+                        <TableParticipant
+                          dataParticipants={dataParticipants}
+                          loading={loadingParticipant}
+                          tournamentId={tournamentId as string}
+                          currency={currency}
+                          tournament_status={tournament_status as string}
+                          refetch={refetch}
+                        />
+                      )}
+                      {tournament_status === "CLOSED" && (
+                        <ListRanks
+                          tournamentId={tournamentId as string}
+                          currency={currency}
+                        />
+                      )}
+                    </>
+                  );
+                case "Referees":
+                  return (
+                    <Referees
+                      dataRefereesDetail={dataRefereesDetail}
+                      loadingReferees={loadingReferees}
+                      tournamentId={tournamentId as string}
+                      currency={currency}
+                      tournament_status={tournament_status as string}
+                      refetch={refetch}
+                    />
+                  );
+                case "Prizing":
+                  return (
+                    <Prizing
+                      dataPrizing={dataPrizing}
+                      loadingPrizing={loadingPrizing}
+                      currency={currency}
+                    />
+                  );
+                case "Donation history":
+                  return (
+                    <DonationHistory
+                      dataDonation={dataDonation}
+                      loadingDonation={loadingDonation}
+                      currency={currency}
+                    />
+                  );
+                default:
+                  break;
+              }
+            })()}
+          </div>
         </div>
 
         <div className={s.communityC}></div>

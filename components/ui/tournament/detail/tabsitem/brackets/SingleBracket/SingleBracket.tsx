@@ -1,17 +1,20 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { RoundProps } from "react-brackets";
 import { observer } from "mobx-react-lite";
 
 import RoundStore, { RoundMatch, Team } from "src/store/SingleRoundStore";
 import SingleBracketStateless from "./SingleBracketStateless";
 import { UpdateScoreModalStateless } from "../../../popup/updateScore/UpdateScoreModalStateless";
+import {ApolloQueryResult} from "@apollo/client";
+import {message} from "antd";
 
-interface Props {
+type Props =  {
   canEdit: boolean
+  refetchBracket?: () => Promise<ApolloQueryResult<any>>
 }
 
 const SingleBracket = (props: Props) => {
-  const {canEdit} = props;
+  const {canEdit, refetchBracket} = props;
   const rounds = RoundStore.rounds as RoundProps[]
   const openMatchEditModal = (
     e: any,
@@ -25,6 +28,8 @@ const SingleBracket = (props: Props) => {
       teams: seed.teams,
       seedIndex,
       roundIndex,
+      linkStreamEnabled: seed.linkStreamEnable,
+      linkStream: seed.linkStream,
     };
   }
 
@@ -50,6 +55,12 @@ const SingleBracket = (props: Props) => {
 
   const onUpdateCompleted = (score0: number, score1: number) => {
     RoundStore.setMatchScore(roundIndex, seedIndex, score0, score1);
+    message.success('Success')
+      .then(() => {
+        if (refetchBracket) {
+          refetchBracket()
+        }
+      })
   }
   // ============= END EDIT MODAL =================
 

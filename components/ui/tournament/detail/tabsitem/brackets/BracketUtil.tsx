@@ -3,11 +3,13 @@ import moment from 'moment'
 import { BracketGql, BracketMatch, BracketMatchStatus, BracketRound, PlayTeam, PlayTeamGql } from "src/generated/graphql";
 import { Round, RoundMatch, Team } from "src/store/SingleRoundStore";
 import s from './index.module.sass'
+import {ApolloQueryResult} from "@apollo/client";
 
 export type BracketUiProps = {
   dataBracket?: BracketGql;
   loadingBracket?: any;
   refereeIds: string[];
+  refetchBracket?: () => Promise<ApolloQueryResult<any>>
 };
 
 function _defaultRoundTeam(): Team {
@@ -42,6 +44,8 @@ export const createSeed = (item: BracketMatch, idx: number, listTeam: PlayTeamGq
     uid: item.uid,
     teams: [roundTeam1, roundTeam2],
     status: item.status,
+    linkStream: item.link_stream,
+    linkStreamEnable: item.link_stream_enable,
   };
 };
 
@@ -51,12 +55,13 @@ export const createRound = (item: BracketRound, idx: number, listTeam: PlayTeamG
     : item.bracketMatchs.map((item, idx) =>
       createSeed(item, idx, listTeam)
     );
+  const startAt = moment(item.start_at).format("MMM Do, HH:mm:ss")
 
   return {
     title: (
       <div>
         <p className="m-0 text text-white text-[24px]">{item.title}</p>
-        <p>{moment(item.start_at).format("MMM Do, HH:MM:SS")}</p>
+        <p className="text-[18px]">{startAt}</p>
       </div>
     ),
     seeds,

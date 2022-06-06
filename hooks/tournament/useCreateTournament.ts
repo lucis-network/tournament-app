@@ -1,8 +1,14 @@
 import { gql, useQuery, useSubscription } from "@apollo/client";
+import { GetRefereeInput } from "components/ui/tournament/create/referee/RefereeModal";
 import { useEffect } from "react";
 
 type Props = {
   name?: string;
+};
+
+type PropsReferees = {
+  input?: GetRefereeInput;
+  skip?: boolean,
 };
 
 export function useChooseGame(props: Props) {
@@ -18,10 +24,11 @@ export function useChooseGame(props: Props) {
   };
 }
 
-export function useReferees(props: Props) {
+export function useReferees(props: PropsReferees) {
   const { loading, error, data } = useQuery(REFEREES, {
-    variables: { name: props?.name },
-    fetchPolicy: "cache-and-network",
+    variables: { input: props?.input },
+    fetchPolicy: "no-cache",
+    skip: props?.skip
   });
 
   return {
@@ -82,15 +89,19 @@ export const CHOOSE_GAME = gql`
 `;
 
 const REFEREES = gql`
-  query ($name: String!) {
-    getReferee(name: $name) {
-      id
-      code
-      email
-      profile {
-        display_name
-        avatar
+  query ($input: GetRefereeInput!) {
+    getReferee(input: $input) {
+      users {
+        id
+        code
+        email
+        profile {
+          display_name
+          avatar
+          user_name
+        }
       }
+      total
     }
   }
 `;
