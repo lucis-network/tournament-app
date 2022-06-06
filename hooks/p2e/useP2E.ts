@@ -1,5 +1,5 @@
-import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
-import {Match, PlatformAccount} from "../../src/generated/graphql_p2e";
+import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
+import { Match, PlatformAccount } from "../../src/generated/graphql_p2e";
 
 export const useGetPlatformAccount = (): {
   getPlatformAccountLoading: boolean,
@@ -44,6 +44,9 @@ export const useGetRecentMatches = (): {
   } = useQuery(GET_RECENT_MATCHES, {
     context: {
       endpoint: 'p2e'
+    },
+    variables: {
+      game_uid: '03',
     }
   })
 
@@ -55,6 +58,7 @@ export const useGetRecentMatches = (): {
   }
 }
 
+
 export const CONNECT_FACEIT = gql`
   mutation ($accessToken: String!, $idToken: String!) {
     connectFaceit (accessToken: $accessToken, idToken: $idToken) {
@@ -65,9 +69,9 @@ export const CONNECT_FACEIT = gql`
   }
 `
 
-export const GET_DAILY_MISSION = gql`
+export const GET_OR_SET_DAILY_MISSION = gql`
   mutation ($game_uid: String!) {
-    getDailyMission(game_uid: $game_uid) {
+    getOrSetDailyMission(game_uid: $game_uid) {
       achieved
       mission_uid
       mission {
@@ -103,6 +107,12 @@ export const UPDATE_DAILY_MISSION = gql`
   }
 `
 
+export const CLAIM_MISSION = gql`
+  mutation ($mission_uid: String!) {
+    claimMission(mission_uid: $mission_uid)
+  }
+`
+
 const GET_PLATFORM_ACCOUNT = gql`
   query {
     getPlatformAccount {
@@ -114,15 +124,24 @@ const GET_PLATFORM_ACCOUNT = gql`
   }
 `
 
-const GET_RECENT_MATCHES = gql`
-  query {
-    getRecentlyMatch {
+export const GET_RECENT_MATCHES = gql`
+  query ($game_uid: String!) {
+    getRecentlyMatch(game_uid: $game_uid) {
       match_uid
       winner_team
       loser_team
       score
       is_win
       end_at
+    }
+  }
+`
+
+export const GET_STATISTICS = gql`
+  query {
+    getBalance {
+      lucis_point
+      lucis_token
     }
   }
 `
