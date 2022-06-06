@@ -18,8 +18,8 @@ export default observer(function MyProfile() {
 	const localUserInfo = AuthStore;
 	const [userInfo, setUserInfo] = useState<any>(localUserInfo);
 	const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData } = useGetUserProfile({
-		user_name: `${localUserInfo?.profile?.user_name}`,
-		skip: isEmpty(localUserInfo?.profile?.user_name),
+		user_id: Number(localUserInfo?.profile?.user_id),
+		skip: isEmpty(localUserInfo?.profile?.user_id),
 		onCompleted: (data: {
 			getUserProfile: UserGraphql;
 		}) => {
