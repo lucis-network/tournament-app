@@ -8,6 +8,7 @@ type Props = {
 
 type PropsReferees = {
   input?: GetRefereeInput;
+  skip?: boolean,
 };
 
 export function useChooseGame(props: Props) {
@@ -27,6 +28,7 @@ export function useReferees(props: PropsReferees) {
   const { loading, error, data } = useQuery(REFEREES, {
     variables: { input: props?.input },
     fetchPolicy: "no-cache",
+    skip: props?.skip
   });
 
   return {
@@ -89,14 +91,17 @@ export const CHOOSE_GAME = gql`
 const REFEREES = gql`
   query ($input: GetRefereeInput!) {
     getReferee(input: $input) {
-      id
-      code
-      email
-      profile {
-        display_name
-        avatar
-        user_name
+      users {
+        id
+        code
+        email
+        profile {
+          display_name
+          avatar
+          user_name
+        }
       }
+      total
     }
   }
 `;

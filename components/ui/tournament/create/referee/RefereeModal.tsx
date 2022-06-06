@@ -7,6 +7,7 @@ import s from "./index.module.sass";
 import { useReferees } from "hooks/tournament/useCreateTournament";
 import debounce from "lodash/debounce";
 import { UserAddOutlined, UserOutlined } from "@ant-design/icons";
+import { isEmpty } from "lodash";
 
 type Props = {
   handCallbackReferee?: any;
@@ -34,6 +35,7 @@ export default observer(function RefereeModal(props: Props) {
 
   const { getDataReferees } = useReferees({
     input: input,
+    skip: input == {}
   });
 
   const isModalVisible = TournamentStore.refereeModalVisible,
@@ -71,8 +73,8 @@ export default observer(function RefereeModal(props: Props) {
     const dataCallback: number[] = [];
     const dataRefereeCallback: any[] = [];
     checkedValue.forEach((item: any) => {
-      dataCallback.push(Number.parseInt(getDataReferees[item].id));
-      dataRefereeCallback.push(getDataReferees[item]);
+      dataCallback.push(Number.parseInt(getDataReferees?.users[item]?.id));
+      dataRefereeCallback.push(getDataReferees?.users[item]);
     });
     props.handCallbackReferee(dataRefereeCallback, dataCallback);
     setIsModalVisible(false);
@@ -119,7 +121,7 @@ export default observer(function RefereeModal(props: Props) {
         className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-2 mt-4"
       >
         {getDataReferees
-          ? getDataReferees.map((ele: any, index: number) => {
+          ? getDataReferees?.users?.map((ele: any, index: number) => {
               return (
                 // <div className={`${s.item}`} key={index}>
                 //   <div className={`${s.avatar} ${s.avBig}`}>
@@ -177,7 +179,7 @@ export default observer(function RefereeModal(props: Props) {
       </Checkbox.Group>
       <div className={s.message_error}>{messageError}</div>
       <div style={{textAlign: "center"}}>
-        <Pagination defaultCurrent={1} total={50} onChange={changePage} />
+        <Pagination defaultCurrent={1} total={getDataReferees?.total} onChange={changePage} />
       </div>
     </Modal>
   );
