@@ -19,6 +19,12 @@ export type Scalars = {
   JSON: any;
 };
 
+export type AnnouncementType = {
+  __typename?: 'AnnouncementType';
+  content?: Maybe<Scalars['String']>;
+  tournament_uid?: Maybe<Scalars['String']>;
+};
+
 export type AuthGraphql = {
   __typename?: 'AuthGraphql';
   token: Scalars['String'];
@@ -1063,6 +1069,14 @@ export enum ClaimType {
   PrizeSystem = 'PRIZE_SYSTEM'
 }
 
+export type Config = {
+  __typename?: 'Config';
+  id: Scalars['ID'];
+  tn_claim_donate: Scalars['Decimal'];
+  tn_lucis_fee: Scalars['Decimal'];
+  tn_referee_fee: Scalars['Decimal'];
+};
+
 export type Contract = {
   __typename?: 'Contract';
   address: Scalars['String'];
@@ -1868,7 +1882,6 @@ export type Mutation = {
   editTeam?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
   generateNonce: Scalars['String'];
-  getNotification?: Maybe<Array<Notification>>;
   joinTournament?: Maybe<Scalars['Boolean']>;
   leaveTeam?: Maybe<Scalars['Boolean']>;
   leaveTournament?: Maybe<Scalars['Boolean']>;
@@ -1877,6 +1890,7 @@ export type Mutation = {
   /** Google login */
   loginGoogle: AuthGraphql;
   reactToTournament?: Maybe<Scalars['Boolean']>;
+  seenNotification?: Maybe<Scalars['Boolean']>;
   subscribeToTournament?: Maybe<Scalars['Boolean']>;
   unsubscribeToTournament?: Maybe<Scalars['Boolean']>;
   /** Only referee can update match result */
@@ -2009,6 +2023,11 @@ export type MutationLoginGoogleArgs = {
 
 export type MutationReactToTournamentArgs = {
   data: ReactionInput;
+};
+
+
+export type MutationSeenNotificationArgs = {
+  id: Scalars['Float'];
 };
 
 
@@ -2183,6 +2202,8 @@ export type Notification = {
   image?: Maybe<Scalars['String']>;
   is_seen: Scalars['Boolean'];
   title?: Maybe<Scalars['String']>;
+  tournament_uid?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
@@ -2195,6 +2216,8 @@ export type NotificationCreateManyUserInput = {
   image?: InputMaybe<Scalars['String']>;
   is_seen?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
+  tournament_uid?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -2221,17 +2244,9 @@ export type NotificationCreateWithoutUserInput = {
   image?: InputMaybe<Scalars['String']>;
   is_seen?: InputMaybe<Scalars['Boolean']>;
   title?: InputMaybe<Scalars['String']>;
+  tournament_uid?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type NotificationType = {
-  __typename?: 'NotificationType';
-  content?: Maybe<Scalars['String']>;
-  image?: Maybe<Scalars['String']>;
-  is_seen?: Maybe<Scalars['Boolean']>;
-  time?: Maybe<Scalars['DateTime']>;
-  title?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['Int']>;
 };
 
 export type NotificationWhereUniqueInput = {
@@ -2245,7 +2260,7 @@ export type NullableStringFieldUpdateOperationsInput = {
 export type Participant = {
   __typename?: 'Participant';
   participant?: Maybe<Scalars['Int']>;
-  team?: Maybe<PlayTeamMember>;
+  teams?: Maybe<Array<PlayTeamMember>>;
   tournament_uid?: Maybe<Scalars['String']>;
 };
 
@@ -2670,6 +2685,7 @@ export type PlayerMission = {
   achieved?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   daily_mission?: Maybe<UserDailyMission>;
+  is_claim: Scalars['Boolean'];
   mission: Mission;
   mission_uid: Scalars['String'];
   player_game: PlayerGame;
@@ -2681,6 +2697,7 @@ export type PlayerMission = {
 export type PlayerMissionCreateManyMissionInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  is_claim?: InputMaybe<Scalars['Boolean']>;
   player_game_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2694,6 +2711,7 @@ export type PlayerMissionCreateManyMissionInputEnvelope = {
 export type PlayerMissionCreateManyPlayer_GameInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  is_claim?: InputMaybe<Scalars['Boolean']>;
   mission_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2742,6 +2760,7 @@ export type PlayerMissionCreateOrConnectWithoutPlayer_GameInput = {
 export type PlayerMissionCreateWithoutDaily_MissionInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
@@ -2752,6 +2771,7 @@ export type PlayerMissionCreateWithoutMissionInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput>;
+  is_claim?: InputMaybe<Scalars['Boolean']>;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2761,6 +2781,7 @@ export type PlayerMissionCreateWithoutPlayer_GameInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput>;
+  is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2905,6 +2926,7 @@ export type Query = {
   checkUserName?: Maybe<Scalars['Boolean']>;
   currencies?: Maybe<Array<CurrencyGql>>;
   donateHistory?: Maybe<Array<DonateHistory>>;
+  getAllConfig?: Maybe<Array<Config>>;
   getAllTeam?: Maybe<Array<UserTeam>>;
   getAllTournament: Array<TournamentGql>;
   getBracket?: Maybe<BracketGql>;
@@ -2915,6 +2937,7 @@ export type Query = {
   getGame?: Maybe<Array<Game>>;
   getJoinedTournament?: Maybe<Array<TTournament>>;
   getMyTeam?: Maybe<Array<UserTeam>>;
+  getNotification?: Maybe<Array<Notification>>;
   getOnGoingTournament?: Maybe<Array<TournamentGql>>;
   getOwnedTournament?: Maybe<Array<TTournament>>;
   getReferee?: Maybe<GUser>;
@@ -3023,7 +3046,7 @@ export type QueryGetSponsorSlotArgs = {
 
 
 export type QueryGetSpotlightAnnouncementArgs = {
-  tournament_uid: Scalars['String'];
+  tournament_uid?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -3881,8 +3904,8 @@ export type StringNullableFilter = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  getSpotlightAnnouncement: SpotlightAnnouncement;
-  pushNotification: NotificationType;
+  getSpotlightAnnouncement: AnnouncementType;
+  pushNotification: Notification;
   updateParticipant: Participant;
   updateTotalDonation: TotalDonation;
   updateTotalPrizePool: TotalPrizePool;

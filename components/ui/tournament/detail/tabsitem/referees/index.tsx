@@ -33,7 +33,7 @@ export default function Referees(props: Props) {
   }
 
   const handleClickShowPopUp = (e: any) => {
-    setDataReferees(e.user.profile);
+    setDataReferees(e.profile);
     setIsPopUp(true);
   };
   const click = () => {
@@ -68,7 +68,7 @@ export default function Referees(props: Props) {
             />
             <a
               style={{ color: "white", marginLeft: "10px" }}
-              href={`/profile/${item?.user?.profile?.user_name}`}
+              href={`/profile/${item?.profile?.user_name}`}
               target="_blank"
               rel="noreferrer"
             >

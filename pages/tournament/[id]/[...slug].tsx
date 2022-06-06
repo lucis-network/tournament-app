@@ -91,14 +91,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-  
-  const { dataUpdateTotalDonation } = useUpdateTotalDonation({
-    tournament_uid: tournamentId,
-    skip: isEmpty(tournamentId),
-  });
-
-  console.log("dataUpdateTotalDonation", dataUpdateTotalDonation);
-  
+    
   useEffect(() => {
     let obj: any = [];
     if (dataSponsors) {
@@ -239,7 +232,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribed</span>
+                      <span className="ml-2">Subscribed &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
                     </button>
                   </Spin>
                 )}
@@ -251,7 +244,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribe</span>
+                      <span className="ml-2">Subscribe &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
                     </button>
                   </Spin>
                 )}
@@ -497,12 +490,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               tournament_status={tournament_status as string}
             />
             {/* ===== sponsor ===== */}
-            <TournamentDetailSponsor
+            {/* <TournamentDetailSponsor
               tournamentId={tournamentId as string}
               tournament_status={tournament_status as string}
               refetchTounament={refetch}
               currency={currency}
-            />
+            /> */}
             {/* ===== end sponsor ===== */}
           </div>
         </div>

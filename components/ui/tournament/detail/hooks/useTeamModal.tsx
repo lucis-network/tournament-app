@@ -211,8 +211,6 @@ const UseTeamModal = (tournamentData: any) => {
           } as JoinTournamentType,
         },
         onCompleted: (data: any) => {
-          console.log("vao day a`");
-          console.log("data", data);
           setPassword("");
           setStep("success");
           message.success("Success", 10);

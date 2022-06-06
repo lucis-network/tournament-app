@@ -113,7 +113,7 @@ export default function ListRanks(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {currencyFomat(item.prize)} {currency.symbol}
+            {currencyFomat(item.prize,2)} {currency.symbol}
           </>
         );
       },
