@@ -7,6 +7,7 @@ import s from "./Login.module.sass"
 import { gql, useMutation, useQuery } from "@apollo/client";
 import {debounce, isEmpty} from "lodash";
 import AuthService from "../AuthService";
+import Country from "country.json"
 
 type SignupInfoModalProps = {};
 
@@ -67,15 +68,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   const { Option } = Select;
 
   const fetchCountryList = (): void => {
-    fetch('https://countriesnow.space/api/v0.1/countries/flag/images', {
-      method: 'GET'
-    })
-      .then(response => response.json())
-      .then(result => {
-        const sortedData = result.data.sort((a: any, b: any) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-        setCountryList(sortedData);
-      })
-      .catch(error => console.log('error fetchCountryList', error));
+    const sortedData = Country.data.sort((a: any, b: any) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+    setCountryList(sortedData);
   }
 
   const handleComplete = (): void => {
