@@ -29,7 +29,7 @@ export default observer(function DepositModal(props: Props) {
 
   const { getContract } = useGetContract({});
   const { getConfigFee } = useGetConfigFee({});
-  
+
   const handleOk = async () => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
@@ -68,6 +68,10 @@ export default observer(function DepositModal(props: Props) {
       );
 
       let token_address = TournamentStore?.currency_address ? TournamentStore?.currency_address : "";
+
+      // if (TournamentStore.currency_symbol === "BUSD") token_address = BUSD;
+      // if (TournamentStore.currency_symbol === "USDT") token_address = USDT;
+      // if (TournamentStore.currency_symbol === "LUCIS") token_address = LUCIS;
 
       if (!TournamentStore.checkDepositApprove) {
         TournamentStore.checkDepositApprove =
