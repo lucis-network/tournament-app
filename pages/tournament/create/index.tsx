@@ -45,6 +45,7 @@ import sponsorStore, {
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
 import AuthStore from "components/Auth/AuthStore";
+import NotifyModal from "components/ui/tournament/create/notify/notifyModal";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -81,8 +82,8 @@ export default observer(function CreateTournament(props: Props) {
 
   const { getDataReferees } = useReferees({
     input: {
-      name: ''
-    }
+      name: "",
+    },
   });
 
   const router = useRouter();
@@ -251,8 +252,13 @@ export default observer(function CreateTournament(props: Props) {
       .then(async (res) => {
         console.log("Res", res);
         if (res.data.createTournament.uid) {
-          setTournamentRes(res.data.createTournament);
-          TournamentStore.depositModalVisible = true;
+          if (TournamentStore.pool_size == 0) {
+            TournamentStore.notifyModalVisible = true;
+          } else {
+            setTournamentRes(res.data.createTournament);
+            TournamentStore.depositModalVisible = true;
+          }
+
           window.onbeforeunload = null;
         } else {
           message.error("Save fail");
@@ -348,6 +354,7 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
+    console.log(cr.pool_size);
     if (cr.pool_size == null || cr.pool_size < 0) {
       setCheckPoolSize(false);
       //@ts-ignore
@@ -416,12 +423,11 @@ export default observer(function CreateTournament(props: Props) {
   const user = getLocalAuthInfo();
 
   useEffect(() => {
-    console.log(AuthStore)
     if (!AuthStore.isLoggedIn) Router.push("/tournament");
   }, [AuthStore]);
 
   return (
-    <> 
+    <>
       {/* <DocHead />
       <div className="pt-28 min-h-screen"></div>
       <Footer /> */}
@@ -854,6 +860,7 @@ export default observer(function CreateTournament(props: Props) {
         <RefereeModal handCallbackReferee={handCallbackReferee} />
         <TimelineModal handCallbackTimeline={handCallbackTimeline} />
         <DepositModal tournamentRes={tournamentRes} />
+        <NotifyModal />
       </div>
 
       {/* <Footer /> */}

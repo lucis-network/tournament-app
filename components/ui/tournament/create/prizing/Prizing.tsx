@@ -15,9 +15,13 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Item from "antd/lib/list/Item";
 import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
 import { useLocalObservable } from "mobx-react";
-import { useCurrencies } from "hooks/tournament/useCreateTournament";
+import {
+  useCurrencies,
+  useGetConfigFee,
+} from "hooks/tournament/useCreateTournament";
 import { currency } from "../../../../../utils/Number";
 import { LUCIS_FEE, REFEREES_FEE } from "utils/Enum";
+import { isEmpty } from "lodash";
 
 const { Option } = Select;
 
@@ -200,6 +204,7 @@ export default observer(function Prizing(props: Props) {
   const [chain, setChain] = useState(TournamentStore.currency_uid);
   const [symbol, setSymbol] = useState(TournamentStore.currency_symbol);
   const { getDataCurrencies } = useCurrencies({});
+  const { getConfigFee } = useGetConfigFee({});
   const [messageErrorPoolSize, setMessageErrorPoolSize] = useState("");
   const [messageErrorCurrency, setMessageErrorCurrency] = useState("");
 
@@ -355,12 +360,17 @@ export default observer(function Prizing(props: Props) {
 
   useEffect(() => {
     if (!props.checkPoolSize) {
-      console.log("poolSize", poolSize);
-      if (poolSize == null || poolSize < 0)
+      if (poolSize == null) {
         if (inputRef && inputRef.current) {
           inputRef.current!.focus();
           setMessageErrorPoolSize("Pool size must not be empty");
         }
+      } else if (poolSize < 0) {
+        if (inputRef && inputRef.current) {
+          inputRef.current!.focus();
+          setMessageErrorPoolSize("Pool size must be greater than or equal to 0");
+        }
+      }
     }
 
     if (!props.checkCurrency) {
@@ -427,11 +437,12 @@ export default observer(function Prizing(props: Props) {
               onChange={onChange}
               ref={inputRef}
               onBlur={() => handleBlur()}
-              value={
-                TournamentStore.pool_size
-                  ? TournamentStore.pool_size
-                  : undefined
-              }
+              // value={
+              //   TournamentStore.pool_size
+              //     ? TournamentStore.pool_size
+              //     : undefined
+              // }
+              value={poolSize}
             />
             <div className={s.message_error}>{messageErrorPoolSize}</div>
           </Col>
@@ -508,21 +519,17 @@ export default observer(function Prizing(props: Props) {
         </Row>
         <Row>
           <Col span={3}>
-            <Input
-              prefix="$"
-              //type="number"
-              defaultValue={LUCIS_FEE + "%"}
-              disabled
-            />
+            <span style={{ color: "white" }}>
+              {" "}
+              {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0} %
+            </span>
           </Col>
           <Col span={2}></Col>
           <Col span={3}>
-            <Input
-              prefix="$"
-              //type="number"
-              defaultValue={REFEREES_FEE + "%"}
-              disabled
-            />
+            <span style={{ color: "white" }}>
+              {" "}
+              {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0} %
+            </span>
           </Col>
           <Col span={10}></Col>
           <Col span={6}>

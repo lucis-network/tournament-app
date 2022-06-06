@@ -8,7 +8,7 @@ type Props = {
 
 type PropsReferees = {
   input?: GetRefereeInput;
-  skip?: boolean,
+  skip?: boolean;
 };
 
 export function useChooseGame(props: Props) {
@@ -28,7 +28,7 @@ export function useReferees(props: PropsReferees) {
   const { loading, error, data } = useQuery(REFEREES, {
     variables: { input: props?.input },
     fetchPolicy: "no-cache",
-    skip: props?.skip
+    skip: props?.skip,
   });
 
   return {
@@ -61,6 +61,23 @@ export function useCurrencies(props: Props) {
     loading,
     error,
     getDataCurrencies: data?.currencies,
+  };
+}
+
+export function useGetConfigFee(props: Props) {
+  const {
+    loading,
+    error,
+    data: getConfigFee,
+  } = useQuery(GET_CONFIG_FEE, {
+    variables: {},
+    fetchPolicy: "cache-and-network",
+  });
+
+  return {
+    loading,
+    error,
+    getConfigFee: getConfigFee?.getAllConfig,
   };
 }
 
@@ -127,6 +144,16 @@ const CURRENCIES = gql`
   }
 `;
 
+const GET_CONFIG_FEE = gql`
+  query {
+    getAllConfig {
+      id
+      tn_lucis_fee
+      tn_referee_fee
+      tn_claim_donate
+    }
+  }
+`;
 const GET_CONTRACT = gql`
   query {
     getContracts {

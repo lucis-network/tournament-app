@@ -234,7 +234,41 @@ export function useUpdateTotalDonation(props: Props) {
   return {
     loading,
     error,
-    dataUpdateTotalDonation,
+    dataUpdateTotalDonation: dataUpdateTotalDonation?.updateTotalDonation,
+  };
+}
+
+export function useUpdateTotalPrizePool(props: Props) {
+  const {
+    loading,
+    error,
+    data: dataUpdateTotalPrizePool,
+  } = useSubscription(UPDATE_TOTAL_PRIZE_POOL, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "no-cache",
+  });
+
+  return {
+    loading,
+    error,
+    dataUpdateTotalPrizePool: dataUpdateTotalPrizePool?.updateTotalPrizePool,
+  };
+}
+
+export function useUpdateParticipant(props: Props) {
+  const {
+    loading,
+    error,
+    data: dataUpdateParticipant,
+  } = useSubscription(UPDATE_PARTICIPANT, {
+    variables: { tournament_uid: props?.tournament_uid },
+    fetchPolicy: "no-cache",
+  });
+
+  return {
+    loading,
+    error,
+    dataUpdateParticipant : dataUpdateParticipant?.updateParticipant,
   };
 }
 
@@ -324,6 +358,11 @@ const GET_TOURNAMENT_DETAIL = gql`
       brackets {
         uid
         start_at
+      }
+      tournament_subscribes {
+        uid
+        user_id
+        tournament_uid
       }
       currency_uid
       totalDonation
@@ -570,10 +609,6 @@ const UPDATE_PARTICIPANT = gql`
   subscription ($tournament_uid: String!) {
     updateParticipant(tournament_uid: $tournament_uid) {
       participant
-      team {
-        uid
-        user_id
-      }
     }
   }
 `;

@@ -11,7 +11,7 @@ import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Au
 import { BUSD, LUCIS, LUCIS_FEE, REFEREES_FEE, USDT } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
 import { fomatNumber } from "utils/Number";
-import { useGetContract } from "hooks/tournament/useCreateTournament";
+import { useGetConfigFee, useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "../../../../Auth/AuthStore";
 
@@ -28,7 +28,8 @@ export default observer(function DepositModal(props: Props) {
     (TournamentStore.depositModalVisible = v);
 
   const { getContract } = useGetContract({});
-
+  const { getConfigFee } = useGetConfigFee({});
+  
   const handleOk = async () => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
@@ -134,7 +135,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee  (${LUCIS_FEE}%)</p>
+                  <p>Lucis fee  (${getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
@@ -150,7 +151,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Referee fee (${REFEREES_FEE}%)</p>
+                  <p>Referee fee (${getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
