@@ -2917,7 +2917,6 @@ export type Query = {
   getMyTeam?: Maybe<Array<UserTeam>>;
   getOnGoingTournament?: Maybe<Array<TournamentGql>>;
   getOwnedTournament?: Maybe<Array<TTournament>>;
-  getPlatformAccount?: Maybe<PlatformAccount>;
   getReferee?: Maybe<GUser>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
   getSpotlightAnnouncement?: Maybe<Array<Scalars['String']>>;

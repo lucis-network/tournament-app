@@ -782,6 +782,11 @@ export type QueryGetRaffleDetailArgs = {
 };
 
 
+export type QueryGetRecentlyMatchArgs = {
+  game_uid: Scalars['String'];
+};
+
+
 export type QuerySearchRaffleArgs = {
   name: Scalars['String'];
 };

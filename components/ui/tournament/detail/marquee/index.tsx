@@ -2,12 +2,14 @@ import s from "./Marquee.module.sass";
 import Marquee from "react-fast-marquee";
 import { useEffect, useState } from "react";
 import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
+import moment from "moment";
 
 const TournamentDetailMarquee = () => {
   const { loading, error, data, refetch } = useGetSpotlightAnnouncement();
 
   const [titleSpotlight, setTitleSpotlight] = useState("");
   const [arr, setArr] = useState(0);
+  const [timer, setTimer] = useState({});
 
   useEffect(() => {
     let interval: NodeJS.Timer;
@@ -21,13 +23,24 @@ const TournamentDetailMarquee = () => {
           const title = data[arr];
           setTitleSpotlight(title);
         }
-      }, 10000);
+      }, 5000);
     }
 
     return () => {
       clearInterval(interval);
     };
   }, [arr, data]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const date = new Date();
+      setTimer(date);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timer]);
 
   return (
     <div className={`lucis-container-2 ${s.marquee_section}`}>
@@ -36,15 +49,9 @@ const TournamentDetailMarquee = () => {
         <div className={s.time}>
           <div></div>
           <div className={s.line}></div>
-          April 4th 13:30:45
+          {moment(timer).format("MMMM Do h:mm:ss")}
         </div>
-        <Marquee
-          speed={100}
-          gradientColor={[180, 180, 180]}
-          className={s.marquee_title}
-        >
-          {titleSpotlight}
-        </Marquee>
+        <div className={s.marquee_title}>{titleSpotlight}</div>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import { Button } from "antd";
 import { useState } from "react";
 import { GTopEarning } from "src/generated/graphql";
+import { currency } from "utils/Number";
 
 type Props = {
   data: GTopEarning[];
@@ -28,7 +29,7 @@ export default function CardPlayer(props: Props) {
   const hanldeLike = (id: any) => {};
   return (
     <>
-      {data.map((e: any, i: number) => {
+      {data?.map((e: any, i: number) => {
         const positionPlayer =
           i === 0 ? `im_top1.png` : i === 1 ? "im_top2.png" : "im_top3.png";
         return (
@@ -47,26 +48,31 @@ export default function CardPlayer(props: Props) {
                   src={e?.avatar ? `${e.avatar}` : `/assets/home/avt_null.jpg`}
                   alt=""
                 />
-                <div className={s.ic_like} onClick={() => hanldeLike(e.id)}>
+                {/* <div className={s.ic_like} onClick={() => hanldeLike(e.id)}>
                   <img src="/assets/home/ic_unlike.svg" alt="" />
-                </div>
+                </div> */}
               </div>
-              <p>{e.display_name || "_ _"}</p>
-              <div className={s.btn}>
+              <p style={{ textAlign: "center" }}>{e.display_name || "_ _"}</p>
+              <div className={s.total_earning}>
+                {
+                  `$${currency(e.total_earning, 2)}`
+                }
+              </div>
+              {/* <div className={s.btn}>
                 <Button
                   className={s.content_btn}
                   onClick={() => showPopUpDonate(e)}
                 >
                   DONATE
                 </Button>
-              </div>
+              </div> */}
             </div>
-            <PopupDonate
+            {/* <PopupDonate
               status={isPopUp}
               types={"TOPPLAYER"}
               closeModal={click}
               datas={newData}
-            />
+            /> */}
           </div>
         );
       })}
