@@ -494,7 +494,7 @@ export type Mutation = {
   connectFaceit: PlatformAccountDto;
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
-  getDailyMission: Array<PlayerMission>;
+  getOrSetDailyMission: Array<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
 };
@@ -507,7 +507,6 @@ export type MutationAddStakedNftArgs = {
 
 export type MutationClaimMissionArgs = {
   mission_uid: Scalars['String'];
-  tx_hash: Scalars['String'];
 };
 
 
@@ -528,7 +527,7 @@ export type MutationEquipNftArgs = {
 };
 
 
-export type MutationGetDailyMissionArgs = {
+export type MutationGetOrSetDailyMissionArgs = {
   game_uid: Scalars['String'];
 };
 
@@ -589,6 +588,8 @@ export type Notification = {
   image?: Maybe<Scalars['String']>;
   is_seen: Scalars['Boolean'];
   title?: Maybe<Scalars['String']>;
+  tournament_uid?: Maybe<Scalars['String']>;
+  type?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
@@ -692,6 +693,7 @@ export type PlayerMission = {
   achieved?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   daily_mission?: Maybe<UserDailyMission>;
+  is_claim: Scalars['Boolean'];
   mission: Mission;
   mission_uid: Scalars['String'];
   player_game: PlayerGame;
