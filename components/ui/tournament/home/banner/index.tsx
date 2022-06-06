@@ -4,71 +4,63 @@ import Marquee from "react-fast-marquee";
 import SilderBanner from "../slider";
 import { useEffect, useState } from "react";
 import useBanner from "../hooks/useBanner";
-
-const Spotlight = [
-	{
-		id: 1,
-		title:
-			"Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-	{
-		id: 2,
-		title:
-			"Spotlight2  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-	{
-		id: 3,
-		title:
-			"Spotlight3  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-	{
-		id: 4,
-		title:
-			"Spotlight4  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-	},
-];
+import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
+import moment from "moment";
 
 export default function BannerPage() {
-	const { dataBanner } = useBanner();
-	const [titleSpotlight, setTitleSpotlight] = useState(Spotlight[0].title);
-	const [arr, setArr] = useState(0);
+  const { dataBanner } = useBanner();
+  const { loading, error, data, refetch } = useGetSpotlightAnnouncement();
 
-	useEffect(() => {
-		const length = Spotlight.length;
-		const interval = setInterval(() => {
-			if (arr >= length) {
-				setArr(0);
-			} else {
-				setArr((prve) => prve + 1);
-				const title = Spotlight[arr].title;
-				setTitleSpotlight(title);
-			}
-		}, 20000);
-		return () => {
-			clearInterval(interval);
-		};
-	}, [arr]);
+  const [titleSpotlight, setTitleSpotlight] = useState("");
+  const [arr, setArr] = useState(0);
+  const [timer, setTimer] = useState({});
 
-	return (
-		<div className={s.wrapper_banner}>
-			<div className={`${s.container} lucis-container`}>
-				<SilderBanner data={dataBanner} />
-				<div className={s.marquee}>
-					<img src="/assets/Banner/ic_loudspeaker.png" alt="" />
-					<div className={s.time}>
-						<div></div>
-						<div className={s.line}></div>
-						April 4th 13:30:45
-					</div>
-					<Marquee
-						speed={100}
-						gradientColor={[180, 180, 180]}
-						className={s.marquee_title}
-					>
-						{titleSpotlight}
-					</Marquee>
-				</div>
-			</div>
-		</div>
-	);
+  useEffect(() => {
+    let interval: NodeJS.Timer;
+    if (data) {
+      const length = data.length;
+      interval = setInterval(() => {
+        if (arr >= length) {
+          setArr(0);
+          setTitleSpotlight(data[0]);
+        } else {
+          setArr((prve) => prve + 1);
+          const title = data[arr];
+          setTitleSpotlight(title);
+        }
+      }, 5000);
+    }
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [arr, data]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const date = new Date();
+      setTimer(date);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timer]);
+
+  return (
+    <div className={s.wrapper_banner}>
+      <div className={`${s.container} lucis-container`}>
+        <SilderBanner data={dataBanner} />
+        <div className={s.marquee}>
+          <img src="/assets/Banner/ic_loudspeaker.png" alt="" />
+          <div className={s.time}>
+            <div></div>
+            <div className={s.line}></div>
+            {moment(timer).format("MMMM Do h:mm:ss")}
+          </div>
+          <div className={s.marquee_title}>{titleSpotlight}</div>
+        </div>
+      </div>
+    </div>
+  );
 }

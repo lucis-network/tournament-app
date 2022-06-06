@@ -20,7 +20,7 @@
         border-top: 2px solid #b3b3b3 !important
     
 .refereeNotice
-    margin-bottom: 30px
+    margin: 20px 0 30px
     font-size: 16px
 
 .lucisDoubleBracket
@@ -49,12 +49,13 @@
     height: 50px
 .liveStream
     position: absolute
-    top: -40px
+    top: -35px
     right: 0
     background: rgb(181, 82, 100)
     padding: 5px 10px
     border-radius: 5px
     color: #ffffff
+    font-size: 12px
     &:hover
         background: rgb(227, 134, 149)
         color: #ffffff
@@ -68,3 +69,20 @@
         position: absolute
         left: 11px
         bottom: -5px
+    :global(.ant-image)
+        width: 18px
+        margin-right: 5px
+        img
+            color: #ffffff
+.liveStreamEnded
+    background: rgb(104 104 104)
+    &:hover
+        background: rgb(227, 134, 149)
+        &:after
+            border-top-color: rgb(227, 134, 149)
+    &:after
+        border-top: 5px solid rgb(104 104 104)
+    :global(.ant-image)
+        margin: 0
+.imgLiveEnded
+    width: 13px

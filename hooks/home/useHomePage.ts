@@ -65,8 +65,8 @@ export function useHomePage() {
 					type === "bracket" && value === ""
 						? Bracket.ALL
 						: value === ""
-						? ""
-						: value,
+							? ""
+							: value,
 			};
 			setFilter(valueFilter);
 			const updateData = () => {
@@ -116,6 +116,16 @@ export function useHomePage() {
 			},
 		});
 	}, []);
+
+	useEffect(() => {
+		const valueActiveTab = {
+			...filter,
+			type: StatusGameType.ONGOING 
+		}
+		if (filter.type === "UPCOMING" && data?.search.length <= 0) {
+			setFilter(valueActiveTab)
+		}
+	}, [data])
 
 	return {
 		filter,

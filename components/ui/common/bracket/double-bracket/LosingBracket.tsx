@@ -51,53 +51,23 @@ const LosingBracket: React.FC<LosingProps> = ({
         <SeedItem>
           <div>
             <SeedTeam className={style.topSeed} style={{ padding: 0 }}>
-              <div
-                style={{
-                  width: "100%",
-                  background: "#d8d899",
-                  height: "100%",
-                  padding: "5px 0",
-                  color: "black",
-                }}
-              >
+              <div className={style.team}>
                 {seed.teams[0]?.name ?? `Team ...`}
               </div>
-              <div
-                style={{
-                  background: "yellow",
-                  color: "black",
-                  padding: "5px",
-                  width: "50px",
-                  // cursor: "pointer",
-                }}
-                onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+              <div className={style.score}
+                // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
               >
-                {seed.teams[0]?.score ?? "0"}
+                {seed.teams[0]?.score ?? "--"}
               </div>
             </SeedTeam>
             <SeedTeam className={style.bottomSeed} style={{ padding: 0 }}>
-              <div
-                style={{
-                  width: "100%",
-                  background: "#4e89a3",
-                  height: "100%",
-                  padding: "5px 0",
-                  color: "white",
-                }}
-              >
+              <div className={style.team}>
                 {seed.teams[1]?.name ?? `Team ...`}
               </div>
-              <div
-                style={{
-                  background: "#306882",
-                  color: "white",
-                  padding: "5px",
-                  width: "50px",
-                  // cursor: "pointer",
-                }}
-                onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
+              <div className={style.score}
+                // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
               >
-                {seed.teams[1]?.score ?? "0"}
+                {seed.teams[1]?.score ?? "--"}
               </div>
             </SeedTeam>
           </div>
