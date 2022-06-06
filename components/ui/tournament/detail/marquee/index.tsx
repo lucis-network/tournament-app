@@ -1,49 +1,46 @@
 import s from "./Marquee.module.sass";
 import Marquee from "react-fast-marquee";
-import {useEffect, useState} from "react";
-
-const Spotlight = [
-  {
-    id: 1,
-    title:
-      "Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-  {
-    id: 2,
-    title:
-      "Spotlight2  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-  {
-    id: 3,
-    title:
-      "Spotlight3  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-  {
-    id: 4,
-    title:
-      "Spotlight4  Spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spotlight announcement spolihjt an...",
-  },
-];
+import { useEffect, useState } from "react";
+import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
+import moment from "moment";
 
 const TournamentDetailMarquee = () => {
-  const [titleSpotlight, setTitleSpotlight] = useState(Spotlight[0].title);
+  const { loading, error, data, refetch } = useGetSpotlightAnnouncement();
+
+  const [titleSpotlight, setTitleSpotlight] = useState("");
   const [arr, setArr] = useState(0);
+  const [timer, setTimer] = useState({});
 
   useEffect(() => {
-    const length = Spotlight.length;
-    const interval = setInterval(() => {
-      if (arr >= length) {
-        setArr(0);
-      } else {
-        setArr((prve) => prve + 1);
-        const title = Spotlight[arr].title;
-        setTitleSpotlight(title);
-      }
-    }, 20000);
+    let interval: NodeJS.Timer;
+    if (data) {
+      const length = data.length;
+      interval = setInterval(() => {
+        if (arr >= length) {
+          setArr(0);
+        } else {
+          setArr((prve) => prve + 1);
+          const title = data[arr];
+          setTitleSpotlight(title);
+        }
+      }, 5000);
+    }
+
     return () => {
       clearInterval(interval);
     };
-  }, [arr]);
+  }, [arr, data]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const date = new Date();
+      setTimer(date);
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [timer]);
 
   return (
     <div className={`lucis-container-2 ${s.marquee_section}`}>
@@ -52,18 +49,12 @@ const TournamentDetailMarquee = () => {
         <div className={s.time}>
           <div></div>
           <div className={s.line}></div>
-          April 4th 13:30:45
+          {moment(timer).format("MMMM Do h:mm:ss")}
         </div>
-        <Marquee
-          speed={100}
-          gradientColor={[180, 180, 180]}
-          className={s.marquee_title}
-        >
-          {titleSpotlight}
-        </Marquee>
+        <div className={s.marquee_title}>{titleSpotlight}</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default TournamentDetailMarquee;

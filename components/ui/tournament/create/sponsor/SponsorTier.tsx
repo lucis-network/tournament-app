@@ -39,7 +39,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
       <Row align="middle">
         <Col xs={{ span: 8, order: 1 }} lg={{ span: 3 }}>
           <div className={s.tierTitle}>{name}</div>
-          <div>(Min {`${min_deposit} ${currency_symbol}`})</div>
+          <div>(Min {`${min_deposit} ${currency_symbol ? currency_symbol : ""}`})</div>
         </Col>
 
         <Col xs={{ span: 24, order: 3 }} lg={{ span: 13, order: 2 }}>

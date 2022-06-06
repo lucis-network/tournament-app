@@ -14,6 +14,8 @@ export type CreateTournament = {
   password?: string;
   game_uid?: string;
   currency_uid?: string;
+  currency_symbol?: string;
+  currency_address?: string;
   join_fee?: number;
   pool_size?: number;
   referees?: number[];
@@ -107,6 +109,10 @@ class TournamentStore {
 
   private _game_uid?: string | undefined;
 
+  // private _currency_uid?: string = DEFAULT_CURRENCY_UID;
+
+  // private _currency_symbol?: string | undefined = DEFAULT_CURRENCY_SYMBOL;
+
   private _currency_uid?: string | undefined;
 
   private _currency_symbol?: string | undefined;
@@ -117,7 +123,7 @@ class TournamentStore {
 
   private _pool_size?: number | undefined;
 
-  private _referees?: number[] | undefined;
+  private _referees?: number[] | undefined = [];
 
   private _regions?: string[] = DEFAULT_REGIONS;
 
@@ -173,8 +179,9 @@ class TournamentStore {
     this._prize_allocation = undefined;
     this._password = undefined;
     this._game_uid = undefined;
-    this._currency_uid = undefined;
-    this._currency_symbol = undefined;
+    this._currency_uid = DEFAULT_CURRENCY_UID;
+    this._currency_symbol = DEFAULT_CURRENCY_SYMBOL;
+    this._currency_address = undefined;
     this._join_fee = DEFAULT_JOIN_FEE;
     this._pool_size = undefined;
     this._referees = undefined;

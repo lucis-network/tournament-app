@@ -44,7 +44,7 @@ export default class EtherContract {
     this._web3Provider = value;
   }
 
-  private getSigner(): ethers.providers.JsonRpcSigner {
+  protected getSigner(): ethers.providers.JsonRpcSigner {
     if (!this._web3Provider) {
       throw makeError(
         EtherContract.ErrorCode.NotInitialized,

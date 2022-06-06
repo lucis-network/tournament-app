@@ -18,16 +18,12 @@
     min-width: 100px
 
 .item
-  display: flex
-  flex-direction: column
-  align-items: center
-  width: 25%
   position: relative
 
 .itemCheckbox
   position: absolute
-  top: -10px
-  right: -4px
+  top: 2px
+  right: 5px
 
 .avatar
   width: 60px
@@ -61,12 +57,28 @@
 
 .container
   margin-top: 10px
-  display: flex
-  flex-wrap: wrap
   color: white
+  :global(.ant-checkbox-group)
+    display: grid
+    color: white
 
 .message_error
   font-size: 14px
   margin-top: 4px
   color: #cb3636
   text-align: center
+
+.button_add
+  display: flex
+  align-items: center
+  justify-content: center
+  background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+  padding: 4px 16px
+  border-radius: 4px
+  margin: 8px 0
+  font-size: 14px
+  width: 100%
+  span
+    color: #FFF
+  img
+    padding-right: 4px

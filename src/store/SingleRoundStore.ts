@@ -1,7 +1,7 @@
 import { ReactElement } from "react";
 import { makeAutoObservable } from "mobx";
 import { isClientDevMode } from "../../utils/Env";
-import { BracketMatchStatus } from "../generated/graphql";
+import {BracketMatchStatus, Maybe} from "../generated/graphql";
 
 export type Team = {
   id: string | number;
@@ -19,6 +19,8 @@ export type RoundMatch = {
   uid: string
   teams: Team[]
   status: BracketMatchStatus
+  linkStream?: Maybe<string>
+  linkStreamEnable?: Maybe<boolean>
 }
 
 export type CurrentMatch = {
@@ -26,6 +28,8 @@ export type CurrentMatch = {
   teams: Team[]
   seedIndex: number
   roundIndex: number
+  linkStream?: Maybe<string>
+  linkStreamEnabled?: Maybe<boolean>
 }
 
 export type ISingleRoundStore = {

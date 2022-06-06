@@ -37,53 +37,21 @@ const WiningBracket: React.FC<LosingProps> = ({
           <SeedItem>
             <div>
               <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
-                <div
-                  style={{
-                    width: "100%",
-                    background: "#d8d899",
-                    height: "100%",
-                    padding: "5px 0",
-                    color: "black",
-                  }}
-                >
+                <div className={s.team}>
                   {seed.teams[0]?.name ?? `Team ...`}
                 </div>
-                <div
-                  style={{
-                    background: "yellow",
-                    color: "black",
-                    padding: "5px",
-                    width: "50px",
-                    // cursor: "pointer",
-                  }}
-                  // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
-                >
-                  {seed.teams[0]?.score ?? "0"}
+                <div className={s.score}>
+                  {seed.teams[0]?.score ?? "--"}
                 </div>
               </SeedTeam>
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
-                <div
-                  style={{
-                    width: "100%",
-                    background: "#4e89a3",
-                    height: "100%",
-                    padding: "5px 0",
-                    color: "white",
-                  }}
-                >
+                <div className={s.team}>
                   {seed.teams[1]?.name ?? `Team ...`}
                 </div>
-                <div
-                  style={{
-                    background: "#306882",
-                    color: "white",
-                    padding: "5px",
-                    width: "50px",
-                    // cursor: "pointer",
-                  }}
+                <div className={s.score}
                   // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
                 >
-                  {seed.teams[1]?.score ?? "0"}
+                  {seed.teams[1]?.score ?? "--"}
                 </div>
               </SeedTeam>
             </div>

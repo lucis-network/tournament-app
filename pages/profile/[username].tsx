@@ -9,6 +9,7 @@ import Head from "next/head";
 import AuthStore from "../../components/Auth/AuthStore";
 import EditProfile from "../../components/ui/tournament/myProfile/editMyProfile/EditProfile";
 import {useState} from "react";
+import SpinLoading from "../../components/ui/common/Spin";
 const localUserInfo = AuthStore;
 
 const MyProfile = () => {
@@ -21,10 +22,15 @@ const MyProfile = () => {
     skip: isEmpty(user_name),
   });
 
-  if (isEmpty(user_name) || loadingUserProfile) return null
+  if (isEmpty(user_name)) return null
 
-  if (loadingUserProfile) return null // todo: add loading screen
-  else if (isEmpty(getUserProfileData?.getUserProfile)) return (
+  if (loadingUserProfile) {
+    return (
+      <main style={{ minHeight: '100vh' }}>
+        <SpinLoading />
+      </main>
+    )
+  } else if (isEmpty(getUserProfileData?.getUserProfile)) return (
     <>
       <Head>
         <meta name="robots" content="noindex" />

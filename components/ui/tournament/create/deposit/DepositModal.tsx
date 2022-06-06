@@ -8,26 +8,27 @@ import ConnectWalletStore from "components/Auth/ConnectWalletStore";
 import { useState } from "react";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
-import { BUSD, LUCIS, USDT } from "utils/Enum";
+import { BUSD, LUCIS, LUCIS_FEE, REFEREES_FEE, USDT } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
 import { fomatNumber } from "utils/Number";
-import { useGetContract } from "hooks/tournament/useCreateTournament";
+import { useGetConfigFee, useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "../../../../Auth/AuthStore";
 
 type Props = {
-  tournamentUid?: any;
+  tournamentRes?: any;
 };
 
 export default observer(function DepositModal(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
-  const { tournamentUid } = props;
+  const { tournamentRes } = props;
   const isModalVisible = TournamentStore.depositModalVisible;
 
   const setIsModalVisible = (v: boolean) =>
     (TournamentStore.depositModalVisible = v);
 
   const { getContract } = useGetContract({});
+  const { getConfigFee } = useGetConfigFee({});
 
   const handleOk = async () => {
     if (!ConnectWalletStore.address) {
@@ -40,7 +41,7 @@ export default observer(function DepositModal(props: Props) {
         TournamentStore.notifyModalVisible = true;
         const tournamentService = new TournamentService();
         tournamentService.depositTournament(
-          tournamentUid,
+          tournamentRes?.uid,
           result?.txHash as string,
           result?.blockNumber as number
         );
@@ -68,7 +69,9 @@ export default observer(function DepositModal(props: Props) {
 
       let token_address = TournamentStore?.currency_address ? TournamentStore?.currency_address : "";
 
-      console.log("token_address", token_address);
+      // if (TournamentStore.currency_symbol === "BUSD") token_address = BUSD;
+      // if (TournamentStore.currency_symbol === "USDT") token_address = USDT;
+      // if (TournamentStore.currency_symbol === "LUCIS") token_address = LUCIS;
 
       if (!TournamentStore.checkDepositApprove) {
         TournamentStore.checkDepositApprove =
@@ -87,7 +90,7 @@ export default observer(function DepositModal(props: Props) {
 
       const result = await ethersService.initTournament(
         AuthStore.id + "",
-        tournamentUid,
+        tournamentRes?.uid,
         TournamentStore.pool_size,
         token_address,
         contractAddress[0]?.address
@@ -136,7 +139,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee (10%)</p>
+                  <p>Lucis fee  (${getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
@@ -152,7 +155,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Referee fee (1%)</p>
+                  <p>Referee fee (${getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
