@@ -44,6 +44,7 @@ import sponsorStore, {
 } from "components/ui/tournament/create/sponsor/SponsorStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
+import AuthStore from "components/Auth/AuthStore";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -347,7 +348,7 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    if (!cr.pool_size || cr.pool_size <= 0) {
+    if (cr.pool_size == null || cr.pool_size < 0) {
       setCheckPoolSize(false);
       //@ts-ignore
       document.getElementById("prizing").scrollIntoView();
@@ -415,11 +416,12 @@ export default observer(function CreateTournament(props: Props) {
   const user = getLocalAuthInfo();
 
   useEffect(() => {
-    if (!user) Router.push("/tournament");
-  }, [user]);
+    console.log(AuthStore)
+    if (!AuthStore.isLoggedIn) Router.push("/tournament");
+  }, [AuthStore]);
 
   return (
-    <>
+    <> 
       {/* <DocHead />
       <div className="pt-28 min-h-screen"></div>
       <Footer /> */}

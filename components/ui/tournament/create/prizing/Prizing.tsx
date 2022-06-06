@@ -17,9 +17,7 @@ import TournamentStore, { PrizeAllocation } from "src/store/TournamentStore";
 import { useLocalObservable } from "mobx-react";
 import { useCurrencies } from "hooks/tournament/useCreateTournament";
 import { currency } from "../../../../../utils/Number";
-
-const LUCIS_FEE = 10;
-const REFEREER_FEE = 1;
+import { LUCIS_FEE, REFEREES_FEE } from "utils/Enum";
 
 const { Option } = Select;
 
@@ -306,7 +304,7 @@ export default observer(function Prizing(props: Props) {
   function onChange(value: number) {
     if (value < 0) {
       setPoolSize(value);
-      setMessageErrorPoolSize("Pool size must be greater than 0");
+      setMessageErrorPoolSize("Pool size must be greater than or equal to 0");
     } else {
       //setPoolSize(TournamentStore.pool_size);
       setPoolSize(value);
@@ -340,12 +338,25 @@ export default observer(function Prizing(props: Props) {
   }, [chain]);
 
   useEffect(() => {
+    if (TournamentStore.currency_uid) {
+      let obj = getDataCurrencies?.filter((item: any) => {
+        return item.uid == TournamentStore.currency_uid;
+      });
+      if (obj) {
+        TournamentStore.currency_symbol = obj[0]?.symbol;
+        TournamentStore.currency_address = obj[0]?.address;
+      }
+    }
+  }, [TournamentStore.currency_uid]);
+
+  useEffect(() => {
     if (TournamentStore.pool_size) setPoolSize(TournamentStore.pool_size);
   });
 
   useEffect(() => {
-    if (!props.checkPoolSize && poolSize == 0) {
-      if (poolSize == 0 || poolSize == null)
+    if (!props.checkPoolSize) {
+      console.log("poolSize", poolSize);
+      if (poolSize == null || poolSize < 0)
         if (inputRef && inputRef.current) {
           inputRef.current!.focus();
           setMessageErrorPoolSize("Pool size must not be empty");
@@ -360,10 +371,6 @@ export default observer(function Prizing(props: Props) {
   const handleBlur = () => {
     if (poolSize == null)
       setMessageErrorPoolSize("Pool size must not be empty");
-    if (poolSize <= 0) {
-      //setPoolSize(1);
-      setMessageErrorPoolSize("Pool size must be greater than 0");
-    }
   };
 
   const recalculateEstimated = () => {
@@ -401,7 +408,7 @@ export default observer(function Prizing(props: Props) {
 
   const totalPool = () => {
     return currency(
-      poolSize + (poolSize * LUCIS_FEE) / 100 + (poolSize * REFEREER_FEE) / 100
+      poolSize + (poolSize * LUCIS_FEE) / 100 + (poolSize * REFEREES_FEE) / 100
     );
   };
 
@@ -430,10 +437,14 @@ export default observer(function Prizing(props: Props) {
           </Col>
           <Col span={3}>
             <Select
-              defaultValue={"Choose currency"}
+              defaultValue={
+                TournamentStore.currency_uid
+                  ? TournamentStore.currency_uid
+                  : "Choose currency"
+              }
               onChange={(value) => {
                 setChain(value);
-                let obj = getDataCurrencies.filter((item: any) => {
+                let obj = getDataCurrencies?.filter((item: any) => {
                   return item.uid == value;
                 });
                 setSymbol(obj[0]?.symbol);
@@ -509,7 +520,7 @@ export default observer(function Prizing(props: Props) {
             <Input
               prefix="$"
               //type="number"
-              defaultValue={REFEREER_FEE + "%"}
+              defaultValue={REFEREES_FEE + "%"}
               disabled
             />
           </Col>
