@@ -8,6 +8,7 @@ type Props = {
 
 type PropsReferees = {
   input?: GetRefereeInput;
+  skip?: boolean,
 };
 
 export function useChooseGame(props: Props) {
@@ -27,6 +28,7 @@ export function useReferees(props: PropsReferees) {
   const { loading, error, data } = useQuery(REFEREES, {
     variables: { input: props?.input },
     fetchPolicy: "no-cache",
+    skip: props?.skip
   });
 
   return {

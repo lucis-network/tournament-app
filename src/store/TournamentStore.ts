@@ -14,6 +14,8 @@ export type CreateTournament = {
   password?: string;
   game_uid?: string;
   currency_uid?: string;
+  currency_symbol?: string;
+  currency_address?: string;
   join_fee?: number;
   pool_size?: number;
   referees?: number[];
