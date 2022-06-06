@@ -9,6 +9,9 @@ import {isEmpty} from "lodash";
 import {UserGraphql} from "../../src/generated/graphql";
 import {useRouter} from "next/router";
 import {observer} from "mobx-react-lite";
+import Head from "next/head";
+import DefaultErrorPage from "next/error";
+import SpinLoading from "../../components/ui/common/Spin";
 
 export default observer(function MyProfile() {
 	const router = useRouter();
@@ -31,7 +34,23 @@ export default observer(function MyProfile() {
 		}
 	}, [AuthStore.isLoggedIn])
 
-	if (loadingUserProfile || isEmpty(userInfo)) return null
+	if (loadingUserProfile) {
+		return (
+			<main style={{ minHeight: '100vh' }}>
+				<SpinLoading />
+			</main>
+		)
+	} else if (isEmpty(getUserProfileData?.getUserProfile)) {
+		return (
+			<>
+				<Head>
+					<meta name="robots" content="noindex" />
+					<title>404 | This page could not be found.</title>
+				</Head>
+				<DefaultErrorPage statusCode={404} />
+			</>
+		)
+	}
 
 	const handleClick = () => {
 		setIsShowEdit(!isShowEdit);
