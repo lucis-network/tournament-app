@@ -1,22 +1,44 @@
 import React from 'react'
 import s from "./daily/Daily.module.sass";
-import {Button, Col, Image, Progress, Row} from "antd";
-import {isEmpty} from "lodash";
+import { Button, Col, Image, message, Progress, Row } from "antd";
+import { isEmpty } from "lodash";
 import SpinLoading from "../common/Spin";
-import {PlayerMission} from "../../../src/generated/graphql_p2e";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faRepeat, faPlusCircle} from "@fortawesome/free-solid-svg-icons";
+import { PlayerMission } from "../../../src/generated/graphql_p2e";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRepeat, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
+import { useMutation } from '@apollo/client';
+import { CLAIM_MISSION } from 'hooks/p2e/useP2E';
 
 type MissionsListProp = {
   title?: string,
   description?: string,
   canChooseGame?: boolean,
   missions?: PlayerMission[],
+  loading?: boolean,
   handleUpdateMissions?: () => void,
 }
 
-const MissionsList = ({ title, description, missions, handleUpdateMissions, canChooseGame }: MissionsListProp) => {
+const MissionsList = ({ title, description, missions, handleUpdateMissions, canChooseGame, loading }: MissionsListProp) => {
 
+  const [claimMission] = useMutation(CLAIM_MISSION, {
+    context: {
+      endpoint: 'p2e'
+    }
+  })
+  const handleClaimMission = async (mission: PlayerMission) => {
+    try {
+      await claimMission({ variables: { mission_uid: mission.mission_uid } }) // fake tx_hash
+
+      if (handleUpdateMissions) {
+        handleUpdateMissions();
+      }
+      message.success("Claimed!");
+
+    } catch (error) {
+      console.error(error);
+      message.error("Error!");
+    }
+  }
   return (
     <div className={s.missionsWrap}>
       <div className={s.missionsWrapHeader}>
@@ -38,15 +60,15 @@ const MissionsList = ({ title, description, missions, handleUpdateMissions, canC
         </div>
       </div>
       <div className={s.missionsList}>
-        {isEmpty(missions) ? <SpinLoading /> : (
+        {loading ? <SpinLoading /> : (
           missions?.map((mission: PlayerMission, index) => {
             const achieved = mission?.achieved
-            const currentPercent = (((achieved as number)/(mission?.mission?.goal as unknown as number)) * 100)
-
+            const currentPercent = (((achieved as number) / (mission?.mission?.goal as unknown as number)) * 100);
+            const hasClaim = currentPercent >= 100;
             return (
               <div className={s.missionItem} key={`${mission?.mission?.game_uid}-${index}`}>
                 <div className={s.missionLogo}>
-                  <Image src="/assets/P2E/gun.png" preview={false} alt="" />
+                  <Image src={mission?.mission?.img ? mission?.mission?.img : "/assets/P2E/gun.png"} preview={false} alt="" />
                 </div>
                 <div className={s.missionInfo}>
                   <h4>{mission?.mission?.title}</h4>
@@ -64,7 +86,7 @@ const MissionsList = ({ title, description, missions, handleUpdateMissions, canC
                   </div>
                 </div>
                 <div className={s.missionAction}>
-                  <Button disabled>Claim</Button>
+                  <Button disabled={!hasClaim} onClick={() => handleClaimMission(mission)}>Claim</Button>
                 </div>
               </div>
             )

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useMutation } from "@apollo/client";
-import { GET_DAILY_MISSION, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
+import { GET_OR_SET_DAILY_MISSION, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
 import s from "../daily/Daily.module.sass";
 import { Image } from "antd";
 import MissionsList from "../MissionsList";
@@ -10,9 +10,9 @@ import Statistics from '../Statistics';
 const Missions = () => {
   const [dailyMission, setDailyMission] = useState([]);
 
-  const [getDailyMission] = useMutation(GET_DAILY_MISSION, {
+  const [getDailyMission] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
-      game_uid: '3',
+      game_uid: '03',
     },
     context: {
       endpoint: 'p2e'
@@ -20,7 +20,7 @@ const Missions = () => {
   })
   const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
     variables: {
-      game_uid: '3',
+      game_uid: '03',
     },
     context: {
       endpoint: 'p2e'
@@ -37,7 +37,7 @@ const Missions = () => {
   useEffect(() => {
     getDailyMission()
       .then(response => {
-        setDailyMission(response.data.getDailyMission)
+        setDailyMission(response.data.getOrSetDailyMission)
       })
   }, [])
 
