@@ -271,6 +271,23 @@ export function useGetListRank(props: Props) {
   };
 }
 
+export function useGetSpotlightAnnouncement() {
+  const { loading, error, data, refetch } = useQuery(
+    GET_SPOTLIGHT_ANNOUNCEMENT,
+    {
+      variables: {},
+      fetchPolicy: "no-cache",
+    }
+  );
+
+  return {
+    loading,
+    error,
+    data: data?.getSpotlightAnnouncement,
+    refetch,
+  };
+}
+
 // ======= GET DATA GRAPQL
 
 const GET_TOURNAMENT_DETAIL = gql`
@@ -558,5 +575,11 @@ const UPDATE_PARTICIPANT = gql`
         user_id
       }
     }
+  }
+`;
+
+const GET_SPOTLIGHT_ANNOUNCEMENT = gql`
+  query getSpotlightAnnouncement {
+    getSpotlightAnnouncement
   }
 `;

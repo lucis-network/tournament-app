@@ -1868,7 +1868,7 @@ export type Mutation = {
   editTeam?: Maybe<Scalars['Boolean']>;
   /** Generate nonce for user login */
   generateNonce: Scalars['String'];
-  getNotification?: Maybe<Array<NotificationType>>;
+  getNotification?: Maybe<Array<Notification>>;
   joinTournament?: Maybe<Scalars['Boolean']>;
   leaveTeam?: Maybe<Scalars['Boolean']>;
   leaveTournament?: Maybe<Scalars['Boolean']>;
@@ -2917,7 +2917,6 @@ export type Query = {
   getMyTeam?: Maybe<Array<UserTeam>>;
   getOnGoingTournament?: Maybe<Array<TournamentGql>>;
   getOwnedTournament?: Maybe<Array<TTournament>>;
-  getPlatformAccount?: Maybe<PlatformAccount>;
   getReferee?: Maybe<GUser>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
   getSpotlightAnnouncement?: Maybe<Array<Scalars['String']>>;

@@ -71,48 +71,60 @@
       font-size: 20px
       line-height: 115%
       color: #FFFFFF
-      @media (max-width: 540px)
-        font-size: 12px
-        padding: 8px 0px 2px 0px
-    .btn
-      position: relative
-      padding: 8px 6px
       @media (min-width: 0px)
-        padding: 0px 6px
+        font-size: 14px
+        padding: 8px 0px 2px 0px
+        margin-bottom: 4px
       @media (min-width: 540px)
-        padding: 4px 2px
-      @media (min-width: 768px)
-        padding: 8px 6px
-      .content_btn
-        font-weight: 700
-        font-size: 20px
-        line-height: 115%
-        border: none
-        color: #0BEBD6
-        margin: 0
-        @media (min-width: 0px)
-          font-size: 14px
-        @media (min-width: 540px)
-          font-size: 18px
-        @media (min-width: 768px)
-          font-size: 20px
-      .content_btn:active
-        background: transparent
-      .content_btn:focus
-        background: transparent
-    .btn::before
-      content: ''
-      position: absolute
-      top:0
-      left:0
-      right:0
-      bottom:0
-      border-radius: 4px
-      padding: 2px
-      background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
-      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-      -webkit-mask-composite: xor
-      mask-composite: exclude
+        font-size: 18px
+    .total_earning
+      color: #0BEBD6
+      font-size: 20px
+      font-weight: 700
+      @media (min-width: 0px)
+        font-size: 13px
+      @media (min-width: 0px)
+        font-size: 16px
+
+    // .btn
+    //   position: relative
+    //   padding: 8px 6px
+    //   @media (min-width: 0px)
+    //     padding: 0px 6px
+    //   @media (min-width: 540px)
+    //     padding: 4px 2px
+    //   @media (min-width: 768px)
+    //     padding: 8px 6px
+    //   .content_btn
+    //     font-weight: 700
+    //     font-size: 20px
+    //     line-height: 115%
+    //     border: none
+    //     color: #0BEBD6
+    //     margin: 0
+    //     @media (min-width: 0px)
+    //       font-size: 14px
+    //     @media (min-width: 540px)
+    //       font-size: 18px
+    //     @media (min-width: 768px)
+    //       font-size: 20px
+    //   .content_btn:active
+    //     background: transparent
+    //   .content_btn:focus
+    //     background: transparent
+    // .btn::before
+    //   content: ''
+    //   position: absolute
+    //   top:0
+    //   left:0
+    //   right:0
+    //   bottom:0
+    //   border-radius: 4px
+    //   padding: 2px
+    //   background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+    //   -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+    //   -webkit-mask-composite: xor
+    //   mask-composite: exclude
 .content_card::before
   content: ''
   position: absolute

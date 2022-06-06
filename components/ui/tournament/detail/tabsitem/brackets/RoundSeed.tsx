@@ -102,7 +102,7 @@ export function makeSeedComponent(
                       Live
                     </>
                   ) : (
-                    <Image src="/assets/TournamentDetail/iconOpenNewtab.svg" preview={false} alt="" />
+                    <Image src="/assets/TournamentDetail/iconOpenNewtab.svg" preview={false} alt="" className={s.imgLiveEnded} />
                   )}
                 </a>
               </Link>

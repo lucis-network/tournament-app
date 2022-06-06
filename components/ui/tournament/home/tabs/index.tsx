@@ -40,7 +40,7 @@ export default function TabHome() {
 
   const createTournament = () => {
     if (!AuthStore.isLoggedIn) {
-      message.warn("Please signin first");
+      message.warn("Please sign in first");
     } else {
       setCreating(true);
       router.push("/tournament/create");

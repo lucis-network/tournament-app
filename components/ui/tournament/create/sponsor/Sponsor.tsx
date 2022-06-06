@@ -9,7 +9,7 @@ type Props = {};
 
 const tiersDataInit: SponsorTierStore[] = [
   new SponsorTierStore(uniqueId('tier_'), "Diamond", {
-    min_deposit: 1000,
+    min_deposit: 0,
     max_slot: 1,
     show_ads: true,
     show_logo: true,
@@ -17,7 +17,7 @@ const tiersDataInit: SponsorTierStore[] = [
     slots: [new SponsorSlot()],
   }),
   new SponsorTierStore(uniqueId('tier_'), "Gold", {
-    min_deposit: 700,
+    min_deposit: 0,
     max_slot: 2,
     show_logo: true,
     show_name: false,
@@ -25,7 +25,7 @@ const tiersDataInit: SponsorTierStore[] = [
     slots: [new SponsorSlot(), new SponsorSlot()],
   }),
   new SponsorTierStore(uniqueId('tier_'), "Silver", {
-    min_deposit: 500,
+    min_deposit: 0,
     max_slot: 3,
     show_logo: true,
     show_name: false,
@@ -34,7 +34,7 @@ const tiersDataInit: SponsorTierStore[] = [
     slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
   }),
   new SponsorTierStore(uniqueId('tier_'), "Enthusiast", {
-    min_deposit: 300,
+    min_deposit: 0,
     max_slot: 5,
     show_logo: true,
     show_name: false,
@@ -47,7 +47,8 @@ sponsorStore.setState({
   tiers: [...tiersDataInit],
 })
 
-const minAmountInit = [1000, 700, 500, 300];
+// const minAmountInit = [1000, 700, 500, 300];
+const minAmountInit = [0, 0, 0, 0];
 
 export default observer(function Sponsor(props: Props) {
   const { tiers } = sponsorStore;

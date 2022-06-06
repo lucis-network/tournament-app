@@ -100,7 +100,7 @@ function TournamentCard(props: { data: TournamentGql; type?: string }) {
                 <div className={s.im_logo_game}>
                   <img src={item.game.logo as string} alt="" />
                   <span className={s.time}>
-                    {moment(item.brackets?.[0].start_at).format("MMM Do HH:MM")}
+                    {moment(item.brackets?.[0].start_at).format("MMM Do YY h:mm")}
                   </span>
                 </div>
                 <h2>

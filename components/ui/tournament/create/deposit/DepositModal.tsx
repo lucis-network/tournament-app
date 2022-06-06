@@ -8,7 +8,7 @@ import ConnectWalletStore from "components/Auth/ConnectWalletStore";
 import { useState } from "react";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
-import { BUSD, LUCIS, USDT } from "utils/Enum";
+import { BUSD, LUCIS, LUCIS_FEE, REFEREES_FEE, USDT } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
 import { fomatNumber } from "utils/Number";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
@@ -67,11 +67,6 @@ export default observer(function DepositModal(props: Props) {
       );
 
       let token_address = TournamentStore?.currency_address ? TournamentStore?.currency_address : "";
-      
-      console.log("token_address", token_address);
-      // if (TournamentStore.currency_symbol === "BUSD") token_address = BUSD;
-      // if (TournamentStore.currency_symbol === "USDT") token_address = USDT;
-      // if (TournamentStore.currency_symbol === "LUCIS") token_address = LUCIS;
 
       if (!TournamentStore.checkDepositApprove) {
         TournamentStore.checkDepositApprove =
@@ -139,7 +134,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee (10%)</p>
+                  <p>Lucis fee  (${LUCIS_FEE}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
@@ -155,7 +150,7 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Referee fee (1%)</p>
+                  <p>Referee fee (${REFEREES_FEE}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
