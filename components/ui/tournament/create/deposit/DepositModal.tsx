@@ -135,14 +135,14 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee  (${getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%)</p>
+                  <p>Lucis fee  ({getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
                     {fomatNumber(
                       TournamentStore.pool_size
-                        ? TournamentStore.pool_size / 10
+                        ? TournamentStore.pool_size * getConfigFee[0]?.tn_lucis_fee
                         : 0
                     )}{" "}
                     {TournamentStore.currency_symbol}
@@ -151,14 +151,14 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Referee fee (${getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%)</p>
+                  <p>Referee fee ({getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%)</p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
                     {fomatNumber(
                       TournamentStore.pool_size
-                        ? TournamentStore.pool_size / 100
+                        ? TournamentStore.pool_size * getConfigFee[0]?.tn_referee_fee
                         : 0
                     )}{" "}
                     {TournamentStore.currency_symbol}

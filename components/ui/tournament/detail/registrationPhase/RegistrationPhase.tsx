@@ -523,6 +523,7 @@ export default observer(function RegistrationPhase(props: Props) {
       <ClaimDonationModal
         tournamentId={tournamentId as string}
         dataDonation={dataDonation}
+        totalFromDonation={totalFromDonation}
       />
       <ChooseTeamModal
         step={step}

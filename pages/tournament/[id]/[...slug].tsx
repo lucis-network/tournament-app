@@ -232,7 +232,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribed &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
+                      <span className="ml-2">Subscribed ({dataTournamentDetail?.tournament_subscribes?.length} sub)</span>
                     </button>
                   </Spin>
                 )}
@@ -244,7 +244,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribe &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
+                      <span className="ml-2">Subscribe ({dataTournamentDetail?.tournament_subscribes?.length} sub)</span>
                     </button>
                   </Spin>
                 )}
