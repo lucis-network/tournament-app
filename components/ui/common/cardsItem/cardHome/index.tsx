@@ -1,5 +1,5 @@
 import { Button, Col, Row } from "antd";
-import { memo, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 
 import { currency } from "utils/Number";
@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 type Props = {
   datas?: TournamentGql[];
   loading: boolean;
-  type?: string;
+  type: string;
 };
 function CardHome(props: Props) {
   const [isLoadMore, setIsLoadMore] = useState(8);
@@ -26,14 +26,13 @@ function CardHome(props: Props) {
   const handleLoadMore = () => {
     setIsLoadMore((prev) => prev + 8);
   };
-
   return (
     <div className="tournaments-c">
       <Row className={s.block_card} gutter={15}>
         {datas?.slice(0, isLoadMore).map((item) => {
           return (
             <Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>
-              {item ? <TournamentCard data={item} type={type} /> : null}
+              {item ? <TournamentCard data={item} typeTab={type} /> : null}
             </Col>
           );
         })}
@@ -50,8 +49,8 @@ function CardHome(props: Props) {
 }
 export default memo(CardHome);
 
-function TournamentCard(props: { data: TournamentGql; type?: string }) {
-  const { data: item, type } = props;
+function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
+  const { data: item, typeTab } = props;
   const router = useRouter();
 
   const handleJoinNowDetail = () => {
@@ -100,7 +99,9 @@ function TournamentCard(props: { data: TournamentGql; type?: string }) {
                 <div className={s.im_logo_game}>
                   <img src={item.game.logo as string} alt="" />
                   <span className={s.time}>
-                    {moment(item.brackets?.[0].start_at).format("MMM Do YY h:mm")}
+                    {moment(item.brackets?.[0].start_at).format(
+                      "MMM Do YY h:mm"
+                    )}
                   </span>
                 </div>
                 <h2>
@@ -150,7 +151,7 @@ function TournamentCard(props: { data: TournamentGql; type?: string }) {
                       {item.currency.symbol}
                     </span>
                   </div>
-                  {type === "UPCOMING" && (
+                  {typeTab === "UPCOMING" && (
                     <Button type="primary" className={s.btn_join_now}>
                       <a href={`/tournament/${item.uid}/${slugify(item.name)}`}>
                         JOIN NOW
