@@ -11,7 +11,10 @@ import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Au
 import { BUSD, LUCIS, LUCIS_FEE, REFEREES_FEE, USDT } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
 import { fomatNumber } from "utils/Number";
-import { useGetConfigFee, useGetContract } from "hooks/tournament/useCreateTournament";
+import {
+  useGetConfigFee,
+  useGetContract,
+} from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "../../../../Auth/AuthStore";
 
@@ -29,7 +32,7 @@ export default observer(function DepositModal(props: Props) {
 
   const { getContract } = useGetContract({});
   const { getConfigFee } = useGetConfigFee({});
-  
+
   const handleOk = async () => {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
@@ -67,7 +70,9 @@ export default observer(function DepositModal(props: Props) {
         (item: any) => item.type === "PRIZE"
       );
 
-      let token_address = TournamentStore?.currency_address ? TournamentStore?.currency_address : "";
+      let token_address = TournamentStore?.currency_address
+        ? TournamentStore?.currency_address
+        : "";
 
       if (!TournamentStore.checkDepositApprove) {
         TournamentStore.checkDepositApprove =
@@ -97,7 +102,13 @@ export default observer(function DepositModal(props: Props) {
 
   const getTotalAmount = () => {
     if (TournamentStore.pool_size)
-      return (TournamentStore.pool_size * 111) / 100;
+      return (
+        (TournamentStore.pool_size *
+          (100 +
+            getConfigFee[0]?.tn_lucis_fee * 100 +
+            getConfigFee[0]?.tn_referee_fee * 100)) /
+        100
+      );
     return 0;
   };
 
@@ -135,14 +146,18 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Lucis fee  ({getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%)</p>
+                  <p>
+                    Lucis fee (
+                    {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%)
+                  </p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
                     {fomatNumber(
                       TournamentStore.pool_size
-                        ? TournamentStore.pool_size * getConfigFee[0]?.tn_lucis_fee
+                        ? TournamentStore.pool_size *
+                            getConfigFee[0]?.tn_lucis_fee
                         : 0
                     )}{" "}
                     {TournamentStore.currency_symbol}
@@ -151,14 +166,18 @@ export default observer(function DepositModal(props: Props) {
               </Row>
               <Row>
                 <Col span={10}>
-                  <p>Referee fee ({getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%)</p>
+                  <p>
+                    Referee fee (
+                    {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%)
+                  </p>
                 </Col>
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
                     {fomatNumber(
                       TournamentStore.pool_size
-                        ? TournamentStore.pool_size * getConfigFee[0]?.tn_referee_fee
+                        ? TournamentStore.pool_size *
+                            getConfigFee[0]?.tn_referee_fee
                         : 0
                     )}{" "}
                     {TournamentStore.currency_symbol}

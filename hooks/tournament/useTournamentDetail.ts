@@ -305,12 +305,13 @@ export function useGetListRank(props: Props) {
   };
 }
 
-export function useGetSpotlightAnnouncement() {
+export function useGetSpotlightAnnouncement(props: Props) {
   const { loading, error, data, refetch } = useQuery(
     GET_SPOTLIGHT_ANNOUNCEMENT,
     {
-      variables: {},
+      variables: {tournament_uid: props?.tournament_uid},
       fetchPolicy: "no-cache",
+      skip: props?.skip,
     }
   );
 
@@ -614,7 +615,10 @@ const UPDATE_PARTICIPANT = gql`
 `;
 
 const GET_SPOTLIGHT_ANNOUNCEMENT = gql`
-  query getSpotlightAnnouncement {
-    getSpotlightAnnouncement
+  query getSpotlightAnnouncement ($tournament_uid: String) {
+    getSpotlightAnnouncement (tournament_uid: $tournament_uid) {
+      content
+      time
+    }
   }
 `;

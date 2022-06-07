@@ -209,7 +209,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       <DocHead title={name} />
       <div className={s.wrapper}>
         <Banner cover={cover} />
-        <TournamentDetailMarquee />
+        <TournamentDetailMarquee tournamentId={tournamentId as string}/>
         <section className={s.tournamentInfo}>
           <div className="lucis-container-2">
             <div className={s.group_button}>
