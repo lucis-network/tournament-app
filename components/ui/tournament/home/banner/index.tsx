@@ -1,11 +1,11 @@
 import s from "./banner.module.sass";
-import GradientButton from "../../../common/button/GradientButton";
-import Marquee from "react-fast-marquee";
 import SilderBanner from "../slider";
 import { useEffect, useState } from "react";
 import useBanner from "../hooks/useBanner";
 import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 import moment from "moment";
+import Texty from "rc-texty";
+import "rc-texty/assets/index.css";
 
 export default function BannerPage() {
   const { dataBanner } = useBanner();
@@ -13,6 +13,7 @@ export default function BannerPage() {
 
   const [titleSpotlight, setTitleSpotlight] = useState("");
   const [arr, setArr] = useState(0);
+  const [show, setShow] = useState(false);
   const [timer, setTimer] = useState(null);
   useEffect(() => {
     let interval: NodeJS.Timer;
@@ -28,6 +29,7 @@ export default function BannerPage() {
           setTitleSpotlight(title);
           setTimer(data[arr]?.time);
         }
+        setShow(true);
       }, 5000);
     }
 
@@ -35,6 +37,10 @@ export default function BannerPage() {
       clearInterval(interval);
     };
   }, [arr, data]);
+
+  useEffect(() => {
+    setShow(false);
+  }, [titleSpotlight]);
 
   return (
     <div className={s.wrapper_banner}>
@@ -48,7 +54,7 @@ export default function BannerPage() {
               <div className={s.line}></div>
               {moment(timer).format("MMMM Do h:mm:ss")}
             </div>
-            <div className={s.marquee_title}>{titleSpotlight}</div>
+            {show && <Texty delay={1000}>{titleSpotlight}</Texty>}
           </div>
         ) : (
           ""

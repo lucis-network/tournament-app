@@ -6,6 +6,7 @@ import {
   useQuery,
   useSubscription,
 } from "@apollo/client";
+import { useEffect } from "react";
 import { SponsorSlot, TournamentGql } from "src/generated/graphql";
 
 type Props = {
@@ -100,8 +101,6 @@ export function useTournamentDetail(props: Props) {
     joinTournament,
     { loading: loadingJoinTournament, error: errorJoinTournament },
   ] = useMutation(JOIN_TOURNAMENT);
-
-  //const [confirmResult] = useMutation(CONFIRM_RESULT);
 
   const { data: dataIsubscribeToTournament, refetch: refetchSubTournament } =
     useQuery(IS_SUBSCRIBE_TOURNAMENT, {
@@ -261,14 +260,14 @@ export function useUpdateParticipant(props: Props) {
     error,
     data: dataUpdateParticipant,
   } = useSubscription(UPDATE_PARTICIPANT, {
-    variables: { tournament_uid: props?.tournament_uid },
+    variables: { tournament_uid: props?.tournament_uid, skip: props?.skip },
     fetchPolicy: "no-cache",
   });
 
   return {
     loading,
     error,
-    dataUpdateParticipant : dataUpdateParticipant?.updateParticipant,
+    dataUpdateParticipant: dataUpdateParticipant?.updateParticipant,
   };
 }
 
@@ -309,7 +308,7 @@ export function useGetSpotlightAnnouncement(props: Props) {
   const { loading, error, data, refetch } = useQuery(
     GET_SPOTLIGHT_ANNOUNCEMENT,
     {
-      variables: {tournament_uid: props?.tournament_uid},
+      variables: { tournament_uid: props?.tournament_uid },
       fetchPolicy: "no-cache",
       skip: props?.skip,
     }
@@ -609,14 +608,26 @@ const UPDATE_TOTAL_PRIZE_POOL = gql`
 const UPDATE_PARTICIPANT = gql`
   subscription ($tournament_uid: String!) {
     updateParticipant(tournament_uid: $tournament_uid) {
+      tournament_uid
       participant
+      playTeamMembers {
+        uid
+        user {
+          profile {
+            user_name
+            user_id
+            avatar
+            display_name
+          }
+        }
+      }
     }
   }
 `;
 
 const GET_SPOTLIGHT_ANNOUNCEMENT = gql`
-  query getSpotlightAnnouncement ($tournament_uid: String) {
-    getSpotlightAnnouncement (tournament_uid: $tournament_uid) {
+  query getSpotlightAnnouncement($tournament_uid: String) {
+    getSpotlightAnnouncement(tournament_uid: $tournament_uid) {
       content
       time
     }
