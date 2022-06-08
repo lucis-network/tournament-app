@@ -90,11 +90,11 @@ export const Navigation = () => {
       src: "/",
       isBlank: false
     },
-    {
-      color: "#FF008C",
-      text: "TOURNAMENT",
-      src: "/tournament"
-    },
+    // {
+    //   color: "#FF008C",
+    //   text: "TOURNAMENT",
+    //   src: "/tournament"
+    // },
     {
       color: "#FF008C",
       text: "INSIGHT",
