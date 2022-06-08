@@ -36,7 +36,7 @@ export default observer(function User(props: Props) {
 
   const { address, network: connected_network } = ConnectWalletStore;
 
-  const { name, balance, facebook_id, google_id } = AuthStore;
+  const { name, balance, facebook_id, google_id, profile } = AuthStore;
   const chainId = ConnectWalletStore?.network?.chainId;
   const currency = chainId && getCurrencyFromChainId(chainId);
 
@@ -87,9 +87,9 @@ export default observer(function User(props: Props) {
     <Row className={s.profileModal}>
       <Col span={8} className={s.avatarC}>
         <div className={`${s.avatar} ${s.avBig}`}>
-          <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
+          <img src={`${profile?.avatar}` || "/assets/MyProfile/defaultAvatar.png"} alt="" />
         </div>
-        <p>{name}</p>
+        <p>{name || profile?.display_name}</p>
       </Col>
       <Col span={16} style={{ borderLeft: "1px solid #fff", paddingLeft: 20 }}>
         <p className={s.addr}>{trim_middle(address ?? "", 7, 8)}</p>
@@ -97,10 +97,10 @@ export default observer(function User(props: Props) {
           <img src={chainNetIcoUrl} alt="" />
           <i>{getAppNetworkFriendlyName(connected_network)}</i>
         </p> */}
-        <p className={`${s.balance} text-14px md:text-18px`}>
-          {/* Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB */}
+        {/* <p className={`${s.balance} text-14px md:text-18px`}>
+          Balance: {profile?.me.balance ? profile.me.balance : "0"} BNB
           Balance: {Number(balance).toFixed(2)} {currency}
-        </p>
+        </p> */}
 
         <div className={s.btns}>
           <Button type="link" onClick={onClickProfile}>
@@ -138,7 +138,7 @@ export default observer(function User(props: Props) {
         onVisibleChange={handleVisibleChange}
       >
         <div className={s.avatar}>
-          <img src="/assets/MyProfile/defaultAvatar.png" alt="" />
+          <img src={`${profile?.avatar}` || "/assets/MyProfile/defaultAvatar.png"} alt="" />
           {/* <span>{name}</span> */}
         </div>
       </Popover>

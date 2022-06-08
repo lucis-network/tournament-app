@@ -57,7 +57,7 @@ export default function BannerPage() {
             {show && <Texty delay={1000}>{titleSpotlight}</Texty>}
           </div>
         ) : (
-          ""
+          <div className={s.marquee}></div>
         )}
       </div>
     </div>
