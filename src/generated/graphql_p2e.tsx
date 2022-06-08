@@ -495,6 +495,7 @@ export type Mutation = {
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
+  rerollMission?: Maybe<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
 };
@@ -529,6 +530,11 @@ export type MutationEquipNftArgs = {
 
 export type MutationGetOrSetDailyMissionArgs = {
   game_uid: Scalars['String'];
+};
+
+
+export type MutationRerollMissionArgs = {
+  player_mission_uid: Scalars['String'];
 };
 
 

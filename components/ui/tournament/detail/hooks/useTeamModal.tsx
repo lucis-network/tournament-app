@@ -21,6 +21,8 @@ import { checkEmptyArrayValue, checkTotalPercent, dataTeam } from "./helper";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import AuthStore from "components/Auth/AuthStore";
 import { message } from "antd";
+import { CommonError, handleGraphqlErrors } from "utils/apollo_client";
+import { ApolloError } from "@apollo/client";
 
 export interface Item extends TeamType {
   prize?: number;
@@ -216,21 +218,29 @@ const UseTeamModal = (tournamentData: any) => {
           message.success("Success", 10);
           setLoading(false);
         },
-        onError: (err: any) => {
-          setLoading(false);
-          if (tourPassword && !password)
-            setErrorPassword("Password is required");
-          else if (
-            tourPassword &&
-            password &&
-            err.message === "password incorrect"
-          )
-            setErrorPassword("Password incorrect");
-          else {
-            //setErrorPassword(err.message);
-			message.error(err.message);		
-          }
-        },
+        onError: (err: ApolloError) =>
+          handleGraphqlErrors(err, (code, messageErr) => {
+            setLoading(false);
+            if (tourPassword && !password)
+              setErrorPassword("Password is required");
+            else if (
+              tourPassword &&
+              password &&
+              err.message === "password incorrect"
+            )
+              setErrorPassword("Password incorrect");
+            else {
+              //setErrorPassword(err.message);
+              //message.error(err.message);
+              if (code === "BAD_REQUEST")
+                message.error(
+                  "Can't join because your team member is joining another tournament"
+                );
+              else {
+                message.error(err.message);
+              }
+            }
+          }),
       });
     }
   };

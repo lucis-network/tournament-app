@@ -40,7 +40,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       let totalObj = dataDonation.filter((item: any) => {
         return item.reward_type === "Total";
       });
-      console.log("totalObj", totalObj);
+
       let objFee = {
         reward_type: "LUCISFEE",
         symbol: totalObj[0]?.symbol,

@@ -427,7 +427,7 @@ body .ant-menu {
 @media (min-width: 1024px) {
   .lucis-container {
     max-width: 1024px;
-    padding: 0 4rem;
+    padding: 0 15px;
   }
 }
 
