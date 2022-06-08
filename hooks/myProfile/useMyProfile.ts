@@ -2,7 +2,7 @@ import {
   ApolloError,
   ApolloQueryResult,
   gql,
-  LazyQueryResult,
+  LazyQueryResult, useApolloClient,
   useLazyQuery, useMutation,
   useQuery
 } from "@apollo/client";
@@ -30,6 +30,8 @@ type UseDeleteFavoriteGameProps = Partial<{
 
 type UseVerifyEmailProps = {
   email: string
+  onError: (error: ApolloError) => void
+  onCompleted: (data: any) => void
 }
 
 type UseGetUserProfileProps = {
@@ -207,16 +209,32 @@ export function useDeleteFavoriteGame({ game_uid }: UseDeleteFavoriteGameProps):
   }
 }
 
-export function useVerifyEmail({ email }: UseVerifyEmailProps): {
-  verifyEmail: () => Promise<LazyQueryResult<any, {email: string}>>;
+export function useVerifyEmail({ email, onError, onCompleted }: UseVerifyEmailProps): {
+  verifyEmail: () => Promise<any>
 } {
-  const [
-    verifyEmail,
-  ] = useLazyQuery(VERIFY_EMAIL, {
-    variables: {
-      email: email
-    }
-  });
+  const client = useApolloClient()
+  const verifyEmail = async function() {
+   try {
+     const result = await client.query({
+       query: VERIFY_EMAIL,
+       variables: {
+         email: email
+       },
+     })
+     onCompleted(result)
+   } catch (err: any) {
+     onError(err)
+   }
+  }
+  // const [
+  //   verifyEmail1
+  // ] = useLazyQuery(VERIFY_EMAIL, {
+  //   variables: {
+  //     email: email
+  //   },
+  //   onError: onError,
+  //   onCompleted: onCompleted
+  // });
 
   return {
     verifyEmail,
