@@ -105,9 +105,17 @@
           background-size: cover
           background-position: center
           background-repeat: no-repeat
-          padding: 150px 0px
+          padding: 130px 0px
           width: 100%
           cursor: pointer
+          @media (min-width: 640px)
+            padding: 90px 0px
+          @media (min-width: 992px)
+            padding: 80px 0px
+          @media (min-width: 1280px)
+            padding: 110px 0px
+          @media (min-width: 1600px)
+            padding: 130px 0px
         .info
           position: absolute
           top: 0
@@ -206,7 +214,7 @@
           @media (min-width: 1440px)
             height: 68px
             margin: 0px
-          a
+          .title
             color: #FFF
             font-weight: 700
             padding-top: 24px
