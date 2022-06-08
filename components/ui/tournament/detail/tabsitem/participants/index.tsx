@@ -8,6 +8,8 @@ import { Team } from "src/generated/graphql";
 import SearchComplete from "components/ui/common/searchs";
 import PopupDonate from "../../popup/popupDonate";
 import AuthStore from "components/Auth/AuthStore";
+import { useUpdateParticipant } from "hooks/tournament/useTournamentDetail";
+import { isEmpty } from "lodash";
 
 type Props = {
   dataParticipants: Team[];
@@ -31,6 +33,12 @@ export default function TableParticipant(props: Props) {
   const [datas, setDatas] = useState({});
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+
+  const { dataUpdateParticipant } = useUpdateParticipant({
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
+  
   const closeModal = () => {
     setIsPopupDonate(false);
   };
