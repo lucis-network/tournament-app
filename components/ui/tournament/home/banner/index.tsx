@@ -51,7 +51,7 @@ export default function BannerPage() {
             <div className={s.marquee_title}>{titleSpotlight}</div>
           </div>
         ) : (
-          ""
+          <div className={s.marquee}></div>
         )}
       </div>
     </div>

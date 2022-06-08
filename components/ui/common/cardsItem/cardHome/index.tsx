@@ -89,12 +89,13 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                     </span>
                   </div>
                 </div>
-                <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
-                  <a
+                <div onClick={handleJoinNowDetail} style={{width: '100%'}}>
+                  <div 
                     style={{ backgroundImage: `url(${item.thumbnail})` }}
                     className={s.thumbnail}
-                  />
-                </Link>
+                  >
+                  </div>
+                </div>
               </div>
               <div className={s.heading}>
                 <div className={s.im_logo_game}>
@@ -106,11 +107,11 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                   </span>
                 </div>
                 <h2>
-                  <Link href={`/tournament/${item.uid}/${slugify(item.name)}`}>
+                  <div className={s.title} onClick={handleJoinNowDetail}>
                     {item?.name.length > 40
                       ? item.name.slice(0, 40) + "..."
                       : item.name}
-                  </Link>
+                  </div>
                 </h2>
                 <div className={s.hosted_by}>
                   <div className={s.hosted_by_detail}>
@@ -154,11 +155,9 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                   </div>
                   {typeTab === "UPCOMING" && (
                     <Button type="primary" className={s.btn_join_now}>
-                      <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
-                        <a>
-                          JOIN NOW
-                        </a>
-                      </Link>
+                      <div onClick={handleJoinNowDetail}>
+                        JOIN NOW
+                      </div>
                     </Button>
                   )}
                 </div>
