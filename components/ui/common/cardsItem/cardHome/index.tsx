@@ -89,11 +89,12 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                     </span>
                   </div>
                 </div>
-                <a
-                  href={`/tournament/${item.uid}/${slugify(item.name)}`}
-                  style={{ backgroundImage: `url(${item.thumbnail})` }}
-                  className={s.thumbnail}
-                ></a>
+                <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
+                  <a
+                    style={{ backgroundImage: `url(${item.thumbnail})` }}
+                    className={s.thumbnail}
+                  />
+                </Link>
               </div>
               <div className={s.heading}>
                 <div className={s.im_logo_game}>
@@ -153,18 +154,18 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                   </div>
                   {typeTab === "UPCOMING" && (
                     <Button type="primary" className={s.btn_join_now}>
-                      <a href={`/tournament/${item.uid}/${slugify(item.name)}`}>
-                        JOIN NOW
-                      </a>
+                      <Link href={`/tournament/${item.uid}/${slugify(item.name)}`} passHref>
+                        <a>
+                          JOIN NOW
+                        </a>
+                      </Link>
                     </Button>
                   )}
                 </div>
               </div>
             </div>
           </div>
-        ) : (
-          "hello"
-        )
+        ) : null
       }
     </>
   );
