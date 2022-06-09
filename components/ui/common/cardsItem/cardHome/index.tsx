@@ -18,7 +18,6 @@ type Props = {
 function CardHome(props: Props) {
   const [isLoadMore, setIsLoadMore] = useState(8);
   const { datas, loading, type } = props;
-
   if (loading || !datas) {
     return <></>;
   }
@@ -34,10 +33,10 @@ function CardHome(props: Props) {
             <Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>
               {item ? <TournamentCard data={item} typeTab={type} /> : null}
             </Col>
-          );
+          ); 
         })}
       </Row>
-      {isLoadMore > datas?.length || isLoadMore < 8 ? (
+      {isLoadMore > datas?.length || isLoadMore <= 8 ? (
         ""
       ) : (
         <div className={s.btn_load}>
