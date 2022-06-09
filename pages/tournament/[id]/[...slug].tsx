@@ -209,7 +209,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       <DocHead title={name} />
       <div className={s.wrapper}>
         <Banner cover={cover} />
-        <TournamentDetailMarquee />
+        <TournamentDetailMarquee tournamentId={tournamentId as string}/>
         <section className={s.tournamentInfo}>
           <div className="lucis-container-2">
             <div className={s.group_button}>
@@ -232,7 +232,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribed &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
+                      <span className="ml-2">Subscribed ({dataTournamentDetail?.tournament_subscribes?.length} sub)</span>
                     </button>
                   </Spin>
                 )}
@@ -244,7 +244,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribe &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
+                      <span className="ml-2">Subscribe ({dataTournamentDetail?.tournament_subscribes?.length} sub)</span>
                     </button>
                   </Spin>
                 )}

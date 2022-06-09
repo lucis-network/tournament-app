@@ -2942,7 +2942,7 @@ export type Query = {
   getOwnedTournament?: Maybe<Array<TTournament>>;
   getReferee?: Maybe<GUser>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
-  getSpotlightAnnouncement?: Maybe<Array<Scalars['String']>>;
+  getSpotlightAnnouncement?: Maybe<Array<SpotlightAnnouncementType>>;
   getSpotlightTournament?: Maybe<Array<GTournament>>;
   getTeam?: Maybe<Array<PlayTeamMember>>;
   getTopEarningPlayer?: Maybe<Array<GTopEarning>>;
@@ -3771,6 +3771,12 @@ export type SpotlightAnnouncementCreateWithoutTournamentInput = {
   content?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type SpotlightAnnouncementType = {
+  __typename?: 'SpotlightAnnouncementType';
+  content?: Maybe<Scalars['String']>;
+  time?: Maybe<Scalars['DateTime']>;
 };
 
 export type SpotlightAnnouncementWhereUniqueInput = {

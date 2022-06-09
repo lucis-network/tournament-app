@@ -71,9 +71,9 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
 
   const handleVerifyEmail = () => {
     verifyEmail().then(result => {
-      console.log('handleVerifyEmail: ', result)
+      message.success('An email has been sent. Please check your inbox.')
     }).catch(error => {
-      console.log('handleVerifyEmail: ', error)
+      console.log('handleVerifyEmail: ', error.message, error.code)
     })
   }
 
@@ -112,7 +112,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
             set: result.youtube ?? ''
           },
           phone: {
-            set: !phone.includes('+') ? '+' + phone : phone
+            set: (!phone.includes('+')) ? ('+' + phone) : phone
           },
           biography: {
             set: result.biography ?? ''

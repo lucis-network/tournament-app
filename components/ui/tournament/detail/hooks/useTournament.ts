@@ -7,6 +7,7 @@ const useTournament = (tournamentId: string) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
   const [status, setStatus] = useState<"unjoin" | "">("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingUnjoin, setLoadingUnjoin] = useState<boolean>(false);
   const [leaveTournament] = useMutation(LEAVE_TOURNAMENT);
   const [checkinTournament] = useMutation(CHECKIN_TOURNAMENT);
 
@@ -21,6 +22,7 @@ const useTournament = (tournamentId: string) => {
   };
 
   const handleLeaveTournament = () => {
+    setLoadingUnjoin(true);
     leaveTournament({
       variables: {
         tournament_uid: tournamentId,
@@ -31,10 +33,12 @@ const useTournament = (tournamentId: string) => {
         antd_message.success("Success", 10);
         refetch();
         refreshParticipant();
+        setLoadingUnjoin(false);
       },
       onError: (err) => {
         // antd_message.error(err.message, 10);
         antd_message.error("You are not leader team", 10);
+        setLoadingUnjoin(false);
       },
     });
   };
@@ -68,6 +72,7 @@ const useTournament = (tournamentId: string) => {
     openModal,
     status,
     loadingCheckin: loading,
+    loadingUnjoin,
     handleOpenLeaveTournament,
     handleCloseTourModal,
     handleLeaveTournament,

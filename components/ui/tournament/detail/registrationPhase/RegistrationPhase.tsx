@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Image, message, Modal } from "antd";
+import { Button, Col, Image, message, Modal, Row } from "antd";
 import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
@@ -101,6 +101,7 @@ export default observer(function RegistrationPhase(props: Props) {
     openModal: openTournamentModal,
     status,
     loadingCheckin,
+    loadingUnjoin,
     handleCloseTourModal,
     handleOpenLeaveTournament,
     handleLeaveTournament,
@@ -523,6 +524,7 @@ export default observer(function RegistrationPhase(props: Props) {
       <ClaimDonationModal
         tournamentId={tournamentId as string}
         dataDonation={dataDonation}
+        totalFromDonation={totalFromDonation}
       />
       <ChooseTeamModal
         step={step}
@@ -552,10 +554,24 @@ export default observer(function RegistrationPhase(props: Props) {
         visible={openTournamentModal}
         wrapClassName={s.mdl}
         okText="Confirm"
-        bodyStyle={{ display: "none" }}
+        //bodyStyle={{ display: "none" }}
+        footer={null}
         onOk={handleLeaveTournament}
         onCancel={handleCloseTourModal}
-      />
+      >
+        <Row className={s.btn}>
+          <Col>
+            <Button className="mr-10px" onClick={handleCloseTourModal}>
+              Cancel
+            </Button>
+          </Col>
+          <Col>
+            <Button type="primary" onClick={handleLeaveTournament} loading={loadingUnjoin}>
+              Confirm
+            </Button>
+          </Col>
+        </Row>
+      </Modal>
     </>
   );
 });

@@ -18,7 +18,7 @@ export const LUCIS = "0x0B0AF2077D1D831A879aBa2775b1a90dcE7c994A";
 
 export const LUCIS_FEE = 0;
 export const REFEREES_FEE = 1;
-
+export const LUCIS_FEE_DONATION = 5;
 export enum REWARD_TYPES {}
 
 export enum StatusGameType {
