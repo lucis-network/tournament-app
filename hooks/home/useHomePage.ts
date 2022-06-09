@@ -19,7 +19,7 @@ const listTabs: StatusGameType[] = [
 ];
 
 export function useHomePage() {
-	const [datas, setDatas] = useState()
+  const [datas, setDatas] = useState()
   const [filter, setFilter] = useState<FilterGame>({
     type: StatusGameType.UPCOMING,
     search: "",
@@ -66,8 +66,8 @@ export function useHomePage() {
           type === "bracket" && value === ""
             ? Bracket.ALL
             : value === ""
-            ? ""
-            : value,
+              ? ""
+              : value,
       };
       setFilter(valueFilter);
       const updateData = () => {
@@ -119,17 +119,61 @@ export function useHomePage() {
   }, []);
 
   useEffect(() => {
-    const valueActiveTab = {
-      ...filter,
-      type: StatusGameType.ONGOING,
-    };
-    if (filter.type === "UPCOMING" && data?.search.length <= 0) {
+    const getDataTab = data?.search.length
+    if (filter.type === "UPCOMING" && getDataTab <= 0) {
+      const valueActiveTab = {
+        ...filter,
+        type: StatusGameType.ONGOING,
+      };
       setFilter(valueActiveTab);
       getData({
         variables: {
           input: {
             value: filter.search,
             type: "ONGOING",
+          },
+          data: {
+            game_uid: filter.game_uid,
+            bracket: filter.bracket,
+            size: filter.size,
+            prize_pool: filter.prize_pool,
+            time: filter.time,
+          },
+        },
+      });
+    }
+    if (filter.type === "ONGOING" && getDataTab <= 0) {
+      const valueActiveTab = {
+        ...filter,
+        type: StatusGameType.CLOSED,
+      };
+      setFilter(valueActiveTab);
+      getData({
+        variables: {
+          input: {
+            value: filter.search,
+            type: "CLOSED",
+          },
+          data: {
+            game_uid: filter.game_uid,
+            bracket: filter.bracket,
+            size: filter.size,
+            prize_pool: filter.prize_pool,
+            time: filter.time,
+          },
+        },
+      });
+    } if (filter.type === "CLOSED" && getDataTab <= 0) {
+      const valueActiveTab = {
+        ...filter,
+        type: StatusGameType.UPCOMING,
+      };
+      setFilter(valueActiveTab);
+      getData({
+        variables: {
+          input: {
+            value: filter.search,
+            type: "UPCOMING",
           },
           data: {
             game_uid: filter.game_uid,
