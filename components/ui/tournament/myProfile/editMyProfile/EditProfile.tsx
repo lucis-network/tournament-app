@@ -103,7 +103,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           formattedPhone = dialCode + result.phone
         }
 
-        const newResult = {
+        let newResult: any = {
           user_name: {
             set: result.user_name ?? ''
           },
@@ -128,13 +128,17 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           youtube: {
             set: result.youtube ?? ''
           },
-          phone: {
-            set: (!phone.includes('+')) ? ('+' + phone) : phone
-          },
           biography: {
             set: result.biography ?? ''
           },
         }
+
+        if (!isEmpty(phone)) {
+          newResult.phone = {
+            set: (!phone.includes('+')) ? ('+' + phone) : phone
+          }
+        }
+
         setNewProfileData(newResult)
       })
       .catch(error => {
