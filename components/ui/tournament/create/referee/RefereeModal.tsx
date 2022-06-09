@@ -35,7 +35,7 @@ export default observer(function RefereeModal(props: Props) {
 
   const { getDataReferees } = useReferees({
     input: input,
-    skip: input == {}
+    skip: input == {},
   });
 
   const isModalVisible = TournamentStore.refereeModalVisible,
@@ -156,18 +156,20 @@ export default observer(function RefereeModal(props: Props) {
                       </p>
                     </div>
                   </div>
-                  <button className={s.button_add} onClick={() => {}}>
-                    <UserOutlined className="mr-2" />
 
-                    <a
-                      target="_blank"
-                      href={`/profile/${ele?.profile?.user_name}`}
-                      rel="noopener noreferrer"
-                      style={{ color: "white" }}
-                    >
+                  <a
+                    target="_blank"
+                    href={`/profile/${ele?.profile?.user_name}`}
+                    rel="noopener noreferrer"
+                    style={{ color: "white" }}
+                  >
+                    <button className={s.button_add}>
+                      {" "}
+                      <UserOutlined className="mr-2" />
                       Profile
-                    </a>
-                  </button>
+                    </button>
+                  </a>
+
                   <Checkbox
                     className={`${s.itemCheckbox}`}
                     value={index}
@@ -178,8 +180,12 @@ export default observer(function RefereeModal(props: Props) {
           : ""}
       </Checkbox.Group>
       <div className={s.message_error}>{messageError}</div>
-      <div style={{textAlign: "center"}}>
-        <Pagination defaultCurrent={1} total={getDataReferees?.total} onChange={changePage} />
+      <div style={{ textAlign: "center" }}>
+        <Pagination
+          defaultCurrent={1}
+          total={getDataReferees?.total}
+          onChange={changePage}
+        />
       </div>
     </Modal>
   );

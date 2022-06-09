@@ -2260,7 +2260,7 @@ export type NullableStringFieldUpdateOperationsInput = {
 export type Participant = {
   __typename?: 'Participant';
   participant?: Maybe<Scalars['Int']>;
-  teams?: Maybe<Array<PlayTeamMember>>;
+  playTeamMembers?: Maybe<Array<PlayTeamMember>>;
   tournament_uid?: Maybe<Scalars['String']>;
 };
 
