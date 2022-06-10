@@ -1,5 +1,12 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { Match, PlatformAccount } from "../../src/generated/graphql_p2e";
+import {GMatch, PlatformAccount} from "../../src/generated/graphql_p2e";
+
+type UseGetRecentMatchesProps = {
+  game_uid: string
+  offset: number
+  limit: number
+  platform_id: number
+}
 
 export const useGetPlatformAccount = (): {
   getPlatformAccountLoading: boolean,
@@ -28,12 +35,12 @@ export const useGetPlatformAccount = (): {
   }
 }
 
-export const useGetRecentMatches = (): {
+export const useGetRecentMatches = ({game_uid, offset, limit, platform_id}: UseGetRecentMatchesProps): {
   getRecentMatchesLoading: boolean,
   getRecentMatchesError: ApolloError | undefined,
   refetchRecentMatches: () => Promise<ApolloQueryResult<any>>,
   getRecentMatchesData: {
-    getRecentlyMatch: Match[]
+    getRecentlyMatch: GMatch
   },
 } => {
   const {
@@ -46,7 +53,10 @@ export const useGetRecentMatches = (): {
       endpoint: 'p2e'
     },
     variables: {
-      game_uid: '03',
+      game_uid: game_uid,
+      offset: offset,
+      limit: limit,
+      platform_id: platform_id,
     }
   })
 
@@ -125,14 +135,24 @@ const GET_PLATFORM_ACCOUNT = gql`
 `
 
 export const GET_RECENT_MATCHES = gql`
-  query ($game_uid: String!) {
-    getRecentlyMatch(game_uid: $game_uid) {
-      match_uid
-      winner_team
-      loser_team
-      score
-      is_win
-      end_at
+  query ($game_uid: String!, $offset: Int!, $limit: Int!, $platform_id: Int!) {
+    getRecentlyMatch(game_uid: $game_uid, offset: $offset, limit: $limit, platform_id: $platform_id) {
+      matches {
+        id
+        match_uid
+        player_game_uid
+        is_win
+        map_img
+        match {
+          uid
+          game_uid
+          winner_team
+          loser_team
+          score
+          end_at
+        }
+      }
+      total
     }
   }
 `
