@@ -10,7 +10,7 @@ import { BracketType } from "utils/Enum";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useWindowSize } from "hooks/useWindowSize";
-import BlankState from "components/ui/tournament/home/blankState/BlankState";
+// import BlankState from "components/ui/tournament/home/blankState/BlankState";
 import { isEmpty } from "lodash";
 
 type Props = {
@@ -174,7 +174,8 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
           }
         </>
       ) : (
-        <BlankState title='hello' />
+        // <BlankState title='hello' />
+        ''
       )}
     </>
   );
