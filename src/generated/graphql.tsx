@@ -444,68 +444,6 @@ export type BracketWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
-export type CachePlayerStatistic = {
-  __typename?: 'CachePlayerStatistic';
-  aces: Scalars['Int'];
-  assists: Scalars['Int'];
-  average_headshots: Scalars['Int'];
-  created_at: Scalars['DateTime'];
-  current_win_streak: Scalars['Int'];
-  deaths: Scalars['Int'];
-  double_kill: Scalars['Int'];
-  id: Scalars['ID'];
-  kd_ratio: Scalars['Decimal'];
-  kills: Scalars['Int'];
-  kr_ratio: Scalars['Decimal'];
-  longest_win_streak: Scalars['Int'];
-  matches: Scalars['Int'];
-  mvps: Scalars['Int'];
-  player_game: PlayerGame;
-  player_game_uid: Scalars['String'];
-  quadra_kill: Scalars['Int'];
-  total_headshots: Scalars['Int'];
-  triple_kill: Scalars['Int'];
-  updated_at: Scalars['DateTime'];
-  wins: Scalars['Int'];
-};
-
-export type CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput = {
-  connect?: InputMaybe<CachePlayerStatisticWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<CachePlayerStatisticCreateOrConnectWithoutPlayer_GameInput>;
-  create?: InputMaybe<CachePlayerStatisticCreateWithoutPlayer_GameInput>;
-};
-
-export type CachePlayerStatisticCreateOrConnectWithoutPlayer_GameInput = {
-  create: CachePlayerStatisticCreateWithoutPlayer_GameInput;
-  where: CachePlayerStatisticWhereUniqueInput;
-};
-
-export type CachePlayerStatisticCreateWithoutPlayer_GameInput = {
-  aces?: InputMaybe<Scalars['Int']>;
-  assists?: InputMaybe<Scalars['Int']>;
-  average_headshots?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  current_win_streak?: InputMaybe<Scalars['Int']>;
-  deaths?: InputMaybe<Scalars['Int']>;
-  double_kill?: InputMaybe<Scalars['Int']>;
-  kd_ratio?: InputMaybe<Scalars['Decimal']>;
-  kills?: InputMaybe<Scalars['Int']>;
-  kr_ratio?: InputMaybe<Scalars['Decimal']>;
-  longest_win_streak?: InputMaybe<Scalars['Int']>;
-  matches?: InputMaybe<Scalars['Int']>;
-  mvps?: InputMaybe<Scalars['Int']>;
-  quadra_kill?: InputMaybe<Scalars['Int']>;
-  total_headshots?: InputMaybe<Scalars['Int']>;
-  triple_kill?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  wins?: InputMaybe<Scalars['Int']>;
-};
-
-export type CachePlayerStatisticWhereUniqueInput = {
-  id?: InputMaybe<Scalars['Int']>;
-  player_game_uid?: InputMaybe<Scalars['String']>;
-};
-
 export type CacheTournament = {
   __typename?: 'CacheTournament';
   created_at: Scalars['DateTime'];
@@ -1530,7 +1468,7 @@ export type Game = {
   name?: Maybe<Scalars['String']>;
   nft?: Maybe<Array<PlayerNft>>;
   nft_limit?: Maybe<Scalars['Int']>;
-  platform: Platform;
+  platform?: Maybe<Array<GamePlatform>>;
   tournaments?: Maybe<Array<Tournament>>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -1541,6 +1479,7 @@ export type GameCount = {
   favorite_user: Scalars['Int'];
   match: Scalars['Int'];
   nft: Scalars['Int'];
+  platform: Scalars['Int'];
   tournaments: Scalars['Int'];
 };
 
@@ -1560,6 +1499,12 @@ export type GameCreateNestedOneWithoutNftInput = {
   connect?: InputMaybe<GameWhereUniqueInput>;
   connectOrCreate?: InputMaybe<GameCreateOrConnectWithoutNftInput>;
   create?: InputMaybe<GameCreateWithoutNftInput>;
+};
+
+export type GameCreateNestedOneWithoutPlatformInput = {
+  connect?: InputMaybe<GameWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<GameCreateOrConnectWithoutPlatformInput>;
+  create?: InputMaybe<GameCreateWithoutPlatformInput>;
 };
 
 export type GameCreateNestedOneWithoutTournamentsInput = {
@@ -1583,6 +1528,11 @@ export type GameCreateOrConnectWithoutNftInput = {
   where: GameWhereUniqueInput;
 };
 
+export type GameCreateOrConnectWithoutPlatformInput = {
+  create: GameCreateWithoutPlatformInput;
+  where: GameWhereUniqueInput;
+};
+
 export type GameCreateOrConnectWithoutTournamentsInput = {
   create: GameCreateWithoutTournamentsInput;
   where: GameWhereUniqueInput;
@@ -1596,7 +1546,7 @@ export type GameCreateWithoutFavorite_UserInput = {
   name?: InputMaybe<Scalars['String']>;
   nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -1610,7 +1560,7 @@ export type GameCreateWithoutMatchInput = {
   name?: InputMaybe<Scalars['String']>;
   nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -1624,7 +1574,21 @@ export type GameCreateWithoutNftInput = {
   match?: InputMaybe<MatchCreateNestedManyWithoutGameInput>;
   name?: InputMaybe<Scalars['String']>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
+  tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GameCreateWithoutPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  desc?: InputMaybe<Scalars['String']>;
+  favorite_user?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutGameInput>;
+  logo?: InputMaybe<Scalars['String']>;
+  match?: InputMaybe<MatchCreateNestedManyWithoutGameInput>;
+  name?: InputMaybe<Scalars['String']>;
+  nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
+  nft_limit?: InputMaybe<Scalars['Int']>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -1639,9 +1603,84 @@ export type GameCreateWithoutTournamentsInput = {
   name?: InputMaybe<Scalars['String']>;
   nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatform = {
+  __typename?: 'GamePlatform';
+  created_at: Scalars['DateTime'];
+  game: Game;
+  game_uid: Scalars['String'];
+  id: Scalars['ID'];
+  platform: Platform;
+  platform_id: Scalars['Int'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type GamePlatformCreateManyGameInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  platform_id: Scalars['Int'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformCreateManyGameInputEnvelope = {
+  data: Array<GamePlatformCreateManyGameInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GamePlatformCreateManyPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game_uid: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformCreateManyPlatformInputEnvelope = {
+  data: Array<GamePlatformCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GamePlatformCreateNestedManyWithoutGameInput = {
+  connect?: InputMaybe<Array<GamePlatformWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<GamePlatformCreateOrConnectWithoutGameInput>>;
+  create?: InputMaybe<Array<GamePlatformCreateWithoutGameInput>>;
+  createMany?: InputMaybe<GamePlatformCreateManyGameInputEnvelope>;
+};
+
+export type GamePlatformCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<GamePlatformWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<GamePlatformCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<GamePlatformCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<GamePlatformCreateManyPlatformInputEnvelope>;
+};
+
+export type GamePlatformCreateOrConnectWithoutGameInput = {
+  create: GamePlatformCreateWithoutGameInput;
+  where: GamePlatformWhereUniqueInput;
+};
+
+export type GamePlatformCreateOrConnectWithoutPlatformInput = {
+  create: GamePlatformCreateWithoutPlatformInput;
+  where: GamePlatformWhereUniqueInput;
+};
+
+export type GamePlatformCreateWithoutGameInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  platform: PlatformCreateNestedOneWithoutGameInput;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformCreateWithoutPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game: GameCreateNestedOneWithoutPlatformInput;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type GameWhereUniqueInput = {
@@ -2324,11 +2363,16 @@ export type Participant = {
   tournament_uid?: Maybe<Scalars['String']>;
 };
 
-export enum Platform {
-  Faceit = 'FACEIT',
-  None = 'NONE',
-  Riot = 'RIOT'
-}
+export type Platform = {
+  __typename?: 'Platform';
+  _count: PlatformCount;
+  accounts?: Maybe<Array<PlatformAccount>>;
+  created_at: Scalars['DateTime'];
+  game?: Maybe<Array<GamePlatform>>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+};
 
 export type PlatformAccount = {
   __typename?: 'PlatformAccount';
@@ -2340,6 +2384,7 @@ export type PlatformAccount = {
   id_token?: Maybe<Scalars['String']>;
   nick_name?: Maybe<Scalars['String']>;
   platform: Platform;
+  platform_id: Scalars['Int'];
   player_game?: Maybe<Array<PlayerGame>>;
   player_uid: Scalars['String'];
   uid: Scalars['ID'];
@@ -2353,6 +2398,24 @@ export type PlatformAccountCount = {
   player_game: Scalars['Int'];
 };
 
+export type PlatformAccountCreateManyPlatformInput = {
+  access_token?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<Scalars['String']>;
+  country_code?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id_token?: InputMaybe<Scalars['String']>;
+  nick_name?: InputMaybe<Scalars['String']>;
+  player_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type PlatformAccountCreateManyPlatformInputEnvelope = {
+  data: Array<PlatformAccountCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type PlatformAccountCreateManyUserInput = {
   access_token?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -2360,7 +2423,7 @@ export type PlatformAccountCreateManyUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_token?: InputMaybe<Scalars['String']>;
   nick_name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<Platform>;
+  platform_id: Scalars['Int'];
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2369,6 +2432,13 @@ export type PlatformAccountCreateManyUserInput = {
 export type PlatformAccountCreateManyUserInputEnvelope = {
   data: Array<PlatformAccountCreateManyUserInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type PlatformAccountCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<PlatformAccountWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PlatformAccountCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<PlatformAccountCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<PlatformAccountCreateManyPlatformInputEnvelope>;
 };
 
 export type PlatformAccountCreateNestedManyWithoutUserInput = {
@@ -2384,6 +2454,11 @@ export type PlatformAccountCreateNestedOneWithoutPlayer_GameInput = {
   create?: InputMaybe<PlatformAccountCreateWithoutPlayer_GameInput>;
 };
 
+export type PlatformAccountCreateOrConnectWithoutPlatformInput = {
+  create: PlatformAccountCreateWithoutPlatformInput;
+  where: PlatformAccountWhereUniqueInput;
+};
+
 export type PlatformAccountCreateOrConnectWithoutPlayer_GameInput = {
   create: PlatformAccountCreateWithoutPlayer_GameInput;
   where: PlatformAccountWhereUniqueInput;
@@ -2394,6 +2469,20 @@ export type PlatformAccountCreateOrConnectWithoutUserInput = {
   where: PlatformAccountWhereUniqueInput;
 };
 
+export type PlatformAccountCreateWithoutPlatformInput = {
+  access_token?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<Scalars['String']>;
+  country_code?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id_token?: InputMaybe<Scalars['String']>;
+  nick_name?: InputMaybe<Scalars['String']>;
+  player_game?: InputMaybe<PlayerGameCreateNestedManyWithoutPlatform_AccountInput>;
+  player_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user: UserCreateNestedOneWithoutPlatform_AccounntInput;
+};
+
 export type PlatformAccountCreateWithoutPlayer_GameInput = {
   access_token?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -2401,7 +2490,7 @@ export type PlatformAccountCreateWithoutPlayer_GameInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_token?: InputMaybe<Scalars['String']>;
   nick_name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<Platform>;
+  platform: PlatformCreateNestedOneWithoutAccountsInput;
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2415,7 +2504,7 @@ export type PlatformAccountCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_token?: InputMaybe<Scalars['String']>;
   nick_name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<Platform>;
+  platform: PlatformCreateNestedOneWithoutAccountsInput;
   player_game?: InputMaybe<PlayerGameCreateNestedManyWithoutPlatform_AccountInput>;
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
@@ -2425,6 +2514,52 @@ export type PlatformAccountCreateWithoutUserInput = {
 export type PlatformAccountWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
   user_id?: InputMaybe<Scalars['Int']>;
+};
+
+export type PlatformCount = {
+  __typename?: 'PlatformCount';
+  accounts: Scalars['Int'];
+  game: Scalars['Int'];
+};
+
+export type PlatformCreateNestedOneWithoutAccountsInput = {
+  connect?: InputMaybe<PlatformWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlatformCreateOrConnectWithoutAccountsInput>;
+  create?: InputMaybe<PlatformCreateWithoutAccountsInput>;
+};
+
+export type PlatformCreateNestedOneWithoutGameInput = {
+  connect?: InputMaybe<PlatformWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlatformCreateOrConnectWithoutGameInput>;
+  create?: InputMaybe<PlatformCreateWithoutGameInput>;
+};
+
+export type PlatformCreateOrConnectWithoutAccountsInput = {
+  create: PlatformCreateWithoutAccountsInput;
+  where: PlatformWhereUniqueInput;
+};
+
+export type PlatformCreateOrConnectWithoutGameInput = {
+  create: PlatformCreateWithoutGameInput;
+  where: PlatformWhereUniqueInput;
+};
+
+export type PlatformCreateWithoutAccountsInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game?: InputMaybe<GamePlatformCreateNestedManyWithoutPlatformInput>;
+  name: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlatformCreateWithoutGameInput = {
+  accounts?: InputMaybe<PlatformAccountCreateNestedManyWithoutPlatformInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  name: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlatformWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlayTeam = {
@@ -2664,7 +2799,6 @@ export type Player = {
 export type PlayerGame = {
   __typename?: 'PlayerGame';
   _count: PlayerGameCount;
-  cache_player_statistic?: Maybe<CachePlayerStatistic>;
   created_at: Scalars['DateTime'];
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
@@ -2730,7 +2864,6 @@ export type PlayerGameCreateOrConnectWithoutPlayer_MissionInput = {
 };
 
 export type PlayerGameCreateWithoutMatchesInput = {
-  cache_player_statistic?: InputMaybe<CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
@@ -2741,7 +2874,6 @@ export type PlayerGameCreateWithoutMatchesInput = {
 };
 
 export type PlayerGameCreateWithoutPlatform_AccountInput = {
-  cache_player_statistic?: InputMaybe<CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
@@ -2752,7 +2884,6 @@ export type PlayerGameCreateWithoutPlatform_AccountInput = {
 };
 
 export type PlayerGameCreateWithoutPlayer_MissionInput = {
-  cache_player_statistic?: InputMaybe<CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];

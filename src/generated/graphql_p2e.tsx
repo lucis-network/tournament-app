@@ -117,31 +117,6 @@ export enum BracketType {
   Swiss = 'SWISS'
 }
 
-export type CachePlayerStatistic = {
-  __typename?: 'CachePlayerStatistic';
-  aces: Scalars['Int'];
-  assists: Scalars['Int'];
-  average_headshots: Scalars['Int'];
-  created_at: Scalars['DateTime'];
-  current_win_streak: Scalars['Int'];
-  deaths: Scalars['Int'];
-  double_kill: Scalars['Int'];
-  id: Scalars['ID'];
-  kd_ratio: Scalars['Decimal'];
-  kills: Scalars['Int'];
-  kr_ratio: Scalars['Decimal'];
-  longest_win_streak: Scalars['Int'];
-  matches: Scalars['Int'];
-  mvps: Scalars['Int'];
-  player_game: PlayerGame;
-  player_game_uid: Scalars['String'];
-  quadra_kill: Scalars['Int'];
-  total_headshots: Scalars['Int'];
-  triple_kill: Scalars['Int'];
-  updated_at: Scalars['DateTime'];
-  wins: Scalars['Int'];
-};
-
 export type CacheTournament = {
   __typename?: 'CacheTournament';
   created_at: Scalars['DateTime'];
@@ -391,7 +366,7 @@ export type Game = {
   name?: Maybe<Scalars['String']>;
   nft?: Maybe<Array<PlayerNft>>;
   nft_limit?: Maybe<Scalars['Int']>;
-  platform: Platform;
+  platform?: Maybe<Array<GamePlatform>>;
   tournaments?: Maybe<Array<Tournament>>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -402,7 +377,19 @@ export type GameCount = {
   favorite_user: Scalars['Int'];
   match: Scalars['Int'];
   nft: Scalars['Int'];
+  platform: Scalars['Int'];
   tournaments: Scalars['Int'];
+};
+
+export type GamePlatform = {
+  __typename?: 'GamePlatform';
+  created_at: Scalars['DateTime'];
+  game: Game;
+  game_uid: Scalars['String'];
+  id: Scalars['ID'];
+  platform: Platform;
+  platform_id: Scalars['Int'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Match = {
@@ -431,7 +418,7 @@ export type MatchCount = {
 export type MatchStatisticInput = {
   game_uid?: InputMaybe<Scalars['String']>;
   match_uid?: InputMaybe<Scalars['String']>;
-  platform_type?: InputMaybe<Platform>;
+  platform_id?: InputMaybe<Scalars['Int']>;
 };
 
 export type MatchStatistics = {
@@ -569,6 +556,7 @@ export type MutationUnStakedNftArgs = {
 
 export type MutationUpdateDailyMissionArgs = {
   game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 export type NestedStringNullableFilter = {
@@ -625,11 +613,16 @@ export type Notification = {
   user_id: Scalars['Int'];
 };
 
-export enum Platform {
-  Faceit = 'FACEIT',
-  None = 'NONE',
-  Riot = 'RIOT'
-}
+export type Platform = {
+  __typename?: 'Platform';
+  _count: PlatformCount;
+  accounts?: Maybe<Array<PlatformAccount>>;
+  created_at: Scalars['DateTime'];
+  game?: Maybe<Array<GamePlatform>>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+};
 
 export type PlatformAccount = {
   __typename?: 'PlatformAccount';
@@ -641,6 +634,7 @@ export type PlatformAccount = {
   id_token?: Maybe<Scalars['String']>;
   nick_name?: Maybe<Scalars['String']>;
   platform: Platform;
+  platform_id: Scalars['Int'];
   player_game?: Maybe<Array<PlayerGame>>;
   player_uid: Scalars['String'];
   uid: Scalars['ID'];
@@ -662,8 +656,15 @@ export type PlatformAccountDto = {
   created_at: Scalars['DateTime'];
   nick_name?: Maybe<Scalars['String']>;
   platform: Platform;
+  platform_id: Scalars['Int'];
   player_uid: Scalars['String'];
   updated_at: Scalars['DateTime'];
+};
+
+export type PlatformCount = {
+  __typename?: 'PlatformCount';
+  accounts: Scalars['Int'];
+  game: Scalars['Int'];
 };
 
 export type PlayTeam = {
@@ -702,7 +703,6 @@ export type PlayTeamMember = {
 export type PlayerGame = {
   __typename?: 'PlayerGame';
   _count: PlayerGameCount;
-  cache_player_statistic?: Maybe<CachePlayerStatistic>;
   created_at: Scalars['DateTime'];
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
@@ -793,7 +793,7 @@ export type Query = {
   getRaffleDetail?: Maybe<Raffle>;
   getRaffles?: Maybe<Array<Raffle>>;
   getRecentlyMatch: GMatch;
-  isConnectFaceit?: Maybe<Scalars['Boolean']>;
+  isConnectPlatform?: Maybe<Scalars['Boolean']>;
   searchRaffle?: Maybe<Array<Raffle>>;
 };
 
@@ -832,6 +832,12 @@ export type QueryGetRecentlyMatchArgs = {
   game_uid: Scalars['String'];
   limit: Scalars['Int'];
   offset: Scalars['Int'];
+  platform_id: Scalars['Int'];
+};
+
+
+export type QueryIsConnectPlatformArgs = {
+  platform_id: Scalars['Int'];
 };
 
 
