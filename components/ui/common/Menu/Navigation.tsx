@@ -87,8 +87,8 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: "HOME",
-      src: "/",
-      isBlank: false
+      isBlank: false,
+      to: "/",
     },
     // {
     //   color: "#FF008C",
@@ -98,102 +98,71 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: "INSIGHT",
-      src: "https://insight.lucis.network/"
+      src: "https://insight.lucis.network/",
     },
     {
       color: "#FF008C",
       text: "FAQ",
-      src: "https://tournament-lucis.gitbook.io/lucis-tournament/"
+      src: "https://tournament-lucis.gitbook.io/lucis-tournament/",
     },
     {
       color: "#FF008C",
       text: "RANKING",
       // src: "/docs"
-      disable: true
+      disable: true,
+      class: { cursor: "context-menu" },
     },
     {
       color: "#FF008C",
       text: "SOCIAL",
-      disable: true
+      disable: true,
+      class: { cursor: "context-menu" },
       // src: "/docs"
     },
     {
       color: "#FF008C",
       text: (
         <div>
-          {
-            AuthStore.isLoggedIn ?
-              <div onClick={onClickProfile}>
-                My Profile
-              </div>
-              : <Login />
-          }
+          {AuthStore.isLoggedIn ? (
+            <div onClick={onClickProfile}>My Profile</div>
+          ) : (
+            <Login />
+          )}
         </div>
       ),
-      class: {position: 'absolute', bottom: "180px"},
-      isBlank: false
+      class: { position: "absolute", bottom: "180px" },
+      isBlank: false,
     },
     {
       color: "#FF008C",
       text: (
         <div>
-          {
-            AuthStore.isLoggedIn ?
-              <div>
-                <p>{trim_middle(address ?? "", 7, 8)}</p>
-                <div onClick={disconnectWallet}>
-                  Disconnect
-                </div>
-              </div>
-              : ''
-          }
+          {AuthStore.isLoggedIn ? (
+            <div>
+              <p>{trim_middle(address ?? "", 7, 8)}</p>
+              <div onClick={disconnectWallet}>Disconnect</div>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       ),
-      class: {position: 'absolute', bottom: "120px"},
-      isBlank: false
+      class: { position: "absolute", bottom: "120px" },
+      isBlank: false,
     },
-    // {
-    //   color: "#FF008C",
-    //   text: (
-    //     <div>
-    //       <div onClick={showSubmenu}>Ecosystem</div>
-    //       <ul style={{height: styleSub}} className={s.submenu}>
-    //       {dataSubMenu.map((data:any) =>(
-    //         <li className={`${data.disabled == true && s.disabled}`} key={data.id} onClick={hideMenu}><Link href={`${data.href}`}>{data.text}</Link></li>
-    //       ))}
-    //       </ul>
-    //     </div>
-
-    //   ),
-    //   src: "",
-    //   subMenu: ""
-    // },
-    // {
-    //   color: "#FF008C",
-    //   text: (
-    //     <GradientButton
-    //       onClick={() => {
-    //         setIsModalVisible(true);
-    //       }}
-    //       type={1}
-    //       className="text-white font-saira nw"
-    //       style={{ whiteSpace: "nowrap",fontSize: "20px",lineHeight: '22px',padding: '10px 16px' }}
-    //     >
-    //       Join us
-    //     </GradientButton>
-    //   ),
-    //   src:""
-    // },
   ];
 
   useEffect(() => {
-    const subscription = AppEmitter.addListener('setJoinUsVisible', (visible: boolean) => {
-      setIsModalVisible(visible)
-    });
+    const subscription = AppEmitter.addListener(
+      "setJoinUsVisible",
+      (visible: boolean) => {
+        setIsModalVisible(visible);
+      }
+    );
     return () => {
       subscription.remove();
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div>
