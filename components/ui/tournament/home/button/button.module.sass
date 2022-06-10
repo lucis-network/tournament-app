@@ -30,18 +30,38 @@
         align-items: flex-start
         margin-right: 8px
         max-width: 74px
+    .ic_sort
+      @media (max-width: 540px)
+        align-items: center
   .item > div
     @media (min-width: 992px)
       padding-right: 20px
     .item_bracket
       @media (max-width: 540px)
         order: 1
+  .m
+    font-size: 14px
+    font-weight: 300
+    @media (min-width: 540px)
+      margin-left: 4px
+  .m_time
+    @media (min-width: 0px)
+      margin-left: 0px
+    @media (min-width: 540px)
+      margin-left: -12px
+    @media (min-width: 992px)
+      margin-left: 0px
+
   :global(.ant-select),
   .m
     margin-right: 0
+    @media (min-width: 0px)
+      margin-bottom: 8px
     @media (min-width: 640px)
       margin-right: 0px
       margin-bottom: 16px
+    // @media (min-width: 992px)
+    //   margin-bottom: 0px
 
   :global(.ant-select-single .ant-select-selector .ant-select-selection-item)
     display: flex
@@ -56,7 +76,6 @@
     border-radius: 8px
     border: none
     position: relative
-    margin-bottom: 8px
   :global(.ant-select-arrow)
     color: #FFF
 

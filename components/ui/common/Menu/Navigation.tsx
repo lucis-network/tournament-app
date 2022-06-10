@@ -90,11 +90,6 @@ export const Navigation = () => {
       isBlank: false,
       to: "/",
     },
-    // {
-    //   color: "#FF008C",
-    //   text: "TOURNAMENT",
-    //   src: "/tournament"
-    // },
     {
       color: "#FF008C",
       text: "INSIGHT",
@@ -108,7 +103,6 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: "RANKING",
-      // src: "/docs"
       disable: true,
       class: { cursor: "context-menu" },
     },
@@ -117,7 +111,6 @@ export const Navigation = () => {
       text: "SOCIAL",
       disable: true,
       class: { cursor: "context-menu" },
-      // src: "/docs"
     },
     {
       color: "#FF008C",
@@ -138,8 +131,21 @@ export const Navigation = () => {
       text: (
         <div>
           {AuthStore.isLoggedIn ? (
+            <p>{trim_middle(address ?? "", 7, 8)}</p>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+      isBlank: false,
+      class: { position: "absolute", bottom: "135px", fontSize: 13, cursor: 'auto' },
+    },
+    {
+      color: "#FF008C",
+      text: (
+        <div>
+          {AuthStore.isLoggedIn ? (
             <div>
-              <p>{trim_middle(address ?? "", 7, 8)}</p>
               <div onClick={disconnectWallet}>Disconnect</div>
             </div>
           ) : (

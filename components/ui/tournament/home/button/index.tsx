@@ -75,7 +75,7 @@ export default function ButtonSort({
 				</div>
 			</div>
 			<div className={s.item}>
-				<div className={`w-24 ${s.ic} mb-4`}>
+				<div className={`w-24 ${s.ic} ${s.ic_sort} mb-4`}>
 					<img src="/assets/home/ic_sort.svg" alt="" />
 					Sort
 				</div>
@@ -105,7 +105,7 @@ export default function ButtonSort({
 						))}
 					</Select>
 				</div> */}
-				<div className="flex items-center align-middle justify-between w-full">
+				<div className="flex items-center align-middle justify-between w-full cursor-pointer">
 					<div className={`mr-4 w-[165px] ${s.m}`}>
 						<Order
 							title="Prize pool"
@@ -114,7 +114,7 @@ export default function ButtonSort({
 							onClick={onOrder}
 						/>
 					</div>
-					<div className={s.m}>
+					<div className={`${s.m} ${s.m_time}`}>
 						<Order
 							id="time"
 							title="Time"
