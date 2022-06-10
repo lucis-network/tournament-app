@@ -32,7 +32,7 @@ function CardHome(props: Props) {
   };
   return (
     <div className="tournaments-c">
-      <Row className={s.block_card} gutter={width > 1600 ? 60 : 15}>
+      <Row className={s.block_card} gutter={width > 1600 ? 50 : 25}>
         {datas?.slice(0, isLoadMore).map((item) => {
           return (
             <Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>

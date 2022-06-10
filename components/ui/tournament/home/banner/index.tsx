@@ -54,7 +54,9 @@ export default function BannerPage() {
               <div className={s.line}></div>
               {moment(timer).format("MMMM Do h:mm:ss")}
             </div>
-            {show && <Texty delay={1000}>{titleSpotlight}</Texty>}
+            <div className={s.title_spotlight}>
+              {show && <Texty delay={1000}>{titleSpotlight}</Texty>}
+            </div>
           </div>
         ) : (
           <div className={s.marquee}></div>
