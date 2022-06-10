@@ -1,5 +1,5 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react";
-import { useMutation } from "@apollo/client";
+import {ApolloQueryResult, useMutation} from "@apollo/client";
 import {Button, Col, Form, Input, InputRef, message as antd_message, Modal, Popconfirm, Row, Switch} from "antd";
 
 import { CurrentMatch, Team } from "src/store/SingleRoundStore";
@@ -8,6 +8,7 @@ import { BracketMatchUpdateInputGql } from "src/generated/graphql";
 import { CommonError, handleGraphqlErrors } from "utils/apollo_client";
 import s from "./UpdateScore.module.sass";
 import {useForm} from "antd/lib/form/Form";
+import SpinLoading from "../../../../common/Spin";
 
 
 export type UpdateScoreModalStatelessProps = {
@@ -17,6 +18,7 @@ export type UpdateScoreModalStatelessProps = {
   currentMatch?: CurrentMatch,
   doCloseModal: () => void,
   onUpdateCompleted: (score0: number, score1: number) => void,
+  refetchBracket: () => Promise<ApolloQueryResult<any>>
 }
 export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps) => {
   const {
@@ -26,11 +28,12 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
     currentMatch,
     doCloseModal,
     onUpdateCompleted,
+    refetchBracket
   } = props;
   const teams = currentMatch ? currentMatch.teams : [];
 
   const [setMatchResult] = useMutation(UPDATE_MATCH_RESULT);
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const teamName0 = teams && teams[0] ? teams[0].name : "";
   const teamName1 = teams && teams[1] ? teams[1].name : "";
@@ -64,63 +67,80 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
   }, [visible])
 
   const updateMatchResult = (is_final: boolean) => {
-    form.validateFields()
-      .then((result) => {
-        if (!currentMatch) {
-          console.error('{updateMatchResult} currentMatch is null');
-          return
-        }
+    if (!currentMatch) {
+      console.error('{updateMatchResult} currentMatch is null');
+      return
+    }
 
-        if (!currentMatch.uid) {
-          console.error("Invalid currentMatch: ", currentMatch)
-          return;
-        }
+    if (!currentMatch.uid) {
+      console.error("Invalid currentMatch: ", currentMatch)
+      return;
+    }
 
-        const input: BracketMatchUpdateInputGql = {
-          uid: currentMatch.uid,
-          // @ts-ignore
-          score_1: score0 ? parseInt(score0) : 0,
-          // @ts-ignore
-          score_2: score1 ? parseInt(score1) : 0,
-          finish_match: is_final,
-          link_stream: linkStream,
-          link_stream_enable: enableLinkStream,
+    const input: BracketMatchUpdateInputGql = {
+      uid: currentMatch.uid,
+      // @ts-ignore
+      score_1: score0 ? parseInt(score0) : 0,
+      // @ts-ignore
+      score_2: score1 ? parseInt(score1) : 0,
+      finish_match: is_final,
+      link_stream: linkStream,
+      link_stream_enable: enableLinkStream,
+    }
+    setIsLoading(true)
+    setMatchResult({
+      variables: {input},
+      onCompleted(data: string) {
+        // console.log('{setMatchResult.onCompleted} data: ', data);
+        onUpdateCompleted(input.score_1, input.score_2);
+      }
+    }).then((res) => {
+      console.log('{} setMatchResult res: ', res);
+    }).catch((e: any) => {
+      handleGraphqlErrors(e, (code, message) => {
+        switch (code) {
+          case 'MATCH_COMPLETE':
+            antd_message.error('Cannot update due to the match was completed', 10);
+            break;
+          case CommonError.Network:
+          case 'BAD_USER_INPUT':
+          default:
+            console.error('{setMatchResult} Unhandled e: ', code, message, e);
         }
-
-        setMatchResult({
-          variables: {input},
-          onCompleted(data: string) {
-            // console.log('{setMatchResult.onCompleted} data: ', data);
-            onUpdateCompleted(input.score_1, input.score_2);
-          }
-        }).then((res) => {
-          console.log('{} setMatchResult res: ', res);
-        }).catch((e: any) => {
-          handleGraphqlErrors(e, (code, message) => {
-            switch (code) {
-              case 'MATCH_COMPLETE':
-                antd_message.error('Cannot update due to the match was completed', 10);
-                break;
-              case CommonError.Network:
-              case 'BAD_USER_INPUT':
-              default:
-                console.error('{setMatchResult} Unhandled e: ', code, message, e);
-            }
-          });
-        }).finally(() => {
-          doCloseModal();
-        })
-      })
-      .catch(error => {
-        console.log(error);
-      })
-  };
+      });
+    }).finally(() => {
+      setIsLoading(false)
+      refetchBracket()
+      doCloseModal();
+    })
+  }
 
   const persistMatchResult = () => {
-    updateMatchResult(false)
+    if (enableLinkStream) {
+      form.validateFields()
+        .then((result) => {
+          updateMatchResult(false)
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    } else {
+      updateMatchResult(false)
+    }
   };
+
   const finishMatchResult = () => {
-    updateMatchResult(true)
+    if (enableLinkStream) {
+      form.validateFields()
+        .then((result) => {
+          updateMatchResult(true)
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    } else {
+      updateMatchResult(true)
+    }
   };
 
   const [form] = useForm()
@@ -241,6 +261,11 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
             </Form>
           </Col>
         </Row>
+        {isLoading && (
+          <div className={s.loaderWrapper}>
+            <SpinLoading className={s.loader} />
+          </div>
+        )}
       </div>
     </Modal>
   );

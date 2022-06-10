@@ -9,7 +9,7 @@ export type BracketUiProps = {
   dataBracket?: BracketGql;
   loadingBracket?: any;
   refereeIds: string[];
-  refetchBracket?: () => Promise<ApolloQueryResult<any>>
+  refetchBracket: () => Promise<ApolloQueryResult<any>>
 };
 
 function _defaultRoundTeam(): Team {

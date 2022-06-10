@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 
 import RoundStore, { ISingleRoundStore, Team } from "src/store/SingleRoundStore";
 import { UpdateScoreModalStateless } from "./UpdateScoreModalStateless";
+import {ApolloQueryResult} from "@apollo/client";
 
 type Props = {
   datas?: object;
@@ -9,9 +10,11 @@ type Props = {
   roundIdx?: number;
   seedIdx?: number;
   teams?: any[];
+  refetchBracket: () => Promise<ApolloQueryResult<any>>
 };
 
 const UpdateScoreModal = (props: Props) => {
+  const {refetchBracket} = props
   const currentMatch = RoundStore.currentMatch;
   const visible = RoundStore.updateScoreModalVisible;
 
@@ -41,6 +44,7 @@ const UpdateScoreModal = (props: Props) => {
     currentMatch={currentMatch}
     doCloseModal={closeModal}
     onUpdateCompleted={onUpdateCompleted}
+    refetchBracket={refetchBracket}
   />
 };
 

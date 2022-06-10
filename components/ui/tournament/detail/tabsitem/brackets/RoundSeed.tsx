@@ -42,15 +42,14 @@ export function makeSeedComponent(
       finalRankIcoTeam1 = team0.score < team1.score ? champion : secondary;
     }
 
-    const teamName0 = team0 && team0.name ? team0.name : 'TBD';
-    const teamName1 = team1 && team1.name ? team1.name : 'TBD';
+    const teamName0 = ((team1 && team1.name) && (team0 && isEmpty(team0.name))) ? 'bye' : (team0 && team0.name ? team0.name : 'TBD')
+    const teamName1 = ((team0 && team0.name) && (team1 && isEmpty(team1.name))) ? 'bye' : (team1 && team1.name ? team1.name : 'TBD')
     const notStartedYet = (isEmpty(team0.id) || isEmpty(team1.id));
     const canUpdate = canEdit && !notStartedYet && (!matchCompleted);
     const team0joined = !isEmpty(team0.id) && (team0.id !== 'bye');
     const team1joined = !isEmpty(team1.id) && (team1.id !== 'bye');
     const team0win = team0.score > team1.score;
     const team1win = team0.score < team1.score;
-
     return (
       <>
         <Seed mobileBreakpoint={breakpoint} style={{ fontSize: 16, paddingBottom: '25px', paddingTop: '25px' }}>
@@ -63,7 +62,7 @@ export function makeSeedComponent(
                   </div>
                 </Tooltip>
                 <div
-                  className={`${ss.score} ${team0joined ? ss.scoreJoined : ''} ${team0win ? ss.scoreWin : ''} ${canUpdate ? '' : ss.disabled }`}
+                  className={`${ss.score} ${teamName0 !== 'bye' ? (team0joined ? ss.scoreJoined : '') : ''} ${teamName0 !== 'bye' ? (team0win ? ss.scoreWin : '') : ''} ${canUpdate ? '' : ss.disabled }`}
                   onClick={(e) =>
                     canUpdate ?
                       handleOpenModal(e, match, seedIndex, roundIndex) :
@@ -81,7 +80,7 @@ export function makeSeedComponent(
                   </div>
                 </Tooltip>
                 <div
-                  className={`${ss.score} ${team0joined ? ss.scoreJoined : ''} ${team1win ? ss.scoreWin : ''} ${canUpdate ? '' : ss.disabled}`}
+                  className={`${ss.score} ${teamName1 !== 'bye' ? (team0joined ? ss.scoreJoined : '') : ''} ${teamName1 !== 'bye' ? (team1win ? ss.scoreWin : '') : ''} ${canUpdate ? '' : ss.disabled}`}
                   onClick={(e) =>
                     canUpdate ?
                       handleOpenModal(e, match, seedIndex, roundIndex) :
