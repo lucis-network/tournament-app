@@ -22,9 +22,8 @@ export default function TabHome() {
     handleChangeFilter,
     handleOrder,
   } = useHomePage();
-
   const [creating, setCreating] = useState(false);
-
+  console.log('data',data);
   const handleChangeTab = (item: string) => {
     handleChangeFilter("type", item);
   };
