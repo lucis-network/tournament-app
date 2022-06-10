@@ -49,11 +49,11 @@ const Statistics = (props: IProps) => {
 					<h2>Statistics</h2>
 				</Col>
 				<Col span={8}>
-					<h3>{loading ? "--" : data.getBalance.lucis_point} LUCIS point</h3>
+					<h3>{loading ? "--" : data?.getBalance?.lucis_point} LUCIS point</h3>
 				</Col>
 				<Col span={8}>
 					<Row className={s.lucisTokenArea} gutter={[16, 16]}>
-						<Col span={24}>Earned: {loading ? "--" : data.getBalance.lucis_token} LUCIS Token</Col>
+						<Col span={24}>Earned: {loading ? "--" : data?.getBalance?.lucis_token} LUCIS Token</Col>
 						<Col span={24}><Button type="primary">Claim</Button></Col>
 						<Col span={24}>Wallet balance: {lucisTokenOnChain} LUCIS</Col>
 					</Row>

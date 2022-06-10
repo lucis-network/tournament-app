@@ -143,23 +143,12 @@ export default function TournamentDetailBecomeSponsor(
         ConnectWalletStore_NonReactiveData.web3Provider
       );
 
-      let token_address = "";
-
-      if (currency.symbol === "BUSD") token_address = BUSD;
-      if (currency.symbol === "USDT") token_address = USDT;
-      if (currency.symbol === "LUCIS") token_address = LUCIS;
+      let token_address = currency?.address;
 
       const contractAddress = getContract.filter(
         (item: any) => item.type === "PRIZE"
       );
 
-      // if (!localStorage.getItem("checkBecomeSponser")) {
-      //   let bool = await ethersService.requestApproval(
-      //     contractAddress[0]?.address,
-      //     token_address
-      //   );
-      //   if (bool) localStorage.setItem("checkBecomeSponser", "true");
-      // }
       if (!AuthStore.id) {
         console.log("User not exist in store");
         return;

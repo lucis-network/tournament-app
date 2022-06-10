@@ -74,6 +74,10 @@ export default observer(function DepositModal(props: Props) {
         ? TournamentStore?.currency_address
         : "";
 
+      // if (TournamentStore.currency_symbol === "BUSD") token_address = BUSD;
+      // if (TournamentStore.currency_symbol === "USDT") token_address = USDT;
+      // if (TournamentStore.currency_symbol === "LUCIS") token_address = LUCIS;
+
       if (!TournamentStore.checkDepositApprove) {
         TournamentStore.checkDepositApprove =
           await ethersService.requestApproval(

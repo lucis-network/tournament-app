@@ -364,6 +364,16 @@ export default observer(function CreateTournament(props: Props) {
       setCheckPoolSize(true);
     }
 
+    if (!cr.currency_uid) {
+      setCheckCurrency(false);
+      //setMessageErrorChoosegame("Currency is required");
+      //@ts-ignore
+      document.getElementById("prizing").scrollIntoView();
+      return false;
+    } else {
+      setCheckCurrency(true);
+    }
+
     if (calculateTotalAllocation(cr.prize_allocation) != 1) {
       //@ts-ignore
       document.getElementById("prizing").scrollIntoView();
