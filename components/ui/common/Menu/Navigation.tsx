@@ -92,6 +92,12 @@ export const Navigation = () => {
     },
     {
       color: "#FF008C",
+      text: "TOURNAMENT",
+      isBlank: false,
+      to: "/tournament",
+    },
+    {
+      color: "#FF008C",
       text: "INSIGHT",
       src: "https://insight.lucis.network/",
     },
