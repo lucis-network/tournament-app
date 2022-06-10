@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 import moment from "moment";
 import { isEmpty } from "lodash";
-import Texty from "rc-texty";
+import TextyAnim from "rc-texty";
 import "rc-texty/assets/index.css";
 
 type Props = {
@@ -63,7 +63,7 @@ const TournamentDetailMarquee = (props: Props) => {
             {moment(timer).format("MMMM Do h:mm:ss")}
           </div>
           {/* <div className={s.marquee_title}>{titleSpotlight}</div> */}
-          {show && <Texty delay={1000}>{titleSpotlight}</Texty>}
+          {show && <TextyAnim delay={1000}>{titleSpotlight}</TextyAnim>}
         </div>
       ) : (
         ""

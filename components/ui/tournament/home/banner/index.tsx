@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import useBanner from "../hooks/useBanner";
 import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 import moment from "moment";
-import Texty from "rc-texty";
+import TextyAnim from "rc-texty";
 import "rc-texty/assets/index.css";
 
 export default function BannerPage() {
@@ -55,7 +55,7 @@ export default function BannerPage() {
               {moment(timer).format("MMMM Do hh:mm:ss")}
             </div>
             <div className={s.title_spotlight}>
-              {show && <Texty delay={1000}>{titleSpotlight}</Texty>}
+              {show && <TextyAnim delay={1000}>{titleSpotlight}</TextyAnim>}
             </div>
           </div>
         ) : (
