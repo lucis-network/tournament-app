@@ -18,6 +18,7 @@ type Props = {
   currency?: any;
   tournament_status: string;
   refetch: any;
+  dataBracket?: any;
 };
 
 export default function TableParticipant(props: Props) {
@@ -28,11 +29,13 @@ export default function TableParticipant(props: Props) {
     currency,
     tournament_status,
     refetch,
+    dataBracket,
   } = props;
 
   const [datas, setDatas] = useState({});
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+  const [isCheckBtnDonate, setIsCheckBtnDonate] = useState(false);
 
   const { dataUpdateParticipant } = useUpdateParticipant({
     tournament_uid: tournamentId,
@@ -42,6 +45,13 @@ export default function TableParticipant(props: Props) {
   const closeModal = () => {
     setIsPopupDonate(false);
   };
+
+  useEffect(() => {
+    const getDate = new Date();
+    const start_at = new Date(dataBracket?.start_at);
+    const inDays = start_at.getTime() - getDate.getTime();
+    if (inDays/3600000  < 1) setIsCheckBtnDonate(true);
+  });
 
   const handleClick = (e: object) => {
     setDatas(e);
@@ -150,7 +160,7 @@ export default function TableParticipant(props: Props) {
       // width: "15%",
       render: (_: any, item: object) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {tournament_status !== "CLOSED" ? (
+          {isCheckBtnDonate && tournament_status !== "CLOSED" ? (
             <Button
               onClick={() => {
                 if (!AuthStore.isLoggedIn) {

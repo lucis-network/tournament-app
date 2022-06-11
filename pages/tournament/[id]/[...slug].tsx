@@ -3,8 +3,7 @@ import { Col, Row, Spin, Tabs, message, Image } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import {
   useSponsors,
-  useTournamentDetail,
-  useUpdateTotalDonation,
+  useTournamentDetail
 } from "hooks/tournament/useTournamentDetail";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -17,9 +16,7 @@ import Prizing from "components/ui/tournament/detail/tabsitem/prizing";
 import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
-import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
-import ClaimResultModal from "components/ui/tournament/detail/popup/claimResultModal/ClaimResultModal";
 import { isClientDevMode } from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
@@ -31,7 +28,6 @@ import AuthStore from "components/Auth/AuthStore";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
-import { useWindowSize } from "hooks/useWindowSize";
 import DocHead from "../../../components/DocHead";
 
 const { TabPane } = Tabs;
@@ -137,6 +133,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   };
 
   const handleOpenConfirmResult = () => {
+    if (!AuthStore.isLoggedIn) {
+      message.info("Please sign in first");
+      return;
+    }
+
     setShowConfirm(true);
   };
 
@@ -625,6 +626,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           currency={currency}
                           tournament_status={tournament_status as string}
                           refetch={refetch}
+                          dataBracket={dataBracket}
                         />
                       )}
                       {tournament_status === "CLOSED" && (
@@ -687,11 +689,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         />
 
         <ConnectWalletModal />
-        <ClaimResultModal
-          totalPrizePool={totalPrizePool as number}
-          currency={currency}
-          name={name as string}
-        />
 
         <PopupConfirm
           show={showConfirm}

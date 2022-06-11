@@ -217,6 +217,7 @@ const UseTeamModal = (tournamentData: any) => {
           setStep("success");
           message.success("Success", 10);
           setLoading(false);
+          refreshParticipant();
         },
         onError: (err: ApolloError) =>
           handleGraphqlErrors(err, (code, messageErr) => {
@@ -232,11 +233,15 @@ const UseTeamModal = (tournamentData: any) => {
             else {
               //setErrorPassword(err.message);
               //message.error(err.message);
-              if (code === "BAD_REQUEST")
+              if (code === "MEMBER_ALREADY_JOINED") {
                 message.error(
-                  "Can't join because your team member is joining another tournament"
+                  "Can't join because one of the team members is joining another tournament"
                 );
-              else {
+              } else if (code === "SERVER_ERROR") {
+                message.error(
+                  "Can't join because one of the team member is the referee"
+                );
+              } else {
                 message.error(err.message);
               }
             }

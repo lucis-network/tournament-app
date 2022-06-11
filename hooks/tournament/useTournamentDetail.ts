@@ -622,6 +622,11 @@ const UPDATE_PARTICIPANT = gql`
           }
         }
       }
+      team {
+        uid
+        name
+        avatar
+      }
     }
   }
 `;

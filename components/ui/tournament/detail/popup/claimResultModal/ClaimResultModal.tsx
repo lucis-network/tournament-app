@@ -37,13 +37,13 @@ export default observer(function ClaimResultModal(props: Props) {
         <div className={`${s.container}`}>
           <p>Claim success</p>
           <p>
-            {fomatNumber(totalPrizePool)} {currency.symbol}
+            {fomatNumber(totalPrizePool ? totalPrizePool : 0)} {currency.symbol}
           </p>
           <div>
             You&apos;ve successfully claimed the prize <br />
             from {name}
           </div>
-          <Button>Share my victory</Button>
+          {/* <Button>Share my victory</Button> */}
         </div>
       </Modal>
     </div>

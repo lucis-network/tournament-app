@@ -25,6 +25,9 @@ import { CalendarOutlined } from "@ant-design/icons";
 import AuthStore from "components/Auth/AuthStore";
 import SpinLoading from "components/ui/common/Spin";
 import { isEmpty } from "lodash";
+import ClaimResultModal from "../popup/claimResultModal/ClaimResultModal";
+import AuthService from "components/Auth/AuthService";
+import { to_hex_str } from "utils/String";
 
 type Props = {
   isJoin: boolean;
@@ -47,6 +50,11 @@ type Reward = {
 };
 
 export type ClaimPrizePool = {
+  tournament_uid?: string;
+  address?: any;
+};
+
+export type ClaimPrizeSystem = {
   tournament_uid?: string;
   address?: any;
 };
@@ -127,6 +135,9 @@ export default observer(function RegistrationPhase(props: Props) {
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
   const [dataDonation, setDataDonation] = useState<Reward[]>();
   const [totalFromDonation, setTotalFromDonation] = useState(0);
+  const [loadingClaimPrizePool, setLoadingClaimPrizePool] = useState(false);
+  const [loadingClaimPrizeSystem, setLoadingClaimPrizePoolSystem] =
+    useState(false);
 
   useEffect(() => {
     let arr: Array<Reward> = [];
@@ -161,6 +172,7 @@ export default observer(function RegistrationPhase(props: Props) {
       AuthBoxStore.connectModalVisible = true;
     } else {
       if (value === "PrizePool") {
+        setLoadingClaimPrizePool(true);
         const claim: ClaimPrizePool = {
           tournament_uid: tournamentId,
           address: ConnectWalletStore.address,
@@ -172,29 +184,37 @@ export default observer(function RegistrationPhase(props: Props) {
             if (res) {
               refetch();
               TournamentStore.claimResultModalVisible = true;
+              setLoadingClaimPrizePool(false);
             }
           },
           (error) => {
-            message.warning("You have received this prize.");
+            message.warning("You have received this prize.", 10);
+            setLoadingClaimPrizePool(false);
           }
         );
       }
 
       if (value === "PrizeSystem") {
+        setLoadingClaimPrizePoolSystem(true);
+        const claim: ClaimPrizeSystem = {
+          tournament_uid: tournamentId,
+          address: ConnectWalletStore.address,
+        };
+
         let tournamentService = new TournamentService();
-        const response = tournamentService
-          .claimPrizeSystem(tournamentId as string)
-          .then(
-            (res) => {
-              if (res) {
-                refetch();
-                TournamentStore.claimResultModalVisible = true;
-              }
-            },
-            (error) => {
-              message.warning("You have received this prize.");
+        const response = tournamentService.claimPrizeSystem(claim).then(
+          (res) => {
+            if (res) {
+              refetch();
+              TournamentStore.claimResultModalVisible = true;
+              setLoadingClaimPrizePoolSystem(false);
             }
-          );
+          },
+          (error) => {
+            message.warning("You have received this prize.", 10);
+            setLoadingClaimPrizePoolSystem(false);
+          }
+        );
       }
     }
   };
@@ -403,6 +423,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                         onClick={() => claimToken("PrizePool")}
                                         className={`${s.btnClaim} btn-cyan`}
                                         disabled={dataPrize?.is_claim}
+                                        loading={loadingClaimPrizePool}
                                       >
                                         Claim
                                       </Button>
@@ -432,6 +453,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                         }
                                         className={`${s.btnClaim} btn-cyan`}
                                         disabled={dataSystemPrize?.is_claim}
+                                        loading={loadingClaimPrizeSystem}
                                       >
                                         Claim
                                       </Button>
@@ -542,6 +564,13 @@ export default observer(function RegistrationPhase(props: Props) {
         thumbnail={thumbnail}
         refetch={refetch}
       />
+
+      <ClaimResultModal
+        totalPrizePool={dataPrize?.amount as number}
+        currency={currency}
+        name={name as string}
+      />
+
       <Modal
         title={
           <h3 className="text-16px text-white">
@@ -566,7 +595,11 @@ export default observer(function RegistrationPhase(props: Props) {
             </Button>
           </Col>
           <Col>
-            <Button type="primary" onClick={handleLeaveTournament} loading={loadingUnjoin}>
+            <Button
+              type="primary"
+              onClick={handleLeaveTournament}
+              loading={loadingUnjoin}
+            >
               Confirm
             </Button>
           </Col>
