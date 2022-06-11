@@ -10,7 +10,7 @@ import { BracketType } from "utils/Enum";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useWindowSize } from "hooks/useWindowSize";
-import BlankState from "components/ui/tournament/home/blankState/BlankState";
+import BlankState from "../../../tournament/home/blankState";
 import { isEmpty } from "lodash";
 
 type Props = {
