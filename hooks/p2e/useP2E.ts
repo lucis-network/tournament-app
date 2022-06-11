@@ -129,7 +129,24 @@ const GET_PLATFORM_ACCOUNT = gql`
       player_uid
       avatar
       nick_name
-      platform
+      platform_id
+      platform {
+        id
+        name
+        accounts {
+          uid
+          user_id
+          player_uid
+          avatar
+          nick_name
+          country_code
+          platform_id
+          access_token
+          id_token
+        }
+      }
+      created_at
+      updated_at
     }
   }
 `
