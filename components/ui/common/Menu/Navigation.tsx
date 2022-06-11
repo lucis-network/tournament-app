@@ -138,7 +138,7 @@ export const Navigation = () => {
         </div>
       ),
       isBlank: false,
-      class: { position: "absolute", bottom: "135px", fontSize: 13, cursor: 'auto' },
+      class: { position: "absolute", bottom: "146px", fontSize: 12, cursor: 'auto' },
     },
     {
       color: "#FF008C",

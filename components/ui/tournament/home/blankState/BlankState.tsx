@@ -1,7 +1,7 @@
 import s from "./Blankstate.module.sass";
 
 type Props = {
-  title: string;
+  title?: string;
 };
 const BlankState = (props: Props) => {
   const { title } = props;
@@ -44,7 +44,7 @@ const BlankState = (props: Props) => {
             fontWeight: "600",
           }}
         >
-          No {title} campaigns
+          No {title} tournament
         </p>
       </div>
     </div>
