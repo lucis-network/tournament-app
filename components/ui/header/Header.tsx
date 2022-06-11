@@ -49,7 +49,7 @@ export default observer(function Header(props: Props) {
           <div className={`${s.menu_container}`}>
             <Row
               justify="space-between"
-              className={`container lucis-container items-center py-20px px-0 relative z-10 `}
+              className="container lucis-container items-center px-0 relative z-10"
             >
               <Col span={3} className={s.logo} style={{maxWidth: 150}}>
                 <Link href="/" passHref>

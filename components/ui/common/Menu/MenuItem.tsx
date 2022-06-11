@@ -34,19 +34,11 @@ export type MenuItemType = {
   disable?: boolean;
   class?: object;
   isBlank?: boolean;
+  to?: string;
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
-  const router = useRouter();
-  const handleGoToLinkMenu = (src: any) => {
-    if (src) {
-      router.push(src)
-    }
-  };
   const click = useCallback(() => {
-    // if (props.item.scrollTarget) {
-    //   scrollToSection(props.item.scrollTarget ?? '', true, -90)
-    //
     if (props.item.onClick) {
       props.item.onClick();
     }
@@ -56,6 +48,19 @@ export const MenuItem = (props: { item: MenuItemType }) => {
   }, []);
 
   const disable = props.item.disable && s.disable;
+  let Comp;
+
+  if (props.item.to) {
+    Comp = <Link href={props.item.to}>{props.item.text}</Link>;
+  } else if (props.item.src) {
+    Comp = (
+      <a href={props.item.src} target="_blank" rel="noopener noreferrer">
+        {props.item.text}
+      </a>
+    );
+  } else {
+    Comp = <div className={`${disable}`}>{props.item.text}</div>;
+  }
   return (
     <motion.li
       variants={variants}
@@ -63,14 +68,9 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       // whileTap={{ scale: 0.95 }}
       onClick={click}
       style={props.item.class}
+      className={`text-placeholder font-saira text-white px-3 py-3`}
     >
-      <div
-        className={`text-placeholder font-saira text-white px-3 py-3 ${disable}`}
-        style={{ fontSize: "16px", lineHeight: "22px" }}
-        onClick={() => handleGoToLinkMenu(props.item.src)}
-      >
-        {props.item.text}
-      </div>
+      {Comp}
     </motion.li>
   );
 };

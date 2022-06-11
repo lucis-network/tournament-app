@@ -1,5 +1,5 @@
 import s from "./EditProfile.module.sass";
-import {Button, Col, Form, Input, InputNumber, message, Row, Select, Space} from "antd";
+import {Button, Col, Form, Input, InputNumber, message as antMessage, Row, Select, Space} from "antd";
 import {InfoCircleOutlined, LinkOutlined} from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import React, {useCallback, useEffect, useRef, useState} from "react";
@@ -8,10 +8,11 @@ import {observer} from "mobx-react-lite";
 import debounce from "lodash/debounce";
 import {ProfileUpdateInput, UserGraphql} from "../../../../../src/generated/graphql";
 import {isEmpty} from "lodash";
-import {ApolloQueryResult} from "@apollo/client";
+import {ApolloError, ApolloQueryResult} from "@apollo/client";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { isPhoneNumber } from 'class-validator';
+import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 
 type EditProfileProps = {
   userInfo: UserGraphql,
@@ -29,9 +30,29 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
   const [emailValue, setEmailValue] = useState<string>('');
   const [countryData, setCountryData] = useState<CountryOption[]>([]);
   const [phone, setPhone] = useState<string>(userInfo?.profile?.phone as string);
-  const { verifyEmail } = useVerifyEmail({
-    email: emailValue
-  });
+  const {verifyEmail} = useVerifyEmail(
+    {
+      email: emailValue,
+      onError: (error) => handleGraphqlErrors(error, (code, message) => {
+        switch (code) {
+          case 'INVALID_EMAIL':
+            antMessage.error('The email address you entered is not valid. Please try another.')
+            break
+          case 'EMAIL_WAS_USED':
+            antMessage.error('The email address is already in use. Please try another email address.')
+            break
+          default:
+            antMessage.error('An unknown error has occurred. Please try again later.' )
+            break
+        }
+      }),
+      onCompleted: (data) => {
+        console.log('[onCompleted] data: ', data)
+        if (data?.data?.verifyEmail && data?.data?.verifyEmail !== null)
+          antMessage.success('An email has been sent. Please check your inbox.')
+      }
+    }
+  );
   const { updateProfile } = useUpdateProfile({
     data: newProfileData
   });
@@ -70,11 +91,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
   }
 
   const handleVerifyEmail = () => {
-    verifyEmail().then(result => {
-      console.log('handleVerifyEmail: ', result)
-    }).catch(error => {
-      console.log('handleVerifyEmail: ', error)
-    })
+    verifyEmail()
   }
 
   const handleSaveChange = () => {
@@ -86,7 +103,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           formattedPhone = dialCode + result.phone
         }
 
-        const newResult = {
+        let newResult: any = {
           user_name: {
             set: result.user_name ?? ''
           },
@@ -111,13 +128,17 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           youtube: {
             set: result.youtube ?? ''
           },
-          phone: {
-            set: !phone.includes('+') ? '+' + phone : phone
-          },
           biography: {
             set: result.biography ?? ''
           },
         }
+
+        if (!isEmpty(phone)) {
+          newResult.phone = {
+            set: (!phone.includes('+')) ? ('+' + phone) : phone
+          }
+        }
+
         setNewProfileData(newResult)
       })
       .catch(error => {

@@ -8,6 +8,8 @@ import { Team } from "src/generated/graphql";
 import SearchComplete from "components/ui/common/searchs";
 import PopupDonate from "../../popup/popupDonate";
 import AuthStore from "components/Auth/AuthStore";
+import { useUpdateParticipant } from "hooks/tournament/useTournamentDetail";
+import { isEmpty } from "lodash";
 
 type Props = {
   dataParticipants: Team[];
@@ -31,6 +33,12 @@ export default function TableParticipant(props: Props) {
   const [datas, setDatas] = useState({});
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
+
+  const { dataUpdateParticipant } = useUpdateParticipant({
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
+
   const closeModal = () => {
     setIsPopupDonate(false);
   };
@@ -163,6 +171,8 @@ export default function TableParticipant(props: Props) {
     },
   ];
 
+  console.log("dataParticipants", dataParticipants);
+  console.log("dataUpdateParticipant", dataUpdateParticipant);
   return (
     <div className={s.wrapper}>
       <div className={s.containerTab}>
@@ -170,11 +180,15 @@ export default function TableParticipant(props: Props) {
         <SearchComplete />
       </div> */}
         <Table
-          dataSource={dataParticipants}
+          dataSource={
+            dataUpdateParticipant ? dataUpdateParticipant : dataParticipants
+          }
+          //dataSource={dataParticipants}
           columns={columns}
           bordered
           className={s.container_table}
-          rowKey={(record) => `${record?.uid}`}
+          //rowKey={(record) => `${record?.tournament_uid ? tournament_uid : ''}`}
+          //rowKey={(record) => `${record?.uid}`}
         />
         <ModalDonateTeam
           nameTeam={datas}

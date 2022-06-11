@@ -22,12 +22,9 @@ export default function TabHome() {
     handleChangeFilter,
     handleOrder,
   } = useHomePage();
-
   const [creating, setCreating] = useState(false);
-  const [typeTab, setTypeTab] = useState("UPCOMING");
-
+  console.log('data',data);
   const handleChangeTab = (item: string) => {
-    setTypeTab(item);
     handleChangeFilter("type", item);
   };
   let cardHome;
@@ -35,7 +32,7 @@ export default function TabHome() {
   if (loading) {
     cardHome = <SpinLoading className="min-h-[500px] pt-0" />;
   } else {
-    cardHome = <CardHome datas={data} loading={loading} type={typeTab} />;
+    cardHome = <CardHome datas={data} loading={loading} type={filter?.type} />;
   }
 
   const createTournament = () => {
@@ -87,7 +84,7 @@ export default function TabHome() {
           onFilter={handleChangeFilter}
           onOrder={handleOrder}
         />
-        <div style={{ minHeight: "500px" }}>{cardHome}</div>
+        <div style={{ minHeight: "380px" }}>{cardHome}</div>
         <div className={s.container_create}>
           <div className={s.line}></div>
           <div className={s.lin1}></div>

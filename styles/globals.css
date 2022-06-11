@@ -258,12 +258,12 @@ body .ant-menu {
     right: 0;
     bottom: 0;
     width: 300px;
-    background: rgba(255, 255, 255, 0.15);
+    background: rgba(150, 150, 150, 0.15);
     box-shadow: 0px 40px 80px rgba(0, 0, 0, 0.2),
       inset 0px -4px 2px rgba(0, 0, 0, 0.2),
       inset 0px 4px 2px rgba(255, 255, 255, 0.12),
       inset 4px 4px 26px rgba(255, 255, 255, 0.12);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
   }
 
   .humburger-menu {
@@ -295,7 +295,6 @@ body .ant-menu {
 
   .nav-list li {
     display: flex;
-    align-items: center;
     margin-bottom: 0px;
     font-size: 16px;
   }
@@ -427,7 +426,7 @@ body .ant-menu {
 @media (min-width: 1024px) {
   .lucis-container {
     max-width: 1024px;
-    padding: 0 4rem;
+    padding: 0 15px;
   }
 }
 
@@ -813,7 +812,7 @@ body .ant-modal-mask{
 }
 body .ant-carousel .slick-list{
   box-shadow: 0px 0px 25px -8px #0bebd6;
-  border-radius: 16px;
+  border-radius: 6px;
 }
 body .ant-carousel .slick-dots-bottom{
   bottom: -30px;

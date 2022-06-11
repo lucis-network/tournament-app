@@ -14,7 +14,7 @@ import {ApolloQueryResult} from "@apollo/client";
 
 type Props = {
   canEdit: boolean
-  refetchBracket?: () => Promise<ApolloQueryResult<any>>
+  refetchBracket: () => Promise<ApolloQueryResult<any>>
 };
 
 const Index = (props: Props) => {
@@ -41,9 +41,6 @@ const Index = (props: Props) => {
     });
   }
 
-
-
-
   let seedIndex = -1, roundIndex = -1;
   if (currentMatch) {
     seedIndex = currentMatch.seedIndex;
@@ -55,15 +52,12 @@ const Index = (props: Props) => {
 
   const onWinnerRoundUpdateCompleted = (score0: number, score1: number) => {
     DoubleBracketStore.setWinnerRoundMatchScore(roundIndex, seedIndex, score0, score1);
-    refetchBracket && refetchBracket()
   }
   const onLoserRoundWinUpdateCompleted = (score0: number, score1: number) => {
     DoubleBracketStore.setLoserRoundMatchScore(roundIndex, seedIndex, score0, score1);
-    refetchBracket && refetchBracket()
   }
   const onFinalRoundWinUpdateCompleted = (score0: number, score1: number) => {
     DoubleBracketStore.setFinalRoundMatchScore(roundIndex, seedIndex, score0, score1);
-    refetchBracket && refetchBracket()
   }
 
 
@@ -99,6 +93,7 @@ const Index = (props: Props) => {
             currentMatch={currentMatch}
             doCloseModal={closeModal}
             onUpdateCompleted={onWinnerRoundUpdateCompleted}
+            refetchBracket={refetchBracket}
           />}
         />
         <div className={s.loseRoundSpacer} />
@@ -113,6 +108,7 @@ const Index = (props: Props) => {
             currentMatch={currentMatch}
             doCloseModal={closeModal}
             onUpdateCompleted={onLoserRoundWinUpdateCompleted}
+            refetchBracket={refetchBracket}
           />}
         />
       </div>
@@ -131,6 +127,7 @@ const Index = (props: Props) => {
             currentMatch={currentMatch}
             doCloseModal={closeModal}
             onUpdateCompleted={onFinalRoundWinUpdateCompleted}
+            refetchBracket={refetchBracket}
           />}
           showFinalMatchRank={true}
         />

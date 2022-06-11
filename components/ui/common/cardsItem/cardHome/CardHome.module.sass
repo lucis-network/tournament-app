@@ -105,9 +105,19 @@
           background-size: cover
           background-position: center
           background-repeat: no-repeat
-          padding: 150px 0px
+          padding: 130px 0px
           width: 100%
           cursor: pointer
+          @media (min-width: 640px)
+            padding: 90px 0px
+          @media (min-width: 768px)
+            padding: 135px 0px
+          @media (min-width: 992px)
+            padding: 90px 0px
+          @media (min-width: 1280px)
+            padding: 120px 0px
+          @media (min-width: 1600px)
+            padding: 130px 0px
         .info
           position: absolute
           top: 0
@@ -152,25 +162,39 @@
         a
           color: #FFF
         @media (min-width: 0px)
-          padding: 20px
+          padding: 0px 20px 20px 20px
         @media (min-width: 640px)
-          padding: 16px 12px
+          padding: 0px 12px 16px 12px
         @media (min-width: 992px)
           padding: 0px 8px 12px 8px
         @media (min-width: 1440px)
-          padding: 20px
+          padding: 12px 20px 20px 20px
         .im_logo_game
           overflow: hidden
           padding: 4px 0px
           display: flex
           justify-content: space-between
           align-items: center
+          @media (min-width: 768px)
+            height: 60px
           @media (min-width: 992px)
             margin-top: 6px
+            height: 40px
+          @media (min-width: 1280px)
+            max-height: 50px
+            overflow: hidden
           @media (min-width: 1440px)
             margin-top: 0px
           img
-            height: 32px
+            @media (min-width: 0px)
+              height: 72px
+            @media (min-width: 992px)
+              height: 50px
+            @media (min-width: 1280px)
+              height: 72px
+            @media (min-width: 1440px)
+              height: 82px
+
           .time
             text-transform: uppercase
             @media ( min-width: 992px )
@@ -185,16 +209,17 @@
           padding-top: 8px
           overflow: hidden
           height: 64px
+          word-break: break-word
+          cursor: pointer
           @media (min-width: 992px)
             height: 54px
             margin: 0px
           @media (min-width: 1440px)
             height: 68px
             margin: 0px
-          a
+          .title
             color: #FFF
             font-weight: 700
-            padding-top: 24px
             @media (min-width: 0px)
               font-size: 22px
               line-height: 28px 
@@ -231,7 +256,7 @@
               font-size: 14px
               line-height: 16px
             span
-              @media (min-width: 992px) and (max-width: 1599px)
+              @media (min-width: 992px) and (max-width: 1919px)
                 display: none
               @media (min-width: 0) and (max-width: 359px)
                 display: none
@@ -280,8 +305,10 @@
               @media (min-width: 0px)
                 font-size: 12px
               @media (min-width: 992px)
-                font-size: 9px
+                font-size: 8px
                 line-height: 15px
+              @media (min-width: 1024px)
+                font-size: 9px
               @media (min-width: 1440px)
                 font-size: 12px
 

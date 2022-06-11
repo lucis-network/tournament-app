@@ -3,13 +3,27 @@ import Marquee from "react-fast-marquee";
 import { useEffect, useState } from "react";
 import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 import moment from "moment";
+import { isEmpty } from "lodash";
+import TextyAnim from "rc-texty";
+import "rc-texty/assets/index.css";
 
-const TournamentDetailMarquee = () => {
-  const { loading, error, data, refetch } = useGetSpotlightAnnouncement();
+type Props = {
+  tournamentId: string;
+};
+
+const TournamentDetailMarquee = (props: Props) => {
+  const { tournamentId } = props;
+
+  const { loading, error, data, refetch } = useGetSpotlightAnnouncement({
+    // Change to tournamentUid after
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
 
   const [titleSpotlight, setTitleSpotlight] = useState("");
   const [arr, setArr] = useState(0);
-  const [timer, setTimer] = useState({});
+  const [show, setShow] = useState(false);
+  const [timer, setTimer] = useState(null);
 
   useEffect(() => {
     let interval: NodeJS.Timer;
@@ -18,11 +32,14 @@ const TournamentDetailMarquee = () => {
       interval = setInterval(() => {
         if (arr >= length) {
           setArr(0);
+          setTitleSpotlight(data[0]?.content);
         } else {
           setArr((prve) => prve + 1);
-          const title = data[arr];
+          const title = data[arr]?.content;
           setTitleSpotlight(title);
+          setTimer(data[arr]?.time);
         }
+        setShow(true);
       }, 5000);
     }
 
@@ -32,27 +49,25 @@ const TournamentDetailMarquee = () => {
   }, [arr, data]);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const date = new Date();
-      setTimer(date);
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [timer]);
+    setShow(false);
+  }, [titleSpotlight]);
 
   return (
     <div className={`lucis-container-2 ${s.marquee_section}`}>
-      <div className={s.marquee}>
-        <img src="/assets/Banner/ic_loudspeaker.png" alt="" />
-        <div className={s.time}>
-          <div></div>
-          <div className={s.line}></div>
-          {moment(timer).format("MMMM Do h:mm:ss")}
+      {timer ? (
+        <div className={s.marquee}>
+          <img src="/assets/Banner/ic_loudspeaker.png" alt="" />
+          <div className={s.time}>
+            <div></div>
+            <div className={s.line}></div>
+            {moment(timer).format("MMMM Do h:mm:ss")}
+          </div>
+          {/* <div className={s.marquee_title}>{titleSpotlight}</div> */}
+          {show && <TextyAnim delay={1000}>{titleSpotlight}</TextyAnim>}
         </div>
-        <div className={s.marquee_title}>{titleSpotlight}</div>
-      </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

@@ -16,6 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <link rel="shortcut icon" href="/favicon.png" />
           <title></title>
         </Head>
+        {/* @ts-ignore */}
         <Component {...pageProps} />
       </Layout>
     </ApolloProvider>

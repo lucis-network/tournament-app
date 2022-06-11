@@ -25,6 +25,7 @@ const createElements = (numRounds: any, selectDate: any) => {
         </Col>
 
         <Col span={16}>
+          {/* @ts-ignore */}
           <DatePicker
             showTime
             placeholder="Tournament open time"

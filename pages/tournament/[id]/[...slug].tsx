@@ -91,7 +91,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-    
+
   useEffect(() => {
     let obj: any = [];
     if (dataSponsors) {
@@ -209,7 +209,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       <DocHead title={name} />
       <div className={s.wrapper}>
         <Banner cover={cover} />
-        <TournamentDetailMarquee />
+        <TournamentDetailMarquee tournamentId={tournamentId as string} />
         <section className={s.tournamentInfo}>
           <div className="lucis-container-2">
             <div className={s.group_button}>
@@ -232,7 +232,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribed &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
+                      <span className="ml-2">
+                        Subscribed (
+                        {dataTournamentDetail?.tournament_subscribes?.length}{" "}
+                        sub)
+                      </span>
                     </button>
                   </Spin>
                 )}
@@ -244,7 +248,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         preview={false}
                         alt=""
                       />
-                      <span className="ml-2">Subscribe &lt;{dataTournamentDetail?.tournament_subscribes?.length} sub&gt;</span>
+                      <span className="ml-2">
+                        Subscribe (
+                        {dataTournamentDetail?.tournament_subscribes?.length}{" "}
+                        sub)
+                      </span>
                     </button>
                   </Spin>
                 )}
@@ -314,19 +322,21 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             />{" "}
                             {region}
                           </div>
-                          <Link
-                            href={discord ? discord : `https://discord.com/`}
-                            passHref
-                          >
-                            <a className={s.joinDiscord} target="_blank">
-                              Join our Discord server{" "}
-                              <Image
-                                src="/assets/TournamentDetail/discordLogo.svg"
-                                alt=""
-                                preview={false}
-                              />
-                            </a>
-                          </Link>
+                          {discord && (
+                            <Link
+                              href={discord ? discord : `https://discord.com/`}
+                              passHref
+                            >
+                              <a className={s.joinDiscord} target="_blank">
+                                Join our Discord server{" "}
+                                <Image
+                                  src="/assets/TournamentDetail/discordLogo.svg"
+                                  alt=""
+                                  preview={false}
+                                />
+                              </a>
+                            </Link>
+                          )}
                         </div>
                       </Col>
                     </Row>
@@ -578,7 +588,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               return (
                 <div
                   className={s.tab_item}
-                  style= {item === activeTab ? {opacity: 1} : {opacity: 0.5}}
+                  style={item === activeTab ? { opacity: 1 } : { opacity: 0.5 }}
                   key={item}
                   onClick={() => handleActiveTab(item)}
                 >

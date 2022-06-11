@@ -39,6 +39,7 @@ const createWinRounds = ({
     const title = (
       <div style={{marginBottom: 20}}>
         <p className="m-0 text-white text-[24px]">{roundName}</p>
+        {/* @ts-ignore */}
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
@@ -76,6 +77,7 @@ const createLoseRounds = ({
     const title = (
       <div style={{marginBottom: 20}}>
         <p className="m-0 text-white text-[24px]">{roundName}</p>
+        {/* @ts-ignore */}
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}
@@ -127,6 +129,7 @@ const DoubleBracket = ({
       title: (
         <div style={{marginBottom: 20}}>
           <p className="m-0 text-[24px] text-white">Final Round</p>
+          {/* @ts-ignore */}
           <DatePicker
             showTime
             onChange={(date, dateString) =>

@@ -3,16 +3,19 @@ import { message, Modal, Table } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { fomatNumber } from "utils/Number";
+import { currency, fomatNumber, format } from "utils/Number";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import AuthService from "components/Auth/AuthService";
 import { to_hex_str } from "utils/String";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { LUCIS_FEE_DONATION } from "utils/Enum";
+import formatNumber from "format/formatNumber";
 
 type Props = {
   tournamentId?: string;
   dataDonation?: any;
+  totalFromDonation?: number;
 };
 
 export type ClaimDonation = {
@@ -23,7 +26,7 @@ export type ClaimDonation = {
 export default observer(function ClaimDonationModal(props: Props) {
   const [isLoading, setIsLoading] = useState(false);
 
-  const { tournamentId, dataDonation } = props;
+  const { tournamentId, dataDonation, totalFromDonation } = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
@@ -31,6 +34,32 @@ export default observer(function ClaimDonationModal(props: Props) {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  useEffect(() => {
+    if (dataDonation) {
+      let totalObj = dataDonation.filter((item: any) => {
+        return item.reward_type === "Total";
+      });
+
+      let objFee = {
+        reward_type: "LUCISFEE",
+        symbol: totalObj[0]?.symbol,
+        amount: totalFromDonation
+          ? (totalFromDonation * LUCIS_FEE_DONATION) / 100
+          : 0,
+      };
+
+      dataDonation.push(objFee);
+      let objReceived = {
+        reward_type: "RECEIVED",
+        symbol: dataDonation[0]?.symbol,
+        amount: totalFromDonation
+          ? (totalFromDonation * (100 - LUCIS_FEE_DONATION)) / 100
+          : 0,
+      };
+      dataDonation.push(objReceived);
+    }
+  }, [dataDonation]);
 
   const handleOk = async (item: any) => {
     if (!ConnectWalletStore.address) {
@@ -77,6 +106,8 @@ export default observer(function ClaimDonationModal(props: Props) {
             {item.reward_type == "DONATEFORPLAYER" && <>For you</>}
             {item.reward_type == "DONATEFORTEAM" && <>For your team</>}
             {item.reward_type == "Total" && <>Total</>}
+            {item.reward_type == "LUCISFEE" && <>Lucis Fee (5%)</>}
+            {item.reward_type == "RECEIVED" && <>You received</>}
           </>
         );
       },
@@ -96,7 +127,6 @@ export default observer(function ClaimDonationModal(props: Props) {
     },
   ];
 
-  console.log("dataDonation", dataDonation);
   return (
     <div style={{ width: "400px" }}>
       <Modal
@@ -106,7 +136,6 @@ export default observer(function ClaimDonationModal(props: Props) {
         className={`${s.container}`}
         onCancel={handleCancel}
         okText="Claim"
-        
       >
         <Table
           dataSource={dataDonation}
