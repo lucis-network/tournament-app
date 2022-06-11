@@ -16,6 +16,7 @@ const DailyMission = () => {
   const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
       game_uid: '03',
+      platform_id: 1
     },
     context: {
       endpoint: 'p2e'
@@ -25,6 +26,7 @@ const DailyMission = () => {
   const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
     variables: {
       game_uid: '03',
+      platform_id: 1
     },
     context: {
       endpoint: 'p2e'

@@ -13,6 +13,7 @@ const Missions = () => {
   const [getDailyMission] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
       game_uid: '03',
+      platform_id: 1 // Faceit
     },
     context: {
       endpoint: 'p2e'
@@ -21,6 +22,7 @@ const Missions = () => {
   const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
     variables: {
       game_uid: '03',
+      platform_id: 1 // Faceit
     },
     context: {
       endpoint: 'p2e'
