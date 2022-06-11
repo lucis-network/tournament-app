@@ -444,70 +444,6 @@ export type BracketWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
-export type CachePlayerStatistic = {
-  __typename?: 'CachePlayerStatistic';
-  aces: Scalars['Int'];
-  assists: Scalars['Int'];
-  average_headshots: Scalars['Int'];
-  created_at: Scalars['DateTime'];
-  current_win_streak: Scalars['Int'];
-  deaths: Scalars['Int'];
-  double_kill: Scalars['Int'];
-  id: Scalars['ID'];
-  kd_ratio: Scalars['Decimal'];
-  kills: Scalars['Int'];
-  kr_ratio: Scalars['Decimal'];
-  lastest_match_uid?: Maybe<Scalars['String']>;
-  longest_win_streak: Scalars['Int'];
-  matches: Scalars['Int'];
-  mvps: Scalars['Int'];
-  player_game: PlayerGame;
-  player_game_uid: Scalars['String'];
-  quadra_kill: Scalars['Int'];
-  total_headshots: Scalars['Int'];
-  triple_kill: Scalars['Int'];
-  updated_at: Scalars['DateTime'];
-  wins: Scalars['Int'];
-};
-
-export type CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput = {
-  connect?: InputMaybe<CachePlayerStatisticWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<CachePlayerStatisticCreateOrConnectWithoutPlayer_GameInput>;
-  create?: InputMaybe<CachePlayerStatisticCreateWithoutPlayer_GameInput>;
-};
-
-export type CachePlayerStatisticCreateOrConnectWithoutPlayer_GameInput = {
-  create: CachePlayerStatisticCreateWithoutPlayer_GameInput;
-  where: CachePlayerStatisticWhereUniqueInput;
-};
-
-export type CachePlayerStatisticCreateWithoutPlayer_GameInput = {
-  aces?: InputMaybe<Scalars['Int']>;
-  assists?: InputMaybe<Scalars['Int']>;
-  average_headshots?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  current_win_streak?: InputMaybe<Scalars['Int']>;
-  deaths?: InputMaybe<Scalars['Int']>;
-  double_kill?: InputMaybe<Scalars['Int']>;
-  kd_ratio?: InputMaybe<Scalars['Decimal']>;
-  kills?: InputMaybe<Scalars['Int']>;
-  kr_ratio?: InputMaybe<Scalars['Decimal']>;
-  lastest_match_uid?: InputMaybe<Scalars['String']>;
-  longest_win_streak?: InputMaybe<Scalars['Int']>;
-  matches?: InputMaybe<Scalars['Int']>;
-  mvps?: InputMaybe<Scalars['Int']>;
-  quadra_kill?: InputMaybe<Scalars['Int']>;
-  total_headshots?: InputMaybe<Scalars['Int']>;
-  triple_kill?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  wins?: InputMaybe<Scalars['Int']>;
-};
-
-export type CachePlayerStatisticWhereUniqueInput = {
-  id?: InputMaybe<Scalars['Int']>;
-  player_game_uid?: InputMaybe<Scalars['String']>;
-};
-
 export type CacheTournament = {
   __typename?: 'CacheTournament';
   created_at: Scalars['DateTime'];
@@ -551,6 +487,7 @@ export type Chain = {
   contracts?: Maybe<Array<Contract>>;
   created_at: Scalars['DateTime'];
   currencies?: Maybe<Array<Currency>>;
+  explorer?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   rpc_url?: Maybe<Scalars['String']>;
@@ -579,6 +516,7 @@ export type ChainCreateWithoutCurrenciesInput = {
   chain_id?: InputMaybe<Scalars['Int']>;
   contracts?: InputMaybe<ContractCreateNestedManyWithoutChainInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  explorer?: InputMaybe<Scalars['String']>;
   icon?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   rpc_url?: InputMaybe<Scalars['String']>;
@@ -603,56 +541,38 @@ export type ChainWhereUniqueInput = {
 
 export type ClaimMatchTransaction = {
   __typename?: 'ClaimMatchTransaction';
-  amount: Scalars['Decimal'];
-  block?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
-  currency_uid: Scalars['String'];
-  fee?: Maybe<Scalars['Decimal']>;
-  game: Game;
-  game_uid: Scalars['String'];
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
+  match: Match;
   match_uid: Scalars['String'];
-  status: TransactionStatus;
-  tx_hash?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
-  usd_value?: Maybe<Scalars['Decimal']>;
   user: User;
   user_id: Scalars['Int'];
 };
 
-export type ClaimMatchTransactionCreateManyGameInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
+export type ClaimMatchTransactionCreateManyMatchInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  match_uid: Scalars['String'];
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
   user_id: Scalars['Int'];
 };
 
-export type ClaimMatchTransactionCreateManyGameInputEnvelope = {
-  data: Array<ClaimMatchTransactionCreateManyGameInput>;
+export type ClaimMatchTransactionCreateManyMatchInputEnvelope = {
+  data: Array<ClaimMatchTransactionCreateManyMatchInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type ClaimMatchTransactionCreateManyUserInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  game_uid: Scalars['String'];
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   match_uid: Scalars['String'];
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
 };
 
 export type ClaimMatchTransactionCreateManyUserInputEnvelope = {
@@ -660,11 +580,11 @@ export type ClaimMatchTransactionCreateManyUserInputEnvelope = {
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
-export type ClaimMatchTransactionCreateNestedManyWithoutGameInput = {
+export type ClaimMatchTransactionCreateNestedManyWithoutMatchInput = {
   connect?: InputMaybe<Array<ClaimMatchTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimMatchTransactionCreateOrConnectWithoutGameInput>>;
-  create?: InputMaybe<Array<ClaimMatchTransactionCreateWithoutGameInput>>;
-  createMany?: InputMaybe<ClaimMatchTransactionCreateManyGameInputEnvelope>;
+  connectOrCreate?: InputMaybe<Array<ClaimMatchTransactionCreateOrConnectWithoutMatchInput>>;
+  create?: InputMaybe<Array<ClaimMatchTransactionCreateWithoutMatchInput>>;
+  createMany?: InputMaybe<ClaimMatchTransactionCreateManyMatchInputEnvelope>;
 };
 
 export type ClaimMatchTransactionCreateNestedManyWithoutUserInput = {
@@ -674,8 +594,8 @@ export type ClaimMatchTransactionCreateNestedManyWithoutUserInput = {
   createMany?: InputMaybe<ClaimMatchTransactionCreateManyUserInputEnvelope>;
 };
 
-export type ClaimMatchTransactionCreateOrConnectWithoutGameInput = {
-  create: ClaimMatchTransactionCreateWithoutGameInput;
+export type ClaimMatchTransactionCreateOrConnectWithoutMatchInput = {
+  create: ClaimMatchTransactionCreateWithoutMatchInput;
   where: ClaimMatchTransactionWhereUniqueInput;
 };
 
@@ -684,70 +604,47 @@ export type ClaimMatchTransactionCreateOrConnectWithoutUserInput = {
   where: ClaimMatchTransactionWhereUniqueInput;
 };
 
-export type ClaimMatchTransactionCreateWithoutGameInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
+export type ClaimMatchTransactionCreateWithoutMatchInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  match_uid: Scalars['String'];
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
   user: UserCreateNestedOneWithoutClaim_MatchInput;
 };
 
 export type ClaimMatchTransactionCreateWithoutUserInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  game: GameCreateNestedOneWithoutMatchInput;
-  match_uid: Scalars['String'];
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
+  match: MatchCreateNestedOneWithoutClaimsInput;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
 };
 
 export type ClaimMatchTransactionWhereUniqueInput = {
-  tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
 };
 
 export type ClaimMissionTransaction = {
   __typename?: 'ClaimMissionTransaction';
-  amount: Scalars['Decimal'];
-  block?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
-  currency_uid: Scalars['String'];
-  fee?: Maybe<Scalars['Decimal']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   mission: Mission;
   mission_uid: Scalars['String'];
-  status: TransactionStatus;
-  tx_hash?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
-  usd_value?: Maybe<Scalars['Decimal']>;
   user: User;
   user_id: Scalars['Int'];
 };
 
 export type ClaimMissionTransactionCreateManyMissionInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
   user_id: Scalars['Int'];
 };
 
@@ -757,17 +654,12 @@ export type ClaimMissionTransactionCreateManyMissionInputEnvelope = {
 };
 
 export type ClaimMissionTransactionCreateManyUserInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   mission_uid: Scalars['String'];
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
 };
 
 export type ClaimMissionTransactionCreateManyUserInputEnvelope = {
@@ -800,35 +692,24 @@ export type ClaimMissionTransactionCreateOrConnectWithoutUserInput = {
 };
 
 export type ClaimMissionTransactionCreateWithoutMissionInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
   user: UserCreateNestedOneWithoutClaim_MissionInput;
 };
 
 export type ClaimMissionTransactionCreateWithoutUserInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
+  lucis_point: Scalars['Int'];
+  lucis_token: Scalars['Decimal'];
   mission: MissionCreateNestedOneWithoutClaim_MissionInput;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
 };
 
 export type ClaimMissionTransactionWhereUniqueInput = {
-  tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
 };
 
@@ -1583,11 +1464,11 @@ export type Game = {
   desc?: Maybe<Scalars['String']>;
   favorite_user?: Maybe<Array<UserFavoriteGame>>;
   logo?: Maybe<Scalars['String']>;
-  match?: Maybe<Array<ClaimMatchTransaction>>;
+  match?: Maybe<Array<Match>>;
   name?: Maybe<Scalars['String']>;
   nft?: Maybe<Array<PlayerNft>>;
   nft_limit?: Maybe<Scalars['Int']>;
-  platform: Platform;
+  platform?: Maybe<Array<GamePlatform>>;
   tournaments?: Maybe<Array<Tournament>>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -1598,6 +1479,7 @@ export type GameCount = {
   favorite_user: Scalars['Int'];
   match: Scalars['Int'];
   nft: Scalars['Int'];
+  platform: Scalars['Int'];
   tournaments: Scalars['Int'];
 };
 
@@ -1617,6 +1499,12 @@ export type GameCreateNestedOneWithoutNftInput = {
   connect?: InputMaybe<GameWhereUniqueInput>;
   connectOrCreate?: InputMaybe<GameCreateOrConnectWithoutNftInput>;
   create?: InputMaybe<GameCreateWithoutNftInput>;
+};
+
+export type GameCreateNestedOneWithoutPlatformInput = {
+  connect?: InputMaybe<GameWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<GameCreateOrConnectWithoutPlatformInput>;
+  create?: InputMaybe<GameCreateWithoutPlatformInput>;
 };
 
 export type GameCreateNestedOneWithoutTournamentsInput = {
@@ -1640,6 +1528,11 @@ export type GameCreateOrConnectWithoutNftInput = {
   where: GameWhereUniqueInput;
 };
 
+export type GameCreateOrConnectWithoutPlatformInput = {
+  create: GameCreateWithoutPlatformInput;
+  where: GameWhereUniqueInput;
+};
+
 export type GameCreateOrConnectWithoutTournamentsInput = {
   create: GameCreateWithoutTournamentsInput;
   where: GameWhereUniqueInput;
@@ -1649,11 +1542,11 @@ export type GameCreateWithoutFavorite_UserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
-  match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutGameInput>;
+  match?: InputMaybe<MatchCreateNestedManyWithoutGameInput>;
   name?: InputMaybe<Scalars['String']>;
   nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -1667,7 +1560,7 @@ export type GameCreateWithoutMatchInput = {
   name?: InputMaybe<Scalars['String']>;
   nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -1678,10 +1571,24 @@ export type GameCreateWithoutNftInput = {
   desc?: InputMaybe<Scalars['String']>;
   favorite_user?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutGameInput>;
   logo?: InputMaybe<Scalars['String']>;
-  match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutGameInput>;
+  match?: InputMaybe<MatchCreateNestedManyWithoutGameInput>;
   name?: InputMaybe<Scalars['String']>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
+  tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GameCreateWithoutPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  desc?: InputMaybe<Scalars['String']>;
+  favorite_user?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutGameInput>;
+  logo?: InputMaybe<Scalars['String']>;
+  match?: InputMaybe<MatchCreateNestedManyWithoutGameInput>;
+  name?: InputMaybe<Scalars['String']>;
+  nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
+  nft_limit?: InputMaybe<Scalars['Int']>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -1692,13 +1599,88 @@ export type GameCreateWithoutTournamentsInput = {
   desc?: InputMaybe<Scalars['String']>;
   favorite_user?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutGameInput>;
   logo?: InputMaybe<Scalars['String']>;
-  match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutGameInput>;
+  match?: InputMaybe<MatchCreateNestedManyWithoutGameInput>;
   name?: InputMaybe<Scalars['String']>;
   nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<Platform>;
+  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatform = {
+  __typename?: 'GamePlatform';
+  created_at: Scalars['DateTime'];
+  game: Game;
+  game_uid: Scalars['String'];
+  id: Scalars['ID'];
+  platform: Platform;
+  platform_id: Scalars['Int'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type GamePlatformCreateManyGameInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  platform_id: Scalars['Int'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformCreateManyGameInputEnvelope = {
+  data: Array<GamePlatformCreateManyGameInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GamePlatformCreateManyPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game_uid: Scalars['String'];
+  id?: InputMaybe<Scalars['Int']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformCreateManyPlatformInputEnvelope = {
+  data: Array<GamePlatformCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GamePlatformCreateNestedManyWithoutGameInput = {
+  connect?: InputMaybe<Array<GamePlatformWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<GamePlatformCreateOrConnectWithoutGameInput>>;
+  create?: InputMaybe<Array<GamePlatformCreateWithoutGameInput>>;
+  createMany?: InputMaybe<GamePlatformCreateManyGameInputEnvelope>;
+};
+
+export type GamePlatformCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<GamePlatformWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<GamePlatformCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<GamePlatformCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<GamePlatformCreateManyPlatformInputEnvelope>;
+};
+
+export type GamePlatformCreateOrConnectWithoutGameInput = {
+  create: GamePlatformCreateWithoutGameInput;
+  where: GamePlatformWhereUniqueInput;
+};
+
+export type GamePlatformCreateOrConnectWithoutPlatformInput = {
+  create: GamePlatformCreateWithoutPlatformInput;
+  where: GamePlatformWhereUniqueInput;
+};
+
+export type GamePlatformCreateWithoutGameInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  platform: PlatformCreateNestedOneWithoutGameInput;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformCreateWithoutPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game: GameCreateNestedOneWithoutPlatformInput;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type GamePlatformWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type GameWhereUniqueInput = {
@@ -1709,6 +1691,122 @@ export type GetRefereeInput = {
   limit?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Int']>;
+};
+
+export type Match = {
+  __typename?: 'Match';
+  _count: MatchCount;
+  claims?: Maybe<Array<ClaimMatchTransaction>>;
+  created_at: Scalars['DateTime'];
+  end_at: Scalars['DateTime'];
+  game: Game;
+  game_uid: Scalars['String'];
+  loser_team?: Maybe<Scalars['String']>;
+  map?: Maybe<Scalars['String']>;
+  players?: Maybe<Array<PlayerMatch>>;
+  score?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  winner_team?: Maybe<Scalars['String']>;
+};
+
+export type MatchCount = {
+  __typename?: 'MatchCount';
+  claims: Scalars['Int'];
+  players: Scalars['Int'];
+};
+
+export type MatchCreateManyGameInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  end_at: Scalars['DateTime'];
+  loser_team?: InputMaybe<Scalars['String']>;
+  map?: InputMaybe<Scalars['String']>;
+  score?: InputMaybe<Scalars['String']>;
+  uid: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  winner_team?: InputMaybe<Scalars['String']>;
+};
+
+export type MatchCreateManyGameInputEnvelope = {
+  data: Array<MatchCreateManyGameInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type MatchCreateNestedManyWithoutGameInput = {
+  connect?: InputMaybe<Array<MatchWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MatchCreateOrConnectWithoutGameInput>>;
+  create?: InputMaybe<Array<MatchCreateWithoutGameInput>>;
+  createMany?: InputMaybe<MatchCreateManyGameInputEnvelope>;
+};
+
+export type MatchCreateNestedOneWithoutClaimsInput = {
+  connect?: InputMaybe<MatchWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MatchCreateOrConnectWithoutClaimsInput>;
+  create?: InputMaybe<MatchCreateWithoutClaimsInput>;
+};
+
+export type MatchCreateNestedOneWithoutPlayersInput = {
+  connect?: InputMaybe<MatchWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MatchCreateOrConnectWithoutPlayersInput>;
+  create?: InputMaybe<MatchCreateWithoutPlayersInput>;
+};
+
+export type MatchCreateOrConnectWithoutClaimsInput = {
+  create: MatchCreateWithoutClaimsInput;
+  where: MatchWhereUniqueInput;
+};
+
+export type MatchCreateOrConnectWithoutGameInput = {
+  create: MatchCreateWithoutGameInput;
+  where: MatchWhereUniqueInput;
+};
+
+export type MatchCreateOrConnectWithoutPlayersInput = {
+  create: MatchCreateWithoutPlayersInput;
+  where: MatchWhereUniqueInput;
+};
+
+export type MatchCreateWithoutClaimsInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  end_at: Scalars['DateTime'];
+  game: GameCreateNestedOneWithoutMatchInput;
+  loser_team?: InputMaybe<Scalars['String']>;
+  map?: InputMaybe<Scalars['String']>;
+  players?: InputMaybe<PlayerMatchCreateNestedManyWithoutMatchInput>;
+  score?: InputMaybe<Scalars['String']>;
+  uid: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  winner_team?: InputMaybe<Scalars['String']>;
+};
+
+export type MatchCreateWithoutGameInput = {
+  claims?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutMatchInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  end_at: Scalars['DateTime'];
+  loser_team?: InputMaybe<Scalars['String']>;
+  map?: InputMaybe<Scalars['String']>;
+  players?: InputMaybe<PlayerMatchCreateNestedManyWithoutMatchInput>;
+  score?: InputMaybe<Scalars['String']>;
+  uid: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  winner_team?: InputMaybe<Scalars['String']>;
+};
+
+export type MatchCreateWithoutPlayersInput = {
+  claims?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutMatchInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  end_at: Scalars['DateTime'];
+  game: GameCreateNestedOneWithoutMatchInput;
+  loser_team?: InputMaybe<Scalars['String']>;
+  map?: InputMaybe<Scalars['String']>;
+  score?: InputMaybe<Scalars['String']>;
+  uid: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  winner_team?: InputMaybe<Scalars['String']>;
+};
+
+export type MatchWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
 };
 
 export type Member = {
@@ -2260,15 +2358,21 @@ export type NullableStringFieldUpdateOperationsInput = {
 export type Participant = {
   __typename?: 'Participant';
   participant?: Maybe<Scalars['Int']>;
-  teams?: Maybe<Array<PlayTeamMember>>;
+  playTeamMembers?: Maybe<Array<PlayTeamMember>>;
+  team?: Maybe<Array<Team>>;
   tournament_uid?: Maybe<Scalars['String']>;
 };
 
-export enum Platform {
-  Faceit = 'FACEIT',
-  None = 'NONE',
-  Riot = 'RIOT'
-}
+export type Platform = {
+  __typename?: 'Platform';
+  _count: PlatformCount;
+  accounts?: Maybe<Array<PlatformAccount>>;
+  created_at: Scalars['DateTime'];
+  game?: Maybe<Array<GamePlatform>>;
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+};
 
 export type PlatformAccount = {
   __typename?: 'PlatformAccount';
@@ -2280,6 +2384,7 @@ export type PlatformAccount = {
   id_token?: Maybe<Scalars['String']>;
   nick_name?: Maybe<Scalars['String']>;
   platform: Platform;
+  platform_id: Scalars['Int'];
   player_game?: Maybe<Array<PlayerGame>>;
   player_uid: Scalars['String'];
   uid: Scalars['ID'];
@@ -2293,6 +2398,24 @@ export type PlatformAccountCount = {
   player_game: Scalars['Int'];
 };
 
+export type PlatformAccountCreateManyPlatformInput = {
+  access_token?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<Scalars['String']>;
+  country_code?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id_token?: InputMaybe<Scalars['String']>;
+  nick_name?: InputMaybe<Scalars['String']>;
+  player_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type PlatformAccountCreateManyPlatformInputEnvelope = {
+  data: Array<PlatformAccountCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type PlatformAccountCreateManyUserInput = {
   access_token?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -2300,7 +2423,7 @@ export type PlatformAccountCreateManyUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_token?: InputMaybe<Scalars['String']>;
   nick_name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<Platform>;
+  platform_id: Scalars['Int'];
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2309,6 +2432,13 @@ export type PlatformAccountCreateManyUserInput = {
 export type PlatformAccountCreateManyUserInputEnvelope = {
   data: Array<PlatformAccountCreateManyUserInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type PlatformAccountCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<PlatformAccountWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PlatformAccountCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<PlatformAccountCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<PlatformAccountCreateManyPlatformInputEnvelope>;
 };
 
 export type PlatformAccountCreateNestedManyWithoutUserInput = {
@@ -2324,6 +2454,11 @@ export type PlatformAccountCreateNestedOneWithoutPlayer_GameInput = {
   create?: InputMaybe<PlatformAccountCreateWithoutPlayer_GameInput>;
 };
 
+export type PlatformAccountCreateOrConnectWithoutPlatformInput = {
+  create: PlatformAccountCreateWithoutPlatformInput;
+  where: PlatformAccountWhereUniqueInput;
+};
+
 export type PlatformAccountCreateOrConnectWithoutPlayer_GameInput = {
   create: PlatformAccountCreateWithoutPlayer_GameInput;
   where: PlatformAccountWhereUniqueInput;
@@ -2334,6 +2469,20 @@ export type PlatformAccountCreateOrConnectWithoutUserInput = {
   where: PlatformAccountWhereUniqueInput;
 };
 
+export type PlatformAccountCreateWithoutPlatformInput = {
+  access_token?: InputMaybe<Scalars['String']>;
+  avatar?: InputMaybe<Scalars['String']>;
+  country_code?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id_token?: InputMaybe<Scalars['String']>;
+  nick_name?: InputMaybe<Scalars['String']>;
+  player_game?: InputMaybe<PlayerGameCreateNestedManyWithoutPlatform_AccountInput>;
+  player_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user: UserCreateNestedOneWithoutPlatform_AccounntInput;
+};
+
 export type PlatformAccountCreateWithoutPlayer_GameInput = {
   access_token?: InputMaybe<Scalars['String']>;
   avatar?: InputMaybe<Scalars['String']>;
@@ -2341,7 +2490,7 @@ export type PlatformAccountCreateWithoutPlayer_GameInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_token?: InputMaybe<Scalars['String']>;
   nick_name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<Platform>;
+  platform: PlatformCreateNestedOneWithoutAccountsInput;
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2355,7 +2504,7 @@ export type PlatformAccountCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id_token?: InputMaybe<Scalars['String']>;
   nick_name?: InputMaybe<Scalars['String']>;
-  platform?: InputMaybe<Platform>;
+  platform: PlatformCreateNestedOneWithoutAccountsInput;
   player_game?: InputMaybe<PlayerGameCreateNestedManyWithoutPlatform_AccountInput>;
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
@@ -2365,6 +2514,52 @@ export type PlatformAccountCreateWithoutUserInput = {
 export type PlatformAccountWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
   user_id?: InputMaybe<Scalars['Int']>;
+};
+
+export type PlatformCount = {
+  __typename?: 'PlatformCount';
+  accounts: Scalars['Int'];
+  game: Scalars['Int'];
+};
+
+export type PlatformCreateNestedOneWithoutAccountsInput = {
+  connect?: InputMaybe<PlatformWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlatformCreateOrConnectWithoutAccountsInput>;
+  create?: InputMaybe<PlatformCreateWithoutAccountsInput>;
+};
+
+export type PlatformCreateNestedOneWithoutGameInput = {
+  connect?: InputMaybe<PlatformWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlatformCreateOrConnectWithoutGameInput>;
+  create?: InputMaybe<PlatformCreateWithoutGameInput>;
+};
+
+export type PlatformCreateOrConnectWithoutAccountsInput = {
+  create: PlatformCreateWithoutAccountsInput;
+  where: PlatformWhereUniqueInput;
+};
+
+export type PlatformCreateOrConnectWithoutGameInput = {
+  create: PlatformCreateWithoutGameInput;
+  where: PlatformWhereUniqueInput;
+};
+
+export type PlatformCreateWithoutAccountsInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game?: InputMaybe<GamePlatformCreateNestedManyWithoutPlatformInput>;
+  name: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlatformCreateWithoutGameInput = {
+  accounts?: InputMaybe<PlatformAccountCreateNestedManyWithoutPlatformInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  name: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlatformWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlayTeam = {
@@ -2604,10 +2799,10 @@ export type Player = {
 export type PlayerGame = {
   __typename?: 'PlayerGame';
   _count: PlayerGameCount;
-  cache_player_statistic?: Maybe<CachePlayerStatistic>;
   created_at: Scalars['DateTime'];
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
+  matches?: Maybe<Array<PlayerMatch>>;
   platform_account: PlatformAccount;
   platform_account_uid: Scalars['String'];
   player_mission?: Maybe<Array<PlayerMission>>;
@@ -2617,6 +2812,7 @@ export type PlayerGame = {
 
 export type PlayerGameCount = {
   __typename?: 'PlayerGameCount';
+  matches: Scalars['Int'];
   player_mission: Scalars['Int'];
 };
 
@@ -2640,10 +2836,21 @@ export type PlayerGameCreateNestedManyWithoutPlatform_AccountInput = {
   createMany?: InputMaybe<PlayerGameCreateManyPlatform_AccountInputEnvelope>;
 };
 
+export type PlayerGameCreateNestedOneWithoutMatchesInput = {
+  connect?: InputMaybe<PlayerGameWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlayerGameCreateOrConnectWithoutMatchesInput>;
+  create?: InputMaybe<PlayerGameCreateWithoutMatchesInput>;
+};
+
 export type PlayerGameCreateNestedOneWithoutPlayer_MissionInput = {
   connect?: InputMaybe<PlayerGameWhereUniqueInput>;
   connectOrCreate?: InputMaybe<PlayerGameCreateOrConnectWithoutPlayer_MissionInput>;
   create?: InputMaybe<PlayerGameCreateWithoutPlayer_MissionInput>;
+};
+
+export type PlayerGameCreateOrConnectWithoutMatchesInput = {
+  create: PlayerGameCreateWithoutMatchesInput;
+  where: PlayerGameWhereUniqueInput;
 };
 
 export type PlayerGameCreateOrConnectWithoutPlatform_AccountInput = {
@@ -2656,21 +2863,31 @@ export type PlayerGameCreateOrConnectWithoutPlayer_MissionInput = {
   where: PlayerGameWhereUniqueInput;
 };
 
-export type PlayerGameCreateWithoutPlatform_AccountInput = {
-  cache_player_statistic?: InputMaybe<CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput>;
+export type PlayerGameCreateWithoutMatchesInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
+  platform_account: PlatformAccountCreateNestedOneWithoutPlayer_GameInput;
+  player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutPlayer_GameInput>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlayerGameCreateWithoutPlatform_AccountInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game_player_uid: Scalars['String'];
+  game_uid: Scalars['String'];
+  matches?: InputMaybe<PlayerMatchCreateNestedManyWithoutPlayerInput>;
   player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutPlayer_GameInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type PlayerGameCreateWithoutPlayer_MissionInput = {
-  cache_player_statistic?: InputMaybe<CachePlayerStatisticCreateNestedOneWithoutPlayer_GameInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_player_uid: Scalars['String'];
   game_uid: Scalars['String'];
+  matches?: InputMaybe<PlayerMatchCreateNestedManyWithoutPlayerInput>;
   platform_account: PlatformAccountCreateNestedOneWithoutPlayer_GameInput;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2678,6 +2895,86 @@ export type PlayerGameCreateWithoutPlayer_MissionInput = {
 
 export type PlayerGameWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
+};
+
+export type PlayerMatch = {
+  __typename?: 'PlayerMatch';
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  is_win: Scalars['Boolean'];
+  match: Match;
+  match_uid: Scalars['String'];
+  player: PlayerGame;
+  player_game_uid: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type PlayerMatchCreateManyMatchInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  is_win?: InputMaybe<Scalars['Boolean']>;
+  player_game_uid: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlayerMatchCreateManyMatchInputEnvelope = {
+  data: Array<PlayerMatchCreateManyMatchInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type PlayerMatchCreateManyPlayerInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  is_win?: InputMaybe<Scalars['Boolean']>;
+  match_uid: Scalars['String'];
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlayerMatchCreateManyPlayerInputEnvelope = {
+  data: Array<PlayerMatchCreateManyPlayerInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type PlayerMatchCreateNestedManyWithoutMatchInput = {
+  connect?: InputMaybe<Array<PlayerMatchWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PlayerMatchCreateOrConnectWithoutMatchInput>>;
+  create?: InputMaybe<Array<PlayerMatchCreateWithoutMatchInput>>;
+  createMany?: InputMaybe<PlayerMatchCreateManyMatchInputEnvelope>;
+};
+
+export type PlayerMatchCreateNestedManyWithoutPlayerInput = {
+  connect?: InputMaybe<Array<PlayerMatchWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PlayerMatchCreateOrConnectWithoutPlayerInput>>;
+  create?: InputMaybe<Array<PlayerMatchCreateWithoutPlayerInput>>;
+  createMany?: InputMaybe<PlayerMatchCreateManyPlayerInputEnvelope>;
+};
+
+export type PlayerMatchCreateOrConnectWithoutMatchInput = {
+  create: PlayerMatchCreateWithoutMatchInput;
+  where: PlayerMatchWhereUniqueInput;
+};
+
+export type PlayerMatchCreateOrConnectWithoutPlayerInput = {
+  create: PlayerMatchCreateWithoutPlayerInput;
+  where: PlayerMatchWhereUniqueInput;
+};
+
+export type PlayerMatchCreateWithoutMatchInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_win?: InputMaybe<Scalars['Boolean']>;
+  player: PlayerGameCreateNestedOneWithoutMatchesInput;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlayerMatchCreateWithoutPlayerInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_win?: InputMaybe<Scalars['Boolean']>;
+  match: MatchCreateNestedOneWithoutPlayersInput;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlayerMatchWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type PlayerMission = {
@@ -3157,23 +3454,21 @@ export type QueryVerifyEmailArgs = {
 
 export type Raffle = {
   __typename?: 'Raffle';
-  _count: RaffleCount;
   amount?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
+  end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  sponsor_raffle?: Maybe<Array<SponsorRaffle>>;
+  regions: Scalars['String'];
+  sponsor_raffle?: Maybe<SponsorRaffle>;
+  sponsor_raffle_id?: Maybe<Scalars['String']>;
+  status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
-  type?: Maybe<RaffleType>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
+  valued_at?: Maybe<Scalars['Decimal']>;
   winner_id?: Maybe<Scalars['Int']>;
-};
-
-export type RaffleCount = {
-  __typename?: 'RaffleCount';
-  sponsor_raffle: Scalars['Int'];
 };
 
 export type RaffleCreateNestedOneWithoutTicketInput = {
@@ -3191,16 +3486,19 @@ export type RaffleCreateWithoutTicketInput = {
   amount?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
+  end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  sponsor_raffle?: InputMaybe<SponsorRaffleCreateNestedManyWithoutRaffleInput>;
-  type?: InputMaybe<RaffleType>;
+  regions: Scalars['String'];
+  sponsor_raffle?: InputMaybe<SponsorRaffleCreateNestedOneWithoutRaffleInput>;
+  status?: InputMaybe<RaffleStatus>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+  valued_at?: InputMaybe<Scalars['Decimal']>;
   winner_id?: InputMaybe<Scalars['Int']>;
 };
 
-export enum RaffleType {
+export enum RaffleStatus {
   Finish = 'FINISH',
   Ongoing = 'ONGOING',
   Upcoming = 'UPCOMING'
@@ -3356,35 +3654,26 @@ export type SponsorCreateInputGql = {
 
 export type SponsorRaffle = {
   __typename?: 'SponsorRaffle';
+  _count: SponsorRaffleCount;
   created_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  raffle: Raffle;
-  raffle_uid: Scalars['String'];
+  raffle?: Maybe<Array<Raffle>>;
   title?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
 };
 
-export type SponsorRaffleCreateManyRaffleInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  img?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  title?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
+export type SponsorRaffleCount = {
+  __typename?: 'SponsorRaffleCount';
+  raffle: Scalars['Int'];
 };
 
-export type SponsorRaffleCreateManyRaffleInputEnvelope = {
-  data: Array<SponsorRaffleCreateManyRaffleInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type SponsorRaffleCreateNestedManyWithoutRaffleInput = {
-  connect?: InputMaybe<Array<SponsorRaffleWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<SponsorRaffleCreateOrConnectWithoutRaffleInput>>;
-  create?: InputMaybe<Array<SponsorRaffleCreateWithoutRaffleInput>>;
-  createMany?: InputMaybe<SponsorRaffleCreateManyRaffleInputEnvelope>;
+export type SponsorRaffleCreateNestedOneWithoutRaffleInput = {
+  connect?: InputMaybe<SponsorRaffleWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<SponsorRaffleCreateOrConnectWithoutRaffleInput>;
+  create?: InputMaybe<SponsorRaffleCreateWithoutRaffleInput>;
 };
 
 export type SponsorRaffleCreateOrConnectWithoutRaffleInput = {
@@ -3395,6 +3684,7 @@ export type SponsorRaffleCreateOrConnectWithoutRaffleInput = {
 export type SponsorRaffleCreateWithoutRaffleInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   img?: InputMaybe<Scalars['String']>;
+  link?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
@@ -4181,7 +4471,7 @@ export type TeamWhereUniqueInput = {
 export type Ticket = {
   __typename?: 'Ticket';
   _count: TicketCount;
-  cost: Scalars['Int'];
+  cost: Scalars['Decimal'];
   created_at: Scalars['DateTime'];
   raffle: Raffle;
   raffle_uid: Scalars['String'];
@@ -4208,7 +4498,7 @@ export type TicketCreateOrConnectWithoutUser_TicketInput = {
 };
 
 export type TicketCreateWithoutUser_TicketInput = {
-  cost: Scalars['Int'];
+  cost: Scalars['Decimal'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   raffle: RaffleCreateNestedOneWithoutTicketInput;
   uid?: InputMaybe<Scalars['String']>;

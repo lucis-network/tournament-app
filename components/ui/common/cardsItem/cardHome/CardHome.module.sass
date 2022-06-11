@@ -105,9 +105,19 @@
           background-size: cover
           background-position: center
           background-repeat: no-repeat
-          padding: 150px 0px
+          padding: 130px 0px
           width: 100%
           cursor: pointer
+          @media (min-width: 640px)
+            padding: 90px 0px
+          @media (min-width: 768px)
+            padding: 135px 0px
+          @media (min-width: 992px)
+            padding: 90px 0px
+          @media (min-width: 1280px)
+            padding: 120px 0px
+          @media (min-width: 1600px)
+            padding: 130px 0px
         .info
           position: absolute
           top: 0
@@ -200,16 +210,16 @@
           overflow: hidden
           height: 64px
           word-break: break-word
+          cursor: pointer
           @media (min-width: 992px)
             height: 54px
             margin: 0px
           @media (min-width: 1440px)
             height: 68px
             margin: 0px
-          a
+          .title
             color: #FFF
             font-weight: 700
-            padding-top: 24px
             @media (min-width: 0px)
               font-size: 22px
               line-height: 28px 
@@ -246,7 +256,7 @@
               font-size: 14px
               line-height: 16px
             span
-              @media (min-width: 992px) and (max-width: 1599px)
+              @media (min-width: 992px) and (max-width: 1919px)
                 display: none
               @media (min-width: 0) and (max-width: 359px)
                 display: none
@@ -295,8 +305,10 @@
               @media (min-width: 0px)
                 font-size: 12px
               @media (min-width: 992px)
-                font-size: 9px
+                font-size: 8px
                 line-height: 15px
+              @media (min-width: 1024px)
+                font-size: 9px
               @media (min-width: 1440px)
                 font-size: 12px
 

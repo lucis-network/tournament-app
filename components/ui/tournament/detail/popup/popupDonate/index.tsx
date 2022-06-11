@@ -156,14 +156,10 @@ const PopupDonate = (props: Props) => {
       }
     }
   };
-
+  
   const donation = async () => {
     setIsLoading(true);
-    let token_address = "";
-
-    if (currency.symbol === "BUSD") token_address = BUSD;
-    if (currency.symbol === "USDT") token_address = USDT;
-    if (currency.symbol === "LUCIS") token_address = LUCIS;
+    let token_address = currency?.address;
 
     if (ConnectWalletStore_NonReactiveData.web3Provider) {
       const ethersService = new EthersService(

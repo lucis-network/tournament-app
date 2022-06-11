@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 import moment from "moment";
 import { isEmpty } from "lodash";
+import TextyAnim from "rc-texty";
+import "rc-texty/assets/index.css";
 
 type Props = {
   tournamentId: string;
@@ -20,6 +22,7 @@ const TournamentDetailMarquee = (props: Props) => {
 
   const [titleSpotlight, setTitleSpotlight] = useState("");
   const [arr, setArr] = useState(0);
+  const [show, setShow] = useState(false);
   const [timer, setTimer] = useState(null);
 
   useEffect(() => {
@@ -36,6 +39,7 @@ const TournamentDetailMarquee = (props: Props) => {
           setTitleSpotlight(title);
           setTimer(data[arr]?.time);
         }
+        setShow(true);
       }, 5000);
     }
 
@@ -43,6 +47,10 @@ const TournamentDetailMarquee = (props: Props) => {
       clearInterval(interval);
     };
   }, [arr, data]);
+
+  useEffect(() => {
+    setShow(false);
+  }, [titleSpotlight]);
 
   return (
     <div className={`lucis-container-2 ${s.marquee_section}`}>
@@ -54,7 +62,8 @@ const TournamentDetailMarquee = (props: Props) => {
             <div className={s.line}></div>
             {moment(timer).format("MMMM Do h:mm:ss")}
           </div>
-          <div className={s.marquee_title}>{titleSpotlight}</div>
+          {/* <div className={s.marquee_title}>{titleSpotlight}</div> */}
+          {show && <TextyAnim delay={1000}>{titleSpotlight}</TextyAnim>}
         </div>
       ) : (
         ""

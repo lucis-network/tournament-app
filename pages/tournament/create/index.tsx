@@ -364,6 +364,16 @@ export default observer(function CreateTournament(props: Props) {
       setCheckPoolSize(true);
     }
 
+    if (!cr.currency_uid) {
+      setCheckCurrency(false);
+      //setMessageErrorChoosegame("Currency is required");
+      //@ts-ignore
+      document.getElementById("prizing").scrollIntoView();
+      return false;
+    } else {
+      setCheckCurrency(true);
+    }
+
     if (calculateTotalAllocation(cr.prize_allocation) != 1) {
       //@ts-ignore
       document.getElementById("prizing").scrollIntoView();
@@ -776,6 +786,7 @@ export default observer(function CreateTournament(props: Props) {
           <div>
             <p className="text-30px mt-20px">Tournament Overview</p>
             <div style={{ minHeight: 50, color: "white" }}>
+              {/* @ts-ignore */}
               <ReactQuill
                 theme="snow"
                 value={TournamentStore.desc}
@@ -789,6 +800,7 @@ export default observer(function CreateTournament(props: Props) {
           <div>
             <p className="text-30px mt-20px">Rules</p>
             <div style={{ minHeight: 50, color: "white" }}>
+              {/* @ts-ignore */}
               <ReactQuill
                 theme="snow"
                 value={TournamentStore.rules}

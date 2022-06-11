@@ -305,8 +305,12 @@ const DailyMission = () => {
     },
   });
 
-  const { getRecentMatchesLoading, getRecentMatchesData } =
-    useGetRecentMatches();
+  const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentMatches({
+    game_uid: '03',
+    offset: 1,
+    limit: 5,
+    platform_id: 1
+  })
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
@@ -349,18 +353,18 @@ const DailyMission = () => {
       <div className={s.recentMatchesWrap}>
         <h2>Recent matches</h2>
         <div className={s.recentMatchesList}>
-          {/* {getRecentMatchesLoading ? <SpinLoading /> : (
-            !isEmpty(getRecentMatchesData?.getRecentlyMatch) && getRecentMatchesData?.getRecentlyMatch.map((match, index) => {
-              const endAt = moment.unix(match?.end_at as number).fromNow()
+          {getRecentMatchesLoading ? <SpinLoading /> : (
+            !isEmpty(getRecentMatchesData?.getRecentlyMatch?.matches) && getRecentMatchesData?.getRecentlyMatch?.matches?.map((item, index) => {
+              const endAt = moment.unix(item?.match?.end_at as number).fromNow()
 
               return (
-                <div className={s.recentMatchesItem} key={`${match?.match_uid}-${index}`}>
+                <div className={s.recentMatchesItem} key={`${item?.match_uid}-${index}`}>
                   <div className={s.recentMatchesLogo}>
                     <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
                   </div>
                   <div className={s.recentMatchReward}>1000 Lucis point</div>
                   <div className={s.recentMatchReward}>100 Lucis token</div>
-                  <div className={s.recentMatchScore}>{match?.score}</div>
+                  <div className={s.recentMatchScore}>{item?.match?.score}</div>
                   <div className={s.recentMatchTime}>{endAt}</div>
                   <div className={s.recentMatchActions}>
                     <Button disabled>Claim</Button>
@@ -368,8 +372,8 @@ const DailyMission = () => {
                 </div>
               )
             })
-          )} */}
-          {FETCH_API &&
+          )}
+          {/* {FETCH_API &&
             FETCH_API.slice(0, lengthShowMore).map((item) => {
               return (
                 <div className={s.recentMatchesItem} key={`${item?.id}`}>
@@ -398,7 +402,7 @@ const DailyMission = () => {
           )}
           {FETCH_API.length == 0 && (
             <div className={s.recentMatchesNodata}>No data Recent matches</div>
-          )}
+          )} */}
         </div>
       </div>
     </div>

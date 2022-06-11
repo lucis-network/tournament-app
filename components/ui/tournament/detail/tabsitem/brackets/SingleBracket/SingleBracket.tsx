@@ -10,7 +10,7 @@ import {message} from "antd";
 
 type Props =  {
   canEdit: boolean
-  refetchBracket?: () => Promise<ApolloQueryResult<any>>
+  refetchBracket: () => Promise<ApolloQueryResult<any>>
 }
 
 const SingleBracket = (props: Props) => {
@@ -56,11 +56,6 @@ const SingleBracket = (props: Props) => {
   const onUpdateCompleted = (score0: number, score1: number) => {
     RoundStore.setMatchScore(roundIndex, seedIndex, score0, score1);
     message.success('Success')
-      .then(() => {
-        if (refetchBracket) {
-          refetchBracket()
-        }
-      })
   }
   // ============= END EDIT MODAL =================
 
@@ -76,6 +71,7 @@ const SingleBracket = (props: Props) => {
       currentMatch={currentMatch}
       doCloseModal={closeModal}
       onUpdateCompleted={onUpdateCompleted}
+      refetchBracket={refetchBracket}
     />}
   />;
 };

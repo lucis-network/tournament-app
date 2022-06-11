@@ -418,7 +418,8 @@ export default observer(function Prizing(props: Props) {
 
   const totalPool = () => {
     return currency(
-      poolSize + (poolSize * LUCIS_FEE) / 100 + (poolSize * REFEREES_FEE) / 100
+      getConfigFee ? 
+      (poolSize * (100 + (getConfigFee[0]?.tn_lucis_fee * 100) + (getConfigFee[0]?.tn_referee_fee * 100))) / 100 : 0, 2
     );
   };
 

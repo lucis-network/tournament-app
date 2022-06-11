@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { gql, useLazyQuery, useQuery } from "@apollo/client";
 import { Bracket, OrderType, StatusGameType } from "utils/Enum";
 import { debounce } from "lodash";
+import { message } from "antd";
 
 export type FilterGame = {
   type: StatusGameType;
@@ -19,7 +20,6 @@ const listTabs: StatusGameType[] = [
 ];
 
 export function useHomePage() {
-	const [datas, setDatas] = useState()
   const [filter, setFilter] = useState<FilterGame>({
     type: StatusGameType.UPCOMING,
     search: "",
@@ -119,17 +119,16 @@ export function useHomePage() {
   }, []);
 
   useEffect(() => {
-    const valueActiveTab = {
-      ...filter,
-      type: StatusGameType.ONGOING,
-    };
-    if (filter.type === "UPCOMING" && data?.search.length <= 0) {
-      setFilter(valueActiveTab);
-      getData({
+    handleActiveData();
+  }, []);
+
+  const handleActiveData = async () => {
+    try {
+      const dataUpcoming = await getData({
         variables: {
           input: {
             value: filter.search,
-            type: "ONGOING",
+            type: StatusGameType.UPCOMING,
           },
           data: {
             game_uid: filter.game_uid,
@@ -140,9 +139,135 @@ export function useHomePage() {
           },
         },
       });
-    }
-  }, [loading]);
+      if (dataUpcoming && dataUpcoming?.data?.search.length > 0) {
+        const activeTab = {
+          ...filter,
+          type: StatusGameType.UPCOMING,
+        };
+        setFilter(activeTab);
+        getData({
+          variables: {
+            input: {
+              value: filter.search,
+              type: StatusGameType.UPCOMING,
+            },
+            data: {
+              game_uid: filter.game_uid,
+              bracket: filter.bracket,
+              size: filter.size,
+              prize_pool: filter.prize_pool,
+              time: filter.time,
+            },
+          },
+        });
 
+        return;
+      }
+      const dataOngoing = await getData({
+        variables: {
+          input: {
+            value: filter.search,
+            type: StatusGameType.ONGOING,
+          },
+          data: {
+            game_uid: filter.game_uid,
+            bracket: filter.bracket,
+            size: filter.size,
+            prize_pool: filter.prize_pool,
+            time: filter.time,
+          },
+        },
+      });
+      if (dataOngoing && dataOngoing?.data?.search.length > 0) {
+        const activeTab = {
+          ...filter,
+          type: StatusGameType.ONGOING,
+        };
+        setFilter(activeTab);
+        getData({
+          variables: {
+            input: {
+              value: filter.search,
+              type: StatusGameType.ONGOING,
+            },
+            data: {
+              game_uid: filter.game_uid,
+              bracket: filter.bracket,
+              size: filter.size,
+              prize_pool: filter.prize_pool,
+              time: filter.time,
+            },
+          },
+        });
+
+        return;
+      }
+      const dataClosed = await getData({
+        variables: {
+          input: {
+            value: filter.search,
+            type: StatusGameType.CLOSED,
+          },
+          data: {
+            game_uid: filter.game_uid,
+            bracket: filter.bracket,
+            size: filter.size,
+            prize_pool: filter.prize_pool,
+            time: filter.time,
+          },
+        },
+      });
+      if (dataClosed && dataClosed?.data?.search.length > 0) {
+        const activeTab = {
+          ...filter,
+          type: StatusGameType.CLOSED,
+        };
+        setFilter(activeTab);
+        getData({
+          variables: {
+            input: {
+              value: filter.search,
+              type: StatusGameType.CLOSED,
+            },
+            data: {
+              game_uid: filter.game_uid,
+              bracket: filter.bracket,
+              size: filter.size,
+              prize_pool: filter.prize_pool,
+              time: filter.time,
+            },
+          },
+        });
+
+        return;
+      } else {
+        const activeTab = {
+          ...filter,
+          type: StatusGameType.UPCOMING,
+        };
+        setFilter(activeTab);
+        getData({
+          variables: {
+            input: {
+              value: filter.search,
+              type: StatusGameType.UPCOMING,
+            },
+            data: {
+              game_uid: filter.game_uid,
+              bracket: filter.bracket,
+              size: filter.size,
+              prize_pool: filter.prize_pool,
+              time: filter.time,
+            },
+          },
+        });
+
+        return;
+      }
+    } catch {
+      message.error("no data");
+    }
+  };
   return {
     filter,
     listTabs,

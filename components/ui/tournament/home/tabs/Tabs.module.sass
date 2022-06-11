@@ -88,6 +88,8 @@
       @media (min-width: 992px)
         left: 80px
         right: 500px
+      @media (min-width: 1024px)
+        top: -18%
       @media (min-width: 1280px)
         top: -24%
         left: 120px
@@ -103,6 +105,20 @@
       height: 84px
       border-radius: 100%
       z-index: 6
+    .line::before
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      border-radius: 100%
+      z-index: 10
+      padding: 1px
+      background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
+      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+      -webkit-mask-composite: xor
+      mask-composite: exclude
     .lin1
       position: absolute
       top: 0
@@ -190,6 +206,7 @@
     :global(.ant-input-group .ant-input:hover),
     :global(.ant-input-group .ant-input:focus)
       border-color: transparent
+      box-shadow: none
     :global(.ant-btn-primary)
       background: transparent
       display: flex

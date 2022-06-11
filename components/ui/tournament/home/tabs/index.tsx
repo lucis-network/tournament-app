@@ -22,9 +22,8 @@ export default function TabHome() {
     handleChangeFilter,
     handleOrder,
   } = useHomePage();
-
   const [creating, setCreating] = useState(false);
-
+  console.log('data',data);
   const handleChangeTab = (item: string) => {
     handleChangeFilter("type", item);
   };
@@ -85,7 +84,7 @@ export default function TabHome() {
           onFilter={handleChangeFilter}
           onOrder={handleOrder}
         />
-        <div style={{ minHeight: "500px" }}>{cardHome}</div>
+        <div style={{ minHeight: "380px" }}>{cardHome}</div>
         <div className={s.container_create}>
           <div className={s.line}></div>
           <div className={s.lin1}></div>

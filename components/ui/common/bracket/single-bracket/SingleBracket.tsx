@@ -58,6 +58,7 @@ const createRounds = ({
         <p className="m-0 text text-white">
           {roundName}
         </p>
+        {/* @ts-ignore */}
         <DatePicker
           // disabledDate={disabledDate}
           // disabledTime={disabledDateTime}

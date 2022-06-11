@@ -38,7 +38,7 @@ export default function TableParticipant(props: Props) {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-  
+
   const closeModal = () => {
     setIsPopupDonate(false);
   };
@@ -171,6 +171,8 @@ export default function TableParticipant(props: Props) {
     },
   ];
 
+  console.log("dataParticipants", dataParticipants);
+  console.log("dataUpdateParticipant", dataUpdateParticipant);
   return (
     <div className={s.wrapper}>
       <div className={s.containerTab}>
@@ -178,11 +180,15 @@ export default function TableParticipant(props: Props) {
         <SearchComplete />
       </div> */}
         <Table
-          dataSource={dataParticipants}
+          dataSource={
+            dataUpdateParticipant ? dataUpdateParticipant : dataParticipants
+          }
+          //dataSource={dataParticipants}
           columns={columns}
           bordered
           className={s.container_table}
-          rowKey={(record) => `${record?.uid}`}
+          //rowKey={(record) => `${record?.tournament_uid ? tournament_uid : ''}`}
+          //rowKey={(record) => `${record?.uid}`}
         />
         <ModalDonateTeam
           nameTeam={datas}
