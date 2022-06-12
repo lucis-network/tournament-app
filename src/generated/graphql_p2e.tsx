@@ -139,6 +139,7 @@ export type Chain = {
   explorer?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  poolWallet?: Maybe<Array<PoolWallet>>;
   rpc_url?: Maybe<Scalars['String']>;
   symbol: ChainSymbol;
   updated_at: Scalars['DateTime'];
@@ -148,6 +149,7 @@ export type ChainCount = {
   __typename?: 'ChainCount';
   contracts: Scalars['Int'];
   currencies: Scalars['Int'];
+  poolWallet: Scalars['Int'];
 };
 
 export enum ChainSymbol {
@@ -504,6 +506,7 @@ export type Mutation = {
   rerollMission?: Maybe<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
+  withdrawLucisToken?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -541,10 +544,12 @@ export type MutationEquipNftArgs = {
 
 export type MutationGetOrSetDailyMissionArgs = {
   game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
 export type MutationRerollMissionArgs = {
+  platform_id: Scalars['Int'];
   player_mission_uid: Scalars['String'];
 };
 
@@ -557,6 +562,11 @@ export type MutationUnStakedNftArgs = {
 export type MutationUpdateDailyMissionArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
+};
+
+
+export type MutationWithdrawLucisTokenArgs = {
+  address: Scalars['String'];
 };
 
 export type NestedStringNullableFilter = {
@@ -774,6 +784,18 @@ export type PlayerStatistic = {
   Triple_Kills?: Maybe<Scalars['String']>;
 };
 
+export type PoolWallet = {
+  __typename?: 'PoolWallet';
+  address: Scalars['String'];
+  chain: Chain;
+  chain_symbol: ChainSymbol;
+  created_at: Scalars['DateTime'];
+  currency_uid: Scalars['String'];
+  private_key: Scalars['String'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type ProgressDailyMission = {
   __typename?: 'ProgressDailyMission';
   archieved?: Maybe<Scalars['Int']>;
@@ -788,7 +810,7 @@ export type Query = {
   getBiggestRaffles?: Maybe<Array<Raffle>>;
   getLucisMission?: Maybe<Array<PlayerMission>>;
   getMatchStatistic?: Maybe<MatchStatistics>;
-  getPlatformAccount?: Maybe<Array<PlatformAccountDto>>;
+  getPlatformAccount?: Maybe<Array<PlatformAccount>>;
   getProgressDailyMission?: Maybe<ProgressDailyMission>;
   getRaffleDetail?: Maybe<Raffle>;
   getRaffles?: Maybe<Array<Raffle>>;
@@ -810,6 +832,7 @@ export type QueryClaimMatchArgs = {
 
 export type QueryGetLucisMissionArgs = {
   game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
@@ -820,6 +843,7 @@ export type QueryGetMatchStatisticArgs = {
 
 export type QueryGetProgressDailyMissionArgs = {
   game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
@@ -1234,6 +1258,7 @@ export type User = {
   tournamentSubscriber?: Maybe<Array<TournamentSubscriber>>;
   updated_at: Scalars['DateTime'];
   user_ticket?: Maybe<Array<UserTicket>>;
+  withdraws?: Maybe<Array<WithdrawTransaction>>;
 };
 
 export type UserCount = {
@@ -1256,6 +1281,7 @@ export type UserCount = {
   tournament: Scalars['Int'];
   tournamentSubscriber: Scalars['Int'];
   user_ticket: Scalars['Int'];
+  withdraws: Scalars['Int'];
 };
 
 export type UserDailyMission = {
@@ -1332,5 +1358,21 @@ export type UserTicketInputGql = {
   amount?: InputMaybe<Scalars['Int']>;
   ticket_uid: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type WithdrawTransaction = {
+  __typename?: 'WithdrawTransaction';
+  amount: Scalars['Decimal'];
+  block?: Maybe<Scalars['Int']>;
+  created_at: Scalars['DateTime'];
+  currency_uid: Scalars['String'];
+  fee?: Maybe<Scalars['Decimal']>;
+  status: TransactionStatus;
+  tx_hash?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  usd_value?: Maybe<Scalars['Decimal']>;
+  user: User;
   user_id: Scalars['Int'];
 };
