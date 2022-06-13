@@ -14,24 +14,35 @@
     min-height: 400px
   .user_information
     display: flex
-    align-items: flex-end
     justify-content: space-between
     z-index: 1
     width: 100%
     padding-bottom: 40px
+    @media (min-width: 0px)
+      flex-direction: column
+      align-items: flex-start
+    @media (min-width: 640px)
+      align-items: flex-end
+      flex-direction: row
     .user_information_left
       display: flex
       align-items: center
       justify-content: space-between
       .avt
-        max-width: 120px
-        max-height: 120px
-        min-width: 120px
-        min-height: 120px
         overflow: hidden
         border-radius: 100%
         background: #fff
         border: 10px solid rgb(233 233 233)
+        @media (min-width: 0px)
+          max-width: 100px
+          max-height: 100px
+          min-width: 100px
+          min-height: 100px
+        @media (min-width: 640px)
+          max-width: 120px
+          max-height: 120px
+          min-width: 120px
+          min-height: 120px
         img
           width: 100%
           height: 100%
@@ -40,10 +51,14 @@
         background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
         backdrop-filter: blur(4px)
         padding: 20px 16px 12px 16px
-        min-width: 200px
         margin-left: 30px
         border: 1px solid #cec9c9
         border-radius: 12px
+        @media (min-width: 0px)
+          min-width: 190px
+        @media (min-width: 640px)
+          min-width: 200px
+
         p
           margin-bottom: 10px
           color: #FFF
@@ -60,8 +75,14 @@
             padding-right: 4px
 
     .user_information_right
+      @media (min-width: 0px)
+        margin-top: 20px
       button
         background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
-        padding: 8px 26px
         border-radius: 4px
         color: #FFF
+        @media (min-width: 0px)
+          padding: 6px 18px
+        @media (min-width: 640px)
+          padding: 8px 26px
+

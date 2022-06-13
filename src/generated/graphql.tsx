@@ -1050,6 +1050,7 @@ export type Currency = {
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   usd_value?: Maybe<Scalars['Float']>;
+  withdrawTransactions?: Maybe<Array<WithdrawTransaction>>;
 };
 
 export type CurrencyCount = {
@@ -1057,6 +1058,7 @@ export type CurrencyCount = {
   donateTransactions: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
   tournaments: Scalars['Int'];
+  withdrawTransactions: Scalars['Int'];
 };
 
 export type CurrencyCreateNestedOneWithoutDonateTransactionsInput = {
@@ -1077,6 +1079,12 @@ export type CurrencyCreateNestedOneWithoutTournamentsInput = {
   create?: InputMaybe<CurrencyCreateWithoutTournamentsInput>;
 };
 
+export type CurrencyCreateNestedOneWithoutWithdrawTransactionsInput = {
+  connect?: InputMaybe<CurrencyWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<CurrencyCreateOrConnectWithoutWithdrawTransactionsInput>;
+  create?: InputMaybe<CurrencyCreateWithoutWithdrawTransactionsInput>;
+};
+
 export type CurrencyCreateOrConnectWithoutDonateTransactionsInput = {
   create: CurrencyCreateWithoutDonateTransactionsInput;
   where: CurrencyWhereUniqueInput;
@@ -1089,6 +1097,11 @@ export type CurrencyCreateOrConnectWithoutSponsorTransactionsInput = {
 
 export type CurrencyCreateOrConnectWithoutTournamentsInput = {
   create: CurrencyCreateWithoutTournamentsInput;
+  where: CurrencyWhereUniqueInput;
+};
+
+export type CurrencyCreateOrConnectWithoutWithdrawTransactionsInput = {
+  create: CurrencyCreateWithoutWithdrawTransactionsInput;
   where: CurrencyWhereUniqueInput;
 };
 
@@ -1106,6 +1119,7 @@ export type CurrencyCreateWithoutDonateTransactionsInput = {
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   usd_value?: InputMaybe<Scalars['Float']>;
+  withdrawTransactions?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutCurrencyInput>;
 };
 
 export type CurrencyCreateWithoutSponsorTransactionsInput = {
@@ -1122,6 +1136,7 @@ export type CurrencyCreateWithoutSponsorTransactionsInput = {
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   usd_value?: InputMaybe<Scalars['Float']>;
+  withdrawTransactions?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutCurrencyInput>;
 };
 
 export type CurrencyCreateWithoutTournamentsInput = {
@@ -1135,6 +1150,24 @@ export type CurrencyCreateWithoutTournamentsInput = {
   owner?: InputMaybe<Scalars['String']>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutCurrencyInput>;
   symbol?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  usd_value?: InputMaybe<Scalars['Float']>;
+  withdrawTransactions?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutCurrencyInput>;
+};
+
+export type CurrencyCreateWithoutWithdrawTransactionsInput = {
+  address?: InputMaybe<Scalars['String']>;
+  chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  decimals?: InputMaybe<Scalars['Int']>;
+  donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
+  icon?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  owner?: InputMaybe<Scalars['String']>;
+  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutCurrencyInput>;
+  symbol?: InputMaybe<Scalars['String']>;
+  tournaments?: InputMaybe<TournamentCreateNestedManyWithoutCurrencyInput>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   usd_value?: InputMaybe<Scalars['Float']>;
@@ -1155,6 +1188,7 @@ export type CurrencyGql = {
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   usd_value?: Maybe<Scalars['Float']>;
+  withdrawTransactions?: Maybe<Array<WithdrawTransaction>>;
 };
 
 export type CurrencyWhereUniqueInput = {
@@ -1375,6 +1409,7 @@ export type GTopEarning = {
   avatar?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   total_earning?: Maybe<Scalars['Float']>;
+  user_name?: Maybe<Scalars['String']>;
 };
 
 export type GTournament = {
@@ -5866,6 +5901,12 @@ export type UserCreateNestedOneWithoutTournamentSubscriberInput = {
   create?: InputMaybe<UserCreateWithoutTournamentSubscriberInput>;
 };
 
+export type UserCreateNestedOneWithoutWithdrawsInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutWithdrawsInput>;
+  create?: InputMaybe<UserCreateWithoutWithdrawsInput>;
+};
+
 export type UserCreateOrConnectWithoutClaim_MatchInput = {
   create: UserCreateWithoutClaim_MatchInput;
   where: UserWhereUniqueInput;
@@ -5948,6 +5989,11 @@ export type UserCreateOrConnectWithoutTournamentInput = {
 
 export type UserCreateOrConnectWithoutTournamentSubscriberInput = {
   create: UserCreateWithoutTournamentSubscriberInput;
+  where: UserWhereUniqueInput;
+};
+
+export type UserCreateOrConnectWithoutWithdrawsInput = {
+  create: UserCreateWithoutWithdrawsInput;
   where: UserWhereUniqueInput;
 };
 
@@ -6546,6 +6592,41 @@ export type UserCreateWithoutTournamentSubscriberInput = {
   withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
 };
 
+export type UserCreateWithoutWithdrawsInput = {
+  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
+  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
+  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
+  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
+  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
+  code?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
+  email?: InputMaybe<Scalars['String']>;
+  facebook_id?: InputMaybe<Scalars['String']>;
+  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
+  google_id?: InputMaybe<Scalars['String']>;
+  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
+  password?: InputMaybe<Scalars['String']>;
+  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_uid?: InputMaybe<Scalars['String']>;
+  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
+  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
+  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
+  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  ref_code?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<UserRole>;
+  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
+  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
+  status?: InputMaybe<UserStatus>;
+  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
+  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
+  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
+};
+
 export type UserDailyMission = {
   __typename?: 'UserDailyMission';
   created_at: Scalars['DateTime'];
@@ -6911,6 +6992,7 @@ export type WithdrawTransaction = {
   amount: Scalars['Decimal'];
   block?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
+  currency: Currency;
   currency_uid: Scalars['String'];
   fee?: Maybe<Scalars['Decimal']>;
   status: TransactionStatus;
@@ -6920,6 +7002,24 @@ export type WithdrawTransaction = {
   usd_value?: Maybe<Scalars['Decimal']>;
   user: User;
   user_id: Scalars['Int'];
+};
+
+export type WithdrawTransactionCreateManyCurrencyInput = {
+  amount: Scalars['Decimal'];
+  block?: InputMaybe<Scalars['Int']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  fee?: InputMaybe<Scalars['Decimal']>;
+  status?: InputMaybe<TransactionStatus>;
+  tx_hash?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  usd_value?: InputMaybe<Scalars['Decimal']>;
+  user_id: Scalars['Int'];
+};
+
+export type WithdrawTransactionCreateManyCurrencyInputEnvelope = {
+  data: Array<WithdrawTransactionCreateManyCurrencyInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
 export type WithdrawTransactionCreateManyUserInput = {
@@ -6940,6 +7040,13 @@ export type WithdrawTransactionCreateManyUserInputEnvelope = {
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type WithdrawTransactionCreateNestedManyWithoutCurrencyInput = {
+  connect?: InputMaybe<Array<WithdrawTransactionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<WithdrawTransactionCreateOrConnectWithoutCurrencyInput>>;
+  create?: InputMaybe<Array<WithdrawTransactionCreateWithoutCurrencyInput>>;
+  createMany?: InputMaybe<WithdrawTransactionCreateManyCurrencyInputEnvelope>;
+};
+
 export type WithdrawTransactionCreateNestedManyWithoutUserInput = {
   connect?: InputMaybe<Array<WithdrawTransactionWhereUniqueInput>>;
   connectOrCreate?: InputMaybe<Array<WithdrawTransactionCreateOrConnectWithoutUserInput>>;
@@ -6947,16 +7054,34 @@ export type WithdrawTransactionCreateNestedManyWithoutUserInput = {
   createMany?: InputMaybe<WithdrawTransactionCreateManyUserInputEnvelope>;
 };
 
+export type WithdrawTransactionCreateOrConnectWithoutCurrencyInput = {
+  create: WithdrawTransactionCreateWithoutCurrencyInput;
+  where: WithdrawTransactionWhereUniqueInput;
+};
+
 export type WithdrawTransactionCreateOrConnectWithoutUserInput = {
   create: WithdrawTransactionCreateWithoutUserInput;
   where: WithdrawTransactionWhereUniqueInput;
+};
+
+export type WithdrawTransactionCreateWithoutCurrencyInput = {
+  amount: Scalars['Decimal'];
+  block?: InputMaybe<Scalars['Int']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  fee?: InputMaybe<Scalars['Decimal']>;
+  status?: InputMaybe<TransactionStatus>;
+  tx_hash?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  usd_value?: InputMaybe<Scalars['Decimal']>;
+  user: UserCreateNestedOneWithoutWithdrawsInput;
 };
 
 export type WithdrawTransactionCreateWithoutUserInput = {
   amount: Scalars['Decimal'];
   block?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
+  currency: CurrencyCreateNestedOneWithoutWithdrawTransactionsInput;
   fee?: InputMaybe<Scalars['Decimal']>;
   status?: InputMaybe<TransactionStatus>;
   tx_hash?: InputMaybe<Scalars['String']>;
