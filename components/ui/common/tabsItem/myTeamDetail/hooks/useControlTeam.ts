@@ -14,6 +14,7 @@ import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
 import { useGetUserProfile } from "../../../../../../hooks/myProfile/useMyProfile";
+import TournamentStore from "src/store/TournamentStore";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
 	user_name: string;
@@ -304,6 +305,8 @@ const UseControlTeam = () => {
 						},
 						onCompleted: () => {
 							searchTeam();
+							setOpenCreateTeam(false);
+							TournamentStore.loadingCeateTeam = false;
 						},
 				  })
 				: createTeam({
@@ -322,10 +325,12 @@ const UseControlTeam = () => {
 						},
 						onCompleted: () => {
 							searchTeam();
+							setOpenCreateTeam(false);
+							TournamentStore.loadingCeateTeam = false;
 						},
 				  });
 			setReset(true);
-			setOpenCreateTeam(false);
+			//setOpenCreateTeam(false);
 		}
 	};
 

@@ -159,7 +159,10 @@ const UseTeamModal = (tournamentData: any) => {
     if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
       setErrorTour({
         ...errorTour,
-        size: team_size !== team.length ? `The tournament team size is ${team_size}. Please choose more players to join` : "",
+        size:
+          team_size !== team.length
+            ? `The tournament team size is ${team_size}. Please choose more players to join`
+            : "",
         prize: checkEmptyPrize
           ? "Prize allocation must not be empty"
           : checkTotalPrize
@@ -233,7 +236,7 @@ const UseTeamModal = (tournamentData: any) => {
             else {
               //setErrorPassword(err.message);
               //message.error(err.message);
-              if (code === "MEMBER_ALREADY_JOINED") {
+              if (code === "MEMBER_ALREADY_JOINED" || code === "SERVER_ERROR") {
                 if (team_size === 1) {
                   message.error(
                     "Can't join because you are joining another tournament"
@@ -390,10 +393,11 @@ const UseTeamModal = (tournamentData: any) => {
               <div>
                 <button
                   className={s.button}
-                  onClick={() => handleRoutes("/profile")}
+                  onClick={() => handleRoutes("/profile?tab=teams")}
                 >
-                  <a></a>
-                  Manage your team
+                  <a >
+                    Manage your team
+                  </a>
                 </button>
                 <button className={s.button} onClick={handleOpenCreateNewTeam}>
                   <PlusOutlined className="mr-2" />

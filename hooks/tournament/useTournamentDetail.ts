@@ -104,7 +104,6 @@ export function useTournamentDetail(props: Props) {
   } = useQuery(GET_DONATION_HISTORY, {
     variables: { tournament_uid: props?.tournament_uid },
     skip: props?.skip,
-    fetchPolicy: "network-only",
   });
 
   const [

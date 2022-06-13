@@ -23,15 +23,7 @@ export default function GroupLink(props: Props) {
           </a>
         </div>
       )}
-
-      {/* <div className={s.ic_item}>
-        {datas?.telegram && (
-          <a href={datas?.telegram} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/footer/tele.svg" alt="" />
-          </a>
-        )}
-      </div> */}
-
+      
       {datas?.twitch && (
         <div className={s.ic_item}>
           <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
@@ -40,9 +32,9 @@ export default function GroupLink(props: Props) {
         </div>
       )}
 
-      {datas?.twitch && (
+      {datas?.twitter && (
         <div className={s.ic_item}>
-          <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
+          <a href={datas?.twitter} target="_blank" rel="noopener noreferrer">
             <img src="/assets/MyProfile/iconTwitterWhite.svg" alt="" />
           </a>
         </div>

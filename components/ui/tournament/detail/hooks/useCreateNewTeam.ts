@@ -190,8 +190,8 @@ const UseCreateNewTeam = (profile: any, teamSize: number) => {
 					},
 				},
 				onCompleted: () => {
-					refetch();
 					TournamentStore.loadingCeateTeam = false;
+					refetch();		
 				},
 			});
 			setReset(true);	
