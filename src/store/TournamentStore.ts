@@ -87,6 +87,7 @@ class TournamentStore {
   private _checkDonationApprove: boolean = false;
   private _checkBecomeSponser: boolean = false;
   private _loadingCeateTeam: boolean = false;
+  private _checkBacktoTournament: boolean = false;
 
   private _id?: number | undefined;
 
@@ -452,11 +453,19 @@ class TournamentStore {
   public set currency_address(value: string | undefined) {
     this._currency_address = value;
   }
+
   public get loadingCeateTeam(): boolean {
     return this._loadingCeateTeam;
   }
   public set loadingCeateTeam(value: boolean) {
     this._loadingCeateTeam = value;
+  }
+  
+  public get checkBacktoTournament(): boolean {
+    return this._checkBacktoTournament;
+  }
+  public set checkBacktoTournament(value: boolean) {
+    this._checkBacktoTournament = value;
   }
 }
 

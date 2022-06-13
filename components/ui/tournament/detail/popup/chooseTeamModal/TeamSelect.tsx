@@ -19,7 +19,7 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, isValid, onSelect }) => {
             <div className="rounded-[30px] w-[30px] h-[30px] overflow-hidden">
               <img
                 className="object-cover w-full h-full"
-                src={user?.avatar}
+                src={user?.avatar ? user?.avatar : "/assets/avatar.jpg"}
                 alt=""
                 width={30}
                 height={30}

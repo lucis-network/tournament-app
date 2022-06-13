@@ -1,5 +1,5 @@
 import React, { HTMLAttributes, useEffect, useState } from "react";
-import { Form, Input, InputNumber, Table } from "antd";
+import { Button, Form, Input, InputNumber, Table } from "antd";
 import { StarFilled } from "@ant-design/icons";
 import { MyTeamType } from "../../hooks/useCreateNewTeam";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
@@ -294,9 +294,9 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			</div>
 			<div className="flex justify-center mt-16">
 				{!isSolo && (
-					<button className={`${s.button} !w-max mr-4`} onClick={onBack}>
+					<Button className={` ${s.buttonBack} !w-max mr-4`} onClick={onBack}>
 						Back to step 1
-					</button>
+					</Button>
 				)}
 				<button
 					className={`${s.button} !w-max min-w-[285px]`}

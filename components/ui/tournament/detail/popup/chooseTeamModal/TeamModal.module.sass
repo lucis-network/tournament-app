@@ -20,6 +20,25 @@
       color: #FFF
     img
       padding-right: 4px
+  :global(.ant-btn)
+    height: auto
+  .buttonBack
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 4px 16px
+    border-radius: 4px
+    margin-bottom: 8px
+    color: #FFF
+    width: 100%
+    &:disabled
+      background: gray
+      opacity: 0.7
+    span
+      color: #FFF
+    img
+      padding-right: 4px
+
   .button_select
     display: flex
     align-items: center
@@ -111,6 +130,9 @@
       height: 20px
       &::after
         left: 24%
-  .toolTip 
+    :global(.ant-checkbox-disabled + span )
+      color: rgb(201 200 200 / 50%)
+
+  .toolTip
     display: flex !important
     background: gray

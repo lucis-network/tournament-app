@@ -30,7 +30,6 @@ import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import DocHead from "../../../components/DocHead";
 import moment from "moment";
-import { route } from "next/dist/server/router";
 
 const { TabPane } = Tabs;
 
@@ -115,6 +114,28 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       setDataRankSponsors(obj);
     }
   }, [dataSponsors]);
+
+  const {route} = useRouter();
+
+  const handleBeforeHistoryChange = (url: string) => {
+    console.log(url)
+    const [nextUrl] = url?.split('?') || [];
+
+    // if (
+    //   !(EXCEPTIONS.includes(nextUrl) || EXCEPTIONS.includes(Router.asPath)) &&
+    //   nextUrl !== Router.asPath
+    // ) {
+    //   Router.previousRoute = Router.asPath;
+    // }
+  };
+
+  useEffect(() => {
+    Router.events.on('beforeHistoryChange', handleBeforeHistoryChange);
+
+    return () => {
+      Router.events.off('beforeHistoryChange', handleBeforeHistoryChange);
+    };
+  }, []);
 
   //const router = useRouter();
 

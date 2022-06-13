@@ -55,5 +55,5 @@ export const bracketValues = [
   { key: "DOUBLE", value: "Double Elimination" },
 ];
 
-export const LINK_URL = "https://lucis-tn.koolab.io/";
+export const LINK_URL = "https://lucis-tn.koolab.io";
 

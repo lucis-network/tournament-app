@@ -10,11 +10,14 @@ import AuthService from "components/Auth/AuthService";
 import { to_hex_str } from "utils/String";
 import { useEffect, useState } from "react";
 import { LUCIS_FEE_DONATION } from "utils/Enum";
+import ClaimResultModal from "../claimResultModal/ClaimResultModal";
 
 type Props = {
   tournamentId?: string;
   dataDonation?: any;
   totalFromDonation?: number;
+  currency?: any;
+  name?: string;
 };
 
 export type ClaimDonation = {
@@ -25,7 +28,7 @@ export type ClaimDonation = {
 export default observer(function ClaimDonationModal(props: Props) {
   const [loadingBtn, setLoadingBtn] = useState(false);
 
-  const { tournamentId, dataDonation, totalFromDonation } = props;
+  const { tournamentId, dataDonation, totalFromDonation, currency, name} = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
@@ -79,7 +82,7 @@ export default observer(function ClaimDonationModal(props: Props) {
           setLoadingBtn(false);
           if (res) {
             //message.success("You claim success");
-            authService.sign([msg, ConnectWalletStore.address]);
+            TournamentStore.claimResultModalVisible = true;
             handleCancel();
           }
         },
@@ -161,6 +164,14 @@ export default observer(function ClaimDonationModal(props: Props) {
           </Button>
         </div>
       </Modal>
+
+      <ClaimResultModal
+        totalPrizePool={totalFromDonation as number}
+        currency={currency?.symbol}
+        name={name as string}
+        claim={true}
+      />
+      
     </div>
   );
 });

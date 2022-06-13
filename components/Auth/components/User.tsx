@@ -39,7 +39,7 @@ export default observer(function User(props: Props) {
   const { name, balance, facebook_id, google_id, profile } = AuthStore;
   const chainId = ConnectWalletStore?.network?.chainId;
   const currency = chainId && getCurrencyFromChainId(chainId);
-  
+
   const changeWallet = () => {
     AuthBoxStore.connectModalVisible = true;
   };
@@ -61,6 +61,7 @@ export default observer(function User(props: Props) {
     }
 
     AppEmitter.emit("onWalletDisconnect");
+
   }, []);
 
   let chainNetIcoUrl = "";
@@ -97,7 +98,7 @@ export default observer(function User(props: Props) {
       >
         <div className={`${s.avatar} ${s.avBig}`}>
           <img
-            src={`${profile?.avatar}` || "/assets/MyProfile/default_avatar.png"}
+            src={`${profile?.avatar}` || "/assets/avatar.jpg"}
             alt=""
           />
         </div>
@@ -136,7 +137,7 @@ export default observer(function User(props: Props) {
             My Profile
           </Button>
           <Button type="link" onClick={disconnectWallet}>
-            Disconnect
+            Log out
           </Button>
           {/* <GoogleLogout
             clientId={clientId}
@@ -170,7 +171,7 @@ export default observer(function User(props: Props) {
       >
         <div className={s.avatar}>
           <img
-            src={`${profile?.avatar}` || "/assets/MyProfile/default_avatar.png"}
+            src={`${profile?.avatar}` || "/assets/avatar.jpg"}
             alt=""
           />
           {/* <span>{name}</span> */}

@@ -8,7 +8,8 @@ import { observer } from "mobx-react-lite";
 import { UserGraphql } from "../../../../../src/generated/graphql";
 import { ApolloQueryResult } from "@apollo/client";
 import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
+import TournamentStore from "src/store/TournamentStore";
 
 type ContentMyProfileProps = {
   isOwner?: boolean;
@@ -33,6 +34,20 @@ export default observer(function ContentMyProfile({
     if (route?.query?.tab === "teams") MyProfileStore.tabActiveKey = "2";
   }, []);
 
+  const handleBeforeHistoryChange = (url: string) => {
+    if(url.includes("/tournament/")) {
+      TournamentStore.checkBacktoTournament = true;
+    }
+  };
+
+  useEffect(() => {
+    Router.events.on('beforeHistoryChange', handleBeforeHistoryChange);
+
+    return () => {
+      Router.events.off('beforeHistoryChange', handleBeforeHistoryChange);
+    };
+  }, []);
+  
   return (
     <Tabs
       defaultActiveKey={tabActiveKey}
