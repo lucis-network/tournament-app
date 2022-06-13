@@ -160,7 +160,7 @@ export default observer(function MyOverview({
 
   return (
     <>
-      <Row className={s.wrapper}>
+      <Row className={s.wrapper} style={{paddingBottom: 120}}>
         <Col className={s.container_left}>
           <h2>
             <FontAwesomeIcon icon={faPlay} />
