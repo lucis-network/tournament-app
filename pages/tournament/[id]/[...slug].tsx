@@ -3,9 +3,9 @@ import { Col, Row, Spin, Tabs, message, Image } from "antd";
 import Banner from "components/ui/tournament/detail/Banner";
 import {
   useSponsors,
-  useTournamentDetail
+  useTournamentDetail,
 } from "hooks/tournament/useTournamentDetail";
-import { useRouter } from "next/router";
+import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
@@ -29,6 +29,8 @@ import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import DocHead from "../../../components/DocHead";
+import moment from "moment";
+import { route } from "next/dist/server/router";
 
 const { TabPane } = Tabs;
 
@@ -61,6 +63,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     dataIsCheckin: isCheckin,
     dataDonation,
     dataIsubscribeToTournament,
+    dataSubscriber,
     isCheckConfirmResult,
 
     loading,
@@ -77,6 +80,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     refetchSubTournament,
     refetchConfirmResult,
     refetchBracket,
+    refetchDataSubscriber,
   } = useTournamentDetail({
     // Change to tournamentUid after
     tournament_uid: tournamentId,
@@ -111,6 +115,16 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       setDataRankSponsors(obj);
     }
   }, [dataSponsors]);
+
+  //const router = useRouter();
+
+  // useEffect(() => {
+  //   if (AuthStore.token) {
+  //     router.reload();
+  //   }
+
+  //   //console.log(router)
+  // }, [AuthStore.token]);
 
   if (loading) {
     return null;
@@ -178,6 +192,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         .then((res) => {
           refetchSubTournament();
           setIsLoadingSub(false);
+          refetchDataSubscriber();
         });
     }, 800);
   };
@@ -197,6 +212,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         .then((res) => {
           refetchSubTournament();
           setIsLoadingSub(false);
+          refetchDataSubscriber();
         });
     }, 800);
   };
@@ -209,7 +225,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     <>
       <DocHead title={name} />
       <div className={s.wrapper}>
-        <Banner cover={cover} />
+        <Banner
+          cover={cover}
+          className={s.bannerTourDetailWrap}
+          bannerClassName={s.bannerTourDetail}
+        />
         <TournamentDetailMarquee tournamentId={tournamentId as string} />
         <section className={s.tournamentInfo}>
           <div className="lucis-container-2">
@@ -224,72 +244,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     Confirm tournament result
                   </a>
                 )}
-              <div className={s.gradientBtnWrap}>
-                {dataIsubscribeToTournament?.IsSubscribeToTournament && (
-                  <Spin spinning={isLoadingSub}>
-                    <button key={"Subscribe"} onClick={handUnsubscribe}>
-                      <Image
-                        src="/assets/Campaign/Banner/svg/subcribed.svg"
-                        preview={false}
-                        alt=""
-                      />
-                      <span className="ml-2">
-                        Subscribed (
-                        {dataTournamentDetail?.tournament_subscribes?.length}{" "}
-                        sub)
-                      </span>
-                    </button>
-                  </Spin>
-                )}
-                {!dataIsubscribeToTournament?.IsSubscribeToTournament && (
-                  <Spin spinning={isLoadingSub}>
-                    <button key={"Subscribe"} onClick={handSubscribe}>
-                      <Image
-                        src="/assets/TournamentDetail/signInCircle.svg"
-                        preview={false}
-                        alt=""
-                      />
-                      <span className="ml-2">
-                        Subscribe (
-                        {dataTournamentDetail?.tournament_subscribes?.length}{" "}
-                        sub)
-                      </span>
-                    </button>
-                  </Spin>
-                )}
-
-                {tournament_status !== "CLOSED" && (
-                  <button
-                    key={"Donate"}
-                    onClick={() => {
-                      if (!AuthStore.isLoggedIn) {
-                        message.info("Please sign in first");
-                        return;
-                      }
-                      openModal("Donate");
-                    }}
-                  >
-                    <Image
-                      src="/assets/TournamentDetail/signInCircle.svg"
-                      preview={false}
-                      alt=""
-                    />
-                    <span className="ml-2">Donate</span>
-                  </button>
-                )}
-
-                <button
-                  key={"InviteorShare"}
-                  onClick={() => openModal("Invite or Share")}
-                >
-                  <Image
-                    src="/assets/TournamentDetail/signInCircle.svg"
-                    preview={false}
-                    alt=""
-                  />
-                  <span className="ml-2">Invite or Share</span>
-                </button>
-              </div>
             </div>
             <div className={s.infoWrap}>
               <div className={s.tournamentThumbnail}>
@@ -297,11 +251,24 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               </div>
               <div className={s.tournamentMetadataWrap}>
                 <h1 className={s.tournamentTitle}>{`${name}`}</h1>
-                <Row>
+                <div className={s.tournamentStartTime}>
+                  <Image
+                    src="/assets/TournamentDetail/iconClock.svg"
+                    preview={false}
+                    alt=""
+                  />
+                  <span>
+                    Start time:{" "}
+                    {moment(dataBracket?.bracketRounds[0]?.start_at).format(
+                      "YYYY/MM/DD HH:mm"
+                    )}
+                  </span>
+                </div>
+                <Row className={s.tournamentMetadataRow}>
                   {/* metadata */}
                   <Col
                     xs={{ span: 24 }}
-                    xl={{ span: 15 }}
+                    xl={{ span: 24 }}
                     className={s.tournamentMetadata}
                   >
                     <Row className={s.tournamentTagWrap}>
@@ -309,7 +276,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         <div>
                           <div className={s.tournamentTag}>
                             <Image
-                              src="/assets/TournamentDetail/iconMoney.svg"
+                              src="/assets/TournamentDetail/iconDollarCoin.svg"
                               preview={false}
                               alt=""
                             />{" "}
@@ -338,6 +305,90 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                               </a>
                             </Link>
                           )}
+                          <div className={s.gradientBtnWrap}>
+                            {dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                              <Spin spinning={isLoadingSub}>
+                                <button
+                                  key={"Subscribe"}
+                                  onClick={handUnsubscribe}
+                                >
+                                  <Image
+                                    src="/assets/Campaign/Banner/svg/subcribed.svg"
+                                    preview={false}
+                                    alt=""
+                                  />
+                                  <span className="ml-2">
+                                    Subscribed (
+                                    {/* {
+                                      dataTournamentDetail
+                                        ?.tournament_subscribes?.length
+                                    } */}
+                                    {
+                                      dataSubscriber
+                                    }
+                                    )
+                                  </span>
+                                </button>
+                              </Spin>
+                            )}
+                            {!dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                              <Spin spinning={isLoadingSub}>
+                                <button
+                                  key={"Subscribe"}
+                                  onClick={handSubscribe}
+                                >
+                                  <Image
+                                    src="/assets/TournamentDetail/signInCircle.svg"
+                                    preview={false}
+                                    alt=""
+                                  />
+                                  <span className="ml-2">
+                                    Subscribe (
+                                    {/* {
+                                      dataTournamentDetail
+                                        ?.tournament_subscribes?.length
+                                    } */}
+                                    {
+                                      dataSubscriber
+                                    }
+                                    )
+                                  </span>
+                                </button>
+                              </Spin>
+                            )}
+
+                            {tournament_status !== "CLOSED" && (
+                              <button
+                                key={"Donate"}
+                                onClick={() => {
+                                  if (!AuthStore.isLoggedIn) {
+                                    message.info("Please sign in first");
+                                    return;
+                                  }
+                                  openModal("Donate");
+                                }}
+                              >
+                                <Image
+                                  src="/assets/TournamentDetail/signInCircle.svg"
+                                  preview={false}
+                                  alt=""
+                                />
+                                <span className="ml-2">Donate</span>
+                              </button>
+                            )}
+
+                            <button
+                              key={"InviteorShare"}
+                              onClick={() => openModal("Invite or Share")}
+                            >
+                              <Image
+                                src="/assets/TournamentDetail/signInCircle.svg"
+                                preview={false}
+                                alt=""
+                              />
+                              <span className="ml-2">Invite or Share</span>
+                            </button>
+                          </div>
                         </div>
                       </Col>
                     </Row>
@@ -402,7 +453,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           }
                           passHref
                         >
-                          <a className={`${s.userInfo} ${s.alignRightMb}`}>
+                          <a
+                            className={`${s.userInfo} ${s.alignRightMb}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
                             {user?.profile?.avatar ? (
                               <Image
                                 src={user?.profile?.avatar}

@@ -11,6 +11,7 @@ import { isEmpty } from "lodash"
 import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
+import GAService from "../../../services/GA";
 
 type Props = {};
 
@@ -22,12 +23,21 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
   : "";
 
 export default observer(function LoginModal(props: Props) {
+  const trackUserChangeToAnalytic = (user: AuthUser) => {
+    if (user.id) {
+      const {id, name, role} = user;
+      GAService.setUserProperties({id, name, role});
+    }
+  }
+
   useEffect(() => {
     const cachedUser: AuthUser | null = getLocalAuthInfo();
     const token = cachedUser?.token;
     if (token) {
       console.log("{AuthService.login} re-login user: ");
       AuthStore.setAuthUser(cachedUser);
+
+      trackUserChangeToAnalytic(cachedUser);
     }
   });
 
@@ -44,6 +54,10 @@ export default observer(function LoginModal(props: Props) {
     console.log(AuthStore);
     const localUserInfo = getLocalAuthInfo();
 
+    if (localUserInfo) {
+      trackUserChangeToAnalytic(localUserInfo);
+    }
+
     switch (r.error) {
       case null:
         // Success
@@ -52,10 +66,10 @@ export default observer(function LoginModal(props: Props) {
         if (isEmpty(localUserInfo?.profile?.user_name)) {
           LoginBoxStore.signupInfoModalVisible = true;
         }
-        setTimeout(() => {
-          setIsModalVisible(false);
-        }, 2000);
-
+        // setTimeout(() => {
+          
+        // }, 2000);
+        setIsModalVisible(false);
         break;
     }
   };

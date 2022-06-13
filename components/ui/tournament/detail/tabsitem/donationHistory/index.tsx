@@ -19,7 +19,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
   }
   let totalDonation = 0
   dataDonation.map(item => {
-    if (item.amount as number >= 0) {
+    if (item.amount as number >= 0 && item.status === "SUCCEED") {
       totalDonation += item.amount as number
     }
   })
@@ -88,6 +88,15 @@ export default function DonationHistory(props: DonationHistoryProps) {
       render: (message: string) => (
         <>
           {message}
+        </>
+      ),
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      render: (status: string) => (
+        <>
+          {status}
         </>
       ),
     },
