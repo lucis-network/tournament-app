@@ -5,6 +5,8 @@ import { Button } from "antd";
 import { useState } from "react";
 import { GTopEarning } from "src/generated/graphql";
 import { currency } from "utils/Number";
+import Link from "next/link";
+import { slugify } from "utils/String";
 
 type Props = {
   data: GTopEarning[];
@@ -44,19 +46,23 @@ export default function CardPlayer(props: Props) {
             </div>
             <div className={s.content_player}>
               <div className={s.avt}>
-                <img
-                  src={e?.avatar ? `${e.avatar}` : `/assets/home/avt_null.jpg`}
-                  alt=""
-                />
+                <Link href={`/profile/${slugify(e?.user_name)}`} passHref>
+                  <a className={s.link_profile_player}>
+                    <img
+                      src={
+                        e?.avatar ? `${e.avatar}` : `/assets/home/avt_null.jpg`
+                      }
+                      alt=""
+                    />
+                  </a>
+                </Link>
                 {/* <div className={s.ic_like} onClick={() => hanldeLike(e.id)}>
                   <img src="/assets/home/ic_unlike.svg" alt="" />
                 </div> */}
               </div>
               <p style={{ textAlign: "center" }}>{e.display_name || "_ _"}</p>
               <div className={s.total_earning}>
-                {
-                  `$${currency(e.total_earning, 2)}`
-                }
+                {`$${currency(e.total_earning, 2)}`}
               </div>
               {/* <div className={s.btn}>
                 <Button

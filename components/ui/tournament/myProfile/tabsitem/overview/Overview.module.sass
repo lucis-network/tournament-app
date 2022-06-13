@@ -1,4 +1,8 @@
 .wrapper
+  @media (min-width: 0px)
+    flex-direction: column
+  @media (min-width: 768px)
+    flex-direction: row
   :global(*)
     color: #ffffff
   .btnMore
@@ -16,6 +20,18 @@
     input
       color: #ffffff
   .container_left
+    flex: 55%
+    padding-right: 50px
+    @media (min-width: 0px)
+      flex: 1
+      order: 1
+      padding-right: 0px
+    @media (min-width: 768px)
+      flex: 45%
+      order: 0
+      padding-right: 50px
+    @media (min-width: 1280px)
+      flex: 55%
     h2
       margin: 20px 0px
       color: #FFF
@@ -28,6 +44,8 @@
         display: inline-block
     .player_tournament
       margin-left: 30px
+      @media (min-width: 0px)
+      margin-left: 0px
       button
         background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
         padding: 10px 20px
@@ -85,8 +103,6 @@
           max-width: 20%
           padding: 10px
           border: 1px solid #FFF
-          min-width: 200px 
-          min-height: 200px 
           border-radius: 8px
           display: flex
           align-items: center
@@ -94,10 +110,23 @@
           cursor: pointer
           background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
           backdrop-filter: blur(4px)
-
+          @media (min-width: 0px)
+            flex-direction: column
+            min-width: 140px 
+            min-height: 140px 
+            text-align: center
+          @media (min-width: 992px)
+            min-width: 180px 
+            min-height: 180px 
+          svg
+            font-size: 20px
+          p
+            @media (min-width: 0px)
+              margin-top: 8px
+              margin-left: 0px
   .container_right
+    flex: 1
     padding-top: 30px
-    padding-left: 50px
     color: #FFF
     p
       margin: 0
@@ -122,10 +151,15 @@
           a
             display: block
           img
-            width: 35px
-            height: 35px
-            max-width: 35px
-            max-height: 35px
+            width: 40px
+            height: 40px
+            max-width: 40px
+            max-height: 40px
+            @media (min-width: 1440px)
+              width: 50px
+              height: 50px
+              max-width: 50px
+              max-height: 50px
           &.social_disabled
             opacity: 0.6
             a
