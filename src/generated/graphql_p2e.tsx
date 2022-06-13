@@ -289,6 +289,7 @@ export type Currency = {
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   usd_value?: Maybe<Scalars['Float']>;
+  withdrawTransactions?: Maybe<Array<WithdrawTransaction>>;
 };
 
 export type CurrencyCount = {
@@ -296,6 +297,7 @@ export type CurrencyCount = {
   donateTransactions: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
   tournaments: Scalars['Int'];
+  withdrawTransactions: Scalars['Int'];
 };
 
 export type DonateTransaction = {
@@ -1366,6 +1368,7 @@ export type WithdrawTransaction = {
   amount: Scalars['Decimal'];
   block?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
+  currency: Currency;
   currency_uid: Scalars['String'];
   fee?: Maybe<Scalars['Decimal']>;
   status: TransactionStatus;
