@@ -774,16 +774,26 @@ body .ant-input-group-addon {
   border: 1px solid white;
 } */
 
+body .ant-select-dropdown{
+  background-color: transparent;
+  backdrop-filter: blur(42px);
+  background: linear-gradient(152.97deg,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0) 100%);
+  color: #FFF;
+  padding: 4px 6px;
+}
+
 body .ant-select-item {
   padding: 0;
+  color: #FFF;
+  border-bottom: 1px solid #FFF;
 }
-
-body .ant-select-item:not(:last-child) {
-  border-bottom: 1px solid #dcdcdc;
+body .ant-select-item-option-content{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-body .ant-select-item {
-  padding-left: 10px;
+body .ant-select-item:last-child {
+  border-bottom: none;
 }
 
 body .ant-select-item-option-content img {
@@ -794,7 +804,6 @@ body .ant-select-item-option-content img {
 body .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   background: none;
 }
-
 /* body .ant-select-dropdown-hidden {
   display: block;
 } */
