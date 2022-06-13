@@ -10,8 +10,7 @@ import { BracketType } from "utils/Enum";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useWindowSize } from "hooks/useWindowSize";
-import BlankState from "../../../tournament/home/blankState";
-import { isEmpty } from "lodash";
+import BlankState from "components/ui/tournament/home/blankState";
 
 type Props = {
   datas?: TournamentGql[];
