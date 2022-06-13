@@ -1,10 +1,7 @@
 .containerApp
   width: 100%
   min-height: 100vh
-      
-  h1, h2, h3, h4, h5, h6
-    color: white !important
-
+  padding-top: 40px
   p
     color: white
   :global(.ant-input)
@@ -61,3 +58,45 @@
     color: #fff !important
 
 
+.pageTitle
+  font-size: 20px
+  font-weight: 500
+  color: #00FFEC
+.formItem
+  margin-bottom: 15px
+  &.formImgUpload
+    @media screen and (min-width: 768px)
+      display: flex
+      justify-content: space-between
+  .formLabel
+    color: #ffffff
+    font-size: 20px
+    margin-bottom: 10px
+  .inputName
+    border: 1px solid #ffffff
+    padding: 12px 15px
+    font-size: 14px
+.formImgUpload
+  .imgUpload
+    img
+      width: 100%
+      max-width: 100%
+      object-fit: none
+      object-position: center
+      background: rgba(255, 255, 255, 0.45)
+      border-radius: 8px
+      border: 1px solid #A397CB
+      cursor: pointer
+  .imgUploaded
+    img
+      object-fit: cover
+      background: none
+  .coverUpload
+    .imgUpload
+      img
+        aspect-ratio: 1600 / 400
+  .thumbnailUpload
+    .imgUpload
+      img
+        width: 150px
+        aspect-ratio: 450 / 300

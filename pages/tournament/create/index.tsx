@@ -442,15 +442,15 @@ export default observer(function CreateTournament(props: Props) {
       <div className="pt-28 min-h-screen"></div>
       <Footer /> */}
       <DocHead title="Create new tournament" />
-      <div className="container">
+      <div className="lucis-container-2">
         <div className={s.containerApp}>
-          <p className="text-30px mt-40px">Create your tournament</p>
+          <h2 className={s.pageTitle}>Create your tournament</h2>
           <div className="">
-            <Row>
-              <Col span={4}>
-                <p>Name</p>
+            <Row className={s.formItem}>
+              <Col xs={{ span: 24 }} md={{ span: 4 }}>
+                <label className={s.formLabel}>Name</label>
               </Col>
-              <Col span={20}>
+              <Col xs={{ span: 24 }} md={{ span: 20 }}>
                 <Input
                   style={
                     messageErrorName !== "" ? { borderColor: "#cb3636" } : {}
@@ -464,38 +464,41 @@ export default observer(function CreateTournament(props: Props) {
                   ref={inputRefName}
                   onBlur={() => handleBlur("name")}
                   value={TournamentStore.name}
+                  className={s.inputName}
                 />
                 <div className={s.message_error}>{messageErrorName}</div>
               </Col>
             </Row>
-            <Row className="pt-6">
-              <Col span={4}>
-                <p>Cover (Banner)</p>
+            <Row className={`${s.formItem} ${s.formImgUpload}`}>
+              <Col xs={{ span: 24 }} md={{ span: 4 }}>
+                <label className={s.formLabel}>Cover (Banner)</label>
               </Col>
-              <Col span={10}>
-                <UploadImage
-                  parentCallback={callbackFunction}
-                  heigh="480"
-                  width="1200"
-                  value="cover"
-                  url={TournamentStore?.cover}
-                ></UploadImage>
-                <p>Recommended size: 1600x400</p>
-                <div className={s.message_error}>{messageErrorCover}</div>
+              <Col xs={{ span: 24 }} md={{ span: 20 }} lg={{ span: 10 }} xl={{ span: 12 }}>
+                <div className={s.coverUpload}>
+                  <UploadImage
+                    parentCallback={callbackFunction}
+                    value="cover"
+                    url={TournamentStore?.cover}
+                    className={`${s.imgUpload} ${TournamentStore?.cover ? s.imgUploaded : ''}`}
+                  />
+                  <p>Recommended size: 1600x400</p>
+                  <div className={s.message_error}>{messageErrorCover}</div>
+                </div>
               </Col>
-              <Col span={4} className="text-center">
-                <p>Thumbnail</p>
+              <Col xs={{ span: 24 }} md={{ span: 4 }} lg={{ span: 4 }} xl={{ span: 3 }}>
+                <label className={`lg:pl-3 xl:pl-5 ${s.formLabel}`}>Thumbnail</label>
               </Col>
-              <Col span={6}>
-                <UploadImage
-                  parentCallback={callbackFunction}
-                  heigh="200"
-                  width="300"
-                  value="thumbnail"
-                  url={TournamentStore?.thumbnail}
-                ></UploadImage>
-                <p>Recommended size: 450x300</p>
-                <div className={s.message_error}>{messageErrorThumbnail}</div>
+              <Col xs={{ span: 24 }} md={{ span: 20 }} lg={{ span: 6 }} xl={{ span: 5 }}>
+                <div className={s.thumbnailUpload}>
+                  <UploadImage
+                    parentCallback={callbackFunction}
+                    value="thumbnail"
+                    url={TournamentStore?.thumbnail}
+                    className={`${s.imgUpload} ${TournamentStore?.thumbnail ? s.imgUploaded : ''}`}
+                  />
+                  <p>Recommended size: 450x300</p>
+                  <div className={s.message_error}>{messageErrorThumbnail}</div>
+                </div>
               </Col>
             </Row>
             <Row className="pt-4">
