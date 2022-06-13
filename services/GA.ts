@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent, setUserProperties, setUserId } from "firebase/analytics";
 import { Analytics, AnalyticsCallOptions, CustomParams } from "@firebase/analytics";
+import { isClient } from "utils/Env";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -46,6 +47,9 @@ class GoogleAnalytic {
 }
 
 const GAService = new GoogleAnalytic();
-GAService.init();
+if (isClient) {
+  GAService.init();
+}
+
 
 export default GAService;

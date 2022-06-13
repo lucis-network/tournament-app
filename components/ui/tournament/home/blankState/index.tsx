@@ -1,9 +1,9 @@
-import s from "./Blankstate.module.sass";
+import s from "./BlankState.module.sass";
 
 type Props = {
   title?: string;
 };
-const BlankState = (props: Props) => {
+export default function BlankState (props: Props) {
   const { title } = props;
   return (
     <div style={{ position: "relative", zIndex: 0 }}>
@@ -50,5 +50,3 @@ const BlankState = (props: Props) => {
     </div>
   );
 };
-
-export default BlankState;
