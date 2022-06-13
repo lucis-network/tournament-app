@@ -66,10 +66,10 @@ export default observer(function LoginModal(props: Props) {
         if (isEmpty(localUserInfo?.profile?.user_name)) {
           LoginBoxStore.signupInfoModalVisible = true;
         }
-        setTimeout(() => {
-          setIsModalVisible(false);
-        }, 2000);
-
+        // setTimeout(() => {
+          
+        // }, 2000);
+        setIsModalVisible(false);
         break;
     }
   };

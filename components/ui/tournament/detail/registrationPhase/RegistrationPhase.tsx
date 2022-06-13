@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Col, Image, message, Modal, Row } from "antd";
+import { Button, Col, Image, message, Modal, Row, Tooltip } from "antd";
 import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
@@ -419,11 +419,29 @@ export default observer(function RegistrationPhase(props: Props) {
                                         )}{" "}
                                         {dataPrize?.symbol}
                                       </h3>
+
+                                      {/* <Tooltip
+                                        placement="topLeft"
+                                        title="Lucis will take 5% reward as fee"
+                                        //className={`${s.btnClaim} btn-cyan`}
+                                      >
+                                        <Button
+                                          onClick={() =>
+                                            claimToken("PrizePool")
+                                          }
+                                          
+                                          disabled={dataPrize?.is_claim}
+                                          loading={loadingClaimPrizePool}
+                                        >
+                                          Claim
+                                        </Button>
+                                      </Tooltip> */}
                                       <Button
                                         onClick={() => claimToken("PrizePool")}
                                         className={`${s.btnClaim} btn-cyan`}
                                         disabled={dataPrize?.is_claim}
                                         loading={loadingClaimPrizePool}
+                                        title="abc"
                                       >
                                         Claim
                                       </Button>

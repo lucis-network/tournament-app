@@ -159,7 +159,7 @@ const UseTeamModal = (tournamentData: any) => {
     if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
       setErrorTour({
         ...errorTour,
-        size: team_size !== team.length ? "Invalid team size to join" : "",
+        size: team_size !== team.length ? `The tournament team size is ${team_size}. Please choose more players to join` : "",
         prize: checkEmptyPrize
           ? "Prize allocation must not be empty"
           : checkTotalPrize
@@ -234,13 +234,23 @@ const UseTeamModal = (tournamentData: any) => {
               //setErrorPassword(err.message);
               //message.error(err.message);
               if (code === "MEMBER_ALREADY_JOINED") {
-                message.error(
-                  "Can't join because one of the team members is joining another tournament"
-                );
-              } else if (code === "SERVER_ERROR") {
-                message.error(
-                  "Can't join because one of the team member is the referee"
-                );
+                if (team_size === 1) {
+                  message.error(
+                    "Can't join because you are joining another tournament"
+                  );
+                } else {
+                  message.error(
+                    "Can't join because one of the team members is joining another tournament"
+                  );
+                }
+              } else if (code === "BAD_REQUEST") {
+                if (team_size === 1) {
+                  message.error("Can't join because you are the referee");
+                } else {
+                  message.error(
+                    "Can't join because one of the team member is the referee"
+                  );
+                }
               } else {
                 message.error(err.message);
               }
@@ -250,16 +260,16 @@ const UseTeamModal = (tournamentData: any) => {
     }
   };
 
-  const handleCreateNewTeam = () => {
+  const handleCreateNewTeam = async () => {
     if (
       draftData?.team_avatar &&
       draftData?.team_name &&
       draftData?.team &&
       draftData?.team?.length > 1
     ) {
+      await handleSaveTeam();
       setStep("step-1");
     }
-    handleSaveTeam();
   };
 
   const handleOpenCreateNewTeam = () => {
@@ -382,6 +392,7 @@ const UseTeamModal = (tournamentData: any) => {
                   className={s.button}
                   onClick={() => handleRoutes("/profile")}
                 >
+                  <a></a>
                   Manage your team
                 </button>
                 <button className={s.button} onClick={handleOpenCreateNewTeam}>
