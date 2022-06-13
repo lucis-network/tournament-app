@@ -71,6 +71,7 @@ export const Navigation = () => {
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
   const { address, network: connected_network } = ConnectWalletStore;
+  const { profile } = AuthStore;
 
   const onClickProfile = () => {
     router.push("/profile");
@@ -123,8 +124,22 @@ export const Navigation = () => {
           )}
         </div>
       ),
-      class: { position: "absolute", bottom: "180px" },
+      class: { position: "absolute", bottom: "210px" },
       isBlank: false,
+    },
+    {
+      color: "#FF008C",
+      text: (
+        <div>
+          {AuthStore.isLoggedIn ? (
+            <p>{profile?.display_name}</p>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+      isBlank: false,
+      class: { position: "absolute", bottom: "160px", fontSize: 14, cursor: 'auto' },
     },
     {
       color: "#FF008C",
@@ -138,7 +153,7 @@ export const Navigation = () => {
         </div>
       ),
       isBlank: false,
-      class: { position: "absolute", bottom: "146px", fontSize: 12, cursor: 'auto' },
+      class: { position: "absolute", bottom: "144px", fontSize: 12, cursor: 'auto' },
     },
     {
       color: "#FF008C",
