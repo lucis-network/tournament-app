@@ -196,6 +196,7 @@ const UseCreateNewTeam = (profile: any, teamSize: number) => {
 			});
 			setReset(true);	
 		}
+		TournamentStore.loadingCeateTeam = false;
 	};
 
 	const handleAddMember = (member: TeamType) => {

@@ -129,11 +129,11 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
           disabled={
             !!error["team_name"] || !!error["team_avatar"] || !!error["team"]
           }
-		      loading={TournamentStore.loadingCeateTeam}
+          loading={TournamentStore.loadingCeateTeam}
         >
           {isEdit ? "Update team" : "Create team"}
         </Button>
-		{/* <button
+        {/* <button
           className={s.button_create}
           onClick={() => {
             TournamentStore.loadingCeateTeam = true;

@@ -264,13 +264,13 @@ const UseTeamModal = (tournamentData: any) => {
   };
 
   const handleCreateNewTeam = async () => {
+    await handleSaveTeam();
     if (
       draftData?.team_avatar &&
       draftData?.team_name &&
       draftData?.team &&
       draftData?.team?.length > 1
     ) {
-      await handleSaveTeam();
       setStep("step-1");
     }
   };
@@ -395,9 +395,7 @@ const UseTeamModal = (tournamentData: any) => {
                   className={s.button}
                   onClick={() => handleRoutes("/profile?tab=teams")}
                 >
-                  <a >
-                    Manage your team
-                  </a>
+                  Manage your team
                 </button>
                 <button className={s.button} onClick={handleOpenCreateNewTeam}>
                   <PlusOutlined className="mr-2" />

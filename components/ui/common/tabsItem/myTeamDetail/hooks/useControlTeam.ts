@@ -273,13 +273,14 @@ const UseControlTeam = () => {
 					? ""
 					: "Your team must have at least 2 members",
 		});
-
+		TournamentStore.loadingCeateTeam = false;
 		if (
 			draftData?.team_avatar &&
 			draftData?.team_name &&
 			draftData?.team &&
 			draftData?.team?.length > 1
 		) {
+			TournamentStore.loadingCeateTeam = true;
 			const filterDataMember = draftData?.team
 				?.filter((team) => +team.user_id !== +user?.profile?.user_id!)
 				?.map((item) => ({
@@ -332,6 +333,7 @@ const UseControlTeam = () => {
 			setReset(true);
 			//setOpenCreateTeam(false);
 		}
+
 	};
 
 	const handleAddMember = (member: TeamType) => {
