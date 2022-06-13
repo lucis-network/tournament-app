@@ -4,15 +4,19 @@
   justify-content: space-between
   flex-wrap: wrap
   border: 1px solid #9b9b9b
-  padding: 20px 16px
   cursor: pointer
   box-shadow: none
-  margin-bottom: 30px
   transition: 0.3s
   background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
   backdrop-filter: blur(4px)
   border-radius: 8px
   color: #FFF
+  @media (min-width: 0px)
+    margin-bottom: 12px
+    padding: 8px 12px
+  @media (min-width: 540px)
+    margin-bottom: 30px
+    padding: 20px 16px
 
   .card_avt
     overflow: hidden
@@ -41,7 +45,7 @@
       padding-left: 20px
       font-size: 18px
     @media (min-width: 540px)
-      flex: 45%
+      flex: 36%
       font-size: 16px
 
   .member
