@@ -1,6 +1,6 @@
 import React from 'react'
-import s from "./daily/Daily.module.sass";
-import { Button, Col, Image, message, Progress, Row } from "antd";
+import s from "./p2e.module.sass";
+import { Button, Checkbox, Col, Image, message, Progress, Row } from "antd";
 import { isEmpty } from "lodash";
 import SpinLoading from "../common/Spin";
 import { PlayerMission } from "../../../src/generated/graphql_p2e";
@@ -41,6 +41,19 @@ const MissionsList = ({ title, description, missions, handleUpdateMissions, canC
   }
   return (
     <div className={s.missionsWrap}>
+      {/* <div className={s.header}>
+        <Row>
+          <Col span="12">
+            <div className={s.checkListMission}>
+              <div className={s.checkListMissionItem}>
+                <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+                <Checkbox checked />
+              </div>
+            </div>
+          </Col>
+          <Col span="12"></Col>
+        </Row>
+      </div> */}
       <div className={s.missionsWrapHeader}>
         <div>
           <h2>{title}</h2>
@@ -70,7 +83,7 @@ const MissionsList = ({ title, description, missions, handleUpdateMissions, canC
                 <div className={s.missionLogo}>
                   <Image src={mission?.mission?.img ? mission?.mission?.img : "/assets/P2E/gun.png"} preview={false} alt="" />
                 </div>
-                <div className={s.missionInfo}>
+                <div className={s.missionInfo} style={{ flex: 1, padding: "0 15px" }}>
                   <h4>{mission?.mission?.title}</h4>
                   <Row className={s.missionReward}>
                     <Col xs={{ span: 3 }}>Reward</Col>

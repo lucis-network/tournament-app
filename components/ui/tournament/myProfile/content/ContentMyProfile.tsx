@@ -4,9 +4,10 @@ import MyTeamDetail from "components/ui/common/tabsItem/myTeamDetail";
 import MyOverview from "../tabsitem/overview/Index";
 import MyTournament from "../tabsitem/myTournament";
 import MyProfileStore from "../../../../../src/store/MyProfileStore";
-import {observer} from "mobx-react-lite";
-import {UserGraphql} from "../../../../../src/generated/graphql";
-import {ApolloQueryResult} from "@apollo/client";
+import { observer } from "mobx-react-lite";
+import { UserGraphql } from "../../../../../src/generated/graphql";
+import { ApolloQueryResult } from "@apollo/client";
+import { NFTs } from "../tabsitem/nfts";
 
 type ContentMyProfileProps = {
   isOwner?: boolean,
@@ -35,6 +36,12 @@ export default observer(function ContentMyProfile({ isOwner, userInfo, getUserPr
       </TabPane>
       <TabPane tab="Tournaments" key="4">
         <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} />
+      </TabPane>
+      <TabPane tab="NFTs" key="5">
+        {/* <NFTs isOwner={isOwner} /> */}
+      </TabPane>
+      <TabPane tab="My Staking" key="6" disabled>
+        {/* <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} /> */}
       </TabPane>
     </Tabs>
   );

@@ -1,18 +1,24 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import s from './P2EOverview.module.sass'
-import {Button, Col, Image, Row} from "antd";
-import {isEmpty} from "lodash";
-import {isDevMode} from "../../../../utils/Env";
-import {PlatformAccount} from "../../../../src/generated/graphql_p2e";
-
+import { Button, Col, Image, Row } from "antd";
+import { isEmpty } from "lodash";
+import { isDevMode } from "../../../../utils/Env";
+import { PlatformAccount } from "../../../../src/generated/graphql_p2e";
+import AuthStore from "../../../Auth/AuthStore";
+import { observer } from 'mobx-react-lite';
+import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
+import { useGetPlatformAccount } from 'hooks/p2e/useP2E';
 type P2EOverviewProps = {
   faceitUser: PlatformAccount,
+  isLoadingFaceitUser: boolean
 }
-
-const P2EOverview = ({ faceitUser }: P2EOverviewProps) => {
+export default observer(function P2EOverview(props: P2EOverviewProps) {
   const [faceitLogin, setFaceitLogin] = useState({
-    login: () => {}
+    login: () => { }
   })
+  const [faceitUser, setFaceitUser] = useState<PlatformAccount>(props.faceitUser);
+  const [isAuth, setIsAuth] = React.useState<boolean>(false);
+  const { refetchPlatformAccount } = useGetPlatformAccount()
   const fetchJsFromCDN = (src: string, externals: any[] = []) => {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script')
@@ -51,71 +57,102 @@ const P2EOverview = ({ faceitUser }: P2EOverviewProps) => {
     }
   }, [faceitUser])
 
+  useEffect(() => {
+    handleRefetchPlatformAccount();
+  }, [AuthStore.isLoggedIn])
+
+  const handleRefetchPlatformAccount = async () => {
+    try {
+      const a = await refetchPlatformAccount();
+      setFaceitUser(a.data?.getPlatformAccount[0]);
+      setIsAuth(true);
+    } catch (error) {
+      // TODO
+      setFaceitUser({} as any);
+      setIsAuth(false);
+    }
+
+  }
+
+  const handleConnectFaceit = () => {
+    if (!isAuth) {
+      LoginBoxStore.connectModalVisible = true;
+      return;
+    }
+
+    faceitLogin.login();
+  }
+
 
 
   return (
-    <div className={s.overviewContainer}>
-      <div className={s.overviewSection}>
-        <h2 className={s.overviewSectionTitle}>Choose game</h2>
-        <Row>
-          <Col xs={{ span: 24 }} sm={{ span: 12 }}>
-            <div className={s.gameItem}>
-              <div className={s.gameImage}>
-                <Image
-                  src="/assets/P2E/lol-cover.jpg"
-                  preview={false}
-                  alt=""
-                  className={s.gameCover}
-                />
-                <Image
-                  src="/assets/P2E/lol-logo.webp"
-                  preview={false}
-                  alt=""
-                  className={s.gameLogo}
-                />
+    <div className="lucis-container-2">
+      <div className={s.overviewContainer}>
+        <div className={s.overviewSection}>
+          <h2 className={s.overviewSectionTitle}>Choose game</h2>
+          <Row>
+            <Col xs={{ span: 24 }} sm={{ span: 12 }}>
+              <div className={s.gameItem}>
+                <div className={s.gameImage}>
+                  <Image
+                    src="/assets/P2E/lol-cover.jpg"
+                    preview={false}
+                    alt=""
+                    className={s.gameCover}
+                  />
+                  <Image
+                    src="/assets/P2E/lol-logo.webp"
+                    preview={false}
+                    alt=""
+                    className={s.gameLogo}
+                  />
+                </div>
+                <div className={s.gameName}>
+                  <h3>League of Legends</h3>
+                  <Button className={s.btnConnectLol} disabled>Connect game</Button>
+                </div>
               </div>
-              <div className={s.gameName}>
-                <h3>League of Legends</h3>
-                <Button className={s.btnConnectLol} disabled>Connect game</Button>
+            </Col>
+            <Col xs={{ span: 24 }} sm={{ span: 12 }}>
+              <div className={s.gameItem}>
+                <div className={s.gameImage}>
+                  <Image
+                    src="/assets/P2E/csgo-cover.webp"
+                    preview={false}
+                    alt=""
+                    className={s.gameCover}
+                  />
+                  <Image
+                    src="/assets/P2E/csgo-logo.webp"
+                    preview={false}
+                    alt=""
+                    className={s.gameLogo}
+                  />
+                </div>
+                <div className={s.gameName}>
+                  <h3>CS:GO FACEIT</h3>
+                  {isEmpty(faceitUser) ? (
+                    <>
+                      {/*<div id="faceitLogin" className={s.btnConnectGame}></div>*/}
+                      <Button
+                        onClick={() => handleConnectFaceit()}
+                        className={s.btnLoginFaceit}
+                        loading={props.isLoadingFaceitUser}
+                      >CONNECT WITH FACEIT</Button>
+                    </>
+                  ) : (
+                    <div className={s.platformUser}>
+                      <Image src={faceitUser?.avatar ? faceitUser?.avatar : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
+                      <div className={s.platformUserName}>{faceitUser?.nick_name}</div>
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </Col>
-          <Col xs={{ span: 24 }} sm={{ span: 12 }}>
-            <div className={s.gameItem}>
-              <div className={s.gameImage}>
-                <Image
-                  src="/assets/P2E/csgo-cover.webp"
-                  preview={false}
-                  alt=""
-                  className={s.gameCover}
-                />
-                <Image
-                  src="/assets/P2E/csgo-logo.webp"
-                  preview={false}
-                  alt=""
-                  className={s.gameLogo}
-                />
-              </div>
-              <div className={s.gameName}>
-                <h3>CS:GO FACEIT</h3>
-                {isEmpty(faceitUser) ? (
-                  <>
-                    {/*<div id="faceitLogin" className={s.btnConnectGame}></div>*/}
-                    <Button onClick={faceitLogin.login} className={s.btnLoginFaceit}>CONNECT WITH FACEIT</Button>
-                  </>
-                ) : (
-                  <div className={s.platformUser}>
-                    <Image src={`${faceitUser?.avatar}`} preview={false} alt="" className={s.platformUserAvatar} />
-                    <div className={s.platformUserName}>{faceitUser?.nick_name}</div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        </div>
       </div>
     </div>
   )
 }
-
-export default P2EOverview
+)

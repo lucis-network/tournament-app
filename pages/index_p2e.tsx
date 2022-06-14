@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect, useState } from "react"
 import DocHead from 'components/DocHead'
 import Footer from 'components/ui/footer/Footer'
-import {NextPage} from "next";
-import {Tabs} from "antd";
+import { NextPage } from "next";
+import { Tabs } from "antd";
 import P2EOverview from "components/ui/p2e/overview"
-import DailyMission from "components/ui/p2e/daily"
+import Dashboard from "components/ui/p2e/dashboard"
 import s from './Home.module.sass'
-import {useMutation} from "@apollo/client"
-import {CONNECT_FACEIT, useGetPlatformAccount} from "../hooks/p2e/useP2E"
-import {PlatformAccount} from "../src/generated/graphql_p2e";
+import { useMutation } from "@apollo/client"
+import { CONNECT_FACEIT, useGetPlatformAccount } from "../hooks/p2e/useP2E"
+import { PlatformAccount } from "../src/generated/graphql_p2e";
 import Missions from "../components/ui/p2e/missions";
-import {isEmpty} from "lodash";
+import { isEmpty } from "lodash";
 
 const { TabPane } = Tabs;
 
@@ -22,7 +22,7 @@ const Home: NextPage = () => {
   })
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
   const [tabActiveKey, setTabActiveKey] = useState<string>('p2e')
-  const {getPlatformAccountData} = useGetPlatformAccount()
+  const { getPlatformAccountData } = useGetPlatformAccount()
 
   const handleTabClick = (key: string) => {
     setTabActiveKey(key)
@@ -76,14 +76,14 @@ const Home: NextPage = () => {
   return (
     <>
       <DocHead />
-      <main style={{minHeight: "100vh"}} className={s.homeWrap}>
+      <main style={{ minHeight: "100vh" }} className={s.homeWrap}>
         <div className={`${s.p2eWrap} lucis-container-2`}>
           <Tabs defaultActiveKey={tabActiveKey} activeKey={tabActiveKey} onTabClick={handleTabClick}>
             <TabPane tab="P2E 2.0" key="p2e">
-              <P2EOverview faceitUser={faceitUser} />
+              <P2EOverview faceitUser={faceitUser} isLoadingFaceitUser />
             </TabPane>
             <TabPane tab="Daily" key="daily" disabled={isEmpty(faceitUser)}>
-              <DailyMission />
+              <Dashboard />
             </TabPane>
             <TabPane tab="Missions" key="missions" disabled={isEmpty(faceitUser)}>
               <Missions />

@@ -91,8 +91,6 @@ export const GET_OR_SET_DAILY_MISSION = gql`
         img
         goal
         type
-        lucis_point
-        lucis_token
       }
     }
   }
@@ -110,8 +108,6 @@ export const UPDATE_DAILY_MISSION = gql`
         img
         goal
         type
-        lucis_point
-        lucis_token
       }
     }
   }

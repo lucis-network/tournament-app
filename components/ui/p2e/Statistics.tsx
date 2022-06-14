@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import s from "./daily/Daily.module.sass";
+import s from "./dashboard/dashboard.module.sass";
 import { Button, Col, Row } from "antd";
 import { useQuery } from '@apollo/client';
 import { GET_STATISTICS } from 'hooks/p2e/useP2E';
