@@ -107,11 +107,21 @@ export default observer(function DepositModal(props: Props) {
   const getTotalAmount = () => {
     if (TournamentStore.pool_size)
       return (
-        (TournamentStore.pool_size *
-          (100 +
-            getConfigFee[0]?.tn_lucis_fee * 100 +
-            getConfigFee[0]?.tn_referee_fee * 100)) /
-        100
+        (
+          TournamentStore.pool_size *
+          (
+            100
+            + (
+              getConfigFee
+                ? (
+                  getConfigFee[0]?.tn_lucis_fee * 100 +
+                  getConfigFee[0]?.tn_referee_fee * 100
+                )
+                : 0
+            )
+          )
+        )
+        / 100
       );
     return 0;
   };
@@ -161,7 +171,7 @@ export default observer(function DepositModal(props: Props) {
                     {fomatNumber(
                       TournamentStore.pool_size
                         ? TournamentStore.pool_size *
-                            getConfigFee[0]?.tn_lucis_fee
+                        (getConfigFee ? getConfigFee[0]?.tn_lucis_fee : 0)
                         : 0
                     )}{" "}
                     {TournamentStore.currency_symbol}
@@ -181,7 +191,7 @@ export default observer(function DepositModal(props: Props) {
                     {fomatNumber(
                       TournamentStore.pool_size
                         ? TournamentStore.pool_size *
-                            getConfigFee[0]?.tn_referee_fee
+                            (getConfigFee ? getConfigFee[0]?.tn_lucis_fee : 0)
                         : 0
                     )}{" "}
                     {TournamentStore.currency_symbol}
