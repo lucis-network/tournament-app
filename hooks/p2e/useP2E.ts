@@ -84,6 +84,7 @@ export const GET_OR_SET_DAILY_MISSION = gql`
     getOrSetDailyMission(game_uid: $game_uid, platform_id: $platform_id) {
       achieved
       mission_uid
+      is_claim
       mission {
         uid
         title
@@ -91,8 +92,6 @@ export const GET_OR_SET_DAILY_MISSION = gql`
         img
         goal
         type
-        lucis_point
-        lucis_token
       }
     }
   }
@@ -110,9 +109,8 @@ export const UPDATE_DAILY_MISSION = gql`
         img
         goal
         type
-        lucis_point
-        lucis_token
       }
+      is_claim
     }
   }
 `
@@ -120,6 +118,27 @@ export const UPDATE_DAILY_MISSION = gql`
 export const CLAIM_MISSION = gql`
   mutation ($mission_uid: String!) {
     claimMission(mission_uid: $mission_uid)
+  }
+`
+
+export const REROLL_MISSION = gql`
+  mutation ($player_mission_uid: String!) {
+    rerollMission(player_mission_uid: $player_mission_uid) {
+      uid
+      player_game_uid
+      achieved
+      mission_uid
+      mission {
+        game_uid
+        goal
+        img
+        lucis_point
+        lucis_token
+        title
+        type
+        uid
+      }
+    }
   }
 `
 

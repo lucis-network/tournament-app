@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { useMutation } from "@apollo/client";
-import { GET_OR_SET_DAILY_MISSION, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
-import s from "../daily/Daily.module.sass";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
+import s from "../dashboard/dashboard.module.sass";
 import { Image } from "antd";
 import MissionsList from "../MissionsList";
 import OnUsingNFTs from '../OnUsingNFTs';
@@ -9,7 +9,11 @@ import Statistics from '../Statistics';
 
 const Missions = () => {
   const [dailyMission, setDailyMission] = useState([]);
-
+  const { loading, error, data, refetch } = useQuery(GET_STATISTICS, {
+    context: {
+      endpoint: 'p2e'
+    }
+  });
   const [getDailyMission] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
       game_uid: '03',
@@ -33,6 +37,7 @@ const Missions = () => {
     updateDailyMission()
       .then(response => {
         setDailyMission(response.data.updateDailyMission)
+        refetch()
       })
   }
 
@@ -44,24 +49,26 @@ const Missions = () => {
   }, [])
 
   return (
-    <div className={s.dailyContainer}>
-      <div className={s.userInfo}>
+    <div className="lucis-container-2">
+      <div className={s.dailyContainer}>
+        <div className={s.userInfo}>
 
-      </div>
-      <div className={s.gameInfo}>
-        <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
-        <h3>CS:GO FACEIT</h3>
-      </div>
+        </div>
+        <div className={s.gameInfo}>
+          <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
+          <h3>CS:GO FACEIT</h3>
+        </div>
 
-      <Statistics />
-      <OnUsingNFTs />
-      <MissionsList
-        title="Lucis missions"
-        description="Complete the missions to get reward and up level"
-        missions={dailyMission}
-        handleUpdateMissions={handleUpdateMissions}
-        canChooseGame
-      />
+        <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} />
+        {/* <OnUsingNFTs /> */}
+        <MissionsList
+          title="Lucis missions"
+          description="Complete the missions to get reward and up level"
+          missions={dailyMission}
+          handleUpdateMissions={handleUpdateMissions}
+          canChooseGame
+        />
+      </div>
     </div>
   )
 }
