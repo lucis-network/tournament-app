@@ -156,7 +156,7 @@ const UseTeamModal = (tournamentData: any) => {
     const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
     const checkTotalPrize = checkTotalPercent(team, "prize");
 
-    if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
+    if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || team_size !== team.length) {
       setErrorTour({
         ...errorTour,
         size:
@@ -368,7 +368,7 @@ const UseTeamModal = (tournamentData: any) => {
   ): StepModalComponent | ReactElement => {
     const description1 = (
       <p className="text-24px font-semibold text-white">
-        Select a valid team to join: <br />
+        Select a valid team to join: <br/>
         {`${name}`}
       </p>
     );
@@ -384,7 +384,7 @@ const UseTeamModal = (tournamentData: any) => {
         description: description1,
         component: (
           <div>
-            <div className="flex align-top justify-between w-full mb-4">
+            <div className={s.chooseGame}>
               <p>
                 {teamList?.length > 0
                   ? "Team you've lead:"

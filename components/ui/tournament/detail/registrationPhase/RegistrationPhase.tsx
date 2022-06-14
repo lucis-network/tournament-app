@@ -515,7 +515,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                       <p>From Donation</p>
                                       <h3>
                                         {fomatNumber(totalFromDonation)}{" "}
-                                        {dataPrize?.symbol}
+                                        {currency?.symbol}
                                       </h3>
                                       <Button
                                         onClick={claimTokenDonation}

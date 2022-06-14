@@ -98,7 +98,7 @@ export default observer(function User(props: Props) {
       >
         <div className={`${s.avatar} ${s.avBig}`}>
           <img
-            src={`${profile?.avatar}` || "/assets/avatar.jpg"}
+            src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
             alt=""
           />
         </div>
@@ -171,7 +171,7 @@ export default observer(function User(props: Props) {
       >
         <div className={s.avatar}>
           <img
-            src={`${profile?.avatar}` || "/assets/avatar.jpg"}
+            src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
             alt=""
           />
           {/* <span>{name}</span> */}

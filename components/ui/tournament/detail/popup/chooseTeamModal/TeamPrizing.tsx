@@ -99,7 +99,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 						<div className="rounded-[30px] w-[30px] h-[30px] overflow-hidden bg-white border border-nav">
 							<img
 								className="object-cover w-full h-full"
-								src={record.avatar}
+								src={record.avatar ? record.avatar : "/assets/avatar.jpg"}
 								alt=""
 								width={30}
 								height={30}

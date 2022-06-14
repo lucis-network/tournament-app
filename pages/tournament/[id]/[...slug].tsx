@@ -115,38 +115,6 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     }
   }, [dataSponsors]);
 
-  const {route} = useRouter();
-
-  const handleBeforeHistoryChange = (url: string) => {
-    console.log(url)
-    const [nextUrl] = url?.split('?') || [];
-
-    // if (
-    //   !(EXCEPTIONS.includes(nextUrl) || EXCEPTIONS.includes(Router.asPath)) &&
-    //   nextUrl !== Router.asPath
-    // ) {
-    //   Router.previousRoute = Router.asPath;
-    // }
-  };
-
-  useEffect(() => {
-    Router.events.on('beforeHistoryChange', handleBeforeHistoryChange);
-
-    return () => {
-      Router.events.off('beforeHistoryChange', handleBeforeHistoryChange);
-    };
-  }, []);
-
-  //const router = useRouter();
-
-  // useEffect(() => {
-  //   if (AuthStore.token) {
-  //     router.reload();
-  //   }
-
-  //   //console.log(router)
-  // }, [AuthStore.token]);
-
   if (loading) {
     return null;
   }

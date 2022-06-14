@@ -35,7 +35,7 @@ export default observer(function ContentMyProfile({
   }, []);
 
   const handleBeforeHistoryChange = (url: string) => {
-    if(url.includes("/tournament/")) {
+    if(url.includes("/tournament/") && route?.query?.tab === "teams") {
       TournamentStore.checkBacktoTournament = true;
     }
   };

@@ -13,10 +13,6 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
       <Layout>
-        <Head>
-          <link rel="shortcut icon" href="/favicon.png" />
-          <title></title>
-        </Head>
         {/* @ts-ignore */}
         <ErrorBoundary>
         {/* @ts-ignore */}
