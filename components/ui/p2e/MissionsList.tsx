@@ -28,38 +28,41 @@ const MissionsList = ({
   loading,
 }: MissionsListProp) => {
   return (
-    <div className={s.missionsWrap}>
-      {/* <div className={s.header}>
-        <Row>
-          <Col span="12">
-            <div className={s.checkListMission}>
-              <div className={s.checkListMissionItem}>
-                <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-                <Checkbox checked />
-              </div>
-            </div>
-          </Col>
-          <Col span="12"></Col>
-        </Row>
-      </div> */}
-      <div className={s.missionsWrapHeader}>
-        <div>
-          <h2>{title}</h2>
-          {description && <p>{description}</p>}
+    <div className={s.missionsList}>
+      <div className={s.header}>
+
+        <div className={s.checkListMission}>
+          <div className={s.checkListMissionItem}>
+            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            <Checkbox checked />
+          </div>
+          <div className={s.checkListMissionItem}>
+            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            <Checkbox checked />
+          </div>
+          <div className={s.checkListMissionItem}>
+            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            <Checkbox checked />
+          </div>
+          <div className={s.checkListMissionItem}>
+            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            <Checkbox checked />
+          </div>
+          <div className={s.checkListMissionItem}>
+            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            <Checkbox checked />
+          </div>
         </div>
-        <div>
-          <Button onClick={handleUpdateMissions}>
-            <FontAwesomeIcon icon={faRepeat} />
-            <span style={{ paddingLeft: "5px" }}>Update</span>
-          </Button>
-          {canChooseGame && (
-            <Button>
-              <FontAwesomeIcon icon={faPlusCircle} />
-              <span style={{ paddingLeft: "5px" }}>Choose another game</span>
-            </Button>
-          )}
+
+        <div className={s.headerCenter}>
+          Complete 5 quests to unlock rewards!
+          <img src="/assets/P2E/box.png" alt="" />
+        </div>
+        <div className={s.updateButton}>
+          <img src="/assets/P2E/reload-icon.png" alt="" />
         </div>
       </div>
+
       <div className={s.missionsList}>
         {loading ? (
           <SpinLoading />

@@ -77,13 +77,13 @@ const DailyMission = () => {
   return (
     <div className="lucis-container-2">
       <Row>
-        <Col span={24}>
+        <Col span={16}>
           <div className={s.dailyContainer}>
-            <div className={s.gameInfo}>
+            {/* <div className={s.gameInfo}>
               <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
               <h3>CS:GO FACEIT</h3>
             </div>
-            <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} />
+            <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} /> */}
             {/* <OnUsingNFTs /> */}
             <MissionsList title="Daily missions" missions={dailyMission} handleUpdateMissions={handleUpdateMissions} loading={stateDailyMissionFetch.loading} />
             <div className={s.recentMatchesWrap}>

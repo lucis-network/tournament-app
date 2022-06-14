@@ -120,12 +120,33 @@
         :global(.ant-progress-outer)
           padding-right: 0
   .header
+    display: flex
     .checkListMission
+      display: flex
       .checkListMissionItem
         display: flex
         flex-direction: column
         align-items: center
+        margin-right: 16px
         // justify-content: flex-start
         img
           width: 40px
           height: 40px
+    .headerCenter
+      background-image: url("/assets/P2E/bg-header-right.png")
+      height: 62px
+      width: 515px
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      img
+        position: absolute
+        right: -30px
+        bottom: -10px
+    .updateButton
+      display: flex
+      justify-content: flex-end
+      img
+        width: 20px
+        height: 20px
