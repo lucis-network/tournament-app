@@ -7,6 +7,7 @@ import { ApolloProvider } from "@apollo/client";
 import client from "utils/apollo_client";
 import "quill/dist/quill.snow.css";
 import Head from "next/head";
+import { ErrorBoundary } from "../components/ErrorBoundary";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -17,7 +18,10 @@ function MyApp({ Component, pageProps }: AppProps) {
           <title></title>
         </Head>
         {/* @ts-ignore */}
+        <ErrorBoundary>
+        {/* @ts-ignore */}
         <Component {...pageProps} />
+        </ErrorBoundary>
       </Layout>
     </ApolloProvider>
   );
