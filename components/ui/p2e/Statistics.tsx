@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import s from "./dashboard/dashboard.module.sass";
+import s from "./p2e.module.sass";
 import { Button, Col, Row } from "antd";
 import { useQuery } from '@apollo/client';
 import { GET_STATISTICS } from 'hooks/p2e/useP2E';
@@ -10,19 +10,24 @@ import EthersService from "../../../services/blockchain/Ethers";
 import { LUCIS } from 'utils/Enum';
 
 interface IProps {
-
+	balance?: { lucisToken: string, lucisPoint: string };
 }
 
 const Statistics = (props: IProps) => {
-	const { loading, error, data } = useQuery(GET_STATISTICS, {
+	const { loading, error, data, refetch } = useQuery(GET_STATISTICS, {
 		context: {
 			endpoint: 'p2e'
 		}
 	});
 
 	useEffect(() => {
+
 		getLucisBalance();
 	}, []);
+
+	useEffect(() => {
+		refetch()
+	}, [props.balance?.lucisPoint, props.balance?.lucisToken]);
 
 	const [lucisTokenOnChain, setLucisTokenOnChain] = React.useState<number | string>(0);
 

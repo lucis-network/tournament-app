@@ -110,6 +110,7 @@ export const UPDATE_DAILY_MISSION = gql`
         goal
         type
       }
+      is_claim
     }
   }
 `

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import s from "./dashboard/dashboard.module.sass";
+import s from "./p2e.module.sass";
 import { Button, Col, Image, message, Progress, Row } from "antd";
 import { isEmpty } from "lodash";
 import SpinLoading from "../common/Spin";

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { useMutation } from "@apollo/client";
-import { GET_OR_SET_DAILY_MISSION, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
+import { useMutation, useQuery } from "@apollo/client";
+import { GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
 import s from "../dashboard/dashboard.module.sass";
 import { Image } from "antd";
 import MissionsList from "../MissionsList";
@@ -9,7 +9,11 @@ import Statistics from '../Statistics';
 
 const Missions = () => {
   const [dailyMission, setDailyMission] = useState([]);
-
+  const { loading, error, data, refetch } = useQuery(GET_STATISTICS, {
+    context: {
+      endpoint: 'p2e'
+    }
+  });
   const [getDailyMission] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
       game_uid: '03',
@@ -33,6 +37,7 @@ const Missions = () => {
     updateDailyMission()
       .then(response => {
         setDailyMission(response.data.updateDailyMission)
+        refetch()
       })
   }
 
@@ -54,7 +59,7 @@ const Missions = () => {
           <h3>CS:GO FACEIT</h3>
         </div>
 
-        <Statistics />
+        <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} />
         {/* <OnUsingNFTs /> */}
         <MissionsList
           title="Lucis missions"
