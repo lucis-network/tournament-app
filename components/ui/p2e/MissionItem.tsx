@@ -90,12 +90,12 @@ const MissionItem = (props: MissionItemProp) => {
         <Row className={s.missionReward}>
           <Col xs={{ span: 3 }}>Reward</Col>
           <Col xs={{ span: 21 }}>
-            {mission?.mission?.lucis_point && (
-              <p>{mission?.mission?.lucis_point} Lucis point</p>
-            )}
-            {mission?.mission?.lucis_token && (
-              <p>{mission?.mission?.lucis_token} Lucis token</p>
-            )}
+            {/* {mission?.mission?.lucis_point && ( */}
+            <p>1 Lucis point</p>
+            {/* )} */}
+            {/* {mission?.mission?.lucis_token && ( */}
+            <p>1 Lucis token</p>
+            {/* )} */}
           </Col>
         </Row>
         <div className={s.missionProgress}>
