@@ -10,7 +10,7 @@ export default function ErrorSection(props: Props) {
     <div className={s.container}>
       <div className={`${s.errorBox} box-glass`}>
         <p>Our app has caught a exception, sorry for inconvenient.</p>
-        <p>We're try our best to fix it asap.</p>
+        <p>We&apos;re try our best to fix it asap.</p>
         <br/>
         <p>This is the error detail:</p>
         <pre>code: {code}</pre>
