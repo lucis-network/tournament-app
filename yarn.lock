@@ -8273,6 +8273,18 @@ stacktrace-parser@0.1.10:
   resolved "https://registry.yarnpkg.com/statuses/-/statuses-1.5.0.tgz#161c7dac177659fd9811f43771fa99381478628c"
   integrity sha1-Fhx9rBd2Wf2YEfQ3cfqZOBR4Yow=
 
+steamapi@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/steamapi/-/steamapi-2.2.0.tgz#e82682b94de773f42e92a59ae82f312abed50041"
+  integrity sha512-2UWklLzYQruuUC0a5AUgll1dU91/CWgiAhm/7y+rqc43kbBWereGTtmwo8wr6imjC64iV5893KChXghW0zK8Gg==
+  dependencies:
+    steamid "^2.0.0"
+
+steamid@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/steamid/-/steamid-2.0.0.tgz#6d4a51feb80638c1fe4793be77aa972996f4ad75"
+  integrity sha512-+BFJMbo+IxzyfovLR37E7APkaNfmrL3S+88T7wTMRHnQ6LBhzEawPnjfWNKM9eUL/dH45j+7vhSX4WaGXoa4/Q==
+
 stream-browserify@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/stream-browserify/-/stream-browserify-3.0.0.tgz#22b0a2850cdf6503e73085da1fc7b7d0c2122f2f"

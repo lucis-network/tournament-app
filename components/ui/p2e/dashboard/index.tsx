@@ -12,6 +12,8 @@ import Statistics from "../Statistics";
 import OnUsingNFTs from '../OnUsingNFTs';
 
 const DailyMission = () => {
+  const [lengthShowMore, setLengthShowMore] = useState(5);
+  const [loading, setLoading] = useState(false);
   const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
   const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
@@ -57,6 +59,14 @@ const DailyMission = () => {
       });
   }, [])
 
+  const loadMore = () => {
+    setLengthShowMore(lengthShowMore + 5);
+  };
+
+  const loadingClaim = () => {
+    setLoading(true);
+  };
+
   return (
     <div className="lucis-container-2">
       <Row>
@@ -92,6 +102,15 @@ const DailyMission = () => {
                     )
                   })
                 )}
+                {/* {FETCH_API.length > 5 && lengthShowMore < FETCH_API.length && (
+                  <div className={s.recentMatchesBtn}>
+                    <Button onClick={loadMore} loading={loading}>Load more</Button>
+                  </div>
+                )}
+                {getRecentMatchesData?.getRecentlyMatch?.matches?.length == 0 && (
+                  <div className={s.recentMatchesNodata}>No data Recent matches</div> */}
+                )}
+
               </div>
             </div>
           </div>
