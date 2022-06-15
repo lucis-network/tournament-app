@@ -1,6 +1,6 @@
 import React, {ChangeEvent, useEffect, useRef, useState} from "react";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
-import {Button, Col, Form, Input, InputRef, message as antd_message, Modal, Popconfirm, Row, Switch} from "antd";
+import {Button, Col, Form, Input, InputRef, message as antd_message, message, Modal, Popconfirm, Row, Switch} from "antd";
 
 import { CurrentMatch, Team } from "src/store/SingleRoundStore";
 import { UPDATE_MATCH_RESULT } from "../../../../common/tabsItem/myTeamDetail/myTeamService";
@@ -87,6 +87,11 @@ export const UpdateScoreModalStateless = (props: UpdateScoreModalStatelessProps)
       link_stream: linkStream,
       link_stream_enable: enableLinkStream,
     }
+    if(input.score_1 === input.score_2) {
+      message.warn("Unable to update draw score")
+      return;
+    }
+    
     setIsLoading(true)
     setMatchResult({
       variables: {input},

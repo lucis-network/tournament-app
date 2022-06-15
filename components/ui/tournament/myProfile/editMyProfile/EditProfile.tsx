@@ -30,6 +30,8 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
   const [emailValue, setEmailValue] = useState<string>('');
   const [countryData, setCountryData] = useState<CountryOption[]>([]);
   const [phone, setPhone] = useState<string>(userInfo?.profile?.phone as string);
+  const [phoneError, setPhoneError] = useState<string | undefined>(undefined)
+
   const {verifyEmail} = useVerifyEmail(
     {
       email: emailValue,
@@ -134,11 +136,20 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
         }
 
         if (!isEmpty(phone)) {
+          const _phone = (!phone.includes('+')) ? ('+' + phone) : phone
+          console.log('_phone: ', _phone);
+          if(!isPhoneNumber(_phone)) {
+            // message.error("")
+            console.log('phone invalidate')
+            return
+          }
+
           newResult.phone = {
             set: (!phone.includes('+')) ? ('+' + phone) : phone
           }
         }
 
+        result;
         setNewProfileData(newResult)
       })
       .catch(error => {
@@ -281,12 +292,20 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
                 country={`${userInfo?.profile?.country_code?.toLowerCase()}`}
                 enableSearch
                 value={phone}
-                // isValid={(value) => {
-                //   return isPhoneNumber(value)
-                // }}
+                isValid={(value, country: any) => {
+                  let _phone = '+'+ value;
+                  // console.log('_phone: ', _phone);
+                  if(!isPhoneNumber(_phone)) {
+                    setPhoneError("Phone invalidate")
+                  } else {
+                    setPhoneError(undefined)
+                  }
+                  return isPhoneNumber(_phone)
+                }}
                 onChange={(phone) => setPhone(phone)}
                 placeholder="Enter phone number"
               />
+              <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
               {/*<Row>*/}
               {/*  <Col span={8}>*/}
               {/*    <Form.Item name="dial_code">*/}
