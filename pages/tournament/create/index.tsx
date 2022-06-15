@@ -217,6 +217,18 @@ export default observer(function CreateTournament(props: Props) {
   };
 
   const handCallbackTimeline = (data: any) => {
+    if(!Array.isArray(data)) {
+      return;
+    }
+    for(let idx = 0; idx < data.length; idx ++) {
+      if(idx == data.length - 1) {
+        continue
+      }
+      if(data[idx].start_at > data[idx+1].start_at) {
+        setMessageErrorTimeline("Invalid timeline")
+        return;
+      }
+    }
     TournamentStore.rounds = data;
     if (data) setMessageErrorTimeline("");
   };
@@ -236,6 +248,8 @@ export default observer(function CreateTournament(props: Props) {
   const createTournament = () => {
     let cr = TournamentStore.getCreateTournament();
     if (!validationInput(cr)) return;
+    console.log('cr:', cr)
+    return;
 
     cr.start_at =
       cr?.rounds && cr?.rounds[0]?.title === "Round 1"

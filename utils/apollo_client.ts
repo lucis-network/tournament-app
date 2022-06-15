@@ -20,6 +20,7 @@ import { GraphQLError } from "graphql";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
+import AuthStore from "../components/Auth/AuthStore";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -68,8 +69,8 @@ const httpLink = createHttpLink({
 });
 
 const p2eEndpoint = createHttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_P2E_URL
-})
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_P2E_URL,
+});
 
 let splitLink: any;
 
@@ -98,11 +99,11 @@ if (isClient) {
   splitLink = split(
     (op) => {
       const endpoint = op.getContext().endpoint;
-      return endpoint === 'p2e'
+      return endpoint === "p2e";
     },
     authLink.concat(p2eEndpoint),
     split(
-      ({query}) => {
+      ({ query }) => {
         const definition = getMainDefinition(query);
         return (
           definition.kind === "OperationDefinition" &&
@@ -127,8 +128,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         // Clean auth info in case of auth error
         // Might be JWT is expired
         // We do clear info only if there was a logged-in user
-        if (_getAuthToken()) {
+        if (_getAuthToken() != null) {
           clearLocalAuthInfo();
+          AuthStore.resetStates();
         }
       }
     });
@@ -141,10 +143,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const client = new ApolloClient({
-  link: from([
-    errorLink,
-    splitLink != null ? splitLink : httpLink,
-  ]),
+  link: from([errorLink, splitLink != null ? splitLink : httpLink]),
   cache,
   connectToDevTools: true,
 });
@@ -209,8 +208,8 @@ export function onApolloError(
 }
 
 export enum CommonError {
-  Network = 'Network',
-  UnAuth = 'UnAuth',
+  Network = "Network",
+  UnAuth = "UnAuth",
 }
 
 function onSingleError(
@@ -235,7 +234,7 @@ function onSingleError(
 
 export function handleGraphqlErrors(
   e: ApolloError,
-  onError: (code: string, message: string, path?: string[]) => void,
+  onError: (code: string, message: string, path?: string[]) => void
 ) {
   const { graphQLErrors, networkError, clientErrors } = e;
   // console.dir(e)

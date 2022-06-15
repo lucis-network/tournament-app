@@ -958,13 +958,14 @@ export type Config = {
   __typename?: 'Config';
   id: Scalars['ID'];
   p2e_withdraw: Scalars['Decimal'];
-  tn_claim_donate: Scalars['Decimal'];
+  tn_claim_fee: Scalars['Decimal'];
   tn_lucis_fee: Scalars['Decimal'];
   tn_referee_fee: Scalars['Decimal'];
 };
 
 export type Contract = {
   __typename?: 'Contract';
+  abi?: Maybe<Scalars['JSON']>;
   address: Scalars['String'];
   admin?: Maybe<Scalars['String']>;
   admin_prv_key?: Maybe<Scalars['String']>;
@@ -979,6 +980,7 @@ export type Contract = {
 };
 
 export type ContractCreateManyChainInput = {
+  abi?: InputMaybe<Scalars['JSON']>;
   address: Scalars['String'];
   admin?: InputMaybe<Scalars['String']>;
   admin_prv_key?: InputMaybe<Scalars['String']>;
@@ -1008,6 +1010,7 @@ export type ContractCreateOrConnectWithoutChainInput = {
 };
 
 export type ContractCreateWithoutChainInput = {
+  abi?: InputMaybe<Scalars['JSON']>;
   address: Scalars['String'];
   admin?: InputMaybe<Scalars['String']>;
   admin_prv_key?: InputMaybe<Scalars['String']>;
@@ -1378,6 +1381,7 @@ export enum GBracketType {
 
 export type GContract = {
   __typename?: 'GContract';
+  abi?: Maybe<Scalars['JSON']>;
   address: Scalars['String'];
   admin?: Maybe<Scalars['String']>;
   chain: Chain;
@@ -1868,6 +1872,7 @@ export type Mission = {
   is_daily_mission: Scalars['Boolean'];
   level: MissionLevel;
   level_id: Scalars['Int'];
+  map?: Maybe<Scalars['String']>;
   mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
   title?: Maybe<Scalars['String']>;
@@ -1924,6 +1929,7 @@ export type MissionCreateWithoutClaim_MissionInput = {
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   level: MissionLevelCreateNestedOneWithoutMissionInput;
+  map?: InputMaybe<Scalars['String']>;
   mission_status?: InputMaybe<MissionStatus>;
   player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
   title?: InputMaybe<Scalars['String']>;
@@ -1941,6 +1947,7 @@ export type MissionCreateWithoutPlayer_MissionInput = {
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   level: MissionLevelCreateNestedOneWithoutMissionInput;
+  map?: InputMaybe<Scalars['String']>;
   mission_status?: InputMaybe<MissionStatus>;
   title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<MissionType>;
@@ -1957,6 +1964,7 @@ export type MissionCreateWithoutUser_Daily_MissionInput = {
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   level: MissionLevelCreateNestedOneWithoutMissionInput;
+  map?: InputMaybe<Scalars['String']>;
   mission_status?: InputMaybe<MissionStatus>;
   player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
   title?: InputMaybe<Scalars['String']>;
@@ -2017,7 +2025,6 @@ export enum MissionType {
   Averageheadshot = 'AVERAGEHEADSHOT',
   Curentwinstreak = 'CURENTWINSTREAK',
   Deaths = 'DEATHS',
-  Doublekill = 'DOUBLEKILL',
   Kda = 'KDA',
   Kills = 'KILLS',
   Kr = 'KR',
@@ -2986,6 +2993,7 @@ export type PlayerMatch = {
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   is_win: Scalars['Boolean'];
+  lucis_point: Scalars['Int'];
   match: Match;
   match_uid: Scalars['String'];
   player: PlayerGame;
@@ -2997,6 +3005,7 @@ export type PlayerMatchCreateManyMatchInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   is_win?: InputMaybe<Scalars['Boolean']>;
+  lucis_point?: InputMaybe<Scalars['Int']>;
   player_game_uid: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3010,6 +3019,7 @@ export type PlayerMatchCreateManyPlayerInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   id?: InputMaybe<Scalars['Int']>;
   is_win?: InputMaybe<Scalars['Boolean']>;
+  lucis_point?: InputMaybe<Scalars['Int']>;
   match_uid: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3046,6 +3056,7 @@ export type PlayerMatchCreateOrConnectWithoutPlayerInput = {
 export type PlayerMatchCreateWithoutMatchInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   is_win?: InputMaybe<Scalars['Boolean']>;
+  lucis_point?: InputMaybe<Scalars['Int']>;
   player: PlayerGameCreateNestedOneWithoutMatchesInput;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3053,6 +3064,7 @@ export type PlayerMatchCreateWithoutMatchInput = {
 export type PlayerMatchCreateWithoutPlayerInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   is_win?: InputMaybe<Scalars['Boolean']>;
+  lucis_point?: InputMaybe<Scalars['Int']>;
   match: MatchCreateNestedOneWithoutPlayersInput;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -5682,6 +5694,7 @@ export type TournamentSearchInput = {
 
 export enum TournamentStatus {
   Accepted = 'ACCEPTED',
+  Cancel = 'CANCEL',
   Complete = 'COMPLETE',
   Disable = 'DISABLE',
   Finish = 'FINISH',
