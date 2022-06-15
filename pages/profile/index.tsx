@@ -65,7 +65,7 @@ export default observer(function MyProfile() {
 	return (
 		<div className={s.wrapper_profile}>
 			{/* Content */}
-			<InfoMyProfile click={handleClick} userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner />
+			<InfoMyProfile click={handleClick} userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner isShowEdit={isShowEdit} />
 			<div className="lucis-container">
 				{
 					isShowEdit ?

@@ -1,6 +1,5 @@
 @import styles/common
 .registrationPhase
-  margin-bottom: 30px
   @media screen and (min-width: 768px)
     margin-bottom: 70px
   *
@@ -9,7 +8,7 @@
     min-width: 162px
     padding: 12px
     font-size: 20px
-    font-weight: 700
+    font-weight: 500
     @include box-glass
     background: rgba(0, 0, 0, 0.3)
     @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
@@ -55,7 +54,8 @@
         .itemText
           h3
             text-transform: uppercase
-            color: #32D2FF !important
+            color: #FFD058 !important
+            text-shadow: 0 0 20px #FFD058
             font-size: 20px
             font-weight: 500
             margin-bottom: 0px
@@ -87,19 +87,22 @@
         .itemImgClosed
           :global(.ant-image)
             width: 18px
-            padding-bottom: 5px
+            img
+              padding-bottom: 5px
         .itemParticipantClosed
           font-size: 30px
           text-transform: uppercase
           color: #32D2FF !important
-          font-weight: 500
-          margin-left: 10px
+          text-shadow: 0 0 20px #32D2FF
+          font-weight: 700
+          margin-left: 5px
 
       &:nth-of-type(2)
         .itemText
           h3
             text-transform: uppercase
             color: #32D2FF !important
+            text-shadow: 0 0 20px #32D2FF
             font-size: 20px
             font-weight: 500
             margin-bottom: 0px
@@ -128,21 +131,23 @@
               width: 120px
       &:nth-of-type(3)
         background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.2) 0.33%, rgba(11, 235, 214, 0.2) 99.88%)
-        opacity: 0.9
-        backdrop-filter: blur(40px)
+        //background-clip: content-box
+        opacity: 1
         border-radius: 4px
         padding: 0px 30px
         width: 100%
+        //backdrop-filter: blur(40px)
         .itemTitle
           margin-top: 34px
           margin-bottom: 50px
           font-size: 18px
           font-weight: 400
         .itemText
-          margin-bottom: 40px
+          margin-bottom: 35px
           span
             text-transform: uppercase
             color: #32D2FF !important
+            text-shadow: 0 0 20px #32D2FF
             font-size: 48px
             font-weight: 500
             margin-bottom: 0px
@@ -162,7 +167,7 @@
               border-radius: 4px
           .itemText
             span
-              font-size: 54px
+              font-size: 50px
         .itemImg
           //padding-top: 30px
           :global(.ant-image)
@@ -193,7 +198,7 @@
             left: 0
             right: 0
             bottom: 0
-            background: linear-gradient(180deg, #2FD4C5 0.31%, rgba(47, 138, 212, 0.6) 100%)
+            //background: linear-gradient(180deg, #2FD4C5 0.31%, rgba(47, 138, 212, 0.6) 100%)
             filter: blur(55px)
             border-radius: 50%
           // &:after
@@ -202,7 +207,7 @@
           //   width: 74px
           //   height: 71px
       h3
-        font-weight: 700
+        font-weight: 500
         font-size: 20px
         margin-bottom: 5px
       p
@@ -229,6 +234,7 @@
       font-size: 16px
       img
         width: 16px
+        margin-bottom: 2px
       @media (max-width: 767px)
         font-size: 12px !important
     &.additionalPrize
@@ -251,6 +257,7 @@
       border-radius: 4px
       border: none
       padding: 6px 20px
+      font-size: 16px
       @media screen and (min-width: 768px)
         font-size: 18px
   .countdownWrap
@@ -273,6 +280,7 @@
         font-size: 20px
     .countdownRegistration
       color: white !important
+      font-size: 18px
       @media screen and (max-width: 767px)
         font-size: 16px
 .btn
@@ -284,6 +292,9 @@
   .rewardsPrize
     p
       text-align: left
+      font-size: 20px !important
+      @media screen and (min-width: 768px)
+        font-size: 24px !important
   .rewardsClaimPrize
     display: flex
     justify-content: space-between
@@ -297,7 +308,7 @@
         font-size: 28px !important
     .rewardsClaimSymbol
       font-size: 18px !important
-      color: #32D2FF !important
+      color: #0BEBD6 !important
       font-weight: 500
       @media screen and (min-width: 768px)
         font-size: 22px !important

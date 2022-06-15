@@ -69,7 +69,7 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
               onChange={onChangeTeamName}
             />
             {!isEmpty(error["team_name"]) && (
-              <p className="text-[120px] text-emerald-2 mt-1">
+              <p className="text-[12px] text-emerald-2 mt-1">
                 {error["team_name"]}
               </p>
             )}
