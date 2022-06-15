@@ -156,10 +156,13 @@ const UseTeamModal = (tournamentData: any) => {
     const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
     const checkTotalPrize = checkTotalPercent(team, "prize");
 
-    if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
+    if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId || team_size !== team.length) {
       setErrorTour({
         ...errorTour,
-        size: team_size !== team.length ? "Invalid team size to join" : "",
+        size:
+          team_size !== team.length
+            ? `The tournament team size is ${team_size}. Please choose more players to join`
+            : "",
         prize: checkEmptyPrize
           ? "Prize allocation must not be empty"
           : checkTotalPrize
@@ -233,14 +236,24 @@ const UseTeamModal = (tournamentData: any) => {
             else {
               //setErrorPassword(err.message);
               //message.error(err.message);
-              if (code === "MEMBER_ALREADY_JOINED") {
-                message.error(
-                  "Can't join because one of the team members is joining another tournament"
-                );
-              } else if (code === "SERVER_ERROR") {
-                message.error(
-                  "Can't join because one of the team member is the referee"
-                );
+              if (code === "MEMBER_ALREADY_JOINED" || code === "SERVER_ERROR") {
+                if (team_size === 1) {
+                  message.error(
+                    "Can't join because you are joining another tournament"
+                  );
+                } else {
+                  message.error(
+                    "Can't join because one of the team members is joining another tournament"
+                  );
+                }
+              } else if (code === "BAD_REQUEST") {
+                if (team_size === 1) {
+                  message.error("Can't join because you are the referee");
+                } else {
+                  message.error(
+                    "Can't join because one of the team member is the referee"
+                  );
+                }
               } else {
                 message.error(err.message);
               }
@@ -250,7 +263,8 @@ const UseTeamModal = (tournamentData: any) => {
     }
   };
 
-  const handleCreateNewTeam = () => {
+  const handleCreateNewTeam = async () => {
+    await handleSaveTeam();
     if (
       draftData?.team_avatar &&
       draftData?.team_name &&
@@ -259,7 +273,6 @@ const UseTeamModal = (tournamentData: any) => {
     ) {
       setStep("step-1");
     }
-    handleSaveTeam();
   };
 
   const handleOpenCreateNewTeam = () => {
@@ -355,7 +368,7 @@ const UseTeamModal = (tournamentData: any) => {
   ): StepModalComponent | ReactElement => {
     const description1 = (
       <p className="text-24px font-semibold text-white">
-        Select a valid team to join: <br />
+        Select a valid team to join: <br/>
         {`${name}`}
       </p>
     );
@@ -371,7 +384,7 @@ const UseTeamModal = (tournamentData: any) => {
         description: description1,
         component: (
           <div>
-            <div className="flex align-top justify-between w-full mb-4">
+            <div className={s.chooseGame}>
               <p>
                 {teamList?.length > 0
                   ? "Team you've lead:"
@@ -380,7 +393,7 @@ const UseTeamModal = (tournamentData: any) => {
               <div>
                 <button
                   className={s.button}
-                  onClick={() => handleRoutes("/profile")}
+                  onClick={() => handleRoutes("/profile?tab=teams")}
                 >
                   Manage your team
                 </button>

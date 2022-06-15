@@ -1,6 +1,16 @@
-import { Input, Modal } from "antd";
+import { Input, message, Modal } from "antd";
+import { useEffect, useState } from "react";
 import { LINK_URL } from "utils/Enum";
 import s from "./PopupShare.module.sass";
+import { CheckOutlined } from "@ant-design/icons";
+import {
+  FacebookShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  FacebookMessengerShareButton,
+} from "react-share";
+import { isClient } from "utils/DOM";
+import { useRouter } from "next/router";
 
 type Props = {
   datas?: object;
@@ -11,6 +21,27 @@ type Props = {
 
 const PopupShare = (props: Props) => {
   const { status, closeModal, asPath } = props;
+  const [isCopy, setIsCopy] = useState(false);
+  const [linkUrl, setLinkUrl] = useState("");
+  useEffect(() => {
+    let timer = setTimeout(() => setIsCopy(false), 2000);
+    return () => clearTimeout(timer);
+  }, [isCopy]);
+
+  useEffect(() => {
+    const link = window.location.origin + asPath;
+    setLinkUrl(link);
+  }, []);
+
+  const handleCopy = () => {
+    if (linkUrl) {
+      if (isClient) {
+        setIsCopy(true);
+        message.success("Copied to clipboard");
+        navigator.clipboard.writeText(linkUrl);
+      }
+    }
+  };
 
   return (
     <Modal
@@ -19,63 +50,49 @@ const PopupShare = (props: Props) => {
       onOk={closeModal}
       onCancel={closeModal}
       className={s.content_modal}
-      //   title="Share to"
       footer=""
     >
       <p className="m-0">Share to:</p>
       <div className={s.group_ic}>
-        <div className={s.ic_item}>
-          <a
-            href="https://www.facebook.com/lucis.network"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/footer/fb.svg" alt="" />
+        <FacebookShareButton url={linkUrl} className={s.ic_item}>
+          <a target="_blank" rel="noopener noreferrer">
+            <img src={"/assets/Campaign/Banner/svg/fb.svg"} alt="icon" />
           </a>
-        </div>
-        <div className={s.ic_item}>
-          <a
-            href="https://www.facebook.com/lucis.network"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/footer/tele.svg" alt="" />
+        </FacebookShareButton>
+        <TelegramShareButton url={linkUrl} className={s.ic_item}>
+          <a target="_blank" rel="noopener noreferrer">
+            <img src={"/assets/Campaign/Banner/svg/tele.svg"} alt="icon" />
           </a>
-        </div>
-        <div className={s.ic_item}>
-          <a
-            href="https://www.youtube.com/lucisnetwork"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/footer/ytb.svg" alt="" />
+        </TelegramShareButton>
+        <TwitterShareButton url={linkUrl} className={s.ic_item}>
+          <a target="_blank" rel="noopener noreferrer">
+            <img src={"/assets/Campaign/Banner/svg/tw.svg"} alt="icon" />
           </a>
-        </div>
-        <div className={s.ic_item}>
-          <a
-            href="https://twitter.com/LucisNetwork"
-            target="_blank"
-            rel="noopener noreferrer"
+        </TwitterShareButton>
+        <FacebookMessengerShareButton
+            url={linkUrl}
+            appId={"1023048308650581"}
+            className={s.ic_item}
           >
-            <img src="/assets/footer/tw.svg" alt="" />
-          </a>
-        </div>
-        <div className={s.ic_item}>
-          <a
-            href="https://discord.gg/mnPXR3ag"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/assets/footer/dis.svg" alt="" />
-          </a>
+            <a target="_blank" rel="noopener noreferrer">
+              <img src={"/assets/Campaign/Banner/svg/mess.svg"} alt="icon" />
+            </a>
+          </FacebookMessengerShareButton>
+      </div>
+      <div className={`${s.info} sm:mt-2 lg:mt-5 `}>
+        <div
+          className={`${s.name} flex font-[400] text-[14px] sm:text-[18px] md:text-[24px]`}
+        >
+          <input
+            readOnly
+            value={`${window.location.origin}${asPath}`}
+            className={s.inputUrl}
+          ></input>
+          <button style={{marginLeft: "5px"}} disabled={isCopy} onClick={handleCopy}>
+            <img src={"/assets/MyProfile/copy.svg"} alt="" />
+          </button>
         </div>
       </div>
-      {/* <Input readOnly> {LINK_URL} </Input> */}
-      <input
-        readOnly
-        value={`${LINK_URL}${asPath}`}
-        style={{ background: "#1890ff", color: "white", width: "100%" }}
-      ></input>
     </Modal>
   );
 };

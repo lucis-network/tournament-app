@@ -6,6 +6,9 @@
       max-width: 560px
   :global(.anticon )
     color: #CD28E8
+  :global(.ant-btn)
+    border: none
+    height: auto
   .avatar_team
     border-radius: 99%
     width: 70px
@@ -39,6 +42,20 @@
       color: #FFF
     img
       padding-right: 4px
+    &:disabled
+      background: gray
+      opacity: 0.7
+  :global(.ant-btn-default:hover)
+    display: flex
+    align-items: center
+    justify-content: center
+    background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+    padding: 6px 24px
+    border-radius: 8px
+    margin: auto
+    margin-top: 32px
+    font-size: 20px
+    color: #FFF
     &:disabled
       background: gray
       opacity: 0.7

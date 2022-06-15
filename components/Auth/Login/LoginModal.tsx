@@ -12,6 +12,7 @@ import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
 import GAService from "../../../services/GA";
+import { useRouter } from "next/router";
 
 type Props = {};
 
@@ -23,6 +24,8 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
   : "";
 
 export default observer(function LoginModal(props: Props) {
+  const route = useRouter();
+  
   const trackUserChangeToAnalytic = (user: AuthUser) => {
     if (user.id) {
       const {id, name, role} = user;
@@ -66,11 +69,15 @@ export default observer(function LoginModal(props: Props) {
         if (isEmpty(localUserInfo?.profile?.user_name)) {
           LoginBoxStore.signupInfoModalVisible = true;
         }
-        setTimeout(() => {
-          setIsModalVisible(false);
-        }, 2000);
-
+        // setTimeout(() => {
+          
+        // }, 2000);
+        setIsModalVisible(false);
         break;
+    }
+
+    if (route.pathname === "/tournament/[id]/[...slug]") {
+      route.reload();
     }
   };
 

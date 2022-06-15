@@ -57,6 +57,15 @@ export function useTournamentDetail(props: Props) {
   });
 
   const {
+    data: dataSubscriber,
+    refetch: refetchDataSubscriber
+  } = useQuery(GET_COUNT_SUBSCRIBER, {
+    variables: { tournament_uid: props?.tournament_uid },
+    skip: props?.skip,
+    fetchPolicy: "no-cache",
+  });
+
+  const {
     loading: loadingBracket,
     error: errorBracket,
     data: dataBracket,
@@ -91,10 +100,10 @@ export function useTournamentDetail(props: Props) {
     loading: loadingDonation,
     error: errorDonation,
     data: dataDonation,
+    refetch: refetchDataDonation,
   } = useQuery(GET_DONATION_HISTORY, {
     variables: { tournament_uid: props?.tournament_uid },
     skip: props?.skip,
-    fetchPolicy: "network-only",
   });
 
   const [
@@ -146,6 +155,7 @@ export function useTournamentDetail(props: Props) {
     dataDonation: dataDonation?.donateHistory,
     dataIsCheckin: dataIsCheckin?.isCheckInTournament,
     dataIsubscribeToTournament: dataIsubscribeToTournament,
+    dataSubscriber: dataSubscriber?.getTournamentSubscriber,
     loadingJoinTournament: loadingJoinTournament,
     isCheckConfirmResult: isCheckConfirmResult?.isConfirmTournamentResult,
     joinTournament,
@@ -156,6 +166,8 @@ export function useTournamentDetail(props: Props) {
     refetchSubTournament,
     refetchConfirmResult,
     refetchBracket,
+    refetchDataDonation,
+    refetchDataSubscriber
   };
 }
 
@@ -440,6 +452,12 @@ const GET_PRIZING_DETAIL = gql`
   }
 `;
 
+const GET_COUNT_SUBSCRIBER = gql`
+  query ($tournament_uid: String!) {
+    getTournamentSubscriber(tournament_uid: $tournament_uid)
+  }
+`;
+
 const GET_BRACKET = gql`
   query ($tournament_uid: String!) {
     getBracket(tournament_uid: $tournament_uid) {
@@ -536,6 +554,7 @@ const GET_DONATION_HISTORY = gql`
       symbol
       time
       message
+      status
     }
   }
 `;

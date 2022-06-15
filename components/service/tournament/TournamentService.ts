@@ -71,7 +71,7 @@ export default class TournamentService {
     txHash: string,
     block?: number
   ): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+    const depositTournament = await apoloClient.mutate({
       mutation: gql`
         mutation depositTournament(
           $tournamentUid: String!
@@ -92,11 +92,11 @@ export default class TournamentService {
       },
     });
 
-    return donataResponse;
+    return depositTournament;
   }
 
   public async claimDonation(claim: ClaimDonation): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+    const donationResponse = await apoloClient.mutate({
       mutation: gql`
         mutation claimDonation($tournament_uid: String!, $address: String!) {
           claimDonation(tournament_uid: $tournament_uid, address: $address)
@@ -108,11 +108,11 @@ export default class TournamentService {
       },
     });
 
-    return donataResponse;
+    return donationResponse;
   }
 
   public async claimPrizePool(claim: ClaimPrizePool): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+    const claimPrizePool = await apoloClient.mutate({
       mutation: gql`
         mutation claimPrizePool($tournament_uid: String!, $address: String!) {
           claimPrizePool(tournament_uid: $tournament_uid, address: $address)
@@ -124,14 +124,14 @@ export default class TournamentService {
       },
     });
 
-    return donataResponse;
+    return claimPrizePool;
   }
 
   public async claimPrizeSystem(claim: ClaimPrizeSystem): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+    const claimPrizeSystem = await apoloClient.mutate({
       mutation: gql`
         mutation claimPrizeSystem($tournament_uid: String!, $address: String!) {
-          claimPrizeSystem(tournament_uid: $tournament_uid, $address: String!)
+          claimPrizeSystem(tournament_uid: $tournament_uid, address: $address)
         }
       `,
       variables: {
@@ -140,7 +140,7 @@ export default class TournamentService {
       },
     });
 
-    return donataResponse;
+    return claimPrizeSystem;
   }
 
   public async subscribeToTournament(tournament_uid: string): Promise<any> {

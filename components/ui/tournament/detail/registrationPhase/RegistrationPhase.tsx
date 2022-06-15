@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Col, Image, message, Modal, Row } from "antd";
+import { Button, Col, Image, message, Modal, Row, Tooltip } from "antd";
 import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
@@ -18,7 +18,7 @@ import {
 } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 import TournamentService from "components/service/tournament/TournamentService";
-import { ApolloQueryResult } from "@apollo/client";
+import { ApolloQueryResult, useLazyQuery } from "@apollo/client";
 import useTournament from "../hooks/useTournament";
 import CountdownTimer from "components/ui/common/CountDown";
 import { CalendarOutlined } from "@ant-design/icons";
@@ -28,6 +28,8 @@ import { isEmpty } from "lodash";
 import ClaimResultModal from "../popup/claimResultModal/ClaimResultModal";
 import AuthService from "components/Auth/AuthService";
 import { to_hex_str } from "utils/String";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import { GET_MY_TEAM } from "components/ui/common/tabsItem/myTeamDetail/myTeamService";
 
 type Props = {
   isJoin: boolean;
@@ -82,7 +84,15 @@ export default observer(function RegistrationPhase(props: Props) {
     refetch,
     refreshParticipant,
   } = props;
+  const user = getLocalAuthInfo();
 
+  const [searchTeam, {refetch: refetchGetMyTeam }] =
+  useLazyQuery(GET_MY_TEAM, {
+    variables: {
+      user_id: user?.profile?.user_id,
+    },
+  });
+  
   const isFullParticipant = cache_tournament?.team_participated >= participants;
 
   const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
@@ -139,6 +149,8 @@ export default observer(function RegistrationPhase(props: Props) {
   const [loadingClaimPrizeSystem, setLoadingClaimPrizePoolSystem] =
     useState(false);
 
+  const [checkClaimPoolSize, setCheckClaimPoolSize] = useState(false);
+
   useEffect(() => {
     let arr: Array<Reward> = [];
     data?.forEach((item: any) => {
@@ -183,6 +195,7 @@ export default observer(function RegistrationPhase(props: Props) {
           (res) => {
             if (res) {
               refetch();
+              setCheckClaimPoolSize(true);
               TournamentStore.claimResultModalVisible = true;
               setLoadingClaimPrizePool(false);
             }
@@ -232,9 +245,19 @@ export default observer(function RegistrationPhase(props: Props) {
     setIsPopupDonate(true);
   };
 
+  useEffect(() => {
+    if(TournamentStore.checkBacktoTournament) {
+      handleOpenModal();
+      refetchGetMyTeam();
+      TournamentStore.checkBacktoTournament= false;
+      
+      //@ts-ignore
+      document.getElementById("registrationPhase").scrollIntoView();
+    }
+  }, [TournamentStore.checkBacktoTournament == true])
   return (
     <>
-      <div className={s.registrationPhase}>
+      <div className={s.registrationPhase} id="registrationPhase">
         <div className={s.startTime}>
           <Image
             src="/assets/TournamentDetail/iconCalendar.svg"
@@ -419,11 +442,29 @@ export default observer(function RegistrationPhase(props: Props) {
                                         )}{" "}
                                         {dataPrize?.symbol}
                                       </h3>
+
+                                      {/* <Tooltip
+                                        placement="topLeft"
+                                        title="Lucis will take 5% reward as fee"
+                                        //className={`${s.btnClaim} btn-cyan`}
+                                      >
+                                        <Button
+                                          onClick={() =>
+                                            claimToken("PrizePool")
+                                          }
+                                          
+                                          disabled={dataPrize?.is_claim}
+                                          loading={loadingClaimPrizePool}
+                                        >
+                                          Claim
+                                        </Button>
+                                      </Tooltip> */}
                                       <Button
                                         onClick={() => claimToken("PrizePool")}
                                         className={`${s.btnClaim} btn-cyan`}
                                         disabled={dataPrize?.is_claim}
                                         loading={loadingClaimPrizePool}
+                                        title="abc"
                                       >
                                         Claim
                                       </Button>
@@ -474,7 +515,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                       <p>From Donation</p>
                                       <h3>
                                         {fomatNumber(totalFromDonation)}{" "}
-                                        {dataPrize?.symbol}
+                                        {currency?.symbol}
                                       </h3>
                                       <Button
                                         onClick={claimTokenDonation}
@@ -547,6 +588,8 @@ export default observer(function RegistrationPhase(props: Props) {
         tournamentId={tournamentId as string}
         dataDonation={dataDonation}
         totalFromDonation={totalFromDonation}
+        currency={currency}
+        name={name as string}
       />
       <ChooseTeamModal
         step={step}
@@ -566,8 +609,8 @@ export default observer(function RegistrationPhase(props: Props) {
       />
 
       <ClaimResultModal
-        totalPrizePool={dataPrize?.amount as number}
-        currency={currency}
+        totalPrizePool={checkClaimPoolSize ? dataPrize?.amount as number : dataSystemPrize?.amount as number}
+        currency={checkClaimPoolSize ? dataPrize?.symbol : dataSystemPrize?.symbol}
         name={name as string}
       />
 
