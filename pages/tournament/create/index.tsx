@@ -538,7 +538,6 @@ export default observer(function CreateTournament(props: Props) {
                                     alt=""
                                 />
                             ) : null}
-                            {/*<p className="mt-5px">{dataChooseGame["name"]}</p>*/}
                           </div>
                       ) : (
                           ""

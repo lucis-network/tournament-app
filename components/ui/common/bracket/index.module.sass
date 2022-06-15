@@ -1,26 +1,36 @@
-.bracketContainer 
-    margin-top: 20px
-    overflow: auto
-    & > :first-child
-        // justify-content: center
+.bracketContainer
+  margin-top: 20px
+  overflow: auto
+  & > :first-child
+  // justify-content: center
 .topSeed
-    margin-bottom: 1px
+  margin-bottom: 1px
 .team
-    width: 100%
-    height: 100%
-    padding: 5px
-    background: #424B57
-    color: #ffffff
-    // single line ellipsis
-    white-space: nowrap
-    text-overflow: ellipsis
-    max-width: 150px
-    overflow: hidden
+  width: 100%
+  height: 100%
+  padding: 5px
+  background: #424B57
+  color: #ffffff
+  // single line ellipsis
+  white-space: nowrap
+  text-overflow: ellipsis
+  max-width: 150px
+  overflow: hidden
+.teamJoined
+  background: linear-gradient(to right, #292958, #1A3D64)
+.teamWin
+  background: linear-gradient(to right, #308785, #286FAA)
 .score
-    background: #656D78
-    color: #ffffff
-    padding: 5px
-    width: 50px
+  background: #656D78
+  color: #ffffff
+  padding: 5px
+  width: 50px
+  &.disabled
+    cursor: initial
+.scoreJoined
+  background: #254B81
+.scoreWin
+  background: #18C3B9
 // .wining
 //     overflow: auto
 
@@ -48,12 +58,12 @@
     // &:nth-child(even)::before
     //     border-top: 1px solid #b3b3b3 !important
 
-.seedFinal 
-    height: 100%
-    border-left: 1px solid rgba(185, 185, 185, 0.2)
-    padding-left: 30px
-    
+.seedFinal
+  height: 100%
+  border-left: 1px solid rgba(185, 185, 185, 0.2)
+  padding-left: 30px
+
 .seedItemContainer
 
-    background: rgb(190,238,174)
-    background: radial-gradient(circle, rgba(190,238,174,1) 0%, rgba(215,221,176,1) 52%, rgba(148,233,208,1) 100%)
+  background: rgb(190,238,174)
+  background: radial-gradient(circle, rgba(190,238,174,1) 0%, rgba(215,221,176,1) 52%, rgba(148,233,208,1) 100%)

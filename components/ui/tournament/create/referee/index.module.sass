@@ -1,13 +1,59 @@
 .container
+  @media screen and (min-width: 768px)
+    width: 656px !important
   :global(.ant-input)
     border-radius: 8px
     padding: 8px
     backdrop-filter: blur(0px)
+  :global(.ant-modal-header)
+    background: rgba(83, 80, 80, 0.3)
+    backdrop-filter: blur(40px)
+    border-top-left-radius: 5px
+    border-top-right-radius: 5px
+    h3
+      font-size: 20px
+      font-weight: 500
+      color: #FFFFFF
+      margin-bottom: 0
+  :global(.ant-modal-close-x)
+    border: 1px solid #FFFFFF
+    background: none !important
+    svg
+      fill: #FFFFFF
+  :global(.ant-modal-content)
+    background: rgba(255, 255, 255, 0.4)
+    backdrop-filter: blur(40px)
+    border-radius: 5px
+  :global(.ant-modal-body)
+    padding: 10px
+    @media screen and (min-width: 576px)
+      padding: 15px
+    @media screen and (min-width: 768px)
+      padding: 15px 60px
+  :global(.ant-modal-body, .ant-modal-footer)
+    background: none
+  :global(.ant-modal-footer)
+    border: none
+    padding: 10px 30px 20px
+.btnCancel, .btnConfirm
+  border-radius: 5px
+  color: #00FFFF !important
+  font-size: 20px
+  font-weight: 500
+  border: none
+  line-height: 1.2
+  height: auto
+  padding: 10px 20px
+.btnCancel
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.1) 0.33%, rgba(11, 235, 214, 0.1) 99.88%) !important
+.btnConfirm
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.5) 0.33%, rgba(11, 235, 214, 0.5) 99.88%) !important
+  margin-left: 16px !important
 
 .bracketType
   display: flex
   flex-direction: column
-  text-color: white
+  color: white
 
 .textColor
   color: white
@@ -16,15 +62,71 @@
   display: flex
   p
     min-width: 100px
-
+.refereeList
+  color: #FFFFFF
+  @media screen and (min-width: 360px)
+    display: grid
+    grid-template-columns: 50% 50%
+    justify-items: flex-start
+    row-gap: 15px
+    column-gap: 3px
+  @media screen and (min-width: 576px)
+    row-gap: 30px
+  @media screen and (min-width: 768px)
+    column-gap: 20px
 .item
   position: relative
-
-.itemCheckbox
-  position: absolute
-  top: 2px
-  right: 5px
-
+  display: flex
+  .avtWrap
+    position: relative
+    margin-right: 8px
+    :global(.ant-checkbox)
+      position: absolute
+      top: 4px
+      left: 4px
+      border: 1px solid #1890ff
+      border-radius: 3px
+      &:after
+        border: none
+    :global(.ant-checkbox + span)
+      padding: 0
+    :global(.ant-checkbox-inner)
+      border: none
+      outline: none
+      transition: background .6s
+    :global(.ant-checkbox-checked)
+      border-color: transparent
+    :global(.ant-checkbox-checked .ant-checkbox-inner)
+      background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+    img
+      min-width: 45px
+      max-width: 45px
+      aspect-ratio: 1 / 1
+      object-fit: contain
+      object-position: center
+      border-radius: 5px
+      @media screen and (min-width: 576px)
+        min-width: 100px
+        max-width: 100px
+  .infoWrap
+    h3
+      font-size: 14px
+      line-height: 1.36
+      color: #FFFFFF
+      margin: 0
+    p
+      font-size: 12px
+      margin: 0
+      line-height: 1.36
+    .btnProfile
+      background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.5) 0.33%, rgba(11, 235, 214, 0.5) 99.88%)
+      border-radius: 5px
+      padding: 5px 15px
+      font-size: 16px
+      width: 100px
+      text-align: center
+      color: #00FFFF
+      margin-top: 15px
 .avatar
   width: 60px
   height: 60px
@@ -43,7 +145,7 @@
     border-radius: 50%
 
 .searchText
-  margin-bottom: 10px
+  margin-bottom: 20px
 
   :global(.ant-input-group-addon)
     position: relative
@@ -58,9 +160,6 @@
 .container
   margin-top: 10px
   color: white
-  :global(.ant-checkbox-group)
-    display: grid
-    color: white
 
 .message_error
   font-size: 14px
@@ -68,17 +167,47 @@
   color: #cb3636
   text-align: center
 
-.button_add
-  display: flex
-  align-items: center
-  justify-content: center
-  background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
-  padding: 4px 16px
-  border-radius: 4px
-  margin: 8px 0
-  font-size: 14px
-  width: 100%
-  span
-    color: #FFF
-  img
-    padding-right: 4px
+.paginationWrap
+  text-align: center
+  margin-top: 25px
+  :global(.ant-pagination)
+    li
+      display: inline-flex
+      justify-content: center
+      align-items: center
+    :global(.ant-pagination-item)
+      background: none
+      border: none
+      a
+        color: #FFFFFF
+        border: 1px solid #FFFFFF
+        border-radius: 5px
+        display: block
+        width: 32px
+        height: 32px
+        font-size: 14px
+    :global(.ant-pagination-item-active)
+      a
+        border-color: #3DDEED
+        color: #3DDEED
+        box-shadow: 0 1px 12px rgba(61, 222, 237, 0.3)
+    :global(.ant-pagination-prev), :global(.ant-pagination-next)
+      border: none
+      background: none
+      button
+        border: 1px solid #FFFFFF
+        border-radius: 5px
+        background: none
+        display: inline-flex
+        align-items: center
+        justify-content: center
+        &:disabled
+          border-color: rgba(255, 255, 255, 0.3)
+          svg
+            fill: rgba(255, 255, 255, 0.3)
+        svg
+          fill: #FFFFFF
+    :global(.ant-pagination-prev)
+      margin-right: 16px
+    :global(.ant-pagination-next)
+      margin-left: 8px
