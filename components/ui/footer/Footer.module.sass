@@ -35,17 +35,24 @@
             margin: 0 8px
       .btn_help
         position: relative
-        button
+        display: flex
+        align-items: center
+        justify-content: center
+        .link
           border: none
           color: #0BEBD6
           font-weight: 700
           line-height: 115%
           height: auto
           transition: 0.2s
+          width: 100%
+          text-align: center
           @media ( min-width: 0px )
-            padding: 8px 20px
+            width: 160px
             font-size: 16px
+            padding: 10px 12px
           @media ( min-width: 640px )
+            width: 180px
             font-size: 20px
             padding: 10px 30px
       .btn_help::before

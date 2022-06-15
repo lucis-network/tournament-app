@@ -70,7 +70,7 @@ export default function TabHome() {
           <Col className={s.container_search}>
             <Search
               className={s.search}
-              placeholder="Search by game"
+              placeholder="Search"
               value={filter.search}
               onChange={(e) => handleChangeFilter("search", e.target.value)}
             />
