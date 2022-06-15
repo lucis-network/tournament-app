@@ -12,6 +12,7 @@ import {observer} from "mobx-react-lite";
 import Head from "next/head";
 import DefaultErrorPage from "next/error";
 import SpinLoading from "../../components/ui/common/Spin";
+import MyProfileStore from "../../src/store/MyProfileStore";
 
 export default observer(function MyProfile() {
 	const router = useRouter();
@@ -55,6 +56,11 @@ export default observer(function MyProfile() {
 	const handleClick = () => {
 		setIsShowEdit(!isShowEdit);
 	};
+	const onEditedProfile = () => {
+		handleClick();
+		MyProfileStore.tabActiveKey = "1";
+		getUserProfileRefetch()
+	}
 
 	return (
 		<div className={s.wrapper_profile}>
@@ -63,7 +69,7 @@ export default observer(function MyProfile() {
 			<div className="lucis-container">
 				{
 					isShowEdit ?
-						<EditProfile userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} /> :
+						<EditProfile userInfo={userInfo} onEditedProfile={onEditedProfile} /> :
 						<ContentMyProfile userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner />
 				}
 			</div>

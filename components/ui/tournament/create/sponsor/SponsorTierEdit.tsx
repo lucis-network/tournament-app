@@ -79,7 +79,7 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
 
   return (
     <Row align="top" className={s.editTierWrap}>
-      <Col xs={{ span: 24 }} md={{ span: 12 }} lg={{ span: 12 }} className="px-2 mb-5 md:mb-0">
+      <Col xs={{ span: 24 }} md={{ span: 12 }} lg={{ span: 14 }} className="px-2 mb-5 md:mb-0">
         <Row className="mb-5">
           <Col span={16}>
             <label>Show logo</label>
@@ -114,22 +114,27 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
               defaultChecked={data.show_ads}
               onChange={handleSwitchChange}
               title="Ads"
+              disabled
             />
           </Col>
           <Col span={24} className="mt-2">
-            <Text italic className="mb-0">
+            <p className={s.adsDescription}>
               This ads video will be display on the tournament detail screen {">"} Cover Section
-            </Text>
+            </p>
           </Col>
         </Row>
       </Col>
-      <Col xs={{ span: 24 }} md={{ span: 12 }} lg={{ span: 12 }} className="px-2">
+      <Col xs={{ span: 24 }} md={{ span: 12 }} lg={{ span: 10 }} className="px-2">
         <Row className="mb-5">
           <Col xs={{ span: 12 }} md={{ span: 14 }} lg={{ span: 14 }}>
             <label>Max sponpor slot for this tier</label>
           </Col>
           <Col xs={{ span: 12 }} md={{ span: 10 }} lg={{ span: 10 }}>
-            <Select defaultValue={`${data.max_slot}`} style={{ width: '100%' }} onChange={handleMaxSponsorChange}>
+            <Select
+              defaultValue={`${data.max_slot}`}
+              onChange={handleMaxSponsorChange}
+              className={`${s.formFieldBg} ${s.formFieldSelect}`}
+            >
               {maxSponsorOptions}
             </Select>
           </Col>
@@ -138,15 +143,19 @@ export default observer(function SponsorTierEdit(props: SponsorTierEditProps) {
           <Col xs={{ span: 12 }} md={{ span: 14 }} lg={{ span: 14 }}>
             <label>Min sponsor amount</label>
           </Col>
-          <Col xs={{ span: 12 }} md={{ span: 10 }} lg={{ span: 10 }}>
+          <Col xs={{ span: 12 }} md={{ span: 10 }} lg={{ span: 10 }} className={s.amountCurrency}>
             <InputNumber
               defaultValue={data.min_deposit}
               min={minAmountInit}
               max={999999999999999}
               onChange={handleMinSponsorAmountChange}
-              addonAfter={currency_symbol}
               placeholder={`${minAmountInit}`}
+              controls={false}
+              className={`${s.formFieldBg} ${s.formFieldNumber}`}
             />
+            {currency_symbol && (
+              <span className={s.currencySymbol}>{currency_symbol}</span>
+            )}
           </Col>
         </Row>
       </Col>

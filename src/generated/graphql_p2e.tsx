@@ -242,6 +242,7 @@ export enum ClaimType {
 
 export type Contract = {
   __typename?: 'Contract';
+  abi?: Maybe<Scalars['JSON']>;
   address: Scalars['String'];
   admin?: Maybe<Scalars['String']>;
   admin_prv_key?: Maybe<Scalars['String']>;
@@ -353,6 +354,7 @@ export type GPlayerMatch = {
   __typename?: 'GPlayerMatch';
   id: Scalars['ID'];
   is_win: Scalars['Boolean'];
+  lucis_point: Scalars['Int'];
   map_img?: Maybe<Scalars['String']>;
   match: Match;
   match_uid: Scalars['String'];
@@ -454,6 +456,7 @@ export type Mission = {
   is_daily_mission: Scalars['Boolean'];
   level: MissionLevel;
   level_id: Scalars['Int'];
+  map?: Maybe<Scalars['String']>;
   mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
   title?: Maybe<Scalars['String']>;
@@ -499,7 +502,6 @@ export enum MissionType {
   Averageheadshot = 'AVERAGEHEADSHOT',
   Curentwinstreak = 'CURENTWINSTREAK',
   Deaths = 'DEATHS',
-  Doublekill = 'DOUBLEKILL',
   Kda = 'KDA',
   Kills = 'KILLS',
   Kr = 'KR',
@@ -762,6 +764,7 @@ export type PlayerMatch = {
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   is_win: Scalars['Boolean'];
+  lucis_point: Scalars['Int'];
   match: Match;
   match_uid: Scalars['String'];
   player: PlayerGame;
@@ -1231,6 +1234,7 @@ export type TournamentRank = {
 
 export enum TournamentStatus {
   Accepted = 'ACCEPTED',
+  Cancel = 'CANCEL',
   Complete = 'COMPLETE',
   Disable = 'DISABLE',
   Finish = 'FINISH',

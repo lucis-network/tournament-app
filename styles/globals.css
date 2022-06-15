@@ -942,3 +942,6 @@ body .ant-carousel .slick-dots-bottom{
 .ql-editor {
   background: rgba(255, 255, 255, 0.2);
 }
+.ql-editor *:not(a) {
+  color: #ffffff
+}

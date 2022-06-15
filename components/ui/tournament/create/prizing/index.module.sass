@@ -3,13 +3,13 @@
     background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     backdrop-filter: blur(4px)
     border: 1px solid #d9d9d933
-
+  :global(.editable-cell-value-wrap)
+    padding: 5px 12px
+    cursor: pointer
 .editable-cell
   position: relative
 
-.editable-cell-value-wrap
-  padding: 5px 12px
-  cursor: pointer
+
 
 .editable-row:hover
   //padding: 4px 11px
@@ -75,14 +75,35 @@
   color: #cb3636
 .initialPoolSizeWrap
   display: flex
+  flex-wrap: wrap
   h4
     font-size: 16px
     color: #FFFFFF
     margin-right: 45px
     padding-top: 8px
+    width: 100%
+    @media screen and (min-width: 768px)
+      width: auto
+  .inputPoolSizeWrap
+    width: 50%
+    padding-right: 15px
+    @media screen and (min-width: 768px)
+      width: 250px
+    @media screen and (min-width: 992px)
+      width: 405px
+      padding-right: 0
+  .poolSizeCurrencyWrap
+    width: 50%
+    padding-left: 15px
+    @media screen and (min-width: 768px)
+      width: 200px
+    @media screen and (min-width: 992px)
+      width: auto
+      min-width: 140px
+      padding-left: 20px
 
 .formFieldBg
-  background: linear-gradient(90.32deg, rgba(255, 255, 255, 0.2) 0%, rgba(217, 217, 217, 0.04) 100%)
+  background: linear-gradient(90.32deg, rgba(255, 255, 255, 0.2) 0%, rgba(217, 217, 217, 0.04) 100%) !important
   font-size: 18px
   color: #ffffff
   font-weight: 500
@@ -106,6 +127,11 @@
         font-size: 18px
         border: none
         background: none
+  &.formFieldEditable
+    height: auto
+    padding: 0
+    input
+      font-size: 14px !important
   &.formFieldSelect
     padding: 0
     :global(.ant-select-selector)
@@ -124,9 +150,7 @@
       margin-top: 0
       *
         display: none
-  &.formFieldInitPoolSize
-    width: 200px
-    margin-right: 20px
+
 .btnAddRow
   background: rgba(255, 255, 255, 0.2) !important
   border: none
@@ -142,11 +166,23 @@
     color: rgb(255 255 255 / 43%)
 .paidWrap
   display: flex
+  flex-wrap: wrap
   margin-top: 25px
   .fee
     display: flex
     align-items: center
-    margin-right: 15px
+    width: 50%
+    @media screen and (min-width: 576px)
+      width: auto
+    &:first-of-type
+      padding-right: 5px
+      @media screen and (min-width: 768px)
+        padding-right: 0
+        margin-right: 15px
+    &:last-of-type
+      padding-left: 5px
+      @media screen and (min-width: 768px)
+        padding-left: 0
     label
       color: #ffffff
       margin-right: 15px
@@ -160,12 +196,26 @@
       justify-content: center
       border-radius: 4px
   .totalPaid
+    margin-top: 10px
     margin-left: auto
     color: #ffffff
     font-size: 20px
     font-weight: 500
     display: flex
     align-items: center
+    width: 100%
+    @media screen and (min-width: 768px)
+      width: auto
 .customQuill
   :global(.ql-toolbar)
     background: rgba(86, 84, 84, 0.5)
+.tableResponsive
+  width: 100%
+  overflow-x: auto
+  padding-bottom: 3px
+  &::-webkit-scrollbar
+    height: 5px
+    display: block
+  &::-webkit-scrollbar-thumb
+    background: linear-gradient(to right, rgba(24, 137, 228, 0.8), rgba(11, 235, 214, 0.8))
+    border-radius: 5px
