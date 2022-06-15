@@ -16,6 +16,7 @@ type MissionsListProp = {
   canChooseGame?: boolean;
   missions?: PlayerMission[];
   loading?: boolean;
+  loadingUpdate?: boolean;
   handleUpdateMissions?: () => void;
 };
 
@@ -26,6 +27,7 @@ const MissionsList = ({
   handleUpdateMissions,
   canChooseGame,
   loading,
+  loadingUpdate
 }: MissionsListProp) => {
   return (
     <div className={s.missionsWrap}>
@@ -48,9 +50,9 @@ const MissionsList = ({
           {description && <p>{description}</p>}
         </div>
         <div>
-          <Button onClick={handleUpdateMissions}>
-            <FontAwesomeIcon icon={faRepeat} />
-            <span style={{ paddingLeft: "5px" }}>Update</span>
+          <Button onClick={handleUpdateMissions} loading={loadingUpdate}>
+            {/* <FontAwesomeIcon icon={faRepeat} /> */}
+            <span>Update</span>
           </Button>
           {canChooseGame && (
             <Button>
