@@ -86,7 +86,9 @@ const DailyMission = () => {
             <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} /> */}
             {/* <OnUsingNFTs /> */}
             <div className={s.dailyTitle}>
-              Daily Mission
+              <h2>
+                Daily Mission
+              </h2>
             </div>
             <MissionsList title="Daily missions" missions={dailyMission} handleUpdateMissions={handleUpdateMissions} loading={stateDailyMissionFetch.loading} />
             <div className={s.recentMatchesWrap}>

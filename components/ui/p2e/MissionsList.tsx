@@ -30,7 +30,6 @@ const MissionsList = ({
   return (
     <div className={s.missionsList}>
       <div className={s.header}>
-
         <div className={s.checkListMission}>
           <div className={s.checkListMissionItem}>
             <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
@@ -63,7 +62,11 @@ const MissionsList = ({
           Update
         </div>
       </div>
-
+      <div className={s.subHeader}>
+        <p>
+          Completed all the daily misions to receive
+        </p>
+      </div>
       <div className={s.missionsList}>
         {loading ? (
           <SpinLoading />
