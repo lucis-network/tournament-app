@@ -346,6 +346,7 @@ export default observer(function RegistrationPhase(props: Props) {
               )}
             </div>
           </div>
+
           <div className={s.item}>
             {tournament_status !== "CLOSED" && (
               <>
