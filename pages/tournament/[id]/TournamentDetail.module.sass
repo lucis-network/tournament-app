@@ -40,14 +40,21 @@
     width: 100%
     justify-content: space-between
     gap: 12px
-    margin-bottom: 20px
+    margin-bottom: 64px
+    margin-top: 40px
+    max-width: 450px
     @media screen and (min-width: 768px)
       flex-direction: row
     :global(.btn-blur)
+      background: rgba(255, 255, 255, 0.2)
+      font-weight: 400
+      font-size: 20px
+      line-height: 115%
       width: 100%
-      font-size: 16px
+      border-radius: 4px
       @media screen and (min-width: 768px)
-        width: auto
+        width: 100%
+        text-align: center
   .gradientBtnWrap
     width: 100%
     display: flex
@@ -58,6 +65,11 @@
       flex-wrap: wrap
     @media (min-width: 540px)
       flex-wrap: nowrap
+    @media (min-width: 768px)
+      width: auto
+      margin: 0
+    @media (min-width: 992px)
+      margin-top: 12px
     @media (min-width: 1280px)
       margin-top: 0
     :global(.ant-spin-nested-loading)
@@ -153,52 +165,10 @@
     //padding-top: 70px
     // margin-top: 70px
     //padding-bottom: 70px
-  *
-    z-index: 1
-  &::before, &::after
-    content: ''
-    display: block
-    position: absolute
-    z-index: 0
-  &::before
-    height: 40%
-    aspect-ratio: 647 / 979
-    top: 160px
-    left: -60px
-    background: url("/assets/TournamentDetail/leftCharacter.png") no-repeat center
-    background-size: cover
-    @media screen and (min-width: 768px)
-      top: 0
-      left: -50px
-      height: 70%
-    @media screen and (min-width: 1200px)
-      top: 0
-      left: 0
-    @media screen and (min-width: 1600px)
-      height: 100%
-      left: -140px
-    @media screen and (min-width: 1920px)
-      left: -160px
-  &::after
-    aspect-ratio: 537 / 679
-    height: 40%
-    bottom: 90px
-    right: -120px
-    background: url("/assets/TournamentDetail/rightCharacter.png") no-repeat center
-    background-size: cover
-    @media screen and (min-width: 768px)
-      bottom: -170px
-      right: -140px
-      height: 70%
-    @media screen and (min-width: 1200px)
-      bottom: 0
-      right: -100px
-    @media screen and (min-width: 1600px)
-      right: -150px
-    @media screen and (min-width: 1920px)
-      right: -170px
 .tournamentInfo
   margin-bottom: 20px
+  position: relative
+  z-index: 10
   *
     color: #ffffff
   .infoWrap
@@ -213,11 +183,14 @@
       box-shadow: 0px 0px 20px 0px #D9D9D9
       width: 100%
       margin-bottom: 20px
-      @media screen and (min-width: 768px)
+      display: none
+      @media screen and (min-width: 992px)
         width: 250px
         min-width: 250px
         height: auto
         margin: 0 30px 0 0
+        display: block
+        margin-bottom: 20px
       @media screen and (min-width: 992px)
         width: 300px
         min-width: 300px
@@ -230,10 +203,11 @@
         width: 100%
         img
           width: 100%
-          aspect-ratio: 440 / 260
+          aspect-ratio: 390 / 260
           object-fit: cover
           object-position: center
     .tournamentMetadataWrap
+      margin-top: 22px
       .tournamentTitle
         font-weight: 700
         font-size: 24px
@@ -244,6 +218,8 @@
         @media screen and (min-width: 1200px)
           margin: -17px 0 0
           font-size: 38px
+          max-height: 60px
+          overflow: hidden
       .tournamentStartTime
         font-size: 18px
         font-weight: 500
@@ -278,8 +254,9 @@
             flex-wrap: wrap
             @media (min-width: 1280px)
               flex-wrap: nowrap
+              justify-content: flex-start
             .tournamentTag
-              padding: 2px 8px
+              padding: 6px 8px
               background: rgba(255, 255, 255, 0.2)
               border-radius: 4px
               display: inline-flex
@@ -291,14 +268,14 @@
               min-width: 100px
               :global(.ant-image)
                 margin-right: 5px
-                min-width: 16px
+                min-width: 12px
               &:last-of-type
                 margin-right: 15px
             .joinDiscord
               min-width: 190px
               display: inline-block
               border-radius: 4px
-              padding: 6px 6px
+              padding: 5px 6px 6px 6px
               display: flex
               align-items: center
               justify-content: center
@@ -319,23 +296,17 @@
           .col_item
             @media (min-width: 0px)
               margin: 10px 0px
-            @media (min-width: 640px)
-              text-align: center
-            @media (min-width: 992px)
-              text-align: left
-          .col_item:nth-child(1)
-            @media (min-width: 640px)
-              text-align: left
-          .col_team
-            @media (min-width: 992px)
-              margin-left: 20px
-            @media (min-width: 1280px)
-              margin-left: 12px
+          // .col_team
+          //   @media (min-width: 992px)
+          //     margin-left: 20px
+          //   @media (min-width: 1280px)
+          //     margin-left: 12px
         .metadataTitle
           font-size: 14px
-          margin-bottom: 5px
+          margin-bottom: 0px
+          font-weight: 300
           @media screen and (min-width: 576px)
-            font-size: 16px
+            font-size: 18px
         .metadataValue
           font-weight: 600
           font-size: 16px
@@ -343,7 +314,7 @@
           @media screen and (min-width: 576px)
             font-size: 18px
           @media screen and (min-width: 1600px)
-            font-size: 20px
+            font-size: 24px
         .bo
           display: flex
           flex-direction: column
@@ -352,42 +323,40 @@
           @media (min-width: 0px)
             max-height: 74px
           @media (min-width: 540px)
-            max-height: 58px
+            max-height: 68px
           @media (min-width: 992px)
             max-width: 14%
           @media (min-width: 1280px)
             max-width: 16%
         .alignRightMb
           @media screen and (max-width: 575px)
-            justify-content: center
+            justify-content: flex-start
             text-align: left
         .gameInfo, .userInfo
           display: flex
           align-items: center
+          min-height: 62px
           :global(.ant-image)
             margin-right: 10px
-            img
-              min-width: 30px
-              max-width: 30px
           .gameName, .userName
             font-size: 12px
             @media screen and (min-width: 992px)
-              font-size: 16px
+              font-size: 18px
         .gameInfo
           margin-bottom: 20px
           :global(.ant-image)
             img
-              height: auto
+              min-height: 62px
+              max-height: 62px
           .gameName
-            font-weight: 700
+            font-weight: 300
         .userInfo
           :global(.ant-image)
             img
-              height: 30px
+              min-height: 30px
+              max-height: 30px
           .userAvatar
             border-radius: 50px
-          .userName
-            text-decoration: underline
       .generousSponsorsWrap
         .generousSponsorsTitle
           font-weight: 700
@@ -516,7 +485,7 @@
     min-width: 14px
 .btn_detail_share
   border-radius: 90px
-  padding: 2px 6px 2px 3px
+  padding: 3px 6px 2px 2px
   @media screen and (min-width: 0px)
     order: 2
   span
@@ -532,4 +501,126 @@
   background: linear-gradient(290.92deg,#0bebd6,#cd28e8)
 
 
+.btn_subscribed
+  min-height: auto
+  padding: 2px 8px
+  margin-right: 12px
+  border-radius: 4px
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, .2) 0.33%, rgba(11, 235, 214, .3) 99.88%)
+.btb_free_entry
+  @media (min-width: 1280px)
+    width: 36%
+.btn_subscribe
+  @media (min-width: 0px)
+    order: 1
+    height: 28px
+    overflow: hidden
+  button
+    :global(.ant-image)
+      max-width: 20px
+.btn_share
+  @media (min-width: 0px)
+    order: 0
+  @media (min-width: 414px)
+    order: 1
 
+.bracket
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 40%
+  @media (min-width: 992px)
+    width: 36%
+.team_size
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 28%
+  @media (min-width: 992px)
+    width: 22%
+  @media (min-width: 1280px)
+    width: 26%
+  @media (min-width: 1920px)
+    width: 24%
+.participants
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 20%
+  @media (min-width: 992px)
+    width: 26%
+  @media (min-width: 1280px)
+    width: 19%
+  @media (min-width: 1440px)
+    width: 18%
+.bo
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 10%
+
+
+.gameInfoBlock
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 640px)
+    padding: 0px !important
+  @media (min-width: 640px)
+    width: 40%
+  @media (min-width: 992px)
+    width: 36%
+
+.userInfoBlock
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 640px)
+    padding: 0px !important
+
+
+.wrapper
+  &::before, &::after
+    content: ''
+    display: block
+    position: absolute
+    z-index: 0
+  &::before
+    height: 40%
+    aspect-ratio: 700 / 1300
+    top: 160px
+    left: 0px
+    background: url("/assets/TournamentDetail/leftCharacter.png") no-repeat center
+    background-size: cover
+    @media screen and (min-width: 768px)
+      top: 80%
+      left: 0px
+      height: 70%
+    @media screen and (min-width: 1200px)
+      top: 100%
+      left: 0
+    @media screen and (min-width: 1600px)
+      height: 100%
+      left: -140px
+    @media screen and (min-width: 1920px)
+      left: 0px
+      top: 80%
+  &::after
+    aspect-ratio: 700 / 1300
+    height: 40%
+    bottom: 90px
+    right: 0px
+    background: url("/assets/TournamentDetail/rightCharacter.png") no-repeat center
+    background-size: cover
+    z-index: 0
+    @media screen and (min-width: 768px)
+      bottom: 0px
+      right: 0px
+      top: 38%
+      height: 70%
+    @media screen and (min-width: 1200px)
+      right: 0px
+      top: 46%
+    @media screen and (min-width: 1600px)
+      right: 0px
+    @media screen and (min-width: 1920px)
+      right: 0px
+      top: 48%

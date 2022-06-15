@@ -838,6 +838,7 @@ export type Query = {
   claimMatch?: Maybe<Scalars['Boolean']>;
   getBalance?: Maybe<GBalance>;
   getBiggestRaffles?: Maybe<Array<Raffle>>;
+  getExistedRaffleTicketAmount?: Maybe<Scalars['Float']>;
   getLucisMission?: Maybe<Array<PlayerMission>>;
   getMatchStatistic?: Maybe<MatchStatistics>;
   getPlatformAccount?: Maybe<Array<PlatformAccount>>;
@@ -848,7 +849,6 @@ export type Query = {
   getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   searchRaffle?: Maybe<Array<Raffle>>;
-  userTicketAmountOfRaffle?: Maybe<Scalars['Float']>;
 };
 
 
@@ -859,6 +859,11 @@ export type QueryGetAllPlayerNftArgs = {
 
 export type QueryClaimMatchArgs = {
   data: ClaimMatchInput;
+};
+
+
+export type QueryGetExistedRaffleTicketAmountArgs = {
+  raffle_uid: Scalars['String'];
 };
 
 
@@ -899,11 +904,6 @@ export type QueryIsConnectPlatformArgs = {
 
 export type QuerySearchRaffleArgs = {
   name: Scalars['String'];
-};
-
-
-export type QueryUserTicketAmountOfRaffleArgs = {
-  raffle_uid: Scalars['String'];
 };
 
 export type Raffle = {
@@ -1068,6 +1068,16 @@ export type StringNullableFilter = {
   notIn?: InputMaybe<Array<Scalars['String']>>;
   search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  pushNotification: Notification;
+};
+
+
+export type SubscriptionPushNotificationArgs = {
+  user_id: Scalars['Float'];
 };
 
 export type SystemSponsor = {
