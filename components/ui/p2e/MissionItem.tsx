@@ -94,7 +94,7 @@ const MissionItem = (props: MissionItemProp) => {
             <p>1 Lucis point</p>
             {/* )} */}
             {/* {mission?.mission?.lucis_token && ( */}
-            <p>1 Lucis token</p>
+            {/* <p>1 Lucis token</p> */}
             {/* )} */}
           </Col>
         </Row>

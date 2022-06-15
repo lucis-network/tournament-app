@@ -98,13 +98,13 @@ const DailyMission = () => {
                         <div className={s.recentMatchesLogo}>
                           <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
                         </div>
-                        <div className={s.recentMatchReward}>1000 Lucis point</div>
-                        <div className={s.recentMatchReward}>100 Lucis token</div>
+                        <div className={s.recentMatchReward}>{item?.lucis_point}</div>
+                        {/* <div className={s.recentMatchReward}>100 Lucis token</div> */}
                         <div className={s.recentMatchScore}>{item?.match?.score}</div>
                         <div className={s.recentMatchTime}>{endAt}</div>
-                        <div className={s.recentMatchActions}>
-                          {/* <Button disabled>Claim</Button> */}
-                        </div>
+                        {/* <div className={s.recentMatchActions}>
+                          <Button disabled>Claim</Button>
+                        </div> */}
                       </div>
                     )
                   })
