@@ -60,6 +60,7 @@ const MissionsList = ({
         </div>
         <div className={s.updateButton}>
           <img src="/assets/P2E/reload-icon.png" alt="" />
+          Update
         </div>
       </div>
 

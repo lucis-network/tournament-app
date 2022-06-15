@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/tournament/*/edit",
+        "destination": "/tournament/[id]/edit.html"
+      },
+      {
+        "source": "/tournament/*/*",
+        "destination": "/tournament/[id]/[...slug].html"
+      }
+    ]
+  }
+}
