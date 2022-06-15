@@ -62,7 +62,7 @@ export default observer(function Header(props: Props) {
                   ("IS_TESTNET" == "true") && <p>Testnet</p>
                 }
               </Col>
-              <Col span={17} style={{paddingLeft: 60}}>
+              <Col span={17} style={{paddingLeft: "60px"}}>
                 <ul className={s.block_item_menu}>
                   <li><Link href="/">HOME</Link></li>
                   {/*<li><Link href="/tournament">Tournament</Link></li>*/}
