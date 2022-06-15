@@ -367,13 +367,13 @@ const UseTeamModal = (tournamentData: any) => {
     step: StepModalTournament
   ): StepModalComponent | ReactElement => {
     const description1 = (
-      <p className="text-24px font-semibold text-white">
+      <p className="text-20px font-semibold text-white">
         Select a valid team to join: <br/>
         {`${name}`}
       </p>
     );
     const description2 = (
-      <p className="text-24px font-semibold text-white">
+      <p className="text-20px font-semibold text-white">
         Configure your team Prize for this tournament: <br />
         {`${name}`}
       </p>
@@ -390,7 +390,7 @@ const UseTeamModal = (tournamentData: any) => {
                   ? "Team you've lead:"
                   : "You are not the leader of any team"}
               </p>
-              <div>
+              <div className={s.chooseGameBtn}>
                 <button
                   className={s.button}
                   onClick={() => handleRoutes("/profile?tab=teams")}
@@ -403,7 +403,7 @@ const UseTeamModal = (tournamentData: any) => {
                 </button>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className={s.teamListChoosGame}>
               {teamList?.map((team, i) => (
                 <TeamSelect
                   key={i}

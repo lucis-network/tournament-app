@@ -30,6 +30,7 @@ import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import DocHead from "../../../components/DocHead";
 import moment from "moment";
+import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 
 const { TabPane } = Tabs;
 
@@ -532,12 +533,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               tournament_status={tournament_status as string}
             />
             {/* ===== sponsor ===== */}
-            {/* <TournamentDetailSponsor
+            <TournamentDetailSponsor
               tournamentId={tournamentId as string}
               tournament_status={tournament_status as string}
               refetchTounament={refetch}
               currency={currency}
-            /> */}
+            />
             {/* ===== end sponsor ===== */}
           </div>
         </div>

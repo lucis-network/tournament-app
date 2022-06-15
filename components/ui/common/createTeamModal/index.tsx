@@ -48,7 +48,7 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
     <Modal
       centered
       title={
-        <h3 className="text-16px text-white">
+        <h3 className="text-18px text-white">
           {isEdit ? "Edit team" : "Create a new team"}
         </h3>
       }
@@ -60,7 +60,7 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
     >
       <div>
         <div className="flex align-middle items-start mb-4">
-          <span className="min-w-[140px]">Team name</span>
+          <span className="min-w-[120px]">Team name</span>
           <div>
             <Input
               className="!rounded-8px"
@@ -69,15 +69,15 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
               onChange={onChangeTeamName}
             />
             {!isEmpty(error["team_name"]) && (
-              <p className="text-[12px] text-emerald-2 mt-1">
+              <p className="text-[120px] text-emerald-2 mt-1">
                 {error["team_name"]}
               </p>
             )}
           </div>
         </div>
-        <div className="flex align-middle items-start mb-4">
-          <span className="min-w-[140px]">Team avatar</span>
-          <div style={{ fontSize: "16px" }}>
+        <div className={`${s.teamAvatar} flex align-middle items-start mb-4`}>
+          <div className="min-w-[120px]">Team avatar</div>
+          <div className={s.chooseTeamAvatar}>
             <UploadAvatar
               url={url}
               reset={reset}
@@ -85,9 +85,9 @@ const CreateTeamModal: React.FC<CreateTeamModalType> = ({
               handleFileInput={onChangeAvatar}
               heigh="200"
               width="200"
-              className="flex align-middle items-center justify-between"
+              className={`${s.uploadAvatar} flex align-middle items-center justify-between`}
               innerImageClass={s.avatar_team}
-              inputClass="w-[260px]"
+              inputClass="w-[210px]"
               description="Recommended size: 200x200"
             />
             {!isEmpty(error["team_avatar"]) && (
