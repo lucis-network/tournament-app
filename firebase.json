@@ -1,0 +1,33 @@
+{
+  "hosting": {
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/tournament/*/edit$",
+        "destination": "/tournament/[id]/edit.html"
+      },
+      {
+        "source": "/tournament/*/*",
+        "destination": "/tournament/[id]/[...slug].html"
+      },
+      {
+        "source": "/tournament/1",
+        "destination": "/tournament/[id]/[...slug].html"
+      }
+    ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true,
+      "port": 9000
+    }
+  }
+}
