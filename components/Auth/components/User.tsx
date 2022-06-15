@@ -115,7 +115,7 @@ export default observer(function User(props: Props) {
       </Col>
       <Col
         span={address ? 15 : 9}
-        style={{ borderLeft: "1px solid #fff", paddingLeft: 20 }}
+        style={{ borderLeft: "1px solid #fff", paddingLeft: "20px" }}
       >
         <p className={s.addr}>
           {address ? trim_middle(address ?? "", 7, 8) : ""}

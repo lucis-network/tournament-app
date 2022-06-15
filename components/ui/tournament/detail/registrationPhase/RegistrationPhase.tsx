@@ -287,12 +287,12 @@ export default observer(function RegistrationPhase(props: Props) {
                   : fomatNumber(totalPrizePool)}{" "}
                 {currency.symbol}
               </h3>
-              <span>Prize pool</span>
+              <p>PRIZE POOL</p>
             </div>
             <div className={`${s.additionalInfo} ${s.additionalPrize}`}>
               {additionPrize ? (
                 additionPrize > 0 ? (
-                  <div>
+                  <>
                     <h4>Additional prizes:</h4>
                     <p>
                       <Image
@@ -303,7 +303,7 @@ export default observer(function RegistrationPhase(props: Props) {
                       {fomatNumber(Number.parseFloat(additionPrize))} LUCIS
                       token
                     </p>
-                  </div>
+                  </>
                 ) : (
                   ""
                 )
@@ -560,7 +560,7 @@ export default observer(function RegistrationPhase(props: Props) {
                       <div className={s.countdownWrap}>
                         <p className="mb-0">
                           <span className={s.countdownRegistration}>
-                            Registration phase will ends in{" "}
+                            Registration phase will ends in {" "}
                           </span>
                           <CountdownTimer targetDate={timeRegistration} />
                         </p>
