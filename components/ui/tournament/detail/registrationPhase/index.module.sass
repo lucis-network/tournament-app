@@ -9,7 +9,7 @@
     min-width: 162px
     padding: 12px
     font-size: 20px
-    font-weight: 700
+    font-weight: 500
     @include box-glass
     background: rgba(0, 0, 0, 0.3)
     @include border-grad-1(linear-gradient(290.92deg,#0bebd6,#cd28e8))
@@ -55,7 +55,8 @@
         .itemText
           h3
             text-transform: uppercase
-            color: #32D2FF !important
+            color: #FFD058 !important
+            text-shadow: 0 0 20px #FFD058
             font-size: 20px
             font-weight: 500
             margin-bottom: 0px
@@ -92,6 +93,7 @@
           font-size: 30px
           text-transform: uppercase
           color: #32D2FF !important
+          text-shadow: 0 0 20px #32D2FF
           font-weight: 500
           margin-left: 10px
 
@@ -100,6 +102,7 @@
           h3
             text-transform: uppercase
             color: #32D2FF !important
+            text-shadow: 0 0 20px #32D2FF
             font-size: 20px
             font-weight: 500
             margin-bottom: 0px
@@ -143,6 +146,7 @@
           span
             text-transform: uppercase
             color: #32D2FF !important
+            text-shadow: 0 0 20px #32D2FF
             font-size: 48px
             font-weight: 500
             margin-bottom: 0px
@@ -202,7 +206,7 @@
           //   width: 74px
           //   height: 71px
       h3
-        font-weight: 700
+        font-weight: 500
         font-size: 20px
         margin-bottom: 5px
       p
@@ -284,6 +288,9 @@
   .rewardsPrize
     p
       text-align: left
+      font-size: 20px !important
+      @media screen and (min-width: 768px)
+        font-size: 24px !important
   .rewardsClaimPrize
     display: flex
     justify-content: space-between

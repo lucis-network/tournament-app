@@ -519,7 +519,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           </div>
         </section>
         <div className={`lucis-container-2 ${s.bgCharacters}`}>
-          <div className={s.container900}>
+          <div>
             {/* ==== registration phase ====  */}
             <RegistrationPhase
               isJoin={isJoin}
