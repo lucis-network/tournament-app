@@ -111,7 +111,7 @@ const MyTournament = ({
             isMyTournament
           />
         ) : (
-          <div>Don&apos;t own any tournaments yet</div>
+          <div>Don&apos;t own any tournaments yet. Please join a tournament of <a href='/'>Lucis Network</a></div>
         )}
       </div>
       <div className={s.myTournament}>
@@ -155,7 +155,7 @@ const MyTournament = ({
             />
           )
         ) : (
-          <div>Don&apos;t own any tournaments yet</div>
+          <div>Don&apos;t own any tournaments yet. Please join a tournament of <a href='/'>Lucis Network</a></div>
         )}
       </div>
     </div>

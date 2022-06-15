@@ -8,9 +8,10 @@ type InfoMyProfileProps = {
   userInfo: UserGraphql,
   getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>,
   isOwner?: boolean,
+  isShowEdit?: boolean
 };
 
-export default observer(function InfoMyProfile({ click, userInfo, getUserProfileRefetch, isOwner }: InfoMyProfileProps) {
+export default observer(function InfoMyProfile({ click, userInfo, getUserProfileRefetch, isOwner, isShowEdit }: InfoMyProfileProps) {
   return (
     <div className={s.container}>
       <div
@@ -32,7 +33,7 @@ export default observer(function InfoMyProfile({ click, userInfo, getUserProfile
           </div>
         </div>
         <div className={s.user_information_right}>
-          {isOwner && <button onClick={click}>Edit Profile</button>}
+          {isOwner && <button onClick={click}>{!!isShowEdit ? 'Cancel' : 'Edit Profile'}</button>}
         </div>
       </div>
     </div>
