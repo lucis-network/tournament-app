@@ -51,16 +51,78 @@
         max-width: calc(100% / 3)
         padding: 0 15px
       &:first-of-type
-        @media screen and (min-width: 768px)
-          padding-left: 0
-          .itemImg, .itemText
-            margin-right: auto
+        .itemText
+          margin-bottom: 20px
+          h3
+            text-transform: uppercase
+            color: #FFD058 !important
+            font-size: 24px
+            font-weight: 500
+            margin-bottom: 0px
+            //text-shadow: 2px 2px #FFD058
+          span
+            font-size: 20px
+            text-transform: uppercase
+            font-weight: 400
         .itemImg
+          margin-bottom: 16px
           :global(.ant-image)
             &:after
               bottom: -30px
               right: -10px
+      .itemClosed
+        display: flex
+        flex-direction: row
+        margin-top: 15px
+        .itemImgClosed
+          :global(.ant-image)
+            width: 18px
+            padding-bottom: 5px
+        .itemParticipantClosed
+          font-size: 30px
+          text-transform: uppercase
+          color: #32D2FF !important
+          font-weight: 500
+          margin-left: 10px
+        @media screen and (min-width: 768px)
+          padding-left: 0
+          .itemText
+            h3
+              font-size: 28px
+            span
+              font-size: 16px
+        @media screen and (min-width: 768px)
+          .itemText
+            h3
+              font-size: 32px
+            span
+              font-size: 18px
       &:nth-of-type(2)
+        .itemText
+          //margin-bottom: 20px
+          h3
+            text-transform: uppercase
+            color: #32D2FF !important
+            font-size: 26px
+            font-weight: 500
+            margin-bottom: 0px
+          span
+            font-size: 14px
+            text-transform: uppercase
+            font-weight: 400
+          @media screen and (min-width: 768px)
+            padding-left: 0
+          .itemText
+            h3
+              font-size: 30px
+            span
+              font-size: 16px
+          @media screen and (min-width: 768px)
+            .itemText
+              h3
+                font-size: 34px
+              span
+                font-size: 18px
         .itemImg
           :global(.ant-image)
             &:after
@@ -68,23 +130,50 @@
               right: -30px
               transform: translateY(-50%)
       &:nth-of-type(3)
+        background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.2) 0.33%, rgba(11, 235, 214, 0.2) 99.88%)
+        opacity: 0.9
+        backdrop-filter: blur(40px)
+        border-radius: 4px
+        padding: 0 30px
+        .itemTitle
+          margin-top: 34px
+          margin-bottom: 50px
+          font-size: 18px
+          font-weight: 400
+        .itemText
+          margin-bottom: 30px
+          span
+            text-transform: uppercase
+            color: #32D2FF !important
+            font-size: 48px
+            font-weight: 500
+            margin-bottom: 0px
+        @media screen and (max-width: 767px)
+          .itemTitle
+            margin-top: 26px
+            margin-bottom: 34px
+          .itemText
+            margin-bottom: 24px
+            span
+              font-size: 40px
         @media screen and (min-width: 768px)
-          padding-right: 0
-          .itemImg, .itemText
-            margin-left: auto
           .joinWrap
             button
-              width: 100%
+              width: auto
+              border-radius: 4px
+          .itemText
+            span
+              font-size: 52px
         .itemImg
-          padding-top: 30px
+          //padding-top: 30px
           :global(.ant-image)
             &:after
               top: -30px
               right: -10px
       .itemImg
-        margin-bottom: 30px
+        //margin-bottom: 20px
         @media screen and (min-width: 576px)
-          height: 180px
+          //height: 180px
           display: flex
           align-items: center
           justify-content: center
@@ -105,11 +194,11 @@
             background: linear-gradient(180deg, #2FD4C5 0.31%, rgba(47, 138, 212, 0.6) 100%)
             filter: blur(55px)
             border-radius: 50%
-          &:after
-            background: url("/assets/TournamentDetail/ellipse.svg") no-repeat top center
-            background-size: cover
-            width: 74px
-            height: 71px
+          // &:after
+          //   background: url("/assets/TournamentDetail/ellipse.svg") no-repeat top center
+          //   background-size: cover
+          //   width: 74px
+          //   height: 71px
       h3
         font-weight: 700
         font-size: 20px
@@ -118,17 +207,27 @@
         font-size: 20px
       .btnClaim
         width: auto !important
+        height: 100% !important
+        //padding: 9px 10px
+        min-width: auto
       .claimWrap
+        //margin-bottom: 20px
         @media screen and (min-width: 768px)
-          display: flex
-          flex-direction: column
-          align-items: flex-end
+          // display: flex
+          // flex-direction: column
+          //align-items: flex-end
   .additionalInfo
+    h4
+      font-weight: 500
+      font-size: 18px
+    p
+      font-weight: 400
+      font-size: 16px
     &.additionalPrize
       @media screen and (min-width: 768px)
         text-align: left
     h4
-      font-weight: 700
+      font-weight: 500
       font-size: 20px
     p
       &:last-of-type
@@ -137,16 +236,22 @@
         margin-right: 10px
     button
       width: 100%
+      background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+      @include border-grad-1(linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%))
+      border-radius: 4px
+      border: none
+      padding: 6px 20px
       @media screen and (min-width: 576px)
         width: auto
       @media screen and (min-width: 768px)
         font-size: 18px
   .countdownWrap
     margin-top: 20px
+    text-align: center
     *
       color: #0BEBD6
     @media screen and (min-width: 768px)
-      text-align: left
+      //text-align: left
     :global(.show-counter)
       display: inline-flex
       font-weight: 700
@@ -156,6 +261,31 @@
       font-size: 20px
       *
         font-size: 20px
+    .countdownRegistration
+      color: white !important
 .btn
   display: flex
   justify-content: flex-end
+
+.rewards
+  margin-bottom: 24px
+  .rewardsPrize
+    p
+      text-align: left
+  .rewardsClaimPrize
+    display: flex
+    justify-content: space-between
+    @media screen and (max-width: 1023px)
+      flex-direction: column
+    h3
+      font-size: 24px !important
+      font-weight: 500
+    @media screen and (min-width: 768px)
+      h3
+        font-size: 28px !important
+    .rewardsClaimSymbol
+      font-size: 18px !important
+      color: #32D2FF !important
+      font-weight: 500
+      @media screen and (min-width: 768px)
+        font-size: 22px !important
