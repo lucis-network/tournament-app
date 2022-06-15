@@ -159,12 +159,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
         <InputNumber
           formatter={(value) => `${value}%`}
           parser={(value: any) => value.replace("%", "")}
-          style={{ color: "black" }}
           ref={inputRef}
           onPressEnter={save}
           onBlur={save}
           max={100}
           min={1}
+          controls={false}
+          className={`${s.formFieldBg} ${s.formFieldNumber} ${s.formFieldEditable}`}
         />
         {/* <Input
           //formatter={(value) => `${value}%`}
@@ -475,19 +476,21 @@ export default observer(function Prizing(props: Props) {
 
       <div className="pt-4">
         <p className="text-16">Prize Allocation</p>
-        <Table
-          className={s.container_table}
-          components={components}
-          rowClassName={() => "editable-row"}
-          bordered
-          dataSource={dataSource}
-          columns={columns as ColumnTypes}
-          pagination={false}
-        />
+        <div className={s.tableResponsive}>
+          <Table
+            className={s.container_table}
+            components={components}
+            rowClassName={() => "editable-row"}
+            bordered
+            dataSource={dataSource}
+            columns={columns as ColumnTypes}
+            pagination={false}
+          />
+        </div>
         <Row style={{ marginTop: 16 }}>
           <Col span={8}>
             <Button onClick={handleAdd} className={s.btnAddRow}>
-              + more
+              + Add a row
             </Button>
           </Col>
           <Col span={2}></Col>

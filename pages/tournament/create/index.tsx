@@ -447,10 +447,10 @@ export default observer(function CreateTournament(props: Props) {
           <div className={s.containerApp}>
             <div className={s.pageTitleWrapper}>
               <h2 className={s.pageTitle}>Create your tournament</h2>
-              <button className={s.btnReset}>
-                <Image src="/assets/iconReload.svg" preview={false} alt="" />
-                <span>Reset value</span>
-              </button>
+              {/*<button className={s.btnReset}>*/}
+              {/*  <Image src="/assets/iconReload.svg" preview={false} alt="" />*/}
+              {/*  <span>Reset value</span>*/}
+              {/*</button>*/}
             </div>
             <div className={s.tournamentCreateSection}>
               <div className={s.formRow}>
@@ -477,7 +477,7 @@ export default observer(function CreateTournament(props: Props) {
                 </div>
               </div>
               <div className={`${s.formRow} ${s.formImgUpload}`}>
-                <div className={`${s.formCol} ${s.formColLeft}`}>
+                <div className={`${s.formCol} ${s.formColLeft} ${s.formColCover}`}>
                   <label className={s.formLabel}>Cover (Banner)</label>
                   <div className={s.formContent}>
                     <div className={s.coverUpload}>
@@ -508,13 +508,16 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
               </div>
-              <div className={s.formRow}>
+              <div className={`${s.formRow} ${s.formRowFlex}`}>
                 <div className={`${s.formCol} ${s.formColLeft}`}>
                   <label className={s.formLabel}>Choose game</label>
                   <div className={s.formContent}>
                     <div className={s.chooseGameWrap}>
                       {dataChooseGame ? (
-                          <div className="flex flex-col items-center mr-15px ml-[10px]">
+                          <div
+                            className={s.gameItem}
+                            onClick={() => openModal("choosegame")}
+                          >
                             {dataChooseGame["logo"] ? (
                                 <img
                                     width="50"
@@ -535,12 +538,14 @@ export default observer(function CreateTournament(props: Props) {
                       ) : (
                           ""
                       )}
-                      <Button
+                      {!dataChooseGame && (
+                        <Button
                           onClick={() => openModal("choosegame")}
                           className={s.btnChooseGame}
-                      >
-                        <Image src="/assets/iconPlusRounded.svg" preview={false} alt="" />
-                      </Button>
+                        >
+                          <Image src="/assets/iconPlusRounded.svg" preview={false} alt="" />
+                        </Button>
+                      )}
                     </div>
                     <div className={s.message_error}>{messageErrorChoosegame}</div>
                   </div>
@@ -584,7 +589,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
               </div>
-              <div className={s.formRow}>
+              <div className={`${s.formRow} ${s.formRowFlex}`}>
                 <div className={`${s.formCol} ${s.formColLeft}`}>
                   <label className={s.formLabel}>Teamsize</label>
                   <div className={s.formContent}>
@@ -644,7 +649,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
               </div>
-              <div className={s.formRow}>
+              <div className={`${s.formRow} ${s.formRowFlex}`}>
                 <div className={`${s.formCol} ${s.formColLeft}`}>
                   <label className={s.formLabel}>Timeline</label>
                   <div className={s.formContent}>
@@ -676,7 +681,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
               </div>
-              <div className={s.formRow}>
+              <div className={`${s.formRow} ${s.formRowFlex}`}>
                 <div className={`${s.formCol} ${s.formColLeft}`}>
                   <label className={s.formLabel}>Entry</label>
                   <div className={s.formContent}>
@@ -707,7 +712,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
                 <div className={`${s.formCol} ${s.formColRight}`}>
-                  <label className={`${s.formLabel} ${s.formLabelWider}`}>Region</label>
+                  <label className={`${s.formLabel} ${s.formLabelRegion}`}>Region</label>
                   <div className={s.formContent}>
                     <Select
                         value={TournamentStore.regions[0]}
@@ -728,7 +733,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
               </div>
-              <div className={s.formRow}>
+              <div className={`${s.formRow} ${s.formRowFlex}`}>
                 <div className={`${s.formCol} ${s.formColLeft}`}>
                   <label className={s.formLabel}>Discord link</label>
                   <div className={s.formContent}>
@@ -787,7 +792,7 @@ export default observer(function CreateTournament(props: Props) {
               <Prizing
                   checkPoolSize={checkPoolSize}
                   checkCurrency={checkCurrency}
-              ></Prizing>
+              />
             </div>
             <div className={s.tournamentCreateSection}>
               <h3 id="prizing" className={s.sectionTitle}>Tournament Overview</h3>
@@ -814,57 +819,52 @@ export default observer(function CreateTournament(props: Props) {
               </div>
             </div>
             <div className={s.tournamentCreateSection}>
-              <h3 className={s.sectionTitle}>Sponsor</h3>
+              <h3 className={s.sectionTitle}>Sponsor Preview</h3>
               <Sponsor />
             </div>
 
             <div className={`${s.password}`}>
-              <Row>
-                <Col span={4}>
-                  <p>Tournament password</p>
-                </Col>
-                <Col span={2}>
-                  <Switch
-                      checked={checkPassword}
-                      onChange={(checked) => {
-                        setCheckPassword(checked);
-                        if (!checked) {
-                          TournamentStore.password = "";
-                          setMessageErrorPassword("");
-                        }
-                      }}
-                      title="password"
-                  />
-                </Col>
-                <Col span={18}>
-                  <Input
-                      value={TournamentStore.password}
-                      type="password"
-                      placeholder="Password"
-                      onChange={(e) => {
-                        TournamentStore.password = e.target.value;
-                        if (
-                            TournamentStore.password.length < 4 ||
-                            TournamentStore.password.length > 32
-                        )
-                          setMessageErrorPassword(
-                              "Invalid password: length 4-32 characters"
-                          );
-                        else setMessageErrorPassword("");
-                      }}
-                      ref={inputRefPassword}
-                      disabled={!checkPassword}
-                      max={32}
-                      min={4}
-                      style={{ borderColor: "var(--line-color)" }}
-                  />
-                  <div className={s.message_error}>{messageErrorPassword}</div>
-                </Col>
-              </Row>
+              <div className={s.passwordLabelWrap}>
+                <label>Tournament password</label>
+                <Switch
+                  checked={checkPassword}
+                  onChange={(checked) => {
+                    setCheckPassword(checked);
+                    if (!checked) {
+                      TournamentStore.password = "";
+                      setMessageErrorPassword("");
+                    }
+                  }}
+                  title="password"
+                />
+              </div>
+              <div className={s.passwordInputWrap}>
+                <Input
+                  value={TournamentStore.password}
+                  type="password"
+                  placeholder="Password"
+                  onChange={(e) => {
+                    TournamentStore.password = e.target.value;
+                    if (
+                      TournamentStore.password.length < 4 ||
+                      TournamentStore.password.length > 32
+                    )
+                      setMessageErrorPassword(
+                        "Invalid password: length 4-32 characters"
+                      );
+                    else setMessageErrorPassword("");
+                  }}
+                  ref={inputRefPassword}
+                  disabled={!checkPassword}
+                  max={32}
+                  min={4}
+                  className={s.formFieldBg}
+                />
+                <div className={s.message_error}>{messageErrorPassword}</div>
+              </div>
             </div>
-
             <div className="mt-100px text-center pb-100px">
-              <Button size="large" type="primary" onClick={createTournament}>
+              <Button onClick={createTournament} className={s.btnCreateTour}>
                 Create tournament
               </Button>
             </div>
