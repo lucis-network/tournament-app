@@ -231,9 +231,9 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	};
 
 	return (
-		<div>
-			<p className="text-24px mb-2">Squad</p>
-			<div className="">
+		<div className={s.prizingJoinTeam}>
+			<p className = {s.titlePrizingJoinTeam}>Squad</p>
+			<div className={s.tablePrizingJoinTeam}>
 				<Form form={form} component={false} onValuesChange={handleValuesChange}>
 					<Table
 						className={s.table}
@@ -250,8 +250,8 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 						pagination={false}
 					/>
 				</Form>
-
-				<div className="flex align-middle items-center mt-8 text-center">
+			</div>
+			<div className="flex align-middle items-center mt-4 text-center">
 					{!isSolo && (
 						<button
 							className={`${s.button} !w-auto`}
@@ -262,7 +262,6 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 						</button>
 					)}
 					<p className="text-error text-16px flex-1">{errMessage}</p>
-				</div>
 			</div>
 			<div className="mt-8 mb-4">
 				{tourPassword && (
@@ -292,14 +291,14 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 					<p className="m-0">Free</p>
 				</div>
 			</div>
-			<div className="flex justify-center mt-16">
+			<div className={s.prizingBtn}>
 				{!isSolo && (
-					<Button className={` ${s.buttonBack} !w-max mr-4`} onClick={onBack}>
+					<Button className={` ${s.buttonBack} mr-4`} onClick={onBack}>
 						Back to step 1
 					</Button>
 				)}
 				<button
-					className={`${s.button} !w-max min-w-[285px]`}
+					className={s.buttonComplete}
 					disabled={!!errMessage || !!errorPassword}
 					onClick={onJoinTournament}
 				>

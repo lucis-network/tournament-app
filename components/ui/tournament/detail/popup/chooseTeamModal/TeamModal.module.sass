@@ -8,7 +8,7 @@
     align-items: center
     justify-content: center
     background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
-    padding: 4px 16px
+    padding: 4px 8px
     border-radius: 4px
     margin-bottom: 8px
     color: #FFF
@@ -20,25 +20,10 @@
       color: #FFF
     img
       padding-right: 4px
+    @media (min-width: 575px) and (max-width: 767px)
+      width: 49%
   :global(.ant-btn)
     height: auto
-  .buttonBack
-    display: flex
-    align-items: center
-    justify-content: center
-    padding: 4px 16px
-    border-radius: 4px
-    margin-bottom: 8px
-    color: #FFF
-    width: 100%
-    &:disabled
-      background: gray
-      opacity: 0.7
-    span
-      color: #FFF
-    img
-      padding-right: 4px
-
   .button_select
     display: flex
     align-items: center
@@ -57,11 +42,13 @@
       color: #FFF
     img
       padding-right: 4px
+
   .table
     table
       border-radius: 8px !important
       overflow: hidden
       border-color: rgb(255 255 255 / 50%) !important
+      min-width: 767px
       thead
         tr
           th
@@ -137,11 +124,100 @@
     display: flex !important
     background: gray
 
-  .chooseGame 
+  .chooseGame
     display: flex
     justify-content: space-between
     vertical-align: top
+    flex-direction: column-reverse
+    margin-bottom: 10px
     @media (min-width: 768px)
-      font-size: 24px
+      font-size: 18px
+      align-items: flex-start
+      flex-direction: row
     @media (min-width: 992px)
-      font-size: 26px
+      font-size: 20px
+    .chooseGameBtn
+      display: inline
+      @media (min-width: 575px)
+        display: flex
+        justify-content: inherit
+      @media (min-width: 767px)
+        display: inline
+  .teamListChoosGame
+    display: grid
+    grid-template-columns: repeat(1, minmax(0, 1fr))
+    @media (min-width: 424px)
+      grid-template-columns: repeat(2, minmax(0, 1fr))
+      gap: 0 5px
+    @media (min-width: 767px)
+      grid-template-columns: repeat(3, minmax(0, 1fr))
+      gap: 0 10px
+.prizingJoinTeam
+  font-size: 18px
+  .titlePrizingJoinTeam
+    font-size: 22px
+    margin-top: 10px
+  @media (max-width: 768px)
+    .tablePrizingJoinTeam
+      overflow-x: scroll
+      padding-bottom: 20px
+  @media (min-width: 992px)
+    font-size: 20px
+    .titlePrizingJoinTeam
+      font-size: 24px
+  .prizingBtn
+    display: flex
+    justify-content: center
+    margin-top: 10px
+    @media (max-width: 426px)
+      flex-direction: column-reverse
+    .buttonBack
+      display: flex
+      align-items: center
+      justify-content: center
+      padding: 4px 16px
+      border-radius: 4px
+      margin-bottom: 8px
+      color: #FFF
+      width: 100%
+      font-size: 16px
+      &:disabled
+        background: gray
+        opacity: 0.7
+      span
+        color: #FFF
+      img
+        padding-right: 4px
+      @media (min-width: 767px)
+        width: auto !important
+        font-size: 18px
+    .buttonComplete
+      display: flex
+      align-items: center
+      justify-content: center
+      background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+      padding: 4px 8px
+      border-radius: 4px
+      margin-bottom: 8px
+      color: #FFF
+      width: 100%
+      font-size: 16px
+      &:disabled
+        background: gray
+        opacity: 0.7
+      span
+        color: #FFF
+      img
+        padding-right: 4px
+      @media (min-width: 767px)
+        width: auto !important
+        font-size: 18px !important
+.tablePrizingJoinTeam::-webkit-scrollbar
+  width: 4px
+  height: 4px
+  border-radius: 16px
+  display: block
+  background: rgba(255,255,255,.3)
+.tablePrizingJoinTeam::-webkit-scrollbar-thumb
+  border-radius: 16px
+  background: linear-gradient(290.92deg,#0bebd6,#cd28e8)
