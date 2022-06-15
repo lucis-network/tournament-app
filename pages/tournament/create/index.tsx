@@ -532,20 +532,13 @@ export default observer(function CreateTournament(props: Props) {
                           >
                             {dataChooseGame["logo"] ? (
                                 <img
-                                    width="50"
-                                    height="50"
+                                    width="100"
+                                    height="100"
                                     src={dataChooseGame["logo"]}
                                     alt=""
                                 />
-                            ) : (
-                                <img
-                                    width="50"
-                                    height="50"
-                                    src="/assets/avatar.jpg"
-                                    alt=""
-                                />
-                            )}
-                            <p className="mt-5px">{dataChooseGame["name"]}</p>
+                            ) : null}
+                            {/*<p className="mt-5px">{dataChooseGame["name"]}</p>*/}
                           </div>
                       ) : (
                           ""

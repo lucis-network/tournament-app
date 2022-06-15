@@ -251,6 +251,9 @@
     width: 124px
     height: 106px
     cursor: pointer
+    img
+      object-fit: cover
+      object-position: center
     p
       padding: 0 5px
       margin-bottom: 0
@@ -380,7 +383,8 @@
   margin-bottom: 25px
 
 .formFieldBg
-  background: linear-gradient(90.32deg, rgba(255, 255, 255, 0.2) 0%, rgba(217, 217, 217, 0.04) 100%)
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(217, 217, 217, 0.04)) !important
+  backdrop-filter: blur(40px) !important
   font-size: 18px
   color: #ffffff
   font-weight: 500
@@ -394,7 +398,11 @@
     height: 40px
     padding: 0
     :global(.ant-input-number)
-      background: none
+      background: none !important
+      backdrop-filter: blur(0) !important
+      border: none
+      padding: 0
+      height: 100%
     :global(.ant-input-number-input-wrap)
       height: 100%
       input
