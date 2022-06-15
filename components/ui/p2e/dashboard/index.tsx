@@ -10,6 +10,7 @@ import MissionsList from "../MissionsList";
 import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import Statistics from "../Statistics";
 import OnUsingNFTs from '../OnUsingNFTs';
+import { RecentMatchList } from '../RecentMatchList';
 
 const DailyMission = () => {
   const [lengthShowMore, setLengthShowMore] = useState(5);
@@ -89,38 +90,18 @@ const DailyMission = () => {
                 Daily Mission
               </h2>
             </div>
-            <MissionsList title="Daily missions" missions={dailyMission} handleUpdateMissions={handleUpdateMissions} loading={stateDailyMissionFetch.loading} />
-            {/* <div className={s.recentMatchesWrap}>
-              <h2>Recent matches</h2>
-              <div className={s.recentMatchesList}>
-                {getRecentMatchesLoading ? <SpinLoading /> : (
-                  !isEmpty(getRecentMatchesData?.getRecentlyMatch?.matches) && getRecentMatchesData?.getRecentlyMatch?.matches?.map((item, index) => {
-                    // const endAt = moment.unix(item?.match?.end_at as number).fromNow()
-
-                    return (
-                      <div className={s.recentMatchesItem} key={`${item?.match_uid}-${index}`}>
-                        <div className={s.recentMatchesLogo}>
-                          <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
-                        </div>
-                        <div className={s.recentMatchReward}>{item?.lucis_point} lucis point</div>
-                        {/* <div className={s.recentMatchReward}>100 Lucis token</div>
-                        <div className={s.recentMatchScore}>{item?.match?.score}</div>
-                        <div className={s.recentMatchTime}>{endAt}</div>
-                        <div className={s.recentMatchActions}>
-                        </div>
-                      </div>
-                    )
-                  })
-                )}
-                
-
-              </div>
-            </div> */}
+            <MissionsList
+              title="Daily missions"
+              missions={dailyMission}
+              handleUpdateMissions={handleUpdateMissions}
+              loading={stateDailyMissionFetch.loading}
+              loadingUpdate={loading} />
             <div className={s.dailyTitle}>
               <h2>
                 Recent matches
               </h2>
             </div>
+            <RecentMatchList recentMatches={getRecentMatchesData?.getRecentlyMatch} loading={getRecentMatchesLoading} />
           </Col>
           <Col span={8}>
             <div className={s.dailyTitle}>
@@ -129,10 +110,10 @@ const DailyMission = () => {
               </h2>
             </div>
             <div className={s.wallet}>
-              <Row gutter={24}>
+              <Row gutter={32}>
                 <Col span={12}>
                   <div className={s.lucisPointWallet}>
-                    Lucis Point
+                    LUCIS Point
                     <img src="/assets/P2E/lucis-point.png" alt="" width="68" height="68" />
                     {data?.getBalance?.lucis_point}
                   </div>
@@ -145,7 +126,7 @@ const DailyMission = () => {
                       --
                     </div>
                     <div className={s.busdClaim}>
-                      <Button type="primary" disabled>Claim</Button>
+                      <Button type="ghost" disabled>Claim</Button>
                     </div>
                   </div>
                 </Col>

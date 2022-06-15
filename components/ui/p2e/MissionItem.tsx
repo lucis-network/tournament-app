@@ -6,6 +6,7 @@ import SpinLoading from "../common/Spin";
 import { PlayerMission } from "../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
+import ButtonWrapper from "../common/btn/Btn";
 
 type MissionItemProp = {
   mission: PlayerMission;
@@ -108,13 +109,13 @@ const MissionItem = (props: MissionItemProp) => {
                 </div> */}
       <div className={s.missionAction}>
         {!hasDone ? (
-          <Button
+          <ButtonWrapper
             onClick={() => handleRerollMission(mission)}
             loading={loading}
             type="primary"
           >
             Reroll
-          </Button>
+          </ButtonWrapper>
         ) : (
           <Button
             disabled={mission?.is_claim}

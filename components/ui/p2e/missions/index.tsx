@@ -59,7 +59,7 @@ const Missions = () => {
           <h3>CS:GO FACEIT</h3>
         </div>
 
-        <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} />
+        {/* <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} /> */}
         {/* <OnUsingNFTs /> */}
         <MissionsList
           title="Lucis missions"

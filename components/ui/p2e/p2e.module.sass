@@ -112,12 +112,90 @@
       justify-content: flex-end
       align-items: center
       cursor: pointer
+      text-align: right
       img
-        width: 20px
-        height: 20px
         margin-left: 40px
+        margin-right: 5px
+        height: 18px
+      .spinner
+        animation: spin 2s linear 0s infinite
 
   .subHeader
     p
       font-size: 16px
       margin-bottom: 12px
+
+.recentMatchList
+  margin-bottom: 30px
+  .recentMatchHeaderList
+    background: rgba(23, 29, 46, 0.8)
+    backdrop-filter: blur(40px)
+    h2
+      font-weight: 600
+      font-size: 18px
+      line-height: 27px
+    .recentMatchHeaderItem
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+  .recentMatchContentItem
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    height: 95px
+  .recentMatchItem
+    padding: 12px 0
+    height: 95px
+    // background-image: url("/assets/P2E/csgo/daily-item-1.png")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
+  .recentMatchResult
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    span
+      font-size: 16px
+      font-weight: bold
+      line-height: 24px
+  .scoreMatch
+    display: flex
+    height: 95px
+    font-size: 24px
+    font-weight: 500
+    line-height: 36px
+    // flex-direction: column
+    justify-content: center
+    align-items: center
+  .recentMatchTime
+    display: flex
+    height: 95px
+    font-size: 14px
+    font-weight: 400
+    line-height: 21px
+    // flex-direction: column
+    justify-content: center
+    align-items: center
+  .recentMatchReward
+    display: flex
+    height: 95px
+    font-size: 14px
+    font-weight: 400
+    line-height: 21px
+    // flex-direction: column
+    justify-content: space-around
+    align-items: center
+    span
+      font-size: 16px
+      line-height: 24px
+      color: #DF9B16
+
+/* Chrome, Safari, Opera */ 
+@keyframes spin
+  0%
+    transform: rotate(360deg)
+  100%
+    transform: rotate(0deg)

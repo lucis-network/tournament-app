@@ -131,10 +131,10 @@ const Home: NextPage = () => {
           <div className={s.p2eContent}>
             {tabActive === "Overview" && <P2EOverview faceitUser={faceitUser} isLoadingFaceitUser={loadingFaceit} />}
             {tabActive === "Dashboard" && <Dashboard />}
-            {tabActive === "Missions" && <Missions />}
-            {tabActive === "Raffles" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20 }}>Coming Soon</h2>}
-            {tabActive === "Items" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20 }}>Coming Soon</h2>}
-            {tabActive === "Battle pass" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20 }}>Coming Soon</h2>}
+            {tabActive === "Missions" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
+            {tabActive === "Raffles" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
+            {tabActive === "Items" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
+            {tabActive === "Battle pass" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
           </div>
         </div>
       </main>
