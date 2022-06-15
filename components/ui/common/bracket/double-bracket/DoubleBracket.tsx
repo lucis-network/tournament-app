@@ -47,6 +47,7 @@ const createWinRounds = ({
           onChange={(date, dateString) =>
             handleSelectDate('double', date, dateString, i, roundName, "upper")
           }
+          inputReadOnly={true}
         />
       </div>
     );
@@ -85,6 +86,7 @@ const createLoseRounds = ({
           onChange={(date, dateString) =>
             handleSelectDate('double', date, dateString, i, roundName, "lower")
           }
+          inputReadOnly={true}
         />
       </div>
     );
@@ -135,6 +137,7 @@ const DoubleBracket = ({
             onChange={(date, dateString) =>
               handleSelectDate('double', date, dateString, 0, "Final")
             }
+            inputReadOnly={true}
           />
         </div>
       ),
