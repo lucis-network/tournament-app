@@ -520,7 +520,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
               </div>
-              <div className={`${s.formRow} ${s.formRowFlex}`}>
+              <div className={`${s.formRow} ${s.formRowFlex} ${s.formChooseGame}`}>
                 <div className={`${s.formCol} ${s.formColLeft}`}>
                   <label className={s.formLabel}>Choose game</label>
                   <div className={s.formContent}>
@@ -532,20 +532,13 @@ export default observer(function CreateTournament(props: Props) {
                           >
                             {dataChooseGame["logo"] ? (
                                 <img
-                                    width="50"
-                                    height="50"
+                                    width="100"
+                                    height="100"
                                     src={dataChooseGame["logo"]}
                                     alt=""
                                 />
-                            ) : (
-                                <img
-                                    width="50"
-                                    height="50"
-                                    src="/assets/avatar.jpg"
-                                    alt=""
-                                />
-                            )}
-                            <p className="mt-5px">{dataChooseGame["name"]}</p>
+                            ) : null}
+                            {/*<p className="mt-5px">{dataChooseGame["name"]}</p>*/}
                           </div>
                       ) : (
                           ""
@@ -627,7 +620,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
                 <div className={`${s.formCol} ${s.formColRight}`}>
-                  <label className={`${s.formLabel} ${s.formLabelWider}`}>Numbers of participants</label>
+                  <label className={`${s.formLabel} ${s.formLabelWider}`}>Number of participants</label>
                   <div className={s.formContent}>
                     <Select
                         value={TournamentStore.participants}
@@ -872,7 +865,9 @@ export default observer(function CreateTournament(props: Props) {
                   min={4}
                   className={s.formFieldBg}
                 />
-                <div className={s.message_error}>{messageErrorPassword}</div>
+                {messageErrorPassword && (
+                  <div className={s.message_error}>{messageErrorPassword}</div>
+                )}
               </div>
             </div>
             <div className="mt-100px text-center pb-100px">
