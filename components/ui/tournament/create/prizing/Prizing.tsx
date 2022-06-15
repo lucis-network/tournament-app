@@ -243,17 +243,11 @@ export default observer(function Prizing(props: Props) {
       render: (_: any, record: { key: React.Key }) =>
         state.dataSource.length >= 1 ? (
           <Button
-            style={{
-              padding: 0,
-              background: "none",
-              height: "auto",
-              lineHeight: 1,
-              border: "none",
-            }}
             onClick={() => handleDelete(record.key)}
             disabled={record.key == state.dataSource.length - 1 ? false : true}
+            className={s.btnDeleteRow}
           >
-            <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
+            X
           </Button>
         ) : null,
     },
@@ -480,7 +474,7 @@ export default observer(function Prizing(props: Props) {
       </div>
 
       <div className="pt-4">
-        <p>Prize Allocation</p>
+        <p className="text-16">Prize Allocation</p>
         <Table
           className={s.container_table}
           components={components}
