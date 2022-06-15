@@ -28,7 +28,7 @@ export default function CardPlayer(props: Props) {
   const click = () => {
     setIsPopUp(false);
   };
-  const hanldeLike = (id: any) => {};
+  const hanldeLike = (id: any) => { };
   return (
     <>
       {data?.map((e: any, i: number) => {
@@ -36,9 +36,8 @@ export default function CardPlayer(props: Props) {
           i === 0 ? `im_top1.png` : i === 1 ? "im_top2.png" : "im_top3.png";
         return (
           <div
-            className={`${s.content_card} ${
-              i === 0 ? s.top1 : i === 1 ? s.top2 : s.top3
-            }`}
+            className={`${s.content_card} ${i === 0 ? s.top1 : i === 1 ? s.top2 : s.top3
+              }`}
             key={i}
           >
             <div className={s.im_top_player}>
@@ -60,7 +59,13 @@ export default function CardPlayer(props: Props) {
                   <img src="/assets/home/ic_unlike.svg" alt="" />
                 </div> */}
               </div>
-              <p style={{ textAlign: "center" }}>{e.display_name || "_ _"}</p>
+              <p style={{ textAlign: "center" }}>
+                <Link href={`/profile/${slugify(e?.user_name)}`} passHref>
+                  <a style={{ color: "#FFF" }}>
+                    {e.display_name || "_ _"}
+                  </a>
+                </Link>
+              </p>
               <div className={s.total_earning}>
                 {`$${currency(e.total_earning, 2)}`}
               </div>

@@ -1,9 +1,9 @@
 .block_card
   display: flex
   flex-wrap: wrap
-  @media (max-width: 639px)
+  @media (max-width: 767px)
     justify-content: center
-  @media (min-width: 640px) and (max-width: 991px)
+  @media (min-width: 768px) and (max-width: 991px)
     justify-content: space-between
 
   :global(.ant-pagination)
@@ -55,9 +55,9 @@
       color: #0BEBD6
   .wrapper
     margin: 22px 0px
-    // @media (min-width: 0)
-    //   width: 100%
-    //   max-width: 352px
+    @media (min-width: 0)
+      width: 100%
+      max-width: 352px
     // @media (min-width: 640px) and (max-width: 991px)
     //   width: 47%
 
@@ -162,10 +162,8 @@
         a
           color: #FFF
         @media (min-width: 0px)
-          padding: 0px 20px 20px 20px
-        @media (min-width: 640px)
           padding: 0px 12px 16px 12px
-        @media (min-width: 992px)
+        @media (min-width: 640px)
           padding: 0px 8px 12px 8px
         @media (min-width: 1440px)
           padding: 12px 20px 20px 20px
@@ -224,11 +222,11 @@
             color: #FFF
             font-weight: 700
             @media (min-width: 0px)
-              font-size: 22px
+              font-size: 24px
               line-height: 28px 
             @media (min-width: 640px)
               padding-top: 8px
-              font-size: 18px
+              font-size: 24px
             @media (min-width: 992px)
               font-size: 16px
               line-height: 20px
@@ -289,9 +287,9 @@
                 @media (min-width: 0px)
                   width: 90px
                 @media (min-width: 414px)
-                  width: 110px
+                  width: 92px
                 @media (min-width: 540px)
-                  width: 180px
+                  width: 90px
                 @media (min-width: 768px)
                   width: 110px
                 @media (min-width: 992px)
@@ -320,6 +318,8 @@
           align-items: center
           justify-content: space-between
           padding-top: 28px
+          @media (min-width: 0px)
+            padding-top: 12px
           @media (min-width: 992px)
             padding-top: 8px
           @media (min-width: 1440px)
