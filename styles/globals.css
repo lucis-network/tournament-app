@@ -784,13 +784,17 @@ body .ant-select-dropdown{
 
 body .ant-select-item {
   padding: 0;
-  color: #FFF;
-  border-bottom: 1px solid #FFF;
+  color: rgba(255, 255, 255, 0.56);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+body .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background: #e6f7ff99;
+  color: #ffffff;
 }
 body .ant-select-item-option-content{
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
 }
 body .ant-select-item:last-child {
   border-bottom: none;
@@ -930,4 +934,11 @@ body .ant-carousel .slick-dots-bottom{
   .btn-cyan {
     font-size: 16px;
   }
+}
+
+.ql-toolbar {
+  background: rgba(86, 84, 84, 0.5);
+}
+.ql-editor {
+  background: rgba(255, 255, 255, 0.2);
 }
