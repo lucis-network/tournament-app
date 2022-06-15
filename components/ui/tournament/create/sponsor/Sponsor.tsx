@@ -11,7 +11,7 @@ const tiersDataInit: SponsorTierStore[] = [
   new SponsorTierStore(uniqueId('tier_'), "Diamond", {
     min_deposit: 0,
     max_slot: 1,
-    show_ads: true,
+    show_ads: false,
     show_logo: true,
     show_name: true,
     slots: [new SponsorSlot()],

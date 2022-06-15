@@ -239,11 +239,11 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 >
                   Upload logo
                 </Button>
-                <Text
-                  style={{ color: "#ffffff", fontSize: 12, display: "block" }}
-                >
-                  Recommended size: 200x200px
-                </Text>
+                {/*<Text*/}
+                {/*  style={{ color: "#ffffff", fontSize: 12, display: "block" }}*/}
+                {/*>*/}
+                {/*  Recommended size: 200x200px*/}
+                {/*</Text>*/}
                 <div className={s.message_error}>{messageError}</div>
               </Col>
             </Row>
