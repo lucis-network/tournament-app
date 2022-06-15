@@ -91,18 +91,18 @@ const CustomSeed = ({
       <SeedItem>
         <div>
           <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
-            <div className={s.team}>
+            <div className={`${s.team} ${s.teamWin}`}>
               {seed.teams[0]?.name || `Team ...`}
             </div>
-            <div className={s.score}>
+            <div className={`${s.score} ${s.scoreWin}`}>
               {seed.teams[0]?.score || "--"}
             </div>
           </SeedTeam>
           <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
-            <div className={s.team}>
+            <div className={`${s.team} ${s.teamJoined}`}>
               {seed.teams[1]?.name || `Team ...`}
             </div>
-            <div className={s.score}>
+            <div className={`${s.score} ${s.scoreJoined}`}>
               {seed.teams[1]?.score || "--"}
             </div>
           </SeedTeam>
@@ -126,7 +126,11 @@ const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
       <Bracket
         rounds={roundsTemp}
         renderSeedComponent={CustomSeed}
-        mobileBreakpoint={768}
+        mobileBreakpoint={0}
+        swipeableProps={{
+          enableMouseEvents: true,
+          animateHeight: false,
+        }}
       />
     </div>
   );

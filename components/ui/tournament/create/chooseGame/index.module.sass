@@ -1,4 +1,7 @@
 .container
+  width: 656px !important
+  max-width: 100%
+  padding: 0 15px
   :global(.ant-input)
     border-radius: 8px
     padding: 8px
@@ -7,33 +10,138 @@
 .bracketType
   display: flex
   flex-direction: column
-  text-color: white
+  color: white
 
-.radioFee
-  display: flex
-  p
-    min-width: 100px
+.gameList
+  display: grid !important
+  grid-template-columns: 50% 50%
+  justify-items: center
+  row-gap: 25px
+  width: 272px
+  max-width: 100%
+  margin: auto
+  @media screen and (min-width: 425px)
+    width: 377px
+    grid-template-columns: 33.3333% 33.3333% 33.3333%
+  @media screen and (min-width: 576px)
+    width: auto
+    grid-template-columns: 25% 25% 25% 25%
+  .radioFee
+    display: flex
+    p
+      min-width: 100px
 
-.item
-  display: flex
-  flex-direction: column
-  width: 25%
-  position: relative
-  img
-    margin-bottom: 5px
-
-.itemRadio
-  position: absolute
-  top: -10px
-  right: 5px
-
-.searchText
-  :global(.ant-input-group-addon)
+  .item
+    display: flex
+    flex-direction: column
+    width: 100px
     position: relative
-    overflow: hidden
-    :global(.ant-input-search-button)
+    .itemRadio
       display: block
-      width: 100%
-      height: 100%
-      position: absolute
-      top: 0
+      position: relative
+      margin: 0 !important
+      height: auto
+      line-height: 1
+      &:after
+        content: none
+      &:global(.ant-radio-wrapper-checked)
+        img
+          box-shadow: 0 1px 16px rgba(0, 255, 240, 0.5)
+      img
+        width: 100%
+        aspect-ratio: 1 / 1
+        background: #CCCCCC
+        border-radius: 5px
+        object-fit: cover
+        object-position: center
+        position: relative
+        z-index: 0
+        transition: box-shadow .3s
+      p
+        color: #FFFFFF
+        margin-bottom: 0
+        margin-top: 10px
+        text-align: center
+        font-size: 16px
+        line-height: 1.36
+      :global(.ant-radio)
+        position: absolute
+        top: 4px
+        right: 4px
+        z-index: 1
+      :global(.ant-radio + span)
+        display: block
+        padding: 0
+      :global(.ant-radio-inner)
+        background-clip: padding-box
+        border: 1px solid transparent
+        position: relative
+        background-color: #CCCCCC
+        box-shadow: none
+        width: 20px
+        height: 20px
+        &:after
+          width: 24px
+          height: 24px
+          margin-top: -12px
+          margin-left: -12px
+          background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+        *
+          z-index: 1
+        &:before
+          content: ""
+          position: absolute
+          inset: 0
+          z-index: -1
+          margin: -1px
+          background-image: linear-gradient(to right top, #2979ff, #07a787)
+          border-radius: inherit
+  .searchText
+    :global(.ant-input-group-addon)
+      position: relative
+      overflow: hidden
+      :global(.ant-input-search-button)
+        display: block
+        width: 100%
+        height: 100%
+        position: absolute
+        top: 0
+.modalChooseGame
+  :global(.ant-modal-header)
+    background: rgba(83, 80, 80, 0.3)
+    backdrop-filter: blur(40px)
+    border-top-left-radius: 5px
+    border-top-right-radius: 5px
+    h3
+      font-size: 20px
+      font-weight: 500
+      color: #FFFFFF
+      margin-bottom: 0
+  :global(.ant-modal-close-x)
+    border: 1px solid #FFFFFF
+    background: none !important
+    svg
+      fill: #FFFFFF
+  :global(.ant-modal-content)
+    background: rgba(255, 255, 255, 0.4)
+    backdrop-filter: blur(40px)
+    border-radius: 5px
+  :global(.ant-modal-body, .ant-modal-footer)
+    background: none
+  :global(.ant-modal-footer)
+    border: none
+    padding: 10px 30px 20px
+.btnCancel, .btnConfirm
+  border-radius: 5px
+  color: #00FFFF !important
+  font-size: 20px
+  font-weight: 500
+  border: none
+  line-height: 1.2
+  height: auto
+  padding: 10px 20px
+.btnCancel
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.1) 0.33%, rgba(11, 235, 214, 0.1) 99.88%) !important
+.btnConfirm
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.5) 0.33%, rgba(11, 235, 214, 0.5) 99.88%) !important
+  margin-left: 16px !important

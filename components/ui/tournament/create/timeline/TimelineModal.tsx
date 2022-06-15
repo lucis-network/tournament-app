@@ -1,10 +1,11 @@
-import {Col, DatePicker, Modal, Row} from "antd";
+import {Button, Col, DatePicker, Modal, Row} from "antd";
 import {observer} from "mobx-react-lite";
 import {useEffect, useState} from "react";
 
 import TournamentStore, {Rounds} from "src/store/TournamentStore";
 import SingleBracket from "components/ui/common/bracket/single-bracket/SingleBracket";
 import DoubleBracket from "components/ui/common/bracket/double-bracket/DoubleBracket";
+import s from "./index.module.sass"
 
 const { RangePicker } = DatePicker;
 
@@ -188,9 +189,7 @@ const TimelineModal = (props: Props) => {
 
   return (
     <Modal
-      // onOk={handleOk}
-      // bodyStyle={{ overflow: "auto" }}
-      title="Setup Timeline"
+      title={<h3>Setup Timeline</h3>}
       visible={isModalVisible}
       cancelButtonProps={{
         style: {
@@ -201,6 +200,10 @@ const TimelineModal = (props: Props) => {
       onCancel={handleCancel}
       onOk={handleConfirm}
       width={"60%"}
+      wrapClassName={s.modalTimeline}
+      footer={[
+        <Button key="confirm" className={s.btnConfirm} onClick={handleConfirm}>Confirm</Button>
+      ]}
     >
       <i className="text-[14px]">
         * Lucis will review and approve your tournament in less than 24h then

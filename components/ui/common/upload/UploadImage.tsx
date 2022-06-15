@@ -89,16 +89,7 @@ export default observer(function UploadImage(props: Props) {
           onClick={() => inputUpload?.current?.click()}
         />
         {url && (
-          <p
-            style={{
-              color: "rgba(255, 255, 255, 0.7)",
-              textAlign: "center",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              marginBottom: 5,
-              fontStyle: "italic"
-            }}
-          >
+          <p className="file-name">
             {url.slice(LINK_URL.length, url.length)}
           </p>
         )}
