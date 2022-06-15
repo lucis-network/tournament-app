@@ -10,6 +10,7 @@ import AuthStore from "../../components/Auth/AuthStore";
 import EditProfile from "../../components/ui/tournament/myProfile/editMyProfile/EditProfile";
 import {useState} from "react";
 import SpinLoading from "../../components/ui/common/Spin";
+import MyProfileStore from "../../src/store/MyProfileStore";
 const localUserInfo = AuthStore;
 
 const MyProfile = () => {
@@ -46,6 +47,12 @@ const MyProfile = () => {
   const handleClick = () => {
     setIsShowEdit(!isShowEdit);
   };
+  const onEditedProfile = () => {
+		handleClick();
+		MyProfileStore.tabActiveKey = "1";
+		getUserProfileRefetch()
+	}
+
   return (
     <div className={s.wrapper_profile}>
       {/* Content */}
@@ -54,7 +61,7 @@ const MyProfile = () => {
       <div className="lucis-container">
         {
           isShowEdit ?
-            <EditProfile userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} /> :
+            <EditProfile userInfo={getUserProfileData?.getUserProfile} onEditedProfile={onEditedProfile} /> :
             <ContentMyProfile userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} />
         }
       </div>

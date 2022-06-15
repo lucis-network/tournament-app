@@ -248,8 +248,6 @@ export default observer(function CreateTournament(props: Props) {
   const createTournament = () => {
     let cr = TournamentStore.getCreateTournament();
     if (!validationInput(cr)) return;
-    console.log('cr:', cr)
-    return;
 
     cr.start_at =
       cr?.rounds && cr?.rounds[0]?.title === "Round 1"

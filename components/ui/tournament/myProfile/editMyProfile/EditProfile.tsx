@@ -1,5 +1,5 @@
 import s from "./EditProfile.module.sass";
-import {Button, Col, Form, Input, InputNumber, message as antMessage, Row, Select, Space} from "antd";
+import {Button, Col, Form, Input, InputNumber, message as antMessage, message, Row, Select, Space} from "antd";
 import {InfoCircleOutlined, LinkOutlined} from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import React, {useCallback, useEffect, useRef, useState} from "react";
@@ -16,7 +16,7 @@ import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 
 type EditProfileProps = {
   userInfo: UserGraphql,
-  getUserProfileRefetch: () => Promise<ApolloQueryResult<any>>,
+  onEditedProfile: () => void,
 };
 
 type CountryOption = {
@@ -25,7 +25,7 @@ type CountryOption = {
   dial_code: string,
 }
 
-export default observer(function EditProfile({ userInfo, getUserProfileRefetch }: EditProfileProps) {
+export default observer(function EditProfile({ userInfo, onEditedProfile }: EditProfileProps) {
   const [newProfileData, setNewProfileData] = useState<ProfileUpdateInput>({});
   const [emailValue, setEmailValue] = useState<string>('');
   const [countryData, setCountryData] = useState<CountryOption[]>([]);
@@ -174,7 +174,8 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
     if (!isEmpty(newProfileData)) {
       updateProfile()
         .then(response => {
-          getUserProfileRefetch()
+          onEditedProfile()
+          message.success("Success");
         })
         .catch(error => {
           console.log('updateProfile error: ', error)
