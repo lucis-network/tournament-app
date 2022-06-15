@@ -315,7 +315,7 @@ export default observer(function RegistrationPhase(props: Props) {
           <div className={s.item}>
             <div className={s.itemImg}>
               <Image
-                src="/assets/TournamentDetail/diamondBox.png"
+                src="/assets/TournamentDetail/diamondBoxs.png"
                 alt=""
                 preview={false}
               />
@@ -335,7 +335,7 @@ export default observer(function RegistrationPhase(props: Props) {
                   <Image
                     src="/assets/TournamentDetail/iconDonate.svg"
                     preview={false}
-                    alt=""
+                    alt=""  
                   />
                   <span className="ml-2">Donate</span>
                 </button>
@@ -345,7 +345,7 @@ export default observer(function RegistrationPhase(props: Props) {
           <div className={s.item}>
             {tournament_status !== "CLOSED" && (
               <>
-                <span className={s.itemTitle}>Participants</span>
+                <span className={s.itemTitle}>PARTICIPANTS</span>
                 <div className={s.itemImg}>
                   <Image
                     src="/assets/TournamentDetail/participants.svg"
@@ -374,7 +374,7 @@ export default observer(function RegistrationPhase(props: Props) {
                       alt=""
                       preview={false}
                     />{" "}
-                    <span className={s.itemTitle}>Participants</span>
+                    <span className={s.itemTitle}>PARTICIPANTS</span>
                     <span className={s.itemParticipantClosed}>
                       {dataUpdateParticipant
                         ? dataUpdateParticipant?.participant
