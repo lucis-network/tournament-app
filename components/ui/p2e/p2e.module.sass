@@ -45,33 +45,42 @@
 .missionsList
   .missionItem
     display: flex
+    align-items: center
     border-radius: 4px
     background: rgba(69, 80, 107, 0.5)
     backdrop-filter: blur(6px)
+    background-image: url("/assets/P2E/csgo/daily-item-1.png")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: left bottom
+    padding: 16px
     // padding: 15px
     margin-bottom: 20px
     .missionLogo
-      width: 80px
-      height: 80px
+      height: 64px
       background: #ffffff
-      :global(.ant-image)
-        width: 100%
-        height: 100%
-        object-fit: contain
-        object-position: center
+      border-radius: 4px
     .missionInfo
       flex: 1
-      padding: 0 15px
-      h4
-        font-size: 20px
-        font-weight: 700
-      .missionProgress
+      .missionContent
+        display: flex
+        justify-content: space-between
+      .missionTitle
+        margin-left: 24px
+        width: 150px
+        h4
+          font-size: 16px
+          font-weight: 500
+          line-height: 24px
+      .missionReward
         display: flex
         align-items: center
-        :global(.ant-progress)
-          margin: 0 15px
-        :global(.ant-progress-outer)
-          padding-right: 0
+        font-size: 14px
+        color: #DF9B16
+      .missionProgress
+        margin-right: 50px
+        :global(.ant-progress-text)
+          color: #fff
   .header
     display: flex
     margin-bottom: 16px

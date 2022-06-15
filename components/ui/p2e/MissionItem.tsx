@@ -4,8 +4,6 @@ import { Button, Col, Image, message, Progress, Row } from "antd";
 import { isEmpty } from "lodash";
 import SpinLoading from "../common/Spin";
 import { PlayerMission } from "../../../src/generated/graphql_p2e";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRepeat, faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
 
@@ -75,35 +73,36 @@ const MissionItem = (props: MissionItemProp) => {
   return (
     <div className={s.missionItem}>
       <div className={s.missionLogo}>
-        <Image
+        <img
           src={
             mission?.mission?.img
               ? mission?.mission?.img
-              : "/assets/P2E/gun.png"
+              : "/assets/P2E/csgo/avatar-mission.png"
           }
-          preview={false}
+
           alt=""
         />
       </div>
       <div className={s.missionInfo}>
-        <h4>{mission?.mission?.title}</h4>
-        <Row className={s.missionReward}>
-          <Col xs={{ span: 3 }}>Reward</Col>
-          <Col xs={{ span: 21 }}>
-            {mission?.mission?.lucis_point && (
-              <p>{mission?.mission?.lucis_point} Lucis point</p>
-            )}
-            {mission?.mission?.lucis_token && (
-              <p>{mission?.mission?.lucis_token} Lucis token</p>
-            )}
-          </Col>
-        </Row>
-        <div className={s.missionProgress}>
-          <div>{achieved}</div>
-          <Progress percent={currentPercent} format={(percent) => ""} />
-          <div>{mission?.mission?.goal}</div>
+        <div className={s.missionContent}>
+          <div className={s.missionTitle}>
+            <h4>{mission?.mission?.title}</h4>
+            <h5></h5> {/**sub title */}
+          </div>
+          <div className={s.missionReward}>
+            + {mission?.mission?.lucis_point ?? "1"}
+            <img src="/assets/P2E/lucis-point.png" alt="" width="30" height="30" />
+          </div>
+          <div className={s.missionProgress}>
+            <Progress
+              type="circle"
+              strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6', }}
+              width={64}
+              percent={currentPercent} format={() => `${achieved}/${mission?.mission?.goal}`} />
+          </div>
         </div>
       </div>
+
       {/* <div className={s.missionAction}>
                   <Button disabled={!hasClaim} onClick={() => handleClaimMission(mission)}>Claim</Button>
                 </div> */}
@@ -112,6 +111,7 @@ const MissionItem = (props: MissionItemProp) => {
           <Button
             onClick={() => handleRerollMission(mission)}
             loading={loading}
+            type="primary"
           >
             Reroll
           </Button>
@@ -120,6 +120,7 @@ const MissionItem = (props: MissionItemProp) => {
             disabled={mission?.is_claim}
             onClick={() => handleClaimMission(mission)}
             loading={loading}
+            type="primary"
           >
             Claim
           </Button>

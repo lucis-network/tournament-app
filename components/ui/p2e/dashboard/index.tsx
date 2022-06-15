@@ -76,9 +76,10 @@ const DailyMission = () => {
 
   return (
     <div className="lucis-container-2">
-      <Row>
-        <Col span={16}>
-          <div className={s.dailyContainer}>
+      <div className={s.dailyContainer}>
+        <Row gutter={32}>
+          <Col span={16}>
+
             {/* <div className={s.gameInfo}>
               <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
               <h3>CS:GO FACEIT</h3>
@@ -91,7 +92,7 @@ const DailyMission = () => {
               </h2>
             </div>
             <MissionsList title="Daily missions" missions={dailyMission} handleUpdateMissions={handleUpdateMissions} loading={stateDailyMissionFetch.loading} />
-            <div className={s.recentMatchesWrap}>
+            {/* <div className={s.recentMatchesWrap}>
               <h2>Recent matches</h2>
               <div className={s.recentMatchesList}>
                 {getRecentMatchesLoading ? <SpinLoading /> : (
@@ -108,27 +109,53 @@ const DailyMission = () => {
                         <div className={s.recentMatchScore}>{item?.match?.score}</div>
                         <div className={s.recentMatchTime}>{endAt}</div>
                         <div className={s.recentMatchActions}>
-                          {/* <Button disabled>Claim</Button> */}
                         </div>
                       </div>
                     )
                   })
                 )}
-                {/* {FETCH_API.length > 5 && lengthShowMore < FETCH_API.length && (
-                  <div className={s.recentMatchesBtn}>
-                    <Button onClick={loadMore} loading={loading}>Load more</Button>
-                  </div>
-                )}
-                {getRecentMatchesData?.getRecentlyMatch?.matches?.length == 0 && (
-                  <div className={s.recentMatchesNodata}>No data Recent matches</div> */}
-                {/* )} */}
+                
 
               </div>
+            </div> */}
+            <div className={s.dailyTitle}>
+              <h2>
+                Recent matches
+              </h2>
             </div>
-          </div>
-        </Col>
-      </Row>
-
+          </Col>
+          <Col span={8}>
+            <div className={s.dailyTitle}>
+              <h2>
+                Lucis Wallet
+              </h2>
+            </div>
+            <div className={s.wallet}>
+              <Row gutter={24}>
+                <Col span={12}>
+                  <div className={s.lucisPointWallet}>
+                    Lucis Point
+                    <img src="/assets/P2E/lucis-point.png" alt="" width="68" height="68" />
+                    {data?.getBalance?.lucis_point}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div >
+                    <div className={s.BUSDWallet}>
+                      BUSD
+                      <img src="/assets/P2E/BUSD.png" alt="" width="38" height="38" style={{ margin: 16 }} />
+                      --
+                    </div>
+                    <div className={s.busdClaim}>
+                      <Button type="primary" disabled>Claim</Button>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
+      </div>
     </div>
   )
 }
