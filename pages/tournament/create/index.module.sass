@@ -1,3 +1,44 @@
+.tournamentCreateWrapper
+  background: url("/assets/TournamentCreate/floatingBg3.png") no-repeat left bottom
+  position: relative
+  background-size: 400px
+  background-position-x: -220px
+  background-position-y: 72%
+  @media screen and (min-width: 1440px)
+    background-size: 753px
+    background-position-x: -290px
+    background-position-y: bottom
+  @media screen and (min-width: 1920px)
+    width: 1920px
+    margin: auto
+    background-size: 754px 1155px
+  @media screen and (min-width: 1921px)
+    background-position-x: left
+  &:before, &:after
+    content: ''
+    position: absolute
+    z-index: 0
+  &:before
+    width: 450px
+    aspect-ratio: 789 / 880
+    background: url("/assets/TournamentCreate/floatingBg2.png") no-repeat top left
+    background-size: contain
+    top: 800px
+    left: -200px
+    @media screen and (min-width: 1440px)
+      width: 789px
+      top: 580px
+  &:after
+    width: 360px
+    aspect-ratio: 791 / 1179
+    background: url("/assets/TournamentCreate/floatingBg1.png") no-repeat top left
+    background-size: contain
+    top: 100px
+    right: -90px
+    @media screen and (min-width: 1440px)
+      width: 791px
+      right: -130px
+
 .containerApp
   width: 100%
   min-height: 100vh
@@ -9,7 +50,6 @@
     padding: 8px
   :global(.ant-select-dropdown)
     padding: 100px
-
 
 .bracketType
   display: flex
@@ -34,11 +74,27 @@
     background-color: #1890ff !important
   :global(.ant-input[disabled])
     background-color: grey
+  @media screen and (min-width: 576px)
+    display: flex
+    align-items: center
+  .passwordLabelWrap
+    margin-bottom: 15px
+    @media screen and (min-width: 576px)
+      margin-right: 15px
+      margin-bottom: 0
+    label
+      font-size: 16px
+      color: #FFFFFF
+      margin-right: 12px
+  .passwordInputWrap
+    flex: 1
+    @media screen and (min-width: 992px)
+      max-width: 493px
 
 .message_error
   font-size: 13px
   margin-top: 4px
-  color: rgba(0, 255, 255, 1)
+  color: #FF2828
 
 .containerApp
   :global(.ant-btn-default)
@@ -64,6 +120,8 @@
   width: 124px
   height: 106px
 .tournamentCreateContainer
+  position: relative
+  z-index: 1
   @media screen and (min-width: 1200px)
     width: 1115px
 .pageTitleWrapper
@@ -75,7 +133,7 @@
     align-items: center
     justify-content: space-between
   .pageTitle
-    font-size: 30px
+    font-size: 18px
     font-weight: 600
     color: #00FFEC
     text-transform: uppercase
@@ -87,6 +145,8 @@
       margin-bottom: 0
     @media screen and (min-width: 768px)
       width: calc(100% - 270px)
+      font-size: 30px
+
   .btnReset
     border: 1px solid rgba(18, 176, 180, 1)
     border-radius: 5px
@@ -100,65 +160,44 @@
       margin-right: 8px
       width: 13px
 .formRow
-  display: flex
-  justify-content: space-between
   margin-bottom: 30px
-  .formCol
+  @media screen and (min-width: 992px)
     display: flex
+    justify-content: space-between
+  .formCol
     width: 100%
+    @media screen and (min-width: 992px)
+      display: flex
     &.formColLeft
-      width: 710px
+      margin-bottom: 20px
+      @media screen and (min-width: 768px)
+        margin-bottom: 0
+      @media screen and (min-width: 992px)
+        width: 710px
     &.formColRight
-      width: 336px
+      @media screen and (min-width: 992px)
+        width: 336px
       .formLabel
         width: 128px
         &.formLabelWider
           min-width: 223px
+        &.formLabelRegion
+          width: 100px
+    &.formColCover
+      @media screen and (min-width: 768px)
+        min-width: 500px
+        margin-right: 20px
     .formLabel
       color: #ffffff
       font-size: 19px
       margin-bottom: 10px
       width: 160px
       padding-right: 10px
+      display: inline-block
+      @media screen and (min-width: 992px)
+        padding-top: 10px
     .formContent
       flex: 1
-    .formFieldBg
-      background: linear-gradient(90.32deg, rgba(255, 255, 255, 0.2) 0%, rgba(217, 217, 217, 0.04) 100%)
-      font-size: 18px
-      color: #ffffff
-      font-weight: 500
-      line-height: 1.15
-      padding: 12px 15px
-      border: none
-      width: 100%
-      border-radius: 4px
-      height: 40px
-      &.formFieldNumber
-        height: 40px
-        padding: 0
-        :global(.ant-input-number-input-wrap)
-          height: 100%
-          input
-            height: 100%
-            font-size: 18px
-      &.formFieldSelect
-        padding: 0
-        :global(.ant-select-selector)
-          background: none
-          border: none
-          padding: 5px 10px
-          height: 40px
-          :global(.ant-select-selection-item)
-            line-height: 1.6
-        :global(.ant-select-arrow)
-          background: url("/assets/iconCarretDown.svg") no-repeat center
-          background-size: contain
-          width: 13px
-          height: 13px
-          transform: translateY(-50%)
-          margin-top: 0
-          *
-            display: none
     :global(.ant-radio-wrapper)
       align-items: center
       margin-bottom: 20px
@@ -192,6 +231,19 @@
           background: rgba(11, 235, 214, 1)
 .chooseGameWrap
   display: flex
+  .gameItem
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-direction: column
+    background: rgba(255, 255, 255, 0.5) !important
+    border-radius: 8px
+    width: 124px
+    height: 106px
+    cursor: pointer
+    p
+      padding: 0 5px
+      margin-bottom: 0
 .colThumbnailLabel
   @media screen and (min-width: 992px)
     text-align: right
@@ -236,9 +288,24 @@
     font-size: 14px
     font-weight: 500
     color: rgba(255, 255, 255, 0.7)
+.formRowFlex
+  @media screen and (min-width: 576px)
+    display: flex
+    .formCol
+      &:first-of-type
+        padding-right: 15px
+      &:last-of-type
+        padding-left: 15px
+  @media screen and (min-width: 1200px)
+    .formCol
+      &:first-of-type
+        padding-right: 0
+      &:last-of-type
+        padding-left: 0
+
 .btnTimeline
-  background: linear-gradient(to right, rgb(24 137 228 / 40%), rgb(11 235 214 / 40%)) !important
-  width: 100%
+  background: linear-gradient(to right, rgba(24, 137, 228, 0.5), rgba(11, 235, 214, 0.5)) !important
+  width: auto
   border: none
   text-align: left
   height: 40px
@@ -267,7 +334,7 @@
     width: 28px
     height: 28px
     padding: 0
-    margin-top: 12px
+    margin-top: 10px
 .tournamentCreateSection
   margin-bottom: 100px
   .sectionTitle
@@ -277,3 +344,51 @@
     margin-bottom: 25px
 .customQuill
   margin-bottom: 25px
+
+.formFieldBg
+  background: linear-gradient(90.32deg, rgba(255, 255, 255, 0.2) 0%, rgba(217, 217, 217, 0.04) 100%)
+  font-size: 18px
+  color: #ffffff
+  font-weight: 500
+  line-height: 1.15
+  padding: 12px 15px
+  border: none !important
+  width: 100%
+  border-radius: 4px
+  height: 40px
+  &.formFieldNumber
+    height: 40px
+    padding: 0
+    :global(.ant-input-number-input-wrap)
+      height: 100%
+      input
+        height: 100%
+        font-size: 18px
+  &.formFieldSelect
+    padding: 0
+    :global(.ant-select-selector)
+      background: none
+      border: none
+      padding: 5px 10px
+      height: 40px
+      :global(.ant-select-selection-item)
+        line-height: 1.6
+    :global(.ant-select-arrow)
+      background: url("/assets/iconCarretDown.svg") no-repeat center
+      background-size: contain
+      width: 13px
+      height: 13px
+      transform: translateY(-50%)
+      margin-top: 0
+      *
+        display: none
+.btnCreateTour
+  background: linear-gradient(to right, rgba(24, 137, 228, 0.5), rgba(11, 235, 214, 0.5)) !important
+  border: none
+  font-size: 20px
+  font-weight: 500
+  width: 476px
+  height: 44px
+  padding: 10px
+  line-height: 1
+  max-width: 100%
