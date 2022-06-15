@@ -1,0 +1,48 @@
+.customCss:global(.ant-btn-primary) {
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%);
+    border-color: none;
+    border: none;
+    width: 88px;
+    color: #000;
+}
+
+.customCss:global(.ant-btn-primary:hover) {
+    background: linear-gradient(91.09deg, #2f96eb 0.33%, #25f0dc 99.88%);
+    border-color: none;
+    border: none;
+    /* transform: scale(1.1); */
+}
+
+.customCss:global(.ant-btn-ghost) {
+    background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%);
+    border-color: none;
+    border: none;
+    color: white;
+}
+
+.customCss:global(.ant-btn-ghost:hover) {
+    background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%);
+    border-color: none;
+    border: none;
+    color: white;
+}
+
+.customCss:global(.ant-btn-default) {
+    /* background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%); */
+    background: none;
+    color: white;
+    /* border-color: none;
+    border: none; */
+}
+
+.customCss:global(.ant-btn-default.bg-gradient-1) {
+    background-image: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%);
+}
+
+.customCss.ant-btn-default:hover,
+.customCss .ant-btn-default:focus,
+.customCss .ant-btn-default:active {
+    color: #ffffff;
+    border-color: #ffffff;
+    background: none;
+}

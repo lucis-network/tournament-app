@@ -10,6 +10,7 @@ import MissionsList from "../MissionsList";
 import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import Statistics from "../Statistics";
 import OnUsingNFTs from '../OnUsingNFTs';
+import { RecentMatchList } from '../RecentMatchList';
 
 const DailyMission = () => {
   const [lengthShowMore, setLengthShowMore] = useState(5);
@@ -74,54 +75,66 @@ const DailyMission = () => {
 
   return (
     <div className="lucis-container-2">
-      <Row>
-        <Col span={24}>
-          <div className={s.dailyContainer}>
-            <div className={s.gameInfo}>
+      <div className={s.dailyContainer}>
+        <Row gutter={32}>
+          <Col span={16}>
+
+            {/* <div className={s.gameInfo}>
               <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
               <h3>CS:GO FACEIT</h3>
             </div>
-            <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} />
+            <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} /> */}
             {/* <OnUsingNFTs /> */}
-            <MissionsList loadingUpdate={loading} title="Daily missions" missions={dailyMission} handleUpdateMissions={handleUpdateMissions} loading={stateDailyMissionFetch.loading} />
-            <div className={s.recentMatchesWrap}>
-              <h2>Recent matches</h2>
-              <div className={s.recentMatchesList}>
-                {getRecentMatchesLoading ? <SpinLoading /> : (
-                  !isEmpty(getRecentMatchesData?.getRecentlyMatch?.matches) && getRecentMatchesData?.getRecentlyMatch?.matches?.map((item, index) => {
-                    // const endAt = moment.unix(item?.match?.end_at as number).fromNow()
-
-                    return (
-                      <div className={s.recentMatchesItem} key={`${item?.match_uid}-${index}`}>
-                        <div className={s.recentMatchesLogo}>
-                          <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
-                        </div>
-                        <div className={s.recentMatchReward}>{item?.lucis_point} lucis point</div>
-                        {/* <div className={s.recentMatchReward}>100 Lucis token</div> */}
-                        <div className={s.recentMatchScore}>{item?.match?.score}</div>
-                        <div className={s.recentMatchTime}>{new Date(item?.match?.end_at).toLocaleString()}</div>
-                        {/* <div className={s.recentMatchActions}>
-                          <Button disabled>Claim</Button>
-                        </div> */}
-                      </div>
-                    )
-                  })
-                )}
-                {/* {FETCH_API.length > 5 && lengthShowMore < FETCH_API.length && (
-                  <div className={s.recentMatchesBtn}>
-                    <Button onClick={loadMore} loading={loading}>Load more</Button>
-                  </div>
-                )}
-                {getRecentMatchesData?.getRecentlyMatch?.matches?.length == 0 && (
-                  <div className={s.recentMatchesNodata}>No data Recent matches</div> */}
-                {/* )} */}
-
-              </div>
+            <div className={s.dailyTitle}>
+              <h2>
+                Daily Mission
+              </h2>
             </div>
-          </div>
-        </Col>
-      </Row>
-
+            <MissionsList
+              title="Daily missions"
+              missions={dailyMission}
+              handleUpdateMissions={handleUpdateMissions}
+              loading={stateDailyMissionFetch.loading}
+              loadingUpdate={loading} />
+            <div className={s.dailyTitle}>
+              <h2>
+                Recent matches
+              </h2>
+            </div>
+            <RecentMatchList recentMatches={getRecentMatchesData?.getRecentlyMatch} loading={getRecentMatchesLoading} />
+          </Col>
+          <Col span={8}>
+            <div className={s.dailyTitle}>
+              <h2>
+                Lucis Wallet
+              </h2>
+            </div>
+            <div className={s.wallet}>
+              <Row gutter={32}>
+                <Col span={12}>
+                  <div className={s.lucisPointWallet}>
+                    LUCIS Point
+                    <img src="/assets/P2E/lucis-point.png" alt="" width="68" height="68" />
+                    {data?.getBalance?.lucis_point}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div >
+                    <div className={s.BUSDWallet}>
+                      BUSD
+                      <img src="/assets/P2E/BUSD.png" alt="" width="38" height="38" style={{ margin: 16 }} />
+                      --
+                    </div>
+                    <div className={s.busdClaim}>
+                      <Button type="ghost" disabled>Claim</Button>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
+      </div>
     </div>
   )
 }

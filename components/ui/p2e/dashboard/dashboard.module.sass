@@ -1,33 +1,32 @@
 .dailyContainer
   *
     color: #ffffff
+  // :global(.ant-btn-primary)
+  //   background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+  //   // border: 1px solid #222837
+  //   width: 88px
+  // :global(.ant-btn-primary:hover)
+  //   background: linear-gradient(91.09deg, #2f96eb 0.33%, #25f0dc 99.88%)
+  //   // border: 1px solid #222837
+  //   width: 88px
   :global(.ant-btn)
+    color: #000 !important
     &[disabled]
       font-weight: 700
       background: #6a6a6a
       span
         color: #d7d7d7
-  .gameInfo
-    display: flex
-    align-items: center
-    margin-bottom: 30px
-    :global(.ant-image)
-      width: 80px
-      margin-right: 20px
-    h3
-      margin: 0
-      font-size: 26px
-  .statistics
-    .statisticsContent
-      display: flex
-      border: 1px solid rgb(255 255 255 / 57%)
-      padding: 15px
-      margin-bottom: 20px
-      h2
-        font-size: 30px
-        margin: 0
-      .lucisTokenArea
-        text-align: center
+  :global(.ant-checkbox-checked .ant-checkbox-inner)
+    background-color: #0BEBD6
+    border-color: #0BEBD6 !important
+  .dailyTitle
+    margin-top: 50px
+    margin-bottom: 34px
+    h2
+      font-weight: 600
+      font-size: 32px
+      line-height: 35.2px
+      color: #16DADF
   .onUsingNFTs
     h2
       font-size: 30px
@@ -75,3 +74,29 @@
         text-align: center
         margin-bottom: 15px
         font-size: 18px
+  .wallet
+    font-weight: 600
+    font-size: 16px
+    line-height: 20px
+
+    .lucisPointWallet
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      color: #DF9B16
+      background: rgba(81, 100, 147, 0.5)
+      backdrop-filter: blur(40px)
+      height: 200px
+    .busdClaim
+      text-align: center
+      margin-top: 16px
+    .BUSDWallet
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      color: #12B0B4
+      background: rgba(81, 100, 147, 0.5)
+      backdrop-filter: blur(40px)
+      height: 200px

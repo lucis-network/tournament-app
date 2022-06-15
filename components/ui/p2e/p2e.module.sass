@@ -42,90 +42,160 @@
       height: 28px
       margin: 0
 
-.missionsWrap
-  margin-top: 20px
-  .missionsWrapHeader
-    display: flex
-    justify-content: space-between
-    margin-bottom: 20px
-    h2
-      font-size: 30px
-      margin: 0
-      button
-        margin-left: 20px
-    .missionsList
-      .missionItem
-        display: flex
-        border: 1px solid rgb(255 255 255 / 57%)
-        padding: 15px
-        margin-bottom: 20px
-        .missionLogo
-          width: 80px
-          height: 80px
-          background: #ffffff
-          :global(.ant-image)
-            width: 100%
-            height: 100%
-            object-fit: contain
-            object-position: center
-        .missionInfo
-          flex: 1
-          padding: 0 15px
-          h4
-            font-size: 20px
-            font-weight: 700
-        .missionProgress
-          display: flex
-          align-items: center
-          :global(.ant-progress)
-            margin: 0 15px
-            :global(.ant-progress-outer)
-              padding-right: 0
 .missionsList
-  .missionsWrap
-    .missionsWrapHeader
-      display: flex
-      justify-content: space-between
-      margin-bottom: 20px
-      h2
-        font-size: 30px
-        margin: 0
-      button
-        margin-left: 20px
   .missionItem
     display: flex
-    border: 1px solid rgb(255 255 255 / 57%)
-    padding: 15px
+    align-items: center
+    border-radius: 4px
+    background: rgba(69, 80, 107, 0.5)
+    backdrop-filter: blur(6px)
+    background-image: url("/assets/P2E/csgo/daily-item-1.png")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: left bottom
+    padding: 16px
+    // padding: 15px
     margin-bottom: 20px
     .missionLogo
-      width: 80px
-      height: 80px
+      height: 64px
       background: #ffffff
-      :global(.ant-image)
-        width: 100%
-        height: 100%
-        object-fit: contain
-        object-position: center
+      border-radius: 4px
     .missionInfo
       flex: 1
-      padding: 0 15px
-      h4
-        font-size: 20px
-        font-weight: 700
-      .missionProgress
+      .missionContent
+        display: flex
+        justify-content: space-between
+      .missionTitle
+        margin-left: 24px
+        width: 150px
+        h4
+          font-size: 16px
+          font-weight: 500
+          line-height: 24px
+      .missionReward
         display: flex
         align-items: center
-        :global(.ant-progress)
-          margin: 0 15px
-        :global(.ant-progress-outer)
-          padding-right: 0
+        font-size: 14px
+        color: #DF9B16
+      .missionProgress
+        margin-right: 50px
+        :global(.ant-progress-text)
+          color: #fff
   .header
+    display: flex
+    margin-bottom: 16px
     .checkListMission
+      display: flex
       .checkListMissionItem
         display: flex
         flex-direction: column
         align-items: center
+        margin-right: 16px
         // justify-content: flex-start
         img
           width: 40px
           height: 40px
+    .headerCenter
+      background-image: url("/assets/P2E/bg-header-right.png")
+      height: 62px
+      width: 470px
+      position: relative
+      display: flex
+      align-items: center
+      justify-content: center
+      img
+        position: absolute
+        right: -30px
+        bottom: -10px
+    .updateButton
+      display: flex
+      justify-content: flex-end
+      align-items: center
+      cursor: pointer
+      text-align: right
+      img
+        margin-left: 40px
+        margin-right: 5px
+        height: 18px
+      .spinner
+        animation: spin 2s linear 0s infinite
+
+  .subHeader
+    p
+      font-size: 16px
+      margin-bottom: 12px
+
+.recentMatchList
+  margin-bottom: 30px
+  .recentMatchHeaderList
+    background: rgba(23, 29, 46, 0.8)
+    backdrop-filter: blur(40px)
+    h2
+      font-weight: 600
+      font-size: 18px
+      line-height: 27px
+    .recentMatchHeaderItem
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+  .recentMatchContentItem
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    height: 95px
+  .recentMatchItem
+    padding: 12px 0
+    height: 95px
+    // background-image: url("/assets/P2E/csgo/daily-item-1.png")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
+  .recentMatchResult
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    span
+      font-size: 16px
+      font-weight: bold
+      line-height: 24px
+  .scoreMatch
+    display: flex
+    height: 95px
+    font-size: 24px
+    font-weight: 500
+    line-height: 36px
+    // flex-direction: column
+    justify-content: center
+    align-items: center
+  .recentMatchTime
+    display: flex
+    height: 95px
+    font-size: 14px
+    font-weight: 400
+    line-height: 21px
+    // flex-direction: column
+    justify-content: center
+    align-items: center
+  .recentMatchReward
+    display: flex
+    height: 95px
+    font-size: 14px
+    font-weight: 400
+    line-height: 21px
+    // flex-direction: column
+    justify-content: space-around
+    align-items: center
+    span
+      font-size: 16px
+      line-height: 24px
+      color: #DF9B16
+
+/* Chrome, Safari, Opera */ 
+@keyframes spin
+  0%
+    transform: rotate(360deg)
+  100%
+    transform: rotate(0deg)
