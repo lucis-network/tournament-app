@@ -64,6 +64,7 @@ const createRounds = ({
           // disabledTime={disabledDateTime}
           showTime
           onChange={(date, dateString) => handleSelectDate('single', date, dateString, i, roundName)}
+          inputReadOnly={true}
         />
       </div>
     );

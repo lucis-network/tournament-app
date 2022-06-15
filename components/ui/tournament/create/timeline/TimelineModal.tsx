@@ -31,6 +31,7 @@ const createElements = (numRounds: any, selectDate: any) => {
             showTime
             placeholder="Tournament open time"
             onChange={(date, dateString) => selectDate(date, dateString, i)}
+            inputReadOnly={true}
           />
         </Col>
       </Row>
