@@ -184,7 +184,7 @@ function TournamentCard(props: { data?: TournamentGql; typeTab?: string }) {
             </div>
           </div>
         ) : (
-          <div className={s.card_item}>
+          <div className={s.card_item} style={{padding: '0px 12px'}}>
             <BlankState title={typeTab} />
           </div>
         )

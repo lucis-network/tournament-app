@@ -236,7 +236,8 @@ export type ClaimTransaction = {
 export enum ClaimType {
   Donate = 'DONATE',
   PrizePool = 'PRIZE_POOL',
-  PrizeSystem = 'PRIZE_SYSTEM'
+  PrizeSystem = 'PRIZE_SYSTEM',
+  RefereeFee = 'REFEREE_FEE'
 }
 
 export type Contract = {
@@ -451,8 +452,8 @@ export type Mission = {
   goal?: Maybe<Scalars['Decimal']>;
   img?: Maybe<Scalars['String']>;
   is_daily_mission: Scalars['Boolean'];
-  lucis_point: Scalars['Int'];
-  lucis_token?: Maybe<Scalars['Decimal']>;
+  level: MissionLevel;
+  level_id: Scalars['Int'];
   mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
   title?: Maybe<Scalars['String']>;
@@ -467,6 +468,23 @@ export type MissionCount = {
   claim_mission: Scalars['Int'];
   player_mission: Scalars['Int'];
   user_daily_mission: Scalars['Int'];
+};
+
+export type MissionLevel = {
+  __typename?: 'MissionLevel';
+  _count: MissionLevelCount;
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  level: Scalars['Int'];
+  lucis_point?: Maybe<Scalars['Int']>;
+  lucis_token?: Maybe<Scalars['Decimal']>;
+  mission?: Maybe<Array<Mission>>;
+  updated_at: Scalars['DateTime'];
+};
+
+export type MissionLevelCount = {
+  __typename?: 'MissionLevelCount';
+  mission: Scalars['Int'];
 };
 
 export enum MissionStatus {
@@ -497,7 +515,8 @@ export enum MissionType {
 export type Mutation = {
   __typename?: 'Mutation';
   addStakedNft?: Maybe<Scalars['Boolean']>;
-  buyRaffleTicket?: Maybe<UserTicket>;
+  buyRaffleTicket?: Maybe<Scalars['Boolean']>;
+  claimAllMission?: Maybe<Scalars['Boolean']>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
   /** Connect Faceit */
@@ -519,6 +538,12 @@ export type MutationAddStakedNftArgs = {
 
 export type MutationBuyRaffleTicketArgs = {
   input: UserTicketInputGql;
+};
+
+
+export type MutationClaimAllMissionArgs = {
+  game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
@@ -817,8 +842,10 @@ export type Query = {
   getRaffleDetail?: Maybe<Raffle>;
   getRaffles?: Maybe<Array<Raffle>>;
   getRecentlyMatch: GMatch;
+  getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   searchRaffle?: Maybe<Array<Raffle>>;
+  userTicketAmountOfRaffle?: Maybe<Scalars['Float']>;
 };
 
 
@@ -869,6 +896,11 @@ export type QueryIsConnectPlatformArgs = {
 
 export type QuerySearchRaffleArgs = {
   name: Scalars['String'];
+};
+
+
+export type QueryUserTicketAmountOfRaffleArgs = {
+  raffle_uid: Scalars['String'];
 };
 
 export type Raffle = {
@@ -1360,7 +1392,6 @@ export type UserTicketInputGql = {
   amount?: InputMaybe<Scalars['Int']>;
   ticket_uid: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_id: Scalars['Int'];
 };
 
 export type WithdrawTransaction = {
