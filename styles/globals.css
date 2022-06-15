@@ -945,3 +945,14 @@ body .ant-carousel .slick-dots-bottom{
 .ql-editor *:not(a) {
   color: #ffffff
 }
+
+.ant-calendar-picker {
+  width: auto !important;
+}
+.ant-picker-dropdown {
+  max-width: 100%;
+}
+.ant-picker-panel-container {
+  max-width: 100%;
+  overflow-x: auto !important;
+}
