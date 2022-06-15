@@ -60,9 +60,6 @@ export function debug__forceToken_LocalAuthInfo(
 if (isClient) {
   // @ts-ignore
   window.tmp__debug__forceToken_LocalAuthInfo = debug__forceToken_LocalAuthInfo;
-}
-
-if (isClientDevMode) {
   // @ts-ignore
   window.tmp__encode = {
     toBinary,

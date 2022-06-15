@@ -132,8 +132,6 @@ export const REROLL_MISSION = gql`
         game_uid
         goal
         img
-        lucis_point
-        lucis_token
         title
         type
         uid
@@ -179,13 +177,14 @@ export const GET_RECENT_MATCHES = gql`
         player_game_uid
         is_win
         map_img
+        lucis_point
         match {
           uid
           game_uid
           winner_team
           loser_team
           score
-          end_at
+          end_at,
         }
       }
       total

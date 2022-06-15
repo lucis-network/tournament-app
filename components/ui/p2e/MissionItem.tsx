@@ -90,7 +90,7 @@ const MissionItem = (props: MissionItemProp) => {
             <h5></h5> {/**sub title */}
           </div>
           <div className={s.missionReward}>
-            + {mission?.mission?.lucis_point ?? "1"}
+            + {"1"}
             <img src="/assets/P2E/lucis-point.png" alt="" width="30" height="30" />
           </div>
           <div className={s.missionProgress}>

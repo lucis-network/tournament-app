@@ -16,6 +16,7 @@ type MissionsListProp = {
   canChooseGame?: boolean;
   missions?: PlayerMission[];
   loading?: boolean;
+  loadingUpdate?: boolean;
   handleUpdateMissions?: () => void;
 };
 
@@ -26,6 +27,7 @@ const MissionsList = ({
   handleUpdateMissions,
   canChooseGame,
   loading,
+  loadingUpdate
 }: MissionsListProp) => {
   return (
     <div className={s.missionsList}>

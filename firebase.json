@@ -8,13 +8,37 @@
     ],
     "rewrites": [
       {
+<<<<<<< HEAD
         "source": "/tournament/*/edit",
+=======
+        "source": "/tournament/*/edit$",
+>>>>>>> c97987610713f057c2ab0b79f509b80e905eb88b
         "destination": "/tournament/[id]/edit.html"
       },
       {
         "source": "/tournament/*/*",
         "destination": "/tournament/[id]/[...slug].html"
+<<<<<<< HEAD
       }
     ]
   }
 }
+=======
+      },
+      {
+        "source": "/tournament/1",
+        "destination": "/tournament/[id]/[...slug].html"
+      }
+    ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true,
+      "port": 9000
+    }
+  }
+}
+>>>>>>> c97987610713f057c2ab0b79f509b80e905eb88b

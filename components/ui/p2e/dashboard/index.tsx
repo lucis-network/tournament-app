@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import s from './dashboard.module.sass'
-import { Button, Col, Image, Row } from "antd"
+import { Button, Col, Image, message, Row } from "antd"
 import { GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION, useGetRecentMatches } from "../../../../hooks/p2e/useP2E";
 import { isEmpty } from "lodash";
 import moment from "moment";
@@ -41,7 +41,7 @@ const DailyMission = () => {
     }
   })
 
-  const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentMatches({
+  const { getRecentMatchesLoading, getRecentMatchesData, refetchRecentMatches } = useGetRecentMatches({
     game_uid: '03',
     offset: 1,
     limit: 5,
@@ -50,13 +50,15 @@ const DailyMission = () => {
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
-  const handleUpdateMissions = () => {
-    updateDailyMission()
-      .then(response => {
-        setDailyMission(response.data.updateDailyMission)
-      })
+  const handleUpdateMissions = async () => {
+    setLoading(true);
+    const dailyMissions = await updateDailyMission();
+    setDailyMission(dailyMissions.data.updateDailyMission)
+    await refetchRecentMatches()
     // refetchDailyMission()
-    refetch()
+    await refetch();
+    setLoading(false);
+    message.success("update successfully!");
   }
 
   useEffect(() => {
@@ -68,10 +70,6 @@ const DailyMission = () => {
 
   const loadMore = () => {
     setLengthShowMore(lengthShowMore + 5);
-  };
-
-  const loadingClaim = () => {
-    setLoading(true);
   };
 
   return (
@@ -97,15 +95,15 @@ const DailyMission = () => {
               <div className={s.recentMatchesList}>
                 {getRecentMatchesLoading ? <SpinLoading /> : (
                   !isEmpty(getRecentMatchesData?.getRecentlyMatch?.matches) && getRecentMatchesData?.getRecentlyMatch?.matches?.map((item, index) => {
-                    const endAt = moment.unix(item?.match?.end_at as number).fromNow()
+                    // const endAt = moment.unix(item?.match?.end_at as number).fromNow()
 
                     return (
                       <div className={s.recentMatchesItem} key={`${item?.match_uid}-${index}`}>
                         <div className={s.recentMatchesLogo}>
                           <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
                         </div>
-                        <div className={s.recentMatchReward}>1000 Lucis point</div>
-                        <div className={s.recentMatchReward}>100 Lucis token</div>
+                        <div className={s.recentMatchReward}>{item?.lucis_point} lucis point</div>
+                        {/* <div className={s.recentMatchReward}>100 Lucis token</div>
                         <div className={s.recentMatchScore}>{item?.match?.score}</div>
                         <div className={s.recentMatchTime}>{endAt}</div>
                         <div className={s.recentMatchActions}>
