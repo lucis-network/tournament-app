@@ -46,11 +46,11 @@ const MissionsList = ({
           </div>
           <div className={s.checkListMissionItem}>
             <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            <Checkbox checked />
+            <Checkbox />
           </div>
           <div className={s.checkListMissionItem}>
             <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            <Checkbox checked />
+            <Checkbox />
           </div>
         </div>
 
