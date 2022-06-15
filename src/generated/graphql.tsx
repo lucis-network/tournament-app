@@ -950,7 +950,8 @@ export type ClaimTransactionWhereUniqueInput = {
 export enum ClaimType {
   Donate = 'DONATE',
   PrizePool = 'PRIZE_POOL',
-  PrizeSystem = 'PRIZE_SYSTEM'
+  PrizeSystem = 'PRIZE_SYSTEM',
+  RefereeFee = 'REFEREE_FEE'
 }
 
 export type Config = {
@@ -1865,8 +1866,8 @@ export type Mission = {
   goal?: Maybe<Scalars['Decimal']>;
   img?: Maybe<Scalars['String']>;
   is_daily_mission: Scalars['Boolean'];
-  lucis_point: Scalars['Int'];
-  lucis_token?: Maybe<Scalars['Decimal']>;
+  level: MissionLevel;
+  level_id: Scalars['Int'];
   mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
   title?: Maybe<Scalars['String']>;
@@ -1922,8 +1923,7 @@ export type MissionCreateWithoutClaim_MissionInput = {
   goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
-  lucis_point: Scalars['Int'];
-  lucis_token?: InputMaybe<Scalars['Decimal']>;
+  level: MissionLevelCreateNestedOneWithoutMissionInput;
   mission_status?: InputMaybe<MissionStatus>;
   player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
   title?: InputMaybe<Scalars['String']>;
@@ -1940,8 +1940,7 @@ export type MissionCreateWithoutPlayer_MissionInput = {
   goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
-  lucis_point: Scalars['Int'];
-  lucis_token?: InputMaybe<Scalars['Decimal']>;
+  level: MissionLevelCreateNestedOneWithoutMissionInput;
   mission_status?: InputMaybe<MissionStatus>;
   title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<MissionType>;
@@ -1957,14 +1956,53 @@ export type MissionCreateWithoutUser_Daily_MissionInput = {
   goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
-  lucis_point: Scalars['Int'];
-  lucis_token?: InputMaybe<Scalars['Decimal']>;
+  level: MissionLevelCreateNestedOneWithoutMissionInput;
   mission_status?: InputMaybe<MissionStatus>;
   player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
   title?: InputMaybe<Scalars['String']>;
   type?: InputMaybe<MissionType>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type MissionLevel = {
+  __typename?: 'MissionLevel';
+  _count: MissionLevelCount;
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  level: Scalars['Int'];
+  lucis_point?: Maybe<Scalars['Int']>;
+  lucis_token?: Maybe<Scalars['Decimal']>;
+  mission?: Maybe<Array<Mission>>;
+  updated_at: Scalars['DateTime'];
+};
+
+export type MissionLevelCount = {
+  __typename?: 'MissionLevelCount';
+  mission: Scalars['Int'];
+};
+
+export type MissionLevelCreateNestedOneWithoutMissionInput = {
+  connect?: InputMaybe<MissionLevelWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MissionLevelCreateOrConnectWithoutMissionInput>;
+  create?: InputMaybe<MissionLevelCreateWithoutMissionInput>;
+};
+
+export type MissionLevelCreateOrConnectWithoutMissionInput = {
+  create: MissionLevelCreateWithoutMissionInput;
+  where: MissionLevelWhereUniqueInput;
+};
+
+export type MissionLevelCreateWithoutMissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  level: Scalars['Int'];
+  lucis_point?: InputMaybe<Scalars['Int']>;
+  lucis_token?: InputMaybe<Scalars['Decimal']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type MissionLevelWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export enum MissionStatus {
@@ -2005,6 +2043,7 @@ export type Mutation = {
   claimDonation?: Maybe<Scalars['Boolean']>;
   claimPrizePool?: Maybe<Scalars['Boolean']>;
   claimPrizeSystem?: Maybe<Scalars['Boolean']>;
+  claimRefereeFee?: Maybe<Scalars['Boolean']>;
   confirmResult?: Maybe<Scalars['Boolean']>;
   createTeam?: Maybe<Scalars['Boolean']>;
   createTournament?: Maybe<TournamentGql>;
@@ -2069,6 +2108,12 @@ export type MutationClaimPrizePoolArgs = {
 
 
 export type MutationClaimPrizeSystemArgs = {
+  address: Scalars['String'];
+  tournament_uid: Scalars['String'];
+};
+
+
+export type MutationClaimRefereeFeeArgs = {
   address: Scalars['String'];
   tournament_uid: Scalars['String'];
 };
