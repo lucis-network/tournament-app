@@ -1,6 +1,4 @@
 .container
-  border: 1px solid var(--line-color)
-  padding: 20px 40px
   :global(.ant-input-number-affix-wrapper .ant-input-number-input)
     background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     backdrop-filter: blur(4px)
@@ -29,12 +27,40 @@
     background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
     backdrop-filter: blur(4px)
     //border: 1px solid #FFF
-    padding: 0px
+    padding: 0
+    border-radius: 8px
+  :global(.ant-table table)
+    border-radius: 8px
+    border: none !important
+    th
+      border: 1px solid rgba(255, 255, 255, 0.2)
+      border-left: none !important
+      &:first-of-type
+        border-left: 1px solid rgba(255, 255, 255, 0.2) !important
+        border-top-left-radius: 8px !important
+      &:last-of-type
+        border-top-right-radius: 8px !important
+    td
+      background: none
+      &:first-of-type
+        border-left: 1px solid rgba(255, 255, 255, 0.2)
+    tbody
+      tr
+        &:nth-of-type(odd)
+          background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.2) 0.33%, rgba(11, 235, 214, 0.2) 99.88%)
+        &:last-of-type
+          td
+            &:first-of-type
+              border-bottom-left-radius: 8px !important
+            &:last-of-type
+              border-bottom-right-radius: 8px !important
+  :global(.ant-table-container)
+    border: none !important
   :global(.ant-table-thead > tr > th)
     color: #FFF
     font-size: 18px
     font-weight: 600
-    background: transparent
+    background: rgb(15 13 13 / 50%)
   :global(.ant-table-tbody > tr:last-child > td)
     //border: none
   :global(.ant-table-tbody > tr:hover > td)
@@ -44,3 +70,89 @@
   font-size: 14px
   margin-top: 4px
   color: #cb3636
+.initialPoolSizeWrap
+  display: flex
+  h4
+    font-size: 16px
+    color: #FFFFFF
+    margin-right: 45px
+    padding-top: 8px
+
+.formFieldBg
+  background: linear-gradient(90.32deg, rgba(255, 255, 255, 0.2) 0%, rgba(217, 217, 217, 0.04) 100%)
+  font-size: 18px
+  color: #ffffff
+  font-weight: 500
+  line-height: 1.15
+  padding: 12px 15px
+  border: none
+  width: 100%
+  border-radius: 4px
+  height: 40px
+  &.formFieldNumber
+    padding: 5px 10px
+    height: 40px
+    :global(.ant-input-number)
+      background: none
+      border: none
+      padding: 0
+      height: 100%
+    :global(.ant-input-number-input-wrap)
+      input
+        height: 100%
+        font-size: 18px
+        border: none
+        background: none
+  &.formFieldSelect
+    padding: 0
+    :global(.ant-select-selector)
+      background: none
+      border: none
+      padding: 5px 10px
+      height: 40px
+      :global(.ant-select-selection-item)
+        line-height: 1.6
+    :global(.ant-select-arrow)
+      background: url("/assets/iconCarretDown.svg") no-repeat center
+      background-size: contain
+      width: 13px
+      height: 13px
+      transform: translateY(-50%)
+      margin-top: 0
+      *
+        display: none
+  &.formFieldInitPoolSize
+    width: 200px
+    margin-right: 20px
+.btnAddRow
+  background: rgba(255, 255, 255, 0.2) !important
+  border: none
+.paidWrap
+  display: flex
+  margin-top: 25px
+  .fee
+    display: flex
+    align-items: center
+    margin-right: 15px
+    label
+      color: #ffffff
+      margin-right: 15px
+    .feeValue
+      background: linear-gradient(90.32deg, rgba(255, 255, 255, 0.2) 0%, rgba(217, 217, 217, 0.04) 100%)
+      color: rgba(255, 255, 255, 0.5)
+      width: 80px
+      height: 40px
+      display: flex
+      align-items: center
+      justify-content: center
+      border-radius: 4px
+  .totalPaid
+    margin-left: auto
+    color: #ffffff
+    font-size: 20px
+    font-weight: 500
+    display: flex
+    align-items: center
+.customQuill
+  :global(.ql-toolbar)
+    background: rgba(86, 84, 84, 0.5)

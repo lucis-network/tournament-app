@@ -24,23 +24,23 @@ const tiersDataInit: SponsorTierStore[] = [
     show_ads: false,
     slots: [new SponsorSlot(), new SponsorSlot()],
   }),
-  new SponsorTierStore(uniqueId('tier_'), "Silver", {
-    min_deposit: 0,
-    max_slot: 3,
-    show_logo: true,
-    show_name: false,
-    show_ads: false,
-
-    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
-  }),
-  new SponsorTierStore(uniqueId('tier_'), "Enthusiast", {
-    min_deposit: 0,
-    max_slot: 5,
-    show_logo: true,
-    show_name: false,
-    show_ads: false,
-    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
-  }),
+  // new SponsorTierStore(uniqueId('tier_'), "Silver", {
+  //   min_deposit: 0,
+  //   max_slot: 3,
+  //   show_logo: true,
+  //   show_name: false,
+  //   show_ads: false,
+  //
+  //   slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
+  // }),
+  // new SponsorTierStore(uniqueId('tier_'), "Enthusiast", {
+  //   min_deposit: 0,
+  //   max_slot: 5,
+  //   show_logo: true,
+  //   show_name: false,
+  //   show_ads: false,
+  //   slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
+  // }),
 ];
 
 sponsorStore.setState({

@@ -9,7 +9,7 @@ import {
   Form,
   message,
   Timeline,
-  Modal,
+  Modal, Image,
 } from "antd";
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
@@ -442,313 +442,83 @@ export default observer(function CreateTournament(props: Props) {
       <div className="pt-28 min-h-screen"></div>
       <Footer /> */}
       <DocHead title="Create new tournament" />
-      <div className="lucis-container-2">
+      <div className={`lucis-container-2 ${s.tournamentCreateContainer}`}>
         <div className={s.containerApp}>
-          <h2 className={s.pageTitle}>Create your tournament</h2>
-          <div className="">
-            <Row className={s.formItem}>
-              <Col xs={{ span: 24 }} md={{ span: 4 }}>
+          <div className={s.pageTitleWrapper}>
+            <h2 className={s.pageTitle}>Create your tournament</h2>
+            <button className={s.btnReset}>
+              <Image src="/assets/iconReload.svg" preview={false} alt="" />
+              <span>Reset value</span>
+            </button>
+          </div>
+          <div className={s.tournamentCreateSection}>
+            <div className={s.formRow}>
+              <div className={s.formCol}>
                 <label className={s.formLabel}>Name</label>
-              </Col>
-              <Col xs={{ span: 24 }} md={{ span: 20 }}>
-                <Input
-                  style={
-                    messageErrorName !== "" ? { borderColor: "#cb3636" } : {}
-                  }
-                  placeholder="Tournament name"
-                  onChange={(e) => {
-                    TournamentStore.name = e.target.value;
-                    checkValidateName(TournamentStore.name);
-                  }}
-                  required
-                  ref={inputRefName}
-                  onBlur={() => handleBlur("name")}
-                  value={TournamentStore.name}
-                  className={s.inputName}
-                />
-                <div className={s.message_error}>{messageErrorName}</div>
-              </Col>
-            </Row>
-            <Row className={`${s.formItem} ${s.formImgUpload}`}>
-              <Col xs={{ span: 24 }} md={{ span: 4 }}>
-                <label className={s.formLabel}>Cover (Banner)</label>
-              </Col>
-              <Col xs={{ span: 24 }} md={{ span: 20 }} lg={{ span: 10 }} xl={{ span: 12 }}>
-                <div className={s.coverUpload}>
-                  <UploadImage
-                    parentCallback={callbackFunction}
-                    value="cover"
-                    url={TournamentStore?.cover}
-                    className={`${s.imgUpload} ${TournamentStore?.cover ? s.imgUploaded : ''}`}
-                  />
-                  <p>Recommended size: 1600x400</p>
-                  <div className={s.message_error}>{messageErrorCover}</div>
-                </div>
-              </Col>
-              <Col xs={{ span: 24 }} md={{ span: 4 }} lg={{ span: 4 }} xl={{ span: 3 }}>
-                <label className={`lg:pl-3 xl:pl-5 ${s.formLabel}`}>Thumbnail</label>
-              </Col>
-              <Col xs={{ span: 24 }} md={{ span: 20 }} lg={{ span: 6 }} xl={{ span: 5 }}>
-                <div className={s.thumbnailUpload}>
-                  <UploadImage
-                    parentCallback={callbackFunction}
-                    value="thumbnail"
-                    url={TournamentStore?.thumbnail}
-                    className={`${s.imgUpload} ${TournamentStore?.thumbnail ? s.imgUploaded : ''}`}
-                  />
-                  <p>Recommended size: 450x300</p>
-                  <div className={s.message_error}>{messageErrorThumbnail}</div>
-                </div>
-              </Col>
-            </Row>
-            <Row className="pt-4">
-              <Col span={4}>
-                <p>Choose game</p>
-              </Col>
-              <Col span={8}>
-                <div className="flex flex-row">
-                  {dataChooseGame ? (
-                    <div className="flex flex-col items-center mr-15px ml-[10px]">
-                      {dataChooseGame["logo"] ? (
-                        <img
-                          width="50"
-                          height="50"
-                          src={dataChooseGame["logo"]}
-                          alt=""
-                        />
-                      ) : (
-                        <img
-                          width="50"
-                          height="50"
-                          src="/assets/avatar.jpg"
-                          alt=""
-                        />
-                      )}
-                      <p className="mt-5px">{dataChooseGame["name"]}</p>
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <Button onClick={() => openModal("choosegame")}>
-                    Choose game
-                  </Button>
-                </div>
-                <div className={s.message_error}>{messageErrorChoosegame}</div>
-              </Col>
-              <Col span={4}>
-                <p className="ml-[10px]">Bracket type</p>
-              </Col>
-              <Col span={8}>
-                <Radio.Group
-                  value={TournamentStore.bracket_type}
-                  className={s.bracketType}
-                  onChange={(e) => {
-                    TournamentStore.bracket_type = e.target.value;
-                    setMessageErrorBracketType("");
-                    setMessageErrorTimeline("");
-                  }}
-                >
-                  {BracketType.map((item, index) => {
-                    return item.value !== "BATTLE_ROYALE" ? (
-                      <Radio
-                        value={item.value}
-                        key={index}
-                        className={s.textColor}
-                      >
-                        {item.label}
-                      </Radio>
-                    ) : (
-                      <Radio
-                        value={item.value}
-                        key={index}
-                        className={s.textColor}
-                        disabled
-                      >
-                        {item.label}
-                      </Radio>
-                    );
-                  })}
-                  <div className={s.message_error}>
-                    {messageErrorBracketType}
-                  </div>
-                </Radio.Group>
-              </Col>
-            </Row>
-            <Row className="pt-4">
-              <Col span={4}>
-                <p>Teamsize</p>
-              </Col>
-              <Col span={4}>
-                <InputNumber
-                  style={
-                    messageErrorTeamSize !== ""
-                      ? { borderColor: "#cb3636" }
-                      : {}
-                  }
-                  placeholder="Team size"
-                  ref={inputRef}
-                  onChange={(value: any) => {
-                    TournamentStore.team_size = value;
-                    if (TournamentStore.team_size) setMessageErrorTeamSize("");
-                  }}
-                  onBlur={() => handleBlur("teamsize")}
-                  min={1}
-                  value={TournamentStore.team_size}
-                />
-                <div className={s.message_error}>{messageErrorTeamSize}</div>
-              </Col>
-              <Col span={4}></Col>
-              <Col span={4}>
-                <p className="ml-[10px]">Numbers of participants</p>
-              </Col>
-              <Col span={8}>
-                <Select
-                  value={TournamentStore.participants}
-                  defaultValue={TournamentStore.participants}
-                  style={{ width: 150 }}
-                  onChange={(value) => {
-                    TournamentStore.participants = value;
-                    TournamentStore.bracket_type = undefined;
-                    if (
-                      TournamentStore.participants / 2 <
-                      TournamentStore.referees.length
-                    ) {
-                      setMessageErrorReferee(
-                        `You can choose max ${
-                          TournamentStore.participants / 2
-                        } participant(s)`
-                      );
-                    } else {
-                      setMessageErrorReferee("");
+                <div className={s.formContent}>
+                  <Input
+                    style={
+                      messageErrorName !== "" ? { borderColor: "#cb3636" } : {}
                     }
-                  }}
-                >
-                  {Participants.map((item, index) => {
-                    return (
-                      <Option value={item} key={index}>
-                        {item}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </Col>
-            </Row>
-            <Row className="pt-4">
-              <Col span={4}>
-                <p>Timeline</p>
-              </Col>
-              <Col span={8}>
-                <Button onClick={checkOpenModalTimeLine}>Setup Timeline</Button>
-                <div className={`${s.message_error} ml-[10px]`}>
-                  {messageErrorTimeline}
+                    placeholder="Tournament name"
+                    onChange={(e) => {
+                      TournamentStore.name = e.target.value;
+                      checkValidateName(TournamentStore.name);
+                    }}
+                    required
+                    ref={inputRefName}
+                    onBlur={() => handleBlur("name")}
+                    value={TournamentStore.name}
+                    className={s.formFieldBg}
+                  />
+                  <div className={s.message_error}>{messageErrorName}</div>
                 </div>
-              </Col>
-              <Col span={4}>
-                <p className="ml-[10px]">Best of for all rounds</p>
-              </Col>
-              <Col span={8}>
-                <Select
-                  defaultValue={TournamentStore.turns}
-                  style={{ width: 150 }}
-                  onChange={(value) => {
-                    TournamentStore.turns = value;
-                  }}
-                  value={TournamentStore.turns}
-                >
-                  {Rounds.map((item, index) => {
-                    return (
-                      <Option value={item} key={index}>
-                        {item}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </Col>
-            </Row>
-            <Row className="pt-4">
-              <Col span={4}>
-                <p>Entry</p>
-              </Col>
-              <Col span={8}>
-                <Radio.Group
-                  defaultValue={TournamentStore.join_fee}
-                  className={s.bracketType}
-                  onChange={(e) => {
-                    TournamentStore.join_fee = e.target.value;
-                  }}
-                >
-                  <Radio value={0} className={s.textColor}>
-                    Free
-                  </Radio>
-                  <Radio
-                    value={1}
-                    className={`${s.textColor} ${s.textColor1}`}
-                    disabled
-                  >
-                    <div className={`${s.radioFee}`}>
-                      <p className="">With Fee</p>
-                      {/* <Input
-                        placeholder="Input Fee"
-                        disabled={TournamentStore.join_fee == 0 ? true : false}
-                      /> */}
-                    </div>
-                  </Radio>
-                </Radio.Group>
-              </Col>
-
-              <Col span={4}>
-                <p className="ml-[10px]">Region</p>
-              </Col>
-              <Col span={8}>
-                <Select
-                  value={TournamentStore.regions[0]}
-                  defaultValue={"Global"}
-                  style={{ width: 200 }}
-                  onChange={(value) => {
-                    TournamentStore.regions[0] = value;
-                  }}
-                >
-                  {getDataRegions?.map((item: any, index: number) => {
-                    return (
-                      <Option value={item.uid} key={index}>
-                        {item.name}
-                      </Option>
-                    );
-                  })}
-                </Select>
-              </Col>
-            </Row>
-            <Row className="pt-4">
-              <Col span={4} className={s.textColor}>
-                Discord link
-              </Col>
-              <Col span={6}>
-                <Input
-                  value={TournamentStore.discord}
-                  type="text"
-                  placeholder="Discord link"
-                  onChange={(e) => {
-                    TournamentStore.discord = e.target.value;
-                  }}
-                  max={32}
-                  style={{ borderColor: "var(--line-color)" }}
-                />
-              </Col>
-              <Col span={2}></Col>
-              <Col span={12}>
-                <p className="ml-[10px]">Referee(s)</p>
-                <div className="flex flex-row">
-                  {dataReferees?.map((item: any, index: number) => {
-                    return (
-                      <div
-                        className="flex flex-col items-center mr-15px"
-                        key={index}
-                      >
-                        {item?.profile?.avatar ? (
+              </div>
+            </div>
+            <div className={`${s.formRow} ${s.formImgUpload}`}>
+              <div className={`${s.formCol} ${s.formColLeft}`}>
+                <label className={s.formLabel}>Cover (Banner)</label>
+                <div className={s.formContent}>
+                  <div className={s.coverUpload}>
+                    <UploadImage
+                      parentCallback={callbackFunction}
+                      value="cover"
+                      url={TournamentStore?.cover}
+                      className={`${s.imgUpload} ${TournamentStore?.cover ? s.imgUploaded : ''}`}
+                    />
+                    <p className={s.recommendedSize}>Recommended size: 1600x400</p>
+                    <div className={s.message_error}>{messageErrorCover}</div>
+                  </div>
+                </div>
+              </div>
+              <div className={`${s.formCol} ${s.formColRight}`}>
+                <label className={s.formLabel}>Thumbnail</label>
+                <div className={s.formContent}>
+                  <div className={s.thumbnailUpload}>
+                    <UploadImage
+                      parentCallback={callbackFunction}
+                      value="thumbnail"
+                      url={TournamentStore?.thumbnail}
+                      className={`${s.imgUpload} ${TournamentStore?.thumbnail ? s.imgUploaded : ''}`}
+                    />
+                    <p className={s.recommendedSize}>Recommended size: 450x300</p>
+                    <div className={s.message_error}>{messageErrorThumbnail}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={s.formRow}>
+              <div className={`${s.formCol} ${s.formColLeft}`}>
+                <label className={s.formLabel}>Choose game</label>
+                <div className={s.formContent}>
+                  <div className={s.chooseGameWrap}>
+                    {dataChooseGame ? (
+                      <div className="flex flex-col items-center mr-15px ml-[10px]">
+                        {dataChooseGame["logo"] ? (
                           <img
                             width="50"
                             height="50"
-                            src={item?.profile?.avatar}
+                            src={dataChooseGame["logo"]}
                             alt=""
                           />
                         ) : (
@@ -759,36 +529,268 @@ export default observer(function CreateTournament(props: Props) {
                             alt=""
                           />
                         )}
-                        <p className="mt-5px">{item?.profile?.display_name}</p>
+                        <p className="mt-5px">{dataChooseGame["name"]}</p>
                       </div>
-                    );
-                  })}
-                  <Button
-                    className="ml-[10px]"
-                    onClick={() => openModal("referee")}
+                    ) : (
+                      ""
+                    )}
+                    <Button
+                      onClick={() => openModal("choosegame")}
+                      className={s.btnChooseGame}
+                    >
+                      <Image src="/assets/iconPlusRounded.svg" preview={false} alt="" />
+                    </Button>
+                  </div>
+                  <div className={s.message_error}>{messageErrorChoosegame}</div>
+                </div>
+              </div>
+              <div className={`${s.formCol} ${s.formColRight}`}>
+                <label className={s.formLabel}>Bracket type</label>
+                <div className={s.formContent}>
+                  <Radio.Group
+                    value={TournamentStore.bracket_type}
+                    className={s.bracketType}
+                    onChange={(e) => {
+                      TournamentStore.bracket_type = e.target.value;
+                      setMessageErrorBracketType("");
+                      setMessageErrorTimeline("");
+                    }}
                   >
-                    + Add
-                  </Button>
+                    {BracketType.map((item, index) => {
+                      return item.value !== "BATTLE_ROYALE" ? (
+                        <Radio
+                          value={item.value}
+                          key={index}
+                          className={s.textColor}
+                        >
+                          {item.label}
+                        </Radio>
+                      ) : (
+                        <Radio
+                          value={item.value}
+                          key={index}
+                          className={s.textColor}
+                          disabled
+                        >
+                          {item.label}
+                        </Radio>
+                      );
+                    })}
+                    <div className={s.message_error}>
+                      {messageErrorBracketType}
+                    </div>
+                  </Radio.Group>
+                </div>
+              </div>
+            </div>
+            <div className={s.formRow}>
+              <div className={`${s.formCol} ${s.formColLeft}`}>
+                <label className={s.formLabel}>Teamsize</label>
+                <div className={s.formContent}>
+                  <InputNumber
+                    style={
+                      messageErrorTeamSize !== ""
+                        ? { borderColor: "#cb3636" }
+                        : {}
+                    }
+                    placeholder="Team size"
+                    ref={inputRef}
+                    onChange={(value: any) => {
+                      TournamentStore.team_size = value;
+                      if (TournamentStore.team_size) setMessageErrorTeamSize("");
+                    }}
+                    onBlur={() => handleBlur("teamsize")}
+                    min={1}
+                    value={TournamentStore.team_size}
+                    className={`${s.formFieldBg} ${s.formFieldNumber}`}
+                    controls={false}
+                  />
+                  <div className={s.message_error}>{messageErrorTeamSize}</div>
+                </div>
+              </div>
+              <div className={`${s.formCol} ${s.formColRight}`}>
+                <label className={`${s.formLabel} ${s.formLabelWider}`}>Numbers of participants</label>
+                <div className={s.formContent}>
+                  <Select
+                    value={TournamentStore.participants}
+                    defaultValue={TournamentStore.participants}
+                    onChange={(value) => {
+                      TournamentStore.participants = value;
+                      TournamentStore.bracket_type = undefined;
+                      if (
+                        TournamentStore.participants / 2 <
+                        TournamentStore.referees.length
+                      ) {
+                        setMessageErrorReferee(
+                          `You can choose max ${
+                            TournamentStore.participants / 2
+                          } participant(s)`
+                        );
+                      } else {
+                        setMessageErrorReferee("");
+                      }
+                    }}
+                    className={`${s.formFieldBg} ${s.formFieldSelect}`}
+                  >
+                    {Participants.map((item, index) => {
+                      return (
+                        <Option value={item} key={index}>
+                          {item}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className={s.formRow}>
+              <div className={`${s.formCol} ${s.formColLeft}`}>
+                <label className={s.formLabel}>Timeline</label>
+                <div className={s.formContent}>
+                  <Button onClick={checkOpenModalTimeLine} className={s.btnTimeline}>Setup Timeline</Button>
+                  <div className={`${s.message_error} ml-[10px]`}>
+                    {messageErrorTimeline}
+                  </div>
+                </div>
+              </div>
+              <div className={`${s.formCol} ${s.formColRight}`}>
+                <label className={`${s.formLabel} ${s.formLabelWider}`}>Best of for all rounds</label>
+                <div className={s.formContent}>
+                  <Select
+                    defaultValue={TournamentStore.turns}
+                    onChange={(value) => {
+                      TournamentStore.turns = value;
+                    }}
+                    value={TournamentStore.turns}
+                    className={`${s.formFieldBg} ${s.formFieldSelect}`}
+                  >
+                    {Rounds.map((item, index) => {
+                      return (
+                        <Option value={item} key={index}>
+                          {item}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className={s.formRow}>
+              <div className={`${s.formCol} ${s.formColLeft}`}>
+                <label className={s.formLabel}>Entry</label>
+                <div className={s.formContent}>
+                  <Radio.Group
+                    defaultValue={TournamentStore.join_fee}
+                    className={s.bracketType}
+                    onChange={(e) => {
+                      TournamentStore.join_fee = e.target.value;
+                    }}
+                  >
+                    <Radio value={0} className={s.textColor}>
+                      Free
+                    </Radio>
+                    <Radio
+                      value={1}
+                      className={`${s.textColor} ${s.textColor1}`}
+                      disabled
+                    >
+                      <div className={`${s.radioFee}`}>
+                        With Fee
+                        {/* <Input
+                        placeholder="Input Fee"
+                        disabled={TournamentStore.join_fee == 0 ? true : false}
+                      /> */}
+                      </div>
+                    </Radio>
+                  </Radio.Group>
+                </div>
+              </div>
+              <div className={`${s.formCol} ${s.formColRight}`}>
+                <label className={`${s.formLabel} ${s.formLabelWider}`}>Region</label>
+                <div className={s.formContent}>
+                  <Select
+                    value={TournamentStore.regions[0]}
+                    defaultValue={"Global"}
+                    onChange={(value) => {
+                      TournamentStore.regions[0] = value;
+                    }}
+                    className={`${s.formFieldBg} ${s.formFieldSelect}`}
+                  >
+                    {getDataRegions?.map((item: any, index: number) => {
+                      return (
+                        <Option value={item.uid} key={index}>
+                          {item.name}
+                        </Option>
+                      );
+                    })}
+                  </Select>
+                </div>
+              </div>
+            </div>
+            <div className={s.formRow}>
+              <div className={`${s.formCol} ${s.formColLeft}`}>
+                <label className={s.formLabel}>Discord link</label>
+                <div className={s.formContent}>
+                  <Input
+                    value={TournamentStore.discord}
+                    type="text"
+                    placeholder="Discord link"
+                    onChange={(e) => {
+                      TournamentStore.discord = e.target.value;
+                    }}
+                    max={32}
+                    style={{ borderColor: "var(--line-color)" }}
+                    className={s.formFieldBg}
+                  />
+                </div>
+              </div>
+              <div className={`${s.formCol} ${s.formColRight}`}>
+                <label className={s.formLabel}>Referee(s)</label>
+                <div className={s.formContent}>
+                  <div className={s.refereeWrap}>
+                    <div className={s.refereeList}>
+                      {dataReferees?.map((item: any, index: number) => {
+                        return (
+                          <div
+                            className={s.refereeItem}
+                            key={index}
+                          >
+                            <img
+                              src={item?.profile?.avatar ? item?.profile?.avatar : "/assets/defaultAvatar.svg"}
+                              alt=""
+                              className={s.refereeAvt}
+                            />
+                            <p className={s.refereeName}>{item?.profile?.display_name}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <Button
+                      className={s.btnAddReferee}
+                      onClick={() => openModal("referee")}
+                    >
+                      <Image src="/assets/iconPlusRounded.svg" preview={false} alt="" />
+                    </Button>
+                  </div>
                 </div>
                 <div className={`${s.message_error} ml-[10px]`}>
                   {messageErrorReferee}
                 </div>
-              </Col>
-            </Row>
+              </div>
+            </div>
           </div>
-          <div>
-            <p id="prizing" className="text-30px mt-20px">
+          <div className={s.tournamentCreateSection}>
+            <h3 id="prizing" className={s.sectionTitle}>
               Prizing
-            </p>
+            </h3>
             <Prizing
               checkPoolSize={checkPoolSize}
               checkCurrency={checkCurrency}
             ></Prizing>
           </div>
-
-          <div>
-            <p className="text-30px mt-20px">Tournament Overview</p>
-            <div style={{ minHeight: 50, color: "white" }}>
+          <div className={s.tournamentCreateSection}>
+            <h3 id="prizing" className={s.sectionTitle}>Tournament Overview</h3>
+            <div style={{ minHeight: 50, color: "white" }} className={s.customQuill}>
               {/* @ts-ignore */}
               <ReactQuill
                 theme="snow"
@@ -798,10 +800,7 @@ export default observer(function CreateTournament(props: Props) {
                 }}
               />
             </div>
-          </div>
-
-          <div>
-            <p className="text-30px mt-20px">Rules</p>
+            <h3 className={s.sectionTitle}>Rules</h3>
             <div style={{ minHeight: 50, color: "white" }}>
               {/* @ts-ignore */}
               <ReactQuill
@@ -813,9 +812,8 @@ export default observer(function CreateTournament(props: Props) {
               />
             </div>
           </div>
-
-          <div>
-            <p className="text-30px mt-20px">Sponsor</p>
+          <div className={s.tournamentCreateSection}>
+            <h3 className={s.sectionTitle}>Sponsor</h3>
             <Sponsor />
           </div>
 

@@ -64,9 +64,7 @@ export default observer(function UploadImage(props: Props) {
         props.parentCallback(str, props.value);
       });
   };
-  useEffect(() => {
-    console.log(`[${props.value}] url: `, url);
-  }, [url])
+
   useEffect(() => {
     if (props.value == "cover" && TournamentStore.cover) {
       setUrl(TournamentStore.cover);
@@ -90,16 +88,20 @@ export default observer(function UploadImage(props: Props) {
           }}
           onClick={() => inputUpload?.current?.click()}
         />
-        <p
-          style={{
-            color: "white",
-            textAlign: "center",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-          }}
-        >
-          {url.slice(LINK_URL.length, url.length)}
-        </p>
+        {url && (
+          <p
+            style={{
+              color: "rgba(255, 255, 255, 0.7)",
+              textAlign: "center",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              marginBottom: 5,
+              fontStyle: "italic"
+            }}
+          >
+            {url.slice(LINK_URL.length, url.length)}
+          </p>
+        )}
         <input
           //style={{ display: "none" }}
           type="file"

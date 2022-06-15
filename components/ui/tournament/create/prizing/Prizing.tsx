@@ -425,59 +425,58 @@ export default observer(function Prizing(props: Props) {
 
   return (
     <div className={s.container}>
-      <div>
-        <p>Initial pool size</p>
-        <Row>
-          <Col span={3}>
-            <InputNumber
-              type="number"
-              prefix="$"
-              style={{ width: "99%" }}
-              //min={1}
-              placeholder="20,000"
-              onChange={onChange}
-              ref={inputRef}
-              onBlur={() => handleBlur()}
-              // value={
-              //   TournamentStore.pool_size
-              //     ? TournamentStore.pool_size
-              //     : undefined
-              // }
-              value={poolSize}
-            />
-            <div className={s.message_error}>{messageErrorPoolSize}</div>
-          </Col>
-          <Col span={3}>
-            <Select
-              defaultValue={
-                TournamentStore.currency_uid
-                  ? TournamentStore.currency_uid
-                  : "Choose currency"
-              }
-              onChange={(value) => {
-                setChain(value);
-                let obj = getDataCurrencies?.filter((item: any) => {
-                  return item.uid == value;
-                });
-                setSymbol(obj[0]?.symbol);
-                setMessageErrorCurrency("");
-                TournamentStore.currency_uid = obj[0]?.uid;
-                TournamentStore.currency_symbol = obj[0]?.symbol;
-                TournamentStore.currency_address = obj[0]?.address;
-              }}
-              style={{ minWidth: "150px" }}
-            >
-              {getDataCurrencies?.map((item: any, index: number) => {
-                return (
-                  <Option value={item.uid} key={index}>
-                    {item.symbol}
-                  </Option>
-                );
-              })}
-            </Select>
-            <div className={s.message_error}>{messageErrorCurrency}</div>
-          </Col>
-        </Row>
+      <div className={s.initialPoolSizeWrap}>
+        <h4>Initial pool size</h4>
+        <div className={s.inputPoolSizeWrap}>
+          <InputNumber
+            type="number"
+            prefix="$"
+            //min={1}
+            placeholder="20,000"
+            onChange={onChange}
+            ref={inputRef}
+            onBlur={() => handleBlur()}
+            // value={
+            //   TournamentStore.pool_size
+            //     ? TournamentStore.pool_size
+            //     : undefined
+            // }
+            value={poolSize}
+            controls={false}
+            className={`${s.formFieldBg} ${s.formFieldNumber} ${s.formFieldInitPoolSize}`}
+          />
+          <div className={s.message_error}>{messageErrorPoolSize}</div>
+        </div>
+        <div className={s.poolSizeCurrencyWrap}>
+          <Select
+            defaultValue={
+              TournamentStore.currency_uid
+                ? TournamentStore.currency_uid
+                : "Choose currency"
+            }
+            onChange={(value) => {
+              setChain(value);
+              let obj = getDataCurrencies?.filter((item: any) => {
+                return item.uid == value;
+              });
+              setSymbol(obj[0]?.symbol);
+              setMessageErrorCurrency("");
+              TournamentStore.currency_uid = obj[0]?.uid;
+              TournamentStore.currency_symbol = obj[0]?.symbol;
+              TournamentStore.currency_address = obj[0]?.address;
+            }}
+            className={`${s.formFieldBg} ${s.formFieldSelect}`}
+          >
+            {getDataCurrencies?.map((item: any, index: number) => {
+              return (
+                <Option value={item.uid} key={index}>
+                  {item.symbol}
+                </Option>
+              );
+            })}
+          </Select>
+          <div className={s.message_error}>{messageErrorCurrency}</div>
+        </div>
       </div>
 
       <div className="pt-4">
@@ -493,8 +492,8 @@ export default observer(function Prizing(props: Props) {
         />
         <Row style={{ marginTop: 16 }}>
           <Col span={8}>
-            <Button onClick={handleAdd} type="primary">
-              Add a row
+            <Button onClick={handleAdd} className={s.btnAddRow}>
+              + more
             </Button>
           </Col>
           <Col span={2}></Col>
@@ -507,41 +506,16 @@ export default observer(function Prizing(props: Props) {
           </Col>
         </Row>
       </div>
-
-      <div className="pt-4">
-        <Row>
-          <Col span={3}>
-            <p>Lucis fee</p>
-          </Col>
-          <Col span={2}></Col>
-          <Col span={3}>
-            <p>Referees fee</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={3}>
-            <span style={{ color: "white" }}>
-              {" "}
-              {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0} %
-            </span>
-          </Col>
-          <Col span={2}></Col>
-          <Col span={3}>
-            <span style={{ color: "white" }}>
-              {" "}
-              {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0} %
-            </span>
-          </Col>
-          <Col span={10}></Col>
-          <Col span={6}>
-            <p style={{ fontSize: "larger" }}>
-              Total paid:{" "}
-              <b style={{ color: "orange" }}>
-                {totalPool()} {symbol}
-              </b>
-            </p>
-          </Col>
-        </Row>
+      <div className={s.paidWrap}>
+        <div className={s.fee}>
+          <label>Lucis fee</label>
+          <div className={s.feeValue}>$ {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0} %</div>
+        </div>
+        <div className={s.fee}>
+          <label>Referees fee</label>
+          <div className={s.feeValue}>$ {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0} %</div>
+        </div>
+        <div className={s.totalPaid}>Total paid: {totalPool()} {symbol}</div>
       </div>
     </div>
   );
