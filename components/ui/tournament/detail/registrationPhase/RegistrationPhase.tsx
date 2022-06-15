@@ -280,36 +280,40 @@ export default observer(function RegistrationPhase(props: Props) {
                 preview={false}
               />
             </div>
-            <div className={s.itemText}>
-              <h3>
-                {dataUpdateTotalPrizePool
-                  ? fomatNumber(dataUpdateTotalPrizePool?.total_prize_pool)
-                  : fomatNumber(totalPrizePool)}{" "}
-                {currency.symbol}
-              </h3>
-              <p>PRIZE POOL</p>
-            </div>
-            <div className={`${s.additionalInfo} ${s.additionalPrize}`}>
-              {additionPrize ? (
-                additionPrize > 0 ? (
-                  <>
-                    <h4>Additional prizes:</h4>
-                    <p>
-                      <Image
-                        src="/assets/TournamentDetail/goldCupSmall.svg"
-                        preview={false}
-                        alt=""
-                      />
-                      {fomatNumber(Number.parseFloat(additionPrize))} LUCIS
-                      token
-                    </p>
-                  </>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div>
+                <div className={s.itemText}>
+                  <h3>
+                    {dataUpdateTotalPrizePool
+                      ? fomatNumber(dataUpdateTotalPrizePool?.total_prize_pool)
+                      : fomatNumber(totalPrizePool)}{" "}
+                    {currency.symbol}
+                  </h3>
+                  <p>PRIZE POOL</p>
+                </div>
+                <div className={`${s.additionalInfo} ${s.additionalPrize}`}>
+                  {additionPrize ? (
+                    additionPrize > 0 ? (
+                      <>
+                        <h4>Additional prizes:</h4>
+                        <p>
+                          <Image
+                            src="/assets/TournamentDetail/goldCupSmall.svg"
+                            preview={false}
+                            alt=""
+                          />
+                          {fomatNumber(Number.parseFloat(additionPrize))} LUCIS
+                          token
+                        </p>
+                      </>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <div className={s.item}>
@@ -335,7 +339,7 @@ export default observer(function RegistrationPhase(props: Props) {
                   <Image
                     src="/assets/TournamentDetail/iconDonate.svg"
                     preview={false}
-                    alt=""  
+                    alt=""
                   />
                   <span className="ml-2">Donate</span>
                 </button>
@@ -348,7 +352,7 @@ export default observer(function RegistrationPhase(props: Props) {
                 <span className={s.itemTitle}>PARTICIPANTS</span>
                 <div className={s.itemImg}>
                   <Image
-                    src="/assets/TournamentDetail/participants.svg"
+                    src="/assets/TournamentDetail/participant.svg"
                     alt=""
                     preview={false}
                   />
@@ -370,7 +374,7 @@ export default observer(function RegistrationPhase(props: Props) {
                 <div className={s.itemClosed}>
                   <div className={s.itemImgClosed}>
                     <Image
-                      src="/assets/TournamentDetail/participants.svg"
+                      src="/assets/TournamentDetail/participant.svg"
                       alt=""
                       preview={false}
                     />{" "}
@@ -560,7 +564,7 @@ export default observer(function RegistrationPhase(props: Props) {
                       <div className={s.countdownWrap}>
                         <p className="mb-0">
                           <span className={s.countdownRegistration}>
-                            Registration phase will ends in {" "}
+                            Registration phase will ends in{" "}
                           </span>
                           <CountdownTimer targetDate={timeRegistration} />
                         </p>
