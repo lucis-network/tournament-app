@@ -520,7 +520,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
               </div>
-              <div className={`${s.formRow} ${s.formRowFlex}`}>
+              <div className={`${s.formRow} ${s.formRowFlex} ${s.formChooseGame}`}>
                 <div className={`${s.formCol} ${s.formColLeft}`}>
                   <label className={s.formLabel}>Choose game</label>
                   <div className={s.formContent}>
@@ -627,7 +627,7 @@ export default observer(function CreateTournament(props: Props) {
                   </div>
                 </div>
                 <div className={`${s.formCol} ${s.formColRight}`}>
-                  <label className={`${s.formLabel} ${s.formLabelWider}`}>Numbers of participants</label>
+                  <label className={`${s.formLabel} ${s.formLabelWider}`}>Number of participants</label>
                   <div className={s.formContent}>
                     <Select
                         value={TournamentStore.participants}
@@ -872,7 +872,9 @@ export default observer(function CreateTournament(props: Props) {
                   min={4}
                   className={s.formFieldBg}
                 />
-                <div className={s.message_error}>{messageErrorPassword}</div>
+                {messageErrorPassword && (
+                  <div className={s.message_error}>{messageErrorPassword}</div>
+                )}
               </div>
             </div>
             <div className="mt-100px text-center pb-100px">
