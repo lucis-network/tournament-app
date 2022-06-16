@@ -514,7 +514,7 @@ body .backdrop-blur-sm {
   ); */
 }
 
-.ant-modal-root .ant-modal-content {
+.ant-modal-root .ant-modal {
   /*background: rgb(47 33 102);*/
   background: linear-gradient(
     126.08deg,
@@ -530,6 +530,10 @@ body .backdrop-blur-sm {
   color: white;
 }
 
+.ant-modal-content {
+  background: none !important;
+  box-shadow: none !important;
+}
 .ant-modal-content .ant-modal-header {
   background: transparent;
   box-shadow: none;
@@ -595,8 +599,22 @@ body .ant-modal-footer {
 .ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {
 }
 
+.ant-popover {
+  background: rgba(123, 123, 123, 0.2);
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 10px;
+  color: white;
+  padding-top: 0 !important;
+  margin-top: -20px;
+}
+.ant-popover-content .ant-popover-inner {
+  background: none
+}
+
 /*Same style as modal content */
-.ant-popover-content .ant-popover-inner:before {
+.ant-popover:before {
   content: "";
 
   position: absolute;
@@ -623,15 +641,6 @@ body .ant-modal-footer {
   /*  #c1d8f8 100%*/
   /*);*/
   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
-}
-
-.ant-popover-content .ant-popover-inner {
-  background: rgba(123, 123, 123, 0.2);
-  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(20px);
-  /* Note: backdrop-filter has minimal browser support */
-  border-radius: 10px;
-  color: white;
 }
 
 /* .ant-popover-inner-content a,
