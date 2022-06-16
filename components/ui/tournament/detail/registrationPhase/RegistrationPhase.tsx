@@ -259,9 +259,7 @@ export default observer(function RegistrationPhase(props: Props) {
   }, [TournamentStore.checkBacktoTournament == true]);
 
   useEffect(() => {
-    console.log(dataPrize,dataSystemPrize,totalFromDonation)
     if(isEmpty(dataPrize) && isEmpty(dataSystemPrize) && totalFromDonation == 0){
-      //console.log("vao day");
       setCheckClaim(true);
     }
   }, [dataPrize,dataSystemPrize,totalFromDonation])
