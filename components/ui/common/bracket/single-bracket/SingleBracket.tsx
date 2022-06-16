@@ -12,6 +12,7 @@ import s from "../index.module.sass";
 import TournamentStore from "src/store/TournamentStore";
 import moment from "moment";
 import { range } from "lodash";
+import {handleDatepickerScroll} from "../double-bracket/DoubleBracket";
 
 interface RoundNewProps extends RoundProps {
   title: any;
@@ -65,6 +66,7 @@ const createRounds = ({
           showTime
           onChange={(date, dateString) => handleSelectDate('single', date, dateString, i, roundName)}
           inputReadOnly={true}
+          onOpenChange={(open: boolean) => handleDatepickerScroll(open)}
         />
       </div>
     );

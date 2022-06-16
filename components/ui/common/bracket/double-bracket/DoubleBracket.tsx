@@ -13,6 +13,7 @@ import FinalBracket from "./FinalBracket";
 import { DatePicker } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import { round } from "lodash";
+import {isClient} from "../../../../../utils/Env";
 
 type Props = {
   numWinRounds: number | string;
@@ -25,6 +26,21 @@ const createSeed = () => {
     teams: [{ name: null }, { name: null }],
   };
 };
+
+export const handleDatepickerScroll = (open: boolean) => {
+  if (!isClient) return
+  const modal = document.querySelector<HTMLElement>('.ant-modal-wrap')
+  const modalBodyOffset = document.querySelector<HTMLElement>('.ant-modal-body')?.getBoundingClientRect()
+  if (!modal) return
+  if (open) {
+    if (modalBodyOffset && modalBodyOffset.top > 100) {
+      modal.scrollBy(0, 150)
+    }
+    modal.style.overflow = 'hidden'
+  } else {
+    modal.style.overflow = 'auto'
+  }
+}
 
 const createWinRounds = ({
   numWinRounds,
@@ -48,6 +64,7 @@ const createWinRounds = ({
             handleSelectDate('double', date, dateString, i, roundName, "upper")
           }
           inputReadOnly={true}
+          onOpenChange={(open: boolean) => handleDatepickerScroll(open)}
         />
       </div>
     );
@@ -87,6 +104,7 @@ const createLoseRounds = ({
             handleSelectDate('double', date, dateString, i, roundName, "lower")
           }
           inputReadOnly={true}
+          onOpenChange={(open: boolean) => handleDatepickerScroll(open)}
         />
       </div>
     );
@@ -138,6 +156,7 @@ const DoubleBracket = ({
               handleSelectDate('double', date, dateString, 0, "Final")
             }
             inputReadOnly={true}
+            onOpenChange={(open: boolean) => handleDatepickerScroll(open)}
           />
         </div>
       ),
