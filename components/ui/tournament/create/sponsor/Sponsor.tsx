@@ -14,7 +14,7 @@ const tiersDataInit: SponsorTierStore[] = [
     show_ads: false,
     show_logo: true,
     show_name: true,
-    slots: [new SponsorSlot()],
+    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
   }),
   new SponsorTierStore(uniqueId('tier_'), "Gold", {
     min_deposit: 0,
@@ -22,7 +22,7 @@ const tiersDataInit: SponsorTierStore[] = [
     show_logo: true,
     show_name: false,
     show_ads: false,
-    slots: [new SponsorSlot(), new SponsorSlot()],
+    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
   }),
   // new SponsorTierStore(uniqueId('tier_'), "Silver", {
   //   min_deposit: 0,
