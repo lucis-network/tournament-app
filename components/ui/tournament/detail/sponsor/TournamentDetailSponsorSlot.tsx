@@ -35,7 +35,7 @@ export default function TournamentDetailSponsorSlot(
           )}
           {index === 0 && (
             <img
-              src={"/assets/logo369-np.png"}
+              src={"/assets/home/logo.png"}
               className={s.sponsorLogo}
             ></img>
           )}

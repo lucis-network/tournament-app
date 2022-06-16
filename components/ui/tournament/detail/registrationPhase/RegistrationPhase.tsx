@@ -475,7 +475,6 @@ export default observer(function RegistrationPhase(props: Props) {
                                         className={`${s.btnClaim}`}
                                         disabled={dataPrize?.is_claim}
                                         loading={loadingClaimPrizePool}
-                                        title="abc"
                                       >
                                         Claim
                                       </Button>
