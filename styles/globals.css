@@ -951,6 +951,7 @@ body .ant-carousel .slick-dots-bottom{
 }
 .ant-picker-dropdown {
   max-width: 100%;
+  position: fixed;
 }
 .ant-picker-panel-container {
   max-width: 100%;

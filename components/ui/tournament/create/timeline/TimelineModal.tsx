@@ -4,7 +4,7 @@ import {useEffect, useState} from "react";
 
 import TournamentStore, {Rounds} from "src/store/TournamentStore";
 import SingleBracket from "components/ui/common/bracket/single-bracket/SingleBracket";
-import DoubleBracket from "components/ui/common/bracket/double-bracket/DoubleBracket";
+import DoubleBracket, {handleDatepickerScroll} from "components/ui/common/bracket/double-bracket/DoubleBracket";
 import s from "./index.module.sass"
 
 const { RangePicker } = DatePicker;
@@ -32,6 +32,7 @@ const createElements = (numRounds: any, selectDate: any) => {
             placeholder="Tournament open time"
             onChange={(date, dateString) => selectDate(date, dateString, i)}
             inputReadOnly={true}
+            onOpenChange={(open: boolean) => handleDatepickerScroll(open)}
           />
         </Col>
       </Row>
