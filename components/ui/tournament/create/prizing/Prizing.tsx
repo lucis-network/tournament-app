@@ -506,11 +506,11 @@ export default observer(function Prizing(props: Props) {
       <div className={s.paidWrap}>
         <div className={s.fee}>
           <label>Lucis fee</label>
-          <div className={s.feeValue}>$ {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0} %</div>
+          <div className={s.feeValue}>{getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0} %</div>
         </div>
         <div className={s.fee}>
           <label>Referees fee</label>
-          <div className={s.feeValue}>$ {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0} %</div>
+          <div className={s.feeValue}>{getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0} %</div>
         </div>
         <div className={s.totalPaid}>Total paid: {totalPool()} {symbol}</div>
       </div>
