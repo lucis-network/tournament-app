@@ -220,6 +220,15 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           className={s.bannerTourDetailWrap}
           bannerClassName={s.bannerTourDetail}
         />
+        <div>
+          <TournamentDetailSponsor
+            tournamentId={tournamentId as string}
+            tournament_status={tournament_status as string}
+            refetchTounament={refetch}
+            currency={currency}
+            type={"banner"}
+          />
+        </div>
         <TournamentDetailMarquee tournamentId={tournamentId as string} />
         <section className={s.tournamentInfo}>
           <div className="lucis-container-2">
@@ -333,31 +342,30 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                                     </button>
                                   </Spin>
                                 )}
-                              <Col className={s.btn_subscribed}>
-                                {dataIsubscribeToTournament?.IsSubscribeToTournament && (
-                                  <Spin spinning={isLoadingSub}>
-                                    <button
-                                      key={"Subscribe"}
-                                      onClick={handUnsubscribe}
-                                    >
-                                      <Image
-                                        src="/assets/Campaign/Banner/svg/subcribed.svg"
-                                        preview={false}
-                                        alt=""
-                                      />
-                                      <span className="ml-2">
-                                        Subscribed (
-                                        {/* {
+                                <Col className={s.btn_subscribed}>
+                                  {dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                                    <Spin spinning={isLoadingSub}>
+                                      <button
+                                        key={"Subscribe"}
+                                        onClick={handUnsubscribe}
+                                      >
+                                        <Image
+                                          src="/assets/Campaign/Banner/svg/subcribed.svg"
+                                          preview={false}
+                                          alt=""
+                                        />
+                                        <span className="ml-2">
+                                          Subscribed (
+                                          {/* {
                                       dataTournamentDetail
                                         ?.tournament_subscribes?.length
                                     } */}
-                                        {dataSubscriber})
-                                      </span>
-                                    </button>
-                                  </Spin>
-                                )}
-                              </Col>
-
+                                          {dataSubscriber})
+                                        </span>
+                                      </button>
+                                    </Spin>
+                                  )}
+                                </Col>
                               </Col>
                               <Col className={s.btn_share}>
                                 <button
@@ -537,14 +545,22 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               tournament_status={tournament_status as string}
             />
             {/* ===== sponsor ===== */}
-            <TournamentDetailSponsor
+            {/* <TournamentDetailSponsor
               tournamentId={tournamentId as string}
               tournament_status={tournament_status as string}
               refetchTounament={refetch}
               currency={currency}
-            />
+            /> */}
             {/* ===== end sponsor ===== */}
           </div>
+        </div>
+        <div>
+          <TournamentDetailSponsor
+            tournamentId={tournamentId as string}
+            tournament_status={tournament_status as string}
+            refetchTounament={refetch}
+            currency={currency}
+          />
         </div>
         {/* ===== tabs ===== */}
         <div className={`lucis-container-2 ${s.container_Tabs}`}>
