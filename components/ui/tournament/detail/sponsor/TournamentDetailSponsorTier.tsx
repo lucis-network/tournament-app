@@ -6,10 +6,12 @@ import s from "../../../../../styles/tournament/sponsor/index.module.sass";
 import { uniqueId } from "lodash";
 
 type TournamentDetailSponsorTierProps = {
-  tier: SponsorSlot,
-}
+  tier: SponsorSlot;
+};
 
-export default function TournamentDetailSponsorTier(props: TournamentDetailSponsorTierProps) {
+export default function TournamentDetailSponsorTier(
+  props: TournamentDetailSponsorTierProps
+) {
   const { tier } = props;
   const { name: tierName, max: maxSponsorSlot, sponsor_transactions } = tier;
 
@@ -17,17 +19,17 @@ export default function TournamentDetailSponsorTier(props: TournamentDetailSpons
 
   for (let i = 0; i < maxSponsorSlot; i++) {
     newSlots.push({
-      uid: uniqueId('sponsor_'),
-      logo: '',
-      name: '',
-    } as SponsorTransaction)
+      uid: uniqueId("sponsor_"),
+      logo: "",
+      name: "",
+    } as SponsorTransaction);
   }
 
   if (sponsor_transactions) {
     sponsor_transactions.map((item: SponsorTransaction) => {
-      const { order } = item
-      newSlots[order as number] = { ...item }
-    })
+      const { order } = item;
+      newSlots[order as number] = { ...item };
+    });
   }
 
   return (
@@ -38,15 +40,23 @@ export default function TournamentDetailSponsorTier(props: TournamentDetailSpons
         {/*</Col>*/}
         <Col span={24}>
           <div className={s.slotWrap}>
-            {
-              newSlots.length > 0 && 
-              newSlots.map((slot) => (
-                <TournamentDetailSponsorSlot key={slot.uid} tier={tier} slot={slot} />
-              ))
-            }
+            {newSlots.length > 0 &&
+              newSlots.map((slot) => {
+                return (
+                  <>
+                    {slot?.logo && (
+                      <TournamentDetailSponsorSlot
+                        key={slot.uid}
+                        tier={tier}
+                        slot={slot}
+                      />
+                    )}
+                  </>
+                );
+              })}
           </div>
         </Col>
       </Row>
     </div>
-  )
+  );
 }

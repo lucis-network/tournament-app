@@ -505,6 +505,7 @@ const GET_SPONSOR_DETAIL = gql`
         order
         logo
         name
+        home_page
       }
     }
   }
