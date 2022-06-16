@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics, logEvent, setUserProperties, setUserId } from "firebase/analytics";
 import { Analytics, AnalyticsCallOptions, CustomParams } from "@firebase/analytics";
-import { isClient } from "utils/Env";
+import { app_env, app_origin, isClient } from "utils/Env";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -28,6 +28,12 @@ class GoogleAnalytic {
     const app = initializeApp(firebaseConfig);
 
     this.analytics = getAnalytics(app);
+
+    this.setUserProperties({
+      // TODO: Verify if it does not override user info
+      last_app_env: app_env,
+      last_origin: app_origin,
+    })
   }
 
   logEvent(event_name: string, event_params?: { [key: string]: any; }) {
