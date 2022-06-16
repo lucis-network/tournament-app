@@ -220,11 +220,27 @@ export default observer(function CreateTournament(props: Props) {
     if(!Array.isArray(data)) {
       return;
     }
-    for(let idx = 0; idx < data.length; idx ++) {
-      if(idx == data.length - 1) {
+    let upperRound = data.filter(item => item.type === "UPPER")
+    let lowerRound = data.filter(item => item.type === "LOWER")
+
+    for(let idx = 0; idx < upperRound.length; idx ++) {
+      if(idx == upperRound.length - 1) {
         continue
       }
-      if(data[idx].start_at > data[idx+1].start_at) {
+      
+      if(upperRound[idx].start_at > upperRound[idx+1].start_at) {
+        console.log('data[idx].start_at:', upperRound[idx].start_at)
+        console.log('data[idx+1].start_at:',upperRound[idx+1].start_at)
+        setMessageErrorTimeline("Invalid timeline")
+        return;
+      }
+    }
+    for(let idx = 0; idx < lowerRound.length; idx ++) {
+      if(idx == lowerRound.length - 1) {
+        continue
+      }
+      
+      if(lowerRound[idx].start_at > lowerRound[idx+1].start_at) {
         setMessageErrorTimeline("Invalid timeline")
         return;
       }
