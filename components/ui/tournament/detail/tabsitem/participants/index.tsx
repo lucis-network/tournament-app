@@ -201,6 +201,7 @@ export default function TableParticipant(props: Props) {
           columns={columns}
           bordered
           className={s.container_table}
+          pagination={false}
           //rowKey={(record) => `${record?.tournament_uid ? tournament_uid : ''}`}
           //rowKey={(record) => `${record?.uid}`}
         />
