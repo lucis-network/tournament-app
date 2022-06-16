@@ -169,13 +169,15 @@ export default observer(function User(props: Props) {
         visible={isVisible}
         onVisibleChange={handleVisibleChange}
       >
-        <div className={s.avatar}>
-          <img
-            src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
-            alt=""
-          />
-          {/* <span>{name}</span> */}
-        </div>
+        {width > 992 && (
+          <div className={s.avatar}>
+            <img
+              src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
+              alt=""
+            />
+            {/* <span>{name}</span> */}
+          </div>
+        )}
       </Popover>
       <ConnectWalletModal />
     </div>

@@ -252,7 +252,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 <Image src={thumbnail} alt="" preview={false} />
               </div>
               <div className={s.tournamentMetadataWrap}>
-                <h1 className={s.tournamentTitle}>{`${name}`}</h1>
+                <h1 className={s.tournamentTitle}>{name.length > 120 ? name.slice(0, 120) + "..." : name}</h1>
+                {name.length <= 35 && <><br/> <br/></>}
                 <div className={s.tournamentStartTime}>
                   <Image
                     src="/assets/TournamentDetail/iconClock.svg"
