@@ -5,12 +5,13 @@ import s from "../../../../../styles/tournament/sponsor/index.module.sass";
 type TournamentDetailSponsorSlotProps = {
   tier: SponsorSlot;
   slot: SponsorTransaction;
+  index?: number;
 };
 
 export default function TournamentDetailSponsorSlot(
   props: TournamentDetailSponsorSlotProps
 ) {
-  const { tier, slot } = props;
+  const { tier, slot, index } = props;
   const { show_name } = tier;
   const { name: sponsorName, logo: sponsorLogo, home_page } = slot;
 
@@ -26,10 +27,18 @@ export default function TournamentDetailSponsorSlot(
           target="_blank"
           rel="noopener noreferrer"
         >
-          <img
-            src={sponsorLogo || "/assets/avatar.jpg"}
-            className={s.sponsorLogo}
-          ></img>
+          {index !== 0 && (
+            <img
+              src={sponsorLogo || "/assets/avatar.jpg"}
+              className={s.sponsorLogo}
+            ></img>
+          )}
+          {index === 0 && (
+            <img
+              src={"/assets/logo369-np.png"}
+              className={s.sponsorLogo}
+            ></img>
+          )}
         </a>
       </div>
       {/* {(show_name && (sponsorName && (sponsorName.length > 0))) && <div className={s.sponsorName}>{sponsorName}</div>} */}

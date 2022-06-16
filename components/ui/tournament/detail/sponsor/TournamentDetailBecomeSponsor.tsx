@@ -83,7 +83,6 @@ export default function TournamentDetailBecomeSponsor(
   const [isLoading, setIsLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
   const [totalPayment, setTotalPayment] = useState("0");
-
   const handleFormUpdate = async (data: any) => {
     if (!data.logo) {
       setMessageError("Logo is required");
@@ -359,7 +358,7 @@ export default function TournamentDetailBecomeSponsor(
                   <Text
                     style={{ color: "#ffffff", fontSize: 12, display: "block" }}
                   >
-                    Recommended size: 200x200px
+                    Recommended: transparent image
                   </Text>
                   <div className={s.message_error}>{messageError}</div>
                 </Col>

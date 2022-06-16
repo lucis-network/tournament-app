@@ -25,10 +25,11 @@ type Props = {
   tournament_status: string;
   refetchTounament?: any;
   currency: any;
+  type?: string;
 };
 
 export default function TournamentDetailSponsor(props: Props) {
-  const { tournamentId, tournament_status, refetchTounament, currency } = props;
+  const { tournamentId, tournament_status, refetchTounament, currency, type } = props;
   const [isBecome, setIsBecome] = useState(false);
   const {
     loading,
@@ -58,12 +59,22 @@ export default function TournamentDetailSponsor(props: Props) {
       };
     });
   }
-
   return (
     <>
-      <div className={s.sponsorContainer}>
-        {tournament_status !== "CLOSED" ? (
-          <div className={s.becomeWrap}>
+      <div className={`${s.sponsorContainer} ${type === "banner" ? "" : `my-48`}`}>
+        <Row>
+          <Col span={24}>
+            {dataSponsors?.getSponsorSlot.length > 0 &&
+              dataSponsors.getSponsorSlot.map((tier: SponsorSlot, index: number) => {
+                const { uid: tierUid } = tier;
+                return (
+                  <TournamentDetailSponsorTier key={tierUid} tier={tier} index={index} type={type}/>
+                );
+              })}
+          </Col>
+        </Row>
+        {tournament_status !== "CLOSED" && type !== "banner" ? (
+          <div className={`${s.becomeWrap} lucis-container-2`}>
             <Button
               onClick={() => {
                 if (!AuthStore.isLoggedIn) {
@@ -85,17 +96,6 @@ export default function TournamentDetailSponsor(props: Props) {
         ) : (
           ""
         )}
-        <Row>
-          <Col span={24}>
-            {dataSponsors?.getSponsorSlot.length > 0 &&
-              dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
-                const { uid: tierUid } = tier;
-                return (
-                  <TournamentDetailSponsorTier key={tierUid} tier={tier} />
-                );
-              })}
-          </Col>
-        </Row>
       </div>
       {isBecome && (
         <TournamentDetailBecomeSponsor
