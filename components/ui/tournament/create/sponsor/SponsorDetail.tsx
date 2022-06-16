@@ -149,7 +149,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       footer={null}
       okText="Update"
       cancelText="Delete"
-      className={s.becomeSponsor}
+      wrapClassName={s.becomeSponsor}
       // onOk={() => {
       //   form
       //     .validateFields()

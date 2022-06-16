@@ -103,7 +103,7 @@ export default observer(function RefereeModal(props: Props) {
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
-      className={`${s.container}`}
+      wrapClassName={s.container}
       okButtonProps={{
         disabled: !checkedParticipants,
       }}
