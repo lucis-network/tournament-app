@@ -140,7 +140,8 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
           console.log('_phone: ', _phone);
           if(!isPhoneNumber(_phone)) {
             // message.error("")
-            console.log('phone invalidate')
+            console.log('invalid phone')
+            setPhoneError("Invalid phone number")
             return
           }
 
@@ -292,17 +293,19 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
                 country={`${userInfo?.profile?.country_code?.toLowerCase()}`}
                 enableSearch
                 value={phone}
-                isValid={(value, country: any) => {
-                  let _phone = '+'+ value;
-                  // console.log('_phone: ', _phone);
-                  if(!isPhoneNumber(_phone)) {
-                    setPhoneError("Phone invalidate")
-                  } else {
-                    setPhoneError(undefined)
-                  }
-                  return isPhoneNumber(_phone)
+                // isValid={(value, country: any) => {
+                //   let _phone = '+'+ value;
+                //   if(!isPhoneNumber(_phone)) {
+                //     setPhoneError("Invalid phone number")
+                //   } else {
+                //     setPhoneError(undefined)
+                //   }
+                //   return isPhoneNumber(_phone)
+                // }}
+                onChange={(phone) => {
+                  setPhoneError(undefined)
+                  setPhone(phone)
                 }}
-                onChange={(phone) => setPhone(phone)}
                 placeholder="Enter phone number"
               />
               <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
