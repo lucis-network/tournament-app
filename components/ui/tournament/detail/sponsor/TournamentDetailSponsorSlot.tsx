@@ -15,12 +15,13 @@ export default function TournamentDetailSponsorSlot(props: TournamentDetailSpons
   return (
     <div className={s.sponsorSlot}>
       <div className={s.sponsorLogoWrap}>
-        <CircleImage
+        {/* <CircleImage
           src={sponsorLogo || '/assets/avatar.jpg'}
           className={s.sponsorLogo}
-        />
+        /> */}
+        <img src={sponsorLogo || '/assets/avatar.jpg'} className={s.sponsorLogo}></img>
       </div>
-      {(show_name && (sponsorName && (sponsorName.length > 0))) && <div className={s.sponsorName}>{sponsorName}</div>}
+      {/* {(show_name && (sponsorName && (sponsorName.length > 0))) && <div className={s.sponsorName}>{sponsorName}</div>} */}
     </div>
   )
 }
