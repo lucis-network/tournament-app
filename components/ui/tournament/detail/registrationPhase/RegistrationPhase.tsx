@@ -152,7 +152,7 @@ export default observer(function RegistrationPhase(props: Props) {
     useState(false);
 
   const [checkClaimPoolSize, setCheckClaimPoolSize] = useState(false);
-
+  const [checkClaim, setCheckClaim] = useState(false);
   useEffect(() => {
     let arr: Array<Reward> = [];
     data?.forEach((item: any) => {
@@ -257,6 +257,14 @@ export default observer(function RegistrationPhase(props: Props) {
       document.getElementById("registrationPhase").scrollIntoView();
     }
   }, [TournamentStore.checkBacktoTournament == true]);
+
+  useEffect(() => {
+    console.log(dataPrize,dataSystemPrize,totalFromDonation)
+    if(isEmpty(dataPrize) && isEmpty(dataSystemPrize) && totalFromDonation == 0){
+      //console.log("vao day");
+      setCheckClaim(true);
+    }
+  }, [dataPrize,dataSystemPrize,totalFromDonation])
   return (
     <>
       <div className={s.registrationPhase} id="registrationPhase">
@@ -348,7 +356,7 @@ export default observer(function RegistrationPhase(props: Props) {
           </div>
 
           <div className={s.item}>
-            {tournament_status !== "CLOSED" && (
+            {tournament_status !== "CLOSED" || (tournament_status === "CLOSED" && checkClaim) && (
               <>
                 <span className={s.itemTitle}>PARTICIPANTS</span>
                 <div className={s.itemImg}>
@@ -370,7 +378,7 @@ export default observer(function RegistrationPhase(props: Props) {
                 </div>
               </>
             )}
-            {tournament_status === "CLOSED" && (
+            {tournament_status === "CLOSED" && !checkClaim && (
               <>
                 <div className={s.itemClosed}>
                   <div className={s.itemImgClosed}>
