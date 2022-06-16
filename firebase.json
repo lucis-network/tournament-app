@@ -8,22 +8,12 @@
     ],
     "rewrites": [
       {
-<<<<<<< HEAD
-        "source": "/tournament/*/edit",
-=======
         "source": "/tournament/*/edit$",
->>>>>>> c97987610713f057c2ab0b79f509b80e905eb88b
         "destination": "/tournament/[id]/edit.html"
       },
       {
         "source": "/tournament/*/*",
         "destination": "/tournament/[id]/[...slug].html"
-<<<<<<< HEAD
-      }
-    ]
-  }
-}
-=======
       },
       {
         "source": "/tournament/1",
@@ -41,4 +31,3 @@
     }
   }
 }
->>>>>>> c97987610713f057c2ab0b79f509b80e905eb88b
