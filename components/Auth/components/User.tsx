@@ -39,7 +39,7 @@ export default observer(function User(props: Props) {
   const { name, balance, facebook_id, google_id, profile } = AuthStore;
   const chainId = ConnectWalletStore?.network?.chainId;
   const currency = chainId && getCurrencyFromChainId(chainId);
-  
+
   const changeWallet = () => {
     AuthBoxStore.connectModalVisible = true;
   };
@@ -61,6 +61,7 @@ export default observer(function User(props: Props) {
     }
 
     AppEmitter.emit("onWalletDisconnect");
+
   }, []);
 
   let chainNetIcoUrl = "";
@@ -97,11 +98,10 @@ export default observer(function User(props: Props) {
       >
         <div className={`${s.avatar} ${s.avBig}`}>
           <img
-            src={`${profile?.avatar}` || "/assets/MyProfile/defaultAvatar.png"}
+            src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
             alt=""
           />
         </div>
-        {/* <p>{name || profile?.display_name}</p> */}
         <p>
           {
             //@ts-ignore
@@ -115,7 +115,7 @@ export default observer(function User(props: Props) {
       </Col>
       <Col
         span={address ? 15 : 9}
-        style={{ borderLeft: "1px solid #fff", paddingLeft: 20 }}
+        style={{ borderLeft: "1px solid #fff", paddingLeft: "20px" }}
       >
         <p className={s.addr}>
           {address ? trim_middle(address ?? "", 7, 8) : ""}
@@ -137,7 +137,7 @@ export default observer(function User(props: Props) {
             My Profile
           </Button>
           <Button type="link" onClick={disconnectWallet}>
-            Disconnect
+            Log out
           </Button>
           {/* <GoogleLogout
             clientId={clientId}
@@ -169,13 +169,15 @@ export default observer(function User(props: Props) {
         visible={isVisible}
         onVisibleChange={handleVisibleChange}
       >
-        <div className={s.avatar}>
-          <img
-            src={`${profile?.avatar}` || "/assets/MyProfile/defaultAvatar.png"}
-            alt=""
-          />
-          {/* <span>{name}</span> */}
-        </div>
+        {width > 992 && (
+          <div className={s.avatar}>
+            <img
+              src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
+              alt=""
+            />
+            {/* <span>{name}</span> */}
+          </div>
+        )}
       </Popover>
       <ConnectWalletModal />
     </div>

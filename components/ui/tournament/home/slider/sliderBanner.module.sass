@@ -5,160 +5,172 @@
     height: auto
     position: relative
     max-height: 400px
+    @media (min-width: 0px)
+      min-height: 164px
+    @media (min-width: 414px)
+      min-height: 174px
+    @media (min-width: 540px)
+      min-height: 205px
+    @media (min-width: 640px)
+      min-height: 220px
+    @media (min-width: 768px)
+      min-height: 256px
+    @media (min-width: 992px)
+      min-height: auto
     .im_banner
       background-size: 100%
       background-repeat: no-repeat
-      background-position: top center
-      @media (min-width: 0)
-        padding: 82px 0px
+      background-position: center center
+      @media (min-width: 0px)
+        height: 84px
       @media (min-width: 414px)
-        padding: 88px 0px
+        height: 95.5px
       @media (min-width: 540px)
-        padding: 102px 0px
+        height: 125px
       @media (min-width: 640px)
-        padding: 112px 0px
-        height: 0
+        height: 144px
       @media (min-width: 768px)
-        padding: 128px 0px
+        height: 176px
       @media (min-width: 992px)
-        padding: 110px 0px
-        height: 0
+        height: 224px
+      @media (min-width: 1024px)
+        height: 248.5px
       @media (min-width: 1280px)
-        padding: 140px 0px
+        height: 280px
       @media (min-width: 1440px)
-        padding: 160px 0px
+        height: 320px
       @media (min-width: 1600px)
-        padding: 180px 0px
+        height: 360px
       @media (min-width: 1920px)
-        padding: 198px 0px
+        height: 398px
 
-    .title
-      background: linear-gradient(332deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
-      backdrop-filter: blur(12px)
-      position: absolute
-      cursor: default
-      @media (min-width: 0px) and (max-width: 991px)
-        max-width: 100%
-        width: 100%
-        left: 0
-        bottom: 0
-        border-radius: 0px 0px 16px 16px
-        padding: 8px 12px
-      @media (min-width: 992px)
-        top: -20px
-        left: 0
-        border-radius: 16px
-        max-width: 336px
-        min-width: 336px
-        padding: 20px
-        margin-top: 38px
-        margin-left: 60px
-      .line
-        position: absolute
-        width: 4px
-        height: 50px
-        background: #FFF
-        @media (min-width: 0px)
-          top: -67%
-          display: none
-        @media (min-width: 992px)
-          top: -74px
-          display: block
-      .line:nth-child(1)
-        left: 12px
-      .line:nth-child(2)
-        right: 12px
-      .name
-        color: #FFF
-        font-size: 24px
-        line-height: 28px
+.title
+  background: linear-gradient(332deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
+  backdrop-filter: blur(12px)
+  position: absolute
+  cursor: default
+  @media (min-width: 0px) and (max-width: 991px)
+    max-width: 100%
+    width: 100%
+    left: 0
+    bottom: 0
+    border-radius: 0px 0px 6px 6px
+    padding: 8px 12px
+  @media (min-width: 992px)
+    top: -20px
+    left: 0
+    border-radius: 16px
+    max-width: 336px
+    min-width: 336px
+    padding: 20px
+    margin-top: 38px
+    margin-left: 60px
+  .line
+    position: absolute
+    width: 4px
+    height: 50px
+    background: #FFF
+    @media (min-width: 0px)
+      top: -67%
+      display: none
+    @media (min-width: 992px)
+      top: -74px
+      display: block
+  .line:nth-child(1)
+    left: 12px
+  .line:nth-child(2)
+    right: 12px
+  .name
+    color: #FFF
+    font-size: 24px
+    line-height: 28px
+    font-weight: 700
+    @media (min-width: 0px)
+      font-size: 15px
+      margin-bottom: 0px
+      line-height: 20px
+      height: 20px 
+      overflow: hidden
+    @media (min-width: 992px)
+      font-size: 18px
+      margin-bottom: 0px
+      line-height: 20px
+      padding-bottom: 8px
+      height: 40px 
+      overflow: hidden
+    @media (min-width: 1280px)
+      font-size: 24px
+      line-height: 26px
+      height: 54px
+  .detail
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding-top: 2px
+    .pl
+      color: #FFF
+      margin: 0
+      font-size: 16px
+      font-weight: 300
+      @media (max-width: 992px)
+        font-size: 14px
+    .total
+      display: flex
+      align-items: center
+      justify-content: space-between
+      @media (max-width: 992px)
+        margin-right: 12px
+      span
+        font-size: 18px
+        color: #0BEBD6
         font-weight: 700
-        @media (min-width: 0px)
-          font-size: 15px
-          margin-bottom: 0px
-          line-height: 20px
-          height: 20px 
-          overflow: hidden
-        @media (min-width: 992px)
-          font-size: 18px
-          margin-bottom: 0px
-          line-height: 20px
-          padding-bottom: 8px
-          height: 40px 
-          overflow: hidden
-        @media (min-width: 1280px)
-          font-size: 24px
-          line-height: 26px
-          height: 54px
-      .detail
-        display: flex
-        align-items: center
-        justify-content: space-between
-        padding-top: 2px
-        .pl
-          color: #FFF
-          margin: 0
-          font-size: 16px
-          font-weight: 300
-          @media (max-width: 992px)
-            font-size: 14px
-        .total
-          display: flex
-          align-items: center
-          justify-content: space-between
-          @media (max-width: 992px)
-            margin-right: 12px
-          span
-            font-size: 18px
-            color: #0BEBD6
-            font-weight: 700
-            margin-left: 4px
-            @media (max-width: 992px)
-              font-size: 13px
-          img
-            width: 20px
-            height: 20px
-        .btn
-          padding: 4px 20px
-          font-size: 14px
-          moz-transition: all .3s ease-in-out
-          -o-transition: all .3s ease-in-out
-          -webkit-transition: all .3s ease-in-out
-          transition: all .3s ease-in-out
-          background-size: 140% 50%
-          @media (max-width: 992px)
-            font-size: 12px
-        .btn:hover
-          background-position: 50% 0% 
-          moz-transition: all .3s ease-in-out
-          -o-transition: all .3s ease-in-out
-          -webkit-transition: all .3s ease-in-out
-          transition: all .3s ease-in-out
-      .line::before
-        content: ""
-        position: absolute
-        top: 99%
-        left: -2px
-        width: 8px
-        height: 8px
-        border-radius: 100%
-        background: #FFF
-        box-shadow: 0px 0px 9px 8px rgba(67, 224, 247, 0.37)
-    .title::before
-      content: ""
-      position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
-      z-index: -1
-      padding: 1px
-      background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.3) -37.08%, rgba(11,235, 214, 0.3) 96.75%), rgba(241, 241, 241, 0.1)
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-      -webkit-mask-composite: xor
-      mask-composite: exclude
-      @media ( min-width: 0px )
-        border-radius: 0px 0px 16px 16px
-      @media ( min-width: 992px )
-        border-radius: 16px
+        margin-left: 4px
+        @media (max-width: 992px)
+          font-size: 13px
+      img
+        width: 20px
+        height: 20px
+    .btn
+      padding: 4px 20px
+      font-size: 14px
+      moz-transition: all .3s ease-in-out
+      -o-transition: all .3s ease-in-out
+      -webkit-transition: all .3s ease-in-out
+      transition: all .3s ease-in-out
+      background-size: 140% 50%
+      @media (max-width: 992px)
+        font-size: 12px
+    .btn:hover
+      background-position: 50% 0% 
+      moz-transition: all .3s ease-in-out
+      -o-transition: all .3s ease-in-out
+      -webkit-transition: all .3s ease-in-out
+      transition: all .3s ease-in-out
+  .line::before
+    content: ""
+    position: absolute
+    top: 99%
+    left: -2px
+    width: 8px
+    height: 8px
+    border-radius: 100%
+    background: #FFF
+    box-shadow: 0px 0px 9px 8px rgba(67, 224, 247, 0.37)
+.title::before
+  content: ""
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  z-index: -1
+  padding: 1px
+  background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.3) -37.08%, rgba(11,235, 214, 0.3) 96.75%), rgba(241, 241, 241, 0.1)
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+  -webkit-mask-composite: xor
+  mask-composite: exclude
+  @media ( min-width: 0px )
+    border-radius: 0px 0px 6px 6px
+  @media ( min-width: 992px )
+    border-radius: 16px
       

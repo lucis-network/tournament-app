@@ -36,6 +36,7 @@
     "enquire-js": "^0.2.1",
     "ethers": "^5.6.2",
     "fbemitter": "^3.0.0",
+    "firebase": "^9.8.3",
     "framer-motion": "6.0.0-beta.5",
     "framer-motion-3d": "6.0.0-beta.5",
     "gojs": "^2.2.7",
@@ -60,7 +61,8 @@
     "react-quill": "^2.0.0-beta.4",
     "react-slick": "^0.29.0",
     "tournament-generator": "^1.2.0",
-    "web3modal": "^1.9.5"
+    "web3modal": "^1.9.5",
+    "react-share": "^4.4.0"
   },
   "devDependencies": {
     "@graphql-codegen/cli": "2.6.2",

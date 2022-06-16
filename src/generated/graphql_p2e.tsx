@@ -139,6 +139,7 @@ export type Chain = {
   explorer?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  poolWallet?: Maybe<Array<PoolWallet>>;
   rpc_url?: Maybe<Scalars['String']>;
   symbol: ChainSymbol;
   updated_at: Scalars['DateTime'];
@@ -148,6 +149,7 @@ export type ChainCount = {
   __typename?: 'ChainCount';
   contracts: Scalars['Int'];
   currencies: Scalars['Int'];
+  poolWallet: Scalars['Int'];
 };
 
 export enum ChainSymbol {
@@ -234,11 +236,13 @@ export type ClaimTransaction = {
 export enum ClaimType {
   Donate = 'DONATE',
   PrizePool = 'PRIZE_POOL',
-  PrizeSystem = 'PRIZE_SYSTEM'
+  PrizeSystem = 'PRIZE_SYSTEM',
+  RefereeFee = 'REFEREE_FEE'
 }
 
 export type Contract = {
   __typename?: 'Contract';
+  abi?: Maybe<Scalars['JSON']>;
   address: Scalars['String'];
   admin?: Maybe<Scalars['String']>;
   admin_prv_key?: Maybe<Scalars['String']>;
@@ -287,6 +291,7 @@ export type Currency = {
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   usd_value?: Maybe<Scalars['Float']>;
+  withdrawTransactions?: Maybe<Array<WithdrawTransaction>>;
 };
 
 export type CurrencyCount = {
@@ -294,6 +299,7 @@ export type CurrencyCount = {
   donateTransactions: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
   tournaments: Scalars['Int'];
+  withdrawTransactions: Scalars['Int'];
 };
 
 export type DonateTransaction = {
@@ -348,6 +354,7 @@ export type GPlayerMatch = {
   __typename?: 'GPlayerMatch';
   id: Scalars['ID'];
   is_win: Scalars['Boolean'];
+  lucis_point: Scalars['Int'];
   map_img?: Maybe<Scalars['String']>;
   match: Match;
   match_uid: Scalars['String'];
@@ -447,8 +454,9 @@ export type Mission = {
   goal?: Maybe<Scalars['Decimal']>;
   img?: Maybe<Scalars['String']>;
   is_daily_mission: Scalars['Boolean'];
-  lucis_point: Scalars['Int'];
-  lucis_token?: Maybe<Scalars['Decimal']>;
+  level: MissionLevel;
+  level_id: Scalars['Int'];
+  map?: Maybe<Scalars['String']>;
   mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
   title?: Maybe<Scalars['String']>;
@@ -465,6 +473,23 @@ export type MissionCount = {
   user_daily_mission: Scalars['Int'];
 };
 
+export type MissionLevel = {
+  __typename?: 'MissionLevel';
+  _count: MissionLevelCount;
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  level: Scalars['Int'];
+  lucis_point?: Maybe<Scalars['Int']>;
+  lucis_token?: Maybe<Scalars['Decimal']>;
+  mission?: Maybe<Array<Mission>>;
+  updated_at: Scalars['DateTime'];
+};
+
+export type MissionLevelCount = {
+  __typename?: 'MissionLevelCount';
+  mission: Scalars['Int'];
+};
+
 export enum MissionStatus {
   Finish = 'FINISH',
   Ongoing = 'ONGOING',
@@ -477,7 +502,6 @@ export enum MissionType {
   Averageheadshot = 'AVERAGEHEADSHOT',
   Curentwinstreak = 'CURENTWINSTREAK',
   Deaths = 'DEATHS',
-  Doublekill = 'DOUBLEKILL',
   Kda = 'KDA',
   Kills = 'KILLS',
   Kr = 'KR',
@@ -493,7 +517,8 @@ export enum MissionType {
 export type Mutation = {
   __typename?: 'Mutation';
   addStakedNft?: Maybe<Scalars['Boolean']>;
-  buyRaffleTicket?: Maybe<UserTicket>;
+  buyRaffleTicket?: Maybe<Scalars['Boolean']>;
+  claimAllMission?: Maybe<Scalars['Boolean']>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
   /** Connect Faceit */
@@ -504,6 +529,7 @@ export type Mutation = {
   rerollMission?: Maybe<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
+  withdrawLucisToken?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -514,6 +540,12 @@ export type MutationAddStakedNftArgs = {
 
 export type MutationBuyRaffleTicketArgs = {
   input: UserTicketInputGql;
+};
+
+
+export type MutationClaimAllMissionArgs = {
+  game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
@@ -541,10 +573,12 @@ export type MutationEquipNftArgs = {
 
 export type MutationGetOrSetDailyMissionArgs = {
   game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
 export type MutationRerollMissionArgs = {
+  platform_id: Scalars['Int'];
   player_mission_uid: Scalars['String'];
 };
 
@@ -557,6 +591,11 @@ export type MutationUnStakedNftArgs = {
 export type MutationUpdateDailyMissionArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
+};
+
+
+export type MutationWithdrawLucisTokenArgs = {
+  address: Scalars['String'];
 };
 
 export type NestedStringNullableFilter = {
@@ -725,6 +764,7 @@ export type PlayerMatch = {
   created_at: Scalars['DateTime'];
   id: Scalars['ID'];
   is_win: Scalars['Boolean'];
+  lucis_point: Scalars['Int'];
   match: Match;
   match_uid: Scalars['String'];
   player: PlayerGame;
@@ -774,6 +814,18 @@ export type PlayerStatistic = {
   Triple_Kills?: Maybe<Scalars['String']>;
 };
 
+export type PoolWallet = {
+  __typename?: 'PoolWallet';
+  address: Scalars['String'];
+  chain: Chain;
+  chain_symbol: ChainSymbol;
+  created_at: Scalars['DateTime'];
+  currency_uid: Scalars['String'];
+  private_key: Scalars['String'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type ProgressDailyMission = {
   __typename?: 'ProgressDailyMission';
   archieved?: Maybe<Scalars['Int']>;
@@ -786,13 +838,15 @@ export type Query = {
   claimMatch?: Maybe<Scalars['Boolean']>;
   getBalance?: Maybe<GBalance>;
   getBiggestRaffles?: Maybe<Array<Raffle>>;
+  getExistedRaffleTicketAmount?: Maybe<Scalars['Float']>;
   getLucisMission?: Maybe<Array<PlayerMission>>;
   getMatchStatistic?: Maybe<MatchStatistics>;
-  getPlatformAccount?: Maybe<Array<PlatformAccountDto>>;
+  getPlatformAccount?: Maybe<Array<PlatformAccount>>;
   getProgressDailyMission?: Maybe<ProgressDailyMission>;
   getRaffleDetail?: Maybe<Raffle>;
   getRaffles?: Maybe<Array<Raffle>>;
   getRecentlyMatch: GMatch;
+  getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   searchRaffle?: Maybe<Array<Raffle>>;
 };
@@ -808,8 +862,14 @@ export type QueryClaimMatchArgs = {
 };
 
 
+export type QueryGetExistedRaffleTicketAmountArgs = {
+  raffle_uid: Scalars['String'];
+};
+
+
 export type QueryGetLucisMissionArgs = {
   game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
@@ -820,6 +880,7 @@ export type QueryGetMatchStatisticArgs = {
 
 export type QueryGetProgressDailyMissionArgs = {
   game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 
@@ -1009,6 +1070,16 @@ export type StringNullableFilter = {
   startsWith?: InputMaybe<Scalars['String']>;
 };
 
+export type Subscription = {
+  __typename?: 'Subscription';
+  pushNotification: Notification;
+};
+
+
+export type SubscriptionPushNotificationArgs = {
+  user_id: Scalars['Float'];
+};
+
 export type SystemSponsor = {
   __typename?: 'SystemSponsor';
   amount: Scalars['Decimal'];
@@ -1173,6 +1244,7 @@ export type TournamentRank = {
 
 export enum TournamentStatus {
   Accepted = 'ACCEPTED',
+  Cancel = 'CANCEL',
   Complete = 'COMPLETE',
   Disable = 'DISABLE',
   Finish = 'FINISH',
@@ -1234,6 +1306,7 @@ export type User = {
   tournamentSubscriber?: Maybe<Array<TournamentSubscriber>>;
   updated_at: Scalars['DateTime'];
   user_ticket?: Maybe<Array<UserTicket>>;
+  withdraws?: Maybe<Array<WithdrawTransaction>>;
 };
 
 export type UserCount = {
@@ -1256,6 +1329,7 @@ export type UserCount = {
   tournament: Scalars['Int'];
   tournamentSubscriber: Scalars['Int'];
   user_ticket: Scalars['Int'];
+  withdraws: Scalars['Int'];
 };
 
 export type UserDailyMission = {
@@ -1332,5 +1406,21 @@ export type UserTicketInputGql = {
   amount?: InputMaybe<Scalars['Int']>;
   ticket_uid: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type WithdrawTransaction = {
+  __typename?: 'WithdrawTransaction';
+  amount: Scalars['Decimal'];
+  block?: Maybe<Scalars['Int']>;
+  created_at: Scalars['DateTime'];
+  currency: Currency;
+  currency_uid: Scalars['String'];
+  fee?: Maybe<Scalars['Decimal']>;
+  status: TransactionStatus;
+  tx_hash?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  usd_value?: Maybe<Scalars['Decimal']>;
+  user: User;
   user_id: Scalars['Int'];
 };

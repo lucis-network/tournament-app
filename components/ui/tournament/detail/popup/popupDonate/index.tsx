@@ -12,6 +12,8 @@ import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
 import TournamentStore from "src/store/TournamentStore";
 import BigNumber from "bignumber.js";
+import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
+import { isEmpty } from "lodash";
 
 type Props = {
   datas?: any;
@@ -50,6 +52,10 @@ const PopupDonate = (props: Props) => {
   } = props;
   const { getContract } = useGetContract({});
 
+  const { refetchDataDonation } = useTournamentDetail({
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
   const [titleMessage, setTitleMessage] = useState("");
   const [values, setValues] = useState("");
   const [desc, setDesc] = useState("");
@@ -138,6 +144,7 @@ const PopupDonate = (props: Props) => {
         if (res) {
           setIsPopupNotify(true);
           refetch();
+          refetchDataDonation();
         }
       });
     }
@@ -156,7 +163,7 @@ const PopupDonate = (props: Props) => {
       }
     }
   };
-  
+
   const donation = async () => {
     setIsLoading(true);
     let token_address = currency?.address;

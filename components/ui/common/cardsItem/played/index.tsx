@@ -6,6 +6,7 @@ import {TTournament} from "../../../../../src/generated/graphql";
 import {slugify} from "../../../../../utils/String";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faUserFriends} from '@fortawesome/free-solid-svg-icons';
+import moment from "moment";
 
 type CardPlayedProps = {
   tournament?: TTournament,
@@ -41,7 +42,7 @@ export default function CardPlayed({tournament, type, isOwner, isHidden}: CardPl
           </div>
           <div className={s.start_time}>
             <p>Start</p>
-            <p>{startAt}</p>
+            <p>{moment(tournament?.start_at).format('MMMM Do HH:mm')}</p>
           </div>
           <div className={s.daily}>{tournament?.name}</div>
           <div className={s.member}>

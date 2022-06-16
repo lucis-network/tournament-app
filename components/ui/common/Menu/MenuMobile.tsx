@@ -1,12 +1,16 @@
 import * as React from "react";
-import s from './MenuMobile.module.sass'
+import s from "./MenuMobile.module.sass";
 import { useRef, useEffect, useState } from "react";
 import { motion, useCycle } from "framer-motion";
 import { useDimensions } from "./useDimensions";
 import { MenuToggle } from "./MenuToggle";
 import { Navigation } from "./Navigation";
-import {AppEmitter} from "services/emitter";
+import { AppEmitter } from "services/emitter";
 import Link from "next/link";
+
+import Login from "components/Auth/Login/Login";
+import AuthStore from "components/Auth/AuthStore";
+import User from "components/Auth/components/User";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -30,21 +34,21 @@ const sidebar = {
 
 const nav = {
   open: {
-    display: 'block',
+    display: "block",
     transition: {
       staggerChildren: 0.17,
       delayChildren: 0.2,
-    }
+    },
   },
   closed: {
     display: "none",
     transition: {
       staggerChildren: 0.05,
       staggerDirection: -1,
-      when: "afterChildren"
-    }
-  }
-}
+      when: "afterChildren",
+    },
+  },
+};
 export const MenuMobile = (props: any) => {
   const [isOpen, toggleOpen] = useCycle(false, true);
   const containerRef = useRef(null);
@@ -59,33 +63,32 @@ export const MenuMobile = (props: any) => {
   }, [isOpen]);
 
   useEffect(() => {
-    const subscription = AppEmitter.addListener('setMbMenuVisible', (visible: boolean) => {
-      toggleOpen(visible ? 1 : 0)
-    });
+    const subscription = AppEmitter.addListener(
+      "setMbMenuVisible",
+      (visible: boolean) => {
+        toggleOpen(visible ? 1 : 0);
+      }
+    );
     return () => {
       subscription.remove();
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <>
-      <div className="overlay" onClick={() => toggleOpen()}/>
+      <div className="overlay" onClick={() => toggleOpen()} />
 
       {/* Header bar */}
       <div
         className={`${s.mobileMenu} fixed top-0 left-0 right-0 z-[101] bg-nav backdrop-blur-sm`}
       >
         <div className={`${s.menuMobile} flex justify-between items-center`}>
-          <div style={{width: 120, height: 42}}>
-            <Link href={'/'}>
+          <div style={{ width: 120, height: 42 }}>
+            <Link href={"/"}>
               <img src="/assets/home/logo.png" alt="" />
             </Link>
           </div>
-          
-          <motion.div
-            initial={false}
-            animate={"closed"}
-          >
+          <motion.div initial={false} animate={"closed"}>
             <MenuToggle toggle={() => toggleOpen()} />
           </motion.div>
         </div>
@@ -101,12 +104,12 @@ export const MenuMobile = (props: any) => {
         className="mobile-nav z-[101]"
       >
         <motion.div className="background" variants={sidebar}>
-          <div className="bg-glass w-full h-full opacity-[0.15]"/>
+          <div className="bg-glass w-full h-full opacity-[0.15]" />
         </motion.div>
 
         <Navigation />
 
-        <MenuToggle toggle={() => toggleOpen()} className={s.mHumber}/>
+        <MenuToggle toggle={() => toggleOpen()} className={s.mHumber} />
       </motion.nav>
     </>
   );

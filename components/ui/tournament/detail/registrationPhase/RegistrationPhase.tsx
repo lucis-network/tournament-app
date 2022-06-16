@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Col, Image, message, Modal, Row } from "antd";
+import { Button, Col, Image, message, Modal, Row, Tooltip } from "antd";
 import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
@@ -18,13 +18,18 @@ import {
 } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 import TournamentService from "components/service/tournament/TournamentService";
-import { ApolloQueryResult } from "@apollo/client";
+import { ApolloQueryResult, useLazyQuery } from "@apollo/client";
 import useTournament from "../hooks/useTournament";
 import CountdownTimer from "components/ui/common/CountDown";
 import { CalendarOutlined } from "@ant-design/icons";
 import AuthStore from "components/Auth/AuthStore";
 import SpinLoading from "components/ui/common/Spin";
 import { isEmpty } from "lodash";
+import ClaimResultModal from "../popup/claimResultModal/ClaimResultModal";
+import AuthService from "components/Auth/AuthService";
+import { to_hex_str } from "utils/String";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import { GET_MY_TEAM } from "components/ui/common/tabsItem/myTeamDetail/myTeamService";
 
 type Props = {
   isJoin: boolean;
@@ -47,6 +52,11 @@ type Reward = {
 };
 
 export type ClaimPrizePool = {
+  tournament_uid?: string;
+  address?: any;
+};
+
+export type ClaimPrizeSystem = {
   tournament_uid?: string;
   address?: any;
 };
@@ -74,6 +84,16 @@ export default observer(function RegistrationPhase(props: Props) {
     refetch,
     refreshParticipant,
   } = props;
+  const user = getLocalAuthInfo();
+
+  const [searchTeam, { refetch: refetchGetMyTeam }] = useLazyQuery(
+    GET_MY_TEAM,
+    {
+      variables: {
+        user_id: user?.profile?.user_id,
+      },
+    }
+  );
 
   const isFullParticipant = cache_tournament?.team_participated >= participants;
 
@@ -122,12 +142,17 @@ export default observer(function RegistrationPhase(props: Props) {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-
+  
   const [dataPrize, setDataPrize] = useState<Reward>();
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
   const [dataDonation, setDataDonation] = useState<Reward[]>();
   const [totalFromDonation, setTotalFromDonation] = useState(0);
+  const [loadingClaimPrizePool, setLoadingClaimPrizePool] = useState(false);
+  const [loadingClaimPrizeSystem, setLoadingClaimPrizePoolSystem] =
+    useState(false);
 
+  const [checkClaimPoolSize, setCheckClaimPoolSize] = useState(false);
+  const [checkClaim, setCheckClaim] = useState(false);
   useEffect(() => {
     let arr: Array<Reward> = [];
     data?.forEach((item: any) => {
@@ -161,6 +186,7 @@ export default observer(function RegistrationPhase(props: Props) {
       AuthBoxStore.connectModalVisible = true;
     } else {
       if (value === "PrizePool") {
+        setLoadingClaimPrizePool(true);
         const claim: ClaimPrizePool = {
           tournament_uid: tournamentId,
           address: ConnectWalletStore.address,
@@ -171,30 +197,39 @@ export default observer(function RegistrationPhase(props: Props) {
           (res) => {
             if (res) {
               refetch();
+              setCheckClaimPoolSize(true);
               TournamentStore.claimResultModalVisible = true;
+              setLoadingClaimPrizePool(false);
             }
           },
           (error) => {
-            message.warning("You have received this prize.");
+            message.warning("You have received this prize.", 10);
+            setLoadingClaimPrizePool(false);
           }
         );
       }
 
       if (value === "PrizeSystem") {
+        setLoadingClaimPrizePoolSystem(true);
+        const claim: ClaimPrizeSystem = {
+          tournament_uid: tournamentId,
+          address: ConnectWalletStore.address,
+        };
+
         let tournamentService = new TournamentService();
-        const response = tournamentService
-          .claimPrizeSystem(tournamentId as string)
-          .then(
-            (res) => {
-              if (res) {
-                refetch();
-                TournamentStore.claimResultModalVisible = true;
-              }
-            },
-            (error) => {
-              message.warning("You have received this prize.");
+        const response = tournamentService.claimPrizeSystem(claim).then(
+          (res) => {
+            if (res) {
+              refetch();
+              TournamentStore.claimResultModalVisible = true;
+              setLoadingClaimPrizePoolSystem(false);
             }
-          );
+          },
+          (error) => {
+            message.warning("You have received this prize.", 10);
+            setLoadingClaimPrizePoolSystem(false);
+          }
+        );
       }
     }
   };
@@ -212,10 +247,27 @@ export default observer(function RegistrationPhase(props: Props) {
     setIsPopupDonate(true);
   };
 
+  useEffect(() => {
+    if (TournamentStore.checkBacktoTournament) {
+      handleOpenModal();
+      refetchGetMyTeam();
+      TournamentStore.checkBacktoTournament = false;
+
+      //@ts-ignore
+      document.getElementById("registrationPhase").scrollIntoView();
+    }
+  }, [TournamentStore.checkBacktoTournament == true]);
+
+  useEffect(() => {
+    if(dataPrize?.amount == 0 && dataSystemPrize?.amount == 0 && totalFromDonation == 0){
+      setCheckClaim(true);
+    }
+  }, [dataPrize,dataSystemPrize,totalFromDonation])
+
   return (
     <>
-      <div className={s.registrationPhase}>
-        <div className={s.startTime}>
+      <div className={s.registrationPhase} id="registrationPhase">
+        {/* <div className={s.startTime}>
           <Image
             src="/assets/TournamentDetail/iconCalendar.svg"
             preview={false}
@@ -225,52 +277,56 @@ export default observer(function RegistrationPhase(props: Props) {
             <span className="font-bold">Start time: </span>
             {moment(brackets?.[0].start_at).format("YYYY/MM/DD HH:mm")}
           </p>
-        </div>
+        </div> */}
         <div className={s.registrationPhaseMetadata}>
           <div className={s.item}>
             <div className={s.itemImg}>
               <Image
-                src="/assets/TournamentDetail/goldCup.svg"
+                src="/assets/TournamentDetail/goldCup.png"
                 alt=""
                 preview={false}
               />
             </div>
-            <div className={s.itemText}>
-              <h3>
-                {dataUpdateTotalPrizePool
-                  ? fomatNumber(dataUpdateTotalPrizePool?.total_prize_pool)
-                  : fomatNumber(totalPrizePool)}{" "}
-                {currency.symbol}
-              </h3>
-              <p>Prize pool</p>
-            </div>
-            <div className={`${s.additionalInfo} ${s.additionalPrize}`}>
-              {additionPrize ? (
-                additionPrize > 0 ? (
-                  <div>
-                    <h4>Additional prizes:</h4>
-                    <p>
-                      <Image
-                        src="/assets/TournamentDetail/goldCupSmall.svg"
-                        preview={false}
-                        alt=""
-                      />
-                      {fomatNumber(Number.parseFloat(additionPrize))} LUCIS
-                      token
-                    </p>
-                  </div>
-                ) : (
-                  ""
-                )
-              ) : (
-                ""
-              )}
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <div>
+                <div className={s.itemText}>
+                  <h3>
+                    {dataUpdateTotalPrizePool
+                      ? fomatNumber(dataUpdateTotalPrizePool?.total_prize_pool)
+                      : fomatNumber(totalPrizePool)}{" "}
+                    {currency.symbol}
+                  </h3>
+                  <p>PRIZE POOL</p>
+                </div>
+                <div className={`${s.additionalInfo} ${s.additionalPrize}`}>
+                  {additionPrize ? (
+                    additionPrize > 0 ? (
+                      <>
+                        <h4>Additional prizes:</h4>
+                        <p>
+                          <Image
+                            src="/assets/TournamentDetail/goldCupSmall.svg"
+                            preview={false}
+                            alt=""
+                          />
+                          {fomatNumber(Number.parseFloat(additionPrize))} LUCIS
+                          token
+                        </p>
+                      </>
+                    ) : (
+                      ""
+                    )
+                  ) : (
+                    ""
+                  )}
+                </div>
+              </div>
             </div>
           </div>
           <div className={s.item}>
             <div className={s.itemImg}>
               <Image
-                src="/assets/TournamentDetail/diamondBox.png"
+                src="/assets/TournamentDetail/diamondBoxs.png"
                 alt=""
                 preview={false}
               />
@@ -282,13 +338,13 @@ export default observer(function RegistrationPhase(props: Props) {
                   : fomatNumber(totalDonation)}{" "}
                 {currency.symbol}
               </h3>
-              <p>Total donation</p>
+              <p>TOTAL DONATION</p>
             </div>
             <div className={s.additionalInfo}>
               {tournament_status !== "CLOSED" && (
                 <button onClick={openModal}>
                   <Image
-                    src="/assets/TournamentDetail/signInCircle.svg"
+                    src="/assets/TournamentDetail/iconDonate.svg"
                     preview={false}
                     alt=""
                   />
@@ -297,25 +353,52 @@ export default observer(function RegistrationPhase(props: Props) {
               )}
             </div>
           </div>
+
           <div className={s.item}>
-            <div className={s.itemImg}>
-              <Image
-                src="/assets/TournamentDetail/participants.svg"
-                alt=""
-                preview={false}
-              />
-            </div>
-            <div className={s.itemText}>
-              <h3>
-                {dataUpdateParticipant
-                  ? dataUpdateParticipant?.participant
-                  : cache_tournament?.team_participated
-                  ? cache_tournament?.team_participated
-                  : 0}
-                /{participants}
-              </h3>
-              <p>Participants</p>
-            </div>
+            {(tournament_status !== "CLOSED" || (tournament_status === "CLOSED" && checkClaim)) && (
+              <>
+                <span className={s.itemTitle}>PARTICIPANTS</span>
+                <div className={s.itemImg}>
+                  <Image
+                    src="/assets/TournamentDetail/participant.svg"
+                    alt=""
+                    preview={false}
+                  />
+                </div>
+                <div className={s.itemText}>
+                  <span>
+                    {dataUpdateParticipant
+                      ? dataUpdateParticipant?.participant
+                      : cache_tournament?.team_participated
+                      ? cache_tournament?.team_participated
+                      : 0}
+                    /{participants}
+                  </span>
+                </div>
+              </>
+            )}
+            {tournament_status === "CLOSED" && !checkClaim && (
+              <>
+                <div className={s.itemClosed}>
+                  <div className={s.itemImgClosed}>
+                    <Image
+                      src="/assets/TournamentDetail/participant.svg"
+                      alt=""
+                      preview={false}
+                    />{" "}
+                    <span className={s.itemTitle}>PARTICIPANTS</span>
+                    <span className={s.itemParticipantClosed}>
+                      {dataUpdateParticipant
+                        ? dataUpdateParticipant?.participant
+                        : cache_tournament?.team_participated
+                        ? cache_tournament?.team_participated
+                        : 0}
+                      /{participants}
+                    </span>
+                  </div>
+                </div>
+              </>
+            )}
             <div className={s.additionalInfo}>
               {(() => {
                 switch (tournament_status) {
@@ -323,25 +406,16 @@ export default observer(function RegistrationPhase(props: Props) {
                     return (
                       <div className={s.joinWrap}>
                         {isJoin ? (
-                          <Button
-                            onClick={handleOpenLeaveTournament}
-                            className="btn-cyan"
-                          >
+                          <button onClick={handleOpenLeaveTournament}>
                             Unjoin tournament
-                          </Button>
+                          </button>
                         ) : (
-                          <Button
+                          <button
                             onClick={handleOpenModal}
                             disabled={isFullParticipant}
-                            className="btn-cyan"
                           >
-                            <Image
-                              src="/assets/TournamentDetail/iconPlay.svg"
-                              preview={false}
-                              alt=""
-                            />
                             Join tournament
-                          </Button>
+                          </button>
                         )}
                       </div>
                     );
@@ -350,20 +424,15 @@ export default observer(function RegistrationPhase(props: Props) {
                       <div className={s.joinWrap}>
                         {isJoin ? (
                           !isCheckin ? (
-                            <Button
-                              className="btn-cyan"
-                              onClick={handleCheckinTournament}
-                            >
+                            <button onClick={handleCheckinTournament}>
                               {loadingCheckin ? (
                                 <SpinLoading className="pt-0" size={24} />
                               ) : (
                                 "Check-in"
                               )}
-                            </Button>
+                            </button>
                           ) : (
-                            <Button disabled className="btn-cyan">
-                              Checked
-                            </Button>
+                            <button disabled>Checked</button>
                           )
                         ) : null}
                       </div>
@@ -373,94 +442,105 @@ export default observer(function RegistrationPhase(props: Props) {
                       // todo closeds
                       <div className="pt-5">
                         <div className={s.claimWrap}>
-                          {(dataPrize?.amount && dataPrize?.amount > 0) ||
+                          {/* {(dataPrize?.amount && dataPrize?.amount > 0) ||
                           (dataSystemPrize?.amount &&
                             dataSystemPrize?.amount > 0) ? (
                             <p>YOUR REWARDS</p>
                           ) : (
                             ""
-                          )}
-                          <div className={`${s.rewards} pt-5`}>
-                            <div className="mb-7">
-                              {(dataPrize?.amount && dataPrize?.amount > 0) ||
-                                (dataSystemPrize?.amount &&
-                                  dataSystemPrize?.amount > 0) ||
-                                (totalFromDonation > 0 && <div>Prize</div>)}
-                              <div>
-                                {dataPrize?.amount ? (
-                                  dataPrize?.amount > 0 ? (
-                                    <div className="mb-5">
-                                      <p>Prize</p>
+                          )} */}
+                          <div className={`${s.rewards} pt-5 `}>
+                            {(dataPrize?.amount && dataPrize?.amount > 0) ||
+                              (dataSystemPrize?.amount &&
+                                dataSystemPrize?.amount > 0) ||
+                              (totalFromDonation > 0 && <div>Prize</div>)}
+                            <div className="mb-2">
+                              {dataPrize?.amount ? (
+                                dataPrize?.amount > 0 ? (
+                                  <div className={s.rewardsPrize}>
+                                    <p>Prize</p>
+                                    <div className={s.rewardsClaimPrize}>
                                       <h3>
                                         {fomatNumber(
                                           dataPrize?.amount
                                             ? dataPrize?.amount
                                             : 0
                                         )}{" "}
-                                        {dataPrize?.symbol}
+                                        <span className={s.rewardsClaimSymbol}>
+                                          {dataPrize?.symbol}
+                                        </span>
                                       </h3>
                                       <Button
                                         onClick={() => claimToken("PrizePool")}
-                                        className={`${s.btnClaim} btn-cyan`}
+                                        className={`${s.btnClaim}`}
                                         disabled={dataPrize?.is_claim}
+                                        loading={loadingClaimPrizePool}
                                       >
                                         Claim
                                       </Button>
                                     </div>
-                                  ) : (
-                                    ""
-                                  )
+                                  </div>
                                 ) : (
                                   ""
-                                )}
-                              </div>
-                              <div>
-                                {dataSystemPrize?.amount ? (
-                                  dataSystemPrize?.amount > 0 ? (
-                                    <>
-                                      <h3>
-                                        {fomatNumber(
-                                          dataSystemPrize?.amount
-                                            ? dataSystemPrize?.amount
-                                            : 0
-                                        )}{" "}
-                                        {dataSystemPrize?.symbol}
-                                      </h3>
-                                      <Button
-                                        onClick={() =>
-                                          claimToken("PrizeSystem")
-                                        }
-                                        className={`${s.btnClaim} btn-cyan`}
-                                        disabled={dataSystemPrize?.is_claim}
-                                      >
-                                        Claim
-                                      </Button>
-                                    </>
-                                  ) : (
-                                    ""
-                                  )
-                                ) : (
-                                  ""
-                                )}
-                              </div>
+                                )
+                              ) : (
+                                ""
+                              )}
                             </div>
+                            <div className="mb-6">
+                              {dataSystemPrize?.amount ? (
+                                dataSystemPrize?.amount > 0 ? (
+                                  <div className={s.rewardsClaimPrize}>
+                                    <h3>
+                                      {fomatNumber(
+                                        dataSystemPrize?.amount
+                                          ? dataSystemPrize?.amount
+                                          : 0
+                                      )}{" "}
+                                      <span className={s.rewardsClaimSymbol}>
+                                        {dataSystemPrize?.symbol}
+                                      </span>
+                                    </h3>
+                                    <Button
+                                      onClick={() => claimToken("PrizeSystem")}
+                                      className={`${s.btnClaim}`}
+                                      disabled={dataSystemPrize?.is_claim}
+                                      loading={loadingClaimPrizeSystem}
+                                    >
+                                      Claim
+                                    </Button>
+                                  </div>
+                                ) : (
+                                  ""
+                                )
+                              ) : (
+                                ""
+                              )}
+                            </div>
+
                             <div>
                               <div>
                                 {totalFromDonation ? (
                                   totalFromDonation > 0 ? (
-                                    <>
+                                    <div className={s.rewardsPrize}>
                                       <p>From Donation</p>
-                                      <h3>
-                                        {fomatNumber(totalFromDonation)}{" "}
-                                        {dataPrize?.symbol}
-                                      </h3>
-                                      <Button
-                                        onClick={claimTokenDonation}
-                                        className={`${s.btnClaim} btn-cyan`}
-                                      >
-                                        Claim
-                                      </Button>
-                                    </>
+                                      <div className={s.rewardsClaimPrize}>
+                                        <h3>
+                                          {fomatNumber(totalFromDonation)}{" "}
+                                          <span
+                                            className={s.rewardsClaimSymbol}
+                                          >
+                                            {currency?.symbol}
+                                          </span>
+                                        </h3>
+                                        <Button
+                                          onClick={claimTokenDonation}
+                                          className={`${s.btnClaim}`}
+                                        >
+                                          Claim
+                                        </Button>
+                                      </div>
+                                    </div>
                                   ) : (
                                     ""
                                   )
@@ -490,7 +570,9 @@ export default observer(function RegistrationPhase(props: Props) {
                     return (
                       <div className={s.countdownWrap}>
                         <p className="mb-0">
-                          Registration phase will ends in:{" "}
+                          <span className={s.countdownRegistration}>
+                            Registration phase will ends in{" "}
+                          </span>
                           <CountdownTimer targetDate={timeRegistration} />
                         </p>
                       </div>
@@ -499,7 +581,9 @@ export default observer(function RegistrationPhase(props: Props) {
                     return (
                       <div className={s.countdownWrap}>
                         <p className="mb-0 mr-4">
-                          Check-in phase will ends in:
+                          <span className={s.countdownRegistration}>
+                            Check-in phase will ends in{" "}
+                          </span>
                         </p>
                         <CountdownTimer targetDate={timeCheckin} />
                       </div>
@@ -507,7 +591,11 @@ export default observer(function RegistrationPhase(props: Props) {
                   case "PREPARE":
                     return (
                       <div className={s.countdownWrap}>
-                        <p className="mb-0 mr-4">Tournament will starts in:</p>
+                        <p className="mb-0 mr-4">
+                          <span className={s.countdownRegistration}>
+                            Tournament will starts in{" "}
+                          </span>
+                        </p>
                         <CountdownTimer targetDate={timeDefault} />
                       </div>
                     );
@@ -525,6 +613,8 @@ export default observer(function RegistrationPhase(props: Props) {
         tournamentId={tournamentId as string}
         dataDonation={dataDonation}
         totalFromDonation={totalFromDonation}
+        currency={currency}
+        name={name as string}
       />
       <ChooseTeamModal
         step={step}
@@ -542,6 +632,19 @@ export default observer(function RegistrationPhase(props: Props) {
         thumbnail={thumbnail}
         refetch={refetch}
       />
+
+      <ClaimResultModal
+        totalPrizePool={
+          checkClaimPoolSize
+            ? (dataPrize?.amount as number)
+            : (dataSystemPrize?.amount as number)
+        }
+        currency={
+          checkClaimPoolSize ? dataPrize?.symbol : dataSystemPrize?.symbol
+        }
+        name={name as string}
+      />
+
       <Modal
         title={
           <h3 className="text-16px text-white">
@@ -566,7 +669,11 @@ export default observer(function RegistrationPhase(props: Props) {
             </Button>
           </Col>
           <Col>
-            <Button type="primary" onClick={handleLeaveTournament} loading={loadingUnjoin}>
+            <Button
+              type="primary"
+              onClick={handleLeaveTournament}
+              loading={loadingUnjoin}
+            >
               Confirm
             </Button>
           </Col>

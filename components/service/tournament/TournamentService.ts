@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 import { ClaimDonation } from "components/ui/tournament/detail/popup/claimDonationModal/ClaimDonationModal";
 import { GDonateTransaction } from "components/ui/tournament/detail/popup/popupDonate";
-import { ClaimPrizePool } from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
+import { ClaimPrizePool, ClaimPrizeSystem } from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import { SponsorInput } from "components/ui/tournament/detail/sponsor/TournamentDetailBecomeSponsor";
 import { SponsorCreateInputGql } from "src/generated/graphql";
 import { CreateTournament } from "src/store/TournamentStore";
@@ -71,7 +71,7 @@ export default class TournamentService {
     txHash: string,
     block?: number
   ): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+    const depositTournament = await apoloClient.mutate({
       mutation: gql`
         mutation depositTournament(
           $tournamentUid: String!
@@ -92,11 +92,11 @@ export default class TournamentService {
       },
     });
 
-    return donataResponse;
+    return depositTournament;
   }
 
   public async claimDonation(claim: ClaimDonation): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+    const donationResponse = await apoloClient.mutate({
       mutation: gql`
         mutation claimDonation($tournament_uid: String!, $address: String!) {
           claimDonation(tournament_uid: $tournament_uid, address: $address)
@@ -108,38 +108,39 @@ export default class TournamentService {
       },
     });
 
-    return donataResponse;
+    return donationResponse;
   }
 
   public async claimPrizePool(claim: ClaimPrizePool): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+    const claimPrizePool = await apoloClient.mutate({
       mutation: gql`
         mutation claimPrizePool($tournament_uid: String!, $address: String!) {
           claimPrizePool(tournament_uid: $tournament_uid, address: $address)
         }
       `,
       variables: {
-        tournament_uid: claim.tournament_uid,
-        address: claim.address,
+        tournament_uid: claim?.tournament_uid,
+        address: claim?.address,
       },
     });
 
-    return donataResponse;
+    return claimPrizePool;
   }
 
-  public async claimPrizeSystem(tournament_uid: string): Promise<any> {
-    const donataResponse = await apoloClient.mutate({
+  public async claimPrizeSystem(claim: ClaimPrizeSystem): Promise<any> {
+    const claimPrizeSystem = await apoloClient.mutate({
       mutation: gql`
-        mutation claimPrizePool($tournament_uid: String!) {
-          claimPrizePool(tournament_uid: $tournament_uid)
+        mutation claimPrizeSystem($tournament_uid: String!, $address: String!) {
+          claimPrizeSystem(tournament_uid: $tournament_uid, address: $address)
         }
       `,
       variables: {
-        tournament_uid: tournament_uid,
+        tournament_uid: claim?.tournament_uid,
+        address: claim?.address,
       },
     });
 
-    return donataResponse;
+    return claimPrizeSystem;
   }
 
   public async subscribeToTournament(tournament_uid: string): Promise<any> {

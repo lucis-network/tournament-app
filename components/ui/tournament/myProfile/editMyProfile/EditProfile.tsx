@@ -1,5 +1,5 @@
 import s from "./EditProfile.module.sass";
-import {Button, Col, Form, Input, InputNumber, message as antMessage, Row, Select, Space} from "antd";
+import {Button, Col, Form, Input, InputNumber, message as antMessage, message, Row, Select, Space} from "antd";
 import {InfoCircleOutlined, LinkOutlined} from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
 import React, {useCallback, useEffect, useRef, useState} from "react";
@@ -16,7 +16,7 @@ import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 
 type EditProfileProps = {
   userInfo: UserGraphql,
-  getUserProfileRefetch: () => Promise<ApolloQueryResult<any>>,
+  onEditedProfile: () => void,
 };
 
 type CountryOption = {
@@ -25,11 +25,13 @@ type CountryOption = {
   dial_code: string,
 }
 
-export default observer(function EditProfile({ userInfo, getUserProfileRefetch }: EditProfileProps) {
+export default observer(function EditProfile({ userInfo, onEditedProfile }: EditProfileProps) {
   const [newProfileData, setNewProfileData] = useState<ProfileUpdateInput>({});
   const [emailValue, setEmailValue] = useState<string>('');
   const [countryData, setCountryData] = useState<CountryOption[]>([]);
   const [phone, setPhone] = useState<string>(userInfo?.profile?.phone as string);
+  const [phoneError, setPhoneError] = useState<string | undefined>(undefined)
+
   const {verifyEmail} = useVerifyEmail(
     {
       email: emailValue,
@@ -134,11 +136,21 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
         }
 
         if (!isEmpty(phone)) {
+          const _phone = (!phone.includes('+')) ? ('+' + phone) : phone
+          console.log('_phone: ', _phone);
+          if(!isPhoneNumber(_phone)) {
+            // message.error("")
+            console.log('invalid phone')
+            setPhoneError("Invalid phone number")
+            return
+          }
+
           newResult.phone = {
             set: (!phone.includes('+')) ? ('+' + phone) : phone
           }
         }
 
+        result;
         setNewProfileData(newResult)
       })
       .catch(error => {
@@ -174,7 +186,8 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
     if (!isEmpty(newProfileData)) {
       updateProfile()
         .then(response => {
-          getUserProfileRefetch()
+          onEditedProfile()
+          message.success("Success");
         })
         .catch(error => {
           console.log('updateProfile error: ', error)
@@ -280,12 +293,22 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
                 country={`${userInfo?.profile?.country_code?.toLowerCase()}`}
                 enableSearch
                 value={phone}
-                // isValid={(value) => {
-                //   return isPhoneNumber(value)
+                // isValid={(value, country: any) => {
+                //   let _phone = '+'+ value;
+                //   if(!isPhoneNumber(_phone)) {
+                //     setPhoneError("Invalid phone number")
+                //   } else {
+                //     setPhoneError(undefined)
+                //   }
+                //   return isPhoneNumber(_phone)
                 // }}
-                onChange={(phone) => setPhone(phone)}
+                onChange={(phone) => {
+                  setPhoneError(undefined)
+                  setPhone(phone)
+                }}
                 placeholder="Enter phone number"
               />
+              <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
               {/*<Row>*/}
               {/*  <Col span={8}>*/}
               {/*    <Form.Item name="dial_code">*/}

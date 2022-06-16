@@ -5,6 +5,7 @@ import {
 } from "../../../common/tabsItem/myTeamDetail/myTeamService";
 import { useMutation, useLazyQuery } from "@apollo/client";
 import { useCallback, useState } from "react";
+import TournamentStore from "src/store/TournamentStore";
 
 export interface TeamType extends Record<any, any> {
 	user_id: number;
@@ -150,7 +151,7 @@ const UseCreateNewTeam = (profile: any, teamSize: number) => {
 		}
 	};
 
-	const handleSaveTeam = () => {
+	const handleSaveTeam = async () => {
 		setError({
 			...error,
 			["team_name"]: draftData?.team_name ? "" : "Team name is required",
@@ -174,7 +175,7 @@ const UseCreateNewTeam = (profile: any, teamSize: number) => {
 					is_leader: false,
 				}));
 
-			createTeam({
+			await createTeam({
 				variables: {
 					input: {
 						name: draftData?.team_name,
@@ -189,11 +190,13 @@ const UseCreateNewTeam = (profile: any, teamSize: number) => {
 					},
 				},
 				onCompleted: () => {
-					refetch();
+					TournamentStore.loadingCeateTeam = false;
+					refetch();		
 				},
 			});
-			setReset(true);
+			setReset(true);	
 		}
+		TournamentStore.loadingCeateTeam = false;
 	};
 
 	const handleAddMember = (member: TeamType) => {

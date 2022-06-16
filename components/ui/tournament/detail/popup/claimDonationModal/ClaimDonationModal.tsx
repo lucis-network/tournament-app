@@ -1,21 +1,23 @@
 import { observer } from "mobx-react-lite";
-import { message, Modal, Table } from "antd";
+import { Button, message, Modal, Table } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { currency, fomatNumber, format } from "utils/Number";
+import { fomatNumber } from "utils/Number";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import AuthService from "components/Auth/AuthService";
 import { to_hex_str } from "utils/String";
 import { useEffect, useState } from "react";
 import { LUCIS_FEE_DONATION } from "utils/Enum";
-import formatNumber from "format/formatNumber";
+import ClaimResultModal from "../claimResultModal/ClaimResultModal";
 
 type Props = {
   tournamentId?: string;
   dataDonation?: any;
   totalFromDonation?: number;
+  currency?: any;
+  name?: string;
 };
 
 export type ClaimDonation = {
@@ -24,9 +26,9 @@ export type ClaimDonation = {
 };
 
 export default observer(function ClaimDonationModal(props: Props) {
-  const [isLoading, setIsLoading] = useState(false);
+  const [loadingBtn, setLoadingBtn] = useState(false);
 
-  const { tournamentId, dataDonation, totalFromDonation } = props;
+  const { tournamentId, dataDonation, totalFromDonation, currency, name} = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
@@ -65,7 +67,7 @@ export default observer(function ClaimDonationModal(props: Props) {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
     } else {
-      setIsLoading(true);
+      setLoadingBtn(true);
 
       const claim: ClaimDonation = {
         tournament_uid: tournamentId,
@@ -73,19 +75,20 @@ export default observer(function ClaimDonationModal(props: Props) {
       };
       const authService = new AuthService();
       const msg = `0x${to_hex_str(`Lucis verification`)}`;
-      console.log(msg);
+
       let tournamentService = new TournamentService();
       const response = tournamentService.claimDonation(claim).then(
         (res) => {
-          setIsLoading(false);
+          setLoadingBtn(false);
           if (res) {
             //message.success("You claim success");
-            authService.sign([msg, ConnectWalletStore.address]);
+            TournamentStore.claimResultModalVisible = true;
+            handleCancel();
           }
         },
         (error) => {
-          setIsLoading(false);
-          message.warning("You have received this donation");
+          setLoadingBtn(false);
+          message.warning("You have received this donation", 10);
         }
       );
     }
@@ -136,6 +139,7 @@ export default observer(function ClaimDonationModal(props: Props) {
         className={`${s.container}`}
         onCancel={handleCancel}
         okText="Claim"
+        footer={null}
       >
         <Table
           dataSource={dataDonation}
@@ -147,7 +151,27 @@ export default observer(function ClaimDonationModal(props: Props) {
         <div style={{ marginTop: "10px" }}>
           Lucis will take 5% each donation as fee
         </div>
+        <div className={s.btnContainter}>
+          <Button onClick={handleCancel} className="mr-2">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleOk}
+            className={s.btnConfirm}
+            loading={loadingBtn}
+          >
+            Confirm
+          </Button>
+        </div>
       </Modal>
+
+      <ClaimResultModal
+        totalPrizePool={totalFromDonation as number}
+        currency={currency?.symbol}
+        name={name as string}
+        claim={true}
+      />
+      
     </div>
   );
 });

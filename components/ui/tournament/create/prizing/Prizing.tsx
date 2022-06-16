@@ -159,12 +159,13 @@ const EditableCell: React.FC<EditableCellProps> = ({
         <InputNumber
           formatter={(value) => `${value}%`}
           parser={(value: any) => value.replace("%", "")}
-          style={{ color: "black" }}
           ref={inputRef}
           onPressEnter={save}
           onBlur={save}
           max={100}
           min={1}
+          controls={false}
+          className={`${s.formFieldBg} ${s.formFieldNumber} ${s.formFieldEditable}`}
         />
         {/* <Input
           //formatter={(value) => `${value}%`}
@@ -181,7 +182,7 @@ const EditableCell: React.FC<EditableCellProps> = ({
     ) : (
       <div
         className="editable-cell-value-wrap"
-        style={{ paddingRight: 20 }}
+        style={{ paddingRight: "20px" }}
         onClick={toggleEdit}
       >
         {children}
@@ -243,17 +244,11 @@ export default observer(function Prizing(props: Props) {
       render: (_: any, record: { key: React.Key }) =>
         state.dataSource.length >= 1 ? (
           <Button
-            style={{
-              padding: 0,
-              background: "none",
-              height: "auto",
-              lineHeight: 1,
-              border: "none",
-            }}
             onClick={() => handleDelete(record.key)}
             disabled={record.key == state.dataSource.length - 1 ? false : true}
+            className={s.btnDeleteRow}
           >
-            <img src="/assets/iconDelete.png" width={15} height={15} alt="" />
+            X
           </Button>
         ) : null,
     },
@@ -425,76 +420,77 @@ export default observer(function Prizing(props: Props) {
 
   return (
     <div className={s.container}>
-      <div>
-        <p>Initial pool size</p>
-        <Row>
-          <Col span={3}>
-            <InputNumber
-              type="number"
-              prefix="$"
-              style={{ width: "99%" }}
-              //min={1}
-              placeholder="20,000"
-              onChange={onChange}
-              ref={inputRef}
-              onBlur={() => handleBlur()}
-              // value={
-              //   TournamentStore.pool_size
-              //     ? TournamentStore.pool_size
-              //     : undefined
-              // }
-              value={poolSize}
-            />
-            <div className={s.message_error}>{messageErrorPoolSize}</div>
-          </Col>
-          <Col span={3}>
-            <Select
-              defaultValue={
-                TournamentStore.currency_uid
-                  ? TournamentStore.currency_uid
-                  : "Choose currency"
-              }
-              onChange={(value) => {
-                setChain(value);
-                let obj = getDataCurrencies?.filter((item: any) => {
-                  return item.uid == value;
-                });
-                setSymbol(obj[0]?.symbol);
-                setMessageErrorCurrency("");
-                TournamentStore.currency_uid = obj[0]?.uid;
-                TournamentStore.currency_symbol = obj[0]?.symbol;
-                TournamentStore.currency_address = obj[0]?.address;
-              }}
-              style={{ minWidth: "150px" }}
-            >
-              {getDataCurrencies?.map((item: any, index: number) => {
-                return (
-                  <Option value={item.uid} key={index}>
-                    {item.symbol}
-                  </Option>
-                );
-              })}
-            </Select>
-            <div className={s.message_error}>{messageErrorCurrency}</div>
-          </Col>
-        </Row>
+      <div className={s.initialPoolSizeWrap}>
+        <h4>Initial pool size</h4>
+        <div className={s.inputPoolSizeWrap}>
+          <InputNumber
+            type="number"
+            prefix="$"
+            //min={1}
+            placeholder="20,000"
+            onChange={onChange}
+            ref={inputRef}
+            onBlur={() => handleBlur()}
+            // value={
+            //   TournamentStore.pool_size
+            //     ? TournamentStore.pool_size
+            //     : undefined
+            // }
+            value={poolSize}
+            controls={false}
+            className={`${s.formFieldBg} ${s.formFieldNumber} ${s.formFieldInitPoolSize}`}
+          />
+          <div className={s.message_error}>{messageErrorPoolSize}</div>
+        </div>
+        <div className={s.poolSizeCurrencyWrap}>
+          <Select
+            defaultValue={
+              TournamentStore.currency_uid
+                ? TournamentStore.currency_uid
+                : "Choose currency"
+            }
+            onChange={(value) => {
+              setChain(value);
+              let obj = getDataCurrencies?.filter((item: any) => {
+                return item.uid == value;
+              });
+              setSymbol(obj[0]?.symbol);
+              setMessageErrorCurrency("");
+              TournamentStore.currency_uid = obj[0]?.uid;
+              TournamentStore.currency_symbol = obj[0]?.symbol;
+              TournamentStore.currency_address = obj[0]?.address;
+            }}
+            className={`${s.formFieldBg} ${s.formFieldSelect}`}
+          >
+            {getDataCurrencies?.map((item: any, index: number) => {
+              return (
+                <Option value={item.uid} key={index}>
+                  {item.symbol}
+                </Option>
+              );
+            })}
+          </Select>
+          <div className={s.message_error}>{messageErrorCurrency}</div>
+        </div>
       </div>
 
       <div className="pt-4">
-        <p>Prize Allocation</p>
-        <Table
-          className={s.container_table}
-          components={components}
-          rowClassName={() => "editable-row"}
-          bordered
-          dataSource={dataSource}
-          columns={columns as ColumnTypes}
-          pagination={false}
-        />
+        <p className="text-16">Prize Allocation</p>
+        <div className={s.tableResponsive}>
+          <Table
+            className={s.container_table}
+            components={components}
+            rowClassName={() => "editable-row"}
+            bordered
+            dataSource={dataSource}
+            columns={columns as ColumnTypes}
+            pagination={false}
+          />
+        </div>
         <Row style={{ marginTop: 16 }}>
           <Col span={8}>
-            <Button onClick={handleAdd} type="primary">
-              Add a row
+            <Button onClick={handleAdd} className={s.btnAddRow}>
+              + Add a row
             </Button>
           </Col>
           <Col span={2}></Col>
@@ -507,41 +503,16 @@ export default observer(function Prizing(props: Props) {
           </Col>
         </Row>
       </div>
-
-      <div className="pt-4">
-        <Row>
-          <Col span={3}>
-            <p>Lucis fee</p>
-          </Col>
-          <Col span={2}></Col>
-          <Col span={3}>
-            <p>Referees fee</p>
-          </Col>
-        </Row>
-        <Row>
-          <Col span={3}>
-            <span style={{ color: "white" }}>
-              {" "}
-              {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0} %
-            </span>
-          </Col>
-          <Col span={2}></Col>
-          <Col span={3}>
-            <span style={{ color: "white" }}>
-              {" "}
-              {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0} %
-            </span>
-          </Col>
-          <Col span={10}></Col>
-          <Col span={6}>
-            <p style={{ fontSize: "larger" }}>
-              Total paid:{" "}
-              <b style={{ color: "orange" }}>
-                {totalPool()} {symbol}
-              </b>
-            </p>
-          </Col>
-        </Row>
+      <div className={s.paidWrap}>
+        <div className={s.fee}>
+          <label>Lucis fee</label>
+          <div className={s.feeValue}>{getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0} %</div>
+        </div>
+        <div className={s.fee}>
+          <label>Referees fee</label>
+          <div className={s.feeValue}>{getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0} %</div>
+        </div>
+        <div className={s.totalPaid}>Total paid: {totalPool()} {symbol}</div>
       </div>
     </div>
   );

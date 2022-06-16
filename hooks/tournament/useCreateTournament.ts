@@ -150,7 +150,7 @@ const GET_CONFIG_FEE = gql`
       id
       tn_lucis_fee
       tn_referee_fee
-      tn_claim_donate
+      tn_claim_fee
     }
   }
 `;

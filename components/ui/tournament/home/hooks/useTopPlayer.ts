@@ -20,6 +20,7 @@ const GET_TOP_PLAYER = gql`
       display_name
       avatar
       total_earning
+      user_name
     }
   }
 `;
