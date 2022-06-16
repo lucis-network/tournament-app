@@ -4,6 +4,7 @@
   background-size: 400px
   background-position-x: -220px
   background-position-y: 72%
+  overflow-x: hidden
   @media screen and (min-width: 1440px)
     background-size: 753px
     background-position-x: -290px
@@ -14,6 +15,7 @@
     background-size: 754px 1155px
   @media screen and (min-width: 1921px)
     background-position-x: left
+    overflow-x: visible
   &:before, &:after
     content: ''
     position: absolute
@@ -205,7 +207,7 @@
       padding-right: 10px
       display: inline-block
       @media screen and (min-width: 992px)
-        padding-top: 10px
+        padding-top: 5px
     .formContent
       flex: 1
     :global(.ant-radio-wrapper)
@@ -277,6 +279,12 @@
       border-radius: 8px
       border: 1px solid #A397CB
       cursor: pointer
+    :global(.file-name)
+      color: rgba(255, 255, 255, 0.7)
+      overflow: hidden
+      text-overflow: ellipsis
+      margin-bottom: 5px
+      font-style: italic
   .imgUploaded
     img
       object-fit: cover
@@ -371,7 +379,7 @@
     width: 28px
     height: 28px
     padding: 0
-    margin-top: 10px
+    margin-top: 6px
 .tournamentCreateSection
   margin-bottom: 100px
   .sectionTitle

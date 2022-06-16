@@ -50,7 +50,7 @@ export default function TableParticipant(props: Props) {
     const getDate = new Date();
     const start_at = new Date(dataBracket?.start_at);
     const inDays = start_at.getTime() - getDate.getTime();
-    if (inDays/3600000  < 1) setIsCheckBtnDonate(true);
+    if (inDays / 3600000 < 1) setIsCheckBtnDonate(true);
   });
 
   const handleClick = (e: object) => {
@@ -87,14 +87,16 @@ export default function TableParticipant(props: Props) {
           <div className="text-left">
             {item?.playTeamMembers?.length == 1 ? (
               <div>
-                {item?.playTeamMembers[0]?.user?.profile?.avatar && (
-                  <Image
-                    className={s.avatar}
-                    src={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
-                    preview={false}
-                    alt={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
-                  />
-                )}
+                <Image
+                  className={s.avatar}
+                  src={`${
+                    item?.playTeamMembers[0]?.user?.profile?.avatar
+                      ? item?.playTeamMembers[0]?.user?.profile?.avatar
+                      : "/assets/avatar.jpg"
+                  }`}
+                  preview={false}
+                  alt={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+                />
                 <a
                   style={{ color: "white" }}
                   href={`/profile/${item?.playTeamMembers[0]?.user?.profile?.user_name}`}
@@ -106,14 +108,16 @@ export default function TableParticipant(props: Props) {
               </div>
             ) : (
               <div>
-                {item?.team?.avatar && (
-                  <Image
-                    className={s.avatar}
-                    src={`${item?.team?.avatar}`}
-                    preview={false}
-                    alt={`${item?.team?.avatar}`}
-                  />
-                )}
+                <Image
+                  className={s.avatar}
+                  src={`${
+                    item?.team?.avatar
+                      ? item?.team?.avatar
+                      : "/assets/avatar.jpg"
+                  }`}
+                  preview={false}
+                  alt={`${item?.team?.avatar}`}
+                />
                 <a
                   style={{ color: "white" }}
                   onClick={() => {
@@ -197,6 +201,7 @@ export default function TableParticipant(props: Props) {
           columns={columns}
           bordered
           className={s.container_table}
+          pagination={false}
           //rowKey={(record) => `${record?.tournament_uid ? tournament_uid : ''}`}
           //rowKey={(record) => `${record?.uid}`}
         />

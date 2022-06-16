@@ -31,22 +31,22 @@ function CardHome(props: Props) {
   };
   return (
     <div className="tournaments-c">
-      <Row className={s.block_card} style={datas?.length <= 0 ? {flexDirection: "column"}: {}} gutter={width > 1600 ? 50 : 25}>
-        {datas?.length > 0
-          ? datas?.slice(0, isLoadMore).map((item) => {
-              return (
-                <Col
-                  xs={24}
-                  md={12}
-                  lg={6}
-                  className={s.wrapper}
-                  key={item?.uid}
-                >
-                  {<TournamentCard data={item} typeTab={type} />}
-                </Col>
-              );
-            })
-          : <TournamentCard typeTab={type} />}
+      <Row
+        className={s.block_card}
+        style={datas?.length <= 0 ? { flexDirection: "column" } : {}}
+        gutter={width > 1600 ? 20 : 25}
+      >
+        {datas?.length > 0 ? (
+          datas?.slice(0, isLoadMore).map((item) => {
+            return (
+              <Col xs={24} md={12} lg={6} className={s.wrapper} key={item?.uid}>
+                {<TournamentCard data={item} typeTab={type} />}
+              </Col>
+            );
+          })
+        ) : (
+          <TournamentCard typeTab={type} />
+        )}
       </Row>
       {isLoadMore > datas?.length || isLoadMore <= 8 ? (
         ""
@@ -97,9 +97,7 @@ function TournamentCard(props: { data?: TournamentGql; typeTab?: string }) {
                     </span>
                   </div>
                 </div>
-                <Link
-                  href={`/tournament/${item.uid}/${slugify(item.name)}`}
-                >
+                <Link href={`/tournament/${item.uid}/${slugify(item.name)}`}>
                   <a
                     style={{ backgroundImage: `url(${item.thumbnail})` }}
                     className={s.thumbnail}
@@ -110,9 +108,7 @@ function TournamentCard(props: { data?: TournamentGql; typeTab?: string }) {
                 <div className={s.im_logo_game}>
                   <img src={item.game.logo as string} alt="" />
                   <span className={s.time}>
-                    {moment(item.brackets?.[0].start_at).format(
-                      "MMM Do HH:mm"
-                    )}
+                    {moment(item.brackets?.[0].start_at).format("MMM Do HH:mm")}
                   </span>
                 </div>
                 <h2>
@@ -171,9 +167,7 @@ function TournamentCard(props: { data?: TournamentGql; typeTab?: string }) {
                   {typeTab === "UPCOMING" && (
                     <Button type="primary" className={s.btn_join_now}>
                       <Link
-                        href={`/tournament/${item.uid}/${slugify(
-                          item.name
-                        )}`}
+                        href={`/tournament/${item.uid}/${slugify(item.name)}`}
                       >
                         <a>JOIN NOW</a>
                       </Link>
@@ -184,7 +178,7 @@ function TournamentCard(props: { data?: TournamentGql; typeTab?: string }) {
             </div>
           </div>
         ) : (
-          <div className={s.card_item} style={{padding: '0px 12px'}}>
+          <div className={s.card_item} style={{ padding: "0px 12px" }}>
             <BlankState title={typeTab} />
           </div>
         )

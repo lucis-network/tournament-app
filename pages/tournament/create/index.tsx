@@ -220,17 +220,46 @@ export default observer(function CreateTournament(props: Props) {
     if(!Array.isArray(data)) {
       return;
     }
-    for(let idx = 0; idx < data.length; idx ++) {
-      if(idx == data.length - 1) {
-        continue
-      }
-      if(data[idx].start_at > data[idx+1].start_at) {
-        setMessageErrorTimeline("Invalid timeline")
-        return;
-      }
+    let errMsg = isTimelineValid(data)
+    if(errMsg != null) {
+      setMessageErrorTimeline(errMsg);
+    } else {
+      setMessageErrorTimeline("");
     }
     TournamentStore.rounds = data;
-    if (data) setMessageErrorTimeline("");
+  };
+
+  const isTimelineValid = (rounds: any[]): string | undefined => {
+    if(rounds == null || rounds.length === 0) {
+      return "Timeline must not be empty";
+    }
+    let upperRound = rounds.filter(item => item.type === "UPPER")
+    let lowerRound = rounds.filter(item => item.type === "LOWER")
+
+    for(let idx = 0; idx < upperRound.length; idx ++) {
+      if(isEmpty(upperRound[idx])) {
+        return "Timeline must not be empty";
+      }
+      if(idx == upperRound.length - 1) {
+        continue
+      }
+      
+      if(upperRound[idx].start_at > upperRound[idx+1].start_at) {
+        return "Invalid timeline";
+      }
+    }
+    for(let idx = 0; idx < lowerRound.length; idx ++) {
+      if(isEmpty(lowerRound[idx])) {
+        return "Timeline must not be empty";
+      }
+      if(idx == lowerRound.length - 1) {
+        continue
+      }
+      
+      if(lowerRound[idx].start_at > lowerRound[idx+1].start_at) {
+        return "Invalid timeline";
+      }
+    }
   };
 
   const handCallbackChooseGame = (data: any) => {
@@ -334,23 +363,11 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    const isTimelineValid = () => {
-      let valid = true;
-      if (isEmpty(cr.rounds)) {
-        valid = false;
-      } else {
-        for (let i = 0, c = cr.rounds.length; i < c; i++) {
-          if (isEmpty(cr.rounds[i])) {
-            valid = false;
-            break;
-          }
-        }
-      }
-      return valid;
-    };
+    
+    const errMsg = isTimelineValid(cr.rounds)
 
-    if (!isTimelineValid()) {
-      setMessageErrorTimeline("Timeline must not be empty");
+    if (errMsg != null) {
+      setMessageErrorTimeline(errMsg);
       inputRef.current!.focus();
       return false;
     }
@@ -538,7 +555,6 @@ export default observer(function CreateTournament(props: Props) {
                                     alt=""
                                 />
                             ) : null}
-                            {/*<p className="mt-5px">{dataChooseGame["name"]}</p>*/}
                           </div>
                       ) : (
                           ""

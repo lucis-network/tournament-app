@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Modal, Radio } from "antd";
+import {Button, Modal, Radio} from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Input from "antd/lib/input/Input";
 import Search from "antd/lib/input/Search";
@@ -55,50 +55,50 @@ export default observer(function ChooseGameModal(props: Props) {
 		[]
 	);
 
-	useEffect(() => {
-		if (inputRef && inputRef.current) {
-			inputRef.current!.focus();
-		}
-	});
-
 	return (
 		<Modal
 			centered
-			title={<span className="font-[600]">ChooseGame</span>}
+			title={<h3>Choose Game</h3>}
 			visible={isModalVisible}
 			onOk={handleOk}
 			onCancel={handleCancel}
 			className={`${s.container}`}
+			wrapClassName={s.modalChooseGame}
+			footer={[
+				<Button key="cancel" onClick={handleCancel} className={s.btnCancel}>Cancel</Button>,
+				<Button key="confirm" onClick={handleOk} className={s.btnConfirm}>Confirm</Button>
+			]}
 		>
 			<Input placeholder="Search by name" onChange={onSearch} ref={inputRef} />
 			<div className="mt-15px">
 				<Radio.Group
 					onChange={onChange}
 					value={value}
-					className={`flex flex-wrap`}
+					className={s.gameList}
 				>
 					{getDataChooseGame
 						? getDataChooseGame?.map((ele: any, index: number) => {
 								return (
 									<div className={`${s.item}`} key={index}>
-										{ele.logo ? (
-											<img
-												src={ele.logo}
-												width="100"
-												height="100"
-												alt=""
-												style={{ height: "100px" }}
-											/>
-										) : (
-											<img
-												src="/assets/avatar.jpg"
-												width="100"
-												height="100"
-												alt=""
-											/>
-										)}
-										<Radio className={`${s.itemRadio}`} value={index}></Radio>
-										<p className="mt-5px">{ele.name}</p>
+										<Radio className={`${s.itemRadio}`} value={index}>
+											{ele.logo ? (
+												<img
+													src={ele.logo}
+													width="100"
+													height="100"
+													alt=""
+													style={{ height: "100px" }}
+												/>
+											) : (
+												<img
+													src="/assets/avatar.jpg"
+													width="100"
+													height="100"
+													alt=""
+												/>
+											)}
+											<p className="mt-5px">{ele.name}</p>
+										</Radio>
 									</div>
 								);
 						  })

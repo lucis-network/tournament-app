@@ -91,7 +91,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-
+  
   useEffect(() => {
     let obj: any = [];
     if (dataSponsors) {
@@ -220,9 +220,21 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           className={s.bannerTourDetailWrap}
           bannerClassName={s.bannerTourDetail}
         />
+        <div>
+          <TournamentDetailSponsor
+            tournamentId={tournamentId as string}
+            tournament_status={tournament_status as string}
+            refetchTounament={refetch}
+            currency={currency}
+            type={"banner"}
+          />
+        </div>
         <TournamentDetailMarquee tournamentId={tournamentId as string} />
         <section className={s.tournamentInfo}>
           <div className="lucis-container-2">
+            {
+              
+            }
             <div className={s.group_button}>
               {userLocal?.id === user?.id &&
                 tournament_status === "FINISH" &&
@@ -240,7 +252,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 <Image src={thumbnail} alt="" preview={false} />
               </div>
               <div className={s.tournamentMetadataWrap}>
-                <h1 className={s.tournamentTitle}>{`${name}`}</h1>
+                <h1 className={s.tournamentTitle}>{name.length > 120 ? name.slice(0, 120) + "..." : name}</h1>
+                {name.length <= 35 && <><br/> <br/></>}
                 <div className={s.tournamentStartTime}>
                   <Image
                     src="/assets/TournamentDetail/iconClock.svg"
@@ -249,7 +262,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   />
                   <span>
                     Start time:{" "}
-                    {moment(dataBracket?.bracketRounds[0]?.start_at).format(
+                    {moment(dataTournamentDetail?.brackets[0]?.start_at).format(
                       "YYYY/MM/DD HH:mm"
                     )}
                   </span>
@@ -333,31 +346,30 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                                     </button>
                                   </Spin>
                                 )}
-                              <Col className={s.btn_subscribed}>
-                                {dataIsubscribeToTournament?.IsSubscribeToTournament && (
-                                  <Spin spinning={isLoadingSub}>
-                                    <button
-                                      key={"Subscribe"}
-                                      onClick={handUnsubscribe}
-                                    >
-                                      <Image
-                                        src="/assets/Campaign/Banner/svg/subcribed.svg"
-                                        preview={false}
-                                        alt=""
-                                      />
-                                      <span className="ml-2">
-                                        Subscribed (
-                                        {/* {
+                                <Col className={s.btn_subscribed}>
+                                  {dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                                    <Spin spinning={isLoadingSub}>
+                                      <button
+                                        key={"Subscribe"}
+                                        onClick={handUnsubscribe}
+                                      >
+                                        <Image
+                                          src="/assets/Campaign/Banner/svg/subcribed.svg"
+                                          preview={false}
+                                          alt=""
+                                        />
+                                        <span className="ml-2">
+                                          Subscribed (
+                                          {/* {
                                       dataTournamentDetail
                                         ?.tournament_subscribes?.length
                                     } */}
-                                        {dataSubscriber})
-                                      </span>
-                                    </button>
-                                  </Spin>
-                                )}
-                              </Col>
-
+                                          {dataSubscriber})
+                                        </span>
+                                      </button>
+                                    </Spin>
+                                  )}
+                                </Col>
                               </Col>
                               <Col className={s.btn_share}>
                                 <button
@@ -471,7 +483,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   </Col>
 
                   {/* generous sponsors */}
-                  <Col
+                  {/* <Col
                     xs={{ span: 24 }}
                     xl={{ span: 9 }}
                     className={s.generousSponsorsWrap}
@@ -516,7 +528,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         </div>
                       </>
                     )}
-                  </Col>
+                  </Col> */}
                 </Row>
               </div>
             </div>
@@ -537,14 +549,22 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               tournament_status={tournament_status as string}
             />
             {/* ===== sponsor ===== */}
-            <TournamentDetailSponsor
+            {/* <TournamentDetailSponsor
               tournamentId={tournamentId as string}
               tournament_status={tournament_status as string}
               refetchTounament={refetch}
               currency={currency}
-            />
+            /> */}
             {/* ===== end sponsor ===== */}
           </div>
+        </div>
+        <div>
+          <TournamentDetailSponsor
+            tournamentId={tournamentId as string}
+            tournament_status={tournament_status as string}
+            refetchTounament={refetch}
+            currency={currency}
+          />
         </div>
         {/* ===== tabs ===== */}
         <div className={`lucis-container-2 ${s.container_Tabs}`}>

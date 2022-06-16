@@ -13,7 +13,7 @@ import {
   Modal,
   Row,
   Select,
-  Form,
+  Form, Image,
 } from "antd";
 import { observer } from "mobx-react";
 import CircleImage from "components/ui/common/images/CircleImage";
@@ -149,7 +149,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
       footer={null}
       okText="Update"
       cancelText="Delete"
-      className={s.becomeSponsor}
+      wrapClassName={s.becomeSponsor}
       // onOk={() => {
       //   form
       //     .validateFields()
@@ -182,6 +182,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
               style={{ width: "100%" }}
               defaultValue={tier.tier_id}
               disabled
+              className={`${s.formFieldBg} ${s.formFieldSelect}`}
             >
               {tier_ids.map((id) => (
                 <Option key={tier.tier_id} value={id}>
@@ -212,6 +213,8 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 min={0}
                 max={999999999999999}
                 placeholder={`Sponsor amount`}
+                controls={false}
+                className={`${s.formFieldBg} ${s.formFieldNumber}`}
               />
             </Form.Item>
           </Col>
@@ -221,11 +224,13 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
             <label>Logo</label>
           </Col>
           <Col xs={{ span: 24 }} md={{ span: 16 }}>
-            <Row>
-              <Col span={6} className="pr-2">
-                <CircleImage src={logoUrl || "/assets/avatar.jpg"} />
-              </Col>
-              <Col span={18} className="pl-2">
+            <div className={s.logoRow}>
+              {logoUrl ? (
+                <Image src={logoUrl} preview={false} alt="" className={`${s.previewLogo} ${s.logoUploaded}`} />
+              ) : (
+                <Image src="/assets/avatar.jpg" preview={false} alt="" className={s.previewLogo} />
+              )}
+              <div className={s.logoUpload}>
                 <input
                   style={{ display: "none" }}
                   type="file"
@@ -235,7 +240,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 />
                 <Button
                   onClick={() => inputFileRef.current?.click()}
-                  className="mb-2"
+                  className={s.btnConfirm}
                 >
                   Upload logo
                 </Button>
@@ -245,8 +250,8 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 {/*  Recommended size: 200x200px*/}
                 {/*</Text>*/}
                 <div className={s.message_error}>{messageError}</div>
-              </Col>
-            </Row>
+              </div>
+            </div>
           </Col>
         </Row>
         <Row align="middle" className="mb-4">
@@ -267,7 +272,10 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 },
               ]}
             >
-              <Input placeholder="Sponsor name" />
+              <Input
+                placeholder="Sponsor name"
+                className={s.formFieldBg}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -285,7 +293,10 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 },
               ]}
             >
-              <Input placeholder="https://..." />
+              <Input
+                placeholder="https://..."
+                className={s.formFieldBg}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -327,12 +338,12 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
         )}
         <Row className={s.btn}>
           <Col>
-            <Button className="mr-10px" onClick={doDelete} disabled={isCheck}>
+            <Button className={s.btnCancel} onClick={doDelete} disabled={isCheck}>
               Delete
             </Button>
           </Col>
           <Col>
-            <Button type="primary" onClick={doSave}>
+            <Button className={s.btnConfirm} onClick={doSave}>
               Update
             </Button>
           </Col>

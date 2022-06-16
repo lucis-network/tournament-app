@@ -122,6 +122,11 @@
 .sponsorDetailForm
   label
     color: #ffffff !important
+    font-size: 16px
+    margin-bottom: 5px
+    display: block
+    @media screen and (min-width: 768px)
+      margin-bottom: 0
   .btn
     display: flex
     justify-content: flex-end
@@ -137,9 +142,116 @@
   :global(.ant-input[disabled])
     background: #8b8b8b
     color: #ffffff
+  :global(.ant-modal-header)
+    background: rgba(83, 80, 80, 0.3)
+    backdrop-filter: blur(40px)
+    border-top-left-radius: 5px
+    border-top-right-radius: 5px
+    h3
+      font-size: 20px
+      font-weight: 500
+      color: #FFFFFF
+      margin-bottom: 0
+  .formFieldBg
+    color: #000 !important
+  :global(.ant-modal-close-x)
+    border: 1px solid #FFFFFF
+    background: none !important
+    svg
+      fill: #FFFFFF
+  :global(.ant-modal)
+    padding: 0
+    background: rgba(255, 255, 255, 0.4)
+    backdrop-filter: blur(40px)
+    border-radius: 5px
+  :global(.ant-modal-body)
+    padding: 15px
+    @media screen and (min-width: 576px)
+      padding: 15px
+    @media screen and (min-width: 768px)
+      padding: 15px 60px 30px
+  :global(.ant-modal-body, .ant-modal-footer)
+    background: none
+  :global(.ant-modal-footer)
+    border: none
+    padding: 10px 30px 20px
+.btnCancel, .btnConfirm
+  border-radius: 5px
+  color: #00FFFF !important
+  font-size: 20px
+  font-weight: 500
+  border: none
+  line-height: 1.2
+  height: auto
+  padding: 10px 20px
+.btnCancel
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.1) 0.33%, rgba(11, 235, 214, 0.1) 99.88%) !important
+.btnConfirm
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.5) 0.33%, rgba(11, 235, 214, 0.5) 99.88%) !important
+  margin-left: 16px !important
 .adsDescription
   font-size: 14px
   margin-bottom: 0
+.formFieldBg
+  background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(217, 217, 217, 0.04)) !important
+  backdrop-filter: blur(40px) !important
+  font-size: 18px
+  font-weight: 500
+  line-height: 1.15
+  padding: 12px 15px
+  border: none
+  width: 100%
+  border-radius: 4px !important
+  height: 40px
+  &::placeholder
+    color: #6e6e6e
+  &.formFieldNumber
+    height: 40px
+    padding: 0
+    :global(.ant-input-number-prefix)
+      padding-left: 10px
+    :global(.ant-input-number)
+      background: none !important
+      backdrop-filter: blur(0) !important
+      border: none
+      padding: 0
+      height: 100%
+    :global(.ant-input-number-input-wrap)
+      height: 100%
+      input
+        height: 100%
+        font-size: 18px
+        &::placeholder
+          color: #6e6e6e
+  &.formFieldSelect
+    padding: 0
+    &:global(.ant-select-disabled)
+      :global(.ant-select-selection-item)
+        color: #6e6e6e
+    :global(.ant-select-selector)
+      background: none !important
+      border: none
+      padding: 5px 10px
+      height: 40px
+      :global(.ant-select-selection-item)
+        line-height: 1.6
+    :global(.ant-select-arrow)
+      background: url("/assets/iconCarretDown.svg") no-repeat center
+      background-size: contain
+      width: 13px
+      height: 13px
+      transform: translateY(-50%)
+      margin-top: 0
+      *
+        display: none
+.amountCurrency
+  display: flex
+  align-items: center
+  .currencySymbol
+    color: #00FFFF
+    font-size: 20px
+    margin-left: 18px
+    min-width: 55px
 .formFieldBg
   background: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(217, 217, 217, 0.04)) !important
   backdrop-filter: blur(40px) !important
@@ -148,7 +260,7 @@
   font-weight: 500
   line-height: 1.15
   padding: 12px 15px
-  border: none
+  border: none !important
   width: 100%
   border-radius: 4px
   height: 40px
@@ -184,11 +296,16 @@
       margin-top: 0
       *
         display: none
-.amountCurrency
+.logoRow
   display: flex
-  align-items: center
-  .currencySymbol
-    color: #00FFFF
-    font-size: 20px
-    margin-left: 18px
-    min-width: 55px
+  flex-wrap: wrap
+  .previewLogo
+    width: 80px
+    margin-right: 10px
+    margin-bottom: 10px
+    max-width: 100%
+  .logoUploaded
+    width: auto
+  .btnConfirm
+    margin-left: 0 !important
+
