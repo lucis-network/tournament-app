@@ -6,7 +6,7 @@ import SpinLoading from "../common/Spin";
 import { PlayerMission } from "../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
-import ButtonWrapper from "../common/btn/Btn";
+import ButtonWrapper from "../../common/button/Button";
 
 type MissionItemProp = {
   mission: PlayerMission;
@@ -88,17 +88,22 @@ const MissionItem = (props: MissionItemProp) => {
         <div className={s.missionContent}>
           <div className={s.missionTitle}>
             <h4>{mission?.mission?.title}</h4>
-            <h5></h5> {/**sub title */}
+            <img src="/assets/P2E/csgo/hourglass.png" alt="hourglass" style={{ marginRight: 5 }} />
+            <span>20 hours 30 min until next mission</span> {/**sub title */}
           </div>
           <div className={s.missionReward}>
-            + {"1"}
-            <img src="/assets/P2E/lucis-point.png" alt="" width="30" height="30" />
+            <div className={s.missionReward}>
+              <div className={s.missionRewardItem}>
+                <span>+ 1</span>
+                <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
+              </div>
+            </div>
           </div>
           <div className={s.missionProgress}>
             <Progress
               type="circle"
-              strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6', }}
-              width={64}
+              strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
+              width={60}
               percent={currentPercent} format={() => `${achieved}/${mission?.mission?.goal}`} />
           </div>
         </div>
@@ -108,24 +113,15 @@ const MissionItem = (props: MissionItemProp) => {
                   <Button disabled={!hasClaim} onClick={() => handleClaimMission(mission)}>Claim</Button>
                 </div> */}
       <div className={s.missionAction}>
-        {!hasDone ? (
-          <ButtonWrapper
-            onClick={() => handleRerollMission(mission)}
-            loading={loading}
-            type="primary"
-          >
-            Reroll
-          </ButtonWrapper>
-        ) : (
-          <Button
-            disabled={mission?.is_claim}
-            onClick={() => handleClaimMission(mission)}
-            loading={loading}
-            type="primary"
-          >
-            Claim
-          </Button>
-        )}
+
+        <ButtonWrapper
+          disabled={!mission?.is_claim}
+          onClick={() => handleClaimMission(mission)}
+          loading={loading}
+          type="primary"
+        >
+          {!hasDone && mission?.is_claim ? "Finished" : "Claim"}
+        </ButtonWrapper>
       </div>
     </div>
   );

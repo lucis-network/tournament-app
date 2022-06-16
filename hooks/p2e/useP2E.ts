@@ -92,6 +92,7 @@ export const GET_OR_SET_DAILY_MISSION = gql`
         img
         goal
         type
+        map
       }
     }
   }
@@ -178,13 +179,15 @@ export const GET_RECENT_MATCHES = gql`
         is_win
         map_img
         lucis_point
+        player_statistic
         match {
           uid
           game_uid
           winner_team
           loser_team
           score
-          end_at,
+          end_at
+          map
         }
       }
       total

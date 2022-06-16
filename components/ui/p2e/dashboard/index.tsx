@@ -11,6 +11,7 @@ import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import Statistics from "../Statistics";
 import OnUsingNFTs from '../OnUsingNFTs';
 import { RecentMatchList } from '../RecentMatchList';
+import ButtonWrapper from 'components/common/button/Button';
 
 const DailyMission = () => {
   const [lengthShowMore, setLengthShowMore] = useState(5);
@@ -126,7 +127,7 @@ const DailyMission = () => {
                       --
                     </div>
                     <div className={s.busdClaim}>
-                      <Button type="ghost" disabled>Claim</Button>
+                      <ButtonWrapper type="primary" disabled>Claim</ButtonWrapper>
                     </div>
                   </div>
                 </Col>
