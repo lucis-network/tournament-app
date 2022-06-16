@@ -213,6 +213,7 @@ export default observer(function SponsorDetail(props: SponsorDetailProps) {
                 min={0}
                 max={999999999999999}
                 placeholder={`Sponsor amount`}
+                controls={false}
                 className={`${s.formFieldBg} ${s.formFieldNumber}`}
               />
             </Form.Item>
