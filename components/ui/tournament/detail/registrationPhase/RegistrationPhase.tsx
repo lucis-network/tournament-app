@@ -259,10 +259,11 @@ export default observer(function RegistrationPhase(props: Props) {
   }, [TournamentStore.checkBacktoTournament == true]);
 
   useEffect(() => {
-    if(isEmpty(dataPrize) && isEmpty(dataSystemPrize) && totalFromDonation == 0){
+    if(dataPrize?.amount == 0 && dataSystemPrize?.amount == 0 && totalFromDonation == 0){
       setCheckClaim(true);
     }
   }, [dataPrize,dataSystemPrize,totalFromDonation])
+
   return (
     <>
       <div className={s.registrationPhase} id="registrationPhase">
@@ -354,7 +355,7 @@ export default observer(function RegistrationPhase(props: Props) {
           </div>
 
           <div className={s.item}>
-            {tournament_status !== "CLOSED" || (tournament_status === "CLOSED" && checkClaim) && (
+            {(tournament_status !== "CLOSED" || (tournament_status === "CLOSED" && checkClaim)) && (
               <>
                 <span className={s.itemTitle}>PARTICIPANTS</span>
                 <div className={s.itemImg}>
