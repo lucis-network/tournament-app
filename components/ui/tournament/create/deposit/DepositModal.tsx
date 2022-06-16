@@ -191,7 +191,7 @@ export default observer(function DepositModal(props: Props) {
                     {fomatNumber(
                       TournamentStore.pool_size
                         ? TournamentStore.pool_size *
-                            (getConfigFee ? getConfigFee[0]?.tn_lucis_fee : 0)
+                            (getConfigFee ? getConfigFee[0]?.tn_referee_fee : 0)
                         : 0
                     )}{" "}
                     {TournamentStore.currency_symbol}
