@@ -259,25 +259,18 @@ export default observer(function RegistrationPhase(props: Props) {
   }, [TournamentStore.checkBacktoTournament == true]);
 
   useEffect(() => {
-    if(dataPrize?.amount == 0 && dataSystemPrize?.amount == 0 && totalFromDonation == 0){
+    if (
+      dataPrize?.amount == 0 &&
+      dataSystemPrize?.amount == 0 &&
+      totalFromDonation == 0
+    ) {
       setCheckClaim(true);
     }
-  }, [dataPrize,dataSystemPrize,totalFromDonation])
+  }, [dataPrize, dataSystemPrize, totalFromDonation]);
 
   return (
     <>
       <div className={s.registrationPhase} id="registrationPhase">
-        {/* <div className={s.startTime}>
-          <Image
-            src="/assets/TournamentDetail/iconCalendar.svg"
-            preview={false}
-            alt=""
-          />
-          <p className="mb-0">
-            <span className="font-bold">Start time: </span>
-            {moment(brackets?.[0].start_at).format("YYYY/MM/DD HH:mm")}
-          </p>
-        </div> */}
         <div className={s.registrationPhaseMetadata}>
           <div className={s.item}>
             <div className={s.itemImg}>
@@ -355,7 +348,8 @@ export default observer(function RegistrationPhase(props: Props) {
           </div>
 
           <div className={s.item}>
-            {(tournament_status !== "CLOSED" || (tournament_status === "CLOSED" && checkClaim)) && (
+            {(tournament_status !== "CLOSED" ||
+              (tournament_status === "CLOSED" && checkClaim)) && (
               <>
                 <span className={s.itemTitle}>PARTICIPANTS</span>
                 <div className={s.itemImg}>
@@ -440,25 +434,25 @@ export default observer(function RegistrationPhase(props: Props) {
                   case "CLOSED":
                     return (
                       // todo closeds
-                      <div className="pt-5">
+                      <div>
                         <div className={s.claimWrap}>
-                          {/* {(dataPrize?.amount && dataPrize?.amount > 0) ||
+                          {(dataPrize?.amount && dataPrize?.amount > 0) ||
                           (dataSystemPrize?.amount &&
                             dataSystemPrize?.amount > 0) ? (
-                            <p>YOUR REWARDS</p>
+                            <p className={s.claimWrapTitle}>YOUR REWARDS</p>
                           ) : (
                             ""
-                          )} */}
-                          <div className={`${s.rewards} pt-5 `}>
+                          )}
+                          <div className={`${s.rewards}`}>
                             {(dataPrize?.amount && dataPrize?.amount > 0) ||
                               (dataSystemPrize?.amount &&
                                 dataSystemPrize?.amount > 0) ||
                               (totalFromDonation > 0 && <div>Prize</div>)}
-                            <div className="mb-2">
+                            <div>
                               {dataPrize?.amount ? (
                                 dataPrize?.amount > 0 ? (
                                   <div className={s.rewardsPrize}>
-                                    <p>Prize</p>
+                                    <p className={s.rewardsPrizeTitle}>Prize</p>
                                     <div className={s.rewardsClaimPrize}>
                                       <h3>
                                         {fomatNumber(
@@ -487,28 +481,32 @@ export default observer(function RegistrationPhase(props: Props) {
                                 ""
                               )}
                             </div>
-                            <div className="mb-6">
+                            <div>
                               {dataSystemPrize?.amount ? (
                                 dataSystemPrize?.amount > 0 ? (
-                                  <div className={s.rewardsClaimPrize}>
-                                    <h3>
-                                      {fomatNumber(
-                                        dataSystemPrize?.amount
-                                          ? dataSystemPrize?.amount
-                                          : 0
-                                      )}{" "}
-                                      <span className={s.rewardsClaimSymbol}>
-                                        {dataSystemPrize?.symbol}
-                                      </span>
-                                    </h3>
-                                    <Button
-                                      onClick={() => claimToken("PrizeSystem")}
-                                      className={`${s.btnClaim}`}
-                                      disabled={dataSystemPrize?.is_claim}
-                                      loading={loadingClaimPrizeSystem}
-                                    >
-                                      Claim
-                                    </Button>
+                                  <div className={s.rewardsPrize}>
+                                    <div className={s.rewardsClaimPrize}>
+                                      <h3>
+                                        {fomatNumber(
+                                          dataSystemPrize?.amount
+                                            ? dataSystemPrize?.amount
+                                            : 0
+                                        )}{" "}
+                                        <span className={s.rewardsClaimSymbol}>
+                                          {dataSystemPrize?.symbol}
+                                        </span>
+                                      </h3>
+                                      <Button
+                                        onClick={() =>
+                                          claimToken("PrizeSystem")
+                                        }
+                                        className={`${s.btnClaim}`}
+                                        disabled={dataSystemPrize?.is_claim}
+                                        loading={loadingClaimPrizeSystem}
+                                      >
+                                        Claim
+                                      </Button>
+                                    </div>
                                   </div>
                                 ) : (
                                   ""
@@ -523,7 +521,9 @@ export default observer(function RegistrationPhase(props: Props) {
                                 {totalFromDonation ? (
                                   totalFromDonation > 0 ? (
                                     <div className={s.rewardsPrize}>
-                                      <p>From Donation</p>
+                                      <p className={s.rewardsPrizeTitle}>
+                                        From Donation
+                                      </p>
                                       <div className={s.rewardsClaimPrize}>
                                         <h3>
                                           {fomatNumber(totalFromDonation)}{" "}
@@ -573,7 +573,9 @@ export default observer(function RegistrationPhase(props: Props) {
                           <span className={s.countdownRegistration}>
                             Registration phase will ends in{" "}
                           </span>
-                          <CountdownTimer targetDate={timeRegistration} />
+                          <span className={s.countdownRegistrationTimer}>
+                            <CountdownTimer targetDate={timeRegistration} />
+                          </span>
                         </p>
                       </div>
                     );

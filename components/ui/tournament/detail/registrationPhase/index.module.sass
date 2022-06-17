@@ -40,44 +40,50 @@
       justify-content: space-between
     .item
       text-align: center
-      margin-bottom: 10px
       width: 49%
       display: flex
       flex-direction: column
       @media screen and (min-width: 576px)
-        padding: 0px 10px
+        //padding: 0px 10px
       @media screen and (min-width: 768px)
         min-width: calc(100% / 3)
         max-width: calc(100% / 3)
-        padding: 0px 15px
+        //padding: 0px 15px
       &:first-of-type
+        @media screen and (min-width: 1320px)
+          padding-right: 120px
         .itemText
           h3
             text-transform: uppercase
             color: #FFD058 !important
-            text-shadow: 0 0 20px #FFD058
-            font-size: 20px
+            text-shadow: 0 0 25px #FFD058
+            font-size: 22px
             font-weight: 500
+            line-height: 115%
             margin-bottom: 0px
           p
-            font-size: 18px
-          @media screen and (min-width: 767px)
-            h3
-              font-size: 30px
-              p
-                font-size: 20px
-          @media screen and (min-width: 1023px)
+            font-weight: 400
+            font-size: 12px
+            line-height: 150%
+            margin-top: 5px
+          @media screen and (min-width: 768px)
             h3
               font-size: 34px
-              p
-                font-size: 20px
+            p
+              font-size: 16px
+          @media screen and (min-width: 1024px)
+            h3
+              font-size: 40px
+            p
+              font-size: 18px
         .itemImg
-          margin-bottom: 19px
+          margin-bottom: 17px
           :global(.ant-image)
             &:after
               bottom: -30px
               right: -10px
           img
+            margin-top: 7px
             @media screen and (max-width: 767px)
               width: 120px
       .itemClosed
@@ -86,38 +92,49 @@
         margin-top: 15px
         .itemImgClosed
           :global(.ant-image)
-            width: 18px
+            width: 20px
+            @media screen and (min-width: 768px)
+              width: 22px
             img
-              padding-bottom: 5px
+              padding-bottom: 10px
+              margin-right: 5px
         .itemParticipantClosed
-          font-size: 30px
+          font-size: 40px
           text-transform: uppercase
           color: #32D2FF !important
           text-shadow: 0 0 20px #32D2FF
-          font-weight: 700
-          margin-left: 5px
-
+          font-weight: 500
+          line-height: 115%
+          margin-left: 10px
+          @media screen and (min-width: 1320px)
+            font-size: 48px
       &:nth-of-type(2)
+        @media screen and (min-width: 1320px)
+          padding-right: 120px
         .itemText
           h3
             text-transform: uppercase
             color: #32D2FF !important
-            text-shadow: 0 0 20px #32D2FF
-            font-size: 20px
+            text-shadow: 0 0 25px #32D2FF
+            font-size: 22px
             font-weight: 500
+            line-height: 115%
             margin-bottom: 0px
           p
-            font-size: 18px
+            font-weight: 400
+            font-size: 12px
+            line-height: 150%
+            margin-top: 5px
           @media screen and (min-width: 768px)
             h3
-              font-size: 30px
-              p
-                font-size: 20px
-          @media screen and (min-width: 1023px)
-            h3
               font-size: 34px
-              p
-                font-size: 20px
+            p
+              font-size: 16px
+          @media screen and (min-width: 1024px)
+            h3
+              font-size: 40px
+            p
+              font-size: 18px
         .itemImg
           :global(.ant-image)
             &:after
@@ -127,55 +144,69 @@
           @media screen and (max-width: 767px)
             //margin-top: 40px
           img
+            margin-top: 7px
             @media screen and (max-width: 767px)
               width: 120px
       &:nth-of-type(3)
-        background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.2) 0.33%, rgba(11, 235, 214, 0.2) 99.88%)
-        //background-clip: content-box
-        opacity: 1
-        border-radius: 4px
-        padding: 0px 30px
-        width: 100%
-        //backdrop-filter: blur(40px)
+        position: relative
+        padding: 20px
+        @media screen and (max-width: 767px)
+          margin-top: 20px
+        @media screen and (max-width: 767px)
+          width: 100%
+        @media screen and (min-width: 1320px)
+          padding: 34px 50px 28px 50px
+        &:before
+          content: ''
+          background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.2) 0.33%, rgba(11, 235, 214, 0.2) 99.88%)
+          backdrop-filter: blur(40px)
+          opacity: 0.8
+          border-radius: 4px
+          position: absolute
+          top: 0
+          bottom: 0
+          left: 0
+          right: 0
+          z-index: 0
+        *
+          z-index: 1
         .itemTitle
-          margin-top: 34px
-          margin-bottom: 50px
-          font-size: 18px
+          margin-bottom: 20px
+          font-size: 16px
           font-weight: 400
+          line-height: 150%
+          @media screen and (min-width: 767px)
+            font-size: 18px
+            margin-bottom: 50px
         .itemText
-          margin-bottom: 35px
+          margin-bottom: 25px
+          margin-top: 15px
+          @media screen and (min-width: 768px)
+            margin-bottom: 40px
           span
             text-transform: uppercase
             color: #32D2FF !important
             text-shadow: 0 0 20px #32D2FF
-            font-size: 48px
             font-weight: 500
+            line-height: 115%
+            font-size: 54px
             margin-bottom: 0px
-        @media screen and (max-width: 767px)
-          margin-top: 20px
-          .itemTitle
-            margin-top: 20px
-            margin-bottom: 20px
-          .itemText
-            margin-bottom: 10px
-            span
-              font-size: 34px
-        @media screen and (min-width: 768px)
-          .joinWrap
-            button
-              width: auto
-              border-radius: 4px
-          .itemText
-            span
-              font-size: 50px
+            @media screen and (min-width: 767px)
+              font-size: 60px
+
+        .joinWrap
+          button
+            width: auto
+            border-radius: 4px
+            margin-bottom: 15px
         .itemImg
-          //padding-top: 30px
           :global(.ant-image)
             &:after
               top: -30px
               right: -10px
           img
-            @media screen and (max-width: 767px)
+            width: 50px
+            @media screen and (min-width: 767px)
               width: 60px
       .itemImg
         //margin-bottom: 20px
@@ -188,24 +219,6 @@
           position: relative
           img
             position: relative
-          &:before, &:after
-            content: ''
-            display: block
-            position: absolute
-            z-index: -1
-          &:before
-            top: 0
-            left: 0
-            right: 0
-            bottom: 0
-            //background: linear-gradient(180deg, #2FD4C5 0.31%, rgba(47, 138, 212, 0.6) 100%)
-            filter: blur(55px)
-            border-radius: 50%
-          // &:after
-          //   background: url("/assets/TournamentDetail/ellipse.svg") no-repeat top center
-          //   background-size: cover
-          //   width: 74px
-          //   height: 71px
       h3
         font-weight: 500
         font-size: 20px
@@ -215,62 +228,66 @@
       .btnClaim
         width: auto !important
         height: 100% !important
-        //padding: 9px 10px
+        padding: 6px 24px
         min-width: auto
       :global(.ant-btn[disabled])
         background: grey !important
       .claimWrap
-        //margin-bottom: 20px
-        @media screen and (min-width: 768px)
-          // display: flex
-          // flex-direction: column
-          //align-items: flex-end
+        .claimWrapTitle
+          margin-top: 10px
+          font-weight: 500
+          font-size: 14px
+          line-height: 150%
+          text-align: left
+          margin-bottom: 5px
+          @media screen and (min-width: 768px)
+            font-size: 20px !important
   .additionalInfo
+    //margin-top: 20px
+    text-align: center
     h4
       font-weight: 500
-      font-size: 18px
-      @media (max-width: 767px)
-        font-size: 14px !important
+      font-size: 14px
+      line-height: 150%
+      margin-bottom: 10px
+      @media screen and (min-width: 768px)
+        margin-bottom: 16px
+        font-size: 18px
     p
       font-weight: 400
-      font-size: 16px
+
+      line-height: 150%
       img
-        width: 16px
+        width: 18px
         margin-bottom: 2px
-      @media (max-width: 767px)
-        font-size: 12px !important
+        margin-right: 12px
+      // @media (max-width: 767px)
+      //   font-size: 12px !important
     &.additionalPrize
-      @media screen and (min-width: 768px)
-        text-align: left
-    h4
-      font-weight: 500
-      font-size: 20px
-    p
-      &:last-of-type
-        margin-bottom: 0
-      :global(.ant-image)
-        margin-right: 10px
-        @media (max-width: 767px)
-          margin-right: 5px
+      text-align: left
+      p
+        font-size: 12px !important
+        @media screen and (min-width: 768px)
+          font-size: 16px !important
     button
       width: auto
       background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
       @include border-grad-1(linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%))
       border-radius: 4px
       border: none
-      padding: 6px 20px
+      padding: 9px 23px
       font-size: 16px
+      font-weight: 500
+      line-height: 115%
       @media screen and (min-width: 768px)
-        font-size: 18px
+        font-size: 20px
+      //margin-bottom: 16px
+      // @media screen and (min-width: 768px)
+      //   font-size: 18px
   .countdownWrap
-    margin-top: 20px
-    margin-bottom: 20px
     text-align: center
     *
       color: #0BEBD6
-    @media screen and (min-width: 768px)
-      //text-align: left
-      margin-bottom: 30px
     :global(.show-counter)
       display: inline-flex
       //font-weight: 700
@@ -282,35 +299,51 @@
         font-size: 20px
     .countdownRegistration
       color: white !important
+      font-weight: 400
       font-size: 18px
-      @media screen and (max-width: 767px)
-        font-size: 16px
+      line-height: 115%
+      // @media screen and (max-width: 767px)
+      //   font-size: 16px
+    .countdownRegistrationTimer
+      font-weight: 600
+      font-size: 20px
+      line-height: 115%
+      color: #0BEBD6
 .btn
   display: flex
   justify-content: flex-end
 
 .rewards
-  margin-bottom: 24px
   .rewardsPrize
     p
       text-align: left
-      font-size: 20px !important
-      @media screen and (min-width: 768px)
-        font-size: 24px !important
-  .rewardsClaimPrize
-    display: flex
-    justify-content: space-between
-    @media screen and (max-width: 1023px)
-      flex-direction: column
-    h3
-      font-size: 24px !important
       font-weight: 500
-    @media screen and (min-width: 768px)
+      font-size: 18px
+      line-height: 150%
+      //margin-bottom: 5px
+    .rewardsClaimPrize
+      display: flex
+      justify-content: space-between
+      //margin-top: 5px
+      @media screen and (max-width: 1023px)
+        flex-direction: column
       h3
-        font-size: 28px !important
+        font-weight: 500
+        font-size: 30px
+        line-height: 115%
+        @media screen and (min-width: 1320px)
+          font-size: 34px
+    // @media screen and (min-width: 768px)
+    //   h3
+    //     font-size: 28px !important
     .rewardsClaimSymbol
-      font-size: 18px !important
+      font-size: 16px !important
       color: #0BEBD6 !important
       font-weight: 500
+      line-height: 115%
+      text-transform: uppercase
       @media screen and (min-width: 768px)
-        font-size: 22px !important
+        font-size: 20px !important
+    .rewardsPrizeTitle
+      margin-top: 10px
+      margin-bottom: 5px

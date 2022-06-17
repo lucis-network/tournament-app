@@ -214,7 +214,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   return (
     <>
       <DocHead title={name} />
-      <div className={s.wrapper}>
+      <div className={`${s.wrapper}`}>
         <Banner
           cover={cover}
           className={s.bannerTourDetailWrap}
@@ -231,7 +231,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         </div>
         <TournamentDetailMarquee tournamentId={tournamentId as string} />
         <section className={s.tournamentInfo}>
-          <div className="lucis-container-2">
+          <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
             <div className={s.group_button}>
               {userLocal?.id === user?.id &&
                 tournament_status === "FINISH" &&
@@ -483,6 +483,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     xs={{ span: 24 }}
                     xl={{ span: 9 }}
                     className={s.generousSponsorsWrap}
+                    style={{display: "none"}}
                   >
                     {dataRankSponsors.length > 0 && (
                       <>
