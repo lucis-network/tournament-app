@@ -7,6 +7,7 @@ import { PlayerMission } from "../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
 import ButtonWrapper from "../../common/button/Button";
+import moment from "moment";
 
 type MissionItemProp = {
   mission: PlayerMission;
@@ -70,9 +71,14 @@ const MissionItem = (props: MissionItemProp) => {
     ((achieved as number) / (mission?.mission?.goal as unknown as number)) *
     100;
   const hasDone = currentPercent >= 100;
+  let nextDay = new Date();
+  nextDay.setDate(nextDay.getDate() + 1)
+  console.log(nextDay);
+  nextDay.setHours(0, 0, 0);
 
+  const finish = hasDone && mission?.is_claim;
   return (
-    <div className={s.missionItem}>
+    <div className={s.missionItem} style={finish ? { background: "rgba(50, 110, 123, 0.5)" } : {}}>
       <div className={s.missionLogo}>
         <img
           src={
@@ -89,12 +95,12 @@ const MissionItem = (props: MissionItemProp) => {
           <div className={s.missionTitle}>
             <h4>{mission?.mission?.title}</h4>
             <img src="/assets/P2E/csgo/hourglass.png" alt="hourglass" style={{ marginRight: 5 }} />
-            <span>20 hours 30 min until next mission</span> {/**sub title */}
+            <span>{moment(nextDay).fromNow()} next mission</span> {/**sub title */}
           </div>
           <div className={s.missionReward}>
             <div className={s.missionReward}>
               <div className={s.missionRewardItem}>
-                <span>+ 1</span>
+                <span>{mission?.mission?.level?.lucis_point ?? "--"}</span>
                 <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
               </div>
             </div>
@@ -113,15 +119,18 @@ const MissionItem = (props: MissionItemProp) => {
                   <Button disabled={!hasClaim} onClick={() => handleClaimMission(mission)}>Claim</Button>
                 </div> */}
       <div className={s.missionAction}>
-
-        <ButtonWrapper
-          disabled={!mission?.is_claim}
-          onClick={() => handleClaimMission(mission)}
-          loading={loading}
-          type="primary"
-        >
-          {!hasDone && mission?.is_claim ? "Finished" : "Claim"}
-        </ButtonWrapper>
+        {finish ?
+          <img src="/assets/P2E/csgo/finish.png" alt="" />
+          :
+          <ButtonWrapper
+            disabled={!mission?.is_claim}
+            onClick={() => handleClaimMission(mission)}
+            loading={loading}
+            type="primary"
+          >
+            Claim
+          </ButtonWrapper>
+        }
       </div>
     </div>
   );

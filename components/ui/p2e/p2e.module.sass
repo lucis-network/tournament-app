@@ -49,10 +49,6 @@
     border-radius: 4px
     background: rgba(69, 80, 107, 0.5)
     backdrop-filter: blur(6px)
-    background-image: url("/assets/P2E/csgo/daily-item-1.png")
-    background-repeat: no-repeat
-    background-size: cover
-    background-position: left bottom
     padding: 16px
     // padding: 15px
     margin-bottom: 20px
@@ -77,6 +73,7 @@
           line-height: 21px
           font-weight: 400
           opacity: 0.5
+          text-transform: capitalize
         img
           margin-bottom: 3px
 
@@ -101,7 +98,12 @@
           color: rgba(255, 255, 255, 0.5)
         :global(.ant-progress-circle-trail)
           stroke: #6B6C6C
-
+    .missionAction
+      width: 120px
+      justify-content: center
+      display: flex
+      img
+        text-align: center
   .header
     display: flex
     margin-bottom: 16px

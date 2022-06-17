@@ -1,7 +1,8 @@
 
 .lucisButton
   position: relative
-  width: 88px
+  width: auto
+  height: auto
   margin-top: 4px
 .wrapper
   position: absolute
@@ -34,25 +35,38 @@
   border: none
     /* transform: scale(1.1) */
 
-.customCss:global(.ant-btn-ghost)
-  background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%)
-  border-color: none
-  border: none
-  color: white
+// .customCss:global(.ant-btn-ghost)
+//   background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%)
+//   border-color: none
+//   border: none
+//   color: white
 
-.customCss:global(.ant-btn-ghost:hover)
-  background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%)
-  border-color: none
-  border: none
-  color: white
+// .customCss:global(.ant-btn-ghost:hover)
+//   background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%)
+//   border-color: none
+//   border: none
+//   color: white
 
 .customCss:global(.ant-btn-default)
-  background: none
-  color: white
+  background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+  border-color: none
+  border: none
+  width: inherit
+  span
+    color: #000625
 
-.customCss:global(.ant-btn-default .bg-gradient-1)
-  background-image: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
-
+.customCss:global(.ant-btn-default:hover)
+  background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
+  border-color: none
+  border: none
+.customCss:global(.ant-btn-default:focus)
+  background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
+  border-color: none
+  border: none
+.customCss:global(.ant-btn-default:active)
+  background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
+  border-color: none
+  border: none
 .customCss:global(.ant-btn)
   &[disabled]
     background: transparent

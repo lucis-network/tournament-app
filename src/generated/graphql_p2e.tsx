@@ -1017,7 +1017,7 @@ export type Raffle = {
   raffle_winner?: Maybe<User>;
   regions: Scalars['String'];
   sponsor_raffle?: Maybe<SponsorRaffle>;
-  sponsor_raffle_id?: Maybe<Scalars['String']>;
+  sponsor_raffle_uid?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
   uid: Scalars['ID'];

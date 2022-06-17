@@ -3706,7 +3706,7 @@ export type Raffle = {
   raffle_winner?: Maybe<User>;
   regions: Scalars['String'];
   sponsor_raffle?: Maybe<SponsorRaffle>;
-  sponsor_raffle_id?: Maybe<Scalars['String']>;
+  sponsor_raffle_uid?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
   uid: Scalars['ID'];
@@ -3729,7 +3729,7 @@ export type RaffleCreateManyRaffle_WinnerInput = {
   lucis_point?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
   regions: Scalars['String'];
-  sponsor_raffle_id?: InputMaybe<Scalars['String']>;
+  sponsor_raffle_uid?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;

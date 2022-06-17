@@ -13,7 +13,6 @@ interface IProps {
   loading: boolean;
 }
 export const RecentMatchList = (props: IProps) => {
-  console.log(props.recentMatches)
   return (
     <div className={s.recentMatchList}>
       <div className={s.recentMatchHeaderList}>

@@ -86,6 +86,11 @@ export const GET_OR_SET_DAILY_MISSION = gql`
       mission_uid
       is_claim
       mission {
+        level {
+          lucis_point
+          level
+          lucis_token
+        }
         uid
         title
         game_uid
@@ -104,6 +109,7 @@ export const UPDATE_DAILY_MISSION = gql`
       achieved
       mission_uid
       mission {
+        
         uid
         title
         game_uid
