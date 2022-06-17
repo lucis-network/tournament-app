@@ -1,0 +1,43 @@
+.homeWrap
+  background-image: url("/assets/P2E/csgo/background.png")
+  background-repeat: no-repeat
+  background-attachment: fixed
+  background-size: cover
+  .tabsWrap
+    height: 60px
+    background: rgba(255, 255, 255, 0.1)
+    // position: sticky
+    backdrop-filter: blur(40px)
+    z-index: 1
+    top: 0
+  .tabs
+    height: inherit
+    display: flex
+    color: #fff
+    justify-content: flex-start
+    align-items: center
+    font-size: 16px
+    cursor: pointer
+    .tabItem
+      padding: 12px 10px
+      height: 60px
+      display: flex
+      align-items: center
+    .tabActive
+      background: rgba(18, 176, 180, 0.1)
+      color: #12B0B4
+    .tabDisabled
+      cursor: default
+
+  :global(ant-tabs-tab-active)
+    background: #12B0B41A
+  :global(.ant-tabs-nav::before)
+    border-bottom: 0
+  :global(.ant-tabs-tab)
+    color: #ffffff
+  :global(.ant-tabs-tab-disabled)
+    color: #898989
+  .p2eWrap
+    padding-top: 70px
+    @media screen and (min-width: 1024px)
+      padding-top: 0
