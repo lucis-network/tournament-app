@@ -51,13 +51,10 @@ export default function SingleBracketStateless(props: Props) {
         rounds={rounds}
         roundClassName={s.wining}
         renderSeedComponent={RenderSeed}
-        mobileBreakpoint={450}
+        mobileBreakpoint={0}
         swipeableProps={{
           enableMouseEvents: true,
-          animateHeight: true,
-          style: {
-            padding: "0 50px 0 0",
-          },
+          animateHeight: false,
         }}
       />
 
