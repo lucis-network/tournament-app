@@ -57,3 +57,13 @@ export const bracketValues = [
 
 export const LINK_URL = "https://lucis-tn.koolab.io/";
 
+export const MAP_CSGO: { [s: string]: string } = {
+  "de_inferno": "Inferno",
+  "de_dust2": "Dust II",
+  "de_dust3": "Dust III",
+  "de_dust1": "Dust I",
+  "de_vertigo": "Vertigo",
+  "de_mirage": "Mirage"
+
+}
+

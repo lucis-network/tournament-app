@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from "react"
+import React, { Children, useEffect, useState } from "react"
 import DocHead from 'components/DocHead'
 import Footer from 'components/ui/footer/Footer'
-import { NextPage } from "next";
-import { Col, message, Row, Tabs } from "antd";
-import P2EOverview from "components/ui/p2e/overview"
-import Dashboard from "components/ui/p2e/dashboard"
-import s from './Home.module.sass'
+import { message } from "antd";
+import s from './w.module.sass'
 import { useMutation } from "@apollo/client"
-import { CONNECT_FACEIT, useGetPlatformAccount } from "../hooks/p2e/useP2E"
-import { PlatformAccount } from "../src/generated/graphql_p2e";
-import Missions from "../components/ui/p2e/missions";
 import { isEmpty } from "lodash";
+import { CONNECT_FACEIT, useGetPlatformAccount } from "hooks/p2e/useP2E";
+import { PlatformAccount } from "src/generated/graphql";
+import { useRouter } from "next/router";
 
-
-const Home: NextPage = () => {
+interface IProps {
+  children: React.ReactChild | React.ReactChild[]
+}
+const P2EWrapper = (props: IProps) => {
   const [connectFaceit] = useMutation(CONNECT_FACEIT, {
     context: {
       endpoint: 'p2e'
     }
   })
+
+  const router = useRouter();
   const [loadingFaceit, setLoadingFaceit] = useState<boolean>(true);
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
-  const [tabActive, setTabActive] = useState<string>('Overview')
   const { getPlatformAccountData, getPlatformAccountLoading } = useGetPlatformAccount()
 
-  const handleTabClick = (key: string) => {
+  const handleTabClick = (path: string) => {
     if (isEmpty(faceitUser)) {
       return;
     }
-    setTabActive(key)
+    router.push(path);
   }
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const Home: NextPage = () => {
           if (isSubscribed) {
             history.replaceState(null, '', ' ')
             setFaceitUser(response.data.connectFaceit)
-            setTabActive('Dashboard')
+            router.push("/p2e/overview");
           }
           setLoadingFaceit(false);
         }).catch(error => {
@@ -83,7 +83,14 @@ const Home: NextPage = () => {
     }
   }, [getPlatformAccountData?.getPlatformAccount, getPlatformAccountLoading])
 
-  const tabs = ["Overview", "Dashboard", "Missions", "Raffles", "Items", "Battle pass"];
+  const tabs = [
+    { path: "/p2e/overview", name: "Overview" },
+    { path: "/p2e/dashboard", name: "Dashboard" },
+    { path: "/p2e/missions", name: "Missions" },
+    { path: "/p2e/raffles", name: "Raffles" },
+    { path: "/p2e/items", name: "Items" },
+    { path: "/p2e/battle-pass", name: "Battle pass" },
+  ];
 
   return (
     <>
@@ -95,13 +102,13 @@ const Home: NextPage = () => {
               <div className={s.tabs}>
                 {tabs.map(item => {
                   return (
-                    <div key={item}
+                    <div key={item.path}
                       className={
                         `${s.tabItem} 
-                        ${tabActive === item ? s.tabActive : ""}
-                        ${isEmpty(faceitUser) && tabActive !== item ? s.tabDisabled : ""}`}
-                      onClick={() => handleTabClick(item)}
-                    >{item}
+                        ${router.pathname.search(item.path) > -1 ? s.tabActive : ""}
+                        ${isEmpty(faceitUser) && router.pathname.search(item.path) === -1 ? s.tabDisabled : ""}`}
+                      onClick={() => handleTabClick(item.path)}
+                    >{item.name}
                     </div>
                   )
                 })}
@@ -109,12 +116,13 @@ const Home: NextPage = () => {
             </div>
           </div>
           <div className={s.p2eContent}>
-            {tabActive === "Overview" && <P2EOverview faceitUser={faceitUser} isLoadingFaceitUser={loadingFaceit} />}
+            {/* {tabActive === "Overview" && <P2EOverview faceitUser={faceitUser} isLoadingFaceitUser={loadingFaceit} />}
             {tabActive === "Dashboard" && <Dashboard />}
             {tabActive === "Missions" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
             {tabActive === "Raffles" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
             {tabActive === "Items" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
-            {tabActive === "Battle pass" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
+            {tabActive === "Battle pass" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>} */}
+            {props.children}
           </div>
         </div>
       </main>
@@ -123,4 +131,4 @@ const Home: NextPage = () => {
   )
 }
 
-export default Home
+export default P2EWrapper
