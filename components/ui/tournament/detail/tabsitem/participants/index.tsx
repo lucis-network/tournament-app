@@ -95,7 +95,7 @@ export default function TableParticipant(props: Props) {
                       : "/assets/avatar.jpg"
                   }`}
                   preview={false}
-                  alt={`${item?.playTeamMembers[0]?.user?.profile?.avatar}`}
+                  alt=""
                 />
                 <a
                   style={{ color: "white" }}
@@ -116,7 +116,7 @@ export default function TableParticipant(props: Props) {
                       : "/assets/avatar.jpg"
                   }`}
                   preview={false}
-                  alt={`${item?.team?.avatar}`}
+                  alt=""
                 />
                 <a
                   style={{ color: "white" }}
@@ -201,6 +201,7 @@ export default function TableParticipant(props: Props) {
           columns={columns}
           bordered
           className={s.container_table}
+          pagination={false}
           //rowKey={(record) => `${record?.tournament_uid ? tournament_uid : ''}`}
           //rowKey={(record) => `${record?.uid}`}
         />

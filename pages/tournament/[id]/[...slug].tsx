@@ -91,7 +91,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-
+  
   useEffect(() => {
     let obj: any = [];
     if (dataSponsors) {
@@ -249,7 +249,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 <Image src={thumbnail} alt="" preview={false} />
               </div>
               <div className={s.tournamentMetadataWrap}>
-                <h1 className={s.tournamentTitle}>{`${name}`}</h1>
+                <h1 className={s.tournamentTitle}>{name.length > 120 ? name.slice(0, 120) + "..." : name}</h1>
+                {name.length <= 35 && <><br/> <br/></>}
                 <div className={s.tournamentStartTime}>
                   <Image
                     src="/assets/TournamentDetail/iconClock.svg"
@@ -258,7 +259,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   />
                   <span>
                     Start time:{" "}
-                    {moment(dataBracket?.bracketRounds[0]?.start_at).format(
+                    {moment(dataTournamentDetail?.brackets[0]?.start_at).format(
                       "YYYY/MM/DD HH:mm"
                     )}
                   </span>
@@ -479,7 +480,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   </Col>
 
                   {/* generous sponsors */}
-                  <Col
+                  {/* <Col
                     xs={{ span: 24 }}
                     xl={{ span: 9 }}
                     className={s.generousSponsorsWrap}
@@ -525,7 +526,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         </div>
                       </>
                     )}
-                  </Col>
+                  </Col> */}
                 </Row>
               </div>
             </div>

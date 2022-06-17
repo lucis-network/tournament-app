@@ -1,6 +1,4 @@
 .container
-  @media screen and (min-width: 768px)
-    width: 656px !important
   :global(.ant-input)
     border-radius: 8px
     padding: 8px
@@ -20,10 +18,14 @@
     background: none !important
     svg
       fill: #FFFFFF
-  :global(.ant-modal-content)
+  :global(.ant-modal)
     background: rgba(255, 255, 255, 0.4)
     backdrop-filter: blur(40px)
-    border-radius: 5px
+    border-radius: 5px !important
+    padding: 0
+    margin: auto
+    @media screen and (min-width: 768px)
+      width: 656px !important
   :global(.ant-modal-body)
     padding: 10px
     @media screen and (min-width: 576px)

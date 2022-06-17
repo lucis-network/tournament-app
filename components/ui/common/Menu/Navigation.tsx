@@ -14,6 +14,7 @@ import { Button } from "antd/lib/radio";
 import AuthStore from "../../../Auth/AuthStore";
 import { trim_middle } from "utils/String";
 import { AppEmitter } from "services/emitter";
+import User from "components/Auth/components/User";
 
 const variants = {
   open: {
@@ -118,6 +119,22 @@ export const Navigation = () => {
       text: (
         <div>
           {AuthStore.isLoggedIn ? (
+            <>
+              <User></User>
+            </>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+      class: { position: "absolute", bottom: "260px" },
+      isBlank: false,
+    },
+    {
+      color: "#FF008C",
+      text: (
+        <div>
+          {AuthStore.isLoggedIn ? (
             <div onClick={onClickProfile}>My Profile</div>
           ) : (
             <Login />
@@ -130,16 +147,15 @@ export const Navigation = () => {
     {
       color: "#FF008C",
       text: (
-        <div>
-          {AuthStore.isLoggedIn ? (
-            <p>{profile?.display_name}</p>
-          ) : (
-            ""
-          )}
-        </div>
+        <div>{AuthStore.isLoggedIn ? <p>{profile?.display_name}</p> : ""}</div>
       ),
       isBlank: false,
-      class: { position: "absolute", bottom: "160px", fontSize: 14, cursor: 'auto' },
+      class: {
+        position: "absolute",
+        bottom: "160px",
+        fontSize: 14,
+        cursor: "auto",
+      },
     },
     {
       color: "#FF008C",
@@ -153,7 +169,12 @@ export const Navigation = () => {
         </div>
       ),
       isBlank: false,
-      class: { position: "absolute", bottom: "144px", fontSize: 12, cursor: 'auto' },
+      class: {
+        position: "absolute",
+        bottom: "144px",
+        fontSize: 12,
+        cursor: "auto",
+      },
     },
     {
       color: "#FF008C",
@@ -161,7 +182,7 @@ export const Navigation = () => {
         <div>
           {AuthStore.isLoggedIn ? (
             <div>
-              <div onClick={disconnectWallet}>Disconnect</div>
+              <div onClick={disconnectWallet}>Log out</div>
             </div>
           ) : (
             ""

@@ -1,10 +1,13 @@
-import { Currency, DonateHistory } from "../../../../../../src/generated/graphql";
+import {
+  Currency,
+  DonateHistory,
+} from "../../../../../../src/generated/graphql";
 import { Image, Table } from "antd";
 import s from "./DonationHistory.module.sass";
 import Link from "next/link";
 import { LinkOutlined } from "@ant-design/icons";
 import { currency as formatCurrency } from "../../../../../../utils/Number";
-import {isEmpty} from "lodash";
+import { isEmpty } from "lodash";
 
 type DonationHistoryProps = {
   dataDonation: DonateHistory[];
@@ -14,15 +17,20 @@ type DonationHistoryProps = {
 
 export default function DonationHistory(props: DonationHistoryProps) {
   const { dataDonation, loadingDonation, currency } = props;
-  if (loadingDonation || isEmpty(dataDonation)) {
+  if (loadingDonation) {
     return <></>;
   }
-  let totalDonation = 0
-  dataDonation.map(item => {
-    if (item.amount as number >= 0 && item.status === "SUCCEED") {
-      totalDonation += item.amount as number
+  if (dataDonation) {
+    console.log(dataDonation);
+  } else {
+    console.log(1232342);
+  }
+  let totalDonation = 0;
+  dataDonation.map((item) => {
+    if ((item.amount as number) >= 0 && item.status === "SUCCEED") {
+      totalDonation += item.amount as number;
     }
-  })
+  });
 
   const columns = [
     {
@@ -85,20 +93,12 @@ export default function DonationHistory(props: DonationHistoryProps) {
     {
       title: "Message",
       dataIndex: "message",
-      render: (message: string) => (
-        <>
-          {message}
-        </>
-      ),
+      render: (message: string) => <>{message}</>,
     },
     {
       title: "Status",
       dataIndex: "status",
-      render: (status: string) => (
-        <>
-          {status}
-        </>
-      ),
+      render: (status: string) => <>{status}</>,
     },
     {
       title: "TxID",
@@ -131,22 +131,30 @@ export default function DonationHistory(props: DonationHistoryProps) {
       },
     },
   ];
-
+  // console.log('There is no data for this moment, please check back later.', dataDonation);
   return (
-    <div className={s.wrapper}>
-      <div className={s.donationWrapper}>
-        <h3>
-          Total donation: {formatCurrency(totalDonation)} {currency?.symbol}
-        </h3>
-        <Table
-          dataSource={dataDonation}
-          columns={columns}
-          bordered
-          className={s.container_table}
-          rowKey={(record) => `${record.tx_hash}`}
-          pagination={false}
-        />
-      </div>
-    </div>
+    <>
+      {dataDonation?.length > 0 ? (
+        <div className={s.wrapper}>
+          <div className={s.donationWrapper}>
+            <h3>
+              Total donation: {formatCurrency(totalDonation)} {currency?.symbol}
+            </h3>
+            <Table
+              dataSource={dataDonation}
+              columns={columns}
+              bordered
+              className={s.container_table}
+              rowKey={(record) => `${record.tx_hash}`}
+              pagination={false}
+            />
+          </div>
+        </div>
+      ) : (
+        <h1 className={s.blank_state}>
+          There is no data for this moment, please check back later.
+        </h1>
+      )}
+    </>
   );
 }

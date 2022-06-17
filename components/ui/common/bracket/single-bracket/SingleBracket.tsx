@@ -125,7 +125,7 @@ const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
   });
 
   return (
-    <div className={s.bracketContainer}>
+    <div className={`${s.bracketContainer} has-scrollbar`}>
       <Bracket
         rounds={roundsTemp}
         renderSeedComponent={CustomSeed}

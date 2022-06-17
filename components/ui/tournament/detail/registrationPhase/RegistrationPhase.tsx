@@ -142,7 +142,7 @@ export default observer(function RegistrationPhase(props: Props) {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-
+  
   const [dataPrize, setDataPrize] = useState<Reward>();
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
   const [dataDonation, setDataDonation] = useState<Reward[]>();
