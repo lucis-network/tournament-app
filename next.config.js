@@ -75,14 +75,5 @@ function show_testnet_text_on_header(rules) {
 }
 
 module.exports = {
-	...nextConfig,
-	async redirects() {
-		return [
-			{
-				source: '/p2e/overview',
-				destination: '/',
-				permanent: true,
-			},
-		]
-	},
+	...nextConfig
 };
