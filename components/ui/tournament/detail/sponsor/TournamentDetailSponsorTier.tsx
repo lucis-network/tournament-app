@@ -20,15 +20,21 @@ export default function TournamentDetailSponsorTier(
 
   const [checkBanner, setCheckBanner] = useState(false);
 
-  const newSlots: SponsorTransaction[] = [];
-
-  for (let i = 0; i < maxSponsorSlot; i++) {
-    newSlots.push({
+  const newSlots: SponsorTransaction[] = [
+    {
       uid: uniqueId("sponsor_"),
       logo: "",
       name: "",
-    } as SponsorTransaction);
-  }
+    } as SponsorTransaction
+  ];
+
+  // for (let i = 0; i < maxSponsorSlot; i++) {
+  //   newSlots.push({
+  //     uid: uniqueId("sponsor_"),
+  //     logo: "",
+  //     name: "",
+  //   } as SponsorTransaction);
+  // }
 
   if (sponsor_transactions) {
     sponsor_transactions.map((item: SponsorTransaction) => {
