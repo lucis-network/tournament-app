@@ -32,7 +32,7 @@ export default observer(function P2EWrapper(props: IProps) {
   }, [AuthStore.isLoggedIn])
 
   const tabs = [
-    { path: "/p2e/overview", name: "Overview" },
+    { path: "/", name: "Overview" },
     { path: "/p2e/dashboard", name: "Dashboard" },
     { path: "/p2e/missions", name: "Missions" },
     { path: "/p2e/raffles", name: "Raffles" },
@@ -62,10 +62,9 @@ export default observer(function P2EWrapper(props: IProps) {
                       title={isDisabledTab(item.path) ? "Coming soon" : ""}
                       className={
                         `${s.tabItem} 
-                        ${router.pathname.search(item.path) > -1 && router.pathname !== "/" ? s.tabActive : ""}
-                        ${router.pathname === "/" && item.path === "/p2e/overview" ? s.tabActive : ""}
+                        ${item.path === router.pathname ? s.tabActive : ""}
                         ${isDisabledTab(item.path) ? s.tabDisabled : ""}
-                        ${disabledTab && item.path !== "/p2e/overview" ? s.tabDisabled : ""}
+                        ${disabledTab && item.path !== "/" ? s.tabDisabled : ""}
                         `}
                       onClick={() => handleTabClick(item.path)}
                     >{item.name}
