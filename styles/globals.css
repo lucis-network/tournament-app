@@ -1,5 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700;900&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap");
 /*@font-face {*/
 /*  font-family: "Transformer";*/
 /*  src: url(/font/SVN-Transformer.ttf);*/
@@ -55,36 +55,24 @@ body .ant-layout-header {
 
 /* body gradient */
 body {
-  background: radial-gradient(
-      1200px 1800px at calc(100vw / 2 + 400px) 750px,
+  background: radial-gradient(1200px 1800px at calc(100vw / 2 + 400px) 750px,
       #05056c 0%,
-      transparent
-    ),
-    radial-gradient(
-      1200px 1800px at calc(100vw / 2 + 750px) 750px,
+      transparent),
+    radial-gradient(1200px 1800px at calc(100vw / 2 + 750px) 750px,
       #0000ff -150%,
-      transparent
-    ),
-    radial-gradient(
-      1200px 1800px at calc(100vw / 2 - 400px) 4850px,
+      transparent),
+    radial-gradient(1200px 1800px at calc(100vw / 2 - 400px) 4850px,
       #05056c 0%,
-      transparent
-    ),
-    radial-gradient(
-      1200px 1800px at calc(100vw / 2 - 400px) 7000px,
+      transparent),
+    radial-gradient(1200px 1800px at calc(100vw / 2 - 400px) 7000px,
       #05056c 0%,
-      transparent
-    ),
-    radial-gradient(
-      1200px 1800px at calc(100vw / 2 + 400px) 9550px,
+      transparent),
+    radial-gradient(1200px 1800px at calc(100vw / 2 + 400px) 9550px,
       #05056c 0%,
-      transparent
-    ),
-    radial-gradient(
-      1200px 1800px at calc(100vw / 2 + 400px) 10550px,
+      transparent),
+    radial-gradient(1200px 1800px at calc(100vw / 2 + 400px) 10550px,
       #05056c 0%,
-      transparent
-    );
+      transparent);
   /* background: linear-gradient(45deg, rgba(0,0,49,1) 0%, rgba(0,0,49,1) 38%, rgba(0,0,255,1) 100%); */
 }
 
@@ -218,7 +206,7 @@ body .ant-menu {
   }
 
   body .ant-menu-inline.ant-menu-root .ant-menu-item,
-  .ant-menu-inline.ant-menu-root > .ant-menu-submenu-title {
+  .ant-menu-inline.ant-menu-root>.ant-menu-submenu-title {
     padding-left: 24px !important;
     align-items: flex-start;
   }
@@ -447,12 +435,14 @@ body .ant-menu {
     padding: 0 5rem;
   }
 }
+
 @media (min-width: 1600px) {
   .lucis-container {
     max-width: 1600px;
     padding: 0 5rem;
   }
 }
+
 @media (min-width: 1920px) {
   .lucis-container {
     max-width: 1920px;
@@ -468,8 +458,7 @@ body .backdrop-blur-sm {
 /*
 * Override antd style
 */
-.ant-modal-close {
-}
+.ant-modal-close {}
 
 .ant-radio-group {
   display: flex !important;
@@ -516,11 +505,9 @@ body .backdrop-blur-sm {
 
 .ant-modal-root .ant-modal-content {
   /*background: rgb(47 33 102);*/
-  background: linear-gradient(
-    126.08deg,
-    rgba(255, 255, 255, 0.3) 13.84%,
-    rgba(255, 255, 255, 0.1) 74.14%
-  );
+  background: linear-gradient(126.08deg,
+      rgba(255, 255, 255, 0.3) 13.84%,
+      rgba(255, 255, 255, 0.1) 74.14%);
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(40px);
   /* Note: backdrop-filter has minimal browser support */
@@ -586,14 +573,11 @@ body .ant-modal-footer {
   color: #00ffd7;
 }
 
-.ant-popover-content {
-}
+.ant-popover-content {}
 
-.ant-popover-content .ant-popover-arrow {
-}
+.ant-popover-content .ant-popover-arrow {}
 
-.ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {
-}
+.ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {}
 
 /*Same style as modal content */
 .ant-popover-content .ant-popover-inner:before {
@@ -663,6 +647,7 @@ body .ant-btn-primary {
   border-color: none;
   border: none;
 }
+
 body .ant-btn-primary:hover {
   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
   border-color: none;
@@ -676,6 +661,7 @@ body .ant-btn-ghost {
   border: none;
   color: white;
 }
+
 body .ant-btn-ghost:hover {
   background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%);
   border-color: none;
@@ -695,7 +681,9 @@ body .ant-btn-default.bg-gradient-1 {
   background-image: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%);
 }
 
-body .ant-btn-default:hover, body .ant-btn-default:focus, body .ant-btn-default:active {
+body .ant-btn-default:hover,
+body .ant-btn-default:focus,
+body .ant-btn-default:active {
   color: #ffffff;
   border-color: #ffffff;
   background: none;
@@ -708,14 +696,16 @@ body .ant-btn-default:hover, body .ant-btn-default:focus, body .ant-btn-default:
 ::-webkit-scrollbar {
   display: none;
 }
+
 .has-scrollbar::-webkit-scrollbar {
   display: initial;
   width: 8px;
   height: 8px;
   border-radius: 4px;
-  background-color: rgba(255,255,255,0.3);
+  background-color: rgba(255, 255, 255, 0.3);
   cursor: pointer;
 }
+
 .has-scrollbar::-webkit-scrollbar-thumb {
   border-radius: 4px;
   background: linear-gradient(290.92deg, #0bebd6, #cd28e8);
@@ -733,11 +723,9 @@ body .ant-col {
 } */
 
 body .ant-input {
-  background: linear-gradient(
-    152.97deg,
-    rgba(255, 255, 255, 0.2) 0%,
-    rgba(255, 255, 255, 0) 100%
-  ) !important;
+  background: linear-gradient(152.97deg,
+      rgba(255, 255, 255, 0.2) 0%,
+      rgba(255, 255, 255, 0) 100%) !important;
   backdrop-filter: blur(42px);
   transition: 0.3s;
   border: 1px solid #d9d9d933;
@@ -807,14 +795,17 @@ body .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
 body .ant-picker-cell-inner {
   color: black;
 }
-body .ant-modal-mask{
+
+body .ant-modal-mask {
   background-color: rgba(0, 0, 0, 0.2)
 }
-body .ant-carousel .slick-list{
+
+body .ant-carousel .slick-list {
   box-shadow: 0px 0px 25px -8px #0bebd6;
   border-radius: 6px;
 }
-body .ant-carousel .slick-dots-bottom{
+
+body .ant-carousel .slick-dots-bottom {
   bottom: -30px;
 }
 
@@ -892,8 +883,8 @@ body .ant-carousel .slick-dots-bottom{
   bottom: 0;
   border-radius: 10px;
   padding: 1px;
-  background: linear-gradient(115deg,#7f6bbdb3,rgba(196,44,255,0) 45%,rgba(196,44,255,0) 0,#44388b);
-  -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+  background: linear-gradient(115deg, #7f6bbdb3, rgba(196, 44, 255, 0) 45%, rgba(196, 44, 255, 0) 0, #44388b);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
 }
