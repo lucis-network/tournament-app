@@ -1,22 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import s from './dashboard.module.sass'
-import { Button, Col, Image, message, Row } from "antd"
-import { GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION, useGetRecentMatches } from "../../../../hooks/p2e/useP2E";
-import { isEmpty } from "lodash";
-import moment from "moment";
-import SpinLoading from "../../common/Spin";
+import { Col, message, Row } from "antd"
+import { GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION, UPDATE_RECENTLY_MATCH, useGetRecentMatches } from "../../../../hooks/p2e/useP2E";
+
 import { useMutation, useQuery } from "@apollo/client";
 import MissionsList from "../MissionsList";
-import { PlayerMission } from "../../../../src/generated/graphql_p2e";
-import Statistics from "../Statistics";
-import OnUsingNFTs from '../OnUsingNFTs';
+import { GMatch, GPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchList } from '../RecentMatchList';
 import ButtonWrapper from 'components/common/button/Button';
 
-const DailyMission = () => {
-  const [lengthShowMore, setLengthShowMore] = useState(5);
+const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
+  const [recentlyMatches, setRecentlyMatches] = useState<GPlayerMatch[]>([])
   const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
       game_uid: '03',
@@ -27,7 +23,7 @@ const DailyMission = () => {
     }
   })
 
-  const { error, data, refetch } = useQuery(GET_STATISTICS, {
+  const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
       endpoint: 'p2e'
     }
@@ -43,7 +39,17 @@ const DailyMission = () => {
     }
   })
 
-  const { getRecentMatchesLoading, getRecentMatchesData, refetchRecentMatches } = useGetRecentMatches({
+  const [updateRecentlyMatch] = useMutation(UPDATE_RECENTLY_MATCH, {
+    variables: {
+      game_uid: '03',
+      platform_id: 1
+    },
+    context: {
+      endpoint: 'p2e'
+    }
+  })
+
+  const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentMatches({
     game_uid: '03',
     offset: 1,
     limit: 5,
@@ -54,11 +60,14 @@ const DailyMission = () => {
 
   const handleUpdateMissions = async () => {
     setLoading(true);
-    const dailyMissions = await updateDailyMission();
-    setDailyMission(dailyMissions.data.updateDailyMission)
-    await refetchRecentMatches()
-    // refetchDailyMission()
-    await refetch();
+
+    const promise = await Promise.all([
+      updateDailyMission(),
+      updateRecentlyMatch(),
+      statisticQuery.refetch()
+    ])
+    setDailyMission(promise[0].data.updateDailyMission)
+    setRecentlyMatches([...promise[1].data.updateRecentlyMatch, ...recentlyMatches]);
     setLoading(false);
     message.success("update successfully!");
   }
@@ -70,22 +79,32 @@ const DailyMission = () => {
       });
   }, [])
 
-  const loadMore = () => {
-    setLengthShowMore(lengthShowMore + 5);
-  };
+  useEffect(() => {
+    setRecentlyMatches(getRecentMatchesData?.getRecentlyMatch?.matches as GPlayerMatch[]);
+  }, [getRecentMatchesData])
+
+  const lucisPointRewardToday = (missions: GMatch): number => {
+    const matchesToday = missions?.matches?.filter(item => {
+      const now = new Date();
+      const endMatch = new Date(item.match.end_at);
+      return now.getDate() === endMatch.getDate()
+        && now.getFullYear() === endMatch.getFullYear()
+        && now.getMonth() === endMatch.getMonth()
+    })
+
+    let total = 0;
+
+    matchesToday?.forEach((match) => {
+      total += match.lucis_point;
+    })
+    return total
+  }
 
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
         <Row gutter={32}>
           <Col span={16}>
-
-            {/* <div className={s.gameInfo}>
-              <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
-              <h3>CS:GO FACEIT</h3>
-            </div>
-            <Statistics balance={{ lucisPoint: data?.getBalance?.lucis_point, lucisToken: data?.getBalance?.lucis_token }} /> */}
-            {/* <OnUsingNFTs /> */}
             <div className={s.dailyTitle}>
               <h2>
                 Daily Mission
@@ -102,8 +121,11 @@ const DailyMission = () => {
                 Recent matches
               </h2>
               <div className={s.recentMatchRewardGeneral}>
+                <div style={{ marginRight: 16 }}>
+                  Today:
+                </div>
                 <div className={s.recentMatchRewardLucisPoint}>
-                  <span>-- / 300</span>
+                  <span>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / 300</span>
                   <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
                 </div>
                 <div className={s.recentMatchRewardItem}>
@@ -112,8 +134,12 @@ const DailyMission = () => {
                 </div>
               </div>
             </div>
-
-            <RecentMatchList recentMatches={getRecentMatchesData?.getRecentlyMatch} loading={getRecentMatchesLoading} />
+            <RecentMatchList recentMatches={recentlyMatches} loading={getRecentMatchesLoading} />
+            <div className={s.viewAllHistory}>
+              <img src="/assets/P2E/arrow-left.png" alt="" />
+              <span>View all history</span>
+              <img src="/assets/P2E/arrow-right.png" alt="" />
+            </div>
           </Col>
           <Col span={8}>
             <div className={s.sidebarRight}>
@@ -130,7 +156,7 @@ const DailyMission = () => {
                         <div className={s.lucisPointWallet}>
                           LUCIS Point
                           <img src="/assets/P2E/lucis-point.png" alt="" width="68" height="68" />
-                          {data?.getBalance?.lucis_point}
+                          {statisticQuery?.data?.getBalance?.lucis_point}
                         </div>
                       </Col>
                       <Col span={12}>
@@ -159,7 +185,7 @@ const DailyMission = () => {
                       <div className={s.shareDiscordText}>
                         <img src="/assets/P2E/discord.png" alt="" />
                         <p>Connect your Discord account and join our server!</p>
-                        <ButtonWrapper disabled width={56}>Join</ButtonWrapper>
+                        <ButtonWrapper width={56} onClick={() => window.open("https://discord.gg/Y3E4x4U38k")}>Join</ButtonWrapper>
                       </div>
                       <div className={s.shareBonus}>
                         <p>Join bonus:</p>
@@ -203,4 +229,4 @@ const DailyMission = () => {
   )
 }
 
-export default DailyMission
+export default Dashboard

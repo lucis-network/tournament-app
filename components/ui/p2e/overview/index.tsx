@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from 'react'
 import s from './P2EOverview.module.sass'
-import { Button, Col, Image, Row } from "antd";
+import { Button, Col, Image, message, Row } from "antd";
 import { isEmpty } from "lodash";
 import { isDevMode } from "../../../../utils/Env";
 import { PlatformAccount } from "../../../../src/generated/graphql_p2e";
 import AuthStore from "../../../Auth/AuthStore";
 import { observer } from 'mobx-react-lite';
 import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
-import { useGetPlatformAccount } from 'hooks/p2e/useP2E';
-type P2EOverviewProps = {
-  faceitUser: PlatformAccount,
-  isLoadingFaceitUser: boolean
-}
-export default observer(function P2EOverview(props: P2EOverviewProps) {
+import { CONNECT_FACEIT, useGetPlatformAccount } from 'hooks/p2e/useP2E';
+import { useMutation } from '@apollo/client';
+import { useRouter } from 'next/router';
+export default observer(function P2EOverview() {
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
   })
-  const [faceitUser, setFaceitUser] = useState<PlatformAccount>(props.faceitUser);
   const [isAuth, setIsAuth] = React.useState<boolean>(false);
   const { refetchPlatformAccount } = useGetPlatformAccount()
+
+  const [loadingFaceit, setLoadingFaceit] = useState<boolean>(true);
+  const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
+  const { getPlatformAccountData, getPlatformAccountLoading } = useGetPlatformAccount()
+  const router = useRouter();
+  const [connectFaceit] = useMutation(CONNECT_FACEIT, {
+    context: {
+      endpoint: 'p2e'
+    }
+  })
   const fetchJsFromCDN = (src: string, externals: any[] = []) => {
     return new Promise((resolve, reject) => {
       const script = document.createElement("script");
@@ -91,6 +98,60 @@ export default observer(function P2EOverview(props: P2EOverviewProps) {
   }
 
 
+
+  useEffect(() => {
+    let isSubscribed = true
+    const handleHashChange = () => {
+      setLoadingFaceit(true);
+      let hashData = window.location.hash
+      if (hashData.startsWith('#token=') && hashData.includes('id_token')) {
+        const newHashData = new URLSearchParams(hashData.replace('#token=', '?token='))
+        const tokenData = {
+          accessToken: newHashData.get('token'),
+          idToken: newHashData.get('id_token')
+        }
+        connectFaceit({
+          variables: tokenData
+        }).then(response => {
+          if (isSubscribed) {
+            history.replaceState(null, '', ' ')
+            setFaceitUser(response.data.connectFaceit)
+            router.push("/p2e/dashboard");
+          }
+          setLoadingFaceit(false);
+        }).catch(error => {
+          if (isSubscribed) {
+            history.replaceState(null, '', ' ')
+            console.log(error)
+            message.error("This account is already connected to another user! Please use another account.")
+          }
+          setLoadingFaceit(false);
+        })
+      }
+    }
+
+    window.addEventListener('hashchange', handleHashChange)
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange)
+      isSubscribed = false
+    }
+  }, [])
+
+  useEffect(() => {
+    let isSubscribed = true
+    if (isSubscribed) {
+      setFaceitUser(getPlatformAccountData?.getPlatformAccount[0])
+      if (!getPlatformAccountLoading) {
+        setLoadingFaceit(false);
+      }
+    }
+    return () => {
+      isSubscribed = false
+    }
+  }, [getPlatformAccountData?.getPlatformAccount, getPlatformAccountLoading])
+
+
   // const loginWithSteam = () => {
   //   steam.resolve("https://steamcommunity.com/id/IMAPOORKID").then((id: string) => {
   //     console.log(id); // 76561198146931523
@@ -149,7 +210,7 @@ export default observer(function P2EOverview(props: P2EOverviewProps) {
                       <Button
                         onClick={() => handleConnectFaceit()}
                         className={s.btnLoginFaceit}
-                        loading={props.isLoadingFaceitUser}
+                        loading={loadingFaceit}
                       >CONNECT WITH FACEIT</Button>
                     </>
                   ) : (

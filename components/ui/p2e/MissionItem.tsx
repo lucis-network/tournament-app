@@ -73,7 +73,6 @@ const MissionItem = (props: MissionItemProp) => {
   const hasDone = currentPercent >= 100;
   let nextDay = new Date();
   nextDay.setDate(nextDay.getDate() + 1)
-  console.log(nextDay);
   nextDay.setHours(0, 0, 0);
 
   const finish = hasDone && mission?.is_claim;
@@ -105,7 +104,7 @@ const MissionItem = (props: MissionItemProp) => {
               </div>
             </div>
           </div>
-          <div className={s.missionProgress}>
+          <div className={!hasDone ? s.missionProgress : s.missionProgressFinish}>
             <Progress
               type="circle"
               strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
@@ -123,7 +122,7 @@ const MissionItem = (props: MissionItemProp) => {
           <img src="/assets/P2E/csgo/finish.png" alt="" />
           :
           <ButtonWrapper
-            disabled={!mission?.is_claim}
+            disabled={!hasDone}
             onClick={() => handleClaimMission(mission)}
             loading={loading}
             type="primary"

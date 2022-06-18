@@ -80,7 +80,7 @@ const Home: NextPage = () => {
         <div className={`${s.p2eWrap} lucis-container-2`}>
           <Tabs defaultActiveKey={tabActiveKey} activeKey={tabActiveKey} onTabClick={handleTabClick}>
             <TabPane tab="P2E 2.0" key="p2e">
-              <P2EOverview faceitUser={faceitUser} isLoadingFaceitUser />
+              <P2EOverview />
             </TabPane>
             <TabPane tab="Daily" key="daily" disabled={isEmpty(faceitUser)}>
               <Dashboard />

@@ -4,13 +4,13 @@ import React from "react"
 
 
 const DashboardPage = () => {
-    return (
-        <>
-            <P2EWrapper>
-                <Dashboard />
-            </P2EWrapper>
-        </>
-    );
+  return (
+    <>
+      <P2EWrapper>
+        <Dashboard />
+      </P2EWrapper>
+    </>
+  );
 }
 
 export default DashboardPage;

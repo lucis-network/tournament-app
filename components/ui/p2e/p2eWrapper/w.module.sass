@@ -1,4 +1,7 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap")
+
 .homeWrap
+  font-family: 'Poppins'
   background-image: url("/assets/P2E/csgo/background.png")
   background-repeat: no-repeat
   background-attachment: fixed
@@ -17,17 +20,23 @@
     justify-content: flex-start
     align-items: center
     font-size: 16px
-    cursor: pointer
     .tabItem
       padding: 12px 10px
       height: 60px
       display: flex
       align-items: center
+      cursor: pointer
+    .tabItem:hover
+      background: rgba(63, 182, 184, 0.1)
+      color: #12B0B4
     .tabActive
       background: rgba(18, 176, 180, 0.1)
       color: #12B0B4
+      cursor: pointer
+      font-weight: 600
     .tabDisabled
       cursor: default
+      opacity: 0.6
 
   :global(ant-tabs-tab-active)
     background: #12B0B41A

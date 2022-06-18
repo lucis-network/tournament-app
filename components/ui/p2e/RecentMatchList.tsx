@@ -2,14 +2,14 @@ import { Col, Row } from "antd";
 import { isEmpty } from "lodash";
 import moment from "moment";
 import React from "react";
-import { GMatch } from "src/generated/graphql_p2e";
+import { GPlayerMatch } from "src/generated/graphql_p2e";
 import { MAP_CSGO } from "utils/Enum";
 import SpinLoading from "../common/Spin";
 import s from './p2e.module.sass'
 
 
 interface IProps {
-  recentMatches: GMatch;
+  recentMatches: GPlayerMatch[];
   loading: boolean;
 }
 export const RecentMatchList = (props: IProps) => {
@@ -56,8 +56,8 @@ export const RecentMatchList = (props: IProps) => {
           </Col>
         </Row>
       </div>
-      {props.loading ? <SpinLoading /> : (
-        !isEmpty(props.recentMatches?.matches) && props.recentMatches?.matches?.map((item, index) => {
+      {props.loading && props.recentMatches ? <SpinLoading /> : (
+        !isEmpty(props.recentMatches) && props.recentMatches?.map((item, index) => {
           const mapName = item?.match?.map as any as string;
           return (
             <div
@@ -74,10 +74,10 @@ export const RecentMatchList = (props: IProps) => {
                 <Col span={4}>
                   <div className={s.recentMatchResult}>
                     {item?.is_win ?
-                      <span style={{ color: "#00F9FF" }}>VICTORY</span>
-                      : <span style={{ color: "#CC846E" }}>DEFEAT</span>}
-                    <div>{MAP_CSGO[mapName]}</div>
-                    <div>{new Date(item?.match?.end_at).toLocaleTimeString()}</div>
+                      <span style={{ color: "#00F9FF" }}>WIN</span>
+                      : <span style={{ color: "#CC846E" }}>LOSE</span>}
+                    <div className={s.mapName}>{MAP_CSGO[mapName]}</div>
+                    <div className={s.endTime}>{new Date(item?.match?.end_at).toLocaleTimeString([], { timeStyle: 'short' })}</div>
                   </div>
                 </Col>
                 <Col span={10}>

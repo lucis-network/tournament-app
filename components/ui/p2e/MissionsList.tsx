@@ -17,8 +17,6 @@ type MissionsListProp = {
 };
 
 const MissionsList = ({
-  title,
-  description,
   missions,
   handleUpdateMissions,
   canChooseGame,
@@ -33,20 +31,32 @@ const MissionsList = ({
 
           }
           <div className={s.checkListMissionItem}>
-            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            <Checkbox checked={missions?.[0]?.is_claim} disabled />
+            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            {/* <Checkbox checked={missions?.[0]?.is_claim} disabled /> */}
+            {missions?.[0]?.is_claim
+              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
+              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
           </div>
           <div className={s.checkListMissionItem}>
-            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            <Checkbox checked={missions?.[1]?.is_claim} disabled />
+            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            {/* <Checkbox checked={missions?.[1]?.is_claim} disabled /> */}
+            {missions?.[1]?.is_claim
+              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
+              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
           </div>
           <div className={s.checkListMissionItem}>
-            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            <Checkbox checked={missions?.[2]?.is_claim} disabled />
+            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            {/* <Checkbox checked={missions?.[2]?.is_claim} disabled /> */}
+            {missions?.[2]?.is_claim
+              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
+              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
           </div>
           <div className={s.checkListMissionItem}>
-            <img src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            <Checkbox checked={missions?.[3]?.is_claim} disabled />
+            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+            {/* <Checkbox checked={missions?.[3]?.is_claim} disabled /> */}
+            {missions?.[3]?.is_claim
+              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
+              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
           </div>
         </div>
 
