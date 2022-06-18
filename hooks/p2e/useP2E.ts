@@ -85,6 +85,7 @@ export const GET_OR_SET_DAILY_MISSION = gql`
       achieved
       mission_uid
       is_claim
+      updated_at
       mission {
         level {
           lucis_point
@@ -107,9 +108,14 @@ export const UPDATE_DAILY_MISSION = gql`
   mutation ($game_uid: String!, $platform_id: Int!) {
     updateDailyMission(game_uid: $game_uid, platform_id: $platform_id) {
       achieved
+      updated_at 
       mission_uid
       mission {
-        
+        level {
+          lucis_point
+          level
+          lucis_token
+        }
         uid
         title
         game_uid
@@ -118,6 +124,29 @@ export const UPDATE_DAILY_MISSION = gql`
         type
       }
       is_claim
+    }
+  }
+`
+
+export const UPDATE_RECENTLY_MATCH = gql`
+  mutation ($game_uid: String!, $platform_id: Int!) {
+    updateRecentlyMatch(game_uid: $game_uid, platform_id: $platform_id) {
+        id
+        match_uid
+        player_game_uid
+        is_win
+        map_img
+        lucis_point
+        player_statistic
+        match {
+          uid
+          game_uid
+          winner_team
+          loser_team
+          score
+          end_at
+          map
+        }
     }
   }
 `

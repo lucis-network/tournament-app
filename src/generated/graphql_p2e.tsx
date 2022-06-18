@@ -946,6 +946,7 @@ export type Query = {
   getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   searchRaffle?: Maybe<Array<Raffle>>;
+  updateRecentlyMatch: GPlayerMatch;
 };
 
 
@@ -1001,6 +1002,12 @@ export type QueryIsConnectPlatformArgs = {
 
 export type QuerySearchRaffleArgs = {
   name: Scalars['String'];
+};
+
+
+export type QueryUpdateRecentlyMatchArgs = {
+  game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
 };
 
 export type Raffle = {

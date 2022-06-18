@@ -53,7 +53,6 @@
     // padding: 15px
     margin-bottom: 20px
     .missionLogo
-      height: 64px
       background: #ffffff
       border-radius: 4px
     .missionInfo
@@ -76,6 +75,7 @@
           text-transform: capitalize
         img
           margin-bottom: 3px
+          opacity: 1
 
       .missionReward
         display: flex
@@ -98,6 +98,12 @@
           color: rgba(255, 255, 255, 0.5)
         :global(.ant-progress-circle-trail)
           stroke: #6B6C6C
+      .missionProgressFinish
+        margin-right: 50px
+        :global(.ant-progress-text)
+          color: #fff
+        :global(.ant-progress-circle-trail)
+          stroke: #6B6C6C
     .missionAction
       width: 120px
       justify-content: center
@@ -115,10 +121,10 @@
         flex-direction: column
         align-items: center
         margin-right: 16px
-        // justify-content: flex-start
-        img
+        .csgoImage
           width: 40px
           height: 40px
+          margin-bottom: 8px
     .headerCenter
       background-image: url("/assets/P2E/bg-header-right.png")
       height: 62px
@@ -154,7 +160,7 @@
       margin-bottom: 12px
 
 .recentMatchList
-  margin-bottom: 30px
+  margin-bottom: 20px
   .recentMatchHeaderList
     background: rgba(23, 29, 46, 0.8)
     backdrop-filter: blur(40px)
@@ -168,6 +174,8 @@
       flex-direction: column
       justify-content: center
       align-items: center
+      h2
+        color: #fff
   .recentMatchContentItem
     display: flex
     flex-direction: column
@@ -184,16 +192,32 @@
     background-repeat: no-repeat
     background-size: cover
     background-position: center
+    cursor: pointer
+  .recentMatchItem:hover
+    border: 1px solid rgba(0, 255, 255, 0.8)
+    box-shadow: inset 0px 1px 16px rgba(0, 255, 255, 0.8)
+
   .recentMatchResult
     display: flex
     flex-direction: column
     justify-content: center
     align-items: center
     height: 100%
+    color: #DBE0E8
     span
       font-size: 16px
       font-weight: bold
       line-height: 24px
+    .mapName
+      font-style: normal
+      font-weight: 400
+      font-size: 12px
+      line-height: 18px
+      border-bottom: 1px solid #DBE0E8
+    .endTime
+      font-weight: 500
+      font-size: 14px
+      line-height: 21px
   .scoreMatch
     display: flex
     height: 95px

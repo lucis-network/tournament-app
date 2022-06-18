@@ -1,87 +1,35 @@
-import React, { Children, useEffect, useState } from "react"
+import React from "react"
 import DocHead from 'components/DocHead'
 import Footer from 'components/ui/footer/Footer'
-import { message } from "antd";
 import s from './w.module.sass'
-import { useMutation } from "@apollo/client"
-import { isEmpty } from "lodash";
-import { CONNECT_FACEIT, useGetPlatformAccount } from "hooks/p2e/useP2E";
-import { PlatformAccount } from "src/generated/graphql";
 import { useRouter } from "next/router";
+import AuthStore from "components/Auth/AuthStore";
+import { observer } from "mobx-react-lite";
 
 interface IProps {
   children: React.ReactChild | React.ReactChild[]
 }
-const P2EWrapper = (props: IProps) => {
-  const [connectFaceit] = useMutation(CONNECT_FACEIT, {
-    context: {
-      endpoint: 'p2e'
-    }
-  })
-
+export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
-  const [loadingFaceit, setLoadingFaceit] = useState<boolean>(true);
-  const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
-  const { getPlatformAccountData, getPlatformAccountLoading } = useGetPlatformAccount()
-
   const handleTabClick = (path: string) => {
-    if (isEmpty(faceitUser)) {
+    if (isDisabledTab(path) || disabledTab) {
       return;
     }
     router.push(path);
   }
 
-  useEffect(() => {
-    let isSubscribed = true
-    const handleHashChange = () => {
-      setLoadingFaceit(true);
-      let hashData = window.location.hash
-      if (hashData.startsWith('#token=') && hashData.includes('id_token')) {
-        const newHashData = new URLSearchParams(hashData.replace('#token=', '?token='))
-        const tokenData = {
-          accessToken: newHashData.get('token'),
-          idToken: newHashData.get('id_token')
-        }
-        connectFaceit({
-          variables: tokenData
-        }).then(response => {
-          if (isSubscribed) {
-            history.replaceState(null, '', ' ')
-            setFaceitUser(response.data.connectFaceit)
-            router.push("/p2e/overview");
-          }
-          setLoadingFaceit(false);
-        }).catch(error => {
-          if (isSubscribed) {
-            history.replaceState(null, '', ' ')
-            console.log(error)
-            message.error("This account is already connected to another user! Please use another account.")
-          }
-          setLoadingFaceit(false);
-        })
-      }
-    }
+  const [disabledTab, setDisabledTab] = React.useState(false);
 
-    window.addEventListener('hashchange', handleHashChange)
 
-    return () => {
-      window.removeEventListener('hashchange', handleHashChange)
-      isSubscribed = false
-    }
-  }, [])
+  React.useEffect(() => {
+    if (!AuthStore.isLoggedIn) {
+      setDisabledTab(true);
+      router.push("/");
+    } else {
+      setDisabledTab(false);
 
-  useEffect(() => {
-    let isSubscribed = true
-    if (isSubscribed) {
-      setFaceitUser(getPlatformAccountData?.getPlatformAccount[0])
-      if (!getPlatformAccountLoading) {
-        setLoadingFaceit(false);
-      }
     }
-    return () => {
-      isSubscribed = false
-    }
-  }, [getPlatformAccountData?.getPlatformAccount, getPlatformAccountLoading])
+  }, [AuthStore.isLoggedIn])
 
   const tabs = [
     { path: "/p2e/overview", name: "Overview" },
@@ -91,6 +39,14 @@ const P2EWrapper = (props: IProps) => {
     { path: "/p2e/items", name: "Items" },
     { path: "/p2e/battle-pass", name: "Battle pass" },
   ];
+
+  const isDisabledTab = (tab: string) => {
+    if (tab === "/p2e/missions" || tab === "/p2e/raffles" || tab === "/p2e/items" || tab === "/p2e/battle-pass") {
+      return true;
+    }
+
+    return false;
+  }
 
   return (
     <>
@@ -103,10 +59,14 @@ const P2EWrapper = (props: IProps) => {
                 {tabs.map(item => {
                   return (
                     <div key={item.path}
+                      title={isDisabledTab(item.path) ? "Coming soon" : ""}
                       className={
                         `${s.tabItem} 
-                        ${router.pathname.search(item.path) > -1 ? s.tabActive : ""}
-                        ${isEmpty(faceitUser) && router.pathname.search(item.path) === -1 ? s.tabDisabled : ""}`}
+                        ${router.pathname.search(item.path) > -1 && router.pathname !== "/" ? s.tabActive : ""}
+                        ${router.pathname === "/" && item.path === "/p2e/overview" ? s.tabActive : ""}
+                        ${isDisabledTab(item.path) ? s.tabDisabled : ""}
+                        ${disabledTab && item.path !== "/p2e/overview" ? s.tabDisabled : ""}
+                        `}
                       onClick={() => handleTabClick(item.path)}
                     >{item.name}
                     </div>
@@ -130,5 +90,4 @@ const P2EWrapper = (props: IProps) => {
     </>
   )
 }
-
-export default P2EWrapper
+)
