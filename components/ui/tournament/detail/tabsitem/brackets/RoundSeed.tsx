@@ -50,6 +50,14 @@ export function makeSeedComponent(
     const canUpdate = canEdit && !notStartedYet && (!matchCompleted);
     const team0joined = !isEmpty(team0.id) && (team0.id !== 'bye');
     const team1joined = !isEmpty(team1.id) && (team1.id !== 'bye');
+    const team0score =
+      teamName0 === 'bye' ? 0 :
+        teamName1 === 'bye' ? 1 :
+          ((team0 && !notStartedYet) ? team0.score : "--");
+    const team1score =
+      teamName1 === 'bye' ? 0 :
+        teamName0 === 'bye' ? 1 :
+          ((team1 && !notStartedYet) ? team1.score : "--");
     const team0win = team0.score > team1.score;
     const team1win = team0.score < team1.score;
     return (
@@ -72,7 +80,7 @@ export function makeSeedComponent(
                       undefined
                   }
                 >
-                  {(team0 && !notStartedYet) ? team0.score : "--"}
+                  {team0score}
                 </div>
                 {showRankIco && <div className={ss.rank}>{finalRankIcoTeam0}</div>}
               </SeedTeam>
@@ -91,7 +99,7 @@ export function makeSeedComponent(
                       undefined
                   }
                 >
-                  {(team1 && !notStartedYet) ? team1.score : "--"}
+                  {team1score}
                 </div>
                 {showRankIco && <div className={ss.rank}>{finalRankIcoTeam1}</div>}
               </SeedTeam>
