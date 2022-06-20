@@ -486,6 +486,7 @@ const GET_BRACKET = gql`
         team {
           uid
           name
+          avatar
         }
       }
     }

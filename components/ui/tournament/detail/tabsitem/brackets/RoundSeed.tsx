@@ -29,6 +29,8 @@ export function makeSeedComponent(
     const match = seed as RoundMatch;
     const team0 = match.teams[0];
     const team1 = match.teams[1];
+    const team0Logo = team0?.logo ? team0?.logo : '';
+    const team1Logo = team1?.logo ? team1?.logo : '';
     const isFinalRound = roundIndex >= roundCount - 1;
     const matchCompleted = match.status === BracketMatchStatus.Complete;
     const showRankIco = showFinalMatchRank && isFinalRound && matchCompleted;
@@ -58,7 +60,8 @@ export function makeSeedComponent(
               <SeedTeam className={s.topSeed} style={{ padding: 0, marginBottom: '1px' }}>
                 <Tooltip title={teamName0} color="#4e89a3" placement="left" trigger="click">
                   <div className={`${ss.team} ${team0joined ? ss.teamJoined : ''} ${team0win ? ss.teamWin : ''}`}>
-                    {teamName0}
+                    <Image src={team0Logo} preview={false} alt="" fallback="/assets/avatar.jpg" />
+                    <span className={ss.teamName}>{teamName0}</span>
                   </div>
                 </Tooltip>
                 <div
@@ -76,7 +79,8 @@ export function makeSeedComponent(
               <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
                 <Tooltip title={teamName1} color="#4e89a3" placement="left" trigger="click">
                   <div className={`${ss.team} ${team1joined ? ss.teamJoined : ''} ${team1win ? ss.teamWin : ''}`}>
-                    {teamName1}
+                    <Image src={team1Logo} preview={false} alt="" fallback="/assets/avatar.jpg" />
+                    <span className={ss.teamName}>{teamName1}</span>
                   </div>
                 </Tooltip>
                 <div
