@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
@@ -60,22 +60,26 @@ export default observer(function LoginModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  // @ts-ignore
-  var ua = navigator.userAgent || navigator.vendor || window.opera;
-  const isFacebookApp = function () {
+  const isFacebookApp = function (ua: any) {
     return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
   }
 
-  const onLoginClicked = () => {
-    if (isFacebookApp()) {
-      console.log('isFacebookApp')
-      if (!window.location.href.match('redirect_fb')) {
-        // force open in browser ... 
-        location.href = "http://localhost:3000";
+  const onLoginClicked = (cb: () => void) => {
+    return () => {
+      // @ts-ignore
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      if (isFacebookApp(ua)) {
+        console.log('isFacebookApp')
+        if (!window.location.href.match('redirect_fb')) {
+          // force open in browser ... 
+          location.href = location.href;
+        }
+        message.warn("Please open web in browser to use full function")
+        return;
       }
-      return;
+      console.log('not isFacebookApp')
+      cb();
     }
-    console.log('not isFacebookApp')
   }
 
   return (
@@ -93,7 +97,7 @@ export default observer(function LoginModal(props: Props) {
           render={(renderProps) => (
             <button
               // onClick={renderProps.onClick}
-              onClick={onLoginClicked}
+              onClick={onLoginClicked(renderProps.onClick)}
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded`}
             >
               Login Google
