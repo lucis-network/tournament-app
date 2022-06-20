@@ -60,6 +60,24 @@ export default observer(function LoginModal(props: Props) {
     setIsModalVisible(false);
   };
 
+  // @ts-ignore
+  var ua = navigator.userAgent || navigator.vendor || window.opera;
+  const isFacebookApp = function () {
+    return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+  }
+
+  const onLoginClicked = () => {
+    if (isFacebookApp()) {
+      console.log('isFacebookApp')
+      if (!window.location.href.match('redirect_fb')) {
+        // force open in browser ... 
+        location.href = "http://localhost:3000";
+      }
+      return;
+    }
+    console.log('not isFacebookApp')
+  }
+
   return (
     <>
       <Modal
@@ -74,7 +92,8 @@ export default observer(function LoginModal(props: Props) {
           clientId={clientId}
           render={(renderProps) => (
             <button
-              onClick={renderProps.onClick}
+              // onClick={renderProps.onClick}
+              onClick={onLoginClicked}
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded`}
             >
               Login Google
