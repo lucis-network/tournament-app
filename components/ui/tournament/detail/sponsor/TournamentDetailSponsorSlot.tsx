@@ -28,7 +28,27 @@ export default function TournamentDetailSponsorSlot(
               ></img>
             </div>
           ) : (
-            ""
+            <>
+              <div
+                className={`${s.sponsorSlot} ${
+                  !sponsorLogo ? `${s.sponsorSlotHidden}` : ""
+                }`}
+              >
+                <div className={s.sponsorLogoWrap}>
+                  <a
+                    href={home_page ? home_page : "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img
+                      src={sponsorLogo || "/assets/avatar.jpg"}
+                      className={s.sponsorLogo}
+                    ></img>
+                  </a>
+                </div>
+                {/* {(show_name && (sponsorName && (sponsorName.length > 0))) && <div className={s.sponsorName}>{sponsorName}</div>} */}
+              </div>
+            </>
           )}
         </>
       ) : (

@@ -1,11 +1,9 @@
 import s from "./Participants.module.sass";
-
 import { AppEmitter } from "services/emitter";
 import { Image, Button, message, Table } from "antd";
 import { useEffect, useState } from "react";
 import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
 import { Team } from "src/generated/graphql";
-import SearchComplete from "components/ui/common/searchs";
 import PopupDonate from "../../popup/popupDonate";
 import AuthStore from "components/Auth/AuthStore";
 import { useUpdateParticipant } from "hooks/tournament/useTournamentDetail";
@@ -70,7 +68,7 @@ export default function TableParticipant(props: Props) {
   const columns = [
     {
       title: "No",
-      dataIndex: "getTournamentParticipants",
+      dataIndex: "No",
       key: "id",
       width: 60,
       render: (_: any, item: any, index: number) => {
@@ -79,7 +77,7 @@ export default function TableParticipant(props: Props) {
     },
     {
       title: "Participant",
-      dataIndex: "getTournamentParticipants",
+      dataIndex: "Participant",
       key: "name",
       width: 250,
       render: (_: any, item: any, index: number) => {
@@ -185,8 +183,6 @@ export default function TableParticipant(props: Props) {
     },
   ];
 
-  console.log("dataParticipants", dataParticipants);
-  console.log("dataUpdateParticipant", dataUpdateParticipant);
   return (
     <div className={s.wrapper}>
       <div className={s.containerTab}>
