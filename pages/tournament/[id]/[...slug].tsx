@@ -31,6 +31,8 @@ import TournamentDetailMarquee from "../../../components/ui/tournament/detail/ma
 import DocHead from "../../../components/DocHead";
 import moment from "moment";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
+import useTeamModal from "components/ui/tournament/detail/hooks/useTeamModal";
+import PopupNotifyProfile from "components/ui/tournament/detail/popup/popupNotifyProfile";
 
 const { TabPane } = Tabs;
 
@@ -46,6 +48,7 @@ const tabList = [
 
 const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
+  const [isPopupNotifyProfile, setIsPopupNotifyProfile] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
   const { tournamentId, asPath } = props;
   const [isLoadingSub, setIsLoadingSub] = useState(false);
@@ -91,7 +94,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-  
+
   useEffect(() => {
     let obj: any = [];
     if (dataSponsors) {
@@ -174,6 +177,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       return;
     }
 
+    if (!AuthStore.isHasMail) {
+      setIsPopupNotifyProfile(true);
+      return;
+    }
+
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
     setTimeout(() => {
@@ -193,6 +201,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       return;
     }
 
+    if (!AuthStore.isHasMail) {
+      setIsPopupNotifyProfile(true);
+      return;
+    }
+    
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
 
@@ -207,6 +220,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     }, 800);
   };
 
+  const onCancelPopupNotifyProfile = () => {
+    setIsPopupNotifyProfile(false);
+  }
   const handleActiveTab = (item: string) => {
     setActiveTab(item);
   };
@@ -249,8 +265,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                 <Image src={thumbnail} alt="" preview={false} />
               </div>
               <div className={s.tournamentMetadataWrap}>
-                <h1 className={s.tournamentTitle}>{name.length > 120 ? name.slice(0, 120) + "..." : name}</h1>
-                {name.length <= 35 && <><br/> <br/></>}
+                <h1 className={s.tournamentTitle}>
+                  {name.length > 120 ? name.slice(0, 120) + "..." : name}
+                </h1>
+                {name.length <= 35 && (
+                  <>
+                    <br /> <br />
+                  </>
+                )}
                 <div className={s.tournamentStartTime}>
                   <Image
                     src="/assets/TournamentDetail/iconClock.svg"
@@ -752,6 +774,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           tournament_status={tournament_status}
           refetchTounament={refetch}
         />
+
+        <PopupNotifyProfile status={isPopupNotifyProfile} onCancel={onCancelPopupNotifyProfile}></PopupNotifyProfile>
       </div>
       <LoginModal />
     </>

@@ -18,7 +18,7 @@ import {
 } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 import TournamentService from "components/service/tournament/TournamentService";
-import { ApolloQueryResult, useLazyQuery } from "@apollo/client";
+import { ApolloError, ApolloQueryResult, useLazyQuery } from "@apollo/client";
 import useTournament from "../hooks/useTournament";
 import CountdownTimer from "components/ui/common/CountDown";
 import { CalendarOutlined } from "@ant-design/icons";
@@ -30,6 +30,7 @@ import AuthService from "components/Auth/AuthService";
 import { to_hex_str } from "utils/String";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { GET_MY_TEAM } from "components/ui/common/tabsItem/myTeamDetail/myTeamService";
+import { handleGraphqlErrors } from "utils/apollo_client";
 
 type Props = {
   isJoin: boolean;
@@ -112,7 +113,7 @@ export default observer(function RegistrationPhase(props: Props) {
     TournamentStore.claimDonationModalVisible = true;
   };
 
-  const { data } = useClaimReward({
+  const { data, refetch: refetchClaimReward } = useClaimReward({
     tournament_uid: tournamentId ? tournamentId : "",
     skip: isEmpty(tournamentId),
   });
@@ -142,7 +143,7 @@ export default observer(function RegistrationPhase(props: Props) {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
-  
+
   const [dataPrize, setDataPrize] = useState<Reward>();
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
   const [dataDonation, setDataDonation] = useState<Reward[]>();
@@ -200,12 +201,21 @@ export default observer(function RegistrationPhase(props: Props) {
               setCheckClaimPoolSize(true);
               TournamentStore.claimResultModalVisible = true;
               setLoadingClaimPrizePool(false);
+              refetchClaimReward();
             }
           },
-          (error) => {
-            message.warning("You have received this prize.", 10);
-            setLoadingClaimPrizePool(false);
-          }
+          (error: ApolloError) =>
+            handleGraphqlErrors(error, (code, messageErr) => {
+              if (code === "INTERNAL_SERVER_ERROR") {
+                message.error(
+                  "An unexpected error has occurred, please contact Lucis for more details",
+                  10
+                );
+              } else {
+                message.warning("You have received this prize.", 10);
+              }
+              setLoadingClaimPrizePool(false);
+            })
         );
       }
 
@@ -221,14 +231,24 @@ export default observer(function RegistrationPhase(props: Props) {
           (res) => {
             if (res) {
               refetch();
+              setCheckClaimPoolSize(false);
               TournamentStore.claimResultModalVisible = true;
               setLoadingClaimPrizePoolSystem(false);
+              refetchClaimReward();
             }
           },
-          (error) => {
-            message.warning("You have received this prize.", 10);
-            setLoadingClaimPrizePoolSystem(false);
-          }
+          (error: ApolloError) =>
+            handleGraphqlErrors(error, (code, messageErr) => {
+              if (code === "INTERNAL_SERVER_ERROR") {
+                message.error(
+                  "An unexpected error has occurred, please contact Lucis for more details",
+                  10
+                );
+              } else {
+                message.warning("You have received this prize.", 10);
+              }
+              setLoadingClaimPrizePoolSystem(false);
+            })
         );
       }
     }
@@ -260,13 +280,16 @@ export default observer(function RegistrationPhase(props: Props) {
 
   useEffect(() => {
     if (
-      dataPrize?.amount == 0 &&
-      dataSystemPrize?.amount == 0 &&
-      totalFromDonation == 0
+      (dataPrize?.amount == 0 &&
+        dataSystemPrize?.amount == 0 &&
+        totalFromDonation == 0) ||
+      isEmpty(data)
     ) {
       setCheckClaim(true);
+    } else {
+      setCheckClaim(false);
     }
-  }, [dataPrize, dataSystemPrize, totalFromDonation]);
+  }, [dataPrize, dataSystemPrize, totalFromDonation, data]);
 
   return (
     <>
@@ -444,10 +467,10 @@ export default observer(function RegistrationPhase(props: Props) {
                             ""
                           )}
                           <div className={`${s.rewards}`}>
-                            {(dataPrize?.amount && dataPrize?.amount > 0) ||
+                            {/* {(dataPrize?.amount && dataPrize?.amount > 0) ||
                               (dataSystemPrize?.amount &&
                                 dataSystemPrize?.amount > 0) ||
-                              (totalFromDonation > 0 && <div>Prize</div>)}
+                              (totalFromDonation > 0 && <div className={s.rewardsTitle}>Prize</div>)} */}
                             <div>
                               {dataPrize?.amount ? (
                                 dataPrize?.amount > 0 ? (
