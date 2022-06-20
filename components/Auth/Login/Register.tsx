@@ -64,21 +64,21 @@ export default observer(function LoginModal(props: Props) {
     return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
   }
 
-  const onLoginClicked = (cb: () => void) => {
+  const onLoginClicked = (cb: (() => void) | undefined) => {
     return () => {
       // @ts-ignore
       var ua = navigator.userAgent || navigator.vendor || window.opera;
       if (isFacebookApp(ua)) {
-        console.log('isFacebookApp')
+        console.log('window.location.href: ', window.location.href)
         if (!window.location.href.match('redirect_fb')) {
           // force open in browser ... 
-          location.href = location.href;
+          // location.href = location.href;
         }
         message.warn("Please open web in browser to use full function")
         return;
       }
       console.log('not isFacebookApp')
-      cb();
+      cb && cb();
     }
   }
 
@@ -121,7 +121,8 @@ export default observer(function LoginModal(props: Props) {
           }}
           render={(renderProps) => (
             <button
-              onClick={renderProps.onClick}
+              // onClick={renderProps.onClick}
+              onClick={onLoginClicked(renderProps.onClick)}
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded ml-20px`}
             >
               Login Facebook
