@@ -1,6 +1,6 @@
 import { observer } from "mobx-react-lite";
 import { Button, Col, Image, message, Modal, Row, Tooltip } from "antd";
-import TournamentStore, { SponsorTierType } from "src/store/TournamentStore";
+import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
 import ChooseTeamModal from "../popup/chooseTeamModal";
@@ -21,13 +21,10 @@ import TournamentService from "components/service/tournament/TournamentService";
 import { ApolloError, ApolloQueryResult, useLazyQuery } from "@apollo/client";
 import useTournament from "../hooks/useTournament";
 import CountdownTimer from "components/ui/common/CountDown";
-import { CalendarOutlined } from "@ant-design/icons";
 import AuthStore from "components/Auth/AuthStore";
 import SpinLoading from "components/ui/common/Spin";
 import { isEmpty } from "lodash";
 import ClaimResultModal from "../popup/claimResultModal/ClaimResultModal";
-import AuthService from "components/Auth/AuthService";
-import { to_hex_str } from "utils/String";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { GET_MY_TEAM } from "components/ui/common/tabsItem/myTeamDetail/myTeamService";
 import { handleGraphqlErrors } from "utils/apollo_client";
@@ -154,6 +151,7 @@ export default observer(function RegistrationPhase(props: Props) {
 
   const [checkClaimPoolSize, setCheckClaimPoolSize] = useState(false);
   const [checkClaim, setCheckClaim] = useState(false);
+  const [claimStatus, setClaimStatus] = useState(false);
   useEffect(() => {
     let arr: Array<Reward> = [];
     data?.forEach((item: any) => {
@@ -199,7 +197,7 @@ export default observer(function RegistrationPhase(props: Props) {
             if (res) {
               refetch();
               setCheckClaimPoolSize(true);
-              TournamentStore.claimResultModalVisible = true;
+              setClaimStatus(true);
               setLoadingClaimPrizePool(false);
               refetchClaimReward();
             }
@@ -232,7 +230,7 @@ export default observer(function RegistrationPhase(props: Props) {
             if (res) {
               refetch();
               setCheckClaimPoolSize(false);
-              TournamentStore.claimResultModalVisible = true;
+              setClaimStatus(true);
               setLoadingClaimPrizePoolSystem(false);
               refetchClaimReward();
             }
@@ -256,6 +254,10 @@ export default observer(function RegistrationPhase(props: Props) {
 
   const closeModal = () => {
     setIsPopupDonate(false);
+  };
+
+  const handleCancelClaim = () => {
+    setClaimStatus(false);
   };
 
   const openModal = () => {
@@ -423,16 +425,16 @@ export default observer(function RegistrationPhase(props: Props) {
                     return (
                       <div className={s.joinWrap}>
                         {isJoin ? (
-                          <button onClick={handleOpenLeaveTournament}>
+                          <Button onClick={handleOpenLeaveTournament}>
                             Unjoin tournament
-                          </button>
+                          </Button>
                         ) : (
-                          <button
+                          <Button
                             onClick={handleOpenModal}
                             disabled={isFullParticipant}
                           >
                             Join tournament
-                          </button>
+                          </Button>
                         )}
                       </div>
                     );
@@ -441,15 +443,15 @@ export default observer(function RegistrationPhase(props: Props) {
                       <div className={s.joinWrap}>
                         {isJoin ? (
                           !isCheckin ? (
-                            <button onClick={handleCheckinTournament}>
+                            <Button onClick={handleCheckinTournament}>
                               {loadingCheckin ? (
                                 <SpinLoading className="pt-0" size={24} />
                               ) : (
                                 "Check-in"
                               )}
-                            </button>
+                            </Button>
                           ) : (
-                            <button disabled>Checked</button>
+                            <Button disabled>Checked</Button>
                           )
                         ) : null}
                       </div>
@@ -493,7 +495,9 @@ export default observer(function RegistrationPhase(props: Props) {
                                         disabled={dataPrize?.is_claim}
                                         loading={loadingClaimPrizePool}
                                       >
-                                        Claim
+                                        <Tooltip title="Lucis will take 5% reward as fee">
+                                          Claim
+                                        </Tooltip>
                                       </Button>
                                     </div>
                                   </div>
@@ -519,6 +523,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                           {dataSystemPrize?.symbol}
                                         </span>
                                       </h3>
+
                                       <Button
                                         onClick={() =>
                                           claimToken("PrizeSystem")
@@ -527,7 +532,9 @@ export default observer(function RegistrationPhase(props: Props) {
                                         disabled={dataSystemPrize?.is_claim}
                                         loading={loadingClaimPrizeSystem}
                                       >
-                                        Claim
+                                        <Tooltip title="Lucis will take 5% reward as fee">
+                                          Claim
+                                        </Tooltip>
                                       </Button>
                                     </div>
                                   </div>
@@ -668,6 +675,8 @@ export default observer(function RegistrationPhase(props: Props) {
           checkClaimPoolSize ? dataPrize?.symbol : dataSystemPrize?.symbol
         }
         name={name as string}
+        status={claimStatus}
+        onCancel={handleCancelClaim}
       />
 
       <Modal

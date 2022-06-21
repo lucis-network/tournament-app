@@ -67,15 +67,14 @@ export default function TournamentDetailSponsorTier(
               type !== "banner" &&
               newSlots.map((slot) => {
                 return (
-                  <>
+                  <div key={slot.uid}>
                     <TournamentDetailSponsorSlot
-                      key={slot.uid}
                       tier={tier}
                       slot={slot}
                       checkBanner={checkBanner}
                       index={index}
                     />
-                  </>
+                  </div>
                 );
               })}
             {newSlots.length > 0 &&
@@ -83,14 +82,13 @@ export default function TournamentDetailSponsorTier(
               index === 0 &&
               newSlots.map((slot) => {
                 return (
-                  <>
+                  <div key={slot.uid}>
                     <TournamentDetailSponsorSlot
-                      key={slot.uid}
                       tier={tier}
                       slot={slot}
                       //index={index}
                     />
-                  </>
+                  </div>
                 );
               })}
           </div>
