@@ -73,6 +73,7 @@ const SingleBracket = (props: Props) => {
       onUpdateCompleted={onUpdateCompleted}
       refetchBracket={refetchBracket}
     />}
+    showFinalMatchRank
   />;
 };
 
