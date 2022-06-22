@@ -103,7 +103,7 @@ const Dashboard = () => {
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
-        <Row gutter={32}>
+        <Row gutter={40}>
           <Col span={16}>
             <div className={s.dailyTitle}>
               <h2>
@@ -124,13 +124,13 @@ const Dashboard = () => {
                 <div style={{ marginRight: 16 }}>
                   Today:
                 </div>
-                <div className={s.recentMatchRewardLucisPoint}>
-                  <span>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / 300</span>
-                  <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
+                <div className={s.rewardItem} style={{ marginRight: 8 }}>
+                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / 300</span>
+                  <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
-                <div className={s.recentMatchRewardItem}>
+                <div className={s.rewardItem}>
                   <span>-- / 300</span>
-                  <img src="/assets/P2E/lucis-token.png" alt="" width="40" height="40" />
+                  <img src="/assets/P2E/lucis-token.svg" alt="" />
                 </div>
               </div>
             </div>
@@ -155,7 +155,7 @@ const Dashboard = () => {
                       <Col span={12}>
                         <div className={s.lucisPointWallet}>
                           LUCIS Point
-                          <img src="/assets/P2E/lucis-point.png" alt="" width="68" height="68" />
+                          <img src="/assets/P2E/lucis-point.svg" alt="" width="24" height="24" />
                           {statisticQuery?.data?.getBalance?.lucis_point}
                         </div>
                       </Col>
@@ -163,7 +163,7 @@ const Dashboard = () => {
                         <div >
                           <div className={s.BUSDWallet}>
                             Lucis Token
-                            <img src="/assets/P2E/lucis-token.png" alt="" width="68" height="68" />
+                            <img src="/assets/P2E/lucis-token.svg" alt="" width="24" height="24" />
                             --
                           </div>
                           <div className={s.busdClaim}>
@@ -189,9 +189,9 @@ const Dashboard = () => {
                       </div>
                       <div className={s.shareBonus}>
                         <p>Join bonus:</p>
-                        <div>
+                        <div className={s.rewardItem}>
                           <span>--</span>
-                          <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                       </div>
                     </div>
@@ -212,9 +212,9 @@ const Dashboard = () => {
                       </div>
                       <div className={s.shareBonus}>
                         <p>Join bonus:</p>
-                        <div>
+                        <div className={s.rewardItem}>
                           <span>--</span>
-                          <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                       </div>
                     </div>

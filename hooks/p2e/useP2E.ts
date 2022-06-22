@@ -1,5 +1,5 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { GMatch, PlatformAccount } from "../../src/generated/graphql_p2e";
+import { GMatch, MatchStatistics, PlatformAccount } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
   game_uid: string
@@ -67,6 +67,38 @@ export const useGetRecentMatches = ({ game_uid, offset, limit, platform_id }: Us
     getRecentMatchesData,
   }
 }
+
+export const useGetStatisticMatch = (player_match_id: number, skip: boolean = true): {
+  getStatisticMatchLoading: boolean,
+  getStatisticMatchError: ApolloError | undefined,
+  refetchStatisticMatch: () => Promise<ApolloQueryResult<any>>,
+  getStatisticMatchData: {
+    getMatchStatistic: MatchStatistics
+  },
+} => {
+  const {
+    loading: getStatisticMatchLoading,
+    error: getStatisticMatchError,
+    refetch: refetchStatisticMatch,
+    data: getStatisticMatchData,
+  } = useQuery(GET_STATISTIC_MATCH, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
+      player_match_id,
+    },
+    skip: skip
+  })
+
+  return {
+    getStatisticMatchLoading,
+    getStatisticMatchError,
+    refetchStatisticMatch,
+    getStatisticMatchData,
+  }
+}
+
 
 
 export const CONNECT_FACEIT = gql`
@@ -229,6 +261,47 @@ export const GET_RECENT_MATCHES = gql`
     }
   }
 `
+
+export const GET_STATISTIC_MATCH = gql`
+  query ($player_match_id: Int!) {
+    getMatchStatistic(player_match_id: $player_match_id) {
+        match_uid,
+        map_earning {
+          id,
+          win,
+          kill,
+          assist,
+          win_steak,
+          most_kill,
+          mvp,
+          most_support,
+          triple_kill,
+          quadra_kill,
+          pental_kill,
+          headshot,
+          most_headshot,
+          least_died,
+          highest_kda
+        }
+        map {
+          name, 
+          img_lg,
+          img_sm
+        }
+        score,
+        is_win,
+        most_support,
+        most_headshot,
+        least_died,
+        highest_kda,
+        current_win_streak,
+        player_statistic
+    }
+  }
+`
+
+
+
 
 export const GET_STATISTICS = gql`
   query {

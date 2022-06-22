@@ -63,7 +63,8 @@ export const MAP_CSGO: { [s: string]: string } = {
   "de_dust3": "Dust III",
   "de_dust1": "Dust I",
   "de_vertigo": "Vertigo",
-  "de_mirage": "Mirage"
+  "de_mirage": "Mirage",
+  "Dust2": "Dust II"
 
 }
 

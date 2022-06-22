@@ -62,7 +62,8 @@ export default observer(function P2EWrapper(props: IProps) {
                       title={isDisabledTab(item.path) ? "Coming soon" : ""}
                       className={
                         `${s.tabItem} 
-                        ${item.path === router.pathname ? s.tabActive : ""}
+                        ${router.pathname.search(item.path) > -1 && item.path !== "/" ? s.tabActive : ""}
+                        ${router.pathname === "/" && item.path === "/" ? s.tabActive : ""}
                         ${isDisabledTab(item.path) ? s.tabDisabled : ""}
                         ${disabledTab && item.path !== "/" ? s.tabDisabled : ""}
                         `}

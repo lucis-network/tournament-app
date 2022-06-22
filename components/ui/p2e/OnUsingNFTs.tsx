@@ -25,11 +25,11 @@ const OnUsingNFTs = (props: IProps) => {
               <img src="/assets/P2E/nfts/card1.png" alt="card1" />
               <div className={s.coin}>
                 <div className={s.lucisPoint}>
-                  <img src="/assets/P2E/lucis-point.png" alt="" />
+                  <img src="/assets/P2E/lucis-point.svg" alt="" />
                   +15%
                 </div>
                 <div className={s.lucisToken}>
-                  <img src="/assets/P2E/lucis-token.png" alt="" />
+                  <img src="/assets/P2E/lucis-token.svg" alt="" />
                   +15%
                 </div>
               </div>
