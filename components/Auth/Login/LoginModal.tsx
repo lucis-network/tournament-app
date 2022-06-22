@@ -46,6 +46,7 @@ export default observer(function LoginModal(props: Props) {
 
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
+  const setIsAlertModalVisible = (v: boolean) => (LoginBoxStore.alertModalVisible = v);
 
   const onSuccess = async (res: any, type: string) => {
     const authService = new AuthService();
@@ -89,25 +90,73 @@ export default observer(function LoginModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  
-  const isFacebookApp = function (ua: any) {
+  const detectInAppBrowser = (ua: any) => {
+    ua = ua.toLowerCase().trim();
+    const isIOS = ua.includes('iphone') || ua.includes('ipod') || ua.includes('ipad');
+    const isAndroid = ua.includes('android');
+
+    // iOS Chrome
+    if (ua.includes('crios')) {
+      return 'is_chrome_ios';
+    }
+
+    // Facebook
+    if (ua.includes('FBAN') || ua.includes('FBAV')) {
+      return isIOS
+        ? 'is_facebook_ios'
+        : isAndroid
+          ? 'is_facebook_android'
+          : 'is_facebook_unknown';
+    }
+
+    // Instagram
+    if (ua.includes('Instagram')) {
+      return isIOS
+        ? 'is_instagram_ios'
+        : isAndroid
+          ? 'is_instagram_android'
+          : 'is_instagram_unknown';
+    }
+
+    // LINE
+    if (ua.includes(' line/')) {
+      return isIOS
+        ? 'is_line_ios'
+        : isAndroid
+          ? 'is_line_android'
+          : 'is_line_unknown';
+    }
+
+    // iOS Safari|Twitter|Slack|Discord|etc
+    if (isIOS && /safari\/[0-9.]+$/.test(ua)) {
+      return 'maybe_safari_ios';
+    }
+
+    // Android Chrome|Twitter|Slack|Discord|etc
+    if (isAndroid && ua.includes('chrome') && /safari\/[0-9.]+$/.test(ua)) {
+      return 'maybe_chrome_android';
+    }
+
+    return null;
+  }
+
+  const isFacebookApp = (ua: any) => {
     return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+  }
+
+  const isInstaApp = (ua: any) => {
+    return (ua.indexOf('Instagram') > -1);
   }
 
   const onLoginClicked = (cb: (() => void) | undefined) => {
     return () => {
       // @ts-ignore
-      var ua = navigator.userAgent || navigator.vendor || window.opera;
-      if (isFacebookApp(ua)) {
-        console.log('window.location.href: ', window.location.href)
-        if (!window.location.href.match('redirect_fb')) {
-          // force open in browser ... 
-          // location.href = location.href;
-        }
-        message.warn("Please open web in browser to use full function")
+      let ua = navigator.userAgent || navigator.vendor || window.opera;
+      if (['is_facebook_ios', 'is_facebook_android', 'is_facebook_unknown', 'is_instagram_ios', 'is_instagram_android', 'is_instagram_unknown', 'is_line_ios', 'is_line_android', 'is_line_unknown'].includes(detectInAppBrowser(ua) as string)) {
+        setIsAlertModalVisible(true)
+        // message.warn("Please open web in browser to use full function")
         return;
       }
-      console.log('not isFacebookApp')
       cb && cb();
     }
   }
@@ -167,6 +216,7 @@ export default observer(function LoginModal(props: Props) {
         />
         <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge you&apos;ve read our Privacy Policy</p>
       </Modal>
+
     </>
   );
 });

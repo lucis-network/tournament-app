@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { MenuMobile } from "../common/Menu/MenuMobile";
 import { useEffect } from "react";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import AlertInAppModal from "../../Auth/Login/AlertInAppModal";
 
 type Props = {
   handleMenuOpen: Function;
@@ -95,6 +96,7 @@ export default observer(function Header(props: Props) {
         )}
       </div>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal />}
+      {LoginBoxStore.alertModalVisible && <AlertInAppModal />}
     </>
   );
 });
