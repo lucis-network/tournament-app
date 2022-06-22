@@ -4,6 +4,7 @@ import { isClientDevMode } from "utils/Env";
 class LoginBoxStore {
   private _verified: boolean = false
   private _connectModalVisible: boolean = false
+  private _alertModalVisible: boolean = false
   private _signupInfoModalVisible: boolean = false
 
   constructor() {
@@ -25,6 +26,14 @@ class LoginBoxStore {
 
   set connectModalVisible(value: boolean) {
     this._connectModalVisible = value;
+  }
+
+  get alertModalVisible(): boolean {
+    return this._alertModalVisible;
+  }
+
+  set alertModalVisible(value: boolean) {
+    this._alertModalVisible = value;
   }
 
   get signupInfoModalVisible() {
