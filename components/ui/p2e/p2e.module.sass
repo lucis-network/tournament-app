@@ -103,6 +103,14 @@
           font-size: 16px
           line-height: 24px
           color: #DF9B16
+    .missionState
+      align-items: center
+      .missionAction
+        width: 120px
+        justify-content: center
+        display: flex
+        img
+          text-align: center
       .missionProgress
         margin-right: 50px
         :global(.ant-progress-text)
@@ -115,16 +123,12 @@
           color: #fff
         :global(.ant-progress-circle-trail)
           stroke: #6B6C6C
-    .missionAction
-      width: 120px
-      justify-content: center
-      display: flex
-      img
-        text-align: center
   .header
     display: flex
     margin-bottom: 16px
     position: relative
+    width: 100%
+    justify-content: space-between
     .checkListMission
       display: flex
       .checkListMissionItem
@@ -136,34 +140,40 @@
           width: 40px
           height: 40px
           margin-bottom: 8px
-    .headerCenter
-      background-image: url("/assets/P2E/bg-header-right.png")
-      height: 62px
-      width: 500px
-      position: relative
-      display: flex
-      align-items: center
-      justify-content: center
-      img
-        position: absolute
-        right: -30px
-        bottom: -10px
-    .updateButton
-      display: flex
-      justify-content: flex-end
-      align-items: center
-      cursor: pointer
-      text-align: right
-      position: absolute
-      right: 0
-      line-height: 62px
+    .headerRight
+      .rewardBox
+        background: linear-gradient(90.88deg, rgba(156, 248, 241, 0) 5.37%, rgba(0, 240, 255, 0.26) 99.25%)
+        backdrop-filter: blur(12px)
+        height: 62px
+        // width: 500px
+        margin-right: 60px
+        position: relative
+        display: flex
+        align-items: center
+        justify-content: center
+        color: #12B0B4
+        font-size: 14px
+        line-height: 20px
+        // @media only screen and (max-width: 1200px)
+        //   width: 300px
+        img
+          position: absolute
+          right: -65px
+          bottom: -10px
+      .updateButton
+        display: flex
+        justify-content: flex-end
+        align-items: center
+        cursor: pointer
+        text-align: right
+        line-height: 62px
 
-      img
-        margin-left: 40px
-        margin-right: 5px
-        height: 18px
-      .spinner
-        animation: spin 2s linear 0s infinite
+        img
+          margin-left: 40px
+          margin-right: 5px
+          height: 18px
+        .spinner
+          animation: spin 2s linear 0s infinite
 
   .subHeader
     p

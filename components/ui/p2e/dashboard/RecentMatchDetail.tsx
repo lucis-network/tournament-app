@@ -192,7 +192,7 @@ export const RecentMatchDetail = () => {
                       background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
                     }}
                   >
-                    <h3 className={s.mapName}>{MAP_CSGO[data?.map?.name as string]}</h3>
+                    <h3 className={s.mapName}>{MAP_CSGO[data?.map?.name as string] ?? data?.map?.name}</h3>
                     {data?.is_win ?
                       <h2 className={s.scoreMatch}>{data?.score?.replace("/", "-")}</h2>
                       : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.score?.replace("/", "-")}</h2>}

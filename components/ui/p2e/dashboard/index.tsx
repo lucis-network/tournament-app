@@ -103,8 +103,40 @@ const Dashboard = () => {
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
+        <Row>
+          <Col xl={0} xs={24}>
+            <div className={s.walletTitle}>
+              <h2>
+                Lucis Wallet
+              </h2>
+            </div>
+            <div className={s.wallet}>
+              <Row gutter={32}>
+                <Col span={12}>
+                  <div className={s.lucisPointWallet}>
+                    LUCIS Point
+                    <img src="/assets/P2E/lucis-point.svg" alt="" width="24" height="24" />
+                    {statisticQuery?.data?.getBalance?.lucis_point}
+                  </div>
+                </Col>
+                <Col span={12}>
+                  <div >
+                    <div className={s.BUSDWallet}>
+                      Lucis Token
+                      <img src="/assets/P2E/lucis-token.svg" alt="" width="24" height="24" />
+                      --
+                    </div>
+                    <div className={s.busdClaim}>
+                      <ButtonWrapper type="primary" disabled>Claim</ButtonWrapper>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+            </div>
+          </Col>
+        </Row>
         <Row gutter={40}>
-          <Col span={16}>
+          <Col xl={16} md={24}>
             <div className={s.dailyTitle}>
               <h2>
                 Daily Mission
@@ -141,10 +173,10 @@ const Dashboard = () => {
               <img src="/assets/P2E/arrow-right.png" alt="" />
             </div>
           </Col>
-          <Col span={8}>
+          <Col xl={8} md={24}>
             <div className={s.sidebarRight}>
               <Row>
-                <Col span={24}>
+                <Col xs={0} xl={24}>
                   <div className={s.walletTitle}>
                     <h2>
                       Lucis Wallet

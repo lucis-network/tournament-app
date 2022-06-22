@@ -104,33 +104,32 @@ const MissionItem = (props: MissionItemProp) => {
               </div>
             </div>
           </div>
-          <div className={!hasDone ? s.missionProgress : s.missionProgressFinish}>
-            <Progress
-              type="circle"
-              strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
-              width={60}
-              percent={currentPercent} format={() => `${achieved}/${mission?.mission?.goal}`} />
-          </div>
         </div>
       </div>
+      <Row className={s.missionState}>
+        <Col className={!hasDone ? s.missionProgress : s.missionProgressFinish}>
+          <Progress
+            type="circle"
+            strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
+            width={60}
+            percent={currentPercent} format={() => `${achieved}/${mission?.mission?.goal}`} />
+        </Col>
+        <Col className={s.missionAction}>
+          {finish ?
+            <img src="/assets/P2E/csgo/finish.png" alt="" />
+            :
+            <ButtonWrapper
+              disabled={!hasDone}
+              onClick={() => handleClaimMission(mission)}
+              loading={loading}
+              type="primary"
+            >
+              Claim
+            </ButtonWrapper>
+          }
+        </Col>
+      </Row>
 
-      {/* <div className={s.missionAction}>
-                  <Button disabled={!hasClaim} onClick={() => handleClaimMission(mission)}>Claim</Button>
-                </div> */}
-      <div className={s.missionAction}>
-        {finish ?
-          <img src="/assets/P2E/csgo/finish.png" alt="" />
-          :
-          <ButtonWrapper
-            disabled={!hasDone}
-            onClick={() => handleClaimMission(mission)}
-            loading={loading}
-            type="primary"
-          >
-            Claim
-          </ButtonWrapper>
-        }
-      </div>
     </div>
   );
 };
