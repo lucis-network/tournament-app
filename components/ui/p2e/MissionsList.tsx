@@ -13,7 +13,7 @@ type MissionsListProp = {
   missions?: PlayerMission[];
   loading?: boolean;
   loadingUpdate?: boolean;
-  handleUpdateMissions?: () => void;
+  handleUpdateMissions: (popup: boolean) => void;
 };
 
 const MissionsList = ({
@@ -64,7 +64,7 @@ const MissionsList = ({
           Complete 4 quests to unlock rewards!
           <img src="/assets/P2E/box.png" alt="" />
         </div>
-        <div className={s.updateButton} onClick={handleUpdateMissions}>
+        <div className={s.updateButton} onClick={() => handleUpdateMissions(true)}>
           <img src="/assets/P2E/reload-icon.png"
             alt=""
             className={loadingUpdate ? `${s.spinner}` : ""} />
@@ -81,7 +81,7 @@ const MissionsList = ({
           <SpinLoading />
         ) : (
           missions?.map((mission: PlayerMission, index: number) => {
-            return <MissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={handleUpdateMissions} />;
+            return <MissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={() => handleUpdateMissions(false)} />;
           })
         )}
       </div>
