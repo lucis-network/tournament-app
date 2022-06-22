@@ -150,11 +150,13 @@ const Dashboard = () => {
               handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
               loading={stateDailyMissionFetch.loading}
               loadingUpdate={loading} />
-            <div className={s.recentMatchTitle}>
-              <h2>
-                Recent matches
-              </h2>
-              <div className={s.recentMatchRewardGeneral}>
+            <Row className={s.recentMatchTitle}>
+              <Col xs={24} sm={12}>
+                <h2>
+                  Recent matches
+                </h2>
+              </Col>
+              <Col xs={24} sm={12} className={s.recentMatchRewardGeneral}>
                 <div style={{ marginRight: 16 }}>
                   Today:
                 </div>
@@ -166,8 +168,8 @@ const Dashboard = () => {
                   <span>-- / 300</span>
                   <img src="/assets/P2E/lucis-token.svg" alt="" />
                 </div>
-              </div>
-            </div>
+              </Col>
+            </Row>
             <RecentMatchList recentMatches={recentlyMatches} loading={getRecentMatchesLoading} />
             <div className={s.viewAllHistory}>
               <img src="/assets/P2E/arrow-left.png" alt="" />

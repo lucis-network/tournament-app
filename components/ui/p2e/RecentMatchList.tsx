@@ -19,12 +19,12 @@ export const RecentMatchList = (props: IProps) => {
     <div className={s.recentMatchList}>
       <div className={s.recentMatchHeaderList}>
         <Row>
-          <Col span={4}>
+          <Col md={4} xs={0}>
             <div className={s.recentMatchHeaderItem}>
               <h2>Map</h2>
             </div>
           </Col>
-          <Col span={10}>
+          <Col md={10} xs={0}>
             <Row>
               <Col span={8}>
 
@@ -74,7 +74,7 @@ export const RecentMatchList = (props: IProps) => {
               }}
             >
               <Row>
-                <Col span={4}>
+                <Col md={4} xs={6}>
                   <div className={s.recentMatchResult}>
                     {item?.is_win ?
                       <span style={{ color: "#00F9FF" }}>WIN</span>
@@ -83,7 +83,7 @@ export const RecentMatchList = (props: IProps) => {
                     <div className={s.endTime}>{new Date(item?.match?.end_at).toLocaleTimeString([], { timeStyle: 'short' })}</div>
                   </div>
                 </Col>
-                <Col span={10}>
+                <Col md={10} xs={18}>
                   <Row>
                     <Col span={8}>
                       <div className={s.scoreMatch}>
@@ -117,14 +117,13 @@ export const RecentMatchList = (props: IProps) => {
                       </div>
                     </Col>
                   </Row>
-
                 </Col>
-                <Col span={4}>
+                <Col md={4} xs={0}>
                   <div className={s.recentMatchTime}>
                     {moment(item?.match?.end_at).fromNow()}
                   </div>
                 </Col>
-                <Col span={6}>
+                <Col md={6} xs={0}>
                   <div className={s.recentMatchReward}>
                     <div className={s.rewardItem}>
                       <span className={s.lucisPoint}>+ {item?.lucis_point ?? "0"}</span>
@@ -134,6 +133,23 @@ export const RecentMatchList = (props: IProps) => {
                       <span>{"-"}</span>
                       <img src="/assets/P2E/lucis-token.svg" alt="" />
                     </div>
+                  </div>
+                </Col>
+                <Col md={0} xs={12}>
+                  <div className={s.recentMatchRewardResponsive}>
+                    <div className={s.rewardItem} style={{ marginRight: 8 }}>
+                      <span className={s.lucisPoint}>+ {item?.lucis_point ?? "0"}</span>
+                      <img src="/assets/P2E/lucis-point.svg" alt="" />
+                    </div>
+                    <div className={s.rewardItem}>
+                      <span>{"-"}</span>
+                      <img src="/assets/P2E/lucis-token.svg" alt="" />
+                    </div>
+                  </div>
+                </Col>
+                <Col md={0} xs={12}>
+                  <div className={s.recentMatchTimeResponsive}>
+                    {moment(item?.match?.end_at).fromNow()}
                   </div>
                 </Col>
               </Row>
