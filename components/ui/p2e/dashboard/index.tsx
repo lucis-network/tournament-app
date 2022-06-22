@@ -70,7 +70,6 @@ const Dashboard = () => {
     setRecentlyMatches([...promise[1].data.updateRecentlyMatch, ...recentlyMatches]);
     setLoading(false);
     if (popup) {
-
       message.success("update successfully!");
     }
   }
@@ -116,7 +115,7 @@ const Dashboard = () => {
             <MissionsList
               title="Daily missions"
               missions={dailyMission}
-              handleUpdateMissions={handleUpdateMissions}
+              handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
               loading={stateDailyMissionFetch.loading}
               loadingUpdate={loading} />
             <div className={s.recentMatchTitle}>
