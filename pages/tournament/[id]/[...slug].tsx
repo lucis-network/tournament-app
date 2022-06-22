@@ -567,6 +567,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               refetch={refetch}
               refreshParticipant={refreshParticipant}
               tournament_status={tournament_status as string}
+              refereeIds={referees ? referees.split(",") : []}
             />
             {/* ===== sponsor ===== */}
             {/* <TournamentDetailSponsor

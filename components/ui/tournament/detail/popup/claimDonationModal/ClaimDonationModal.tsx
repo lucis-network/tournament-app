@@ -16,6 +16,7 @@ type Props = {
   totalFromDonation?: number;
   currency?: any;
   name?: string;
+  isCheckUserReferee?: boolean;
 };
 
 export type ClaimDonation = {
@@ -26,7 +27,13 @@ export type ClaimDonation = {
 export default observer(function ClaimDonationModal(props: Props) {
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [symbol, setSymbol] = useState("");
-  const { tournamentId, dataDonation, totalFromDonation, name } = props;
+  const {
+    tournamentId,
+    dataDonation,
+    totalFromDonation,
+    name,
+    isCheckUserReferee,
+  } = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
@@ -81,6 +88,15 @@ export default observer(function ClaimDonationModal(props: Props) {
       };
 
       let tournamentService = new TournamentService();
+      if (isCheckUserReferee) {
+        const response = tournamentService.claimRefereeFee(claim).then(
+          (res) => {
+            console.log(res);
+          },
+          (error) => {}
+        );
+      }
+
       const response = tournamentService.claimDonation(claim).then(
         (res) => {
           setLoadingBtn(false);
@@ -110,6 +126,8 @@ export default observer(function ClaimDonationModal(props: Props) {
               <>For our tournament</>
             )}
             {item.reward_type == "DONATEFORPLAYER" && <>For you</>}
+            {item.reward_type == "REFEREE_FEE" && <>From referee fee</>}
+            {item.reward_type == "DONATE_FOR_REFEREE" && <>From donation</>}
             {item.reward_type == "DONATEFORTEAM" && <>For your team</>}
             {item.reward_type == "Total" && <>Total</>}
             {item.reward_type == "LUCISFEE" && <>Lucis Fee (5%)</>}
@@ -136,7 +154,13 @@ export default observer(function ClaimDonationModal(props: Props) {
   return (
     <div style={{ width: "400px" }}>
       <Modal
-        title={<span className="font-[600]">Your reward from donation</span>}
+        title={
+          <span className="font-[600]">
+            {isCheckUserReferee
+              ? "Reward for referee"
+              : "Your reward from donation"}
+          </span>
+        }
         visible={isModalVisible}
         onOk={handleOk}
         className={`${s.container}`}

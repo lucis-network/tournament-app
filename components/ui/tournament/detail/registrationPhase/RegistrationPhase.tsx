@@ -39,6 +39,7 @@ type Props = {
   refreshParticipant: () => Promise<ApolloQueryResult<any>>;
   tournament_status: string;
   isCheckin: boolean;
+  refereeIds: string[];
 };
 
 type Reward = {
@@ -74,14 +75,8 @@ export default observer(function RegistrationPhase(props: Props) {
     cache_tournament,
   } = props.tournament;
 
-  const {
-    isJoin,
-    isCheckin,
-    tournamentId,
-    dataBracket,
-    refetch,
-    refreshParticipant,
-  } = props;
+  const { isJoin, isCheckin, tournamentId, refetch, refereeIds } = props;
+
   const user = getLocalAuthInfo();
 
   const [searchTeam, { refetch: refetchGetMyTeam }] = useLazyQuery(
@@ -152,6 +147,8 @@ export default observer(function RegistrationPhase(props: Props) {
   const [checkClaimPoolSize, setCheckClaimPoolSize] = useState(false);
   const [checkClaim, setCheckClaim] = useState(false);
   const [claimStatus, setClaimStatus] = useState(false);
+  const [isCheckUserReferee, setIsCheckUserReferee] = useState(false);
+
   useEffect(() => {
     let arr: Array<Reward> = [];
     data?.forEach((item: any) => {
@@ -162,6 +159,14 @@ export default observer(function RegistrationPhase(props: Props) {
     setDataDonation(arr);
     calculatorDonation(arr);
   }, [data]);
+
+  useEffect(() => {
+    if (user?.id) {
+      if (refereeIds.includes(user.id.toString())) {
+        setIsCheckUserReferee(true);
+      }
+    }
+  }, [refereeIds]);
 
   const calculatorDonation = (arr: any) => {
     let total = 0;
@@ -552,7 +557,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                   totalFromDonation > 0 ? (
                                     <div className={s.rewardsPrize}>
                                       <p className={s.rewardsPrizeTitle}>
-                                        From Donation
+                                        { isCheckUserReferee ? "Reward for referee" : "From Donation"}
                                       </p>
                                       <div className={s.rewardsClaimPrize}>
                                         <h3>
@@ -647,6 +652,7 @@ export default observer(function RegistrationPhase(props: Props) {
         totalFromDonation={totalFromDonation}
         currency={currency}
         name={name as string}
+        isCheckUserReferee={isCheckUserReferee}
       />
       <ChooseTeamModal
         step={step}

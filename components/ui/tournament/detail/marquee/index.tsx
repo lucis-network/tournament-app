@@ -1,5 +1,4 @@
 import s from "./Marquee.module.sass";
-import Marquee from "react-fast-marquee";
 import { useEffect, useState } from "react";
 import { useGetSpotlightAnnouncement } from "hooks/tournament/useTournamentDetail";
 import moment from "moment";
@@ -30,14 +29,21 @@ const TournamentDetailMarquee = (props: Props) => {
     if (data) {
       const length = data.length;
       interval = setInterval(() => {
-        if (arr >= length) {
-          setArr(0);
+        if (arr == 0) {
           setTitleSpotlight(data[0]?.content);
+          setTimer(data[0]?.time);
         } else {
-          setArr((prve) => prve + 1);
           const title = data[arr]?.content;
-          setTitleSpotlight(title);
-          setTimer(data[arr]?.time);
+          if (title) {
+            setTitleSpotlight(title);
+            setTimer(data[arr]?.time);
+          }
+        }
+        setArr((prve) => prve + 1);
+        if (arr == length) {
+          setTitleSpotlight(data[0]?.content);
+          setTimer(data[0]?.time);
+          setArr(1);
         }
         setShow(true);
       }, 5000);
@@ -58,12 +64,22 @@ const TournamentDetailMarquee = (props: Props) => {
         <div className={s.marquee}>
           <img src="/assets/Banner/ic_loudspeaker.png" alt="" />
           <div className={s.time}>
-            <div></div>
             <div className={s.line}></div>
-            {moment(timer).format("MMMM Do h:mm:ss")}
+            {moment(timer).format("MMMM Do h:mm:ss")}{" "}
           </div>
-          {/* <div className={s.marquee_title}>{titleSpotlight}</div> */}
-          {show && <TextyAnim delay={1000}>{titleSpotlight}</TextyAnim>}
+          {/* <FadeIn>
+            <div className={`${s.marquee_title}`}>{titleSpotlight}</div>
+          </FadeIn> */}
+          {/* <FadeIn visible={show}>
+            <div className={`${s.marquee_title}`}>{titleSpotlight}</div>
+          </FadeIn> */}
+          <div className={s.text}>
+            {show && (
+              <TextyAnim delay={0} interval={12}>
+                {titleSpotlight}
+              </TextyAnim>
+            )}
+          </div>
         </div>
       ) : (
         ""
