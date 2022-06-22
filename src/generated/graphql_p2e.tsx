@@ -195,26 +195,6 @@ export enum ChainSymbol {
   Solana = 'SOLANA'
 }
 
-export type ClaimMatchInput = {
-  game_uid: Scalars['String'];
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Float'];
-  match_uid?: InputMaybe<Scalars['String']>;
-};
-
-export type ClaimMatchTransaction = {
-  __typename?: 'ClaimMatchTransaction';
-  created_at: Scalars['DateTime'];
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  match: Match;
-  match_uid: Scalars['String'];
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
 export type ClaimMissionTransaction = {
   __typename?: 'ClaimMissionTransaction';
   created_at: Scalars['DateTime'];
@@ -503,7 +483,6 @@ export type GamePlatform = {
 export type Match = {
   __typename?: 'Match';
   _count: MatchCount;
-  claims?: Maybe<Array<ClaimMatchTransaction>>;
   created_at: Scalars['DateTime'];
   end_at: Scalars['DateTime'];
   game: Game;
@@ -520,7 +499,6 @@ export type Match = {
 
 export type MatchCount = {
   __typename?: 'MatchCount';
-  claims: Scalars['Int'];
   players: Scalars['Int'];
 };
 
@@ -546,6 +524,7 @@ export type MatchEarning = {
 export type MatchStatistics = {
   __typename?: 'MatchStatistics';
   current_win_streak?: Maybe<Scalars['Int']>;
+  end_at?: Maybe<Scalars['DateTime']>;
   highest_kda?: Maybe<Scalars['Boolean']>;
   is_win?: Maybe<Scalars['Boolean']>;
   least_died?: Maybe<Scalars['Boolean']>;
@@ -641,6 +620,7 @@ export type Mutation = {
   addStakedNft?: Maybe<Scalars['Boolean']>;
   buyRaffleTicket?: Maybe<Scalars['Boolean']>;
   claimAllMission?: Maybe<Scalars['Boolean']>;
+  claimBox?: Maybe<Scalars['Boolean']>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimRaffle?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
@@ -668,6 +648,12 @@ export type MutationBuyRaffleTicketArgs = {
 
 
 export type MutationClaimAllMissionArgs = {
+  game_uid: Scalars['String'];
+  platform_id: Scalars['Int'];
+};
+
+
+export type MutationClaimBoxArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
 };
@@ -914,7 +900,7 @@ export type PlayerMission = {
   achieved?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   daily_history?: Maybe<Array<DailyMissionHistory>>;
-  daily_mission?: Maybe<UserDailyMission>;
+  daily_mission?: Maybe<Array<UserDailyMission>>;
   is_claim: Scalars['Boolean'];
   mission: Mission;
   mission_uid: Scalars['String'];
@@ -927,6 +913,7 @@ export type PlayerMission = {
 export type PlayerMissionCount = {
   __typename?: 'PlayerMissionCount';
   daily_history: Scalars['Int'];
+  daily_mission: Scalars['Int'];
 };
 
 export type PlayerNft = {
@@ -956,14 +943,14 @@ export type PoolWallet = {
 
 export type ProgressDailyMission = {
   __typename?: 'ProgressDailyMission';
-  archieved?: Maybe<Scalars['Int']>;
+  achieved?: Maybe<Scalars['Int']>;
   goal?: Maybe<Scalars['Int']>;
+  is_open?: Maybe<Scalars['Boolean']>;
 };
 
 export type Query = {
   __typename?: 'Query';
   GetAllPlayerNFT?: Maybe<Array<PlayerNft>>;
-  claimMatch?: Maybe<Scalars['Boolean']>;
   getBalance?: Maybe<GBalance>;
   getBiggestRaffles?: Maybe<Array<Raffle>>;
   getExistedRaffleTicketAmount?: Maybe<Scalars['Float']>;
@@ -983,11 +970,6 @@ export type Query = {
 
 export type QueryGetAllPlayerNftArgs = {
   game_uid: Scalars['String'];
-};
-
-
-export type QueryClaimMatchArgs = {
-  data: ClaimMatchInput;
 };
 
 
@@ -1412,7 +1394,6 @@ export type User = {
   __typename?: 'User';
   _count: UserCount;
   balance?: Maybe<Balance>;
-  claim_match?: Maybe<Array<ClaimMatchTransaction>>;
   claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   claim_raffle?: Maybe<Array<ClaimRaffleTransaction>>;
   claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
@@ -1452,7 +1433,6 @@ export type User = {
 
 export type UserCount = {
   __typename?: 'UserCount';
-  claim_match: Scalars['Int'];
   claim_mission: Scalars['Int'];
   claim_raffle: Scalars['Int'];
   claim_staked: Scalars['Int'];

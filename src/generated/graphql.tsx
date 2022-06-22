@@ -542,93 +542,6 @@ export type ChainWhereUniqueInput = {
   symbol?: InputMaybe<ChainSymbol>;
 };
 
-export type ClaimMatchTransaction = {
-  __typename?: 'ClaimMatchTransaction';
-  created_at: Scalars['DateTime'];
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  match: Match;
-  match_uid: Scalars['String'];
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type ClaimMatchTransactionCreateManyMatchInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_id: Scalars['Int'];
-};
-
-export type ClaimMatchTransactionCreateManyMatchInputEnvelope = {
-  data: Array<ClaimMatchTransactionCreateManyMatchInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type ClaimMatchTransactionCreateManyUserInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  match_uid: Scalars['String'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ClaimMatchTransactionCreateManyUserInputEnvelope = {
-  data: Array<ClaimMatchTransactionCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type ClaimMatchTransactionCreateNestedManyWithoutMatchInput = {
-  connect?: InputMaybe<Array<ClaimMatchTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimMatchTransactionCreateOrConnectWithoutMatchInput>>;
-  create?: InputMaybe<Array<ClaimMatchTransactionCreateWithoutMatchInput>>;
-  createMany?: InputMaybe<ClaimMatchTransactionCreateManyMatchInputEnvelope>;
-};
-
-export type ClaimMatchTransactionCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<ClaimMatchTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimMatchTransactionCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<ClaimMatchTransactionCreateWithoutUserInput>>;
-  createMany?: InputMaybe<ClaimMatchTransactionCreateManyUserInputEnvelope>;
-};
-
-export type ClaimMatchTransactionCreateOrConnectWithoutMatchInput = {
-  create: ClaimMatchTransactionCreateWithoutMatchInput;
-  where: ClaimMatchTransactionWhereUniqueInput;
-};
-
-export type ClaimMatchTransactionCreateOrConnectWithoutUserInput = {
-  create: ClaimMatchTransactionCreateWithoutUserInput;
-  where: ClaimMatchTransactionWhereUniqueInput;
-};
-
-export type ClaimMatchTransactionCreateWithoutMatchInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutClaim_MatchInput;
-};
-
-export type ClaimMatchTransactionCreateWithoutUserInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  match: MatchCreateNestedOneWithoutClaimsInput;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ClaimMatchTransactionWhereUniqueInput = {
-  uid?: InputMaybe<Scalars['String']>;
-};
-
 export type ClaimMissionTransaction = {
   __typename?: 'ClaimMissionTransaction';
   created_at: Scalars['DateTime'];
@@ -1904,7 +1817,6 @@ export type GetRefereeInput = {
 export type Match = {
   __typename?: 'Match';
   _count: MatchCount;
-  claims?: Maybe<Array<ClaimMatchTransaction>>;
   created_at: Scalars['DateTime'];
   end_at: Scalars['DateTime'];
   game: Game;
@@ -1921,7 +1833,6 @@ export type Match = {
 
 export type MatchCount = {
   __typename?: 'MatchCount';
-  claims: Scalars['Int'];
   players: Scalars['Int'];
 };
 
@@ -1949,21 +1860,10 @@ export type MatchCreateNestedManyWithoutGameInput = {
   createMany?: InputMaybe<MatchCreateManyGameInputEnvelope>;
 };
 
-export type MatchCreateNestedOneWithoutClaimsInput = {
-  connect?: InputMaybe<MatchWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<MatchCreateOrConnectWithoutClaimsInput>;
-  create?: InputMaybe<MatchCreateWithoutClaimsInput>;
-};
-
 export type MatchCreateNestedOneWithoutPlayersInput = {
   connect?: InputMaybe<MatchWhereUniqueInput>;
   connectOrCreate?: InputMaybe<MatchCreateOrConnectWithoutPlayersInput>;
   create?: InputMaybe<MatchCreateWithoutPlayersInput>;
-};
-
-export type MatchCreateOrConnectWithoutClaimsInput = {
-  create: MatchCreateWithoutClaimsInput;
-  where: MatchWhereUniqueInput;
 };
 
 export type MatchCreateOrConnectWithoutGameInput = {
@@ -1976,22 +1876,7 @@ export type MatchCreateOrConnectWithoutPlayersInput = {
   where: MatchWhereUniqueInput;
 };
 
-export type MatchCreateWithoutClaimsInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  end_at: Scalars['DateTime'];
-  game: GameCreateNestedOneWithoutMatchInput;
-  loser_team?: InputMaybe<Scalars['String']>;
-  map?: InputMaybe<Scalars['String']>;
-  match_statistic?: InputMaybe<Scalars['JSON']>;
-  players?: InputMaybe<PlayerMatchCreateNestedManyWithoutMatchInput>;
-  score?: InputMaybe<Scalars['String']>;
-  uid: Scalars['String'];
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  winner_team?: InputMaybe<Scalars['String']>;
-};
-
 export type MatchCreateWithoutGameInput = {
-  claims?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutMatchInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   end_at: Scalars['DateTime'];
   loser_team?: InputMaybe<Scalars['String']>;
@@ -2005,7 +1890,6 @@ export type MatchCreateWithoutGameInput = {
 };
 
 export type MatchCreateWithoutPlayersInput = {
-  claims?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutMatchInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   end_at: Scalars['DateTime'];
   game: GameCreateNestedOneWithoutMatchInput;
@@ -3253,7 +3137,7 @@ export type PlayerMission = {
   achieved?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   daily_history?: Maybe<Array<DailyMissionHistory>>;
-  daily_mission?: Maybe<UserDailyMission>;
+  daily_mission?: Maybe<Array<UserDailyMission>>;
   is_claim: Scalars['Boolean'];
   mission: Mission;
   mission_uid: Scalars['String'];
@@ -3266,6 +3150,7 @@ export type PlayerMission = {
 export type PlayerMissionCount = {
   __typename?: 'PlayerMissionCount';
   daily_history: Scalars['Int'];
+  daily_mission: Scalars['Int'];
 };
 
 export type PlayerMissionCreateManyMissionInput = {
@@ -3345,7 +3230,7 @@ export type PlayerMissionCreateOrConnectWithoutPlayer_GameInput = {
 export type PlayerMissionCreateWithoutDaily_HistoryInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  daily_mission?: InputMaybe<UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput>;
+  daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
@@ -3368,7 +3253,7 @@ export type PlayerMissionCreateWithoutMissionInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
-  daily_mission?: InputMaybe<UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput>;
+  daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
@@ -3379,7 +3264,7 @@ export type PlayerMissionCreateWithoutPlayer_GameInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
-  daily_mission?: InputMaybe<UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput>;
+  daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
@@ -6116,7 +6001,6 @@ export type User = {
   __typename?: 'User';
   _count: UserCount;
   balance?: Maybe<Balance>;
-  claim_match?: Maybe<Array<ClaimMatchTransaction>>;
   claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   claim_raffle?: Maybe<Array<ClaimRaffleTransaction>>;
   claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
@@ -6156,7 +6040,6 @@ export type User = {
 
 export type UserCount = {
   __typename?: 'UserCount';
-  claim_match: Scalars['Int'];
   claim_mission: Scalars['Int'];
   claim_raffle: Scalars['Int'];
   claim_staked: Scalars['Int'];
@@ -6178,12 +6061,6 @@ export type UserCount = {
   user_ticket: Scalars['Int'];
   withdraws: Scalars['Int'];
   won_raffles: Scalars['Int'];
-};
-
-export type UserCreateNestedOneWithoutClaim_MatchInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutClaim_MatchInput>;
-  create?: InputMaybe<UserCreateWithoutClaim_MatchInput>;
 };
 
 export type UserCreateNestedOneWithoutClaim_MissionInput = {
@@ -6312,11 +6189,6 @@ export type UserCreateNestedOneWithoutWon_RafflesInput = {
   create?: InputMaybe<UserCreateWithoutWon_RafflesInput>;
 };
 
-export type UserCreateOrConnectWithoutClaim_MatchInput = {
-  create: UserCreateWithoutClaim_MatchInput;
-  where: UserWhereUniqueInput;
-};
-
 export type UserCreateOrConnectWithoutClaim_MissionInput = {
   create: UserCreateWithoutClaim_MissionInput;
   where: UserWhereUniqueInput;
@@ -6422,47 +6294,8 @@ export type UserCreateOrConnectWithoutWon_RafflesInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateWithoutClaim_MatchInput = {
-  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
-  claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
-  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
-  code?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
-  email?: InputMaybe<Scalars['String']>;
-  facebook_id?: InputMaybe<Scalars['String']>;
-  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
-  google_id?: InputMaybe<Scalars['String']>;
-  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
-  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
-  password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
-  platform_uid?: InputMaybe<Scalars['String']>;
-  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
-  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
-  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
-  ref_code?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<UserRole>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
-  status?: InputMaybe<UserStatus>;
-  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
-  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
-  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
-  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
-  won_raffles?: InputMaybe<RaffleCreateNestedManyWithoutRaffle_WinnerInput>;
-};
-
 export type UserCreateWithoutClaim_MissionInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
@@ -6500,7 +6333,6 @@ export type UserCreateWithoutClaim_MissionInput = {
 
 export type UserCreateWithoutClaim_RaffleInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
@@ -6538,7 +6370,6 @@ export type UserCreateWithoutClaim_RaffleInput = {
 
 export type UserCreateWithoutClaim_StakedInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
@@ -6576,7 +6407,6 @@ export type UserCreateWithoutClaim_StakedInput = {
 
 export type UserCreateWithoutClaim_TournamentInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6614,7 +6444,6 @@ export type UserCreateWithoutClaim_TournamentInput = {
 
 export type UserCreateWithoutDailyMissionInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6652,7 +6481,6 @@ export type UserCreateWithoutDailyMissionInput = {
 
 export type UserCreateWithoutDaily_HistoryInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6690,7 +6518,6 @@ export type UserCreateWithoutDaily_HistoryInput = {
 
 export type UserCreateWithoutFavorite_GameInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6728,7 +6555,6 @@ export type UserCreateWithoutFavorite_GameInput = {
 
 export type UserCreateWithoutLeader_BoardInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6766,7 +6592,6 @@ export type UserCreateWithoutLeader_BoardInput = {
 
 export type UserCreateWithoutNftsInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6804,7 +6629,6 @@ export type UserCreateWithoutNftsInput = {
 
 export type UserCreateWithoutPlatform_AccounntInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6842,7 +6666,6 @@ export type UserCreateWithoutPlatform_AccounntInput = {
 
 export type UserCreateWithoutPlayTeamMembersInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6880,7 +6703,6 @@ export type UserCreateWithoutPlayTeamMembersInput = {
 
 export type UserCreateWithoutPlayer_NftInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6918,7 +6740,6 @@ export type UserCreateWithoutPlayer_NftInput = {
 
 export type UserCreateWithoutReactionInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6956,7 +6777,6 @@ export type UserCreateWithoutReactionInput = {
 
 export type UserCreateWithoutSponsorTransactionsInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -6994,7 +6814,6 @@ export type UserCreateWithoutSponsorTransactionsInput = {
 
 export type UserCreateWithoutStaked_NftInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -7032,7 +6851,6 @@ export type UserCreateWithoutStaked_NftInput = {
 
 export type UserCreateWithoutTeamMembersInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -7070,7 +6888,6 @@ export type UserCreateWithoutTeamMembersInput = {
 
 export type UserCreateWithoutTournamentInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -7108,7 +6925,6 @@ export type UserCreateWithoutTournamentInput = {
 
 export type UserCreateWithoutTournamentSubscriberInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -7146,7 +6962,6 @@ export type UserCreateWithoutTournamentSubscriberInput = {
 
 export type UserCreateWithoutUser_TicketInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -7184,7 +6999,6 @@ export type UserCreateWithoutUser_TicketInput = {
 
 export type UserCreateWithoutWithdrawsInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -7222,7 +7036,6 @@ export type UserCreateWithoutWithdrawsInput = {
 
 export type UserCreateWithoutWon_RafflesInput = {
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_match?: InputMaybe<ClaimMatchTransactionCreateNestedManyWithoutUserInput>;
   claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
@@ -7284,6 +7097,19 @@ export type UserDailyMissionCreateManyMissionInputEnvelope = {
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type UserDailyMissionCreateManyPlayer_MissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  mission_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type UserDailyMissionCreateManyPlayer_MissionInputEnvelope = {
+  data: Array<UserDailyMissionCreateManyPlayer_MissionInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type UserDailyMissionCreateManyUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   mission_uid: Scalars['String'];
@@ -7304,17 +7130,18 @@ export type UserDailyMissionCreateNestedManyWithoutMissionInput = {
   createMany?: InputMaybe<UserDailyMissionCreateManyMissionInputEnvelope>;
 };
 
+export type UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput = {
+  connect?: InputMaybe<Array<UserDailyMissionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserDailyMissionCreateOrConnectWithoutPlayer_MissionInput>>;
+  create?: InputMaybe<Array<UserDailyMissionCreateWithoutPlayer_MissionInput>>;
+  createMany?: InputMaybe<UserDailyMissionCreateManyPlayer_MissionInputEnvelope>;
+};
+
 export type UserDailyMissionCreateNestedManyWithoutUserInput = {
   connect?: InputMaybe<Array<UserDailyMissionWhereUniqueInput>>;
   connectOrCreate?: InputMaybe<Array<UserDailyMissionCreateOrConnectWithoutUserInput>>;
   create?: InputMaybe<Array<UserDailyMissionCreateWithoutUserInput>>;
   createMany?: InputMaybe<UserDailyMissionCreateManyUserInputEnvelope>;
-};
-
-export type UserDailyMissionCreateNestedOneWithoutPlayer_MissionInput = {
-  connect?: InputMaybe<UserDailyMissionWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserDailyMissionCreateOrConnectWithoutPlayer_MissionInput>;
-  create?: InputMaybe<UserDailyMissionCreateWithoutPlayer_MissionInput>;
 };
 
 export type UserDailyMissionCreateOrConnectWithoutMissionInput = {
@@ -7356,9 +7183,14 @@ export type UserDailyMissionCreateWithoutUserInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type UserDailyMissionUser_Player_MissionCompoundUniqueInput = {
+  player_mission_uid: Scalars['String'];
+  user_id: Scalars['Int'];
+};
+
 export type UserDailyMissionWhereUniqueInput = {
-  player_mission_uid?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
+  user_player_mission?: InputMaybe<UserDailyMissionUser_Player_MissionCompoundUniqueInput>;
 };
 
 export type UserFavoriteGame = {
@@ -7445,7 +7277,6 @@ export type UserGraphql = {
   __typename?: 'UserGraphql';
   _count: UserCount;
   balance?: Maybe<Balance>;
-  claim_match?: Maybe<Array<ClaimMatchTransaction>>;
   claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   claim_raffle?: Maybe<Array<ClaimRaffleTransaction>>;
   claim_staked?: Maybe<Array<ClaimStakedTransaction>>;

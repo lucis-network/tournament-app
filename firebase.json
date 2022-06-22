@@ -18,6 +18,10 @@
       {
         "source": "/tournament/1",
         "destination": "/tournament/[id]/[...slug].html"
+      },
+      {
+        "source": "/p2e/dashboard/*",
+        "destination": "/p2e/dashboard/[id].html"
       }
     ]
   },
