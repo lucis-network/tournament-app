@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import ButtonWrapper from "components/common/button/Button";
 import { useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
+import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
 import { MAP_CSGO } from "utils/Enum";
@@ -39,13 +40,13 @@ export const RecentMatchDetail = () => {
       img: "/assets/P2E/csgo/achievement/win-streak.png",
       lucisPoint: "-",
       lucisToken: "-",
-      isCompleted: true
+      isCompleted: false
     },
 
     {
       name: "Win",
       img: "/assets/P2E/csgo/achievement/win.png",
-      lucisPoint: data?.map_earning?.win ?? "-",
+      lucisPoint: Number(data?.map_earning?.win) ?? "-",
       lucisToken: "-",
       isCompleted: data?.is_win ?? false
     },
@@ -75,9 +76,9 @@ export const RecentMatchDetail = () => {
     {
       name: "Assassin",
       img: "/assets/P2E/csgo/achievement/assassin.png",
-      lucisPoint: "-",
+      lucisPoint: Number(data?.map_earning?.most_kill),
       lucisToken: "-",
-      isCompleted: false
+      isCompleted: data?.most_kill ?? false
     },
 
     {
@@ -118,10 +119,19 @@ export const RecentMatchDetail = () => {
       lucisPoint: "-",
       lucisToken: "-",
       isCompleted: false
-    },
+    }
+  ];
 
+  const lucisPointBonus = () => {
+    let point = 0;
+    cardList.forEach((item, index) => {
+      if (item.isCompleted) {
+        point += Number(item.lucisPoint);
+      }
+    });
 
-  ]
+    return point;
+  }
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
@@ -140,7 +150,7 @@ export const RecentMatchDetail = () => {
                     <img src="/assets/P2E/lucis-token.svg" alt="" />
                   </div>
                   <div className={s.rewardItem}>
-                    <span className={s.lucisPoint}>{"-"}</span>
+                    <span className={s.lucisPoint}>{lucisPointBonus()}</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                 </div>
@@ -196,7 +206,7 @@ export const RecentMatchDetail = () => {
                     {data?.is_win ?
                       <h2 className={s.scoreMatch}>{data?.score?.replace("/", "-")}</h2>
                       : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.score?.replace("/", "-")}</h2>}
-                    <div className={s.endAt}></div>
+                    <div className={s.endAt}>{moment(data?.end_at).fromNow()}</div>
                   </div>
                   <div className={s.matchDetail}>
                     <div className={s.accountInfo}>

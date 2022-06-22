@@ -21,7 +21,7 @@ export default observer(function P2EOverview() {
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
   const { getPlatformAccountData, getPlatformAccountLoading } = useGetPlatformAccount()
   const router = useRouter();
-  const [connectFaceit] = useMutation(CONNECT_FACEIT, {
+  const [connectFaceit, fetch] = useMutation(CONNECT_FACEIT, {
     context: {
       endpoint: 'p2e'
     }
@@ -101,7 +101,7 @@ export default observer(function P2EOverview() {
 
   useEffect(() => {
     let isSubscribed = true
-    const handleHashChange = () => {
+    const handleHashChange = async () => {
       setLoadingFaceit(true);
       let hashData = window.location.hash
       if (hashData.startsWith('#token=') && hashData.includes('id_token')) {
@@ -110,23 +110,29 @@ export default observer(function P2EOverview() {
           accessToken: newHashData.get('token'),
           idToken: newHashData.get('id_token')
         }
-        connectFaceit({
-          variables: tokenData
-        }).then(response => {
+        try {
+          const response = await connectFaceit({
+            variables: tokenData
+          })
           if (isSubscribed) {
             history.replaceState(null, '', ' ')
             setFaceitUser(response.data.connectFaceit)
             router.push("/p2e/dashboard");
           }
           setLoadingFaceit(false);
-        }).catch(error => {
+        } catch (e) {
           if (isSubscribed) {
             history.replaceState(null, '', ' ')
-            console.log(error)
-            message.error("This account is already connected to another user! Please use another account.")
+            if (fetch.error?.graphQLErrors[0].extensions.code === "ALREADY_CONNECTED") {
+              message.error("This account is already connected to another user! Please use another account.")
+            } else {
+              message.error("Something was wrong. Please contact to lucis network for assistance.")
+            }
           }
           setLoadingFaceit(false);
-        })
+        }
+
+
       }
     }
 
