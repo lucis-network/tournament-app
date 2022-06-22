@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import s from "./p2e.module.sass";
-import { Button, Col, Image, message, Progress, Row } from "antd";
+import { Col, message, Progress, Row } from "antd";
 import { isEmpty } from "lodash";
 import SpinLoading from "../common/Spin";
 import { PlayerMission } from "../../../src/generated/graphql_p2e";
@@ -78,60 +78,66 @@ const MissionItem = (props: MissionItemProp) => {
   const finish = hasDone && mission?.is_claim;
   return (
     <div className={s.missionItem} style={finish ? { background: "rgba(50, 110, 123, 0.5)" } : {}}>
-      <div className={s.missionLogo}>
-        <img
-          src={
-            mission?.mission?.img
-              ? mission?.mission?.img
-              : "/assets/P2E/csgo/avatar-mission.png"
-          }
+      <Row>
+        <Col xs={18}>
+          <Row className={s.missionInfo}>
+            <Col md={16} xs={24} className={s.missionContent}>
+              <div className={s.missionLogo}>
+                <img
+                  src={
+                    mission?.mission?.img
+                      ? mission?.mission?.img
+                      : "/assets/P2E/csgo/avatar-mission.png"
+                  }
 
-          alt=""
-        />
-      </div>
-      <div className={s.missionInfo}>
-        <div className={s.missionContent}>
-          <div className={s.missionTitle}>
-            <h4>{mission?.mission?.title}</h4>
-            <img src="/assets/P2E/csgo/hourglass.png" alt="hourglass" style={{ marginRight: 5 }} />
-            <span>{moment(nextDay).fromNow()} next mission</span> {/**sub title */}
-          </div>
-          <div className={s.missionReward}>
-            <div className={s.missionReward}>
-              <div className={s.rewardItem}>
-                <span>+ {mission?.mission?.level?.lucis_point ?? "--"}</span>
-                <img src="/assets/P2E/lucis-point.svg" alt="" />
+                  alt=""
+                />
               </div>
-            </div>
-          </div>
-          <div className={!hasDone ? s.missionProgress : s.missionProgressFinish}>
-            <Progress
-              type="circle"
-              strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
-              width={60}
-              percent={currentPercent} format={() => `${achieved}/${mission?.mission?.goal}`} />
-          </div>
-        </div>
-      </div>
+              <div className={s.missionTitle}>
+                <h4>{mission?.mission?.title}</h4>
+                <img src="/assets/P2E/csgo/hourglass.png" alt="hourglass" style={{ marginRight: 5 }} />
+                <span>{moment(nextDay).fromNow()} next mission</span> {/**sub title */}
+              </div>
+            </Col>
+            <Col md={8} xs={24}>
+              <div className={s.missionReward}>
+                <div className={s.rewardItem}>
+                  <span>+ {mission?.mission?.level?.lucis_point ?? "--"}</span>
+                  <img src="/assets/P2E/lucis-point.svg" alt="" />
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Col>
+        <Col xs={6}>
+          <Row gutter={[16, 16]} className={s.missionState}>
+            <Col md={12} xs={24} className={!hasDone ? s.missionProgress : s.missionProgressFinish}>
+              <Progress
+                type="circle"
+                strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
+                width={60}
+                percent={currentPercent} format={() => `${achieved}/${mission?.mission?.goal}`} />
+            </Col>
+            <Col md={12} xs={24} className={s.missionAction}>
+              {finish ?
+                <img src="/assets/P2E/csgo/finish.png" alt="" />
+                :
+                <ButtonWrapper
+                  disabled={!hasDone}
+                  onClick={() => handleClaimMission(mission)}
+                  loading={loading}
+                  type="primary"
+                >
+                  Claim
+                </ButtonWrapper>
+              }
+            </Col>
+          </Row>
+        </Col>
+      </Row>
 
-      {/* <div className={s.missionAction}>
-                  <Button disabled={!hasClaim} onClick={() => handleClaimMission(mission)}>Claim</Button>
-                </div> */}
-      <div className={s.missionAction}>
-        {finish ?
-          <img src="/assets/P2E/csgo/finish.png" alt="" />
-          :
-          <ButtonWrapper
-            disabled={!hasDone}
-            onClick={() => handleClaimMission(mission)}
-            loading={loading}
-            type="primary"
-          >
-            Claim
-          </ButtonWrapper>
-        }
-      </div>
-    </div>
+
+    </div >
   );
 };
 
