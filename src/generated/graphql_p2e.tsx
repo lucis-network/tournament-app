@@ -532,6 +532,7 @@ export type MatchStatistics = {
   map_earning?: Maybe<MatchEarning>;
   match_uid?: Maybe<Scalars['String']>;
   most_headshot?: Maybe<Scalars['Boolean']>;
+  most_kill?: Maybe<Scalars['Boolean']>;
   most_support?: Maybe<Scalars['Boolean']>;
   player_statistic?: Maybe<Scalars['JSON']>;
   point?: Maybe<Scalars['Int']>;

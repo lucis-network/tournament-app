@@ -58,7 +58,7 @@ const Dashboard = () => {
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
-  const handleUpdateMissions = async () => {
+  const handleUpdateMissions = async (popup = true) => {
     setLoading(true);
 
     const promise = await Promise.all([
@@ -69,7 +69,9 @@ const Dashboard = () => {
     setDailyMission(promise[0].data.updateDailyMission)
     setRecentlyMatches([...promise[1].data.updateRecentlyMatch, ...recentlyMatches]);
     setLoading(false);
-    message.success("update successfully!");
+    if (popup) {
+      message.success("update successfully!");
+    }
   }
 
   useEffect(() => {
@@ -145,7 +147,7 @@ const Dashboard = () => {
             <MissionsList
               title="Daily missions"
               missions={dailyMission}
-              handleUpdateMissions={handleUpdateMissions}
+              handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
               loading={stateDailyMissionFetch.loading}
               loadingUpdate={loading} />
             <div className={s.recentMatchTitle}>

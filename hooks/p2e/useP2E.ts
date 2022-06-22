@@ -295,7 +295,10 @@ export const GET_STATISTIC_MATCH = gql`
         least_died,
         highest_kda,
         current_win_streak,
-        player_statistic
+        player_statistic,
+        end_at,
+        most_kill,
+        point
     }
   }
 `
