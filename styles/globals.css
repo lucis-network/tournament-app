@@ -15,6 +15,33 @@ img {
   height: initial;
 }
 
+@font-face {
+  font-family: 'Revx Neue Demo';
+  src: url("/fonts/RevxNeue/RevxNeueDemo-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: 'Revx Neue Demo';
+  src: url("/fonts/RevxNeue/RevxNeueDemo-Italic.ttf");
+  font-weight: 400;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Revx Neue Demo';
+  src: url("/fonts/RevxNeue/RevxNeueDemo-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: 'Revx Neue Demo';
+  src: url("/fonts/RevxNeue/RevxNeueDemo-SemiBoldItalic.ttf");
+  font-weight: 600;
+  font-style: italic;
+}
+
+
 html,
 body {
   padding: 0;

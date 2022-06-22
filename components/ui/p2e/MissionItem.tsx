@@ -98,9 +98,9 @@ const MissionItem = (props: MissionItemProp) => {
           </div>
           <div className={s.missionReward}>
             <div className={s.missionReward}>
-              <div className={s.missionRewardItem}>
+              <div className={s.rewardItem}>
                 <span>{mission?.mission?.level?.lucis_point ?? "--"}</span>
-                <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
+                <img src="/assets/P2E/lucis-point.svg" alt="" />
               </div>
             </div>
           </div>

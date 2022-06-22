@@ -1,6 +1,7 @@
 import { Col, Row } from "antd";
 import { isEmpty } from "lodash";
 import moment from "moment";
+import { useRouter } from "next/router";
 import React from "react";
 import { GPlayerMatch } from "src/generated/graphql_p2e";
 import { MAP_CSGO } from "utils/Enum";
@@ -13,6 +14,7 @@ interface IProps {
   loading: boolean;
 }
 export const RecentMatchList = (props: IProps) => {
+  const router = useRouter();
   return (
     <div className={s.recentMatchList}>
       <div className={s.recentMatchHeaderList}>
@@ -63,6 +65,7 @@ export const RecentMatchList = (props: IProps) => {
             <div
               className={s.recentMatchItem}
               key={`${item?.match_uid}-${index}`}
+              onClick={() => router.push(`/p2e/dashboard/${item?.id}`)}
               style={{
                 background:
                   index % 2 === 0
@@ -123,13 +126,13 @@ export const RecentMatchList = (props: IProps) => {
                 </Col>
                 <Col span={6}>
                   <div className={s.recentMatchReward}>
-                    <div className={s.recentMatchRewardItem}>
-                      <span>+ {item?.lucis_point ?? "0"}</span>
-                      <img src="/assets/P2E/lucis-point.png" alt="" width="40" height="40" />
+                    <div className={s.rewardItem}>
+                      <span className={s.lucisPoint}>+ {item?.lucis_point ?? "0"}</span>
+                      <img src="/assets/P2E/lucis-point.svg" alt="" />
                     </div>
-                    <div className={s.recentMatchRewardItem}>
-                      {"-"}
-                      <img src="/assets/P2E/lucis-token.png" alt="" width="40" height="40" />
+                    <div className={s.rewardItem}>
+                      <span>{"-"}</span>
+                      <img src="/assets/P2E/lucis-token.svg" alt="" />
                     </div>
                   </div>
                 </Col>
