@@ -1,4 +1,4 @@
-import { Col, Row } from "antd";
+import { Col, Row, Grid } from "antd";
 import ButtonWrapper from "components/common/button/Button";
 import { useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
 import moment from "moment";
@@ -7,9 +7,10 @@ import React from "react";
 import { MAP_CSGO } from "utils/Enum";
 import s from "./dashboard.module.sass";
 
-
+const { useBreakpoint } = Grid;
 export const RecentMatchDetail = () => {
   const router = useRouter();
+  const screens = useBreakpoint();
 
   const [playerMatchId, setPlayerMatchId] = React.useState<number>(-1);
   const [isLoadData, setIsLoadData] = React.useState<boolean>(false);
@@ -135,31 +136,188 @@ export const RecentMatchDetail = () => {
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
-        <Row gutter={70}>
-          <Col span={16}>
+        <Row gutter={[{ xl: 70, xs: 16, md: 16 }, { xs: 16, md: 16, sm: 16 }]}>
+          <Col xl={0} xs={24}>
+            <div className={s.sidebarRight}>
+              {!getStatisticMatchLoading && (
+                <div className={s.informationDetail}>
+                  <h2 className={s.detailTitle}>Stats</h2>
+                  <div className={s.mapBackground}
+                    style={{
+                      background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
+                    }}
+                  >
+                    <h3 className={s.mapName}>{MAP_CSGO[data?.map?.name as string] ?? data?.map?.name}</h3>
+                    {data?.is_win ?
+                      <h2 className={s.scoreMatch}>{data?.score?.replace("/", "-")}</h2>
+                      : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.score?.replace("/", "-")}</h2>}
+                    <div className={s.endAt}>{moment(data?.end_at).fromNow()}</div>
+                  </div>
+                  <div className={s.matchDetail}>
+                    <div className={s.accountInfo}>
+                      <div className={s.platformInfo}>
+                        <img className={s.platformUserAvatar} src={faceitAccount?.avatar ? faceitAccount?.avatar : "/assets/avatar.jpg"} />
+                        <div className={s.platformUserName}>{faceitAccount?.nick_name}</div>
+                      </div>
+                      {data?.is_win ? <h2>WIN</h2> : <h2 style={{ color: "rgb(204, 132, 110)" }}>LOST</h2>}
+                    </div>
+                    <div className={s.playerParameters}>
+                      <div className={s.parameterHeader}>
+                        <div className={s.headerLeft}>Your stats</div>
+                        <div className={s.headerRight}>Lucis bonus: 30%</div>
+                      </div>
+                      <div className={s.parameterBody}>
+                        <Row className={s.row}>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/kill-icon.png" alt="" />
+                              <span>{data?.player_statistic?.Kills ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              Kill
+                            </div>
+                          </Col>
+                          <Col span={6}>
+                            <div className={s.rewardItem}>
+                              <span>{"-"}</span>
+                              <img src="/assets/P2E/lucis-token.svg" alt="" />
+                            </div>
+                          </Col>
+                          <Col span={6}>
+                            <div className={s.rewardItem}>
+                              <span className={s.lucisPoint}>+{lucisPointEarned.kill ?? "-"}</span>
+                              <img src="/assets/P2E/lucis-point.svg" alt="" />
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.row}>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/assist-icon.png" alt="" />
+                              <span>{data?.player_statistic?.Assists ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              Assists
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}>
+                            <div className={s.rewardItem}>
+                              <span className={s.lucisPoint}>+{lucisPointEarned.assists ?? "-"}</span>
+                              <img src="/assets/P2E/lucis-point.svg" alt="" />
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.row}>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/death-icon.png" alt="" />
+                              <span>{data?.player_statistic?.Headshots ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              Headshot
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+{lucisPointEarned.headshot ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.row}>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/mvp-icon.png" alt="" />
+                              <span>{data?.player_statistic?.MVPs ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              MVPs
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>{`+${lucisPointEarned.mvps}` ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.rowTotal}>
+                          <Col span={6}>
+                            <div className={s.parameterItem}>
+                              Total
+                            </div>
+                          </Col>
+                          <Col span={6}>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+            </div>
+          </Col>
+          <Col xl={16} xs={24}>
             <div className={s.achievementListCard}>
-              <div className={s.achievementHeader}>
-                <h2>
-                  <img src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.back()} />
-                  Achievement
-                </h2>
-                <div className={s.lucisBonus}>
+              <Row className={s.achievementHeader}>
+                <Col sm={12} xs={24}>
+                  <h2>
+                    {screens.xl ?
+                      <img src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.back()} />
+                      : null}
+                    Achievement
+                  </h2>
+                </Col>
+                <Col sm={12} xs={24} className={s.lucisBonus}>
                   <span style={{ color: "#00F9FF" }}>Lucis bonus: </span>
                   <div className={s.rewardItem} style={{ marginLeft: 16, marginRight: 16 }}>
                     <span>{"-"}</span>
                     <img src="/assets/P2E/lucis-token.svg" alt="" />
                   </div>
                   <div className={s.rewardItem}>
-                    <span className={s.lucisPoint}>{lucisPointBonus()}</span>
+                    <span className={s.lucisPoint}>+{lucisPointBonus()}</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
-                </div>
-              </div>
+                </Col>
+              </Row>
               <div className={s.achievementBody}>
                 <div className={s.listCard}>
-                  <Row gutter={[40, 40]}>
+                  <Row gutter={[{ xs: 16, sm: 16, md: 16, xl: 40 }, 40]}>
                     {cardList.map((item, index) => (
-                      <Col span={6} key={`${item.name}-${index}`}>
+                      <Col xs={12} sm={8} md={6} xl={6} key={`${item.name}-${index}`}>
                         <div
                           className={s.card}
                           style={{
@@ -192,7 +350,7 @@ export const RecentMatchDetail = () => {
               </div>
             </div>
           </Col>
-          <Col span={8}>
+          <Col xl={8} xs={0}>
             <div className={s.sidebarRight}>
               {!getStatisticMatchLoading && (
                 <div className={s.informationDetail}>
@@ -331,7 +489,7 @@ export const RecentMatchDetail = () => {
                           </div>
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {totalEarned}</span>
+                            <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
                           </div>
                           </Col>
