@@ -11,8 +11,8 @@ import s from "./Login.module.sass"
 type Props = {};
 
 const AlertInAppModal = (props: Props) => {
-  const isModalVisible = LoginBoxStore.alertModalVisible,
-    setIsModalVisible = (v: boolean) => (LoginBoxStore.alertModalVisible = v);
+  const isModalVisible = LoginBoxStore.alertInAppModalVisible,
+    setIsModalVisible = (v: boolean) => (LoginBoxStore.alertInAppModalVisible = v);
 
   const handleCancel = () => {
     setIsModalVisible(false);

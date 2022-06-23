@@ -96,7 +96,8 @@ export default observer(function Header(props: Props) {
         )}
       </div>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal />}
-      {LoginBoxStore.alertModalVisible && <AlertInAppModal />}
+      {LoginBoxStore.alertInAppModalVisible && <AlertInAppModal />}
+      <AlertInAppModal />
     </>
   );
 });
