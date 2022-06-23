@@ -101,7 +101,7 @@ export default observer(function LoginModal(props: Props) {
     }
 
     // Facebook
-    if ((ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1)) {
+    if ((ua.indexOf("fban") > -1) || (ua.indexOf("fbav") > -1)) {
       return isIOS
         ? 'is_facebook_ios'
         : isAndroid
@@ -110,7 +110,7 @@ export default observer(function LoginModal(props: Props) {
     }
 
     // Instagram
-    if (ua.indexOf('Instagram') > -1) {
+    if (ua.indexOf('instagram') > -1) {
       return isIOS
         ? 'is_instagram_ios'
         : isAndroid
