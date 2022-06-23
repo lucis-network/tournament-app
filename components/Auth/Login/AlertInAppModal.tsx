@@ -40,7 +40,9 @@ const AlertInAppModal = (props: Props) => {
             lineHeight: '38.4px',
             textAlign: 'center',
             marginTop: '20px'
-          }}>Sorry, we do not currently support this browser!</p>
+          }}>
+            Sorry, we do not currently supports in-app browser, please use mobile browsers for fully supports.
+          </p>
         </div>
       </Modal>
 
