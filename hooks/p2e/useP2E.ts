@@ -111,6 +111,12 @@ export const CONNECT_FACEIT = gql`
   }
 `
 
+export const CLAIM_BOX = gql`
+  mutation ($platform_id: Int!, $game_uid: String!) {
+    claimBox (platform_id: $platform_id, game_uid: $game_uid) 
+  }
+`
+
 export const GET_OR_SET_DAILY_MISSION = gql`
   mutation ($game_uid: String!, $platform_id: Int!) {
     getOrSetDailyMission(game_uid: $game_uid, platform_id: $platform_id) {

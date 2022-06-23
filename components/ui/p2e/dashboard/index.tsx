@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import s from './dashboard.module.sass'
 import { Col, message, Row } from "antd"
-import { GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION, UPDATE_RECENTLY_MATCH, useGetRecentMatches } from "../../../../hooks/p2e/useP2E";
+import { CLAIM_BOX, GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION, UPDATE_RECENTLY_MATCH, useGetRecentMatches } from "../../../../hooks/p2e/useP2E";
 
 import { useMutation, useQuery } from "@apollo/client";
 import MissionsList from "../MissionsList";
@@ -44,6 +44,12 @@ const Dashboard = () => {
       game_uid: '03',
       platform_id: 1
     },
+    context: {
+      endpoint: 'p2e'
+    }
+  })
+
+  const [claimBox, stateClaimBox] = useMutation(CLAIM_BOX, {
     context: {
       endpoint: 'p2e'
     }
@@ -102,6 +108,30 @@ const Dashboard = () => {
     return total
   }
 
+  const onClaimBox = async () => {
+    try {
+      await claimBox({
+        variables: {
+          game_uid: '03',
+          platform_id: 1
+        }
+      })
+
+      message.success("Claim successfully!");
+    } catch (error) {
+      if (stateClaimBox.error?.graphQLErrors[0].extensions?.code === "MISSION_NOT_COMPLETE") {
+        message.error("You must complete all mission to claim!");
+      } else if (stateClaimBox.error?.graphQLErrors[0].extensions?.code === "HAS_CLAIMED") {
+        message.error("You has claimed!");
+      } else {
+        message.error("Something was wrong! Please contact to Lucis network!");
+      }
+    }
+
+
+
+  }
+
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
@@ -148,6 +178,7 @@ const Dashboard = () => {
               title="Daily missions"
               missions={dailyMission}
               handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
+              onClaimBox={onClaimBox}
               loading={stateDailyMissionFetch.loading}
               loadingUpdate={loading} />
             <Row className={s.recentMatchTitle}>
@@ -226,7 +257,7 @@ const Dashboard = () => {
                       <div className={s.shareBonus}>
                         <p>Join bonus:</p>
                         <div className={s.rewardItem}>
-                          <span>--</span>
+                          <span className={s.lucisPoint}>+50</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                       </div>
@@ -249,7 +280,7 @@ const Dashboard = () => {
                       <div className={s.shareBonus}>
                         <p>Join bonus:</p>
                         <div className={s.rewardItem}>
-                          <span>--</span>
+                          <span className={s.lucisPoint}>+50</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                       </div>

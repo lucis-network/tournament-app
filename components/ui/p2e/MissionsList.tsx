@@ -14,15 +14,18 @@ type MissionsListProp = {
   loading?: boolean;
   loadingUpdate?: boolean;
   handleUpdateMissions: (popup: boolean) => void;
+  onClaimBox: () => void;
 };
 
 const MissionsList = ({
   missions,
   handleUpdateMissions,
+  onClaimBox,
   canChooseGame,
   loading,
   loadingUpdate
 }: MissionsListProp) => {
+
   return (
     <div className={s.missionsList}>
       <Row className={s.header}>
@@ -57,7 +60,7 @@ const MissionsList = ({
           </div>
         </Col>
         <Col xl={16} sm={24} xs={24} className={s.headerRight}>
-          <div className={s.rewardBox}>
+          <div className={s.rewardBox} onClick={() => onClaimBox()}>
             Complete 4 quests to unlock rewards!
             <img src="/assets/P2E/box.png" alt="" />
           </div>

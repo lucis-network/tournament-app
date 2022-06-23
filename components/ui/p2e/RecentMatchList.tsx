@@ -17,47 +17,6 @@ export const RecentMatchList = (props: IProps) => {
   const router = useRouter();
   return (
     <div className={s.recentMatchList}>
-      <div className={s.recentMatchHeaderList}>
-        <Row>
-          <Col md={4} xs={0}>
-            <div className={s.recentMatchHeaderItem}>
-              <h2>Map</h2>
-            </div>
-          </Col>
-          <Col md={10} xs={0}>
-            <Row>
-              <Col span={8}>
-
-              </Col>
-              <Col span={4}>
-                <div className={s.recentMatchHeaderItem}>
-                  <h2>K</h2>
-                </div>
-              </Col>
-              <Col span={4}>
-                <div className={s.recentMatchHeaderItem}>
-                  <h2>D</h2>
-                </div>
-              </Col>
-              <Col span={4}>
-                <div className={s.recentMatchHeaderItem}>
-                  <h2>A</h2>
-                </div>
-              </Col>
-              <Col span={4}>
-                <div className={s.recentMatchHeaderItem}>
-                  <h2>K/R</h2>
-                </div>
-              </Col>
-            </Row>
-          </Col>
-          <Col span={4}>
-          </Col>
-          <Col span={6}>
-
-          </Col>
-        </Row>
-      </div>
       <Row gutter={[{ xs: 8, md: 0 }, { xs: 8, md: 0 }]}>
         {props.loading && props.recentMatches ? <SpinLoading /> : (
           !isEmpty(props.recentMatches) && props.recentMatches?.map((item, index) => {

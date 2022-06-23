@@ -22,6 +22,10 @@
       {
         "source": "/p2e/dashboard/*",
         "destination": "/p2e/dashboard/[id].html"
+      },
+      {
+        "source": "/p2e/dashboard/",
+        "destination": "/p2e/dashboard/dashboard.html"
       }
     ]
   },

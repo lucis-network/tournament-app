@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import s from "./p2e.module.sass";
 import { Col, message, Progress, Row } from "antd";
-import { isEmpty } from "lodash";
-import SpinLoading from "../common/Spin";
 import { MissionType, PlayerMission } from "../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
@@ -24,11 +22,11 @@ const MissionItem = (props: MissionItemProp) => {
     },
   });
 
-  const [rerollMission] = useMutation(REROLL_MISSION, {
-    context: {
-      endpoint: "p2e",
-    },
-  });
+  // const [rerollMission] = useMutation(REROLL_MISSION, {
+  //   context: {
+  //     endpoint: "p2e",
+  //   },
+  // });
 
   const handleClaimMission = async (mission: PlayerMission) => {
     claimMission({
@@ -44,27 +42,28 @@ const MissionItem = (props: MissionItemProp) => {
       onError: (errors) => {
         console.log("errors", errors);
         setLoading(false);
+        message.error("Something was wrong!");
       },
     });
   };
 
-  const handleRerollMission = async (mission: PlayerMission) => {
-    setLoading(true);
-    rerollMission({
-      variables: { player_mission_uid: mission?.uid },
-      onCompleted: (data) => {
-        message.success("Rerolled!");
-        if (handleUpdateMissions) {
-          handleUpdateMissions();
-        }
-        setLoading(false);
-      },
-      onError: (errors) => {
-        console.log("errors", errors);
-        setLoading(false);
-      },
-    });
-  };
+  // const handleRerollMission = async (mission: PlayerMission) => {
+  //   setLoading(true);
+  //   rerollMission({
+  //     variables: { player_mission_uid: mission?.uid },
+  //     onCompleted: (data) => {
+  //       message.success("Rerolled!");
+  //       if (handleUpdateMissions) {
+  //         handleUpdateMissions();
+  //       }
+  //       setLoading(false);
+  //     },
+  //     onError: (errors) => {
+  //       console.log("errors", errors);
+  //       setLoading(false);
+  //     },
+  //   });
+  // };
 
   const achieved = mission?.achieved;
   const currentPercent =
@@ -79,9 +78,9 @@ const MissionItem = (props: MissionItemProp) => {
   return (
     <div className={s.missionItem} style={finish ? { background: "rgba(50, 110, 123, 0.5)" } : {}}>
       <Row>
-        <Col xs={18}>
+        <Col xs={20} xl={18}>
           <Row className={s.missionInfo}>
-            <Col md={16} xs={24} className={s.missionContent}>
+            <Col xl={16} xs={24} className={s.missionContent}>
               <div className={s.missionLogo}>
                 <img
                   src={
@@ -99,19 +98,23 @@ const MissionItem = (props: MissionItemProp) => {
                 <span>{moment(nextDay).fromNow()} next mission</span> {/**sub title */}
               </div>
             </Col>
-            <Col md={8} xs={24}>
+            <Col xl={8} xs={24}>
               <div className={s.missionReward}>
-                <div className={s.rewardItem}>
-                  <span>+ {mission?.mission?.level?.lucis_point ?? "--"}</span>
+                <div className={s.rewardItem} style={{ marginRight: 70 }}>
+                  <span className={s.lucisPoint}>+{mission?.mission?.level?.lucis_point ?? "--"}</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
+                </div>
+                <div className={s.rewardItem}>
+                  <span>-</span>
+                  <img src="/assets/P2E/lucis-token.svg" alt="" />
                 </div>
               </div>
             </Col>
           </Row>
         </Col>
-        <Col xs={6}>
-          <Row gutter={[16, 16]} className={s.missionState}>
-            <Col md={12} xs={24} className={!hasDone ? s.missionProgress : s.missionProgressFinish}>
+        <Col xs={4} xl={6}>
+          <Row gutter={[50, 0]} className={s.missionState}>
+            <Col xl={12} xs={24} className={!hasDone ? s.missionProgress : s.missionProgressFinish} style={finish ? { justifyContent: "center" } : {}}>
               <Progress
                 type="circle"
                 strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
@@ -124,7 +127,7 @@ const MissionItem = (props: MissionItemProp) => {
                 }
                 } />
             </Col>
-            <Col md={12} xs={24} className={s.missionAction}>
+            <Col xl={12} xs={24} className={s.missionAction} style={finish ? { justifyContent: "center" } : {}}>
               {finish ?
                 <img src="/assets/P2E/csgo/finish.png" alt="" />
                 :
