@@ -29,6 +29,7 @@ function CardHome(props: Props) {
   const handleLoadMore = () => {
     setIsLoadMore((prev) => prev + 8);
   };
+  console.log("datas", datas);
   return (
     <div className="tournaments-c">
       <Row
@@ -48,7 +49,7 @@ function CardHome(props: Props) {
           <TournamentCard typeTab={type} />
         )}
       </Row>
-      {isLoadMore > datas?.length || isLoadMore <= 8 ? (
+      {isLoadMore > datas?.length || isLoadMore < 8 ? (
         ""
       ) : (
         <div className={s.btn_load}>

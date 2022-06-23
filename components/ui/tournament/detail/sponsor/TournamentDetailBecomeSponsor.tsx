@@ -8,20 +8,21 @@ import {
   Row,
   Select,
   Form,
-  message
+  message,
 } from "antd";
-import CircleImage from "components/ui/common/images/CircleImage";
 import Text from "antd/lib/typography/Text";
 import { myBucket, S3_BUCKET } from "components/ui/common/upload/UploadImage";
 import { TiersSelectType } from "./TournamentDetailSponsor";
 import s from "../../../../../styles/tournament/sponsor/index.module.sass";
-import { ApolloQueryResult } from "@apollo/client";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
 import EthersService from "../../../../../services/blockchain/Ethers";
-import { useGetContract } from "hooks/tournament/useCreateTournament";
+import {
+  useGetContract,
+  useGetConfigFee,
+} from "hooks/tournament/useCreateTournament";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "components/Auth/AuthStore";
 import { SponsorCreateInputGql } from "src/generated/graphql";
@@ -53,6 +54,7 @@ export default function TournamentDetailBecomeSponsor(
   props: TournamentDetailBecomeSponsorProps
 ) {
   const { getContract } = useGetContract({});
+  const { getConfigFee } = useGetConfigFee({});
   const {
     isBecome,
     setIsBecome,
@@ -207,7 +209,15 @@ export default function TournamentDetailBecomeSponsor(
   };
 
   const calTotalPayment = (value: number) => {
-    return ((value * 111) / 100).toFixed(2);
+    return (
+      (value *
+        (100 +
+          (getConfigFee
+            ? getConfigFee[0]?.tn_lucis_fee * 100 +
+              getConfigFee[0]?.tn_referee_fee * 100
+            : 0))) /
+      100
+    ).toFixed(2);
   };
 
   const handleFileInput = (e: any) => {
@@ -300,7 +310,7 @@ export default function TournamentDetailBecomeSponsor(
             </Select>
             {is_full && (
               <div style={{ color: "#ff4d4f" }}>
-                All slots have been occupied.
+                All slots of this tier have been occupied.
               </div>
             )}
           </Col>
@@ -325,7 +335,7 @@ export default function TournamentDetailBecomeSponsor(
               ]}
             >
               <InputNumber
-                prefix="$"
+                // prefix="$"
                 style={{ width: "100%" }}
                 ref={inputSponsorAmountRef}
                 min={0}
@@ -344,7 +354,8 @@ export default function TournamentDetailBecomeSponsor(
           <Col xs={{ span: 24 }} md={{ span: 16 }}>
             <Row>
               <Col span={6} className="pr-2">
-                <CircleImage src={logoUrl || "/assets/avatar.jpg"} />
+                {/* <CircleImage src={logoUrl || "/assets/avatar.jpg"} /> */}
+                <img src={logoUrl || "/assets/avatar.jpg"} alt="" />
               </Col>
               <Col span={18} className="pl-2">
                 <input
@@ -455,13 +466,17 @@ export default function TournamentDetailBecomeSponsor(
             <label>Lucis fee</label>
           </Col>
           <Col xs={{ span: 24 }} md={{ span: 4 }}>
-            <span style={{ color: "white", marginTop: "10px" }}>10%</span>
+            <span style={{ color: "white", marginTop: "10px" }}>
+              {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%
+            </span>
           </Col>
           <Col xs={{ span: 24 }} md={{ span: 8 }}>
             <label>Referees fee</label>
           </Col>
           <Col xs={{ span: 24 }} md={{ span: 4 }}>
-            <span style={{ color: "white", marginTop: "10px" }}>1%</span>
+            <span style={{ color: "white", marginTop: "10px" }}>
+              {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%
+            </span>
           </Col>
         </Row>
         <Row align="middle">
