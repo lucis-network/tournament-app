@@ -1,11 +1,10 @@
 import React from 'react'
 import s from "./p2e.module.sass";
-import { Checkbox, Row } from "antd";
+import { Row, Col } from "antd";
 import SpinLoading from "../common/Spin";
 import { PlayerMission } from "../../../src/generated/graphql_p2e";
 
 import MissionItem from "./MissionItem";
-import Col from 'antd/es/grid/col';
 
 type MissionsListProp = {
   title?: string;
