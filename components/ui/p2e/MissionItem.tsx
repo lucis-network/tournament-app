@@ -3,7 +3,7 @@ import s from "./p2e.module.sass";
 import { Col, message, Progress, Row } from "antd";
 import { isEmpty } from "lodash";
 import SpinLoading from "../common/Spin";
-import { PlayerMission } from "../../../src/generated/graphql_p2e";
+import { MissionType, PlayerMission } from "../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
 import ButtonWrapper from "../../common/button/Button";
@@ -116,7 +116,13 @@ const MissionItem = (props: MissionItemProp) => {
                 type="circle"
                 strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
                 width={60}
-                percent={currentPercent} format={() => `${achieved}/${mission?.mission?.goal}`} />
+                percent={currentPercent} format={() => {
+                  if (mission?.mission?.type === MissionType.Kr || mission?.mission?.type === MissionType.Kda) {
+                    return `${mission?.mission?.goal}`
+                  }
+                  return `${achieved}/${mission?.mission?.goal}`
+                }
+                } />
             </Col>
             <Col md={12} xs={24} className={s.missionAction}>
               {finish ?
