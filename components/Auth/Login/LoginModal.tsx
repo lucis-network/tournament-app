@@ -101,7 +101,7 @@ export default observer(function LoginModal(props: Props) {
     }
 
     // Facebook
-    if (ua.includes('FBAN') || ua.includes('FBAV')) {
+    if ((ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1)) {
       return isIOS
         ? 'is_facebook_ios'
         : isAndroid
@@ -110,7 +110,7 @@ export default observer(function LoginModal(props: Props) {
     }
 
     // Instagram
-    if (ua.includes('Instagram')) {
+    if (ua.indexOf('Instagram') > -1) {
       return isIOS
         ? 'is_instagram_ios'
         : isAndroid
@@ -154,7 +154,7 @@ export default observer(function LoginModal(props: Props) {
       let ua = navigator.userAgent || navigator.vendor || window.opera;
       console.log('[onLoginClicked] detectInAppBrowser(ua): ', detectInAppBrowser(ua));
       if (isTest) {
-        alert(`[onLoginClicked] detectInAppBrowser(ua): ${detectInAppBrowser(ua)}`)
+        alert(`[onLoginClicked] detectInAppBrowser(ua): ${detectInAppBrowser(ua)} ------------ user agent: ${ua}`)
       }
       if (['is_facebook_ios', 'is_facebook_android', 'is_facebook_unknown', 'is_instagram_ios', 'is_instagram_android', 'is_instagram_unknown', 'is_line_ios', 'is_line_android', 'is_line_unknown'].includes(detectInAppBrowser(ua) as string)) {
         setIsAlertInAppModalVisible(true)
