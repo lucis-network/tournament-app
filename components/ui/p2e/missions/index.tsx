@@ -67,6 +67,7 @@ const Missions = () => {
           missions={dailyMission}
           handleUpdateMissions={handleUpdateMissions}
           canChooseGame
+          onClaimBox={() => null}
         />
       </div>
     </div>
