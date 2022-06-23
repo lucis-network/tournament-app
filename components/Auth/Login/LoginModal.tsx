@@ -13,6 +13,7 @@ import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
 import GAService from "../../../services/GA";
 import { useRouter } from "next/router";
+import {isClientDevMode} from "../../../utils/Env";
 
 type Props = {};
 
@@ -140,30 +141,20 @@ export default observer(function LoginModal(props: Props) {
     return null;
   }
 
-  const isFacebookApp = (ua: any) => {
-    return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
-  }
-
-  const isInstaApp = (ua: any) => {
-    return (ua.indexOf('Instagram') > -1);
-  }
-
-  const onLoginClicked = (cb?: (() => void) | undefined, isTest?: boolean) => {
+  const onLoginClicked = (cb: (() => void) | undefined) => {
     return () => {
       // @ts-ignore
       let ua = navigator.userAgent || navigator.vendor || window.opera;
-      console.log('[onLoginClicked] detectInAppBrowser(ua): ', detectInAppBrowser(ua));
-      if (isTest) {
+      if (isClientDevMode) {
         alert(`[onLoginClicked] detectInAppBrowser(ua): ${detectInAppBrowser(ua)} ------------ user agent: ${ua}`)
       }
       if (['is_facebook_ios', 'is_facebook_android', 'is_facebook_unknown', 'is_instagram_ios', 'is_instagram_android', 'is_instagram_unknown', 'is_line_ios', 'is_line_android', 'is_line_unknown'].includes(detectInAppBrowser(ua) as string)) {
         setIsAlertInAppModalVisible(true)
+        setIsModalVisible(false)
         // message.warn("Please open web in browser to use full function")
         return;
       }
-      if (!isTest) {
-        cb && cb();
-      }
+      cb && cb();
     }
   }
 
@@ -220,12 +211,14 @@ export default observer(function LoginModal(props: Props) {
           }}
           cookiePolicy={"single_host_origin"}
         />
-        <button
-          onClick={onLoginClicked(undefined, true)}
-          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded gg mt-20 ${s.loginBtn}`}
-        >
-          test user agent
-        </button>
+        {isClientDevMode && (
+          <button
+            onClick={onLoginClicked(undefined)}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded gg mt-20 ${s.loginBtn}`}
+          >
+            test user agent
+          </button>
+        )}
         <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge you&apos;ve read our Privacy Policy</p>
       </Modal>
 
