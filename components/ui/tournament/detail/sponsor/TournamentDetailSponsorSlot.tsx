@@ -1,4 +1,3 @@
-import CircleImage from "components/ui/common/images/CircleImage";
 import { SponsorSlot, SponsorTransaction } from "src/generated/graphql";
 import s from "../../../../../styles/tournament/sponsor/index.module.sass";
 

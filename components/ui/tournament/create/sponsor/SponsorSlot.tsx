@@ -2,7 +2,6 @@ import { useState } from "react";
 import { observer } from "mobx-react-lite";
 import {Button, Image} from "antd";
 import s from "./index.module.sass";
-import CircleImage from "components/ui/common/images/CircleImage";
 import SponsorDetail from "./SponsorDetail";
 import { SponsorSlot, SponsorTierStore } from "./SponsorStore";
 
