@@ -13,6 +13,7 @@ import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
 import GAService from "../../../services/GA";
 import { useRouter } from "next/router";
+import {isClientDevMode} from "../../../utils/Env";
 
 type Props = {};
 
@@ -46,6 +47,7 @@ export default observer(function LoginModal(props: Props) {
 
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
+  const setIsAlertInAppModalVisible = (v: boolean) => (LoginBoxStore.alertInAppModalVisible = v);
 
   const onSuccess = async (res: any, type: string) => {
     const authService = new AuthService();
@@ -89,25 +91,69 @@ export default observer(function LoginModal(props: Props) {
     setIsModalVisible(false);
   };
 
-  
-  const isFacebookApp = function (ua: any) {
-    return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+  const detectInAppBrowser = (ua: any) => {
+    ua = ua.toLowerCase().trim();
+    const isIOS = ua.includes('iphone') || ua.includes('ipod') || ua.includes('ipad');
+    const isAndroid = ua.includes('android');
+
+    // iOS Chrome
+    if (ua.includes('crios')) {
+      return 'is_chrome_ios';
+    }
+
+    // Facebook
+    if ((ua.indexOf("fban") > -1) || (ua.indexOf("fbav") > -1)) {
+      return isIOS
+        ? 'is_facebook_ios'
+        : isAndroid
+          ? 'is_facebook_android'
+          : 'is_facebook_unknown';
+    }
+
+    // Instagram
+    if (ua.indexOf('instagram') > -1) {
+      return isIOS
+        ? 'is_instagram_ios'
+        : isAndroid
+          ? 'is_instagram_android'
+          : 'is_instagram_unknown';
+    }
+
+    // LINE
+    if (ua.includes(' line/')) {
+      return isIOS
+        ? 'is_line_ios'
+        : isAndroid
+          ? 'is_line_android'
+          : 'is_line_unknown';
+    }
+
+    // iOS Safari|Twitter|Slack|Discord|etc
+    if (isIOS && /safari\/[0-9.]+$/.test(ua)) {
+      return 'maybe_safari_ios';
+    }
+
+    // Android Chrome|Twitter|Slack|Discord|etc
+    if (isAndroid && ua.includes('chrome') && /safari\/[0-9.]+$/.test(ua)) {
+      return 'maybe_chrome_android';
+    }
+
+    return null;
   }
 
   const onLoginClicked = (cb: (() => void) | undefined) => {
     return () => {
       // @ts-ignore
-      var ua = navigator.userAgent || navigator.vendor || window.opera;
-      if (isFacebookApp(ua)) {
-        console.log('window.location.href: ', window.location.href)
-        if (!window.location.href.match('redirect_fb')) {
-          // force open in browser ... 
-          // location.href = location.href;
-        }
-        message.warn("Please open web in browser to use full function")
+      let ua = navigator.userAgent || navigator.vendor || window.opera;
+      if (isClientDevMode) {
+        alert(`[onLoginClicked] detectInAppBrowser(ua): ${detectInAppBrowser(ua)} ------------ user agent: ${ua}`)
+      }
+      if (['is_facebook_ios', 'is_facebook_android', 'is_facebook_unknown', 'is_instagram_ios', 'is_instagram_android', 'is_instagram_unknown', 'is_line_ios', 'is_line_android', 'is_line_unknown'].includes(detectInAppBrowser(ua) as string)) {
+        setIsAlertInAppModalVisible(true)
+        setIsModalVisible(false)
+        // message.warn("Please open web in browser to use full function")
         return;
       }
-      console.log('not isFacebookApp')
       cb && cb();
     }
   }
@@ -165,8 +211,17 @@ export default observer(function LoginModal(props: Props) {
           }}
           cookiePolicy={"single_host_origin"}
         />
+        {isClientDevMode && (
+          <button
+            onClick={onLoginClicked(undefined)}
+            className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded gg mt-20 ${s.loginBtn}`}
+          >
+            test user agent
+          </button>
+        )}
         <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge you&apos;ve read our Privacy Policy</p>
       </Modal>
+
     </>
   );
 });
