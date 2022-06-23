@@ -46,7 +46,7 @@ export default observer(function LoginModal(props: Props) {
 
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
-  const setIsAlertModalVisible = (v: boolean) => (LoginBoxStore.alertModalVisible = v);
+  const setIsAlertInAppModalVisible = (v: boolean) => (LoginBoxStore.alertInAppModalVisible = v);
 
   const onSuccess = async (res: any, type: string) => {
     const authService = new AuthService();
@@ -148,16 +148,22 @@ export default observer(function LoginModal(props: Props) {
     return (ua.indexOf('Instagram') > -1);
   }
 
-  const onLoginClicked = (cb: (() => void) | undefined) => {
+  const onLoginClicked = (cb?: (() => void) | undefined, isTest?: boolean) => {
     return () => {
       // @ts-ignore
       let ua = navigator.userAgent || navigator.vendor || window.opera;
+      console.log('[onLoginClicked] detectInAppBrowser(ua): ', detectInAppBrowser(ua));
+      if (isTest) {
+        alert(`[onLoginClicked] detectInAppBrowser(ua): ${detectInAppBrowser(ua)}`)
+      }
       if (['is_facebook_ios', 'is_facebook_android', 'is_facebook_unknown', 'is_instagram_ios', 'is_instagram_android', 'is_instagram_unknown', 'is_line_ios', 'is_line_android', 'is_line_unknown'].includes(detectInAppBrowser(ua) as string)) {
-        setIsAlertModalVisible(true)
+        setIsAlertInAppModalVisible(true)
         // message.warn("Please open web in browser to use full function")
         return;
       }
-      cb && cb();
+      if (!isTest) {
+        cb && cb();
+      }
     }
   }
 
@@ -214,6 +220,12 @@ export default observer(function LoginModal(props: Props) {
           }}
           cookiePolicy={"single_host_origin"}
         />
+        <button
+          onClick={onLoginClicked(undefined, true)}
+          className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded gg mt-20 ${s.loginBtn}`}
+        >
+          test user agent
+        </button>
         <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge you&apos;ve read our Privacy Policy</p>
       </Modal>
 
