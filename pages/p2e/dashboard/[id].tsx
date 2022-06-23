@@ -4,13 +4,13 @@ import React from "react"
 
 
 const RecentMatchDetailPage = () => {
-    return (
-        <>
-            <P2EWrapper>
-                <RecentMatchDetail />
-            </P2EWrapper>
-        </>
-    );
+  return (
+    <>
+      <P2EWrapper>
+        <RecentMatchDetail />
+      </P2EWrapper>
+    </>
+  );
 }
 
 export default RecentMatchDetailPage;
