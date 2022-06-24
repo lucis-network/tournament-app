@@ -15,9 +15,9 @@ import SpinLoading from "../../components/ui/common/Spin";
 import MyProfileStore from "../../src/store/MyProfileStore";
 
 export default observer(function MyProfile() {
-	const router = useRouter();
 	const localUserInfo = AuthStore;
 	const [userInfo, setUserInfo] = useState<any>(localUserInfo);
+	const [page, setPage] = useState<string>('');
 	const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData } = useGetUserProfile({
 		user_id: Number(localUserInfo?.profile?.user_id),
 		skip: isEmpty(localUserInfo?.profile?.user_id),
@@ -27,21 +27,30 @@ export default observer(function MyProfile() {
 			setUserInfo(data.getUserProfile)
 		}
 	})
-	const [isShowEdit, setIsShowEdit] = useState(false);
-
+	const router = useRouter();
+	const currentPage = router.query?.page ?? ''
+	const allowedPages = ['', 'teams', 'tournaments', 'edit']
 	useEffect(() => {
 		if (!AuthStore.isLoggedIn) {
 			router.push('/')
 		}
 	}, [AuthStore.isLoggedIn])
-
+	
+	useEffect(() => {
+		if (currentPage === '') {
+			setPage('overview')
+		} else {
+			setPage(currentPage as string)
+		}
+	}, [currentPage])
+	
 	if (loadingUserProfile) {
 		return (
 			<main style={{ minHeight: '100vh' }}>
 				<SpinLoading />
 			</main>
 		)
-	} else if (isEmpty(getUserProfileData?.getUserProfile)) {
+	} else if (isEmpty(getUserProfileData?.getUserProfile) || !allowedPages.includes(currentPage as string)) {
 		return (
 			<>
 				<Head>
@@ -54,7 +63,11 @@ export default observer(function MyProfile() {
 	}
 
 	const handleClick = () => {
-		setIsShowEdit(!isShowEdit);
+		if (page === 'edit') {
+			router.push('/profile')
+		} else {
+			router.push('/profile?page=edit')
+		}
 	};
 	const onEditedProfile = () => {
 		handleClick();
@@ -65,12 +78,12 @@ export default observer(function MyProfile() {
 	return (
 		<div className={s.wrapper_profile}>
 			{/* Content */}
-			<InfoMyProfile click={handleClick} userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner isShowEdit={isShowEdit} />
+			<InfoMyProfile click={handleClick} userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner isShowEdit={page === 'edit'} />
 			<div className="lucis-container">
 				{
-					isShowEdit ?
+					page === 'edit' ?
 						<EditProfile userInfo={userInfo} onEditedProfile={onEditedProfile} /> :
-						<ContentMyProfile userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner />
+						<ContentMyProfile userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner page={page} />
 				}
 			</div>
 		</div>
