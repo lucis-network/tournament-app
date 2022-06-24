@@ -247,19 +247,19 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         </div>
         <section className={s.tournamentInfo}>
           <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
-          <TournamentDetailMarquee tournamentId={tournamentId as string} />
-            <div className={s.group_button}>
-              {userLocal?.id === user?.id &&
-                tournament_status === "FINISH" &&
-                !isCheckConfirmResult && (
+            <TournamentDetailMarquee tournamentId={tournamentId as string} />
+            {userLocal?.id === user?.id &&
+              tournament_status === "FINISH" &&
+              !isCheckConfirmResult && (
+                <div className={s.group_button}>
                   <a
                     className="text-16px btn-blur"
                     onClick={handleOpenConfirmResult}
                   >
                     Confirm tournament result
                   </a>
-                )}
-            </div>
+                </div>
+              )}
             <div className={s.infoWrap}>
               <div className={s.tournamentThumbnail}>
                 <Image src={thumbnail} alt="" preview={false} />
@@ -441,7 +441,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           <div className={s.metadataValue}>{participants}</div>
                         </Col>
                         <Col
-                          className={`${s.alignRightMb} ${s.bo} ${s.col_item}`}
+                          className={`${s.metadataBlock} ${s.alignRightMb} ${s.bo} ${s.col_item} ${s.participants}`}
                         >
                           <h4 className={s.metadataTitle}></h4>
                           <div className={s.metadataValue}>BO{turns}</div>
@@ -473,7 +473,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           passHref
                         >
                           <a
-                            className={`${s.userInfo} ${s.alignRightMb}`}
+                            className={`${s.userInfo} ${s.alignRightMb} ${s.profileAva}`}
                             target="_blank"
                             rel="noopener noreferrer"
                           >
