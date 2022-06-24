@@ -38,7 +38,7 @@ const PopupNotifyProfile = (props: Props) => {
         <div className="flex justify-end align-middle items-center mt-2">
           <button
             className={`${s.button} mr-4 !w-max`}
-            onClick={() => handleRoutes(`/profile`)}
+            onClick={() => handleRoutes(`/profile?page=edit`)}
           >
             Go to my profile
           </button>
