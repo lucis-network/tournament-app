@@ -4,7 +4,7 @@ import { GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION } from "
 import s from "../dashboard/dashboard.module.sass";
 import { Image } from "antd";
 import MissionsList from "../MissionsList";
-import OnUsingNFTs from '../OnUsingNFTs';
+import NFTList from '../NFTList';
 import Statistics from '../Statistics';
 
 const Missions = () => {
