@@ -41,7 +41,8 @@ const AlertInAppModal = (props: Props) => {
             textAlign: 'center',
             marginTop: '20px'
           }}>
-            Sorry, we do not currently supports in-app browser, please use mobile browsers for fully supports.
+            Sorry, we currently do not support in-app browser as it lack of user experience and supports.<br />
+            For a full set of features, please open our app in the official browser instead such as Chrome, Safari, etc.
           </p>
         </div>
       </Modal>
