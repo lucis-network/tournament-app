@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Button, Modal } from "antd";
-import TournamentStore from "src/store/TournamentStore";
+import { Modal } from "antd";
 import s from "./index.module.sass";
 import { fomatNumber } from "utils/Number";
 
@@ -9,32 +8,16 @@ type Props = {
   currency?: string;
   name: string;
   claim?: boolean;
+  status?: boolean;
+  onCancel?: () => void;
 };
 
 export default observer(function ClaimResultModal(props: Props) {
-  const { totalPrizePool, currency, name, claim } = props;
-  const isModalVisible = TournamentStore.claimResultModalVisible,
-    setIsModalVisible = (v: boolean) =>
-      (TournamentStore.claimResultModalVisible = v);
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
-
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+  const { totalPrizePool, currency, name, claim, status, onCancel } = props;
 
   return (
     <div style={{ width: "400px" }}>
-      <Modal
-        //title={<span className="font-[600]">Your reward from donation</span>}
-        visible={isModalVisible}
-        onOk={handleOk}
-        //className={`${s.container}`}
-        onCancel={handleCancel}
-        footer={null}
-      >
+      <Modal visible={status} onCancel={onCancel} footer={null}>
         <div className={`${s.container}`}>
           <p>Claim success</p>
           <p>
@@ -42,11 +25,10 @@ export default observer(function ClaimResultModal(props: Props) {
             {currency}
           </p>
           <div>
-            You&apos;ve successfully claimed the {" "}
-            {claim ? "donation reward" : "prize"} <br />
+            You&apos;ve successfully claimed the{" "}
+            {claim == true ? "donation reward" : "prize"} <br />
             from {name} tournament
           </div>
-          {/* <Button>Share my victory</Button> */}
         </div>
       </Modal>
     </div>

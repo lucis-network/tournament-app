@@ -1,5 +1,9 @@
 .marquee_section
-  padding-bottom: 50px
+  padding-bottom: 10px
+  @media (min-width: 640px)
+    padding-bottom: 20px
+  @media (min-width: 992px)
+    padding-bottom: 40px
 .marquee
   display: flex
   align-items: center
@@ -26,10 +30,18 @@
     @media (min-width: 640px)
       max-width: 60px
       top: unset
+  .text
+    font-weight: 400
+    font-size: 10px
+    line-height: 150%
+    @media (min-width: 640px)
+      font-size: 14px
+    @media (min-width: 768px)
+      font-size: 18px
   .time
     position: relative
     font-weight: 600
-    font-size: 14px
+    font-size: 10px
     line-height: 150%
     color: #3BE2CD
     background: linear-gradient(111.29deg, rgba(255, 255, 255, 0.13) -1.83%, rgba(255, 255, 255, 0) 109.95%)
@@ -41,7 +53,7 @@
       align-items: center
     @media (min-width: 640px)
       padding-left: 80px
-
+      font-size: 14px
     .line
       position: absolute
       top: 0

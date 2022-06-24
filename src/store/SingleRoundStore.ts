@@ -7,6 +7,7 @@ export type Team = {
   id: string | number;
   name: string;
   score: number;
+  logo?: string;
 };
 
 // RoundProps

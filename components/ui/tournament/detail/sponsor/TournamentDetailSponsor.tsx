@@ -7,7 +7,6 @@ import { SponsorSlot, SponsorTransaction } from "src/generated/graphql";
 import s from "../../../../../styles/tournament/sponsor/index.module.sass";
 import TournamentDetailBecomeSponsor from "./TournamentDetailBecomeSponsor";
 import TournamentDetailSponsorTier from "./TournamentDetailSponsorTier";
-import { isEmpty } from "lodash";
 
 export type TiersSelectType = {
   uid: string;
@@ -17,7 +16,6 @@ export type TiersSelectType = {
   show_name?: Maybe<boolean> | undefined;
   is_full?: boolean;
   dataSponsors?: any;
-  refetchSponsor?: any;
 };
 
 type Props = {
@@ -26,15 +24,15 @@ type Props = {
   refetchTounament?: any;
   currency: any;
   type?: string;
+  refetchSponsor?: any;
 };
 
 export default function TournamentDetailSponsor(props: Props) {
-  const { tournamentId, tournament_status, refetchTounament, currency, type } = props;
+  const { tournamentId, tournament_status, refetchTounament, currency, type, refetchSponsor } = props;
   const [isBecome, setIsBecome] = useState(false);
   const {
     loading,
     dataSponsors,
-    refetchSponsor: refetch,
   } = useSponsors({
     tournament_uid: tournamentId,
   });
@@ -102,7 +100,7 @@ export default function TournamentDetailSponsor(props: Props) {
           isBecome={isBecome}
           setIsBecome={setIsBecome}
           tiersSelect={tiersSelect}
-          refetch={refetch}
+          refetchSponsor={refetchSponsor}
           tournamentId={tournamentId}
           refetchTounament={refetchTounament}
           currency={currency}

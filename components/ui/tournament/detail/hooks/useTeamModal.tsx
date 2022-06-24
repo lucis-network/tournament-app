@@ -180,6 +180,10 @@ const UseTeamModal = (tournamentData: any) => {
     setStep("add-team");
   };
 
+  const handleOpenProfile = () => {
+    setStep("profile");
+  };
+
   const handleJoinTournament = () => {
     if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
       setErrorTour({
@@ -553,6 +557,7 @@ const UseTeamModal = (tournamentData: any) => {
     handleCloseModal,
     handleChangeStep,
     stepConfiguration,
+    handleOpenProfile
   };
 };
 

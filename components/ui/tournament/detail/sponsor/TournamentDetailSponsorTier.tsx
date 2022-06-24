@@ -20,15 +20,21 @@ export default function TournamentDetailSponsorTier(
 
   const [checkBanner, setCheckBanner] = useState(false);
 
-  const newSlots: SponsorTransaction[] = [];
-
-  for (let i = 0; i < maxSponsorSlot; i++) {
-    newSlots.push({
+  const newSlots: SponsorTransaction[] = [
+    {
       uid: uniqueId("sponsor_"),
       logo: "",
       name: "",
-    } as SponsorTransaction);
-  }
+    } as SponsorTransaction
+  ];
+
+  // for (let i = 0; i < maxSponsorSlot; i++) {
+  //   newSlots.push({
+  //     uid: uniqueId("sponsor_"),
+  //     logo: "",
+  //     name: "",
+  //   } as SponsorTransaction);
+  // }
 
   if (sponsor_transactions) {
     sponsor_transactions.map((item: SponsorTransaction) => {
@@ -38,9 +44,9 @@ export default function TournamentDetailSponsorTier(
   }
 
   useEffect(() => {
-    if (newSlots && type === "banner" && index === 0) {
+    if (newSlots && index === 0) {
       newSlots.forEach((slot) => {
-        if (slot?.logo === "") {
+        if (slot?.logo !== "") {
           setCheckBanner(true);
         }
       });
@@ -50,7 +56,9 @@ export default function TournamentDetailSponsorTier(
   return (
     <div
       key={tier.uid}
-      className={`${s.tierRow} ${checkBanner ? `hidden` : ""}`}
+      className={`${s.tierRow} ${
+        !checkBanner && index === 0 && type === "banner" ? `hidden` : ""
+      }`}
     >
       <Row align="middle" justify="center">
         <Col span={24}>
@@ -59,23 +67,14 @@ export default function TournamentDetailSponsorTier(
               type !== "banner" &&
               newSlots.map((slot) => {
                 return (
-                  <>
-                    {slot?.logo && (
-                      <TournamentDetailSponsorSlot
-                        key={slot.uid}
-                        tier={tier}
-                        slot={slot}
-                      />
-                    )}
-                    {!slot?.logo && index == 0 && (
-                      <TournamentDetailSponsorSlot
-                        key={slot.uid}
-                        tier={tier}
-                        slot={slot}
-                        index={index}
-                      />
-                    )}
-                  </>
+                  <div key={slot.uid}>
+                    <TournamentDetailSponsorSlot
+                      tier={tier}
+                      slot={slot}
+                      checkBanner={checkBanner}
+                      index={index}
+                    />
+                  </div>
                 );
               })}
             {newSlots.length > 0 &&
@@ -83,23 +82,13 @@ export default function TournamentDetailSponsorTier(
               index === 0 &&
               newSlots.map((slot) => {
                 return (
-                  <>
-                    {slot?.logo && (
-                      <TournamentDetailSponsorSlot
-                        key={slot.uid}
-                        tier={tier}
-                        slot={slot}
-                      />
-                    )}
-                    {!slot?.logo && (
-                      <TournamentDetailSponsorSlot
-                        key={slot.uid}
-                        tier={tier}
-                        slot={slot}
-                        index={index}
-                      />
-                    )}
-                  </>
+                  <div key={slot.uid}>
+                    <TournamentDetailSponsorSlot
+                      tier={tier}
+                      slot={slot}
+                      //index={index}
+                    />
+                  </div>
                 );
               })}
           </div>

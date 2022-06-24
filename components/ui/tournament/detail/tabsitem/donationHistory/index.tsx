@@ -20,11 +20,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
   if (loadingDonation) {
     return <></>;
   }
-  if (dataDonation) {
-    console.log(dataDonation);
-  } else {
-    console.log(1232342);
-  }
+
   let totalDonation = 0;
   dataDonation.map((item) => {
     if ((item.amount as number) >= 0 && item.status === "SUCCEED") {
@@ -43,14 +39,14 @@ export default function DonationHistory(props: DonationHistoryProps) {
       dataIndex: ["donor_avatar", "donor_display_name"],
       render: (text: string, row: any) => (
         <div className="text-left">
-          {row.donor_avatar && (
-            <Image
-              className={s.avatar}
-              src={`${row.donor_avatar}`}
-              preview={false}
-              alt={`${row.donor_display_name}`}
-            />
-          )}
+          <Image
+            className={s.avatar}
+            src={`${
+              row.donor_avatar ? row.donor_avatar : "/assets/avatar.jpg"
+            }`}
+            preview={false}
+            alt={`${row.donor_display_name}`}
+          />
           {row.donor_display_name}
         </div>
       ),
@@ -60,15 +56,21 @@ export default function DonationHistory(props: DonationHistoryProps) {
       dataIndex: ["receiver_avatar", "receiver_display_name"],
       render: (text: string, row: any) => (
         <div className="text-left">
-          {row.receiver_avatar && (
-            <Image
-              className={s.avatar}
-              src={`${row.receiver_avatar}`}
-              preview={false}
-              alt={`${row.receiver_display_name}`}
-            />
+          {row.receiver_display_name && (
+            <>
+              <Image
+                className={s.avatar}
+                src={`${
+                  row.receiver_avatar
+                    ? row.receiver_avatar
+                    : "/assets/avatar.jpg"
+                }`}
+                preview={false}
+                alt={`${row.receiver_display_name}`}
+              />
+              {row.receiver_display_name}
+            </>
           )}
-          {row.receiver_display_name}
         </div>
       ),
     },
