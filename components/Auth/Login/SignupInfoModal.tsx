@@ -154,7 +154,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           rules={[
             {
               required: true,
-              message: 'Please input your username!'
+              message: "Please input your username!"
             },
             {
               min: 3,
@@ -165,8 +165,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               message: "Username must be maximum 16 characters."
             },
             {
-              pattern: /^[a-zA-Z0-9]*$/g,
-              message: "Valid characters are A-Z a-z 0-9."
+              pattern: /^[a-zA-Z0-9_]*$/g,
+              message: "Valid characters are A-Z a-z 0-9 and _"
             },
             {
               async validator(rule, value) {
@@ -178,7 +178,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" onChange={handleUsernameInput} />
+          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg} />
         </Form.Item>
         <Form.Item
           label="Country"
@@ -191,6 +191,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               return option?.key.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }}
             placeholder="Select country"
+            className={`${s.formFieldBg} ${s.formFieldSelect}`}
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>

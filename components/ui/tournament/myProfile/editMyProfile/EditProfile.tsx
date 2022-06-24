@@ -44,7 +44,7 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
             antMessage.error('The email address is already in use. Please try another email address.')
             break
           default:
-            antMessage.error('An unknown error has occurred. Please try again later.' )
+            antMessage.error('An unknown error has occurred. Please try again later.')
             break
         }
       }),
@@ -259,7 +259,6 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
                 label="Email"
                 name="email"
                 labelCol={{ span: 24 }}
-                style={{ marginBottom: 0 }}
                 className={s.emailField}
                 rules={[
                   {
