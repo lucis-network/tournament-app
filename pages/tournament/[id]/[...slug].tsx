@@ -205,7 +205,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       setIsPopupNotifyProfile(true);
       return;
     }
-    
+
     setIsLoadingSub(true);
     const tournamentService = new TournamentService();
 
@@ -222,7 +222,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
   const onCancelPopupNotifyProfile = () => {
     setIsPopupNotifyProfile(false);
-  }
+  };
   const handleActiveTab = (item: string) => {
     setActiveTab(item);
   };
@@ -245,9 +245,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             type={"banner"}
           />
         </div>
-        <TournamentDetailMarquee tournamentId={tournamentId as string} />
         <section className={s.tournamentInfo}>
           <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
+          <TournamentDetailMarquee tournamentId={tournamentId as string} />
             <div className={s.group_button}>
               {userLocal?.id === user?.id &&
                 tournament_status === "FINISH" &&
@@ -777,7 +777,10 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           refetchTounament={refetch}
         />
 
-        <PopupNotifyProfile status={isPopupNotifyProfile} onCancel={onCancelPopupNotifyProfile}></PopupNotifyProfile>
+        <PopupNotifyProfile
+          status={isPopupNotifyProfile}
+          onCancel={onCancelPopupNotifyProfile}
+        ></PopupNotifyProfile>
       </div>
       <LoginModal />
     </>
