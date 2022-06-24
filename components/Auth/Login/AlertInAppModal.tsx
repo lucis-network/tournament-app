@@ -34,10 +34,10 @@ const AlertInAppModal = (props: Props) => {
           <h4 style={{ marginBottom: '36px' }}>Play to relax, but earn</h4>
           <AntImage src="/assets/iconBlock.svg" alt="" width={40} height={40} preview={false} />
           <p style={{
-            fontSize: '30px',
+            fontSize: '20px',
             fontWeight: '600',
             color: 'rgba(255, 145, 83, 1)',
-            lineHeight: '38.4px',
+            lineHeight: '1.5',
             textAlign: 'center',
             marginTop: '20px'
           }}>
