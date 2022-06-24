@@ -8,6 +8,7 @@ import MissionsList from "../MissionsList";
 import { GMatch, GPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchList } from '../RecentMatchList';
 import ButtonWrapper from 'components/common/button/Button';
+import { handleGraphqlErrors } from 'utils/apollo_client';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -49,7 +50,7 @@ const Dashboard = () => {
     }
   })
 
-  const [claimBox, stateClaimBox] = useMutation(CLAIM_BOX, {
+  const [claimBox] = useMutation(CLAIM_BOX, {
     context: {
       endpoint: 'p2e'
     }
@@ -118,14 +119,23 @@ const Dashboard = () => {
       })
 
       message.success("Claim successfully!");
-    } catch (error) {
-      if (stateClaimBox.error?.graphQLErrors[0].extensions?.code === "MISSION_NOT_COMPLETE") {
-        message.error("You must complete all mission to claim!");
-      } else if (stateClaimBox.error?.graphQLErrors[0].extensions?.code === "HAS_CLAIMED") {
-        message.error("You has claimed!");
-      } else {
-        message.error("Something was wrong! Please contact to Lucis network!");
-      }
+    } catch (error: any) {
+      handleGraphqlErrors(error, (code) => {
+        switch (code) {
+          case "MISSION_NOT_COMPLETE":
+            message.error("You must complete all mission to claim!");
+            return;
+          case "HAS_CLAIMED":
+            message.error("You has claimed!");
+            return;
+          case "INVALID_PLATFORM_ID":
+            message.error("You must connect faceit to continue!");
+            return;
+          default:
+            message.error("Something was wrong! Please contact to Lucis network!");
+            return;
+        }
+      })
     }
 
 

@@ -5,6 +5,7 @@ import SpinLoading from "../common/Spin";
 import { PlayerMission } from "../../../src/generated/graphql_p2e";
 
 import MissionItem from "./MissionItem";
+import { isEmpty } from 'lodash';
 
 type MissionsListProp = {
   title?: string;
@@ -81,9 +82,11 @@ const MissionsList = ({
         {loading ? (
           <SpinLoading />
         ) : (
-          missions?.map((mission: PlayerMission, index: number) => {
-            return <MissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={() => handleUpdateMissions(false)} />;
-          })
+          isEmpty(missions)
+            ? <div className={s.blankState}>No missions found.</div>
+            : missions?.map((mission: PlayerMission, index: number) => {
+              return <MissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={() => handleUpdateMissions(false)} />;
+            })
         )}
       </div>
     </div>
