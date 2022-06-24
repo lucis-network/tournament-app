@@ -1,26 +1,4 @@
 
-.lucisButton
-  position: relative
-  width: auto
-  height: auto
-  margin-top: 4px
-.wrapper
-  position: absolute
-  top: -4px
-  left: -4px
-  height: calc(100% + 8px)
-  width: calc(100% + 8px)
-  border: 2px solid
-  border-image-slice: 1
-  border-image-source: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
-.wrapperDisabled
-  position: absolute
-  top: -4px
-  left: -4px
-  height: calc(100% + 8px)
-  width: calc(100% + 8px)
-  border: 2px solid
-  border-color: #808080
 .customCss:global(.ant-btn-primary)
   background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
   border-color: none
@@ -28,6 +6,18 @@
   width: inherit
   span
     color: #000625
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+    border: 2px solid #000
+    display: flex
+    position: absolute
+    top: 1.5px
+    left: 1.5px
+    right: 1.5px
+    bottom: 1.5px
+    justify-content: center
+    align-items: center
+    line-height: 1,
+    font-size: 12px
 
 .customCss:global(.ant-btn-primary:hover)
   background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
@@ -54,6 +44,18 @@
   width: inherit
   span
     color: #000625
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+    border: 2px solid #000
+    display: flex
+    position: absolute
+    top: 1.5px
+    left: 1.5px
+    right: 1.5px
+    bottom: 1.5px
+    justify-content: center
+    align-items: center
+    line-height: 1
+    font-size: 12px
 
 .customCss:global(.ant-btn-default:hover)
   background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
@@ -72,6 +74,18 @@
     background: transparent
     span
       color: #808080
+      background: transparent
+      border: 2px solid #808080
+      display: flex
+      position: absolute
+      top: -2.5px
+      left: -2.5px
+      right: -2.5px
+      bottom: -2.5px
+      justify-content: center
+      align-items: center
+      line-height: 1
+      font-size: 12px
 
 // .customCss.ant-btn-default:hover,
 // .customCss .ant-btn-default:focus,

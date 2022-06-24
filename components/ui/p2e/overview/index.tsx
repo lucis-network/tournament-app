@@ -125,7 +125,11 @@ export default observer(function P2EOverview() {
             history.replaceState(null, '', ' ')
             if (fetch.error?.graphQLErrors[0].extensions.code === "ALREADY_CONNECTED") {
               message.error("This account is already connected to another user! Please use another account.")
-            } else {
+            }
+            if (fetch.error?.graphQLErrors[0].extensions.code === "HAS_NOT_CSGO") {
+              message.error("You must connect csgo to use platform!");
+            }
+            else {
               message.error("Something was wrong. Please contact to lucis network for assistance.")
             }
           }
