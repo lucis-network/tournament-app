@@ -297,7 +297,7 @@ export default function TournamentDetailBecomeSponsor(
           </Col>
           <Col xs={{ span: 24 }} md={{ span: 16 }}>
             <Select
-              style={{ width: "100%" }}
+              className={s.selectTier}
               defaultValue={tierUid}
               onChange={handleTierChange}
               status={is_full ? "error" : ""}

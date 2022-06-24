@@ -59,7 +59,7 @@ const TournamentDetailMarquee = (props: Props) => {
   }, [titleSpotlight]);
 
   return (
-    <div className={`lucis-container-2 ${s.marquee_section}`}>
+    <div className={`${s.marquee_section}`}>
       {timer ? (
         <div className={s.marquee}>
           <img src="/assets/Banner/ic_loudspeaker.png" alt="" />
