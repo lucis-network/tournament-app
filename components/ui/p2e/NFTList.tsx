@@ -2,12 +2,13 @@ import React from 'react'
 import s from "./p2e.module.sass";
 import { Button, Col, Row } from "antd";
 import NFTCategories from './NFTCategories';
+import ButtonWrapper from 'components/common/button/Button';
 
 
 interface IProps {
 }
 
-const OnUsingNFTs = (props: IProps) => {
+const NFTList = (props: IProps) => {
   const [openNFTCategories, setOpenNFTCategories] = React.useState<boolean>(false);
 
   return (
@@ -16,25 +17,85 @@ const OnUsingNFTs = (props: IProps) => {
       <div className={s.nftCategories}>
         <div className={s.subTitle}>Equip your NFTs to earn Lucis token and more prizes for NFTs gamers <br />
           You will receive the corresponding bonus:</div>
-        <Row gutter={16}>
+        <Row gutter={16} style={{ marginTop: 12 }}>
           <Col span={6}>
             <div className={s.cardWrap}>
               <div className={s.card}>
-                <img src="/assets/P2E/nfts/card1.png" alt="card1" />
+                <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
                 <div className={s.coin}>
-                  <div className={s.lucisPoint}>
+                  <div className={s.rewardItem}>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
-                    +15%
+                    <span className={s.lucisPoint}>+15%</span>
                   </div>
-                  <div className={s.lucisToken}>
+                  <div className={s.rewardItem}>
                     <img src="/assets/P2E/lucis-token.svg" alt="" />
-                    +15%
+                    <span>+15%</span>
                   </div>
                 </div>
               </div>
             </div>
             <div className={s.buttonWrapper}>
-              <Button type="primary" onClick={() => setOpenNFTCategories(true)}>Equip</Button>
+              <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
+            </div>
+          </Col>
+          <Col span={6}>
+            <div className={s.cardWrap}>
+              <div className={s.card}>
+                <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
+                <div className={s.coin}>
+                  <div className={s.rewardItem}>
+                    <img src="/assets/P2E/lucis-point.svg" alt="" />
+                    <span className={s.lucisPoint}>+15%</span>
+                  </div>
+                  <div className={s.rewardItem}>
+                    <img src="/assets/P2E/lucis-token.svg" alt="" />
+                    <span>+15%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={s.buttonWrapper}>
+              <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
+            </div>
+          </Col>
+          <Col span={6}>
+            <div className={s.cardWrap}>
+              <div className={s.card}>
+                <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
+                <div className={s.coin}>
+                  <div className={s.rewardItem}>
+                    <img src="/assets/P2E/lucis-point.svg" alt="" />
+                    <span className={s.lucisPoint}>+15%</span>
+                  </div>
+                  <div className={s.rewardItem}>
+                    <img src="/assets/P2E/lucis-token.svg" alt="" />
+                    <span>+15%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={s.buttonWrapper}>
+              <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
+            </div>
+          </Col>
+          <Col span={6}>
+            <div className={s.cardWrap}>
+              <div className={s.card}>
+                <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
+                <div className={s.coin}>
+                  <div className={s.rewardItem}>
+                    <img src="/assets/P2E/lucis-point.svg" alt="" />
+                    <span className={s.lucisPoint}>+15%</span>
+                  </div>
+                  <div className={s.rewardItem}>
+                    <img src="/assets/P2E/lucis-token.svg" alt="" />
+                    <span>+15%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className={s.buttonWrapper}>
+              <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
             </div>
           </Col>
 
@@ -50,4 +111,4 @@ const OnUsingNFTs = (props: IProps) => {
   )
 }
 
-export default OnUsingNFTs
+export default NFTList
