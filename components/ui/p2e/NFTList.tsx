@@ -14,8 +14,8 @@ const NFTList = (props: IProps) => {
     <>
       {/* {openNFTCategories && <NFTCategories onClose={() => setOpenNFTCategories(false)} />} */}
       <div className={s.nftCategories}>
-        <div className={s.subTitle}>Equip your NFTs to earn Lucis token and more prizes for NFTs gamers <br />
-          You will receive the corresponding bonus:</div>
+        {/* <div className={s.subTitle}>Equip your NFTs to earn Lucis token and more prizes for NFTs gamers <br />
+          You will receive the corresponding bonus:</div> */}
         <div style={{ marginTop: 12 }} className={s.cardList}>
           <div className={s.cardItem}>
             <div className={s.cardWrap}>
@@ -97,6 +97,12 @@ const NFTList = (props: IProps) => {
               <ButtonWrapper type="primary" onClick={() => null}>Equip</ButtonWrapper>
             </div>
           </div>
+        </div>
+        <div className={s.comingSoon}>
+          <h2>Coming soon</h2>
+          <div className={s.comingSoonSubTitle}>your nfts card</div>
+          <p>Equip your NFTs to earn Lucis token and more prizes for NFTs gamers <br />
+            You will receive the corresponding bonus</p>
         </div>
       </div>
     </>

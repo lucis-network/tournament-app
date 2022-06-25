@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import s from "./p2e.module.sass";
+import s from "./dailyMission.module.sass";
 import { Col, message, Progress, Row } from "antd";
-import { MissionType, PlayerMission } from "../../../src/generated/graphql_p2e";
+import { MissionType, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
-import ButtonWrapper from "../../common/button/Button";
+import ButtonWrapper from "../../../common/button/Button";
 import moment from "moment";
 
 type MissionItemProp = {
@@ -12,7 +12,7 @@ type MissionItemProp = {
   handleUpdateMissions?: () => void;
 };
 
-const MissionItem = (props: MissionItemProp) => {
+const DailyMissionItem = (props: MissionItemProp) => {
   const { mission, handleUpdateMissions } = props;
   const [loading, setLoading] = useState(false);
 
@@ -30,7 +30,7 @@ const MissionItem = (props: MissionItemProp) => {
 
   const handleClaimMission = async (mission: PlayerMission) => {
     claimMission({
-      variables: { mission_uid: mission?.mission_uid },
+      variables: { player_mission_uid: mission?.uid },
       onCompleted: (data) => {
         message.success("Claimed!");
         if (handleUpdateMissions) {
@@ -150,4 +150,4 @@ const MissionItem = (props: MissionItemProp) => {
   );
 };
 
-export default MissionItem;
+export default DailyMissionItem;

@@ -121,6 +121,7 @@ export const GET_OR_SET_DAILY_MISSION = gql`
   mutation ($game_uid: String!, $platform_id: Int!) {
     getOrSetDailyMission(game_uid: $game_uid, platform_id: $platform_id) {
       achieved
+      uid
       mission_uid
       is_claim
       updated_at
@@ -146,6 +147,7 @@ export const UPDATE_DAILY_MISSION = gql`
   mutation ($game_uid: String!, $platform_id: Int!) {
     updateDailyMission(game_uid: $game_uid, platform_id: $platform_id) {
       achieved
+      uid
       updated_at 
       mission_uid
       mission {
@@ -190,8 +192,8 @@ export const UPDATE_RECENTLY_MATCH = gql`
 `
 
 export const CLAIM_MISSION = gql`
-  mutation ($mission_uid: String!) {
-    claimMission(mission_uid: $mission_uid)
+  mutation ($player_mission_uid: String!) {
+    claimMission(player_mission_uid: $mission_uid)
   }
 `
 
@@ -305,6 +307,31 @@ export const GET_STATISTIC_MATCH = gql`
         end_at,
         most_kill,
         point
+    }
+  }
+`
+
+export const GET_LUCIS_MISSION = gql`
+  query ($game_uid: String!, $platform_id: Int!) {
+    getLucisMission(game_uid: $game_uid, platform_id: $platform_id) {
+      achieved
+      mission_uid
+      is_claim
+      updated_at
+      mission {
+        level {
+          lucis_point
+          level
+          lucis_token
+        }
+        uid
+        title
+        game_uid
+        img
+        goal
+        type
+        map
+      }
     }
   }
 `

@@ -39,7 +39,7 @@ export default observer(function P2EWrapper(props: IProps) {
   ];
 
   const isDisabledTab = (tab: string) => {
-    if (tab === "/p2e/missions" || tab === "/p2e/raffles" || tab === "/p2e/items" || tab === "/p2e/battle-pass") {
+    if (tab === "/p2e/raffles" || tab === "/p2e/items" || tab === "/p2e/battle-pass") {
       return true;
     }
 
@@ -74,12 +74,6 @@ export default observer(function P2EWrapper(props: IProps) {
             </div>
           </div>
           <div className={s.p2eContent}>
-            {/* {tabActive === "Overview" && <P2EOverview faceitUser={faceitUser} isLoadingFaceitUser={loadingFaceit} />}
-            {tabActive === "Dashboard" && <Dashboard />}
-            {tabActive === "Missions" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
-            {tabActive === "Raffles" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
-            {tabActive === "Items" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>}
-            {tabActive === "Battle pass" && <h2 style={{ color: "#fff", textAlign: "center", fontSize: 20, marginTop: 30 }}>Coming Soon</h2>} */}
             {props.children}
           </div>
         </div>

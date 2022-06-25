@@ -480,6 +480,16 @@ export type GamePlatform = {
   updated_at: Scalars['DateTime'];
 };
 
+export type LucisMission = {
+  __typename?: 'LucisMission';
+  created_at: Scalars['DateTime'];
+  group: Scalars['Int'];
+  mission: Mission;
+  mission_uid: Scalars['String'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
 export type Match = {
   __typename?: 'Match';
   _count: MatchCount;
@@ -558,6 +568,7 @@ export type Mission = {
   is_daily_mission: Scalars['Boolean'];
   level: MissionLevel;
   level_id: Scalars['Int'];
+  lucis_mission?: Maybe<Array<LucisMission>>;
   map?: Maybe<Scalars['String']>;
   mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
@@ -571,6 +582,7 @@ export type Mission = {
 export type MissionCount = {
   __typename?: 'MissionCount';
   claim_mission: Scalars['Int'];
+  lucis_mission: Scalars['Int'];
   player_mission: Scalars['Int'];
   user_daily_mission: Scalars['Int'];
 };
@@ -625,12 +637,14 @@ export type Mutation = {
   claimMission?: Maybe<Scalars['Boolean']>;
   claimRaffle?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
+  connect?: Maybe<PlatformAccountDto>;
   /** Connect Faceit */
   connectFaceit: PlatformAccountDto;
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
-  rerollMission?: Maybe<PlayerMission>;
+  joinDiscord?: Maybe<Scalars['Boolean']>;
+  rerollDailyMission?: Maybe<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
   updateRecentlyMatch: Array<GPlayerMatch>;
@@ -661,7 +675,7 @@ export type MutationClaimBoxArgs = {
 
 
 export type MutationClaimMissionArgs = {
-  mission_uid: Scalars['String'];
+  player_mission_uid: Scalars['String'];
 };
 
 
@@ -673,6 +687,14 @@ export type MutationClaimRaffleArgs = {
 export type MutationClaimStakedArgs = {
   staked_uid: Scalars['String'];
   tx_hash: Scalars['String'];
+};
+
+
+export type MutationConnectArgs = {
+  avatar: Scalars['String'];
+  nick_name: Scalars['String'];
+  player_id: Scalars['String'];
+  user_id: Scalars['Int'];
 };
 
 
@@ -693,7 +715,7 @@ export type MutationGetOrSetDailyMissionArgs = {
 };
 
 
-export type MutationRerollMissionArgs = {
+export type MutationRerollDailyMissionArgs = {
   platform_id: Scalars['Int'];
   player_mission_uid: Scalars['String'];
 };
@@ -955,7 +977,7 @@ export type Query = {
   getBalance?: Maybe<GBalance>;
   getBiggestRaffles?: Maybe<Array<Raffle>>;
   getExistedRaffleTicketAmount?: Maybe<Scalars['Float']>;
-  getLucisMission?: Maybe<Array<PlayerMission>>;
+  getLucisMission: Array<PlayerMission>;
   getLuckyGuys?: Maybe<Array<Raffle>>;
   getMatchStatistic?: Maybe<MatchStatistics>;
   getPlatformAccount?: Maybe<Array<PlatformAccount>>;
@@ -964,6 +986,7 @@ export type Query = {
   getRaffles?: Maybe<Array<Raffle>>;
   getRecentlyMatch: GMatch;
   getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
+  isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   searchRaffle?: Maybe<Array<Raffle>>;
 };
@@ -1027,7 +1050,7 @@ export type Raffle = {
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
   is_claim: Scalars['Boolean'];
-  lucis_point?: Maybe<Scalars['Int']>;
+  lucis_point_reward?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   raffle_winner?: Maybe<User>;
   regions: Scalars['String'];
@@ -1296,7 +1319,7 @@ export type Tournament = {
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
   status: TournamentStatus;
-  systemSponsor?: Maybe<SystemSponsor>;
+  systemSponsors?: Maybe<Array<SystemSponsor>>;
   team_size: Scalars['Int'];
   thumbnail: Scalars['String'];
   tournamentDeposit?: Maybe<TournamentDeposit>;
@@ -1319,6 +1342,7 @@ export type TournamentCount = {
   ranks: Scalars['Int'];
   reaction: Scalars['Int'];
   sponsorSlot: Scalars['Int'];
+  systemSponsors: Scalars['Int'];
   tournament_subscribes: Scalars['Int'];
 };
 
@@ -1427,9 +1451,21 @@ export type User = {
   tournament?: Maybe<Array<Tournament>>;
   tournamentSubscriber?: Maybe<Array<TournamentSubscriber>>;
   updated_at: Scalars['DateTime'];
+  user_bonus?: Maybe<UserBonus>;
   user_ticket?: Maybe<Array<UserTicket>>;
   withdraws?: Maybe<Array<WithdrawTransaction>>;
   won_raffles?: Maybe<Array<Raffle>>;
+};
+
+export type UserBonus = {
+  __typename?: 'UserBonus';
+  created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  is_join_discord: Scalars['Boolean'];
+  is_refer_friend: Scalars['Boolean'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
 };
 
 export type UserCount = {
