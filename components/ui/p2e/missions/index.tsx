@@ -2,21 +2,15 @@ import React, { useEffect, useState } from 'react'
 import s from '../dashboard/dashboard.module.sass'
 import { Col, message, Row } from "antd"
 import {
-  CLAIM_BOX,
   GET_LUCIS_MISSION,
-  GET_OR_SET_DAILY_MISSION,
   GET_STATISTICS,
-  UPDATE_DAILY_MISSION,
-  UPDATE_RECENTLY_MATCH,
-  useGetRecentMatches
 } from "../../../../hooks/p2e/useP2E";
 
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import MissionsList from "../missionComponent/MissionsList";
-import { GMatch, GPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
+import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import ButtonWrapper from 'components/common/button/Button';
 import NFTList from '../NFTList';
-import { handleGraphqlErrors } from 'utils/apollo_client';
 
 const Mission = () => {
   const [loading, setLoading] = useState(false);
