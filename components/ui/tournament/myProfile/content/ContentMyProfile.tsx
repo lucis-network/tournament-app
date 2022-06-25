@@ -15,6 +15,7 @@ type ContentMyProfileProps = {
   isOwner?: boolean;
   userInfo: UserGraphql;
   getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>;
+  page?: string;
 };
 
 const { TabPane } = Tabs;
@@ -23,19 +24,21 @@ export default observer(function ContentMyProfile({
   isOwner,
   userInfo,
   getUserProfileRefetch,
+  page,
 }: ContentMyProfileProps) {
-  const { tabActiveKey } = MyProfileStore;
+  const tabActiveKey = page ?? 'overview';
+  const router = useRouter();
+  const user_name = router.query.username;
   const handleTabClick = (key: string) => {
-    MyProfileStore.tabActiveKey = key;
+    if (key === 'overview') {
+      router.push(`/profile${!isOwner ? `/${user_name}` : ''}`)
+    } else {
+      router.push(`/profile${!isOwner ? `/${user_name}` : ''}?page=${key}`)
+    }
   };
 
-  const route = useRouter();
-  useEffect(() => {
-    if (route?.query?.tab === "teams") MyProfileStore.tabActiveKey = "2";
-  }, []);
-
   const handleBeforeHistoryChange = (url: string) => {
-    if(url.includes("/tournament/") && route?.query?.tab === "teams") {
+    if(url.includes("/tournament/") && router?.query?.page === "teams") {
       TournamentStore.checkBacktoTournament = true;
     }
   };
@@ -55,20 +58,20 @@ export default observer(function ContentMyProfile({
       onTabClick={handleTabClick}
       className={s.container_Tabs}
     >
-      <TabPane tab="Overview" key="1">
+      <TabPane tab="Overview" key="overview">
         <MyOverview
           userInfo={userInfo}
           getUserProfileRefetch={getUserProfileRefetch}
           isOwner={isOwner}
         />
       </TabPane>
-      <TabPane tab="Teams" key="2">
+      <TabPane tab="Teams" key="teams">
         <MyTeamDetail isOwnerProp={isOwner} />
       </TabPane>
-      <TabPane tab="For Sponsor" disabled key="3">
+      <TabPane tab="For Sponsor" disabled key="sponsor">
         Content of Tab Pane 3
       </TabPane>
-      <TabPane tab="Tournaments" key="4">
+      <TabPane tab="Tournaments" key="tournaments">
         <MyTournament
           userInfo={userInfo}
           getUserProfileRefetch={getUserProfileRefetch}

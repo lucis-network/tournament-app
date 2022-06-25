@@ -37,7 +37,9 @@
       .slotWrap
         padding-bottom: 20px
         padding-top: 20px
-        background: rgba(61, 59, 59, 0.4)
+        background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.2) 0.33%, rgba(11, 235, 214, 0.2) 99.88%)
+        mix-blend-mode: normal
+        //opacity: 0.4
         backdrop-filter: blur(20px)
         border-radius: 8px
         @media screen and (min-width: 768px)
@@ -169,6 +171,10 @@
 .sponsorDetailForm
   label
     color: #ffffff !important
+  .selectTier
+    width: 100%
+    :global(.ant-select-item-option-disabled .ant-select-item-option-selected)
+      background-color: transparent
 .message_error
   font-size: 14px
   margin-top: 4px
@@ -180,3 +186,17 @@
   :global(.ant-input[disabled])
     background: #8b8b8b
     color: #ffffff
+.sponsorSlotHidden
+  display: none !important
+
+.btnContainter
+  display: flex
+  justify-content: flex-end
+  margin-top: 10px
+  .btnConfirm
+    color: #FFF !important
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%) !important
+    border-radius: 4px
+    border: none
+  :global(.ant-btn-default:hover)
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)

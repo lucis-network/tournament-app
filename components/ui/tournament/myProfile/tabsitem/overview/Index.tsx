@@ -22,6 +22,7 @@ import Link from "next/link";
 import { isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandHoldingHeart, faPlay } from "@fortawesome/free-solid-svg-icons";
+import { useRouter } from "next/router";
 
 type MyOverviewProps = {
   isOwner?: boolean;
@@ -35,6 +36,8 @@ export default observer(function MyOverview({
   getUserProfileRefetch,
 }: MyOverviewProps) {
   const [gameToDelete, setGameToDelete] = useState<string>("");
+  const router = useRouter();
+  const user_name = router.query.username;
   const { joinedTournamentData } = useGetJoinedTournament({
     user_id: `${userInfo?.id}`,
     skip: isEmpty(userInfo?.id),
@@ -60,12 +63,12 @@ export default observer(function MyOverview({
   });
   const [favoriteGameIDs, setFavoriteGameIDs] = useState<string[]>([]);
 
-  const handleTournamentShowMore = (key: string) => {
-    MyProfileStore.tabActiveKey = key;
+  const handleTournamentShowMore = () => {
+    router.push(`/profile${!isOwner ? `/${user_name}` : ''}?page=tournaments`)
   };
 
-  const handleTeamShowMore = (key: string) => {
-    MyProfileStore.tabActiveKey = key;
+  const handleTeamShowMore = () => {
+    router.push(`/profile${!isOwner ? `/${user_name}` : ''}?page=teams`)
   };
 
   const handleDisconnectWallet = () => {
@@ -178,7 +181,7 @@ export default observer(function MyOverview({
                   />
                 </div>
                 <Button
-                  onClick={() => handleTournamentShowMore("4")}
+                  onClick={handleTournamentShowMore}
                   className={s.btnMore}
                 >
                   Show more
@@ -274,7 +277,7 @@ export default observer(function MyOverview({
                         <CardTeam key={team.team_uid} team={team} />
                       ))}
                     <Button
-                      onClick={() => handleTeamShowMore("2")}
+                      onClick={handleTeamShowMore}
                       type="link"
                       className={s.btnLink}
                     >

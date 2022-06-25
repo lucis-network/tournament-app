@@ -30,7 +30,8 @@ export const createSeed = (item: BracketMatch, idx: number, listTeam: PlayTeamGq
       id: item.playteam1_uid !== "bye" ? (item.playteam1_uid ?? "") : "",
       name: item.playteam1_uid !== "bye" ? team1.team.name : "",
       score: item.score_1 ?? 0,
-    };
+      logo: team1.team.avatar,
+    } as Team;
 
   const roundTeam2: Team = !team2
     ? _defaultRoundTeam()
@@ -38,7 +39,8 @@ export const createSeed = (item: BracketMatch, idx: number, listTeam: PlayTeamGq
       id: item.playteam2_uid !== "bye" ? (item.playteam2_uid ?? "") : "",
       name: item.playteam2_uid !== "bye" ? team2.team.name : "",
       score: item.score_2 ?? 0,
-    };
+      logo: team2.team.avatar,
+    } as Team;
 
   return {
     uid: item.uid,

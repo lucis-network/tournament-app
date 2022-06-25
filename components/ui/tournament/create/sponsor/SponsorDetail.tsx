@@ -16,9 +16,7 @@ import {
   Form, Image,
 } from "antd";
 import { observer } from "mobx-react";
-import CircleImage from "components/ui/common/images/CircleImage";
 import Text from "antd/lib/typography/Text";
-import TournamentStore from "../../../../../src/store/TournamentStore";
 import { myBucket, S3_BUCKET } from "components/ui/common/upload/UploadImage";
 import { ISponsorSlot, SponsorSlot, SponsorTierStore } from "./SponsorStore";
 import s from "./index.module.sass";

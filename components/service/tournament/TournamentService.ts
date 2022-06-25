@@ -111,6 +111,22 @@ export default class TournamentService {
     return donationResponse;
   }
 
+  public async claimRefereeFee(claim: ClaimDonation): Promise<any> {
+    const claimRefereeFeeResponse = await apoloClient.mutate({
+      mutation: gql`
+        mutation claimRefereeFee($tournament_uid: String!, $address: String!) {
+          claimRefereeFee(tournament_uid: $tournament_uid, address: $address)
+        }
+      `,
+      variables: {
+        tournament_uid: claim.tournament_uid,
+        address: claim.address,
+      },
+    });
+
+    return claimRefereeFeeResponse;
+  }
+
   public async claimPrizePool(claim: ClaimPrizePool): Promise<any> {
     const claimPrizePool = await apoloClient.mutate({
       mutation: gql`

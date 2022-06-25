@@ -180,6 +180,10 @@ const UseTeamModal = (tournamentData: any) => {
     setStep("add-team");
   };
 
+  const handleOpenProfile = () => {
+    setStep("profile");
+  };
+
   const handleJoinTournament = () => {
     if (checkEmptyPrize || checkTotalPrize || checkEmptyUserId) {
       setErrorTour({
@@ -393,7 +397,7 @@ const UseTeamModal = (tournamentData: any) => {
               <div className={s.chooseGameBtn}>
                 <button
                   className={s.button}
-                  onClick={() => handleRoutes("/profile?tab=teams")}
+                  onClick={() => handleRoutes("/profile?page=teams")}
                 >
                   Manage your team
                 </button>
@@ -527,7 +531,7 @@ const UseTeamModal = (tournamentData: any) => {
           <div className="flex justify-end align-middle items-center mt-8">
             <button
               className={`${s.button} mr-4 !w-max`}
-              onClick={() => handleRoutes(`/profile`)}
+              onClick={() => handleRoutes(`/profile?page=edit`)}
             >
               Go to my profile
             </button>
@@ -553,6 +557,7 @@ const UseTeamModal = (tournamentData: any) => {
     handleCloseModal,
     handleChangeStep,
     stepConfiguration,
+    handleOpenProfile
   };
 };
 

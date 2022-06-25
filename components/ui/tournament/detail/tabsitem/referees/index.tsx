@@ -42,7 +42,7 @@ export default function Referees(props: Props) {
 
   const columnsReferees = [
     {
-      title: "NO",
+      title: "No",
       dataIndex: "no",
       key: "no",
       width: "10%",
