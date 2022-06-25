@@ -1,27 +1,43 @@
 .nftCategories
-  h2
-    font-size: 25px
-    color: #fff
-    margin: 0
-  .cardWrap
+  margin-bottom: 80px
+  position: relative
+  .subTitle
+    font-weight: 400
+    font-size: 16px
+    line-height: 24px
+    color: rgba(255, 255, 255, 0.8)
+    margin-top: 16px
+  .cardList
     display: flex
-    flex-direction: column
-    align-items: center
-    margin-bottom: 10px
-  .card
-    height: 300px,
-    background: rgba(45, 52, 70, 0.5),
-    backdrop-filter: blur(12px),
-    width: 100%,
-    margin-fottom: 10px,
-    position: relative,
-    display: flex,
-    flex-direction: column
-    justify-content: center
-    align-items: center
-  .buttonWrapper
-    margin: 10px
-    button
+    justify-content: space-between
+    overflow: auto
+    .cardItem
+      margin-right: 16px
+    .cardWrap
+      display: flex
+      flex-direction: column
+      align-items: center
+      margin-bottom: 10px
+      @media screen and ( max-width: 768px )
+        min-width: 212px
+
+    .card
+      height: 300px,
+      background: rgba(45, 52, 70, 0.5),
+      backdrop-filter: blur(12px),
+      width: 100%,
+      margin-fottom: 10px,
+      position: relative,
+      display: flex,
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      padding: 25px 24px 0
+      .nftImage
+        width: 162px
+        height: 216px
+    .buttonWrapper
+      margin: 10px
       text-align: center
   .tier
     border: 1px solid rgb(255 255 255 / 57%)
@@ -29,18 +45,42 @@
     margin-bottom: 20px
   .tierTitle
     font-size: 20px
-  img
-    width: 162px
-    height: 216px
-    margin-top: 25px
   .coin
     display: flex
     justify-content: space-between
     font-size: 12px
-    img
-      width: 28px
-      height: 28px
-      margin: 0
+    padding: 26px 25px 20px 25px
+    width: 100%
+  .comingSoon
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-color: #000625CC
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    h2
+      font-weight: 600
+      font-size: 40px
+      line-height: 44px
+      text-transform: uppercase
+    p
+      font-weight: 400
+      font-size: 16px
+      line-height: 24px
+      text-align: center
+
+      color: rgba(255, 255, 255, 0.8)
+    .comingSoonSubTitle
+      font-style: normal
+      font-weight: 400
+      font-size: 24px
+      line-height: 26px
+      text-transform: uppercase
+      color: #DBE0E8
 .rewardItem
   display: flex
   align-items: center
@@ -53,133 +93,6 @@
     align-items: center
   .lucisPoint
     color: #DF9B16
-.missionsList
-  .missionItem
-    border-radius: 4px
-    background: rgba(69, 80, 107, 0.5)
-    backdrop-filter: blur(6px)
-    padding: 16px
-    // padding: 15px
-    margin-bottom: 20px
-    .missionInfo
-      .missionContent
-        display: flex
-        .missionLogo
-          background: #ffffff
-          border-radius: 4px
-          height: 64px
-          min-width: 64px
-        .missionTitle
-          margin-left: 12px
-          h4
-            font-size: 16px
-            font-weight: 500
-            line-height: 24px
-            margin: 0
-            margin-bottom: 8px
-          span
-            font-size: 14px
-            line-height: 21px
-            font-weight: 400
-            opacity: 0.5
-          img
-            margin-bottom: 3px
-            opacity: 1
-
-      .missionReward
-        display: flex
-        font-size: 14px
-        font-weight: 400
-        line-height: 21px
-        // flex-direction: column
-        align-items: center
-        margin-top: 16px
-    .missionState
-      align-items: center
-      height: 100%
-      .missionAction
-        width: 120px
-        justify-content: flex-end
-        display: flex
-        img
-          text-align: center
-      .missionProgress
-        display: flex
-        justify-content: flex-end
-        width: 100%
-        :global(.ant-progress-text)
-          color: rgba(255, 255, 255, 0.5)
-        :global(.ant-progress-circle-trail)
-          stroke: #6B6C6C
-      .missionProgressFinish
-        :global(.ant-progress-text)
-          color: #fff
-        :global(.ant-progress-circle-trail)
-          stroke: #6B6C6C
-  .header
-    display: flex
-    margin-bottom: 16px
-    position: relative
-    width: 100%
-    justify-content: space-between
-    .checkListMission
-      display: flex
-      .checkListMissionItem
-        display: flex
-        flex-direction: column
-        align-items: center
-        margin-right: 16px
-        .csgoImage
-          width: 40px
-          height: 40px
-          margin-bottom: 8px
-          filter: drop-shadow(0px 1px 8px rgba(0, 249, 255, 0.8))
-          border: 0.5px solid #00F9FF
-          border-radius: 2px
-    .headerRight
-      .rewardBox
-        background: linear-gradient(90.88deg, rgba(156, 248, 241, 0) 5.37%, rgba(0, 240, 255, 0.26) 99.25%)
-        backdrop-filter: blur(12px)
-        height: 62px
-        // width: 500px
-        margin-right: 60px
-        position: relative
-        display: flex
-        align-items: center
-        justify-content: center
-        color: #12B0B4
-        font-size: 14px
-        line-height: 20px
-        @media only screen and (max-width: 450px)
-          justify-content: flex-start
-          height: 24px
-          font-size: 10px
-          margin-top: 20px
-        img
-          position: absolute
-          right: -65px
-          bottom: -10px
-          cursor: pointer
-      .updateButton
-        display: flex
-        justify-content: flex-end
-        align-items: center
-        cursor: pointer
-        text-align: right
-        line-height: 62px
-
-        img
-          margin-left: 40px
-          margin-right: 5px
-          height: 18px
-        .spinner
-          animation: spin 2s linear 0s infinite
-
-  .subHeader
-    p
-      font-size: 16px
-      margin-bottom: 12px
-
 .recentMatchList
   margin-bottom: 20px
   .recentMatchHeaderList

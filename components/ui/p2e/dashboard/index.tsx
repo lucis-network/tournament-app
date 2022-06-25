@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import s from './dashboard.module.sass'
 import { Col, message, Row } from "antd"
-import { CLAIM_BOX, GET_OR_SET_DAILY_MISSION, GET_STATISTICS, UPDATE_DAILY_MISSION, UPDATE_RECENTLY_MATCH, useGetRecentMatches } from "../../../../hooks/p2e/useP2E";
+import {
+  CLAIM_BOX,
+  GET_OR_SET_DAILY_MISSION,
+  GET_STATISTICS,
+  UPDATE_DAILY_MISSION,
+  UPDATE_RECENTLY_MATCH,
+  useGetRecentMatches
+} from "../../../../hooks/p2e/useP2E";
 
 import { useMutation, useQuery } from "@apollo/client";
-import MissionsList from "../MissionsList";
 import { GMatch, GPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchList } from '../RecentMatchList';
 import ButtonWrapper from 'components/common/button/Button';
+import NFTList from '../NFTList';
 import { handleGraphqlErrors } from 'utils/apollo_client';
+import DailyMissionList from '../missionComponent/DailyMissionList';
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
@@ -179,12 +187,18 @@ const Dashboard = () => {
         </Row>
         <Row gutter={40}>
           <Col xl={16} md={24}>
+            <div>
+              {/* <h2>
+                Your NFTs card
+              </h2> */}
+              <NFTList />
+            </div>
             <div className={s.dailyTitle}>
               <h2>
                 Daily Mission
               </h2>
             </div>
-            <MissionsList
+            <DailyMissionList
               title="Daily missions"
               missions={dailyMission}
               handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
@@ -202,7 +216,7 @@ const Dashboard = () => {
                   Today:
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / 300</span>
+                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / --</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>

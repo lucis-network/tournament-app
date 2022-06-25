@@ -1,11 +1,10 @@
 import React from 'react'
-import s from "./p2e.module.sass";
+import s from "./dailyMission.module.sass";
 import { Row, Col } from "antd";
-import SpinLoading from "../common/Spin";
-import { PlayerMission } from "../../../src/generated/graphql_p2e";
-
-import MissionItem from "./MissionItem";
+import SpinLoading from "../../common/Spin";
+import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { isEmpty } from 'lodash';
+import DailyMissionItem from './DailyMissionItem';
 
 type MissionsListProp = {
   title?: string;
@@ -18,7 +17,7 @@ type MissionsListProp = {
   onClaimBox: () => void;
 };
 
-const MissionsList = ({
+const DailyMissionList = ({
   missions,
   handleUpdateMissions,
   onClaimBox,
@@ -28,7 +27,7 @@ const MissionsList = ({
 }: MissionsListProp) => {
 
   return (
-    <div className={s.missionsList}>
+    <div className={s.dailyMissionsList}>
       <Row className={s.header}>
         <Col xl={8} sm={24} xs={24} className={s.checkListMission}>
           <div className={s.checkListMissionItem}>
@@ -85,7 +84,7 @@ const MissionsList = ({
           isEmpty(missions)
             ? <div className={s.blankState}>No missions found.</div>
             : missions?.map((mission: PlayerMission, index: number) => {
-              return <MissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={() => handleUpdateMissions(false)} />;
+              return <DailyMissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={() => handleUpdateMissions(false)} />;
             })
         )}
       </div>
@@ -93,4 +92,4 @@ const MissionsList = ({
   );
 };
 
-export default MissionsList;
+export default DailyMissionList;
