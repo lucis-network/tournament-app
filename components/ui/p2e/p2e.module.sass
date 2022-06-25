@@ -1,33 +1,41 @@
 .nftCategories
+  margin-bottom: 80px
   .subTitle
     font-weight: 400
     font-size: 16px
     line-height: 24px
     color: rgba(255, 255, 255, 0.8)
     margin-top: 16px
-  .cardWrap
+  .cardList
     display: flex
-    flex-direction: column
-    align-items: center
-    margin-bottom: 10px
-  .card
-    height: 300px,
-    background: rgba(45, 52, 70, 0.5),
-    backdrop-filter: blur(12px),
-    width: 100%,
-    margin-fottom: 10px,
-    position: relative,
-    display: flex,
-    flex-direction: column
-    justify-content: center
-    align-items: center
-    .nftImage
-      width: 162px
-      height: 216px
-      margin-top: 25px
-  .buttonWrapper
-    margin: 10px
-    text-align: center
+    justify-content: space-between
+    overflow: auto
+    .cardItem
+      margin-right: 16px
+    .cardWrap
+      display: flex
+      flex-direction: column
+      align-items: center
+      margin-bottom: 10px
+      min-width: 212px
+    .card
+      height: 300px,
+      background: rgba(45, 52, 70, 0.5),
+      backdrop-filter: blur(12px),
+      width: 100%,
+      margin-fottom: 10px,
+      position: relative,
+      display: flex,
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      .nftImage
+        width: 162px
+        height: 216px
+        margin: 25px 24px 0
+    .buttonWrapper
+      margin: 10px
+      text-align: center
   .tier
     border: 1px solid rgb(255 255 255 / 57%)
     padding: 15px

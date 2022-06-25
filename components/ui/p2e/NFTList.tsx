@@ -10,15 +10,14 @@ interface IProps {
 
 const NFTList = (props: IProps) => {
   const [openNFTCategories, setOpenNFTCategories] = React.useState<boolean>(false);
-
   return (
     <>
-      {openNFTCategories && <NFTCategories onClose={() => setOpenNFTCategories(false)} />}
+      {/* {openNFTCategories && <NFTCategories onClose={() => setOpenNFTCategories(false)} />} */}
       <div className={s.nftCategories}>
         <div className={s.subTitle}>Equip your NFTs to earn Lucis token and more prizes for NFTs gamers <br />
           You will receive the corresponding bonus:</div>
-        <Row gutter={16} style={{ marginTop: 12 }}>
-          <Col span={6}>
+        <div style={{ marginTop: 12 }} className={s.cardList}>
+          <div className={s.cardItem}>
             <div className={s.cardWrap}>
               <div className={s.card}>
                 <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
@@ -37,11 +36,11 @@ const NFTList = (props: IProps) => {
             <div className={s.buttonWrapper}>
               <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
             </div>
-          </Col>
-          <Col span={6}>
+          </div>
+          <div className={s.cardItem}>
             <div className={s.cardWrap}>
               <div className={s.card}>
-                <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
+                <img className={s.nftImage} src="/assets/P2E/nfts/card2.png" alt="card2 " />
                 <div className={s.coin}>
                   <div className={s.rewardItem}>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
@@ -57,11 +56,11 @@ const NFTList = (props: IProps) => {
             <div className={s.buttonWrapper}>
               <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
             </div>
-          </Col>
-          <Col span={6}>
+          </div>
+          <div className={s.cardItem}>
             <div className={s.cardWrap}>
               <div className={s.card}>
-                <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
+                <img className={s.nftImage} src="/assets/P2E/nfts/card3.png" alt="card3" />
                 <div className={s.coin}>
                   <div className={s.rewardItem}>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
@@ -77,11 +76,11 @@ const NFTList = (props: IProps) => {
             <div className={s.buttonWrapper}>
               <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
             </div>
-          </Col>
-          <Col span={6}>
+          </div>
+          <div className={s.cardItem}>
             <div className={s.cardWrap}>
               <div className={s.card}>
-                <img className={s.nftImage} src="/assets/P2E/nfts/card1.png" alt="card1" />
+                <img className={s.nftImage} src="/assets/P2E/nfts/face-down.png" alt="face-down.png" />
                 <div className={s.coin}>
                   <div className={s.rewardItem}>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
@@ -95,18 +94,11 @@ const NFTList = (props: IProps) => {
               </div>
             </div>
             <div className={s.buttonWrapper}>
-              <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
+              <ButtonWrapper type="primary" onClick={() => null}>Equip</ButtonWrapper>
             </div>
-          </Col>
-
-        </Row>
-        <Row>
-          <Col span={24}>
-            <div style={{ fontSize: 20 }}>
-            </div>
-          </Col>
-        </Row>
-      </div >
+          </div>
+        </div>
+      </div>
     </>
   )
 }
