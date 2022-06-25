@@ -25,7 +25,7 @@ export default observer(function LoginModal(props: Props) {
       console.log("{AuthService.login} re-login user: ");
       AuthStore.setAuthUser(cachedUser);
     }
-  });
+  }, []);
 
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);

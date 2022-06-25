@@ -26,6 +26,10 @@
       {
         "source": "/p2e/dashboard",
         "destination": "/p2e/dashboard.html"
+      },
+      {
+        "source": "/p2e/missions",
+        "destination": "/p2e/missions.html"
       }
     ]
   },

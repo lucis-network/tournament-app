@@ -73,15 +73,17 @@ export default observer(function P2EOverview() {
   }, [faceitUser])
 
   useEffect(() => {
-    handleRefetchPlatformAccount();
-  }, [AuthStore.isLoggedInFaceit])
+    if (!AuthStore.isLoggedInFaceit) {
+      handleRefetchPlatformAccount();
+    }
+  }, [])
 
   const handleRefetchPlatformAccount = async () => {
     try {
       const a = await refetchPlatformAccount();
       setFaceitUser(a.data?.getPlatformAccount[0]);
       if (a.data?.getPlatformAccount[0]) {
-        AuthStore.setAuthUser({ ...AuthStore, faceit_id_token: "has_data" })
+        AuthStore.faceit_id_token = "has_token";
       }
       setIsAuth(true);
     } catch (error) {
