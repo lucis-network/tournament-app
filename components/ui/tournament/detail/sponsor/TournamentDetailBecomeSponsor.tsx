@@ -495,7 +495,7 @@ export default function TournamentDetailBecomeSponsor(
             className={s.btnConfirm}
             loading={isLoading}
           >
-            Sponsor with ${currentMinAmount} ${currency.symbol}
+            Sponsor with {currentMinAmount} {currency.symbol}
           </Button>
         </div>
       </Form>

@@ -293,12 +293,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     xl={{ span: 24 }}
                     className={s.tournamentMetadata}
                   >
-                    <Row className={s.tournamentTagWrap}>
+                    <Row gutter={{ sm: 20, lg: 30 }} className={s.tournamentTagWrap}>
                       <Col style={{ width: "100%" }}>
                         <Row className={s.contentTopWrap}>
                           <Col
-                            className={s.btb_free_entry}
-                            style={{ display: "flex" }}
+                            className={`${s.btb_free_entry} ${s.bracket}`}
                           >
                             <div className={s.tournamentTag}>
                               <Image
@@ -317,7 +316,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                               {region}
                             </div>
                           </Col>
-                          <Col className={s.gradientBtnWrap}>
+                          <Col className={`${s.gradientBtnWrap} ${s.team_size}`}>
                             <Row style={{ width: "100%" }}>
                               <Col className={s.btn_join_discord}>
                                 {discord && (
@@ -341,7 +340,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                                   </Link>
                                 )}
                               </Col>
-                              <Col className={s.btn_subscribe}>
+                              <Col className={`${s.btn_subscribe}`}>
                                 {!dataIsubscribeToTournament?.IsSubscribeToTournament && (
                                   <Spin spinning={isLoadingSub}>
                                     <button
