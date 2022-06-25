@@ -59,7 +59,7 @@ export default function TournamentDetailSponsor(props: Props) {
   }
   return (
     <>
-      <div className={`${s.sponsorContainer} ${type === "banner" ? "" : `my-48`}`}>
+      <div className={`${s.sponsorContainer} ${type === "banner" ? "" : s.sponsorBecome}`}>
         <Row>
           <Col span={24}>
             {dataSponsors?.getSponsorSlot.length > 0 &&

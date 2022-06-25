@@ -293,12 +293,13 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     xl={{ span: 24 }}
                     className={s.tournamentMetadata}
                   >
-                    <Row gutter={{ sm: 20, lg: 30 }} className={s.tournamentTagWrap}>
+                    <Row
+                      gutter={{ sm: 20, lg: 30 }}
+                      className={s.tournamentTagWrap}
+                    >
                       <Col style={{ width: "100%" }}>
                         <Row className={s.contentTopWrap}>
-                          <Col
-                            className={`${s.btb_free_entry} ${s.bracket}`}
-                          >
+                          <Col className={`${s.btb_free_entry} ${s.bracket}`}>
                             <div className={s.tournamentTag}>
                               <Image
                                 src="/assets/TournamentDetail/iconDollarCoin.svg"
@@ -316,7 +317,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                               {region}
                             </div>
                           </Col>
-                          <Col className={`${s.gradientBtnWrap} ${s.team_size}`}>
+                          <Col
+                            className={`${s.gradientBtnWrap} ${s.team_size}`}
+                          >
                             <Row style={{ width: "100%" }}>
                               <Col className={s.btn_join_discord}>
                                 {discord && (
@@ -364,10 +367,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                                     </button>
                                   </Spin>
                                 )}
-                                <Col className={s.btn_subscribed}>
+                                <Col className={s.btn_subscribe}>
                                   {dataIsubscribeToTournament?.IsSubscribeToTournament && (
                                     <Spin spinning={isLoadingSub}>
                                       <button
+                                        className={`${s.btn_detail} ${s.btn_sub}`}
                                         key={"Subscribe"}
                                         onClick={handUnsubscribe}
                                       >
