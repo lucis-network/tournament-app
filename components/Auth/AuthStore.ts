@@ -16,6 +16,8 @@ export type AuthUser = {
 	status?: string;
 	updated_at?: string;
 	favorite_game?: UserFavoriteGame[];
+	isLoggedInFaceit?: boolean;
+
 };
 
 type UserProfile = {
@@ -65,6 +67,7 @@ class AuthStore implements AuthUser {
 	private _balance?: string;
 	private _loading: boolean = false;
 	private _favorite_game?: UserFavoriteGame[];
+	private _isLoggedInFaceit?: boolean;
 
 	public get isLoggedIn(): boolean {
 		return !!this._token;
@@ -77,6 +80,7 @@ class AuthStore implements AuthUser {
 	constructor() {
 		makeAutoObservable(this);
 	}
+
 
 	resetStates() {
 		this._id = undefined;
@@ -92,6 +96,7 @@ class AuthStore implements AuthUser {
 		this._status = undefined;
 		this._updated_at = undefined;
 		this._favorite_game = undefined;
+		this._isLoggedInFaceit = false;
 	}
 
 	setAuthUser(user: AuthUser) {
@@ -108,6 +113,7 @@ class AuthStore implements AuthUser {
 		this._status = user.status;
 		this._updated_at = user.updated_at;
 		this._favorite_game = user.favorite_game;
+		this._isLoggedInFaceit = user.isLoggedInFaceit;
 	}
 
 	/* ============= Getter & Setter ==============*/
@@ -230,6 +236,14 @@ class AuthStore implements AuthUser {
 
 	set favorite_game(games: UserFavoriteGame[] | undefined) {
 		this._favorite_game = games;
+	}
+
+	get isLoggedInFaceit(): boolean | undefined {
+		return this._isLoggedInFaceit;
+	}
+
+	set isLoggedInFaceit(isLogged: boolean | undefined) {
+		this._isLoggedInFaceit = isLogged;
 	}
 }
 

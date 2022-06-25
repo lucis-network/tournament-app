@@ -10,6 +10,7 @@ import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
 import { CONNECT_FACEIT, useGetPlatformAccount } from 'hooks/p2e/useP2E';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
+import { handleGraphqlErrors } from 'utils/apollo_client';
 export default observer(function P2EOverview() {
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
@@ -79,9 +80,15 @@ export default observer(function P2EOverview() {
     try {
       const a = await refetchPlatformAccount();
       setFaceitUser(a.data?.getPlatformAccount[0]);
+      if (a.data?.getPlatformAccount[0]) {
+        AuthStore.isLoggedInFaceit = true;
+      } else {
+        AuthStore.isLoggedInFaceit = false;
+      }
       setIsAuth(true);
     } catch (error) {
       // TODO
+      AuthStore.isLoggedInFaceit = false;
       setFaceitUser({} as any);
       setIsAuth(false);
     }
@@ -117,21 +124,26 @@ export default observer(function P2EOverview() {
           if (isSubscribed) {
             history.replaceState(null, '', ' ')
             setFaceitUser(response.data.connectFaceit)
+            AuthStore.isLoggedInFaceit = true;
             router.push("/p2e/dashboard");
           }
           setLoadingFaceit(false);
-        } catch (e) {
+        } catch (e: any) {
           if (isSubscribed) {
             history.replaceState(null, '', ' ')
-            if (fetch.error?.graphQLErrors[0].extensions.code === "ALREADY_CONNECTED") {
-              message.error("This account is already connected to another user! Please use another account.")
-            }
-            if (fetch.error?.graphQLErrors[0].extensions.code === "HAS_NOT_CSGO") {
-              message.error("You must connect csgo to use platform!");
-            }
-            else {
-              message.error("Something was wrong. Please contact to lucis network for assistance.")
-            }
+
+            handleGraphqlErrors(e, (code) => {
+              switch (code) {
+                case "ALREADY_CONNECTED":
+                  message.error("This account is already connected to another user! Please use another account.")
+                  return;
+                case "HAS_NOT_CSGO":
+                  message.error("You must connect csgo to use platform!");
+                  return;
+                default:
+                  message.error("Something was wrong. Please contact to lucis network for assistance.")
+              };
+            })
           }
           setLoadingFaceit(false);
         }

@@ -20,14 +20,12 @@ export default observer(function P2EWrapper(props: IProps) {
 
   const [disabledTab, setDisabledTab] = React.useState(false);
 
-
   React.useEffect(() => {
     if (!AuthStore.isLoggedIn) {
       setDisabledTab(true);
       router.push("/");
     } else {
       setDisabledTab(false);
-
     }
   }, [AuthStore.isLoggedIn])
 
