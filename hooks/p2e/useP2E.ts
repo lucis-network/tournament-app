@@ -193,7 +193,7 @@ export const UPDATE_RECENTLY_MATCH = gql`
 
 export const CLAIM_MISSION = gql`
   mutation ($player_mission_uid: String!) {
-    claimMission(player_mission_uid: $mission_uid)
+    claimMission(player_mission_uid: $player_mission_uid)
   }
 `
 
@@ -315,6 +315,7 @@ export const GET_LUCIS_MISSION = gql`
   query ($game_uid: String!, $platform_id: Int!) {
     getLucisMission(game_uid: $game_uid, platform_id: $platform_id) {
       achieved
+      uid
       mission_uid
       is_claim
       updated_at

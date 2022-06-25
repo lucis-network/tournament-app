@@ -42,23 +42,22 @@ const Mission = () => {
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
-  // const handleUpdateMissions = async (popup = true) => {
-  //   setLoading(true);
+  const handleUpdateMissions = async (popup = true) => {
+    setLoading(true);
 
-  //   const promise = await Promise.all([
-  //     statisticQuery.refetch()
-  //   ])
-  //   setDailyMission(promise[0].data.updateDailyMission)
-  //   setRecentlyMatches([...promise[1].data.updateRecentlyMatch, ...recentlyMatches]);
-  //   setLoading(false);
-  //   if (popup) {
-  //     message.success("update successfully!");
-  //   }
-  // }
+    const promise = await Promise.all([
+      lucisMissionQuery.refetch(),
+      statisticQuery.refetch()
+    ])
+    setMission(lucisMissionQuery?.data?.getLucisMission)
+    setLoading(false);
+    if (popup) {
+      message.success("update successfully!");
+    }
+  }
 
   useEffect(() => {
-
-    setMission(lucisMissionQuery?.data)
+    setMission(lucisMissionQuery?.data?.getLucisMission)
   }, [lucisMissionQuery?.data])
 
 
@@ -112,7 +111,7 @@ const Mission = () => {
             </div>
             <MissionsList
               missions={mission}
-              handleUpdateMissions={(popup) => null}
+              handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
               loading={lucisMissionQuery.loading}
               loadingUpdate={loading} />
           </Col>

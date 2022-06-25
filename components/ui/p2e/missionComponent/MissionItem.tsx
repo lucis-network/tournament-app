@@ -29,8 +29,9 @@ const MissionItem = (props: MissionItemProp) => {
   // });
 
   const handleClaimMission = async (mission: PlayerMission) => {
+    console.log(mission)
     claimMission({
-      variables: { mission_uid: mission?.mission_uid },
+      variables: { player_mission_uid: mission?.uid },
       onCompleted: (data) => {
         message.success("Claimed!");
         if (handleUpdateMissions) {
@@ -92,7 +93,7 @@ const MissionItem = (props: MissionItemProp) => {
               <div className={s.missionTitle}>
                 <h4>{mission?.mission?.title}</h4>
                 <div className={s.levelMission}>
-                  Level mission:
+                  Level mission: {mission?.mission?.level?.level}
                 </div> {/**sub title */}
               </div>
             </Col>

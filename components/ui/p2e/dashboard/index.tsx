@@ -216,7 +216,7 @@ const Dashboard = () => {
                   Today:
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / 300</span>
+                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / --</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>

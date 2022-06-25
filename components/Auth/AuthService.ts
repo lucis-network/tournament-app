@@ -144,6 +144,12 @@ export default class AuthService {
                 biography
                 cover
               }
+
+              platform_account {
+                uid
+                access_token
+                id_token
+              }
             }
           }
         }
@@ -154,6 +160,7 @@ export default class AuthService {
     });
 
     const u = loginRes.data.loginGoogle.user;
+    console.log(u?.platform_account?.id_token);
     console.log("u", loginRes.data.loginGoogle);
     const tokenID = loginRes.data.loginGoogle.token;
     const user: AuthUser = {
@@ -167,6 +174,7 @@ export default class AuthService {
       google_id: u.google_id,
       status: u.status,
       profile: u.profile,
+      faceit_id_token: u?.platform_account?.[0]?.id_token
     };
 
     return user;
@@ -221,6 +229,12 @@ export default class AuthService {
                 biography
                 cover
               }
+
+              platform_account {
+                uid
+                access_token
+                id_token
+              }
             }
           }
         }
@@ -243,6 +257,7 @@ export default class AuthService {
       facebook_id: u.facebook_id,
       status: u.status,
       profile: u.profile,
+      faceit_id_token: u?.platform_account?.[0]?.id_token
     };
 
     return user;

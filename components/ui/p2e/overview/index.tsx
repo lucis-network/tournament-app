@@ -74,21 +74,18 @@ export default observer(function P2EOverview() {
 
   useEffect(() => {
     handleRefetchPlatformAccount();
-  }, [AuthStore.isLoggedIn])
+  }, [AuthStore.isLoggedInFaceit])
 
   const handleRefetchPlatformAccount = async () => {
     try {
       const a = await refetchPlatformAccount();
       setFaceitUser(a.data?.getPlatformAccount[0]);
       if (a.data?.getPlatformAccount[0]) {
-        AuthStore.isLoggedInFaceit = true;
-      } else {
-        AuthStore.isLoggedInFaceit = false;
+        AuthStore.setAuthUser({ ...AuthStore, faceit_id_token: "has_data" })
       }
       setIsAuth(true);
     } catch (error) {
       // TODO
-      AuthStore.isLoggedInFaceit = false;
       setFaceitUser({} as any);
       setIsAuth(false);
     }
@@ -124,7 +121,7 @@ export default observer(function P2EOverview() {
           if (isSubscribed) {
             history.replaceState(null, '', ' ')
             setFaceitUser(response.data.connectFaceit)
-            AuthStore.isLoggedInFaceit = true;
+            AuthStore.faceit_id_token = newHashData.get('id_token') as string;
             router.push("/p2e/dashboard");
           }
           setLoadingFaceit(false);
@@ -182,6 +179,7 @@ export default observer(function P2EOverview() {
 
   return (
     <div className="lucis-container-2">
+
       <div className={s.overviewContainer}>
         <div className={s.overviewSection}>
           <h2 className={s.overviewSectionTitle}>Choose game</h2>
