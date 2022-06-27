@@ -32,6 +32,7 @@ export function format(num: number, decimal = 0, option?: NumberFormatOption): s
   if (option) {
     if (option.zero_trim) {
       s = s.replace(/0+$/, '')
+      if(s.charAt(s.length-1) == '.') s = s.replace('.', '');      
     }
 
     if (option.separator) {

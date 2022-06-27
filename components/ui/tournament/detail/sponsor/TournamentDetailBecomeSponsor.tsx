@@ -27,6 +27,7 @@ import TournamentService from "components/service/tournament/TournamentService";
 import AuthStore from "components/Auth/AuthStore";
 import { SponsorCreateInputGql } from "src/generated/graphql";
 import BigNumber from "bignumber.js";
+import { format } from "utils/Number";
 
 type TournamentDetailBecomeSponsorProps = {
   isBecome: boolean;
@@ -81,7 +82,7 @@ export default function TournamentDetailBecomeSponsor(
   const inputSponsorAmountRef = useRef<HTMLInputElement>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [messageError, setMessageError] = useState("");
-  const [totalPayment, setTotalPayment] = useState("0");
+  const [totalPayment, setTotalPayment] = useState(0);
   const handleFormUpdate = async (data: any) => {
     if (!data.logo) {
       setMessageError("Logo is required");
@@ -217,7 +218,7 @@ export default function TournamentDetailBecomeSponsor(
               getConfigFee[0]?.tn_referee_fee * 100
             : 0))) /
       100
-    ).toFixed(2);
+    );
   };
 
   const handleFileInput = (e: any) => {
@@ -462,30 +463,30 @@ export default function TournamentDetailBecomeSponsor(
           </Col>
         </Row>
         <Row align="middle" className="mb-4">
-          <Col xs={{ span: 24 }} md={{ span: 8 }}>
+          <Col xs={{ span: 6 }} md={{ span: 8 }}>
             <label>Lucis fee</label>
           </Col>
-          <Col xs={{ span: 24 }} md={{ span: 4 }}>
+          <Col xs={{ span: 4 }} md={{ span: 4 }}>
             <span style={{ color: "white", marginTop: "10px" }}>
               {getConfigFee ? getConfigFee[0]?.tn_lucis_fee * 100 : 0}%
             </span>
           </Col>
-          <Col xs={{ span: 24 }} md={{ span: 8 }}>
+          <Col xs={{ span: 8 }} md={{ span: 8 }}>
             <label>Referees fee</label>
           </Col>
-          <Col xs={{ span: 24 }} md={{ span: 4 }}>
+          <Col xs={{ span: 6 }} md={{ span: 4 }}>
             <span style={{ color: "white", marginTop: "10px" }}>
               {getConfigFee ? getConfigFee[0]?.tn_referee_fee * 100 : 0}%
             </span>
           </Col>
         </Row>
         <Row align="middle">
-          <Col xs={{ span: 24 }} md={{ span: 8 }}>
+          <Col xs={{ span: 10 }} md={{ span: 8 }}>
             <label>Total payment</label>
           </Col>
-          <Col xs={{ span: 24 }} md={{ span: 16 }}>
+          <Col xs={{ span: 14 }} md={{ span: 16 }}>
             <span style={{ color: "white", marginTop: "10px" }}>
-              {totalPayment} {currency.symbol}
+              {format(totalPayment, 2, {zero_trim: true})} {currency.symbol}
             </span>
           </Col>
         </Row>
@@ -495,7 +496,7 @@ export default function TournamentDetailBecomeSponsor(
             className={s.btnConfirm}
             loading={isLoading}
           >
-            Sponsor with {currentMinAmount} {currency.symbol}
+            Sponsor with {format(currentMinAmount, 2, {zero_trim: true})} {currency.symbol}
           </Button>
         </div>
       </Form>

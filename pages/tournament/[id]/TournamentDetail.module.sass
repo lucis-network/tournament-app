@@ -232,7 +232,7 @@
           line-height: 1.3
         @media screen and (min-width: 768px)
           margin: -7px 0 15px
-        
+
         @media screen and (min-width: 1200px)
           margin: -17px 0 0
           font-size: 38px
@@ -524,7 +524,10 @@
 .block_tabs::-webkit-scrollbar-thumb
   border-radius: 16px
   background: linear-gradient(290.92deg,#0bebd6,#cd28e8)
-
+.btn_share_top
+  display: none
+  @media (max-width: 575px)
+    display: block
 .btn_subscribed
   min-height: auto
   padding: 2px 8px
@@ -548,8 +551,8 @@
 .btn_share
   @media (min-width: 0px)
     order: 1
-  @media (min-width: 414px)
-    order: 1
+  @media (max-width: 574px)
+    display: none
 
 .bracket
   @media (min-width: 0px)

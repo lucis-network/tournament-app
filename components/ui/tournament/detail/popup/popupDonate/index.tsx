@@ -1,16 +1,14 @@
 import { Button, Col, Input, message, Modal, Row, Spin } from "antd";
 import TournamentService from "components/service/tournament/TournamentService";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import PopupNotify from "../popupNotify";
 import s from "./PopupDonate.module.sass";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
-import { BUSD, LUCIS, USDT } from "utils/Enum";
 import EthersService from "../../../../../../services/blockchain/Ethers";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
-import TournamentStore from "src/store/TournamentStore";
 import BigNumber from "bignumber.js";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import { isEmpty } from "lodash";

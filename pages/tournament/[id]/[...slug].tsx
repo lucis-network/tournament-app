@@ -316,6 +316,20 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                               />{" "}
                               {region}
                             </div>
+                            <div className={`${s.btn_share_top}`}>
+                              <button
+                                key={"InviteorShare"}
+                                className={`${s.btn_detail} ${s.btn_detail_share}`}
+                                onClick={() => openModal("Invite or Share")}
+                              >
+                                <Image
+                                  src="/assets/TournamentDetail/ic_share.svg"
+                                  preview={false}
+                                  alt=""
+                                />
+                                <span className="ml-2">Share</span>
+                              </button>
+                            </div>
                           </Col>
                           <Col
                             className={`${s.gradientBtnWrap} ${s.team_size}`}

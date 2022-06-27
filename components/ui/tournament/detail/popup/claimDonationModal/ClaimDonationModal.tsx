@@ -3,7 +3,7 @@ import { Button, message, Modal, Table } from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { fomatNumber } from "utils/Number";
+import { format } from "utils/Number";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import { useEffect, useState } from "react";
@@ -144,7 +144,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {fomatNumber(item.amount)} {item.symbol}
+            {format(item.amount, 2, {zero_trim: true})} {item.symbol}
           </>
         );
       },

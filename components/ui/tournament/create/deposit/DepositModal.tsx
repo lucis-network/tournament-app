@@ -8,9 +8,8 @@ import ConnectWalletStore from "components/Auth/ConnectWalletStore";
 import { useState } from "react";
 import EthersService from "../../../../../services/blockchain/Ethers";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "components/Auth/ConnectWalletStore";
-import { BUSD, LUCIS, LUCIS_FEE, REFEREES_FEE, USDT } from "utils/Enum";
 import NotifyModal from "../notify/notifyModal";
-import { fomatNumber } from "utils/Number";
+import { format } from "utils/Number";
 import {
   useGetConfigFee,
   useGetContract,
@@ -151,8 +150,8 @@ export default observer(function DepositModal(props: Props) {
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
-                    {fomatNumber(
-                      TournamentStore.pool_size ? TournamentStore.pool_size : 0
+                    {format(
+                      TournamentStore.pool_size ? TournamentStore.pool_size : 0, 2, {zero_trim: true}
                     )}{" "}
                     {TournamentStore.currency_symbol}
                   </p>
@@ -168,11 +167,11 @@ export default observer(function DepositModal(props: Props) {
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
-                    {fomatNumber(
+                    {format(
                       TournamentStore.pool_size
                         ? TournamentStore.pool_size *
                         (getConfigFee ? getConfigFee[0]?.tn_lucis_fee : 0)
-                        : 0
+                        : 0, 2, {zero_trim: true}
                     )}{" "}
                     {TournamentStore.currency_symbol}
                   </p>
@@ -188,11 +187,11 @@ export default observer(function DepositModal(props: Props) {
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
-                    {fomatNumber(
+                    {format(
                       TournamentStore.pool_size
                         ? TournamentStore.pool_size *
                             (getConfigFee ? getConfigFee[0]?.tn_referee_fee : 0)
-                        : 0
+                        : 0, 2, {zero_trim: true}
                     )}{" "}
                     {TournamentStore.currency_symbol}
                   </p>
@@ -206,7 +205,7 @@ export default observer(function DepositModal(props: Props) {
                 <Col span={2}></Col>
                 <Col span={12}>
                   <p>
-                    {getTotalAmount().toFixed(2)}{" "}
+                    {format(getTotalAmount(), 2, {zero_trim: true})}{" "}
                     {TournamentStore.currency_symbol}
                   </p>
                 </Col>
