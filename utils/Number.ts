@@ -21,18 +21,29 @@ export function format(num: number, decimal = 0, option?: NumberFormatOption): s
   if (decimal > 0) {
     // 0,0.00
     format += '.'.padEnd(decimal + 1, '0')
+
+    // add an additional 0 then trim it to ignore rounding
+    if (option?.no_round) {
+      format += '000000';
+    }
   }
 
-  if (option?.no_round) {
-    throw new Error("option.no_round was not implemented")
-  }
 
   let s = numeral(num).format(format);
 
+
   if (option) {
+    if (option?.no_round && decimal > 0) {
+      // remove last rounded character
+      s = s.substring(0, s.length - 6)
+    }
+
     if (option.zero_trim) {
       s = s.replace(/0+$/, '')
-      if(s.charAt(s.length-1) == '.') s = s.replace('.', '');      
+    }
+
+    if(s.charAt(s.length-1) == '.') {
+      s = s.replace('.', '');
     }
 
     if (option.separator) {
