@@ -25,7 +25,10 @@ const DailyMissionList = ({
   loading,
   loadingUpdate
 }: MissionsListProp) => {
-
+  const boxOpen = missions?.[0]?.is_claim
+    && missions?.[1]?.is_claim
+    && missions?.[2]?.is_claim
+    && missions?.[3]?.is_claim;
   return (
     <div className={s.dailyMissionsList}>
       <Row className={s.header}>
@@ -60,22 +63,27 @@ const DailyMissionList = ({
           </div>
         </Col>
         <Col xl={16} sm={24} xs={24} className={s.headerRight}>
-          <div className={s.rewardBox} onClick={() => onClaimBox()}>
+          <div className={s.rewardBox}>
             Complete 4 quests to unlock rewards!
-            <img src="/assets/P2E/box.png" alt="" />
+            <img src={
+              !boxOpen ?
+                "/assets/P2E/csgo/box-normal.png"
+                : "/assets/P2E/csgo/box-open.png"
+            } width="300" alt="" onClick={() => onClaimBox()} />
           </div>
-          <div className={s.updateButton} onClick={() => handleUpdateMissions(true)}>
-            <img src="/assets/P2E/reload-icon.png"
-              alt=""
-              className={loadingUpdate ? `${s.spinner}` : ""} />
-            Update
-          </div>
+
         </Col>
       </Row>
       <div className={s.subHeader}>
         <p>
           Completed all the daily misions to receive
         </p>
+        <div className={s.updateButton} onClick={() => handleUpdateMissions(true)}>
+          <img src="/assets/P2E/reload-icon.png"
+            alt=""
+            className={loadingUpdate ? `${s.spinner}` : ""} />
+          Update
+        </div>
       </div>
       <div className={s.missionsList}>
         {loading ? (

@@ -18,7 +18,7 @@
     backdrop-filter: blur(6px)
     padding: 16px
     // padding: 15px
-    margin-bottom: 20px
+    margin-bottom: 16px
     .missionInfo
       .missionContent
         display: flex
@@ -57,19 +57,21 @@
       height: 100%
       .missionAction
         width: 120px
-        justify-content: flex-end
+        justify-content: center
         display: flex
         img
           text-align: center
       .missionProgress
         display: flex
-        justify-content: flex-end
+        justify-content: center
         width: 100%
         :global(.ant-progress-text)
           color: rgba(255, 255, 255, 0.5)
         :global(.ant-progress-circle-trail)
           stroke: #6B6C6C
       .missionProgressFinish
+        display: flex
+        justify-content: center
         :global(.ant-progress-text)
           color: #fff
         :global(.ant-progress-circle-trail)
@@ -114,28 +116,32 @@
           margin-top: 20px
         img
           position: absolute
-          right: -65px
-          bottom: -10px
+          right: -155px
+          bottom: -55px
           cursor: pointer
-      .updateButton
-        display: flex
-        justify-content: flex-end
-        align-items: center
-        cursor: pointer
-        text-align: right
-        line-height: 62px
-
-        img
-          margin-left: 40px
-          margin-right: 5px
-          height: 18px
-        .spinner
-          animation: spin 2s linear 0s infinite
-
   .subHeader
+    position: relative
+    min-height: 24px
     p
       font-size: 16px
       margin-bottom: 12px
+      @media screen and ( max-width: 576px  )
+        display: none
+    .updateButton
+      display: flex
+      justify-content: flex-end
+      align-items: center
+      cursor: pointer
+      text-align: right
+      position: absolute
+      top: 0
+      right: 0
+      img
+        margin-left: 40px
+        margin-right: 5px
+        height: 18px
+      .spinner
+        animation: spin 2s linear 0s infinite
 
 .blankState
   width: 100%

@@ -60,7 +60,7 @@ const Mission = () => {
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
         <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
-        <Row gutter={40}>
+        <Row gutter={51}>
           <Col xl={16} md={24}>
             <div>
               {/* <h2>

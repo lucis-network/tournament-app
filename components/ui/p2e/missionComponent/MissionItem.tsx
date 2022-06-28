@@ -29,10 +29,11 @@ const MissionItem = (props: MissionItemProp) => {
   // });
 
   const handleClaimMission = async (mission: PlayerMission) => {
-    console.log(mission)
+    setLoading(true);
     claimMission({
       variables: { player_mission_uid: mission?.uid },
       onCompleted: (data) => {
+        setLoading(false);
         message.success("Claimed!");
         if (handleUpdateMissions) {
           handleUpdateMissions();
@@ -41,6 +42,7 @@ const MissionItem = (props: MissionItemProp) => {
         setLoading(false);
       },
       onError: (errors) => {
+        setLoading(false);
         console.log("errors", errors);
         setLoading(false);
         message.error("Something was wrong!");
@@ -121,6 +123,9 @@ const MissionItem = (props: MissionItemProp) => {
                 percent={currentPercent} format={() => {
                   if (mission?.mission?.type === MissionType.Kr || mission?.mission?.type === MissionType.Kda) {
                     return `${mission?.mission?.goal}`
+                  }
+                  if (mission?.mission?.goal.length >= 3) {
+                    return `${achieved}`;
                   }
                   return `${achieved}/${mission?.mission?.goal}`
                 }

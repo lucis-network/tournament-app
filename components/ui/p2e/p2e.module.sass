@@ -1,5 +1,6 @@
 .nftCategories
   margin-bottom: 80px
+  margin-top: 44px
   position: relative
   .subTitle
     font-weight: 400
@@ -121,12 +122,13 @@
     img
       margin-bottom: 6px
   .recentMatchItem
-    // height: 95px
-    // background-image: url("/assets/P2E/csgo/daily-item-1.png")
     background-repeat: no-repeat
     background-size: cover
     background-position: center
     cursor: pointer
+    @media screen and ( max-width: 574px )
+      border-radius: 4px !important
+
   .recentMatchItem:hover
     border: 1px solid rgba(0, 255, 255, 0.8)
     box-shadow: inset 0px 1px 16px rgba(0, 255, 255, 0.8)
@@ -203,8 +205,11 @@
     font-weight: 400
     line-height: 21px
     // flex-direction: column
-    justify-content: space-around
+    // justify-content: space-around
     align-items: center
+    .rewardItem
+      justify-content: flex-end
+      padding-right: 32px
 .blankState
   width: 100%
   padding: 10px

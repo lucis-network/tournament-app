@@ -33,9 +33,9 @@ const NFTList = (props: IProps) => {
                 </div>
               </div>
             </div>
-            <div className={s.buttonWrapper}>
+            {/* <div className={s.buttonWrapper}>
               <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
-            </div>
+            </div> */}
           </div>
           <div className={s.cardItem}>
             <div className={s.cardWrap}>
@@ -53,9 +53,9 @@ const NFTList = (props: IProps) => {
                 </div>
               </div>
             </div>
-            <div className={s.buttonWrapper}>
+            {/* <div className={s.buttonWrapper}>
               <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
-            </div>
+            </div> */}
           </div>
           <div className={s.cardItem}>
             <div className={s.cardWrap}>
@@ -73,9 +73,9 @@ const NFTList = (props: IProps) => {
                 </div>
               </div>
             </div>
-            <div className={s.buttonWrapper}>
+            {/* <div className={s.buttonWrapper}>
               <ButtonWrapper type="primary" onClick={() => null}>Change</ButtonWrapper>
-            </div>
+            </div> */}
           </div>
           <div className={s.cardItem}>
             <div className={s.cardWrap}>
@@ -93,9 +93,9 @@ const NFTList = (props: IProps) => {
                 </div>
               </div>
             </div>
-            <div className={s.buttonWrapper}>
+            {/* <div className={s.buttonWrapper}>
               <ButtonWrapper type="primary" onClick={() => null}>Equip</ButtonWrapper>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className={s.comingSoon}>

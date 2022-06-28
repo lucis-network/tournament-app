@@ -29,6 +29,7 @@ const DailyMissionItem = (props: MissionItemProp) => {
   // });
 
   const handleClaimMission = async (mission: PlayerMission) => {
+    setLoading(true);
     claimMission({
       variables: { player_mission_uid: mission?.uid },
       onCompleted: (data) => {
