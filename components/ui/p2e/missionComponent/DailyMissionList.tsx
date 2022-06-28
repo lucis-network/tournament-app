@@ -15,6 +15,7 @@ type MissionsListProp = {
   loadingUpdate?: boolean;
   handleUpdateMissions: (popup: boolean) => void;
   onClaimBox: () => void;
+  isClaimBox?: boolean;
 };
 
 const DailyMissionList = ({
@@ -23,53 +24,57 @@ const DailyMissionList = ({
   onClaimBox,
   canChooseGame,
   loading,
-  loadingUpdate
+  loadingUpdate,
+  isClaimBox
 }: MissionsListProp) => {
   const boxOpen = missions?.[0]?.is_claim
     && missions?.[1]?.is_claim
     && missions?.[2]?.is_claim
     && missions?.[3]?.is_claim;
+  const listMissionDone = missions?.map(item => {
+    const achieved = item?.achieved;
+    const currentPercent =
+      ((achieved as number) / (item?.mission?.goal as unknown as number)) *
+      100;
+
+    return currentPercent >= 100;
+  });
+
+  const lengthMissionDone = listMissionDone?.filter(item => item)?.length ?? 0;
+
   return (
     <div className={s.dailyMissionsList}>
       <Row className={s.header}>
         <Col xl={8} sm={24} xs={24} className={s.checkListMission}>
-          <div className={s.checkListMissionItem}>
-            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            {/* <Checkbox checked={missions?.[0]?.is_claim} disabled /> */}
-            {missions?.[0]?.is_claim
-              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
-              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
-          </div>
-          <div className={s.checkListMissionItem}>
-            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            {/* <Checkbox checked={missions?.[1]?.is_claim} disabled /> */}
-            {missions?.[1]?.is_claim
-              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
-              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
-          </div>
-          <div className={s.checkListMissionItem}>
-            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            {/* <Checkbox checked={missions?.[2]?.is_claim} disabled /> */}
-            {missions?.[2]?.is_claim
-              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
-              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
-          </div>
-          <div className={s.checkListMissionItem}>
-            <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
-            {/* <Checkbox checked={missions?.[3]?.is_claim} disabled /> */}
-            {missions?.[3]?.is_claim
-              ? <img src="/assets/P2E/csgo/checkbox-active.png" />
-              : <img src="/assets/P2E/csgo/checkbox-default.png" />}
-          </div>
+          {listMissionDone?.map((item, index) => {
+            return (
+              <div className={s.checkListMissionItem} key={index}>
+                <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+                {item
+                  ? <img src="/assets/P2E/csgo/checkbox-active.png" />
+                  : <img src="/assets/P2E/csgo/checkbox-default.png" />}
+              </div>
+            );
+          })}
         </Col>
         <Col xl={16} sm={24} xs={24} className={s.headerRight}>
           <div className={s.rewardBox}>
-            Complete 4 quests to unlock rewards!
+            Complete 4 quests to unlock reward!
             <img src={
-              !boxOpen ?
-                "/assets/P2E/csgo/box-normal.png"
-                : "/assets/P2E/csgo/box-open.png"
-            } width="300" alt="" onClick={() => onClaimBox()} />
+              isClaimBox ?
+                "/assets/P2E/csgo/box-open.png"
+                : "/assets/P2E/csgo/box-normal.png"
+            }
+              style={
+                !boxOpen && lengthMissionDone < 4 ? { filter: "grayscale(100%)", cursor: "auto" }
+                  : isClaimBox ? { cursor: "auto" } : {}
+              }
+              width="300" alt="" onClick={() => {
+                if (!boxOpen && lengthMissionDone < 4 || isClaimBox) {
+                  return;
+                }
+                onClaimBox()
+              }} />
           </div>
 
         </Col>

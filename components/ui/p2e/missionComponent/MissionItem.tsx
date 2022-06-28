@@ -95,7 +95,7 @@ const MissionItem = (props: MissionItemProp) => {
               <div className={s.missionTitle}>
                 <h4>{mission?.mission?.title}</h4>
                 <div className={s.levelMission}>
-                  Level mission: {mission?.mission?.level?.level}
+                  Mission level: {mission?.mission?.level?.level}
                 </div> {/**sub title */}
               </div>
             </Col>
@@ -122,7 +122,7 @@ const MissionItem = (props: MissionItemProp) => {
                 width={60}
                 percent={currentPercent} format={() => {
                   if (mission?.mission?.type === MissionType.Kr || mission?.mission?.type === MissionType.Kda) {
-                    return `${mission?.mission?.goal}`
+                    return `${achieved}`
                   }
                   if (mission?.mission?.goal.length >= 3) {
                     return `${achieved}`;

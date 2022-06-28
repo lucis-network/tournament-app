@@ -194,7 +194,7 @@ export const RecentMatchDetail = () => {
                         <Row className={s.row}>
                           <Col span={6}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/assist-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/support.svg" alt="" />
                               <span>{data?.player_statistic?.Assists ?? "-"}</span>
                             </div>
                           </Col>
@@ -218,7 +218,7 @@ export const RecentMatchDetail = () => {
                         <Row className={s.row}>
                           <Col span={6}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/death-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/headshot.svg" alt="" />
                               <span>{data?.player_statistic?.Headshots ?? "-"}</span>
                             </div>
                           </Col>
@@ -396,7 +396,7 @@ export const RecentMatchDetail = () => {
                         <Row className={s.row}>
                           <Col span={6}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/kill-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/kill.svg" alt="" />
                               <span>{data?.player_statistic?.Kills ?? "-"}</span>
                             </div>
                           </Col>
@@ -421,7 +421,7 @@ export const RecentMatchDetail = () => {
                         <Row className={s.row}>
                           <Col span={6}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/assist-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/support.svg" alt="" />
                               <span>{data?.player_statistic?.Assists ?? "-"}</span>
                             </div>
                           </Col>
@@ -445,7 +445,7 @@ export const RecentMatchDetail = () => {
                         <Row className={s.row}>
                           <Col span={6}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/death-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/headshot.svg" alt="" />
                               <span>{data?.player_statistic?.Headshots ?? "-"}</span>
                             </div>
                           </Col>

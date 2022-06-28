@@ -6,6 +6,7 @@ import {
   GET_DAILY_POINT,
   GET_OR_SET_DAILY_MISSION,
   GET_STATISTICS,
+  IS_CLAIM_BOX,
   UPDATE_DAILY_MISSION,
   UPDATE_RECENTLY_MATCH,
   useGetRecentMatches
@@ -42,6 +43,16 @@ const Dashboard = () => {
   });
 
   const dailyPointQuery = useQuery(GET_DAILY_POINT, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
+      game_uid: '03',
+      platform_id: 1
+    },
+  });
+
+  const isClaimBoxQuery = useQuery(IS_CLAIM_BOX, {
     context: {
       endpoint: 'p2e'
     },
@@ -98,7 +109,7 @@ const Dashboard = () => {
     setRecentlyMatches([...promise[1].data.updateRecentlyMatch, ...recentlyMatches]);
     setLoading(false);
     if (popup) {
-      message.success("update successfully!");
+      message.success("Success!");
     }
   }
 
@@ -113,23 +124,6 @@ const Dashboard = () => {
     setRecentlyMatches(getRecentMatchesData?.getRecentlyMatch?.matches as GPlayerMatch[]);
   }, [getRecentMatchesData])
 
-  const lucisPointRewardToday = (missions: GMatch): number => {
-    const matchesToday = missions?.matches?.filter(item => {
-      const now = new Date();
-      const endMatch = new Date(item.match.end_at);
-      return now.getDate() === endMatch.getDate()
-        && now.getFullYear() === endMatch.getFullYear()
-        && now.getMonth() === endMatch.getMonth()
-    })
-
-    let total = 0;
-
-    matchesToday?.forEach((match) => {
-      total += match.lucis_point;
-    })
-    return total
-  }
-
   const onClaimBox = async () => {
     try {
       await claimBox({
@@ -138,8 +132,8 @@ const Dashboard = () => {
           platform_id: 1
         }
       })
-
-      message.success("Claim successfully!");
+      statisticQuery.refetch()
+      message.success("You have successfully claimed 30 lucis point!");
     } catch (error: any) {
       handleGraphqlErrors(error, (code) => {
         switch (code) {
@@ -186,6 +180,7 @@ const Dashboard = () => {
               handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
               onClaimBox={onClaimBox}
               loading={stateDailyMissionFetch.loading}
+              isClaimBox={isClaimBoxQuery?.data?.isClaimBox ?? false}
               loadingUpdate={loading} />
             <Row className={s.recentMatchTitle}>
               <Col xs={24} sm={12}>
@@ -198,7 +193,7 @@ const Dashboard = () => {
                   Today:
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{`${dailyPointQuery?.data?.getDailyPoint ?? "--"} / --`} </span>
+                  <span className={s.lucisPoint}>{`${dailyPointQuery?.data?.getDailyPoint ?? "--"} / ∞`} </span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>

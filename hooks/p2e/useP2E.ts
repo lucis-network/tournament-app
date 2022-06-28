@@ -302,7 +302,6 @@ export const GET_STATISTIC_MATCH = gql`
           win,
           kill,
           assist,
-          win_steak,
           most_kill,
           mvp,
           most_support,
@@ -373,5 +372,11 @@ export const GET_STATISTICS = gql`
 export const GET_DAILY_POINT = gql`
 query ($game_uid: String!, $platform_id: Int!) {
   getDailyPoint(game_uid: $game_uid, platform_id: $platform_id)
+}
+`
+
+export const IS_CLAIM_BOX = gql`
+query ($game_uid: String!, $platform_id: Int!) {
+  isClaimBox(game_uid: $game_uid, platform_id: $platform_id)
 }
 `

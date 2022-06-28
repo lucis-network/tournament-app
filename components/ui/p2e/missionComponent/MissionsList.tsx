@@ -25,7 +25,7 @@ const MissionsList = ({
     <div className={s.missionsList}>
       <div className={s.subHeader}>
         <p>
-          Completed all the daily misions to receive
+          Completed  the Lucis missions to receive
         </p>
         <div className={s.updateButton} onClick={() => handleUpdateMissions(true)}>
           <img src="/assets/P2E/reload-icon.png"

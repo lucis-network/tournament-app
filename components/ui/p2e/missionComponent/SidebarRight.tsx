@@ -88,7 +88,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                 </div>
                 <div className={s.shareDiscordContent}>
                   <div className={s.shareDiscordText}>
-                    <img src="/assets/P2E/discord.svg" alt="" />
+                    <img src="/assets/P2E/discord.svg" alt="" width="36" height="36" />
                     <p>Connect your Discord account and join our server!</p>
                     <ButtonWrapper width={59} onClick={() => window.open("https://discord.gg/Y3E4x4U38k")}>Join</ButtonWrapper>
                   </div>
@@ -111,7 +111,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                 </div>
                 <div className={s.shareDiscordContent}>
                   <div className={s.shareDiscordText}>
-                    <img src="/assets/P2E/friend.svg" alt="" />
+                    <img src="/assets/P2E/friend.svg" alt="" width="36" height="36" />
                     <p style={{ display: "flex", alignItems: "center" }}>https://lucis.network</p>
                     <img src="/assets/P2E/link.png" alt="" />
                   </div>

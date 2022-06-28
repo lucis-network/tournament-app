@@ -24,7 +24,7 @@ export const RecentMatchList = (props: IProps) => {
             <div className={s.blankState}>
               {props.isHistory ? "No matches found."
                 :
-                "No matches found. Please play a match to start earning LUCISpoint."
+                "No matches found. Please play a match to start earning LUCIS point."
               }
             </div>
             :
@@ -69,25 +69,25 @@ export const RecentMatchList = (props: IProps) => {
                         <Col span={4}>
                           <div className={s.recentMatchContentItem}>
                             <img src="/assets/P2E/csgo/kill.svg" alt="" />
-                            <div>{item?.player_statistic?.Kills}</div>
+                            <span className={s.textContentItem}>{item?.player_statistic?.Kills}</span>
                           </div>
                         </Col>
                         <Col span={4}>
                           <div className={s.recentMatchContentItem}>
                             <img src="/assets/P2E/csgo/death.svg" alt="" />
-                            <span>{item?.player_statistic?.Deaths}</span>
+                            <span className={s.textContentItem}>{item?.player_statistic?.Deaths}</span>
                           </div>
                         </Col>
                         <Col span={4}>
                           <div className={s.recentMatchContentItem}>
                             <img src="/assets/P2E/csgo/support.svg" alt="" />
-                            <span>{item?.player_statistic?.Assists}</span>
+                            <span className={s.textContentItem}>{item?.player_statistic?.Assists}</span>
                           </div>
                         </Col>
                         <Col span={4}>
                           <div className={s.recentMatchContentItem} style={{ border: 0 }}>
                             <img src="/assets/P2E/csgo/headshot.svg" alt="" />
-                            <span>{item?.player_statistic?.["Headshots"]}</span>
+                            <span className={s.textContentItem}>{item?.player_statistic?.["Headshots"]}</span>
                           </div>
                         </Col>
                       </Row>

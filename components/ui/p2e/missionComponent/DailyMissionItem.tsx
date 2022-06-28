@@ -77,7 +77,13 @@ const DailyMissionItem = (props: MissionItemProp) => {
 
   const finish = hasDone && mission?.is_claim;
   return (
-    <div className={s.missionItem} style={finish ? { background: "rgba(50, 110, 123, 0.5)" } : {}}>
+    <div className={s.missionItem} style={
+      finish ?
+        { background: "rgba(50, 110, 123, 0.5)" }
+        : hasDone
+          ? { background: "linear-gradient(270deg, #326E7B 74.38%, rgba(50, 110, 123, 0.2) 99.08%)" }
+          : {}
+    }>
       <Row>
         <Col xs={20} xl={18}>
           <Row className={s.missionInfo}>
@@ -96,7 +102,7 @@ const DailyMissionItem = (props: MissionItemProp) => {
               <div className={s.missionTitle}>
                 <h4>{mission?.mission?.title}</h4>
                 <img src="/assets/P2E/csgo/hourglass.png" alt="hourglass" style={{ marginRight: 5 }} />
-                <span>{moment(nextDay).fromNow()} next mission</span> {/**sub title */}
+                <span>{moment(nextDay).fromNow().slice(3)} until next mission</span> {/**sub title */}
               </div>
             </Col>
             <Col xl={8} xs={24}>
@@ -122,14 +128,17 @@ const DailyMissionItem = (props: MissionItemProp) => {
                 width={60}
                 percent={currentPercent} format={() => {
                   if (mission?.mission?.type === MissionType.Kr || mission?.mission?.type === MissionType.Kda) {
-                    return `${mission?.mission?.goal}`
+                    return `${achieved}`
+                  }
+                  if (mission?.mission?.goal.length >= 3) {
+                    return `${achieved}`;
                   }
                   return `${achieved}/${mission?.mission?.goal}`
                 }
                 } />
             </Col>
             <Col xl={12} xs={24} className={s.missionAction} style={finish ? { justifyContent: "center" } : {}}>
-              {finish ?
+              {!finish ?
                 <img src="/assets/P2E/csgo/finish.png" alt="" />
                 :
                 <ButtonWrapper
