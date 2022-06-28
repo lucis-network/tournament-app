@@ -602,7 +602,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             tournament_status={tournament_status as string}
             refetchTounament={refetch}
             currency={currency}
-            refetchSponsor={refetchSponsor}
+            //refetchSponsor={refetchSponsor}
           />
         </div>
         {/* ===== tabs ===== */}

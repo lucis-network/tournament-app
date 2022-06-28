@@ -1,6 +1,6 @@
 import s from "./Participants.module.sass";
 import { AppEmitter } from "services/emitter";
-import { Image, Button, message, Table } from "antd";
+import { Image, Button, message, Table, Input } from "antd";
 import { useEffect, useState } from "react";
 import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
 import { Team } from "src/generated/graphql";
@@ -8,6 +8,7 @@ import PopupDonate from "../../popup/popupDonate";
 import AuthStore from "components/Auth/AuthStore";
 import { useUpdateParticipant } from "hooks/tournament/useTournamentDetail";
 import { isEmpty } from "lodash";
+import SearchComplete from "components/ui/common/searchs";
 
 type Props = {
   dataParticipants: Team[];
@@ -186,9 +187,9 @@ export default function TableParticipant(props: Props) {
   return (
     <div className={s.wrapper}>
       <div className={s.containerTab}>
-        {/* <div style={{ display: "flex", justifyContent: "end" }}>
-        <SearchComplete />
-      </div> */}
+        <div style={{ display: "flex", justifyContent: "end" }}>
+          <Input placeholder="Search by name" />
+      </div>
         <Table
           dataSource={
             dataUpdateParticipant ? dataUpdateParticipant : dataParticipants

@@ -64,9 +64,9 @@ export default function ModalDonateTeam(props: Props) {
         {
           <div>
             <Row className={s.top}>
-              <Col xs={{ span: 24 }} sm={{ span: 14 }}>
+              <Col xs={{ span: 24 }} sm={{ span: 16 }}>
                 <Row align={"middle"} className={s.avtRow}>
-                  <Col span={4} className={s.avtWrap}>
+                  <Col span={5} className={s.avtWrap}>
                     <img
                       className={s.avt}
                       src={`${
@@ -76,13 +76,13 @@ export default function ModalDonateTeam(props: Props) {
                       alt=""
                     />
                   </Col>
-                  <Col span={10} className={s.name_team}>
+                  <Col span={14} className={s.name_team}>
                     <p>{nameTeam?.team?.name}</p>
                     <span>{quantityMember}</span>
                   </Col>
                 </Row>
               </Col>
-              <Col xs={{ span: 24 }} sm={{ span: 10 }} className={s.donateTeam}>
+              <Col xs={{ span: 24 }} sm={{ span: 8 }} className={s.donateTeam}>
                 {isCheck && (
                   <Button
                     type="primary"

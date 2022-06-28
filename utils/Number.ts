@@ -98,13 +98,22 @@ if (isClientDevMode) {
       expected: '+12_345_678.129',
     },
     {
-      msg: 'Can trim non-meaningful 0',
+      msg: 'Can not trim meaningful 0',
       input: {
-        num: 12345678.12600012312,
+        num: 12345678000.000129,
         decimal: 5,
         option: {zero_trim: true},
       },
-      expected: '12,345,678.126',
+      expected: '12,345,678,000.00013',
+    },
+    {
+      msg: 'Can not trim meaningful 0',
+      input: {
+        num: 12345678000.00012312,
+        decimal: 2,
+        option: {zero_trim: true},
+      },
+      expected: '12,345,678,000',
     },
   ]
 

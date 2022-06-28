@@ -970,3 +970,7 @@ body .ant-carousel .slick-dots-bottom{
 .ant-empty-description{
   color: #FFF
 }
+
+.ant-select-item-option-disabled.ant-select-item-option-selected{
+  background-color: transparent !important
+}
