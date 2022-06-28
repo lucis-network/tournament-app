@@ -12,7 +12,9 @@ type NumberFormatOption = {
 }
 
 export function currency(num: number, decimal = 0): string {
-  return format(num, decimal)
+  return format(num, decimal, {
+    zero_trim: true,
+  })
 }
 
 export function format(num: number, decimal = 0, option?: NumberFormatOption): string {
