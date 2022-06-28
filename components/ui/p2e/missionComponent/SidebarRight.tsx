@@ -22,11 +22,11 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
               </h2>
             </div>
             <div className={s.wallet}>
-              <Row gutter={32}>
+              <Row gutter={24}>
                 <Col span={12}>
                   <div className={s.lucisPointWallet}>
                     LUCIS Point
-                    <img src="/assets/P2E/lucis-point.svg" alt="" width="24" height="24" />
+                    <img src="/assets/P2E/lucis-point.svg" alt="" width="48" height="48" />
                     {balance?.lucis_point}
                   </div>
                 </Col>
@@ -34,7 +34,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                   <div >
                     <div className={s.BUSDWallet}>
                       Lucis Token
-                      <img src="/assets/P2E/lucis-token.svg" alt="" width="24" height="24" />
+                      <img src="/assets/P2E/lucis-token.svg" alt="" width="48" height="48" />
                       --
                     </div>
                     <div className={s.busdClaim}>
@@ -48,7 +48,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
         </Row>
         :
         <div className={s.sidebarRight}>
-          <Row>
+          <Row gutter={[0, 32]}>
             <Col xs={0} xl={24}>
               <div className={s.walletTitle}>
                 <h2>
@@ -56,11 +56,11 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                 </h2>
               </div>
               <div className={s.wallet}>
-                <Row gutter={32}>
+                <Row gutter={24}>
                   <Col span={12}>
                     <div className={s.lucisPointWallet}>
                       LUCIS Point
-                      <img src="/assets/P2E/lucis-point.svg" alt="" width="24" height="24" />
+                      <img src="/assets/P2E/lucis-point.svg" alt="" width="48" height="48" />
                       {balance?.lucis_point ?? "-"}
                     </div>
                   </Col>
@@ -68,7 +68,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                     <div >
                       <div className={s.BUSDWallet}>
                         Lucis Token
-                        <img src="/assets/P2E/lucis-token.svg" alt="" width="24" height="24" />
+                        <img src="/assets/P2E/lucis-token.svg" alt="" width="48" height="48" />
                         --
                       </div>
                       <div className={s.busdClaim}>
@@ -88,9 +88,9 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                 </div>
                 <div className={s.shareDiscordContent}>
                   <div className={s.shareDiscordText}>
-                    <img src="/assets/P2E/discord.png" alt="" />
+                    <img src="/assets/P2E/discord.svg" alt="" />
                     <p>Connect your Discord account and join our server!</p>
-                    <ButtonWrapper width={56} onClick={() => window.open("https://discord.gg/Y3E4x4U38k")}>Join</ButtonWrapper>
+                    <ButtonWrapper width={59} onClick={() => window.open("https://discord.gg/Y3E4x4U38k")}>Join</ButtonWrapper>
                   </div>
                   <div className={s.shareBonus}>
                     <p>Join bonus:</p>
@@ -103,7 +103,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
               </div>
             </Col>
             <Col span={24}>
-              <div className={s.share}>
+              <div className={s.share} style={{ marginBottom: 48 }}>
                 <div>
                   <h2>
                     Refer a friend
@@ -111,8 +111,8 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                 </div>
                 <div className={s.shareDiscordContent}>
                   <div className={s.shareDiscordText}>
-                    <img src="/assets/P2E/referFriend.png" alt="" />
-                    <p>https://lucis.network</p>
+                    <img src="/assets/P2E/friend.svg" alt="" />
+                    <p style={{ display: "flex", alignItems: "center" }}>https://lucis.network</p>
                     <img src="/assets/P2E/link.png" alt="" />
                   </div>
                   <div className={s.shareBonus}>

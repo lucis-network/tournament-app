@@ -9,9 +9,10 @@ type IProps = ButtonProps & {
 }
 const ButtonWrapper = (props: IProps) => {
     const width = props?.width ?? "88px";
+    const height = props?.height ?? "35px";
     return (
         //<div className={s.lucisButton} style={{ width: width, height: height }}>
-        <Button {...props} className={`${s.customCss} ${props?.className ?? ""}`} style={{ minWidth: width, maxWidth: width }} />
+        <Button {...props} className={`${s.customCss} ${props?.className ?? ""}`} style={{ minWidth: width, maxWidth: width, minHeight: height, maxHeight: height }} />
         //</div >
     )
 }

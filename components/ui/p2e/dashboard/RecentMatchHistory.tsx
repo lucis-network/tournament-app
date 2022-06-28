@@ -1,28 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import s from './dashboard.module.sass'
-import { Col, message, Row } from "antd"
+import { Col, Row } from "antd"
 import {
-  CLAIM_BOX,
-  GET_OR_SET_DAILY_MISSION,
+
+  GET_RECENT_MATCHES_BY_DAYS,
   GET_STATISTICS,
-  UPDATE_DAILY_MISSION,
-  UPDATE_RECENTLY_MATCH,
   useGetRecentMatches
 } from "../../../../hooks/p2e/useP2E";
 
-import { useMutation, useQuery } from "@apollo/client";
-import { GMatch, GPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
+import { useQuery } from "@apollo/client";
+import { GMatch, GPlayerMatch, PlayerMatch } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchList } from '../RecentMatchList';
-import ButtonWrapper from 'components/common/button/Button';
 import { useRouter } from 'next/router';
 import SidebarRight from '../missionComponent/SidebarRight';
 
 const RecentMatchHistory = () => {
-  const [recentlyMatches, setRecentlyMatches] = useState<GPlayerMatch[]>([])
-
   const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
       endpoint: 'p2e'
+    }
+  });
+
+  const historyQuery = useQuery(GET_RECENT_MATCHES_BY_DAYS, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
+      game_uid: '03',
+      platform_id: 1,
+      number_of_day: 3
     }
   });
 
@@ -38,12 +44,6 @@ const RecentMatchHistory = () => {
   //   }
   // })
 
-  const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentMatches({
-    game_uid: '03',
-    offset: 1,
-    limit: 5,
-    platform_id: 1
-  })
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
@@ -58,28 +58,29 @@ const RecentMatchHistory = () => {
   //   }
   // }
 
-  useEffect(() => {
-    setRecentlyMatches(getRecentMatchesData?.getRecentlyMatch?.matches as GPlayerMatch[]);
-  }, [getRecentMatchesData])
-
-  const lucisPointRewardToday = (missions: GMatch): number => {
-    const matchesToday = missions?.matches?.filter(item => {
-      const now = new Date();
-      const endMatch = new Date(item.match.end_at);
-      return now.getDate() === endMatch.getDate()
-        && now.getFullYear() === endMatch.getFullYear()
-        && now.getMonth() === endMatch.getMonth()
-    })
-
+  const lucisPointRewardToday = (matches: GPlayerMatch[]): number => {
     let total = 0;
-
-    matchesToday?.forEach((match) => {
+    matches?.forEach((match) => {
       total += match.lucis_point;
     })
     return total
   }
 
-
+  const isSameDay = (d1: Date, d2: Date) => {
+    d1 = new Date(d1);
+    d2 = new Date(d2);
+    return d1.getFullYear() === d2.getFullYear() &&
+      d1.getDate() === d2.getDate() &&
+      d1.getMonth() === d2.getMonth();
+  }
+  const today = new Date();
+  const yesterday = new Date();
+  yesterday.setDate(new Date().getDate() - 1);
+  const beforeYesterday = new Date();
+  beforeYesterday.setDate(new Date().getDate() - 2);
+  const historyToday = historyQuery?.data?.getPreviousMatch?.filter((item: PlayerMatch) => isSameDay(today, item?.match?.end_at));
+  const historyYesterday = historyQuery?.data?.getPreviousMatch?.filter((item: PlayerMatch) => isSameDay(yesterday, item?.match?.end_at));
+  const historyBeforeYesterday = historyQuery?.data?.getPreviousMatch?.filter((item: PlayerMatch) => isSameDay(beforeYesterday, item?.match?.end_at));
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
@@ -96,10 +97,10 @@ const RecentMatchHistory = () => {
               </Col>
               <Col xs={24} sm={12} className={s.recentMatchRewardGeneral}>
                 <div style={{ marginRight: 16 }}>
-                  Today:
+                  Today :
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / --</span>
+                  <span className={s.lucisPoint}>{lucisPointRewardToday(historyToday)} / --</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>
@@ -108,14 +109,14 @@ const RecentMatchHistory = () => {
                 </div>
               </Col>
             </Row>
-            <RecentMatchList recentMatches={recentlyMatches} loading={getRecentMatchesLoading} />
+            <RecentMatchList isHistory recentMatches={historyToday} loading={historyQuery.loading} />
             <Row className={s.recentMatchTitle}>
               <Col xs={24} className={s.recentMatchRewardGeneral}>
                 <div style={{ marginRight: 16 }}>
-                  Last day:
+                  {yesterday.toLocaleDateString()} :
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / --</span>
+                  <span className={s.lucisPoint}>{lucisPointRewardToday(historyYesterday)} / --</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>
@@ -124,7 +125,23 @@ const RecentMatchHistory = () => {
                 </div>
               </Col>
             </Row>
-            <RecentMatchList recentMatches={recentlyMatches} loading={getRecentMatchesLoading} />
+            <RecentMatchList isHistory recentMatches={historyYesterday} loading={historyQuery.loading} />
+            <Row className={s.recentMatchTitle}>
+              <Col xs={24} className={s.recentMatchRewardGeneral}>
+                <div style={{ marginRight: 16 }}>
+                  {beforeYesterday.toLocaleDateString()} :
+                </div>
+                <div className={s.rewardItem} style={{ marginRight: 8 }}>
+                  <span className={s.lucisPoint}>{lucisPointRewardToday(historyBeforeYesterday)} / --</span>
+                  <img src="/assets/P2E/lucis-point.svg" alt="" />
+                </div>
+                <div className={s.rewardItem}>
+                  <span>-- / 300</span>
+                  <img src="/assets/P2E/lucis-token.svg" alt="" />
+                </div>
+              </Col>
+            </Row>
+            <RecentMatchList isHistory recentMatches={historyBeforeYesterday} loading={historyQuery.loading} />
           </Col>
           <Col xl={8} md={24}>
             <SidebarRight balance={statisticQuery?.data?.getBalance} />

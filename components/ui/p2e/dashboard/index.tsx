@@ -3,6 +3,7 @@ import s from './dashboard.module.sass'
 import { Col, message, Row } from "antd"
 import {
   CLAIM_BOX,
+  GET_DAILY_POINT,
   GET_OR_SET_DAILY_MISSION,
   GET_STATISTICS,
   UPDATE_DAILY_MISSION,
@@ -38,6 +39,16 @@ const Dashboard = () => {
     context: {
       endpoint: 'p2e'
     }
+  });
+
+  const dailyPointQuery = useQuery(GET_DAILY_POINT, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
+      game_uid: '03',
+      platform_id: 1
+    },
   });
 
   const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
@@ -156,7 +167,7 @@ const Dashboard = () => {
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
         <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
-        <Row gutter={40}>
+        <Row gutter={51}>
           <Col xl={16} md={24}>
             <div>
               {/* <h2>
@@ -187,7 +198,7 @@ const Dashboard = () => {
                   Today:
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{lucisPointRewardToday(getRecentMatchesData?.getRecentlyMatch)} / --</span>
+                  <span className={s.lucisPoint}>{`${dailyPointQuery?.data?.getDailyPoint ?? "--"} / --`} </span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>

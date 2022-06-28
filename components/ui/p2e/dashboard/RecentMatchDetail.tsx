@@ -141,7 +141,6 @@ export const RecentMatchDetail = () => {
             <div className={s.sidebarRight}>
               {!getStatisticMatchLoading && (
                 <div className={s.informationDetail}>
-                  <h2 className={s.detailTitle}>Stats</h2>
                   <div className={s.mapBackground}
                     style={{
                       background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
@@ -263,12 +262,10 @@ export const RecentMatchDetail = () => {
                           </Col>
                         </Row>
                         <Row className={s.rowTotal}>
-                          <Col span={6}>
+                          <Col span={12}>
                             <div className={s.parameterItem}>
-                              Total
+                              Total Stats
                             </div>
-                          </Col>
-                          <Col span={6}>
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
                             <span>{"-"}</span>
@@ -277,6 +274,23 @@ export const RecentMatchDetail = () => {
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
                             <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.rowTotal}>
+                          <Col span={12}>
+                            <div className={s.parameterItem}>
+                              Total Achievement
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>{`+${lucisPointBonus()}`}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
                           </div>
                           </Col>
@@ -354,7 +368,6 @@ export const RecentMatchDetail = () => {
             <div className={s.sidebarRight}>
               {!getStatisticMatchLoading && (
                 <div className={s.informationDetail}>
-                  <h2 className={s.detailTitle}>Stats</h2>
                   <div className={s.mapBackground}
                     style={{
                       background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
@@ -377,7 +390,7 @@ export const RecentMatchDetail = () => {
                     <div className={s.playerParameters}>
                       <div className={s.parameterHeader}>
                         <div className={s.headerLeft}>Your stats</div>
-                        <div className={s.headerRight}>Lucis bonus: 30%</div>
+                        <div className={s.headerRight}>Lucis bonus: --%</div>
                       </div>
                       <div className={s.parameterBody}>
                         <Row className={s.row}>
@@ -475,13 +488,14 @@ export const RecentMatchDetail = () => {
                           </div>
                           </Col>
                         </Row>
+                        <div style={{ borderBottom: "1px solid #556281" }}>
+
+                        </div>
                         <Row className={s.rowTotal}>
-                          <Col span={6}>
+                          <Col span={12}>
                             <div className={s.parameterItem}>
-                              Total
+                              Total Stats
                             </div>
-                          </Col>
-                          <Col span={6}>
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
                             <span>{"-"}</span>
@@ -490,6 +504,23 @@ export const RecentMatchDetail = () => {
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
                             <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.rowTotal}>
+                          <Col span={12}>
+                            <div className={s.parameterItem}>
+                              Total Achievement
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>{`+${lucisPointBonus()}`}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
                           </div>
                           </Col>

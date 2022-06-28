@@ -270,6 +270,29 @@ export const GET_RECENT_MATCHES = gql`
   }
 `
 
+export const GET_RECENT_MATCHES_BY_DAYS = gql`
+  query ($game_uid: String!, $platform_id: Int!,$number_of_day: Int!) {
+    getPreviousMatch(game_uid: $game_uid, platform_id: $platform_id, number_of_day: $number_of_day) {
+      id
+      match_uid
+      player_game_uid
+      is_win
+      map_img
+      lucis_point
+      player_statistic
+      match {
+        uid
+        game_uid
+        winner_team
+        loser_team
+        score
+        end_at
+        map
+      }
+    }
+  }
+`
+
 export const GET_STATISTIC_MATCH = gql`
   query ($player_match_id: Int!) {
     getMatchStatistic(player_match_id: $player_match_id) {
@@ -337,9 +360,6 @@ export const GET_LUCIS_MISSION = gql`
   }
 `
 
-
-
-
 export const GET_STATISTICS = gql`
   query {
     getBalance {
@@ -347,4 +367,11 @@ export const GET_STATISTICS = gql`
       lucis_token
     }
   }
+`
+
+
+export const GET_DAILY_POINT = gql`
+query ($game_uid: String!, $platform_id: Int!) {
+  getDailyPoint(game_uid: $game_uid, platform_id: $platform_id)
+}
 `
