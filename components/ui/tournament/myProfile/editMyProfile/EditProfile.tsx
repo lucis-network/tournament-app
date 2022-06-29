@@ -221,18 +221,18 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
       <Form
         form={form}
         initialValues={{
-          user_name: !isEmpty(userInfo?.profile?.user_name) ? userInfo?.profile?.user_name : '',
-          display_name: !isEmpty(userInfo?.profile?.display_name) ? userInfo.profile?.display_name : (userInfo?.profile?.user_name ?? ''),
-          email: !isEmpty(userInfo?.email) ? userInfo?.email : '',
-          biography: !isEmpty(userInfo?.profile?.biography) ? userInfo?.profile?.biography : '',
-          facebook: !isEmpty(userInfo?.profile?.facebook) ? userInfo?.profile?.facebook : '',
-          twitter: !isEmpty(userInfo?.profile?.twitter) ? userInfo?.profile?.twitter : '',
-          // telegram: !isEmpty(userInfo?.profile?.telegram) ? userInfo?.profile?.telegram : '',
-          twitch: !isEmpty(userInfo?.profile?.twitch) ? userInfo?.profile?.twitch : '',
-          discord: !isEmpty(userInfo?.profile?.discord) ? userInfo?.profile?.discord : '',
-          youtube: !isEmpty(userInfo?.profile?.youtube) ? userInfo?.profile?.youtube : '',
-          dial_code: !isEmpty(userInfo?.profile?.country_code) ? userInfo?.profile?.country_code : '',
-          phone: !isEmpty(userInfo?.profile?.phone) ? userInfo?.profile?.phone : '',
+          user_name: !isEmpty(AuthStore?.profile?.user_name) ? AuthStore?.profile?.user_name : '',
+          display_name: !isEmpty(AuthStore?.profile?.display_name) ? AuthStore.profile?.display_name : (AuthStore?.profile?.user_name ?? ''),
+          email: !isEmpty(AuthStore?.email) ? AuthStore?.email : '',
+          biography: !isEmpty(AuthStore?.profile?.biography) ? AuthStore?.profile?.biography : '',
+          facebook: !isEmpty(AuthStore?.profile?.facebook) ? AuthStore?.profile?.facebook : '',
+          twitter: !isEmpty(AuthStore?.profile?.twitter) ? AuthStore?.profile?.twitter : '',
+          // telegram: !isEmpty(AuthStore?.profile?.telegram) ? AuthStore?.profile?.telegram : '',
+          twitch: !isEmpty(AuthStore?.profile?.twitch) ? AuthStore?.profile?.twitch : '',
+          discord: !isEmpty(AuthStore?.profile?.discord) ? AuthStore?.profile?.discord : '',
+          youtube: !isEmpty(AuthStore?.profile?.youtube) ? AuthStore?.profile?.youtube : '',
+          dial_code: !isEmpty(AuthStore?.profile?.country_code) ? AuthStore?.profile?.country_code : '',
+          phone: !isEmpty(AuthStore?.profile?.phone) ? AuthStore?.profile?.phone : '',
         }}
       >
         <Row gutter={30}>
