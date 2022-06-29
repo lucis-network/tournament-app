@@ -1,13 +1,13 @@
 import s from "./Participants.module.sass";
 import { AppEmitter } from "services/emitter";
 import { Image, Button, message, Table, Input } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import ModalDonateTeam from "components/ui/common/button/buttonDonateTeam";
 import { Team } from "src/generated/graphql";
 import PopupDonate from "../../popup/popupDonate";
 import AuthStore from "components/Auth/AuthStore";
 import { useUpdateParticipant } from "hooks/tournament/useTournamentDetail";
-import { isEmpty } from "lodash";
+import { debounce, isEmpty } from "lodash";
 import SearchComplete from "components/ui/common/searchs";
 
 type Props = {
@@ -35,6 +35,8 @@ export default function TableParticipant(props: Props) {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
   const [isCheckBtnDonate, setIsCheckBtnDonate] = useState(false);
+  const [name, setName] = useState("");
+  const [dataParticipantsFilter, setDataParticipantsFilter] = useState<Team[]>([] as Team[]);
 
   const { dataUpdateParticipant } = useUpdateParticipant({
     tournament_uid: tournamentId,
@@ -62,9 +64,24 @@ export default function TableParticipant(props: Props) {
       AppEmitter.emit("showPopupDonate", true);
     }
   };
-  if (loading) {
-    return <></>;
-  }
+
+  const onSearch = (e: any) => {
+		delayedSearch(e.target.value);
+	};
+
+  const delayedSearch = useCallback(
+		debounce((value: string) => {
+			setName(value);
+		}, 600),
+		[]
+	);
+  
+  useEffect(() => {
+    const dataFilter = dataParticipants.filter((item: any) => {
+      if (item?.team && item?.team?.name.toLowerCase().includes(name?.toLowerCase())) return item;
+    })
+    setDataParticipantsFilter(dataFilter);
+  }, [name, dataParticipants])
 
   const columns = [
     {
@@ -184,17 +201,30 @@ export default function TableParticipant(props: Props) {
     },
   ];
 
+  if (loading) {
+    return <></>;
+  }
+
   return (
     <div className={s.wrapper}>
       <div className={s.containerTab}>
-        <div style={{ display: "flex", justifyContent: "end" }}>
-          <Input placeholder="Search by name" />
-      </div>
+        <div
+          className={s.search}
+        >
+          <div className={s.searchInput}>
+            <Input.Search
+              size="large"
+              placeholder="Search by name"
+              enterButton
+              onChange={onSearch}
+            />
+          </div>
+        </div>
         <Table
-          dataSource={
-            dataUpdateParticipant ? dataUpdateParticipant : dataParticipants
-          }
-          //dataSource={dataParticipants}
+          // dataSource={
+          //   dataUpdateParticipant ? dataUpdateParticipant : dataParticipants
+          // }
+          dataSource={dataParticipantsFilter}
           columns={columns}
           bordered
           className={s.container_table}

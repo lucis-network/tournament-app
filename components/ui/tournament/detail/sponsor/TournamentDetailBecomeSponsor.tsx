@@ -322,6 +322,7 @@ export default function TournamentDetailBecomeSponsor(
           </Col>
           <Col xs={{ span: 24 }} md={{ span: 16 }}>
             <Form.Item
+
               name="amount"
               rules={[
                 {
@@ -336,7 +337,6 @@ export default function TournamentDetailBecomeSponsor(
               ]}
             >
               <InputNumber
-                // prefix="$"
                 style={{ width: "100%" }}
                 ref={inputSponsorAmountRef}
                 min={0}

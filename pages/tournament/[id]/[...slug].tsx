@@ -202,7 +202,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     }
 
     if (!AuthStore.isHasMail) {
-      setIsPopupNotifyProfile(true);
+      setIsPopupNotifyProfile(true);s
       return;
     }
 

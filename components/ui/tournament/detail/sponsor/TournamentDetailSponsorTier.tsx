@@ -19,6 +19,7 @@ export default function TournamentDetailSponsorTier(
   const { name: tierName, max: maxSponsorSlot, sponsor_transactions } = tier;
 
   const [checkBanner, setCheckBanner] = useState(false);
+  const [checkBlankLogo, setCheckBlankLogo] = useState(false);
 
   const newSlots: SponsorTransaction[] = [
     {
@@ -51,7 +52,17 @@ export default function TournamentDetailSponsorTier(
         }
       });
     }
-  }, []);
+  }, [newSlots]);
+
+  useEffect(() => {
+    if (newSlots) {
+      newSlots.forEach((slot) => {
+        if (slot?.logo !== "") {
+          setCheckBlankLogo(true);
+        }
+      });
+    }
+  }, [newSlots]);
 
   return (
     <div
@@ -73,6 +84,7 @@ export default function TournamentDetailSponsorTier(
                       slot={slot}
                       checkBanner={checkBanner}
                       index={index}
+                      checkBlankLogo={checkBlankLogo}
                     />
                   </div>
                 );

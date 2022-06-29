@@ -27,7 +27,7 @@ export default function GroupLink(props: Props) {
       {datas?.twitch && (
         <div className={s.ic_item}>
           <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/MyProfile/ic_twitch.svg" alt="" />
+            <img src="/assets/MyProfile/ic_twitchIcon.svg" alt="" />
           </a>
         </div>
       )}
@@ -43,7 +43,7 @@ export default function GroupLink(props: Props) {
       {datas.discord && (
         <div className={s.ic_item}>
           <a href={datas.discord} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/MyProfile/ic_dis.svg" alt="" />
+            <img src="/assets/MyProfile/ic_discord.svg" alt="" />
           </a>
         </div>
       )}
