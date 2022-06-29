@@ -3,17 +3,16 @@ import { Tabs } from "antd";
 import MyTeamDetail from "components/ui/common/tabsItem/myTeamDetail";
 import MyOverview from "../tabsitem/overview/Index";
 import MyTournament from "../tabsitem/myTournament";
-import MyProfileStore from "../../../../../src/store/MyProfileStore";
 import { observer } from "mobx-react-lite";
-import { UserGraphql } from "../../../../../src/generated/graphql";
 import { ApolloQueryResult } from "@apollo/client";
 import { useEffect } from "react";
 import { Router, useRouter } from "next/router";
 import TournamentStore from "src/store/TournamentStore";
+import {AuthUser} from "../../../../Auth/AuthStore";
 
 type ContentMyProfileProps = {
   isOwner?: boolean;
-  userInfo: UserGraphql;
+  userInfo: AuthUser;
   getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>;
   page?: string;
 };

@@ -9,16 +9,15 @@ import s from "./MyTournament.module.sass";
 import { Button, Col, Input, message, Row } from "antd";
 import { debounce, isEmpty } from "lodash";
 import Link from "next/link";
-import { UserGraphql } from "../../../../../../src/generated/graphql";
 import { ApolloQueryResult } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import AuthStore from "components/Auth/AuthStore";
+import AuthStore, {AuthUser} from "components/Auth/AuthStore";
 import { useRouter } from "next/router";
 
 type MyTournamentProps = {
   isOwner?: boolean;
-  userInfo: UserGraphql;
+  userInfo: AuthUser;
   getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>;
 };
 

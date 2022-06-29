@@ -1,21 +1,23 @@
 import s from "./EditProfile.module.sass";
-import {Button, Col, Form, Input, InputNumber, message as antMessage, message, Row, Select, Space} from "antd";
+import {Button, Col, Form, Input, message as antMessage, Row} from "antd";
 import {InfoCircleOutlined, LinkOutlined} from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useUpdateProfile, useVerifyEmail} from "../../../../../hooks/myProfile/useMyProfile";
 import {observer} from "mobx-react-lite";
 import debounce from "lodash/debounce";
-import {ProfileUpdateInput, UserGraphql} from "../../../../../src/generated/graphql";
+import {ProfileUpdateInput} from "../../../../../src/generated/graphql";
 import {isEmpty} from "lodash";
-import {ApolloError, ApolloQueryResult} from "@apollo/client";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { isPhoneNumber } from 'class-validator';
 import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
+import AuthStore, {AuthUser} from "../../../../Auth/AuthStore";
+import {getLocalAuthInfo, setLocalAuthInfo} from "../../../../Auth/AuthLocal";
+import {useRouter} from "next/router";
 
 type EditProfileProps = {
-  userInfo: UserGraphql,
+  userInfo: AuthUser,
   onEditedProfile: () => void,
 };
 
@@ -28,10 +30,12 @@ type CountryOption = {
 export default observer(function EditProfile({ userInfo, onEditedProfile }: EditProfileProps) {
   const [newProfileData, setNewProfileData] = useState<ProfileUpdateInput>({});
   const [emailValue, setEmailValue] = useState<string>('');
+  const [emailVerifying, setEmailVerifying] = useState<boolean>(false);
   const [countryData, setCountryData] = useState<CountryOption[]>([]);
   const [phone, setPhone] = useState<string>(userInfo?.profile?.phone as string);
   const [phoneError, setPhoneError] = useState<string | undefined>(undefined)
-
+  const broadcastChannel = new BroadcastChannel('VerifyEmailListening')
+  const router = useRouter()
   const {verifyEmail} = useVerifyEmail(
     {
       email: emailValue,
@@ -55,16 +59,37 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
       }
     }
   );
-  const { updateProfile } = useUpdateProfile({
-    data: newProfileData
+
+  const {updateProfile, profileUpdating} = useUpdateProfile({
+    data: newProfileData,
+    onError: (error) => handleGraphqlErrors(error, (code, message) => {
+      console.log('[updateProfile onError] code, message: ', code, message);
+      switch (code) {
+        case 'BAD_USER_INPUT':
+          antMessage.error('The information you entered is not correct. Please try again.')
+          break
+        default:
+          antMessage.error('An unknown error has occurred. Please try again later.')
+          break
+      }
+    }),
+    onCompleted: response => {
+      console.log('[useUpdateProfile onCompleted] response: ', response.updateProfile);
+      AuthStore.profile = response.updateProfile
+      let localUserInfo = getLocalAuthInfo()
+      if (localUserInfo) {
+        localUserInfo.profile = response.updateProfile
+        setLocalAuthInfo(localUserInfo)
+      }
+      console.log('[useUpdateProfile onCompleted] localUserInfo: ', localUserInfo);
+      // setLocalAuthInfo()
+      antMessage.success("Profile updated.")
+        .then(() => {
+          onEditedProfile()
+        })
+    },
   });
   const [form] = Form.useForm();
-  const emailRef = useRef<HTMLInputElement>(null);
-  const { Option } = Select;
-
-  const handleRegionChange = (data: any) => {
-    console.log(data)
-  }
 
   const fetchCountryList = async (): Promise<any> => {
     try {
@@ -93,18 +118,16 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
   }
 
   const handleVerifyEmail = () => {
+    setEmailVerifying(true)
     verifyEmail()
+      .finally(() => {
+        setEmailVerifying(false)
+      })
   }
 
   const handleSaveChange = () => {
     form.validateFields()
       .then(result => {
-        let formattedPhone = '';
-        if (result.phone && result.dial_code) {
-          const dialCode = countryData.filter(country => country.code === result.dial_code)[0].dial_code;
-          formattedPhone = dialCode + result.phone
-        }
-
         let newResult: any = {
           user_name: {
             set: result.user_name ?? ''
@@ -144,13 +167,11 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
             setPhoneError("Invalid phone number")
             return
           }
-
           newResult.phone = {
-            set: (!phone.includes('+')) ? ('+' + phone) : phone
+            set: _phone
           }
         }
 
-        result;
         setNewProfileData(newResult)
       })
       .catch(error => {
@@ -158,13 +179,8 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
       });
   }
 
-  const handlePhoneChange = (phone: string) => {
-    console.log(phone)
-  }
-
   useEffect(() => {
     let isSubscribed = true;
-
     fetchCountryList()
       .then(response => response.json())
       .then(result => {
@@ -185,16 +201,21 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
   useEffect(() => {
     if (!isEmpty(newProfileData)) {
       updateProfile()
-        .then(response => {
-          onEditedProfile()
-          message.success("Success");
-        })
-        .catch(error => {
-          console.log('updateProfile error: ', error)
-        })
     }
   }, [newProfileData])
-
+  useEffect(() => {
+    broadcastChannel.onmessage = event => {
+      if (event.data === 'Verify success.') {
+        window.location.reload()
+      }
+    }
+    if (router.query.verify === 'success') {
+      broadcastChannel.postMessage('Verify success.');
+    }
+    return () => {
+      broadcastChannel.close()
+    }
+  }, [router.query])
   return (
     <div className={s.editProfile}>
       <Form
@@ -271,7 +292,7 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
               </Form.Item>
               <Button
                 onClick={handleVerifyEmail}
-                disabled={(emailValue.length <= 0) || (emailValue === userInfo.email)}
+                disabled={(emailValue.length <= 0) || (emailValue === userInfo.email) || emailVerifying}
                 className={s.btnVerify}
               >
                 Verify
@@ -282,7 +303,7 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
               name="biography"
               labelCol={{ span: 24 }}
             >
-              <TextArea placeholder="Enter biography" />
+              <TextArea placeholder="Enter biography" rows={4} />
             </Form.Item>
             <Form.Item
               label="Phone"
@@ -306,32 +327,9 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
                   setPhone(phone)
                 }}
                 placeholder="Enter phone number"
+                buttonClass={s.inputPhone}
               />
               <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
-              {/*<Row>*/}
-              {/*  <Col span={8}>*/}
-              {/*    <Form.Item name="dial_code">*/}
-              {/*      <Select*/}
-              {/*        showSearch*/}
-              {/*        filterOption={(input, option) => {*/}
-              {/*          return option?.key.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
-              {/*        }}*/}
-              {/*        onChange={handleRegionChange}*/}
-              {/*      >*/}
-              {/*        {countryData.length > 0 && countryData.map((item: CountryOption) => (*/}
-              {/*          <Option key={item.name} value={item.code}>{item.name} {item.dial_code}</Option>*/}
-              {/*        ))}*/}
-              {/*      </Select>*/}
-              {/*    </Form.Item>*/}
-              {/*  </Col>*/}
-              {/*  <Col span={16}>*/}
-              {/*    <Form.Item*/}
-              {/*      name="phone"*/}
-              {/*    >*/}
-              {/*      <InputNumber controls={false} type="number" placeholder="Enter phone number" style={{ width: "100%" }} />*/}
-              {/*    </Form.Item>*/}
-              {/*  </Col>*/}
-              {/*</Row>*/}
             </Form.Item>
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
@@ -408,7 +406,7 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
           </Col>
         </Row>
         <div className="text-center mt-5">
-          <Button onClick={handleSaveChange}>Save change</Button>
+          <Button onClick={handleSaveChange} disabled={profileUpdating}>Save change</Button>
         </div>
       </Form>
     </div>
