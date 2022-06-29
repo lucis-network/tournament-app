@@ -190,7 +190,7 @@ const UseTeamModal = (tournamentData: any) => {
         ...errorTour,
         size:
           team_size !== selectedTeam?.team?.length
-            ? "Invalid team size to join"
+            ? `The tournament team size is ${team_size}. Please choose more players to join`
             : "",
         prize: checkEmptyPrize
           ? "Prize allocation must not be empty"

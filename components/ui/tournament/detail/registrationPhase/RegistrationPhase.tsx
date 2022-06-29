@@ -277,13 +277,17 @@ export default observer(function RegistrationPhase(props: Props) {
   useEffect(() => {
     if (TournamentStore.checkBacktoTournament) {
       handleOpenModal();
-      refetchGetMyTeam();
+      //refetchGetMyTeam();
       TournamentStore.checkBacktoTournament = false;
 
       //@ts-ignore
       document.getElementById("registrationPhase").scrollIntoView();
     }
   }, [TournamentStore.checkBacktoTournament == true]);
+
+  useEffect(() => {
+    refetchGetMyTeam();
+  }, []);
 
   useEffect(() => {
     if (
@@ -609,7 +613,7 @@ export default observer(function RegistrationPhase(props: Props) {
                             Registration phase will ends in{" "}
                           </span>
                           <span className={s.countdownRegistrationTimer}>
-                            <CountdownTimer targetDate={timeRegistration} />
+                            <CountdownTimer targetDate={timeRegistration} refetch={refetch}/>
                           </span>
                         </p>
                       </div>
@@ -622,7 +626,7 @@ export default observer(function RegistrationPhase(props: Props) {
                             Check-in phase will ends in{" "}
                           </span>
                         </p>
-                        <CountdownTimer targetDate={timeCheckin} />
+                        <CountdownTimer targetDate={timeCheckin} refetch={refetch}/>
                       </div>
                     );
                   case "PREPARE":
@@ -633,7 +637,7 @@ export default observer(function RegistrationPhase(props: Props) {
                             Tournament will starts in{" "}
                           </span>
                         </p>
-                        <CountdownTimer targetDate={timeDefault} />
+                        <CountdownTimer targetDate={timeDefault} refetch={refetch}/>
                       </div>
                     );
                   case "RUNNING":
