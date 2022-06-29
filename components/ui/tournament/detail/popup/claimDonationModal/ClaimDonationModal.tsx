@@ -1,13 +1,13 @@
-import { observer } from "mobx-react-lite";
-import { Button, message, Modal, Table } from "antd";
+import {observer} from "mobx-react-lite";
+import {Button, message, Modal, Table} from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import { fomatNumber } from "utils/Number";
+import {format} from "utils/Number";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
-import { useEffect, useState } from "react";
-import { LUCIS_FEE_DONATION } from "utils/Enum";
+import {useEffect, useState} from "react";
+import {LUCIS_FEE_DONATION} from "utils/Enum";
 import ClaimResultModal from "../claimResultModal/ClaimResultModal";
 
 type Props = {
@@ -93,7 +93,8 @@ export default observer(function ClaimDonationModal(props: Props) {
           (res) => {
             console.log(res);
           },
-          (error) => {}
+          (error) => {
+          }
         );
       }
 
@@ -129,7 +130,7 @@ export default observer(function ClaimDonationModal(props: Props) {
             {item.reward_type == "REFEREE_FEE" && <>From referee fee</>}
             {item.reward_type == "DONATE_FOR_REFEREE" && <>From donation</>}
             {item.reward_type == "DONATEFORTEAM" && <>For your team</>}
-            {item.reward_type == "Total" && <>Total</>}
+            {item.reward_type == "Total" && <strong>Total</strong>}
             {item.reward_type == "LUCISFEE" && <>Lucis Fee (5%)</>}
             {item.reward_type == "RECEIVED" && <>You received</>}
           </>
@@ -144,7 +145,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {fomatNumber(item.amount)} {item.symbol}
+            {format(item.amount, 2, {zero_trim: true})} {item.symbol}
           </>
         );
       },
@@ -152,7 +153,7 @@ export default observer(function ClaimDonationModal(props: Props) {
   ];
 
   return (
-    <div style={{ width: "400px" }}>
+    <div style={{width: "400px"}}>
       <Modal
         title={
           <span className="font-[600]">
@@ -175,8 +176,8 @@ export default observer(function ClaimDonationModal(props: Props) {
           rowKey={(record) => `${record?.reward_type}`}
           className={s.container_table}
         />
-        <div style={{ marginTop: "10px" }}>
-          Lucis will take 5% each donation as fee
+        <div style={{marginTop: "10px"}}>
+          {isCheckUserReferee ? "Lucis will take 5% the reward as fee" : "Lucis will take 5% each donation as fee"}
         </div>
         <div className={s.btnContainter}>
           <Button onClick={handleCancel} className="mr-2">

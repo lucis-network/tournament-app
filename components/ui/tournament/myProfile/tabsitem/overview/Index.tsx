@@ -104,7 +104,7 @@ export default observer(function MyOverview({
     {
       name: "discord",
       link: userInfo?.profile?.discord,
-      logo: "/assets/MyProfile/ic_dis.svg",
+      logo: "/assets/MyProfile/ic_discord.svg",
     },
     {
       name: "facebook",
@@ -114,7 +114,7 @@ export default observer(function MyOverview({
     {
       name: "twitch",
       link: userInfo?.profile?.twitch,
-      logo: "/assets/MyProfile/ic_twitch.svg",
+      logo: "/assets/MyProfile/ic_twitchIcon.svg",
     },
     {
       name: "twitter",

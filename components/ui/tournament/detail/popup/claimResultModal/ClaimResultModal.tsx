@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import { Modal } from "antd";
 import s from "./index.module.sass";
-import { fomatNumber } from "utils/Number";
+import { format } from "utils/Number";
 
 type Props = {
   totalPrizePool: number;
@@ -21,7 +21,7 @@ export default observer(function ClaimResultModal(props: Props) {
         <div className={`${s.container}`}>
           <p>Claim success</p>
           <p>
-            {fomatNumber(totalPrizePool ? (totalPrizePool * 95) / 100 : 0)}{" "}
+            {format(totalPrizePool ? (totalPrizePool * 95) / 100 : 0, 2, {zero_trim: true})}{" "}
             {currency}
           </p>
           <div>

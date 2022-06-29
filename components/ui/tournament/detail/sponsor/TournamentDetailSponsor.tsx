@@ -24,15 +24,16 @@ type Props = {
   refetchTounament?: any;
   currency: any;
   type?: string;
-  refetchSponsor?: any;
+  //refetchSponsor?: any;
 };
 
 export default function TournamentDetailSponsor(props: Props) {
-  const { tournamentId, tournament_status, refetchTounament, currency, type, refetchSponsor } = props;
+  const { tournamentId, tournament_status, refetchTounament, currency, type } = props;
   const [isBecome, setIsBecome] = useState(false);
   const {
     loading,
     dataSponsors,
+    refetchSponsor
   } = useSponsors({
     tournament_uid: tournamentId,
   });
@@ -59,7 +60,7 @@ export default function TournamentDetailSponsor(props: Props) {
   }
   return (
     <>
-      <div className={`${s.sponsorContainer} ${type === "banner" ? "" : `my-48`}`}>
+      <div className={`${s.sponsorContainer} ${type === "banner" ? "" : s.sponsorBecome}`}>
         <Row>
           <Col span={24}>
             {dataSponsors?.getSponsorSlot.length > 0 &&

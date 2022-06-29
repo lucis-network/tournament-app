@@ -76,9 +76,11 @@
         .sponsorSlot
           .sponsorLogoWrap
             img
-              height: 50px
+              height: 24px
               width: auto
               margin-bottom: 20px
+              @media screen and (min-width: 575px)
+                height: 50px
           .sponsorName
             font-size: 14px
     &:nth-of-type(3)
@@ -122,8 +124,9 @@
       flex-wrap: wrap
       justify-content: center
       align-items: center
-      gap: 0 60px
-      @media screen and (min-width: 992px)
+      gap: 0 30px
+      @media screen and (min-width: 768px)
+        gap: 0 60px
       .sponsorSlot
         padding: 0 5px
         display: flex
@@ -134,8 +137,10 @@
           margin-bottom: 10px
           text-align: center
           img
-            height: 60px
+            height: 28px
             width: auto
+            @media screen and (min-width: 575px)
+              height: 60px
         .sponsorEdit
           display: block
           width: 40px
@@ -173,8 +178,6 @@
     color: #ffffff !important
   .selectTier
     width: 100%
-    :global(.ant-select-item-option-disabled .ant-select-item-option-selected)
-      background-color: transparent
 .message_error
   font-size: 14px
   margin-top: 4px
@@ -200,3 +203,12 @@
     border: none
   :global(.ant-btn-default:hover)
     background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+
+.sponsorBecome
+  margin-bottom: 20px
+  @media screen and (min-width: 867px)
+    margin-top: 100px
+    margin-bottom: 100px
+  @media screen and (min-width: 1200px)
+    margin-top: 200px
+    margin-bottom: 200px

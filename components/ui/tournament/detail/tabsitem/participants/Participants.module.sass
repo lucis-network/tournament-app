@@ -9,7 +9,14 @@
   background: linear-gradient(333deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
   backdrop-filter: blur(42px)
   padding: 32px
-  
+  .search
+    display: flex
+    justify-content: flex-end
+    margin-bottom: 40px
+    .searchInput
+      max-width: 400px
+      :global(.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button)
+        background: none
 .container_table
   :global(.ant-table)
     color: #FFF !important

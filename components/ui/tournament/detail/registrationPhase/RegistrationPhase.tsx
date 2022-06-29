@@ -5,7 +5,7 @@ import s from "./index.module.sass";
 import moment from "moment";
 import ChooseTeamModal from "../popup/chooseTeamModal";
 import useTeamModal from "../hooks/useTeamModal";
-import { fomatNumber } from "utils/Number";
+import { format } from "utils/Number";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
 import PopupDonate from "../popup/popupDonate";
@@ -315,8 +315,8 @@ export default observer(function RegistrationPhase(props: Props) {
                 <div className={s.itemText}>
                   <h3>
                     {dataUpdateTotalPrizePool
-                      ? fomatNumber(dataUpdateTotalPrizePool?.total_prize_pool)
-                      : fomatNumber(totalPrizePool)}{" "}
+                      ? format(dataUpdateTotalPrizePool?.total_prize_pool, 2, {zero_trim: true})
+                      : format(totalPrizePool, 2, {zero_trim: true})}{" "}
                     {currency.symbol}
                   </h3>
                   <p>PRIZE POOL</p>
@@ -332,7 +332,7 @@ export default observer(function RegistrationPhase(props: Props) {
                             preview={false}
                             alt=""
                           />
-                          {fomatNumber(Number.parseFloat(additionPrize))} LUCIS
+                          {format(Number.parseFloat(additionPrize),2, {zero_trim: true})} LUCIS
                           token
                         </p>
                       </>
@@ -357,8 +357,8 @@ export default observer(function RegistrationPhase(props: Props) {
             <div className={s.itemText}>
               <h3>
                 {dataUpdateTotalDonation
-                  ? fomatNumber(dataUpdateTotalDonation?.total_donation)
-                  : fomatNumber(totalDonation)}{" "}
+                  ? format(dataUpdateTotalDonation?.total_donation, 2, {zero_trim: true})
+                  : format(totalDonation, 2, {zero_trim: true})}{" "}
                 {currency.symbol}
               </h3>
               <p>TOTAL DONATION</p>
@@ -485,10 +485,10 @@ export default observer(function RegistrationPhase(props: Props) {
                                     <p className={s.rewardsPrizeTitle}>Prize</p>
                                     <div className={s.rewardsClaimPrize}>
                                       <h3>
-                                        {fomatNumber(
+                                        {format(
                                           dataPrize?.amount
                                             ? dataPrize?.amount
-                                            : 0
+                                            : 0, 2, {zero_trim: true}
                                         )}{" "}
                                         <span className={s.rewardsClaimSymbol}>
                                           {dataPrize?.symbol}
@@ -519,10 +519,10 @@ export default observer(function RegistrationPhase(props: Props) {
                                   <div className={s.rewardsPrize}>
                                     <div className={s.rewardsClaimPrize}>
                                       <h3>
-                                        {fomatNumber(
+                                        {format(
                                           dataSystemPrize?.amount
                                             ? dataSystemPrize?.amount
-                                            : 0
+                                            : 0, 2, {zero_trim: true}
                                         )}{" "}
                                         <span className={s.rewardsClaimSymbol}>
                                           {dataSystemPrize?.symbol}
@@ -561,7 +561,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                       </p>
                                       <div className={s.rewardsClaimPrize}>
                                         <h3>
-                                          {fomatNumber(totalFromDonation)}{" "}
+                                          {format(totalFromDonation, 2, {zero_trim: true})}{" "}
                                           <span
                                             className={s.rewardsClaimSymbol}
                                           >

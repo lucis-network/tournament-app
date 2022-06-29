@@ -297,17 +297,26 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 						Back to step 1
 					</Button>
 				)}
-				<button
+				{/* <Button
 					className={s.buttonComplete}
 					disabled={!!errMessage || !!errorPassword}
 					onClick={onJoinTournament}
+					loading={loadingJoin}
 				>
 					{loadingJoin ? (
 						<SpinLoading className="pt-0 py-1 h-[28px]" size={24} />
 					) : (
 						"Complete and Join tournament"
 					)}
-				</button>
+				</Button> */}
+				<Button
+					className={s.buttonComplete}
+					disabled={!!errMessage || !!errorPassword}
+					onClick={onJoinTournament}
+					loading={loadingJoin}
+				>
+					Complete and Join tournament
+				</Button>
 			</div>
 		</div>
 	);

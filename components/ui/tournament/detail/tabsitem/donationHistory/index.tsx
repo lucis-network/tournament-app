@@ -6,8 +6,7 @@ import { Image, Table } from "antd";
 import s from "./DonationHistory.module.sass";
 import Link from "next/link";
 import { LinkOutlined } from "@ant-design/icons";
-import { currency as formatCurrency } from "../../../../../../utils/Number";
-import { isEmpty } from "lodash";
+import { format } from "../../../../../../utils/Number";
 
 type DonationHistoryProps = {
   dataDonation: DonateHistory[];
@@ -88,7 +87,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
       dataIndex: "amount",
       render: (amount: number) => (
         <span>
-          {formatCurrency(amount)} {currency?.symbol}
+          {format(amount, 2, {zero_trim: true})} {currency?.symbol}
         </span>
       ),
     },
@@ -140,7 +139,7 @@ export default function DonationHistory(props: DonationHistoryProps) {
         <div className={s.wrapper}>
           <div className={s.donationWrapper}>
             <h3>
-              Total donation: {formatCurrency(totalDonation)} {currency?.symbol}
+              Total donation: {format(totalDonation, 2, {zero_trim: true})} {currency?.symbol}
             </h3>
             <Table
               dataSource={dataDonation}
