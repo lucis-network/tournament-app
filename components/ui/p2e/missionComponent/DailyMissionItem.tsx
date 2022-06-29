@@ -138,7 +138,7 @@ const DailyMissionItem = (props: MissionItemProp) => {
                 } />
             </Col>
             <Col xl={12} xs={24} className={s.missionAction} style={finish ? { justifyContent: "center" } : {}}>
-              {!finish ?
+              {finish ?
                 <img src="/assets/P2E/csgo/finish.png" alt="" />
                 :
                 <ButtonWrapper
