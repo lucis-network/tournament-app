@@ -4,7 +4,13 @@
   border-color: none
   border: none
   width: inherit
-  span
+  :global(.ant-btn-loading-icon)
+    z-index: 1
+    position: absolute
+    left: 10px
+    top: 50%
+    transform: translateY(-50%)
+  span:not(:global(.ant-btn-loading-icon), :global(.anticon-loading))
     color: #000625
     background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
     border: 1px solid #000
@@ -42,7 +48,7 @@
   border-color: none
   border: none
   width: inherit
-  span
+  span:not(:global(.anticon-loading))
     color: #000625
     background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
     border: 1px solid #000

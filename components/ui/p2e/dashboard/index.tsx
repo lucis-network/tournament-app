@@ -132,7 +132,9 @@ const Dashboard = () => {
           platform_id: 1
         }
       })
-      statisticQuery.refetch()
+      await statisticQuery.refetch();
+      await isClaimBoxQuery.refetch();
+
       message.success("You have successfully claimed 30 lucis point!");
     } catch (error: any) {
       handleGraphqlErrors(error, (code) => {

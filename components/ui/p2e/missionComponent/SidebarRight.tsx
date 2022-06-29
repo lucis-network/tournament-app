@@ -25,7 +25,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
               <Row gutter={24}>
                 <Col span={12}>
                   <div className={s.lucisPointWallet}>
-                    LUCIS Point
+                    Lucis Point
                     <img src="/assets/P2E/lucis-point.svg" alt="" width="48" height="48" />
                     {balance?.lucis_point}
                   </div>
@@ -59,7 +59,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
                 <Row gutter={24}>
                   <Col span={12}>
                     <div className={s.lucisPointWallet}>
-                      LUCIS Point
+                      Lucis Point
                       <img src="/assets/P2E/lucis-point.svg" alt="" width="48" height="48" />
                       {balance?.lucis_point ?? "-"}
                     </div>

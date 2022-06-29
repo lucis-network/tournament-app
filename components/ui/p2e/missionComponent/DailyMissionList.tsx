@@ -14,7 +14,7 @@ type MissionsListProp = {
   loading?: boolean;
   loadingUpdate?: boolean;
   handleUpdateMissions: (popup: boolean) => Promise<void>;
-  onClaimBox: () => void;
+  onClaimBox: () => Promise<void>;
   isClaimBox?: boolean;
 };
 
@@ -27,6 +27,7 @@ const DailyMissionList = ({
   loadingUpdate,
   isClaimBox
 }: MissionsListProp) => {
+  const [loadingOpenBox, setLoadingOpenBox] = React.useState(false);
   const boxOpen = missions?.[0]?.is_claim
     && missions?.[1]?.is_claim
     && missions?.[2]?.is_claim
@@ -69,11 +70,13 @@ const DailyMissionList = ({
                 !boxOpen && lengthMissionDone < 4 ? { filter: "grayscale(100%)", cursor: "auto" }
                   : isClaimBox ? { cursor: "auto" } : {}
               }
-              width="300" alt="" onClick={() => {
-                if (!boxOpen && lengthMissionDone < 4 || isClaimBox) {
+              width="300" alt="" onClick={async () => {
+                if (!boxOpen && lengthMissionDone < 4 || isClaimBox || loadingOpenBox) {
                   return;
                 }
-                onClaimBox()
+                setLoadingOpenBox(true);
+                await onClaimBox();
+                setLoadingOpenBox(false);
               }} />
           </div>
 

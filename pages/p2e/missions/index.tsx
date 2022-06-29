@@ -4,13 +4,13 @@ import React from "react"
 
 
 const MissionPage = () => {
-    return (
-        <>
-            <P2EWrapper>
-                <Mission />
-            </P2EWrapper>
-        </>
-    );
+  return (
+    <>
+      <P2EWrapper>
+        <Mission />
+      </P2EWrapper>
+    </>
+  );
 }
 
 export default MissionPage;
