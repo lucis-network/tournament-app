@@ -6,10 +6,11 @@ import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
 import ButtonWrapper from "../../../common/button/Button";
 import moment from "moment";
+import { handleGraphqlErrors } from "utils/apollo_client";
 
 type MissionItemProp = {
   mission: PlayerMission;
-  handleUpdateMissions?: () => void;
+  handleUpdateMissions?: () => Promise<void>;
 };
 
 const MissionItem = (props: MissionItemProp) => {
@@ -22,32 +23,38 @@ const MissionItem = (props: MissionItemProp) => {
     },
   });
 
-  // const [rerollMission] = useMutation(REROLL_MISSION, {
-  //   context: {
-  //     endpoint: "p2e",
-  //   },
-  // });
-
   const handleClaimMission = async (mission: PlayerMission) => {
     setLoading(true);
-    claimMission({
-      variables: { player_mission_uid: mission?.uid },
-      onCompleted: (data) => {
-        setLoading(false);
-        message.success("Claimed!");
-        if (handleUpdateMissions) {
-          handleUpdateMissions();
-        }
-        console.log("data", data);
-        setLoading(false);
-      },
-      onError: (errors) => {
-        setLoading(false);
-        console.log("errors", errors);
-        setLoading(false);
-        message.error("Something was wrong!");
-      },
-    });
+    try {
+      await claimMission({
+        variables: { player_mission_uid: mission?.uid },
+      });
+
+      if (handleUpdateMissions) {
+        await handleUpdateMissions();
+      }
+      message.success("Claimed!");
+      setLoading(false);
+
+    } catch (error: any) {
+      setLoading(false);
+      handleGraphqlErrors(error, (code) => {
+        switch (code) {
+          case "INVALID_PLAYER_MISSION_UID":
+            message.error("Your in invalid.")
+            return;
+          case "NOT_ACHIEVED":
+            message.error("You must complete mission.");
+            return;
+          case "HAS_CLAIMED":
+            message.error("You has claimed.");
+            return;
+          default:
+            message.error("Something was wrong. Please contact to lucis network for assistance.")
+        };
+      })
+    }
+
   };
 
   // const handleRerollMission = async (mission: PlayerMission) => {

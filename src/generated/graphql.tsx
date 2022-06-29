@@ -63,6 +63,77 @@ export type BalanceCreateWithoutUserInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type BalanceHistory = {
+  __typename?: 'BalanceHistory';
+  created_at: Scalars['DateTime'];
+  decs?: Maybe<Scalars['String']>;
+  lucis_point?: Maybe<Scalars['Int']>;
+  lucis_token?: Maybe<Scalars['Decimal']>;
+  reference?: Maybe<Scalars['String']>;
+  type: BalanceHistoryType;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+export type BalanceHistoryCreateManyUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  decs?: InputMaybe<Scalars['String']>;
+  lucis_point?: InputMaybe<Scalars['Int']>;
+  lucis_token?: InputMaybe<Scalars['Decimal']>;
+  reference?: InputMaybe<Scalars['String']>;
+  type: BalanceHistoryType;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type BalanceHistoryCreateManyUserInputEnvelope = {
+  data: Array<BalanceHistoryCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type BalanceHistoryCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<BalanceHistoryWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<BalanceHistoryCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<BalanceHistoryCreateWithoutUserInput>>;
+  createMany?: InputMaybe<BalanceHistoryCreateManyUserInputEnvelope>;
+};
+
+export type BalanceHistoryCreateOrConnectWithoutUserInput = {
+  create: BalanceHistoryCreateWithoutUserInput;
+  where: BalanceHistoryWhereUniqueInput;
+};
+
+export type BalanceHistoryCreateWithoutUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  decs?: InputMaybe<Scalars['String']>;
+  lucis_point?: InputMaybe<Scalars['Int']>;
+  lucis_token?: InputMaybe<Scalars['Decimal']>;
+  reference?: InputMaybe<Scalars['String']>;
+  type: BalanceHistoryType;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export enum BalanceHistoryType {
+  Addition = 'ADDITION',
+  Dailymission = 'DAILYMISSION',
+  Dailymissionbox = 'DAILYMISSIONBOX',
+  Equip = 'EQUIP',
+  Joindiscord = 'JOINDISCORD',
+  Lucismission = 'LUCISMISSION',
+  Match = 'MATCH',
+  Raffle = 'RAFFLE',
+  Referfriend = 'REFERFRIEND',
+  Reroll = 'REROLL',
+  Staked = 'STAKED'
+}
+
+export type BalanceHistoryWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
+};
+
 export type BalanceWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
   user_id?: InputMaybe<Scalars['Int']>;
@@ -540,93 +611,6 @@ export enum ChainSymbol {
 
 export type ChainWhereUniqueInput = {
   symbol?: InputMaybe<ChainSymbol>;
-};
-
-export type ClaimMissionTransaction = {
-  __typename?: 'ClaimMissionTransaction';
-  created_at: Scalars['DateTime'];
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  mission: Mission;
-  mission_uid: Scalars['String'];
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type ClaimMissionTransactionCreateManyMissionInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_id: Scalars['Int'];
-};
-
-export type ClaimMissionTransactionCreateManyMissionInputEnvelope = {
-  data: Array<ClaimMissionTransactionCreateManyMissionInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type ClaimMissionTransactionCreateManyUserInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  mission_uid: Scalars['String'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ClaimMissionTransactionCreateManyUserInputEnvelope = {
-  data: Array<ClaimMissionTransactionCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type ClaimMissionTransactionCreateNestedManyWithoutMissionInput = {
-  connect?: InputMaybe<Array<ClaimMissionTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimMissionTransactionCreateOrConnectWithoutMissionInput>>;
-  create?: InputMaybe<Array<ClaimMissionTransactionCreateWithoutMissionInput>>;
-  createMany?: InputMaybe<ClaimMissionTransactionCreateManyMissionInputEnvelope>;
-};
-
-export type ClaimMissionTransactionCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<ClaimMissionTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimMissionTransactionCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<ClaimMissionTransactionCreateWithoutUserInput>>;
-  createMany?: InputMaybe<ClaimMissionTransactionCreateManyUserInputEnvelope>;
-};
-
-export type ClaimMissionTransactionCreateOrConnectWithoutMissionInput = {
-  create: ClaimMissionTransactionCreateWithoutMissionInput;
-  where: ClaimMissionTransactionWhereUniqueInput;
-};
-
-export type ClaimMissionTransactionCreateOrConnectWithoutUserInput = {
-  create: ClaimMissionTransactionCreateWithoutUserInput;
-  where: ClaimMissionTransactionWhereUniqueInput;
-};
-
-export type ClaimMissionTransactionCreateWithoutMissionInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutClaim_MissionInput;
-};
-
-export type ClaimMissionTransactionCreateWithoutUserInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
-  lucis_token: Scalars['Decimal'];
-  mission: MissionCreateNestedOneWithoutClaim_MissionInput;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type ClaimMissionTransactionWhereUniqueInput = {
-  uid?: InputMaybe<Scalars['String']>;
 };
 
 export type ClaimRaffleTransaction = {
@@ -1194,88 +1178,6 @@ export type CurrencyWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
-export type DailyMissionHistory = {
-  __typename?: 'DailyMissionHistory';
-  created_at: Scalars['DateTime'];
-  day: Scalars['DateTime'];
-  player_mission: PlayerMission;
-  player_mission_uid: Scalars['String'];
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type DailyMissionHistoryCreateManyPlayer_MissionInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  day: Scalars['DateTime'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_id: Scalars['Int'];
-};
-
-export type DailyMissionHistoryCreateManyPlayer_MissionInputEnvelope = {
-  data: Array<DailyMissionHistoryCreateManyPlayer_MissionInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type DailyMissionHistoryCreateManyUserInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  day: Scalars['DateTime'];
-  player_mission_uid: Scalars['String'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type DailyMissionHistoryCreateManyUserInputEnvelope = {
-  data: Array<DailyMissionHistoryCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type DailyMissionHistoryCreateNestedManyWithoutPlayer_MissionInput = {
-  connect?: InputMaybe<Array<DailyMissionHistoryWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<DailyMissionHistoryCreateOrConnectWithoutPlayer_MissionInput>>;
-  create?: InputMaybe<Array<DailyMissionHistoryCreateWithoutPlayer_MissionInput>>;
-  createMany?: InputMaybe<DailyMissionHistoryCreateManyPlayer_MissionInputEnvelope>;
-};
-
-export type DailyMissionHistoryCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<DailyMissionHistoryWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<DailyMissionHistoryCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<DailyMissionHistoryCreateWithoutUserInput>>;
-  createMany?: InputMaybe<DailyMissionHistoryCreateManyUserInputEnvelope>;
-};
-
-export type DailyMissionHistoryCreateOrConnectWithoutPlayer_MissionInput = {
-  create: DailyMissionHistoryCreateWithoutPlayer_MissionInput;
-  where: DailyMissionHistoryWhereUniqueInput;
-};
-
-export type DailyMissionHistoryCreateOrConnectWithoutUserInput = {
-  create: DailyMissionHistoryCreateWithoutUserInput;
-  where: DailyMissionHistoryWhereUniqueInput;
-};
-
-export type DailyMissionHistoryCreateWithoutPlayer_MissionInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  day: Scalars['DateTime'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutDaily_HistoryInput;
-};
-
-export type DailyMissionHistoryCreateWithoutUserInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  day: Scalars['DateTime'];
-  player_mission: PlayerMissionCreateNestedOneWithoutDaily_HistoryInput;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type DailyMissionHistoryWhereUniqueInput = {
-  uid?: InputMaybe<Scalars['String']>;
-};
-
 export type DonateHistory = {
   __typename?: 'DonateHistory';
   amount?: Maybe<Scalars['Float']>;
@@ -1824,23 +1726,10 @@ export type LucisMission = {
   updated_at: Scalars['DateTime'];
 };
 
-export type LucisMissionCreateManyMissionInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  group: Scalars['Int'];
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type LucisMissionCreateManyMissionInputEnvelope = {
-  data: Array<LucisMissionCreateManyMissionInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type LucisMissionCreateNestedManyWithoutMissionInput = {
-  connect?: InputMaybe<Array<LucisMissionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<LucisMissionCreateOrConnectWithoutMissionInput>>;
-  create?: InputMaybe<Array<LucisMissionCreateWithoutMissionInput>>;
-  createMany?: InputMaybe<LucisMissionCreateManyMissionInputEnvelope>;
+export type LucisMissionCreateNestedOneWithoutMissionInput = {
+  connect?: InputMaybe<LucisMissionWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<LucisMissionCreateOrConnectWithoutMissionInput>;
+  create?: InputMaybe<LucisMissionCreateWithoutMissionInput>;
 };
 
 export type LucisMissionCreateOrConnectWithoutMissionInput = {
@@ -1963,7 +1852,6 @@ export type Member = {
 export type Mission = {
   __typename?: 'Mission';
   _count: MissionCount;
-  claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   created_at: Scalars['DateTime'];
   game_uid: Scalars['String'];
   goal?: Maybe<Scalars['Decimal']>;
@@ -1971,7 +1859,7 @@ export type Mission = {
   is_daily_mission: Scalars['Boolean'];
   level: MissionLevel;
   level_id: Scalars['Int'];
-  lucis_mission?: Maybe<Array<LucisMission>>;
+  lucis_mission?: Maybe<LucisMission>;
   map?: Maybe<Scalars['String']>;
   mission_status: MissionStatus;
   player_mission?: Maybe<Array<PlayerMission>>;
@@ -1984,16 +1872,8 @@ export type Mission = {
 
 export type MissionCount = {
   __typename?: 'MissionCount';
-  claim_mission: Scalars['Int'];
-  lucis_mission: Scalars['Int'];
   player_mission: Scalars['Int'];
   user_daily_mission: Scalars['Int'];
-};
-
-export type MissionCreateNestedOneWithoutClaim_MissionInput = {
-  connect?: InputMaybe<MissionWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<MissionCreateOrConnectWithoutClaim_MissionInput>;
-  create?: InputMaybe<MissionCreateWithoutClaim_MissionInput>;
 };
 
 export type MissionCreateNestedOneWithoutPlayer_MissionInput = {
@@ -2008,11 +1888,6 @@ export type MissionCreateNestedOneWithoutUser_Daily_MissionInput = {
   create?: InputMaybe<MissionCreateWithoutUser_Daily_MissionInput>;
 };
 
-export type MissionCreateOrConnectWithoutClaim_MissionInput = {
-  create: MissionCreateWithoutClaim_MissionInput;
-  where: MissionWhereUniqueInput;
-};
-
 export type MissionCreateOrConnectWithoutPlayer_MissionInput = {
   create: MissionCreateWithoutPlayer_MissionInput;
   where: MissionWhereUniqueInput;
@@ -2023,33 +1898,14 @@ export type MissionCreateOrConnectWithoutUser_Daily_MissionInput = {
   where: MissionWhereUniqueInput;
 };
 
-export type MissionCreateWithoutClaim_MissionInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  game_uid: Scalars['String'];
-  goal?: InputMaybe<Scalars['Decimal']>;
-  img?: InputMaybe<Scalars['String']>;
-  is_daily_mission?: InputMaybe<Scalars['Boolean']>;
-  level: MissionLevelCreateNestedOneWithoutMissionInput;
-  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutMissionInput>;
-  map?: InputMaybe<Scalars['String']>;
-  mission_status?: InputMaybe<MissionStatus>;
-  player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
-  title?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<MissionType>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutMissionInput>;
-};
-
 export type MissionCreateWithoutPlayer_MissionInput = {
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutMissionInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_uid: Scalars['String'];
   goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   level: MissionLevelCreateNestedOneWithoutMissionInput;
-  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutMissionInput>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedOneWithoutMissionInput>;
   map?: InputMaybe<Scalars['String']>;
   mission_status?: InputMaybe<MissionStatus>;
   title?: InputMaybe<Scalars['String']>;
@@ -2060,14 +1916,13 @@ export type MissionCreateWithoutPlayer_MissionInput = {
 };
 
 export type MissionCreateWithoutUser_Daily_MissionInput = {
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutMissionInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_uid: Scalars['String'];
   goal?: InputMaybe<Scalars['Decimal']>;
   img?: InputMaybe<Scalars['String']>;
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   level: MissionLevelCreateNestedOneWithoutMissionInput;
-  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutMissionInput>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedOneWithoutMissionInput>;
   map?: InputMaybe<Scalars['String']>;
   mission_status?: InputMaybe<MissionStatus>;
   player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
@@ -2075,6 +1930,83 @@ export type MissionCreateWithoutUser_Daily_MissionInput = {
   type?: InputMaybe<MissionType>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type MissionHistory = {
+  __typename?: 'MissionHistory';
+  created_at: Scalars['DateTime'];
+  player_mission: PlayerMission;
+  player_mission_uid: Scalars['String'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+export type MissionHistoryCreateManyPlayer_MissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type MissionHistoryCreateManyPlayer_MissionInputEnvelope = {
+  data: Array<MissionHistoryCreateManyPlayer_MissionInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type MissionHistoryCreateManyUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  player_mission_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type MissionHistoryCreateManyUserInputEnvelope = {
+  data: Array<MissionHistoryCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type MissionHistoryCreateNestedManyWithoutPlayer_MissionInput = {
+  connect?: InputMaybe<Array<MissionHistoryWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MissionHistoryCreateOrConnectWithoutPlayer_MissionInput>>;
+  create?: InputMaybe<Array<MissionHistoryCreateWithoutPlayer_MissionInput>>;
+  createMany?: InputMaybe<MissionHistoryCreateManyPlayer_MissionInputEnvelope>;
+};
+
+export type MissionHistoryCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<MissionHistoryWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<MissionHistoryCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<MissionHistoryCreateWithoutUserInput>>;
+  createMany?: InputMaybe<MissionHistoryCreateManyUserInputEnvelope>;
+};
+
+export type MissionHistoryCreateOrConnectWithoutPlayer_MissionInput = {
+  create: MissionHistoryCreateWithoutPlayer_MissionInput;
+  where: MissionHistoryWhereUniqueInput;
+};
+
+export type MissionHistoryCreateOrConnectWithoutUserInput = {
+  create: MissionHistoryCreateWithoutUserInput;
+  where: MissionHistoryWhereUniqueInput;
+};
+
+export type MissionHistoryCreateWithoutPlayer_MissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user: UserCreateNestedOneWithoutDaily_HistoryInput;
+};
+
+export type MissionHistoryCreateWithoutUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  player_mission: PlayerMissionCreateNestedOneWithoutHistoryInput;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type MissionHistoryWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
 };
 
 export type MissionLevel = {
@@ -2182,7 +2114,17 @@ export type Mutation = {
   /** Google login */
   loginGoogle: AuthGraphql;
   reactToTournament?: Maybe<Scalars['Boolean']>;
-  /** Reset password */
+  /**
+   *
+   *     Reset password:
+   *     - Error code:
+   *     + TOKEN_INVALID:
+   *     + TOKEN_EXPIRED:
+   *     + NEW_PASS_INVALID: not strong password
+   *     + BAD_REQUEST: User not found
+   *     + NEW_PASS_SAME_OLD_PASS:
+   *
+   */
   resetPassword: Scalars['Boolean'];
   seenNotification?: Maybe<Scalars['Boolean']>;
   subscribeToTournament?: Maybe<Scalars['Boolean']>;
@@ -2707,7 +2649,7 @@ export type PlatformAccountCreateWithoutPlatformInput = {
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutPlatform_AccounntInput;
+  user: UserCreateNestedOneWithoutPlatform_AccountInput;
 };
 
 export type PlatformAccountCreateWithoutPlayer_GameInput = {
@@ -2721,7 +2663,7 @@ export type PlatformAccountCreateWithoutPlayer_GameInput = {
   player_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutPlatform_AccounntInput;
+  user: UserCreateNestedOneWithoutPlatform_AccountInput;
 };
 
 export type PlatformAccountCreateWithoutUserInput = {
@@ -3210,8 +3152,14 @@ export type PlayerMatchCreateWithoutPlayerInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type PlayerMatchPlayer_MatchCompoundUniqueInput = {
+  match_uid: Scalars['String'];
+  player_game_uid: Scalars['String'];
+};
+
 export type PlayerMatchWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
+  player_match?: InputMaybe<PlayerMatchPlayer_MatchCompoundUniqueInput>;
 };
 
 export type PlayerMission = {
@@ -3219,8 +3167,8 @@ export type PlayerMission = {
   _count: PlayerMissionCount;
   achieved?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
-  daily_history?: Maybe<Array<DailyMissionHistory>>;
   daily_mission?: Maybe<Array<UserDailyMission>>;
+  history?: Maybe<Array<MissionHistory>>;
   is_claim: Scalars['Boolean'];
   mission: Mission;
   mission_uid: Scalars['String'];
@@ -3232,8 +3180,8 @@ export type PlayerMission = {
 
 export type PlayerMissionCount = {
   __typename?: 'PlayerMissionCount';
-  daily_history: Scalars['Int'];
   daily_mission: Scalars['Int'];
+  history: Scalars['Int'];
 };
 
 export type PlayerMissionCreateManyMissionInput = {
@@ -3278,25 +3226,25 @@ export type PlayerMissionCreateNestedManyWithoutPlayer_GameInput = {
   createMany?: InputMaybe<PlayerMissionCreateManyPlayer_GameInputEnvelope>;
 };
 
-export type PlayerMissionCreateNestedOneWithoutDaily_HistoryInput = {
-  connect?: InputMaybe<PlayerMissionWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<PlayerMissionCreateOrConnectWithoutDaily_HistoryInput>;
-  create?: InputMaybe<PlayerMissionCreateWithoutDaily_HistoryInput>;
-};
-
 export type PlayerMissionCreateNestedOneWithoutDaily_MissionInput = {
   connect?: InputMaybe<PlayerMissionWhereUniqueInput>;
   connectOrCreate?: InputMaybe<PlayerMissionCreateOrConnectWithoutDaily_MissionInput>;
   create?: InputMaybe<PlayerMissionCreateWithoutDaily_MissionInput>;
 };
 
-export type PlayerMissionCreateOrConnectWithoutDaily_HistoryInput = {
-  create: PlayerMissionCreateWithoutDaily_HistoryInput;
-  where: PlayerMissionWhereUniqueInput;
+export type PlayerMissionCreateNestedOneWithoutHistoryInput = {
+  connect?: InputMaybe<PlayerMissionWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlayerMissionCreateOrConnectWithoutHistoryInput>;
+  create?: InputMaybe<PlayerMissionCreateWithoutHistoryInput>;
 };
 
 export type PlayerMissionCreateOrConnectWithoutDaily_MissionInput = {
   create: PlayerMissionCreateWithoutDaily_MissionInput;
+  where: PlayerMissionWhereUniqueInput;
+};
+
+export type PlayerMissionCreateOrConnectWithoutHistoryInput = {
+  create: PlayerMissionCreateWithoutHistoryInput;
   where: PlayerMissionWhereUniqueInput;
 };
 
@@ -3310,10 +3258,10 @@ export type PlayerMissionCreateOrConnectWithoutPlayer_GameInput = {
   where: PlayerMissionWhereUniqueInput;
 };
 
-export type PlayerMissionCreateWithoutDaily_HistoryInput = {
+export type PlayerMissionCreateWithoutDaily_MissionInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
+  history?: InputMaybe<MissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
@@ -3321,10 +3269,10 @@ export type PlayerMissionCreateWithoutDaily_HistoryInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
-export type PlayerMissionCreateWithoutDaily_MissionInput = {
+export type PlayerMissionCreateWithoutHistoryInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
+  daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
@@ -3335,8 +3283,8 @@ export type PlayerMissionCreateWithoutDaily_MissionInput = {
 export type PlayerMissionCreateWithoutMissionInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
+  history?: InputMaybe<MissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
@@ -3346,8 +3294,8 @@ export type PlayerMissionCreateWithoutMissionInput = {
 export type PlayerMissionCreateWithoutPlayer_GameInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
+  history?: InputMaybe<MissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
@@ -6100,15 +6048,15 @@ export enum TransactionStatus {
 export type User = {
   __typename?: 'User';
   _count: UserCount;
+  balace_history?: Maybe<Array<BalanceHistory>>;
   balance?: Maybe<Balance>;
-  claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   claim_raffle?: Maybe<Array<ClaimRaffleTransaction>>;
   claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
   claim_tournament?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   dailyMission?: Maybe<Array<UserDailyMission>>;
-  daily_history?: Maybe<Array<DailyMissionHistory>>;
+  daily_history?: Maybe<Array<MissionHistory>>;
   email?: Maybe<Scalars['String']>;
   facebook_id?: Maybe<Scalars['String']>;
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
@@ -6118,7 +6066,7 @@ export type User = {
   nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
-  platform_accounnt?: Maybe<Array<PlatformAccount>>;
+  platform_account?: Maybe<Array<PlatformAccount>>;
   platform_uid?: Maybe<Scalars['String']>;
   playTeamMembers?: Maybe<Array<PlayTeamMember>>;
   player_nft?: Maybe<PlayerNft>;
@@ -6175,7 +6123,7 @@ export type UserBonusWhereUniqueInput = {
 
 export type UserCount = {
   __typename?: 'UserCount';
-  claim_mission: Scalars['Int'];
+  balace_history: Scalars['Int'];
   claim_raffle: Scalars['Int'];
   claim_staked: Scalars['Int'];
   claim_tournament: Scalars['Int'];
@@ -6185,7 +6133,7 @@ export type UserCount = {
   leader_board: Scalars['Int'];
   nfts: Scalars['Int'];
   notification: Scalars['Int'];
-  platform_accounnt: Scalars['Int'];
+  platform_account: Scalars['Int'];
   playTeamMembers: Scalars['Int'];
   reaction: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
@@ -6196,12 +6144,6 @@ export type UserCount = {
   user_ticket: Scalars['Int'];
   withdraws: Scalars['Int'];
   won_raffles: Scalars['Int'];
-};
-
-export type UserCreateNestedOneWithoutClaim_MissionInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutClaim_MissionInput>;
-  create?: InputMaybe<UserCreateWithoutClaim_MissionInput>;
 };
 
 export type UserCreateNestedOneWithoutClaim_RaffleInput = {
@@ -6252,10 +6194,10 @@ export type UserCreateNestedOneWithoutNftsInput = {
   create?: InputMaybe<UserCreateWithoutNftsInput>;
 };
 
-export type UserCreateNestedOneWithoutPlatform_AccounntInput = {
+export type UserCreateNestedOneWithoutPlatform_AccountInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutPlatform_AccounntInput>;
-  create?: InputMaybe<UserCreateWithoutPlatform_AccounntInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutPlatform_AccountInput>;
+  create?: InputMaybe<UserCreateWithoutPlatform_AccountInput>;
 };
 
 export type UserCreateNestedOneWithoutPlayTeamMembersInput = {
@@ -6324,11 +6266,6 @@ export type UserCreateNestedOneWithoutWon_RafflesInput = {
   create?: InputMaybe<UserCreateWithoutWon_RafflesInput>;
 };
 
-export type UserCreateOrConnectWithoutClaim_MissionInput = {
-  create: UserCreateWithoutClaim_MissionInput;
-  where: UserWhereUniqueInput;
-};
-
 export type UserCreateOrConnectWithoutClaim_RaffleInput = {
   create: UserCreateWithoutClaim_RaffleInput;
   where: UserWhereUniqueInput;
@@ -6369,8 +6306,8 @@ export type UserCreateOrConnectWithoutNftsInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateOrConnectWithoutPlatform_AccounntInput = {
-  create: UserCreateWithoutPlatform_AccounntInput;
+export type UserCreateOrConnectWithoutPlatform_AccountInput = {
+  create: UserCreateWithoutPlatform_AccountInput;
   where: UserWhereUniqueInput;
 };
 
@@ -6429,53 +6366,15 @@ export type UserCreateOrConnectWithoutWon_RafflesInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateWithoutClaim_MissionInput = {
-  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
-  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
-  code?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
-  email?: InputMaybe<Scalars['String']>;
-  facebook_id?: InputMaybe<Scalars['String']>;
-  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
-  google_id?: InputMaybe<Scalars['String']>;
-  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
-  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
-  password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
-  platform_uid?: InputMaybe<Scalars['String']>;
-  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
-  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
-  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
-  ref_code?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<UserRole>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
-  status?: InputMaybe<UserStatus>;
-  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
-  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
-  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_bonus?: InputMaybe<UserBonusCreateNestedOneWithoutUserInput>;
-  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
-  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
-  won_raffles?: InputMaybe<RaffleCreateNestedManyWithoutRaffle_WinnerInput>;
-};
-
 export type UserCreateWithoutClaim_RaffleInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6484,7 +6383,7 @@ export type UserCreateWithoutClaim_RaffleInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6506,14 +6405,14 @@ export type UserCreateWithoutClaim_RaffleInput = {
 };
 
 export type UserCreateWithoutClaim_StakedInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6522,7 +6421,7 @@ export type UserCreateWithoutClaim_StakedInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6544,14 +6443,14 @@ export type UserCreateWithoutClaim_StakedInput = {
 };
 
 export type UserCreateWithoutClaim_TournamentInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6560,7 +6459,7 @@ export type UserCreateWithoutClaim_TournamentInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6582,14 +6481,14 @@ export type UserCreateWithoutClaim_TournamentInput = {
 };
 
 export type UserCreateWithoutDailyMissionInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6598,7 +6497,7 @@ export type UserCreateWithoutDailyMissionInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6620,8 +6519,8 @@ export type UserCreateWithoutDailyMissionInput = {
 };
 
 export type UserCreateWithoutDaily_HistoryInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
@@ -6636,7 +6535,7 @@ export type UserCreateWithoutDaily_HistoryInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6658,15 +6557,15 @@ export type UserCreateWithoutDaily_HistoryInput = {
 };
 
 export type UserCreateWithoutFavorite_GameInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   google_id?: InputMaybe<Scalars['String']>;
@@ -6674,7 +6573,7 @@ export type UserCreateWithoutFavorite_GameInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6696,15 +6595,15 @@ export type UserCreateWithoutFavorite_GameInput = {
 };
 
 export type UserCreateWithoutLeader_BoardInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6712,7 +6611,7 @@ export type UserCreateWithoutLeader_BoardInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6734,15 +6633,15 @@ export type UserCreateWithoutLeader_BoardInput = {
 };
 
 export type UserCreateWithoutNftsInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6750,7 +6649,7 @@ export type UserCreateWithoutNftsInput = {
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6771,16 +6670,16 @@ export type UserCreateWithoutNftsInput = {
   won_raffles?: InputMaybe<RaffleCreateNestedManyWithoutRaffle_WinnerInput>;
 };
 
-export type UserCreateWithoutPlatform_AccounntInput = {
+export type UserCreateWithoutPlatform_AccountInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6810,15 +6709,15 @@ export type UserCreateWithoutPlatform_AccounntInput = {
 };
 
 export type UserCreateWithoutPlayTeamMembersInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6827,7 +6726,7 @@ export type UserCreateWithoutPlayTeamMembersInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
@@ -6848,15 +6747,15 @@ export type UserCreateWithoutPlayTeamMembersInput = {
 };
 
 export type UserCreateWithoutPlayer_NftInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6865,7 +6764,7 @@ export type UserCreateWithoutPlayer_NftInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
@@ -6886,15 +6785,15 @@ export type UserCreateWithoutPlayer_NftInput = {
 };
 
 export type UserCreateWithoutReactionInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6903,7 +6802,7 @@ export type UserCreateWithoutReactionInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6924,15 +6823,15 @@ export type UserCreateWithoutReactionInput = {
 };
 
 export type UserCreateWithoutSponsorTransactionsInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6941,7 +6840,7 @@ export type UserCreateWithoutSponsorTransactionsInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -6962,15 +6861,15 @@ export type UserCreateWithoutSponsorTransactionsInput = {
 };
 
 export type UserCreateWithoutStaked_NftInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -6979,7 +6878,7 @@ export type UserCreateWithoutStaked_NftInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -7000,15 +6899,15 @@ export type UserCreateWithoutStaked_NftInput = {
 };
 
 export type UserCreateWithoutTeamMembersInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -7017,7 +6916,7 @@ export type UserCreateWithoutTeamMembersInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -7038,15 +6937,15 @@ export type UserCreateWithoutTeamMembersInput = {
 };
 
 export type UserCreateWithoutTournamentInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -7055,7 +6954,7 @@ export type UserCreateWithoutTournamentInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -7076,15 +6975,15 @@ export type UserCreateWithoutTournamentInput = {
 };
 
 export type UserCreateWithoutTournamentSubscriberInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -7093,7 +6992,7 @@ export type UserCreateWithoutTournamentSubscriberInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -7114,15 +7013,15 @@ export type UserCreateWithoutTournamentSubscriberInput = {
 };
 
 export type UserCreateWithoutUser_TicketInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -7131,7 +7030,7 @@ export type UserCreateWithoutUser_TicketInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -7152,15 +7051,15 @@ export type UserCreateWithoutUser_TicketInput = {
 };
 
 export type UserCreateWithoutWithdrawsInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -7169,7 +7068,7 @@ export type UserCreateWithoutWithdrawsInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -7190,15 +7089,15 @@ export type UserCreateWithoutWithdrawsInput = {
 };
 
 export type UserCreateWithoutWon_RafflesInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_mission?: InputMaybe<ClaimMissionTransactionCreateNestedManyWithoutUserInput>;
   claim_raffle?: InputMaybe<ClaimRaffleTransactionCreateNestedManyWithoutUserInput>;
   claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<DailyMissionHistoryCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
@@ -7207,7 +7106,7 @@ export type UserCreateWithoutWon_RafflesInput = {
   nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
-  platform_accounnt?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
   player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
@@ -7432,15 +7331,15 @@ export type UserFavoriteGameWhereUniqueInput = {
 export type UserGraphql = {
   __typename?: 'UserGraphql';
   _count: UserCount;
+  balace_history?: Maybe<Array<BalanceHistory>>;
   balance?: Maybe<Balance>;
-  claim_mission?: Maybe<Array<ClaimMissionTransaction>>;
   claim_raffle?: Maybe<Array<ClaimRaffleTransaction>>;
   claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
   claim_tournament?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   dailyMission?: Maybe<Array<UserDailyMission>>;
-  daily_history?: Maybe<Array<DailyMissionHistory>>;
+  daily_history?: Maybe<Array<MissionHistory>>;
   email?: Maybe<Scalars['String']>;
   facebook_id?: Maybe<Scalars['String']>;
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
@@ -7449,7 +7348,7 @@ export type UserGraphql = {
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
-  platform_accounnt?: Maybe<Array<PlatformAccount>>;
+  platform_account?: Maybe<Array<PlatformAccount>>;
   platform_uid?: Maybe<Scalars['String']>;
   playTeamMembers?: Maybe<Array<PlayTeamMember>>;
   player_nft?: Maybe<PlayerNft>;

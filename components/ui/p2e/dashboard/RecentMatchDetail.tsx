@@ -27,57 +27,38 @@ export const RecentMatchDetail = () => {
   const data = getStatisticMatchData?.getMatchStatistic;
   const faceitAccount = getPlatformAccountData?.getPlatformAccount?.[0];
   const lucisPointEarned = {
-    kill: Number(data?.map_earning?.kill) * Number(data?.player_statistic?.Kills),
-    assists: Number(data?.map_earning?.assist) * Number(data?.player_statistic?.Assists),
-    headshot: Number(data?.map_earning?.headshot) * Number(data?.player_statistic?.Headshots),
-    mvps: Number(data?.map_earning?.mvp) * Number(data?.player_statistic?.MVPs)
+    kill: Number(data?.match_earning?.kill) * Number(data?.player_statistic?.Kills),
+    assists: Number(data?.match_earning?.assist) * Number(data?.player_statistic?.Assists),
+    headshot: Number(data?.match_earning?.headshot) * Number(data?.player_statistic?.Headshots),
+    mvps: Number(data?.match_earning?.mvp) * Number(data?.player_statistic?.MVPs),
+    tripleKill: Number(data?.match_earning?.triple_kill) * Number(data?.player_statistic?.["Triple Kills"]),
+    quadraKill: Number(data?.match_earning?.quadra_kill) * Number(data?.player_statistic?.["Quadro Kills"]),
+    pentalKill: Number(data?.match_earning?.pental_kill) * Number(data?.player_statistic?.["Penta Kills"]),
+    winStreak: 0
   };
 
-  const totalEarned = lucisPointEarned.kill + lucisPointEarned.assists + lucisPointEarned.headshot + lucisPointEarned.mvps;
+  const totalEarned = lucisPointEarned.kill
+    + lucisPointEarned.assists
+    + lucisPointEarned.headshot
+    + lucisPointEarned.mvps
+    + lucisPointEarned.tripleKill
+    + lucisPointEarned.quadraKill
+    + lucisPointEarned.pentalKill
+    + lucisPointEarned.winStreak;
 
   const cardList = [
     {
-      name: "Win streak",
-      img: "/assets/P2E/csgo/achievement/win-streak.png",
-      lucisPoint: "-",
-      lucisToken: "-",
-      isCompleted: false
-    },
-
-    {
       name: "Win",
       img: "/assets/P2E/csgo/achievement/win.png",
-      lucisPoint: Number(data?.map_earning?.win) ?? "-",
+      lucisPoint: Number(data?.match_earning?.win) ?? "-",
       lucisToken: "-",
       isCompleted: data?.is_win ?? false
     },
 
     {
-      name: "Triple kill",
-      img: "/assets/P2E/csgo/achievement/triple-kill.png",
-      lucisPoint: Number(data?.map_earning?.triple_kill) * Number(data?.player_statistic?.["Triple Kills"]) ?? "-",
-      lucisToken: "-",
-      isCompleted: Number(data?.player_statistic?.["Triple Kills"]) > 0 ?? false
-    },
-    {
-      name: "Quadra kill",
-      img: "/assets/P2E/csgo/achievement/quadra-kill.png",
-      lucisPoint: Number(data?.map_earning?.quadra_kill) * Number(data?.player_statistic?.["Quadro Kills"]) ?? "-",
-      lucisToken: "-",
-      isCompleted: Number(data?.player_statistic?.["Quadro Kills"]) > 0 ?? false
-    },
-    {
-      name: "Penta kill",
-      img: "/assets/P2E/csgo/achievement/penta-kill.png",
-      lucisPoint: Number(data?.map_earning?.pental_kill) * Number(data?.player_statistic?.["Penta Kills"]) ?? "-",
-      lucisToken: "-",
-      isCompleted: Number(data?.player_statistic?.["Penta Kills"]) > 0 ?? false
-    },
-
-    {
       name: "Assassin",
       img: "/assets/P2E/csgo/achievement/assassin.png",
-      lucisPoint: Number(data?.map_earning?.most_kill),
+      lucisPoint: Number(data?.match_earning?.most_kill),
       lucisToken: "-",
       isCompleted: data?.most_kill ?? false
     },
@@ -85,7 +66,7 @@ export const RecentMatchDetail = () => {
     {
       name: "Supporter",
       img: "/assets/P2E/csgo/achievement/supporter.png",
-      lucisPoint: Number(data?.map_earning?.most_support) ?? "-",
+      lucisPoint: Number(data?.match_earning?.most_support) ?? "-",
       lucisToken: "-",
       isCompleted: data?.most_support ?? false
     },
@@ -93,15 +74,15 @@ export const RecentMatchDetail = () => {
     {
       name: "Survivor",
       img: "/assets/P2E/csgo/achievement/survivor.png",
-      lucisPoint: Number(data?.map_earning?.least_died) ?? "-",
+      lucisPoint: Number(data?.match_earning?.least_died) ?? "-",
       lucisToken: "-",
       isCompleted: data?.least_died ?? false
     },
 
     {
-      name: "Headshoter",
+      name: "Head shooter",
       img: "/assets/P2E/csgo/achievement/headshoter.png",
-      lucisPoint: Number(data?.map_earning?.most_headshot) ?? "-",
+      lucisPoint: Number(data?.match_earning?.most_headshot) ?? "-",
       lucisToken: "-",
       isCompleted: data?.most_headshot ?? false
     },
@@ -109,7 +90,7 @@ export const RecentMatchDetail = () => {
     {
       name: "K/D ratio top 1",
       img: "/assets/P2E/csgo/achievement/k-d.png",
-      lucisPoint: Number(data?.map_earning?.highest_kda) ?? "-",
+      lucisPoint: Number(data?.match_earning?.highest_kda) ?? "-",
       lucisToken: "-",
       isCompleted: data?.highest_kda ?? false
     },
@@ -117,7 +98,7 @@ export const RecentMatchDetail = () => {
     {
       name: "K/R ratio top 1",
       img: "/assets/P2E/csgo/achievement/k-r.png",
-      lucisPoint: "-",
+      lucisPoint: Number(data?.match_earning?.highest_kr) ?? "-",
       lucisToken: "-",
       isCompleted: false
     }
@@ -136,7 +117,7 @@ export const RecentMatchDetail = () => {
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
-        <Row gutter={[{ xl: 70, xs: 16, md: 16 }, { xs: 16, md: 16, sm: 16 }]}>
+        <Row gutter={[{ xl: 52, xs: 16, md: 16 }, { xs: 16, md: 16, sm: 16 }]}>
           <Col xl={0} xs={24}>
             <div className={s.sidebarRight}>
               {!getStatisticMatchLoading && (
@@ -163,18 +144,18 @@ export const RecentMatchDetail = () => {
                     <div className={s.playerParameters}>
                       <div className={s.parameterHeader}>
                         <div className={s.headerLeft}>Your stats</div>
-                        <div className={s.headerRight}>Lucis bonus: 30%</div>
+                        <div className={s.headerRight}>Lucis bonus: --%</div>
                       </div>
                       <div className={s.parameterBody}>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/kill-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/kill.svg" alt="" />
                               <span>{data?.player_statistic?.Kills ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               Kill
                             </div>
                           </Col>
@@ -186,20 +167,20 @@ export const RecentMatchDetail = () => {
                           </Col>
                           <Col span={6}>
                             <div className={s.rewardItem}>
-                              <span className={s.lucisPoint}>+{lucisPointEarned.kill ?? "-"}</span>
+                              <span className={s.lucisPoint}>+ {lucisPointEarned.kill ?? "-"}</span>
                               <img src="/assets/P2E/lucis-point.svg" alt="" />
                             </div>
                           </Col>
                         </Row>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
                               <img src="/assets/P2E/csgo/support.svg" alt="" />
                               <span>{data?.player_statistic?.Assists ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               Assists
                             </div>
                           </Col>
@@ -210,20 +191,20 @@ export const RecentMatchDetail = () => {
                           </Col>
                           <Col span={6}>
                             <div className={s.rewardItem}>
-                              <span className={s.lucisPoint}>+{lucisPointEarned.assists ?? "-"}</span>
+                              <span className={s.lucisPoint}>+ {lucisPointEarned.assists ?? "-"}</span>
                               <img src="/assets/P2E/lucis-point.svg" alt="" />
                             </div>
                           </Col>
                         </Row>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
                               <img src="/assets/P2E/csgo/headshot.svg" alt="" />
                               <span>{data?.player_statistic?.Headshots ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               Headshot
                             </div>
                           </Col>
@@ -233,20 +214,20 @@ export const RecentMatchDetail = () => {
                           </div>
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+{lucisPointEarned.headshot ?? "-"}</span>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.headshot ?? "-"}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
                           </div>
                           </Col>
                         </Row>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/mvp-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/star.svg" alt="" />
                               <span>{data?.player_statistic?.MVPs ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               MVPs
                             </div>
                           </Col>
@@ -256,11 +237,106 @@ export const RecentMatchDetail = () => {
                           </div>
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>{`+${lucisPointEarned.mvps}` ?? "-"}</span>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.mvps ?? "-"}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
                           </div>
                           </Col>
                         </Row>
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/triple-kill.svg" alt="" />
+                              <span>{data?.player_statistic?.["Triple Kills"] ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Triple kills
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.tripleKill ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/quadra-kill.svg" alt="" />
+                              <span>{data?.player_statistic?.["Quadro Kills"] ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Quadra kills
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.quadraKill ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/pental-kill.svg" alt="" />
+                              <span>{data?.player_statistic?.["Penta Kills"] ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Aces
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.pentalKill ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
+                              <span>{"-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Win streaks
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {"??"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <div style={{ borderBottom: "1px solid #556281" }} />
                         <Row className={s.rowTotal}>
                           <Col span={12}>
                             <div className={s.parameterItem}>
@@ -299,6 +375,25 @@ export const RecentMatchDetail = () => {
                       </div>
                     </div>
                   </div>
+                  <div className={s.grandTotal}>
+                    <Row className={s.rowTotal}>
+                      <Col span={12}>
+                        <div className={s.parameterItem} style={{ color: "#00F9FF", fontFamily: "Revx Neue Demo" }}>
+                          Grand Total
+                        </div>
+                      </Col>
+                      <Col span={6}><div className={s.rewardItem}>
+                        <span>{"-"}</span>
+                        <img src="/assets/P2E/lucis-token.svg" alt="" />
+                      </div>
+                      </Col>
+                      <Col span={6}><div className={s.rewardItem}>
+                        <span className={s.lucisPoint}>{`+${data?.point}`}</span>
+                        <img src="/assets/P2E/lucis-point.svg" alt="" />
+                      </div>
+                      </Col>
+                    </Row>
+                  </div>
                 </div>
               )}
 
@@ -329,7 +424,7 @@ export const RecentMatchDetail = () => {
               </Row>
               <div className={s.achievementBody}>
                 <div className={s.listCard}>
-                  <Row gutter={[{ xs: 16, sm: 16, md: 16, xl: 40 }, 40]}>
+                  <Row gutter={[{ xs: 16, sm: 16, md: 16, xl: 53 }, 40]}>
                     {cardList.map((item, index) => (
                       <Col xs={12} sm={8} md={6} xl={6} key={`${item.name}-${index}`}>
                         <div
@@ -394,14 +489,14 @@ export const RecentMatchDetail = () => {
                       </div>
                       <div className={s.parameterBody}>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
                               <img src="/assets/P2E/csgo/kill.svg" alt="" />
                               <span>{data?.player_statistic?.Kills ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               Kill
                             </div>
                           </Col>
@@ -419,14 +514,14 @@ export const RecentMatchDetail = () => {
                           </Col>
                         </Row>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
                               <img src="/assets/P2E/csgo/support.svg" alt="" />
                               <span>{data?.player_statistic?.Assists ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               Assists
                             </div>
                           </Col>
@@ -443,14 +538,14 @@ export const RecentMatchDetail = () => {
                           </Col>
                         </Row>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
                               <img src="/assets/P2E/csgo/headshot.svg" alt="" />
                               <span>{data?.player_statistic?.Headshots ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               Headshot
                             </div>
                           </Col>
@@ -466,14 +561,14 @@ export const RecentMatchDetail = () => {
                           </Col>
                         </Row>
                         <Row className={s.row}>
-                          <Col span={6}>
+                          <Col span={4}>
                             <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/mvp-icon.png" alt="" />
+                              <img src="/assets/P2E/csgo/star.svg" alt="" />
                               <span>{data?.player_statistic?.MVPs ?? "-"}</span>
                             </div>
                           </Col>
-                          <Col span={6}>
-                            <div className={s.parameterItem}>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
                               MVPs
                             </div>
                           </Col>
@@ -488,9 +583,101 @@ export const RecentMatchDetail = () => {
                           </div>
                           </Col>
                         </Row>
-                        <div style={{ borderBottom: "1px solid #556281" }}>
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/triple-kill.svg" alt="" />
+                              <span>{data?.player_statistic?.["Triple Kills"] ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Triple kills
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.tripleKill ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
 
-                        </div>
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/quadra-kill.svg" alt="" />
+                              <span>{data?.player_statistic?.["Quadro Kills"] ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Quadra kills
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.quadraKill ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/pental-kill.svg" alt="" />
+                              <span>{data?.player_statistic?.["Penta Kills"] ?? "-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Aces
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.pentalKill ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <Row className={s.row}>
+                          <Col span={4}>
+                            <div className={s.parameterItem}>
+                              <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
+                              <span>{"-"}</span>
+                            </div>
+                          </Col>
+                          <Col span={8}>
+                            <div className={s.parameterItemText}>
+                              Win streaks
+                            </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                          </Col>
+                          <Col span={6}><div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {"??"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                          </Col>
+                        </Row>
+                        <div style={{ borderBottom: "1px solid #556281" }} />
                         <Row className={s.rowTotal}>
                           <Col span={12}>
                             <div className={s.parameterItem}>
@@ -528,6 +715,25 @@ export const RecentMatchDetail = () => {
 
                       </div>
                     </div>
+                  </div>
+                  <div className={s.grandTotal}>
+                    <Row className={s.rowTotal}>
+                      <Col span={12}>
+                        <div className={s.parameterItem} style={{ color: "#00F9FF", fontFamily: "Revx Neue Demo" }}>
+                          Grand Total
+                        </div>
+                      </Col>
+                      <Col span={6}><div className={s.rewardItem}>
+                        <span>{"-"}</span>
+                        <img src="/assets/P2E/lucis-token.svg" alt="" />
+                      </div>
+                      </Col>
+                      <Col span={6}><div className={s.rewardItem}>
+                        <span className={s.lucisPoint}>{`+${data?.point}`}</span>
+                        <img src="/assets/P2E/lucis-point.svg" alt="" />
+                      </div>
+                      </Col>
+                    </Row>
                   </div>
                 </div>
               )}
