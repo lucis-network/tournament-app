@@ -24,6 +24,7 @@ type UserProfile = {
 	country_code?: string | null;
 	display_name?: string;
 	biography?: string;
+	phone?: string;
 	avatar?: string;
 	cover?: string;
 	totalEarning?: number;

@@ -140,8 +140,9 @@
         border: 1px solid #FFF
         min-height: 100px
         padding: 10px
-        margin: 20px 0px
-    
+        margin: 20px 0
+        white-space: pre-line
+        word-wrap: break-word
     .social
       margin-bottom: 20px
       .group_ic
@@ -168,3 +169,6 @@
             opacity: 0.6
             a
               pointer-events: none
+.walletAddress
+  &:global(.ant-input-disabled)
+    background: none

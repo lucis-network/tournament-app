@@ -2,11 +2,12 @@ import {
   ApolloError,
   ApolloQueryResult,
   gql,
-  LazyQueryResult, useApolloClient,
-  useLazyQuery, useMutation,
+  useApolloClient,
+  useMutation,
   useQuery
 } from "@apollo/client";
 import {ProfileUpdateInput, TTournament, UserFavoriteGame, UserGraphql} from "../../src/generated/graphql";
+import {isEmpty} from "lodash";
 
 type UseSearchProps = {
   user_id: string,
@@ -42,7 +43,9 @@ type UseGetUserProfileProps = {
 }
 
 type UseUpdateProfileProps = {
-  data: ProfileUpdateInput
+  data: ProfileUpdateInput,
+  onCompleted?: (data: any) => void,
+  onError?: (error: ApolloError) => void
 }
 
 type UseGetTotalEarningProps = {
@@ -218,26 +221,29 @@ export function useVerifyEmail({ email, onError, onCompleted }: UseVerifyEmailPr
      const result = await client.query({
        query: VERIFY_EMAIL,
        variables: {
-         email: email
+         email: email,
+         skip: isEmpty(email),
        },
+       fetchPolicy: "no-cache",
      })
      onCompleted(result)
    } catch (err: any) {
      onError(err)
    }
   }
-  // const [
-  //   verifyEmail1
-  // ] = useLazyQuery(VERIFY_EMAIL, {
+
+  // const {loading: emailUpdating, verifyEmail} = useQuery(VERIFY_EMAIL, {
   //   variables: {
-  //     email: email
+  //     email: email,
+  //     skip: isEmpty(email),
   //   },
   //   onError: onError,
-  //   onCompleted: onCompleted
+  //   onCompleted: onCompleted,
+  //   fetchPolicy: "no-cache"
   // });
 
   return {
-    verifyEmail,
+    verifyEmail
   }
 }
 
@@ -273,19 +279,24 @@ export function useGetUserProfile({ user_id, user_name, skip, onCompleted }: Use
   }
 }
 
-export function useUpdateProfile({ data }: UseUpdateProfileProps): {
+export function useUpdateProfile({ data, onError, onCompleted }: UseUpdateProfileProps): {
   updateProfile: () => Promise<any>;
+  profileUpdating: boolean
 } {
-  const options = data ? {
-    variables: {
-      data: data
-    }
-  } : undefined;
 
-  const [updateProfile] = useMutation(UPDATE_PROFILE, options);
+  const [updateProfile, {loading: profileUpdating}] = useMutation(UPDATE_PROFILE, {
+    variables: {
+      data: data,
+      skip: isEmpty(data),
+    },
+    onError: onError,
+    onCompleted: onCompleted,
+    fetchPolicy: "no-cache"
+  });
 
   return {
-    updateProfile
+    updateProfile,
+    profileUpdating,
   }
 }
 

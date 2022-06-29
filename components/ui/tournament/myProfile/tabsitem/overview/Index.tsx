@@ -12,7 +12,7 @@ import MyTournamentList from "../myTournament/MyTournamentList";
 import React, { useEffect, useState } from "react";
 import { ApolloQueryResult, useMutation, useQuery } from "@apollo/client";
 import { GET_USER_TEAMS } from "../../../../common/tabsItem/myTeamDetail/myTeamService";
-import { UserGraphql, UserTeam } from "../../../../../../src/generated/graphql";
+import { UserTeam } from "../../../../../../src/generated/graphql";
 import { observer } from "mobx-react-lite";
 import ConnectWalletStore from "../../../../../Auth/ConnectWalletStore";
 import MyProfileStore from "../../../../../../src/store/MyProfileStore";
@@ -23,10 +23,11 @@ import { isEmpty } from "lodash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHandHoldingHeart, faPlay } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
+import { AuthUser } from "../../../../../Auth/AuthStore";
 
 type MyOverviewProps = {
   isOwner?: boolean;
-  userInfo: UserGraphql;
+  userInfo: AuthUser;
   getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>;
 };
 
@@ -298,7 +299,7 @@ export default observer(function MyOverview({
           {isOwner && ConnectWalletStore.address && (
             <div className={s.address}>
               <p>Address</p>
-              <Input type="text" value={ConnectWalletStore.address} disabled />
+              <Input type="text" value={ConnectWalletStore.address} className={s.walletAddress} disabled />
               <Button
                 onClick={handleDisconnectWallet}
                 style={{ width: "100%" }}
