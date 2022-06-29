@@ -297,7 +297,7 @@ export const GET_STATISTIC_MATCH = gql`
   query ($player_match_id: Int!) {
     getMatchStatistic(player_match_id: $player_match_id) {
         match_uid,
-        map_earning {
+        match_earning {
           id,
           win,
           kill,
@@ -311,7 +311,8 @@ export const GET_STATISTIC_MATCH = gql`
           headshot,
           most_headshot,
           least_died,
-          highest_kda
+          highest_kda,
+          highest_kr
         }
         map {
           name, 
