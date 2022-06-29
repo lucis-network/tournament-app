@@ -4,7 +4,7 @@ import {
 	SEARCH_MEMBER,
 } from "../../../common/tabsItem/myTeamDetail/myTeamService";
 import { useMutation, useLazyQuery } from "@apollo/client";
-import { useCallback, useState } from "react";
+import {useCallback, useEffect, useState} from "react";
 import TournamentStore from "src/store/TournamentStore";
 
 export interface TeamType extends Record<any, any> {
