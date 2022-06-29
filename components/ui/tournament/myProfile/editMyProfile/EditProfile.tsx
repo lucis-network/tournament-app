@@ -211,6 +211,7 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
     }
     if (router.query.verify === 'success') {
       broadcastChannel.postMessage('Verify success.');
+      router.replace('/profile?page=edit', undefined, { shallow: true });
     }
     return () => {
       broadcastChannel.close()
