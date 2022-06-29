@@ -6,7 +6,7 @@ import {useGetUserProfile} from "../../hooks/myProfile/useMyProfile";
 import {isEmpty} from "lodash";
 import DefaultErrorPage from 'next/error'
 import Head from "next/head";
-import AuthStore from "../../components/Auth/AuthStore";
+import AuthStore, {AuthUser} from "../../components/Auth/AuthStore";
 import EditProfile from "../../components/ui/tournament/myProfile/editMyProfile/EditProfile";
 import {useEffect, useState} from "react";
 import SpinLoading from "../../components/ui/common/Spin";
@@ -67,13 +67,13 @@ const MyProfile = () => {
   return (
     <div className={s.wrapper_profile}>
       {/* Content */}
-      <InfoMyProfile userInfo={getUserProfileData?.getUserProfile} isOwner={isOwner} click={handleClick} />
+      <InfoMyProfile userInfo={getUserProfileData?.getUserProfile as unknown as AuthUser} isOwner={isOwner} click={handleClick} />
 
       <div className="lucis-container">
         {
           isShowEdit ?
-            <EditProfile userInfo={getUserProfileData?.getUserProfile} onEditedProfile={onEditedProfile} /> :
-            <ContentMyProfile userInfo={getUserProfileData?.getUserProfile} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} page={page} />
+            <EditProfile userInfo={getUserProfileData?.getUserProfile as unknown as AuthUser} onEditedProfile={onEditedProfile} /> :
+            <ContentMyProfile userInfo={getUserProfileData?.getUserProfile as unknown as AuthUser} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} page={page} />
         }
       </div>
     </div>
