@@ -24,7 +24,6 @@ const UPDATE_PROFILE = gql`
             user_id
             user_name
             country_code
-            password
         }
     }
 `;
@@ -40,7 +39,6 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   const [updateProfileMutation] = useMutation(UPDATE_PROFILE);
   const [username, setUsername] = useState<string>('');
   const [userNameExisted, setUserNameExisted] = useState(false)
-  const [checkConfirmPassword, setCheckConfirmPassword] = useState(false)
   const [form] = Form.useForm();
   const {
     loading: checkUsernameLoading,
@@ -134,13 +132,6 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     fetchCountryList();
   }, []);
 
-  const handleConfirmPasswordInput = (event: React.FormEvent<HTMLInputElement>) => {
-    console.log("form values", form.getFieldValue("password"));
-    console.log("event.currentTarget.value", event.currentTarget.value);
-    const valuePassword = form.getFieldValue("password");
-    if (event.currentTarget.value === valuePassword) setCheckConfirmPassword(true);
-    else setCheckConfirmPassword(false);
-  }
   return (
     <Modal
       title={<span className="font-[600]">Sign in info</span>}
@@ -229,7 +220,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               message: "Confirm Password must be maximum 32 characters."
             },
             {
-              pattern: /[^A-Za-z0-9]+/,
+              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
               message: "Valid characters are A-Z a-z 0-9"
             },]}
         >
@@ -249,14 +240,20 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               message: "Confirm Password must be maximum 32 characters."
             },
             {
-              pattern: /^[a-zA-Z0-9]*$/g,
+              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
               message: "Valid characters are A-Z a-z 0-9"
             },
-            {required: checkConfirmPassword, message: 'Your password and confirmation password do not match.'},
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+              },
+            }),
           ]}
         >
-          <Input.Password placeholder="Enter confirm password" onChange={handleConfirmPasswordInput}
-                          className={s.formFieldBg}/>
+          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg}/>
         </Form.Item>
       </Form>
     </Modal>

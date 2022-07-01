@@ -164,6 +164,85 @@ export default class AuthService {
       role: u.role,
       name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
       ref_code: u.ref_code,
+      google_id: u.google_id ? u.google_id : "",
+      facebook_id: u.facebook_id ? u.facebook_id : "",
+      status: u.status,
+      profile: u.profile,
+    };
+
+    return user;
+  }
+
+  private async loginByUsername(username: string, password: string): Promise<AuthUser> {
+      const loginRes = await apoloClient.mutate({
+          mutation: gql`
+              mutation login($username: String!, $password: String!,) {
+                  login(username: $username, password: $password) {
+                      token
+                      user {
+                          id
+                          email
+                          role
+                          code
+                          ref_code
+                          google_id
+                          status
+                          facebook_id
+                          favorite_game {
+                              id
+                              user_id
+                              game_uid
+                              enable_favorite
+                              game {
+                                  uid
+                                  name
+                                  logo
+                                  desc
+                              }
+                              user {
+                                  id
+                              }
+                          }
+                          profile {
+                              user_id
+                              given_name
+                              family_name
+                              phone
+                              avatar
+                              cover
+                              user_name
+                              country_code
+                              twitter
+                              facebook
+                              discord
+                              telegram
+                              twitch
+                              user_name
+                              display_name
+                              biography
+                              cover
+                          }
+                      }
+                  }
+              }
+          `,
+        variables: {
+          username,
+          password
+        },
+      });
+
+    const u = loginRes.data.login.user;
+    console.log("u", loginRes.data.login);
+    const tokenID = loginRes.data.login.token;
+    const user: AuthUser = {
+      id: u.id,
+      token: tokenID,
+      code: u.code,
+      email: u.email,
+      role: u.role,
+      name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
+      ref_code: u.ref_code,
       google_id: u.google_id,
       status: u.status,
       profile: u.profile,
@@ -258,7 +337,9 @@ export default class AuthService {
   async login(
     tokenId: string,
     delay = 1000,
-    type?: string
+    type?: string,
+    username?: string,
+    password?: string
   ): Promise<LoginResponse> {
     let res: LoginResponse = {
       error: null,
@@ -269,11 +350,12 @@ export default class AuthService {
       if (type === "google") {
         user = await this.loginByGoogle(tokenId);
       }
-
       if (type === "facebook") {
         user = await this.loginByFacebook(tokenId);
       }
-
+      if (type === "username") {
+        user = await this.loginByUsername(username ? username : "",password ? password : "");
+      }
       console.log("{AuthService.login} new-login user: ", user);
       user.token && ApoloClient_setAuthToken(user.token);
       setLocalAuthInfo(user);

@@ -26,6 +26,7 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
 
 export default observer(function LoginModal(props: Props) {
   const route = useRouter();
+  const [form] = Form.useForm();
 
   const trackUserChangeToAnalytic = (user: AuthUser) => {
     if (user.id) {
@@ -49,13 +50,13 @@ export default observer(function LoginModal(props: Props) {
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
   const setIsAlertInAppModalVisible = (v: boolean) => (LoginBoxStore.alertInAppModalVisible = v);
 
-  const onSuccess = async (res: any, type: string) => {
+  const onSuccess = async (res: any, type: string, username?: string, password?: string) => {
     const authService = new AuthService();
     let tokenid = "";
 
     if (type === "google") tokenid = res?.tokenId;
     if (type === "facebook") tokenid = res?.accessToken;
-    const r = await authService.login(tokenid, 100, type);
+    const r = await authService.login(tokenid, 100, type, username, password);
     console.log(AuthStore);
     const localUserInfo = getLocalAuthInfo();
 
@@ -158,6 +159,24 @@ export default observer(function LoginModal(props: Props) {
     }
   }
 
+  const onSubmit = () => {
+    form
+      .validateFields()
+      .then(async (values) => {
+        try {
+          const response = await onSuccess({}, "username", values.username, values.password);
+
+        } catch (error) {
+          console.error('error updateProfileMutation: ', error);
+        } finally {
+          setIsModalVisible(false);
+        }
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
+  }
+
   return (
     <>
       <Modal
@@ -177,11 +196,10 @@ export default observer(function LoginModal(props: Props) {
         <div>
           <Form
             name="basic"
+            form={form}
             labelCol={{span: 8}}
             wrapperCol={{span: 16}}
             initialValues={{remember: true}}
-            // onFinish={onFinish}
-            // onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <div className={s.labelLogin}>
@@ -211,7 +229,7 @@ export default observer(function LoginModal(props: Props) {
               Forgot password
             </div>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className={s.buttonLogin}>
+              <Button type="primary" htmlType="submit" className={s.buttonLogin} onClick={onSubmit}>
                 Log in
               </Button>
             </Form.Item>
