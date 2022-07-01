@@ -883,7 +883,6 @@ export default observer(function CreateTournament(props: Props) {
               <div className={s.passwordLabelWrap}>
                 <label>Require Check-in phase</label>
                 <Switch
-                  checked={TournamentStore.is_auto_checkin}
                   onChange={(checked: boolean) => {
                     TournamentStore.is_auto_checkin = !checked;
                   }}

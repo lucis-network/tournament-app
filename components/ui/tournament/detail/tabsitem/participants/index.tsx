@@ -180,7 +180,7 @@ export default function TableParticipant(props: Props) {
       // width: "15%",
       render: (_: any, item: object) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {isCheckBtnDonate && tournament_status !== "CLOSED" ? (
+          {isCheckBtnDonate && !is_auto_checkin && ["REGISTRATION", "CHECKIN", "EDIT_BRACKET", "PREPARE"].includes(tournament_status) &&
             <Button
               onClick={() => {
                 if (!AuthStore.isLoggedIn) {
@@ -193,9 +193,23 @@ export default function TableParticipant(props: Props) {
             >
               Donate
             </Button>
-          ) : (
-            ""
-          )}
+          }
+
+          {isCheckBtnDonate && is_auto_checkin && ["EDIT_BRACKET", "PREPARE"].includes(tournament_status) &&
+              <Button
+                  onClick={() => {
+                    if (!AuthStore.isLoggedIn) {
+                      message.info("Please sign in first");
+                      return;
+                    }
+                    handleClick(item);
+                  }}
+                  type="primary"
+              >
+                  Donate
+              </Button>
+          }
+
         </div>
       ),
     },

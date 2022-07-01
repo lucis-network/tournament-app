@@ -1,10 +1,10 @@
 import {Button, Form, FormInstance, Image, Input, Modal, Select} from "antd";
 import LoginBoxStore from "./LoginBoxStore";
-import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
-import { observer } from "mobx-react-lite";
-import React, { useCallback, useEffect, useState } from "react";
+import {getLocalAuthInfo, setLocalAuthInfo} from "../AuthLocal";
+import {observer} from "mobx-react-lite";
+import React, {useCallback, useEffect, useState} from "react";
 import s from "./Login.module.sass"
-import { gql, useMutation, useQuery } from "@apollo/client";
+import {gql, useMutation, useQuery} from "@apollo/client";
 import {debounce, isEmpty} from "lodash";
 import AuthService from "../AuthService";
 import Country from "country.json"
@@ -19,19 +19,20 @@ type Country = {
 }
 
 const UPDATE_PROFILE = gql`
-  mutation UpdateProfile($data: ProfileUpdateInput!) {
-    updateProfile(data: $data) {
-      user_id
-      user_name
-      country_code
+    mutation UpdateProfile($data: ProfileUpdateInput!) {
+        updateProfile(data: $data) {
+            user_id
+            user_name
+            country_code
+            password
+        }
     }
-  }
 `;
 
 const CHECK_USERNAME = gql`
-  query ($value: String!) {
-    checkUserName(value: $value)
-  }
+    query ($value: String!) {
+        checkUserName(value: $value)
+    }
 `;
 
 export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
@@ -39,6 +40,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   const [updateProfileMutation] = useMutation(UPDATE_PROFILE);
   const [username, setUsername] = useState<string>('');
   const [userNameExisted, setUserNameExisted] = useState(false)
+  const [checkConfirmPassword, setCheckConfirmPassword] = useState(false)
   const [form] = Form.useForm();
   const {
     loading: checkUsernameLoading,
@@ -65,7 +67,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   }, [username, userNameExisted])
   const isModalVisible = LoginBoxStore.signupInfoModalVisible,
     setIsModalVisible = (value: boolean) => (LoginBoxStore.signupInfoModalVisible = value);
-  const { Option } = Select;
+  const {Option} = Select;
 
   const fetchCountryList = (): void => {
     const sortedData = Country.data.sort((a: any, b: any) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
@@ -84,10 +86,13 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
                   set: values.user_name
                 },
                 country_code: values.country_code,
+                password: {
+                  set: values.password
+                }
               }
             }
           });
-          const { user_name, country_code } = response.data.updateProfile;
+          const {user_name, country_code} = response.data.updateProfile;
           const user = getLocalAuthInfo()!;
 
           if (user && user.profile) {
@@ -124,11 +129,18 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     setUserNameExisted(false)
     debouncedInputTyping(event.currentTarget.value)
   };
-  
+
   useEffect(() => {
     fetchCountryList();
   }, []);
 
+  const handleConfirmPasswordInput = (event: React.FormEvent<HTMLInputElement>) => {
+    console.log("form values", form.getFieldValue("password"));
+    console.log("event.currentTarget.value", event.currentTarget.value);
+    const valuePassword = form.getFieldValue("password");
+    if (event.currentTarget.value === valuePassword) setCheckConfirmPassword(true);
+    else setCheckConfirmPassword(false);
+  }
   return (
     <Modal
       title={<span className="font-[600]">Sign in info</span>}
@@ -140,12 +152,12 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       ]}
       className={s.signupInfoModal}
     >
-      <h3 style={{ color: '#ffffff' }}>Enter the information below to finish the sign in process</h3>
+      <h3 style={{color: '#ffffff'}}>Enter the information below to finish the sign in process</h3>
       <Form
         form={form}
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 19 }}
-        initialValues={{ country_code: null }}
+        labelCol={{span: 8}}
+        wrapperCol={{span: 16}}
+        initialValues={{country_code: null}}
         autoComplete="off"
       >
         <Form.Item
@@ -178,12 +190,12 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg} />
+          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg}/>
         </Form.Item>
         <Form.Item
           label="Country"
           name="country_code"
-          rules={[{ required: true, message: 'Please select your country!' }]}
+          rules={[{required: true, message: 'Please select your country!'}]}
         >
           <Select
             showSearch
@@ -195,13 +207,56 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>
-                <Image src={country.flag} preview={false} width="30px" height="auto" />
+                <Image src={country.flag} preview={false} width="30px" height="auto"/>
                 <span className="ml-3">
                   {country.name}
                 </span>
               </Option>
             ))}
           </Select>
+        </Form.Item>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {required: true, message: 'Please input your password!'},
+            {
+              min: 8,
+              message: "Password must be minimum 8 characters."
+            },
+            {
+              max: 32,
+              message: "Confirm Password must be maximum 32 characters."
+            },
+            {
+              pattern: /[^A-Za-z0-9]+/,
+              message: "Valid characters are A-Z a-z 0-9"
+            },]}
+        >
+          <Input.Password placeholder="Enter password" className={s.formFieldBg}/>
+        </Form.Item>
+        <Form.Item
+          label="Confirm Password"
+          name="confirmPassword"
+          rules={[
+            {required: true, message: 'Please input your confirm password!'},
+            {
+              min: 8,
+              message: "Confirm Password must be minimum 8 characters."
+            },
+            {
+              max: 32,
+              message: "Confirm Password must be maximum 32 characters."
+            },
+            {
+              pattern: /^[a-zA-Z0-9]*$/g,
+              message: "Valid characters are A-Z a-z 0-9"
+            },
+            {required: checkConfirmPassword, message: 'Your password and confirmation password do not match.'},
+          ]}
+        >
+          <Input.Password placeholder="Enter confirm password" onChange={handleConfirmPasswordInput}
+                          className={s.formFieldBg}/>
         </Form.Item>
       </Form>
     </Modal>

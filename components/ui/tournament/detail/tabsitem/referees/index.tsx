@@ -99,7 +99,7 @@ export default function Referees(props: Props) {
       key: "donate",
       render: (_: any, item: any) => (
         <div>
-          {!is_auto_checkin && ["REGISTRATION", "CHECKIN", "EDIT_BRACKET", "PREPARE"].includes(tournament_status) &&
+          {tournament_status !== "CLOSED" &&
             <Button
               onClick={() => {
                 if (!AuthStore.isLoggedIn) {
@@ -112,20 +112,6 @@ export default function Referees(props: Props) {
             >
               Donate
             </Button>
-          }
-          {is_auto_checkin && ["EDIT_BRACKET", "PREPARE"].includes(tournament_status) &&
-              <Button
-                  onClick={() => {
-                    if (!AuthStore.isLoggedIn) {
-                      message.info("Please sign in first");
-                      return;
-                    }
-                    handleClickShowPopUp(item);
-                  }}
-                  type="primary"
-              >
-                  Donate
-              </Button>
           }
         </div>
       ),

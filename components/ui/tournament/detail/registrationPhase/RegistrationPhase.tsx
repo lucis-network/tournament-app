@@ -378,17 +378,7 @@ export default observer(function RegistrationPhase(props: Props) {
               <p>TOTAL DONATION</p>
             </div>
             <div className={s.additionalInfo}>
-              {!is_auto_checkin && ["REGISTRATION", "CHECKIN", "EDIT_BRACKET", "PREPARE"].includes(tournament_status) && (
-                <button onClick={openModal}>
-                  <Image
-                    src="/assets/TournamentDetail/iconDonate.svg"
-                    preview={false}
-                    alt=""
-                  />
-                  <span className="ml-2">Donate</span>
-                </button>
-              )}
-              {is_auto_checkin && ["EDIT_BRACKET", "PREPARE"].includes(tournament_status) && (
+              { tournament_status != "CLOSED" && (
                 <button onClick={openModal}>
                   <Image
                     src="/assets/TournamentDetail/iconDonate.svg"
