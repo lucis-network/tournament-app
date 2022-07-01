@@ -885,7 +885,7 @@ export default observer(function CreateTournament(props: Props) {
                 <Switch
                   checked={TournamentStore.is_auto_checkin}
                   onChange={(checked: boolean) => {
-                    TournamentStore.is_auto_checkin = checked;
+                    TournamentStore.is_auto_checkin = !checked;
                   }}
                   title="Require Check-in phase"
                 />

@@ -142,7 +142,7 @@ class TournamentStore {
 
   private _discord?: string | undefined;
 
-  private _is_auto_checkin?: boolean = false;
+  private _is_auto_checkin?: boolean = true;
 
   constructor() {
     makeAutoObservable(this);
