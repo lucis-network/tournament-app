@@ -40,6 +40,7 @@ type Props = {
   tournament_status: string;
   isCheckin: boolean;
   refereeIds: string[];
+  is_auto_checkin?: boolean;
 };
 
 type Reward = {
@@ -75,7 +76,7 @@ export default observer(function RegistrationPhase(props: Props) {
     cache_tournament,
   } = props.tournament;
 
-  const { isJoin, isCheckin, tournamentId, refetch, refereeIds } = props;
+  const { isJoin, isCheckin, tournamentId, refetch, refereeIds, is_auto_checkin} = props;
 
   const user = getLocalAuthInfo();
 
@@ -94,11 +95,20 @@ export default observer(function RegistrationPhase(props: Props) {
     useTeamModal(props);
 
   const timeDefault = moment(brackets?.[0].start_at).valueOf();
-  const timeCheckin = moment(brackets?.[0].start_at)
-    .subtract(15, "minutes")
+  let timeRegistration = moment(brackets?.[0].start_at)
+    .subtract(75, "minutes")
     .valueOf();
-  const timeRegistration = moment(brackets?.[0].start_at)
-    .subtract(1, "hour")
+
+  if(is_auto_checkin) {
+    timeRegistration = moment(brackets?.[0].start_at)
+      .subtract(45, "minutes")
+      .valueOf();
+  }
+  const timeCheckin = moment(brackets?.[0].start_at)
+    .subtract(45, "minutes")
+    .valueOf();
+  const timeEditBracket = moment(brackets?.[0].start_at)
+    .subtract(15, "minutes")
     .valueOf();
 
   const claimTokenDonation = async () => {
@@ -368,7 +378,17 @@ export default observer(function RegistrationPhase(props: Props) {
               <p>TOTAL DONATION</p>
             </div>
             <div className={s.additionalInfo}>
-              {tournament_status !== "CLOSED" && (
+              {!is_auto_checkin && ["REGISTRATION", "CHECKIN", "EDIT_BRACKET", "PREPARE"].includes(tournament_status) && (
+                <button onClick={openModal}>
+                  <Image
+                    src="/assets/TournamentDetail/iconDonate.svg"
+                    preview={false}
+                    alt=""
+                  />
+                  <span className="ml-2">Donate</span>
+                </button>
+              )}
+              {is_auto_checkin && ["EDIT_BRACKET", "PREPARE"].includes(tournament_status) && (
                 <button onClick={openModal}>
                   <Image
                     src="/assets/TournamentDetail/iconDonate.svg"
@@ -629,6 +649,17 @@ export default observer(function RegistrationPhase(props: Props) {
                         <CountdownTimer targetDate={timeCheckin} refetch={refetch}/>
                       </div>
                     );
+                  case "EDIT_BRACKET":
+                    return (
+                      <div className={s.countdownWrap}>
+                        <p className="mb-0 mr-4">
+                          <span className={s.countdownRegistration}>
+                            Arrange bracket phase will ends in{" "}
+                          </span>
+                        </p>
+                        <CountdownTimer targetDate={timeEditBracket} refetch={refetch}/>
+                      </div>
+                  );
                   case "PREPARE":
                     return (
                       <div className={s.countdownWrap}>

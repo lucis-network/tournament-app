@@ -22,6 +22,7 @@ interface TeamPrizingProps {
 	onChangePassword: (e: React.FormEvent<HTMLInputElement>) => void;
 	onJoinTournament: () => void;
 	onSetDataForm: (team: Item[]) => void;
+	is_auto_checkin?: boolean
 }
 
 interface EditableCellProps extends HTMLAttributes<HTMLElement> {
@@ -49,6 +50,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 	onJoinTournament,
 	onChangePassword,
 	onSetDataForm,
+	is_auto_checkin
 }) => {
 	const isMatchTeamSize = draftSelectedTeam?.team?.length === teamSize;
 	const { team = [] } = selectedTeam;
@@ -289,6 +291,11 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				<div className="flex items-center">
 					<p className="w-[150px] m-0">Entry Fee:</p>
 					<p className="m-0">Free</p>
+				</div>
+				<div>
+					{!is_auto_checkin &&
+					<p className={s.note}>Note: You need to check-in after joining this tournament. The Check-in phase will open 1h15m before the tournament starts. Don't miss it!</p>
+					}
 				</div>
 			</div>
 			<div className={s.prizingBtn}>

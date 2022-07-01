@@ -391,6 +391,7 @@ const GET_TOURNAMENT_DETAIL = gql`
         team_participated
         tournament_uid
       }
+      is_auto_checkin
     }
   }
 `;

@@ -15,6 +15,7 @@ type Props = {
   currency?: any;
   tournament_status: string;
   refetch?: any;
+  is_auto_checkin?: boolean
 };
 export default function Referees(props: Props) {
   const {
@@ -24,6 +25,7 @@ export default function Referees(props: Props) {
     currency,
     tournament_status,
     refetch,
+    is_auto_checkin
   } = props;
   const [dataReferees, setDataReferees] = useState({});
   const [isPopUp, setIsPopUp] = useState(false);
@@ -97,7 +99,7 @@ export default function Referees(props: Props) {
       key: "donate",
       render: (_: any, item: any) => (
         <div>
-          {tournament_status !== "CLOSED" ? (
+          {!is_auto_checkin && ["REGISTRATION", "CHECKIN", "EDIT_BRACKET", "PREPARE"].includes(tournament_status) &&
             <Button
               onClick={() => {
                 if (!AuthStore.isLoggedIn) {
@@ -110,9 +112,21 @@ export default function Referees(props: Props) {
             >
               Donate
             </Button>
-          ) : (
-            ""
-          )}
+          }
+          {is_auto_checkin && ["EDIT_BRACKET", "PREPARE"].includes(tournament_status) &&
+              <Button
+                  onClick={() => {
+                    if (!AuthStore.isLoggedIn) {
+                      message.info("Please sign in first");
+                      return;
+                    }
+                    handleClickShowPopUp(item);
+                  }}
+                  type="primary"
+              >
+                  Donate
+              </Button>
+          }
         </div>
       ),
     },

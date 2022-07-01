@@ -25,6 +25,7 @@ export type CreateTournament = {
   start_at?: Date;
   rounds?: Rounds[];
   discord?: string;
+  is_auto_checkin?: boolean;
 };
 
 export type PrizeAllocation = {
@@ -141,6 +142,8 @@ class TournamentStore {
 
   private _discord?: string | undefined;
 
+  private _is_auto_checkin?: boolean = false;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -167,6 +170,7 @@ class TournamentStore {
     this._start_at = cr.start_at;
     this._rounds = cr.rounds;
     this._discord = cr.discord;
+    this._is_auto_checkin = cr.is_auto_checkin;
   }
 
   resetStates() {
@@ -193,6 +197,7 @@ class TournamentStore {
     this._start_at = undefined;
     this._rounds = undefined;
     this._discord = undefined;
+    this._is_auto_checkin = false;
   }
 
   getCreateTournament() {
@@ -218,6 +223,7 @@ class TournamentStore {
     cr.start_at = this._start_at;
     cr.rounds = this._rounds;
     cr.discord = this._discord;
+    cr.is_auto_checkin = this._is_auto_checkin;
     return cr;
   }
 
@@ -452,6 +458,14 @@ class TournamentStore {
   }
   public set currency_address(value: string | undefined) {
     this._currency_address = value;
+  }
+
+  public get is_auto_checkin() {
+    return this._is_auto_checkin;
+  }
+
+  public set is_auto_checkin(value) {
+    this._is_auto_checkin = value;
   }
 
   public get loadingCeateTeam(): boolean {

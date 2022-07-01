@@ -1,18 +1,18 @@
-import { message, Modal } from "antd";
+import {Button, Form, Input, message, Modal} from "antd";
 import GoogleLogin from "react-google-login";
-import { observer } from "mobx-react-lite";
+import {observer} from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
-import AuthStore, { AuthUser } from "../AuthStore";
+import AuthStore, {AuthUser} from "../AuthStore";
 import AuthService from "../AuthService";
-import { useCallback, useEffect } from "react";
-import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
-import { isEmpty } from "lodash"
+import {useCallback, useEffect} from "react";
+import {getLocalAuthInfo, setLocalAuthInfo} from "../AuthLocal";
+import {isEmpty} from "lodash"
 import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
 import GAService from "../../../services/GA";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 import {isClientDevMode} from "../../../utils/Env";
 
 type Props = {};
@@ -26,7 +26,7 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
 
 export default observer(function LoginModal(props: Props) {
   const route = useRouter();
-  
+
   const trackUserChangeToAnalytic = (user: AuthUser) => {
     if (user.id) {
       const {id, name, role} = user;
@@ -72,7 +72,7 @@ export default observer(function LoginModal(props: Props) {
           LoginBoxStore.signupInfoModalVisible = true;
         }
         // setTimeout(() => {
-          
+
         // }, 2000);
         setIsModalVisible(false);
         break;
@@ -169,10 +169,56 @@ export default observer(function LoginModal(props: Props) {
       >
         <div className="text-center mb-10">
           <div className="mb-5">
-            <Image src={Logo} />
+            <Image src={Logo}/>
           </div>
           <h2 className="mb-1">Welcome to Lucis tournament</h2>
           <h4>Play to relax, but earn</h4>
+        </div>
+        <div>
+          <Form
+            name="basic"
+            labelCol={{span: 8}}
+            wrapperCol={{span: 16}}
+            initialValues={{remember: true}}
+            // onFinish={onFinish}
+            // onFinishFailed={onFinishFailed}
+            autoComplete="off"
+          >
+            <div className={s.labelLogin}>
+              <label>Username</label>
+            </div>
+            <div>
+              <Form.Item
+                name="username"
+                rules={[{required: true, message: 'Please input your username!'}]}
+              >
+                <Input className={s.inputLogin} placeholder="Enter account"/>
+              </Form.Item>
+            </div>
+
+            <div className={s.labelLogin}>
+              <label>Password</label>
+            </div>
+            <div>
+              <Form.Item
+                name="password"
+                rules={[{required: true, message: 'Please input your password!'}]}
+              >
+                <Input.Password placeholder="Enter password" />
+              </Form.Item>
+            </div>
+            <div className={s.forgotPassword}>
+              Forgot password
+            </div>
+            <Form.Item>
+              <Button type="primary" htmlType="submit" className={s.buttonLogin}>
+                Log in
+              </Button>
+            </Form.Item>
+          </Form>
+        </div>
+        <div className={s.or}>
+          <span>or</span>
         </div>
         <FacebookLogin
           appId={facebookId}
@@ -186,7 +232,7 @@ export default observer(function LoginModal(props: Props) {
             <button
               // onClick={renderProps.onClick}
               onClick={onLoginClicked(renderProps.onClick)}
-              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded mb-5 fb ${s.loginBtn} ${s.fb}`}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded mb-5 fb ${s.loginBtn} ${s.fb} `}
             >
               Sign in with Facebook
             </button>
@@ -219,12 +265,14 @@ export default observer(function LoginModal(props: Props) {
             test user agent
           </button>
         )}
-        <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge you&apos;ve read our Privacy Policy</p>
+        <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge
+          you&apos;ve read our Privacy Policy</p>
       </Modal>
 
     </>
   );
 });
+
 function ApoloClient_setAuthToken(token: string) {
   throw new Error("Function not implemented.");
 }

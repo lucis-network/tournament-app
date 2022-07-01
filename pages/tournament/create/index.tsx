@@ -1,21 +1,15 @@
 import DocHead from "components/DocHead";
 import s from "./index.module.sass";
 import {
-  Row,
-  Col,
-  Switch,
   InputNumber,
-  InputRef,
-  Form,
   message,
-  Timeline,
-  Modal, Image,
+  Image, Switch,
 } from "antd";
 import { Input } from "antd";
 import { observer } from "mobx-react-lite";
 import { Radio } from "antd";
 import { Select } from "antd";
-import { BracketType, Participants, Region, Rounds } from "utils/Enum";
+import { BracketType, Participants, Rounds } from "utils/Enum";
 import { Button } from "antd";
 import UploadImage from "components/ui/common/upload/UploadImage";
 import ChooseGameModal from "components/ui/tournament/create/chooseGame/ChooseGameModal";
@@ -383,7 +377,6 @@ export default observer(function CreateTournament(props: Props) {
       return false;
     }
 
-    console.log(cr.pool_size);
     if (cr.pool_size == null || cr.pool_size < 0) {
       setCheckPoolSize(false);
       //@ts-ignore
@@ -845,7 +838,7 @@ export default observer(function CreateTournament(props: Props) {
             </div>
 
             <div className={`${s.password}`}>
-              <div className={s.passwordLabelWrap}>
+              <div className={`${s.passwordLabelWrap} ${s.passwordLabelWrapMargin}`}>
                 <label>Tournament password</label>
                 <Switch
                   checked={checkPassword}
@@ -884,6 +877,18 @@ export default observer(function CreateTournament(props: Props) {
                 {messageErrorPassword && (
                   <div className={s.message_error}>{messageErrorPassword}</div>
                 )}
+              </div>
+            </div>
+            <div className={`${s.password}`}>
+              <div className={s.passwordLabelWrap}>
+                <label>Require Check-in phase</label>
+                <Switch
+                  checked={TournamentStore.is_auto_checkin}
+                  onChange={(checked: boolean) => {
+                    TournamentStore.is_auto_checkin = checked;
+                  }}
+                  title="Require Check-in phase"
+                />
               </div>
             </div>
             <div className="mt-100px text-center pb-100px">

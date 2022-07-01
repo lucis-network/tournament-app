@@ -18,6 +18,7 @@ type Props = {
   tournament_status: string;
   refetch: any;
   dataBracket?: any;
+  is_auto_checkin?: boolean,
 };
 
 export default function TableParticipant(props: Props) {
@@ -29,6 +30,7 @@ export default function TableParticipant(props: Props) {
     tournament_status,
     refetch,
     dataBracket,
+    is_auto_checkin
   } = props;
 
   const [datas, setDatas] = useState({});
@@ -153,20 +155,18 @@ export default function TableParticipant(props: Props) {
       title: "Earning",
       dataIndex: "position",
       key: "position",
-      width: 250,
-
-      // width: "15%",
+      //width: 250,
     },
     {
       title: "Was donated",
       dataIndex: "donate",
       key: "donate",
-      // width: "15%",
     },
     {
       title: "Checked in",
       dataIndex: "checkin",
       key: "donate",
+      hidden: is_auto_checkin,
       render: (_: any, item: any) => {
         return (
           <div style={{ display: "flex", justifyContent: "center" }}>
@@ -199,7 +199,7 @@ export default function TableParticipant(props: Props) {
         </div>
       ),
     },
-  ];
+  ].filter(item => !item.hidden);
 
   if (loading) {
     return <></>;

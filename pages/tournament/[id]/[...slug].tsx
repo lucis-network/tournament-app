@@ -167,6 +167,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     referees,
     turns,
     discord,
+    is_auto_checkin
   } = dataTournamentDetail ?? {};
 
   const userLocal = getLocalAuthInfo();
@@ -585,13 +586,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               refreshParticipant={refreshParticipant}
               tournament_status={tournament_status as string}
               refereeIds={referees ? referees.split(",") : []}
+              is_auto_checkin={is_auto_checkin}
             />
             {/* ===== sponsor ===== */}
             {/* <TournamentDetailSponsor
               tournamentId={tournamentId as string}
               tournament_status={tournament_status as string}
               refetchTounament={refetch}
-              currency={currency}
+              currency={currency}m
             /> */}
             {/* ===== end sponsor ===== */}
           </div>
@@ -722,6 +724,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           tournament_status={tournament_status as string}
                           refetch={refetch}
                           dataBracket={dataBracket}
+                          is_auto_checkin={is_auto_checkin}
                         />
                       )}
                       {tournament_status === "CLOSED" && (
@@ -741,6 +744,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       currency={currency}
                       tournament_status={tournament_status as string}
                       refetch={refetch}
+                      is_auto_checkin={is_auto_checkin}
                     />
                   );
                 case "Prizing":

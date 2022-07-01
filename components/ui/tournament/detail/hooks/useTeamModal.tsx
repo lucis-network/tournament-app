@@ -41,7 +41,7 @@ const UseTeamModal = (tournamentData: any) => {
     team_size,
     has_password: tourPassword,
   } = tournamentData?.tournament;
-  const { tournamentId } = tournamentData;
+  const { tournamentId, is_auto_checkin } = tournamentData;
   const { joinTournament, refreshParticipant } = tournamentData;
   const isSoloVersion = useMemo(() => team_size === 1, [team_size]);
   const [show, setShow] = useState<boolean>(false);
@@ -437,6 +437,7 @@ const UseTeamModal = (tournamentData: any) => {
             teamSize={team_size}
             selectedTeam={selectedTeam}
             draftSelectedTeam={draftSelectedTeam}
+            is_auto_checkin={is_auto_checkin}
             onChooseTeam={handleChooseTeam}
             onJoinTournament={handleJoinTournament}
             onChangePassword={handleChangePassword}

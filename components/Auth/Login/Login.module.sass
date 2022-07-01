@@ -5,6 +5,26 @@
     font-size: 30px
   h4
     font-size: 24px
+  :global(.ant-col-16)
+    max-width: 100%
+  :global(.ant-input)
+    background: #FFFFFF
+    backdrop-filter: blur(42px)
+    transition: 0.3s
+    border: 1px solid #d9d9d933
+    border-radius: 4px
+    color: #000000
+    padding: 8px 12px !important
+  :global(.ant-input-affix-wrapper)
+    border-radius: 4px
+    padding: 0px 10px
+  :global(.ant-input-affix-wrapper input.ant-input)
+    padding: 8px 5px !important
+  :global(.ant-form-item)
+    margin-bottom: 16px
+  :global(.ant-btn-primary)
+    width: 100%
+
   .loginBtn
     width: 100%
     border-radius: 5px
@@ -62,3 +82,56 @@
     padding: 8px 20px
   @media (min-width: 1600px)
     padding: 8px 30px
+
+.labelLogin
+  margin-bottom: 12px
+  label
+    font-weight: 500
+    font-size: 18px
+    line-height: 120%
+    color: #ffffff
+
+.forgotPassword
+  display: flex
+  justify-content: flex-end
+  color: #4886D3
+  font-weight: 500
+  font-size: 14px
+  line-height: 120%
+  letter-spacing: 0.04em
+  margin-top: -10px
+
+.buttonLogin
+  margin-top: 24px !important
+  background: #4886D3 !important
+  border-radius: 4px !important
+  height: auto
+  padding: 12px
+  font-weight: 600
+  font-size: 18px
+  line-height: 120%
+
+.or
+  display: flex
+  align-items: center
+  margin-bottom: 20px
+  span
+    font-weight: 600
+    font-size: 18px
+    line-height: 120%
+    letter-spacing: 0.04em
+    color: rgba(255, 255, 255, 0.5)
+  &:before
+    content: ''
+    height: 1px
+    background: rgba(255, 255, 255, 0.5)
+    width: 49%
+    display: block
+    margin-right: 12px
+  &:after
+    content: ''
+    height: 1px
+    background: rgba(255, 255, 255, 0.5)
+    width: 49%
+    display: block
+    margin-left: 12px
