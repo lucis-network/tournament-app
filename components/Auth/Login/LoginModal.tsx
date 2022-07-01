@@ -4,8 +4,8 @@ import {observer} from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
 import AuthStore, {AuthUser} from "../AuthStore";
-import AuthService from "../AuthService";
-import {useCallback, useEffect} from "react";
+import AuthService, { AuthError } from "../AuthService";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {getLocalAuthInfo, setLocalAuthInfo} from "../AuthLocal";
 import {isEmpty} from "lodash"
 import Logo from "../../../assets/icon/logo.png";
@@ -27,6 +27,8 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
 export default observer(function LoginModal(props: Props) {
   const route = useRouter();
   const [form] = Form.useForm();
+  const [messageInvalLogin, setMessageInvalLogin] = useState("");
+  const ref = useRef();
 
   const trackUserChangeToAnalytic = (user: AuthUser) => {
     if (user.id) {
@@ -60,7 +62,7 @@ export default observer(function LoginModal(props: Props) {
     console.log(AuthStore);
     const localUserInfo = getLocalAuthInfo();
 
-    if (localUserInfo) {
+    if (localUserInfo?.token) {
       trackUserChangeToAnalytic(localUserInfo);
     }
 
@@ -76,11 +78,17 @@ export default observer(function LoginModal(props: Props) {
 
         // }, 2000);
         setIsModalVisible(false);
+        setMessageInvalLogin("");
+        if (route.pathname === "/tournament/[id]/[...slug]") {
+          route.reload();
+        }
         break;
-    }
 
-    if (route.pathname === "/tournament/[id]/[...slug]") {
-      route.reload();
+      case AuthError.Unknown:
+        //Login Fail
+        if(type === "username") setMessageInvalLogin("The username or password is incorrect!");
+        else setMessageInvalLogin("Login fail. Please try again!");
+        break;
     }
   };
 
@@ -165,11 +173,8 @@ export default observer(function LoginModal(props: Props) {
       .then(async (values) => {
         try {
           const response = await onSuccess({}, "username", values.username, values.password);
-
         } catch (error) {
           console.error('error updateProfileMutation: ', error);
-        } finally {
-          setIsModalVisible(false);
         }
       })
       .catch(info => {
@@ -177,6 +182,7 @@ export default observer(function LoginModal(props: Props) {
       });
   }
 
+  // @ts-ignore
   return (
     <>
       <Modal
@@ -228,8 +234,11 @@ export default observer(function LoginModal(props: Props) {
             <div className={s.forgotPassword}>
               Forgot password
             </div>
+            <div className={`${s.message_error} ml-[10px]`}>
+              {messageInvalLogin}
+            </div>
             <Form.Item>
-              <Button type="primary" htmlType="submit" className={s.buttonLogin} onClick={onSubmit}>
+              <Button type="primary" htmlType="submit"  className={s.buttonLogin} onClick={onSubmit}>
                 Log in
               </Button>
             </Form.Item>

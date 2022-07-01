@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import {gql} from "@apollo/client";
 
-import AuthStore, { AuthUser } from "./AuthStore";
+import AuthStore, {AuthUser} from "./AuthStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
 } from "utils/apollo_client";
@@ -10,7 +10,7 @@ import {
   setLocalAuthInfo,
 } from "./AuthLocal";
 import LoginBoxStore from "../Auth/Login/LoginBoxStore";
-import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
+import {nonReactive as ConnectWalletStore_NonReactiveData} from "./ConnectWalletStore";
 import {JoinTournamentType} from "../ui/common/types";
 
 export enum AuthError {
@@ -29,9 +29,6 @@ function delay(time: number) {
     }, time);
   });
 }
-
-const grapql = `
-  `
 
 export default class AuthService {
   async fetchUserData(): Promise<AuthUser> {
@@ -177,69 +174,73 @@ export default class AuthService {
     return user;
   }
 
-  private async loginByUsername(username: string, password: string): Promise<AuthUser> {
-      const loginRes = await apoloClient.mutate({
-          mutation: gql`
-              mutation login($username: String!, $password: String!,) {
-                  login(username: $username, password: $password) {
-                      token
-                      user {
-                          id
-                          email
-                          role
-                          code
-                          ref_code
-                          google_id
-                          status
-                          facebook_id
-                          favorite_game {
-                              id
-                              user_id
-                              game_uid
-                              enable_favorite
-                              game {
-                                  uid
-                                  name
-                                  logo
-                                  desc
-                              }
-                              user {
-                                  id
-                              }
-                          }
-                          profile {
-                              user_id
-                              given_name
-                              family_name
-                              phone
-                              avatar
-                              cover
-                              user_name
-                              country_code
-                              twitter
-                              facebook
-                              discord
-                              telegram
-                              twitch
-                              user_name
-                              display_name
-                              biography
-                              cover
-                          }
-                      }
-                  }
+  private async loginByUsername(
+    username: string,
+    password: string
+  ): Promise<AuthUser> {
+    const loginRes = await apoloClient.mutate({
+      mutation: gql`
+        mutation login($username: String!, $password: String!) {
+          login(username: $username, password: $password) {
+            token
+            user {
+              id
+              email
+              role
+              code
+              ref_code
+              google_id
+              status
+              facebook_id
+              favorite_game {
+                id
+                user_id
+                game_uid
+                enable_favorite
+                game {
+                  uid
+                  name
+                  logo
+                  desc
+                }
+                user {
+                  id
+                }
               }
-          `,
-        variables: {
-          username,
-          password
-        },
+              profile {
+                user_id
+                given_name
+                family_name
+                phone
+                avatar
+                cover
+                user_name
+                country_code
+                twitter
+                facebook
+                discord
+                telegram
+                twitch
+                user_name
+                display_name
+                biography
+                cover
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        username,
+        password,
       },
- );
+    }).catch(err => {
+      console.log("catch", err);
+    });
 
-    const u = loginRes.data.login.user;
-    console.log("u", loginRes.data.login);
-    const tokenID = loginRes.data.login.token;
+    const u = loginRes?.data.login.user;
+    console.log("u", loginRes?.data.login);
+    const tokenID = loginRes?.data.login.token;
     const user: AuthUser = {
       id: u.id,
       token: tokenID,
@@ -359,8 +360,12 @@ export default class AuthService {
         user = await this.loginByFacebook(tokenId);
       }
       if (type === "username") {
-        user = await this.loginByUsername(username ? username : "",password ? password : "");
+        user = await this.loginByUsername(
+          username ? username : "",
+          password ? password : ""
+        );
       }
+
       console.log("{AuthService.login} new-login user: ", user);
       user.token && ApoloClient_setAuthToken(user.token);
       setLocalAuthInfo(user);
