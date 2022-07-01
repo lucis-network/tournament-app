@@ -29,14 +29,12 @@ export default function TableParticipant(props: Props) {
     currency,
     tournament_status,
     refetch,
-    dataBracket,
     is_auto_checkin
   } = props;
 
   const [datas, setDatas] = useState({});
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isCheck, setIsCheck] = useState(false);
-  const [isCheckBtnDonate, setIsCheckBtnDonate] = useState(false);
   const [name, setName] = useState("");
   const [dataParticipantsFilter, setDataParticipantsFilter] = useState<Team[]>([] as Team[]);
 
@@ -49,12 +47,13 @@ export default function TableParticipant(props: Props) {
     setIsPopupDonate(false);
   };
 
-  useEffect(() => {
-    const getDate = new Date();
-    const start_at = new Date(dataBracket?.start_at);
-    const inDays = start_at.getTime() - getDate.getTime();
-    if (inDays / 3600000 < 1) setIsCheckBtnDonate(true);
-  });
+  // useEffect(() => {
+  //   const getDate = new Date();
+  //   const start_at = new Date(dataBracket?.start_at);
+  //   const inDays = start_at.getTime() - getDate.getTime();
+  //   if (!is_auto_checkin && inDays / 3600000 < 1.25) setIsCheckBtnDonate(true);
+  //   if (is_auto_checkin && inDays / 3600000 < 0.75) setIsCheckBtnDonate(true);
+  // });
 
   const handleClick = (e: object) => {
     setDatas(e);
@@ -180,7 +179,7 @@ export default function TableParticipant(props: Props) {
       // width: "15%",
       render: (_: any, item: object) => (
         <div style={{ display: "flex", justifyContent: "center" }}>
-          {isCheckBtnDonate && !is_auto_checkin && ["REGISTRATION", "CHECKIN", "EDIT_BRACKET", "PREPARE", "RUNNING", "FINISH"].includes(tournament_status) &&
+          {!is_auto_checkin && ["REGISTRATION", "CHECKIN", "EDIT_BRACKET", "PREPARE", "RUNNING", "FINISH"].includes(tournament_status) &&
             <Button
               onClick={() => {
                 if (!AuthStore.isLoggedIn) {
@@ -195,7 +194,7 @@ export default function TableParticipant(props: Props) {
             </Button>
           }
 
-          {isCheckBtnDonate && is_auto_checkin && ["EDIT_BRACKET", "PREPARE", "RUNNING", "FINISH"].includes(tournament_status) &&
+          {is_auto_checkin && ["EDIT_BRACKET", "PREPARE", "RUNNING", "FINISH"].includes(tournament_status) &&
               <Button
                   onClick={() => {
                     if (!AuthStore.isLoggedIn) {

@@ -11,6 +11,7 @@ import {
 } from "./AuthLocal";
 import LoginBoxStore from "../Auth/Login/LoginBoxStore";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
+import {JoinTournamentType} from "../ui/common/types";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -28,6 +29,9 @@ function delay(time: number) {
     }, time);
   });
 }
+
+const grapql = `
+  `
 
 export default class AuthService {
   async fetchUserData(): Promise<AuthUser> {
@@ -230,7 +234,8 @@ export default class AuthService {
           username,
           password
         },
-      });
+      },
+ );
 
     const u = loginRes.data.login.user;
     console.log("u", loginRes.data.login);
