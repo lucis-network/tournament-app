@@ -130,7 +130,7 @@ export default observer(function ClaimDonationModal(props: Props) {
             {item.reward_type == "REFEREE_FEE" && <>From referee fee</>}
             {item.reward_type == "DONATE_FOR_REFEREE" && <>From donation</>}
             {item.reward_type == "DONATEFORTEAM" && <>For your team</>}
-            {item.reward_type == "Total" && <strong>Total</strong>}
+            {item.reward_type == "Total" && <><strong>Total</strong></>}
             {item.reward_type == "LUCISFEE" && <>Lucis Fee (5%)</>}
             {item.reward_type == "RECEIVED" && <>You received</>}
           </>

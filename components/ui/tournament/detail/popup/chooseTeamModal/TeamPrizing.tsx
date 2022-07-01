@@ -294,7 +294,7 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 				</div>
 				<div>
 					{!is_auto_checkin &&
-					<p className={s.note}>Note: You need to check-in after joining this tournament. The Check-in phase will open 1h15m before the tournament starts. Don't miss it!</p>
+					<p className={s.note}>Note: You need to check-in after joining this tournament. The Check-in phase will open 1h15m before the tournament starts. Don&apos;t miss it!</p>
 					}
 				</div>
 			</div>
