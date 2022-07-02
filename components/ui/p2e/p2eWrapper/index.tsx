@@ -39,7 +39,7 @@ export default observer(function P2EWrapper(props: IProps) {
       return;
     }
     setDisabledTab(true);
-  }, [])
+  }, [AuthGameStore.isLoggedInFaceit])
 
   const tabs = [
     { path: "/", name: "Overview" },
@@ -87,7 +87,7 @@ export default observer(function P2EWrapper(props: IProps) {
                 <div className={s.chooseGame}>
                   <img className={s.lolGame} src="/assets/P2E/lol-game.svg" alt="lol-game" />
                   <img className={s.csgoGame} src="/assets/P2E/csgo-game.svg" alt="csgo-game" />
-                  <img className={s.addGame} src="/assets/P2E/add-game.svg" alt="add-game" />
+                  <img className={s.addGame} src="/assets/P2E/add-game.svg" alt="add-game" onClick={() => router.push("/")} />
                 </div>
               </div>
             </div>

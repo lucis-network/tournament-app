@@ -37,8 +37,10 @@ const Mission = () => {
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
-  const handleUpdateMissions = async (popup = true) => {
-    setLoading(true);
+  const handleUpdateMissions = async (showMessage = true, loadingIconUpdate = true) => {
+    if (loadingIconUpdate) {
+      setLoading(true);
+    }
 
     const promise = await Promise.all([
       lucisMissionQuery.refetch(),
@@ -46,7 +48,7 @@ const Mission = () => {
     ])
     setMission(lucisMissionQuery?.data?.getLucisMission)
     setLoading(false);
-    if (popup) {
+    if (showMessage) {
       message.success("update successfully!");
     }
   }
@@ -75,7 +77,7 @@ const Mission = () => {
             </div>
             <MissionsList
               missions={mission}
-              handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
+              handleUpdateMissions={(showMessage, loadingIconUpdate) => handleUpdateMissions(showMessage, loadingIconUpdate)}
               loading={lucisMissionQuery.loading}
               loadingUpdate={loading} />
           </Col>

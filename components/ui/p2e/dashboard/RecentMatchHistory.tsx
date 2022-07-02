@@ -49,20 +49,20 @@ const RecentMatchHistory = () => {
       <div className={s.dailyContainer}>
         <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
         <Row gutter={40}>
-          <Col xl={16} md={24}>
+          <Col lg={16} md={24}>
             <RecentMatchList
               recentMatches={getRecentMatchesData?.getRecentlyMatch?.matches as GPlayerMatch[]}
               loading={getRecentMatchesLoading} title="Recent matches history"
               hasButtonBack
             />
-            {currentLimit <= (getRecentMatchesData?.getRecentlyMatch?.total as number) &&
+            {currentLimit < (getRecentMatchesData?.getRecentlyMatch?.total as number) &&
               <div className={s.viewAllHistory}>
                 <span onClick={() => onViewMore()}>
                   {loading ? <Spin /> :
                     "View more"}</span>
               </div>}
           </Col>
-          <Col xl={8} md={24}>
+          <Col lg={8} md={24}>
             <SidebarRight balance={statisticQuery?.data?.getBalance} />
           </Col>
         </Row>

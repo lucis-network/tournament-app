@@ -167,9 +167,9 @@ const Dashboard = () => {
 
         ]}
       >
-        <div>
+        <div style={{ textAlign: "center" }}>
+          <img src="/assets/P2E/csgo/box-open.png" alt="" width="300" />
           <p style={{ textAlign: "center" }}>You have successfully claimed 30 lucis point!</p>
-          <img src="/assets/P2E/csgo/box-open.png" alt="" />
         </div>
       </Modal>
       <div className="lucis-container-2">
@@ -191,7 +191,7 @@ const Dashboard = () => {
               <DailyMissionList
                 title="Daily missions"
                 missions={dailyMission}
-                handleUpdateMissions={(showMessage) => handleUpdateMissions(showMessage)}
+                handleUpdateMissions={(showMessage, loadingIcon) => handleUpdateMissions(showMessage, loadingIcon)}
                 onClaimBox={onClaimBox}
                 loading={stateDailyMissionFetch.loading}
                 isClaimBox={isClaimBoxQuery?.data?.isClaimBox ?? false}

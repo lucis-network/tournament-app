@@ -11,7 +11,7 @@ type MissionsListProp = {
   missions?: PlayerMission[];
   loading?: boolean;
   loadingUpdate?: boolean;
-  handleUpdateMissions: (popup: boolean) => Promise<void>;
+  handleUpdateMissions: (showMessage: boolean, loadingIconUpdate?: boolean) => Promise<void>;
 };
 
 const MissionsList = ({
@@ -41,7 +41,7 @@ const MissionsList = ({
           isEmpty(missions)
             ? <div className={s.blankState}>No missions found.</div>
             : missions?.map((mission: PlayerMission, index: number) => {
-              return <MissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={async () => await handleUpdateMissions(false)} />;
+              return <MissionItem mission={mission} key={`${mission?.mission?.game_uid}-${index}`} handleUpdateMissions={async () => await handleUpdateMissions(false, false)} />;
             })
         )}
       </div>
