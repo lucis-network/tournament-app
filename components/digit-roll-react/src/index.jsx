@@ -6,7 +6,12 @@ import s from './default.module.css'
 
 export default class DigitRoll extends PureComponent {
   render() {
-    const { num, length, height, width, divider = '', rollingDuration, oneRoundDuration, className } = this.props
+    const {
+      num,
+      length, height, width, divider = '',
+      rollingDuration, oneRoundDuration, className,
+      rolling,
+    } = this.props
     const numArr = formatDigit(num, length, divider)
     const validDivider = divider !== undefined && (typeof divider === 'string' || typeof divider === 'number')
 
@@ -24,6 +29,7 @@ export default class DigitRoll extends PureComponent {
                 digit={d}
                 rollingDuration={rollingDuration}
                 oneRoundDuration={oneRoundDuration}
+                rolling={rolling}
               />
             )
           })}
