@@ -1,0 +1,436 @@
+.rafflesBg
+  background: url('/assets/P2E/raffles/bgRafflesMobile.jpg') no-repeat fixed top center
+  background-size: cover
+  @media screen and (min-width: 768px)
+    background: url('/assets/P2E/raffles/bgRafflesPC.jpg') no-repeat fixed top center
+    background-size: cover
+.rafflesWrapper
+  padding: 24px 0
+.sectionTitle
+  font-family: 'Revx Neue Demo'
+  font-size: 20px
+  font-weight: 600
+  line-height: 22px
+  background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  margin-bottom: 16px
+  @media screen and (min-width: 768px)
+    margin-bottom: 24px
+  @media screen and (min-width: 1400px)
+    font-size: 24px
+    line-height: 26px
+.raffleCountdown
+  display: flex
+  align-items: center
+  :global(.ant-image)
+    margin-right: 8px
+    display: flex
+    align-items: center
+    img
+      min-width: 14px
+      max-width: 14px
+      height: 14px
+  .raffleCountdownText
+    font-family: 'Poppins'
+    font-weight: 400
+    font-size: 14px
+    line-height: 21px
+    background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
+    -webkit-background-clip: text
+    -webkit-text-fill-color: transparent
+.rafflePrice
+  font-family: 'Poppins'
+  font-weight: 600
+  font-size: 16px
+  line-height: 1
+  color: #00FFEC
+  display: flex
+  align-items: center
+  .rafflePriceText
+    margin-right: 4px
+    margin-bottom: -2px
+    line-height: 1
+  :global(.ant-image)
+    img
+      min-width: 14px
+      max-width: 14px
+      height: 14px
+.raffleTag
+  display: inline-block
+  width: 59px
+  text-align: center
+  border: 1px solid #00FFFF
+  border-radius: 4px
+  font-family: 'Poppins'
+  font-weight: 400
+  font-size: 10px
+  line-height: 15px
+  color: #00FFFF
+  padding: 5px
+  margin-right: 8px
+  &:last-of-type
+    margin-right: 0
+.sectionRecentWinners
+  margin-bottom: 32px
+  @media screen and (min-width: 768px)
+    margin-bottom: 43px
+  .recentWinnersList
+    display: flex
+    column-gap: 8px
+    overflow-x: auto
+    margin-bottom: 16px
+    @media screen and (min-width: 768px)
+      justify-content: space-between
+      column-gap: 13px
+    @media screen and (min-width: 1400px)
+      column-gap: 55px
+    .recentWinnersItem
+      min-width: 124px
+      max-width: 124px
+      border-radius: 4px
+      overflow: hidden
+      @media screen and (min-width: 768px)
+        min-width: 170px
+        max-width: 170px
+      @media screen and (min-width: 992px)
+        min-width: 220px
+        max-width: 220px
+      @media screen and (min-width: 1200px)
+        min-width: 250px
+        max-width: 250px
+      @media screen and (min-width: 1400px)
+        min-width: 288px
+        max-width: 288px
+      .recentWinnerThumbnail
+        width: 100%
+        :global(.ant-image)
+          width: 100%
+          height: 100%
+          img
+            width: 100%
+            height: 100%
+            object-fit: cover
+      .recentWinnerInfo
+        background: rgba(69, 80, 107, 0.3)
+        backdrop-filter: blur(40px)
+        padding: 8px 13px 16px
+        @media screen and (min-width: 992px)
+          display: flex
+          justify-content: space-between
+          align-items: center
+          padding: 10px 13px
+        .winner
+          display: flex
+          align-items: center
+          margin-bottom: 12px
+          @media screen and (min-width: 992px)
+            margin-bottom: 0
+            max-width: 50%
+            word-break: break-word
+          .winnerAvatar
+            margin-right: 4px
+            :global(.ant-image)
+              img
+                min-width: 24px
+                max-width: 24px
+                height: 24px
+                object-fit: cover
+                border-radius: 4px
+          .winnerUsername
+            color: #FFFFFF
+            font-family: 'Poppins'
+            font-size: 14px
+            line-height: 21px
+            @media screen and (min-width: 992px)
+              font-size: 14px
+              line-height: 18px
+            @media screen and (min-width: 1200px)
+              font-size: 14px
+        .winnerValued
+          font-family: 'Poppins'
+          font-size: 12px
+          line-height: 18px
+          color: rgba(255, 255, 255, 0.8)
+          @media screen and (min-width: 992px)
+            max-width: 50%
+          @media screen and (min-width: 1200px)
+            font-size: 14px
+            line-height: 21px
+  .btnViewAll
+    display: block
+    margin-left: auto
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    font-size: 14px
+    line-height: 15px
+    color: #00FFFF
+.sectionFeaturedRaffle
+  margin-bottom: 32px
+  @media screen and (min-width: 768px)
+    margin-bottom: 80px
+  .titleFlex
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 16px
+    @media screen and (min-width: 768px)
+      margin-bottom: 24px
+    .sectionTitle
+      margin-bottom: 0
+      max-width: 50%
+      padding-right: 5px
+    .raffleCountdown
+      max-width: 50%
+      padding-left: 5px
+      @media screen and (min-width: 768px)
+        display: none
+  .featuredRaffle
+    border-radius: 4px
+    overflow: hidden
+    position: relative
+    .featuredRaffleThumbnail
+      position: relative
+      :global(.ant-image)
+        img
+          aspect-ratio: 343 / 194
+          object-fit: cover
+    .featuredRaffleInfo
+      background: rgba(69, 80, 107, 0.5)
+      backdrop-filter: blur(9.807px)
+      padding: 16px
+      display: flex
+      justify-content: space-between
+      position: relative
+      @media screen and (min-width: 768px)
+        justify-content: unset
+        position: absolute
+        bottom: 0
+        left: 0
+        right: 0
+      @media screen and (min-width: 992px)
+        padding: 25px 30px
+      .btnViewRaffle
+        position: absolute
+        right: 16px
+        top: -48px
+        display: flex
+        align-items: center
+        border: 1px solid rgba(0, 249, 255, 1)
+        padding: 5px 17px
+        height: 33px
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 12px
+        letter-spacing: 0.04em
+        color: #FFFFFF
+        line-height: 1
+        span
+          position: relative
+          z-index: 1
+        &:before
+          content: ''
+          display: block
+          position: absolute
+          top: 1px
+          left: 1px
+          bottom: 1px
+          right: 1px
+          background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+          z-index: 0
+      .featuredRaffleTitleWrap
+        @media screen and (min-width: 768px)
+          display: flex
+          align-items: center
+          margin-right: 15px
+          max-width: 51%
+        h3
+          font-family: 'Revx Neue Demo'
+          font-style: normal
+          font-weight: 600
+          font-size: 16px
+          line-height: 18px
+          letter-spacing: 0.04em
+          text-transform: uppercase
+          color: rgba(255, 255, 255, 0.8)
+          margin-bottom: 24px
+          @media screen and (min-width: 768px)
+            margin-bottom: 0
+            margin-right: 15px
+            max-width: 66%
+            display: -webkit-box
+            -webkit-line-clamp: 1
+            -webkit-box-orient: vertical
+            overflow: hidden
+          @media screen and (min-width: 1200px)
+            font-size: 32px
+            line-height: 35px
+        p
+          font-family: 'Poppins'
+          font-weight: 400
+          font-size: 14px
+          line-height: 21px
+          color: rgba(255, 208, 88, 0.7)
+          margin-bottom: 0
+      .featuredRafflePriceWrap
+        display: flex
+        flex-direction: column
+        align-items: flex-end
+        justify-content: space-between
+        min-width: 130px
+        @media screen and (min-width: 768px)
+          flex-direction: row
+          align-items: center
+          flex: 1
+        .rafflePrice
+          margin-bottom: 11px
+          @media screen and (min-width: 768px)
+            margin-bottom: 0
+            margin-right: auto
+            margin-top: -2px
+            justify-self: flex-start
+        .raffleCountdown
+          display: none
+          @media screen and (min-width: 768px)
+            display: flex
+            margin-right: 15px
+            margin-left: 15px
+      .featuredRaffleTagWrap
+        @media screen and (min-width: 768px)
+          min-width: 126px
+.sectionRafflesSponsor
+  margin-bottom: 32px
+  @media screen and (min-width: 768px)
+    margin-bottom: 80px
+  .rafflesSponsorList
+    display: flex
+    flex-wrap: wrap
+    row-gap: 32px
+    align-items: center
+    justify-content: space-between
+    width: 287px
+    margin: 0 auto
+    @media screen and (min-width: 768px)
+      width: 500px
+    @media screen and (min-width: 992px)
+      width: 800px
+    .raffleSponsorItem
+      min-width: 50%
+      max-width: 50%
+      &:nth-of-type(even)
+        text-align: right
+      :global(.ant-image)
+        width: 80%
+      @media screen and (min-width: 992px)
+        width: auto
+        min-width: 0
+        max-width: 160px
+        &:nth-of-type(even)
+          text-align: unset
+        :global(.ant-image)
+          width: auto
+.sectionRaffles
+  .raffleTitleWrap
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: 16px
+    @media screen and (min-width: 768px)
+      margin-bottom: 24px
+    .sectionTitle
+      margin-bottom: 0
+    .raffleSearch
+      min-width: 180px
+      max-width: 180px
+      display: flex
+      align-items: center
+      border: 1px solid #FFFFFF
+      border-radius: 4px
+      height: 40px
+      padding: 10px
+      :global(.ant-input)
+        border-radius: 0
+        border: none
+        background: none !important
+        backdrop-filter: none
+        padding: 0 5px 0 0
+        &:focus
+          outline: none
+          box-shadow: none
+      :global(.ant-image)
+        img
+          min-width: 20px
+          height: 20px
+  .rafflesList
+    display: grid
+    gap: 15px
+    grid-template-columns: 1fr 1fr
+    @media screen and (min-width: 360px)
+      gap: 24px
+    @media screen and (min-width: 768px)
+      grid-template-columns: 1fr 1fr 1fr
+      gap: 24px
+    .rafflesItem
+      background: rgba(0, 0, 0, 0.5)
+      border-radius: 4px
+      overflow: hidden
+      &:global(.comingSoon)
+        background: rgba(69, 80, 107, 0.5)
+        backdrop-filter: blur(14.8009px)
+        display: flex
+        align-items: center
+        justify-content: center
+        text-align: center
+        font-family: 'Revx Neue Demo'
+        font-weight: 400
+        font-size: 16px
+        line-height: 18px
+        text-transform: uppercase
+        color: #D9D9D9
+    .raffleTagWrap
+      display: flex
+      justify-content: space-between
+      align-items: center
+      margin-bottom: 10px
+    .raffleTag
+      width: auto
+      font-size: 6px
+      line-height: 9px
+      padding: 1px 4px
+      border-radius: 2px
+      @media screen and (min-width: 768px)
+        font-size: 12px
+        line-height: 1.5
+    .raffleThumbnail
+      :global(.ant-image)
+        width: 100%
+        img
+          width: 100%
+    .raffleInfo
+      padding: 5px
+      @media screen and (min-width: 768px)
+        padding: 16px 24px
+      .raffleTitle
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 14px
+        line-height: 15px
+        letter-spacing: 0.04em
+        text-transform: uppercase
+        color: rgba(255, 255, 255, 0.8)
+        display: -webkit-box
+        -webkit-line-clamp: 3
+        -webkit-box-orient: vertical
+        overflow: hidden
+        margin-bottom: 4px
+      .rafflePriceWrap
+        display: flex
+        align-items: center
+        justify-content: space-between
+        .raffleValued
+          font-family: 'Poppins'
+          font-weight: 400
+          font-size: 12px
+          line-height: 18px
+          color: rgba(255, 255, 255, 0.7)
+
