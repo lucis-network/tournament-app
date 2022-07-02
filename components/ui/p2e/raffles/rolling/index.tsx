@@ -2,29 +2,55 @@ import {useEffect, useState} from "react";
 import s from './index.module.sass'
 // import DigitRoll from "digit-roll-react";
 import DigitRoll from "components/digit-roll-react/src";
+import { randInt } from "../../../../../utils/Number";
+import { replaceAt } from "../../../../../utils/String";
 
+
+const Digit = function (props: {
+  value: number,
+  rolling: boolean,
+}) {
+  const {value, rolling} = props;
+
+  return (
+    <DigitRoll
+      className={s.digit}
+      length={1} divider=""
+      num={value}
+      rolling={rolling}
+      rollingDuration={5000}
+      oneRoundDuration={1000}
+    />
+  )
+}
 
 const RollingRaffles = () => {
-  const [value, setValue] = useState(0);
-  const getRandomInt = (min: number, max: number) => (Math.floor(Math.random() * (max - min + 1)) + min);
-
 
   const [currentTicket, setCurrentTicket] = useState('000000');
+  const [currentRollingIdx, setCurrentRollingIdx] = useState(5);
 
   useEffect(() => {
     const rollInterval = setInterval(() => {
-      const digit6 = currentTicket[5];
-      const newDigit6 = digit6 === '0' ? '9' : '0';
-      setCurrentTicket(currentTicket.substring(0, currentTicket.length - 1) + newDigit6)
+      const new_digit_n = randInt(0, 9).toString();
+      setCurrentTicket(replaceAt(currentTicket, currentRollingIdx, new_digit_n))
     }, 6000);
 
     return () => {
       clearInterval(rollInterval)
     }
-  }, [currentTicket])
+  }, [currentTicket, currentRollingIdx])
 
-  const list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-  // @ts-ignore
+  useEffect(() => {
+    const changeIdxInterval = setInterval(() => {
+      setCurrentRollingIdx(randInt(0, 5));
+    }, 20000);
+
+    return () => {
+      clearInterval(changeIdxInterval)
+    }
+  }, [])
+
+
   return (
     <div className={s.rafflesWrapper}>
       <section className={s.sectionRecentWinners}>
@@ -33,15 +59,17 @@ const RollingRaffles = () => {
 
 
           <div>
-            <p>currentTicket: {currentTicket}</p>
-            {/*Roll the last ticket digit*/}
-            <DigitRoll
-              className={"digit"}
-              length={1} divider=""
-              num={parseInt(currentTicket[5])}
-              rollingDuration={5000}
-              oneRoundDuration={1000}
-            />
+            <p className={s.digit}>currentTicket: {currentTicket}</p>
+
+            <div className={s.digits}>
+              <Digit value={parseInt(currentTicket[0])} rolling={currentRollingIdx === 0} />
+              <Digit value={parseInt(currentTicket[1])} rolling={currentRollingIdx === 1} />
+              <Digit value={parseInt(currentTicket[2])} rolling={currentRollingIdx === 2} />
+              <Digit value={parseInt(currentTicket[3])} rolling={currentRollingIdx === 3} />
+              <Digit value={parseInt(currentTicket[4])} rolling={currentRollingIdx === 4} />
+              <Digit value={parseInt(currentTicket[5])} rolling={currentRollingIdx === 5} />
+            </div>
+
           </div>
 
           <div className={s.rolling}>

@@ -50,3 +50,8 @@ export function truncateStr(str: Maybe<string>, start: number, end: number) {
   str = `${str?.split(" ").splice(start, end).join(" ")}...`;
   return str;
 }
+
+// not safe
+export function replaceAt(s: string, idx: number, char: string) {
+  return s.slice(0, idx) + char + s.slice(idx + 1, s.length)
+}

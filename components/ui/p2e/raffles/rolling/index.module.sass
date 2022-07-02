@@ -1,3 +1,5 @@
+@use 'styles/common'
+
 .rafflesBg
   background: url('/assets/P2E/raffles/bgRafflesMobile.jpg') no-repeat fixed top center
   background-size: cover
@@ -80,5 +82,11 @@
     font-size: 24px
     line-height: 26px
 
+
+.digits
+  @include common.flex-rear
+  justify-content: flex-start
+
 .digit
   color: white
+  font-size: 20px
