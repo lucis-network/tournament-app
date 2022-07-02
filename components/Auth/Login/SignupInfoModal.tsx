@@ -1,11 +1,11 @@
-import {Button, Form, FormInstance, Image, Input, Modal, Select} from "antd";
+import { Button, Form, FormInstance, Image, Input, Modal, Select } from "antd";
 import LoginBoxStore from "./LoginBoxStore";
 import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 import { observer } from "mobx-react-lite";
 import React, { useCallback, useEffect, useState } from "react";
 import s from "./Login.module.sass"
 import { gql, useMutation, useQuery } from "@apollo/client";
-import {debounce, isEmpty} from "lodash";
+import { debounce, isEmpty } from "lodash";
 import AuthService from "../AuthService";
 import Country from "country.json"
 
@@ -124,7 +124,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     setUserNameExisted(false)
     debouncedInputTyping(event.currentTarget.value)
   };
-  
+
   useEffect(() => {
     fetchCountryList();
   }, []);

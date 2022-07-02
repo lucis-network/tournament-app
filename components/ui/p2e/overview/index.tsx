@@ -11,18 +11,18 @@ import { CONNECT_FACEIT, useGetPlatformAccount } from 'hooks/p2e/useP2E';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
+import AuthGameStore, { AuthGameUser } from 'components/Auth/AuthGameStore';
+import { getLocalAuthGameInfo } from 'components/Auth/AuthLocal';
 export default observer(function P2EOverview() {
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
   })
   const [isAuth, setIsAuth] = React.useState<boolean>(false);
-  const { refetchPlatformAccount } = useGetPlatformAccount()
-
+  // const { refetchPlatformAccount } = useGetPlatformAccount(false);
   const [loadingFaceit, setLoadingFaceit] = useState<boolean>(true);
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
-  const { getPlatformAccountData, getPlatformAccountLoading } = useGetPlatformAccount()
   const router = useRouter();
-  const [connectFaceit, fetch] = useMutation(CONNECT_FACEIT, {
+  const [connectFaceit] = useMutation(CONNECT_FACEIT, {
     context: {
       endpoint: 'p2e'
     }
@@ -73,26 +73,28 @@ export default observer(function P2EOverview() {
   }, [faceitUser])
 
   useEffect(() => {
-    if (!AuthStore.isLoggedInFaceit) {
-      handleRefetchPlatformAccount();
-    }
-  }, [])
 
-  const handleRefetchPlatformAccount = async () => {
-    try {
-      const a = await refetchPlatformAccount();
-      setFaceitUser(a.data?.getPlatformAccount[0]);
-      if (a.data?.getPlatformAccount[0]) {
-        AuthStore.faceit_id_token = "has_token";
-      }
+    if (AuthGameStore.isLoggedInFaceit === true) {
       setIsAuth(true);
-    } catch (error) {
-      // TODO
-      setFaceitUser({} as any);
+
+      const faceitUser = {
+        avatar: AuthGameStore.faceit_avatar,
+        nick_name: AuthGameStore.faceit_nick_name
+      }
+      setFaceitUser(faceitUser as any as PlatformAccount);
+
+    } else if (AuthGameStore.isLoggedInFaceit === false) {
+      // console.log(123)
+      // refetchPlatformAccount().then(e => console.log(e))
       setIsAuth(false);
+      setFaceitUser({} as any);
+    } else {
+      setIsAuth(true);
     }
 
-  }
+    setLoadingFaceit(false);
+  }, [AuthGameStore.isLoggedInFaceit])
+
 
   const handleConnectFaceit = () => {
     if (!isAuth) {
@@ -112,9 +114,11 @@ export default observer(function P2EOverview() {
       let hashData = window.location.hash
       if (hashData.startsWith('#token=') && hashData.includes('id_token')) {
         const newHashData = new URLSearchParams(hashData.replace('#token=', '?token='))
+        const accessToken = newHashData.get('token');
+        const idToken = newHashData.get('id_token');
         const tokenData = {
-          accessToken: newHashData.get('token'),
-          idToken: newHashData.get('id_token')
+          accessToken,
+          idToken
         }
         try {
           const response = await connectFaceit({
@@ -123,7 +127,17 @@ export default observer(function P2EOverview() {
           if (isSubscribed) {
             history.replaceState(null, '', ' ')
             setFaceitUser(response.data.connectFaceit)
-            AuthStore.faceit_id_token = newHashData.get('id_token') as string;
+            const data = response.data.connectFaceit;
+            const gameAccount: AuthGameUser = {
+              faceit_id: data.player_uid,
+              faceit_access_token: accessToken as string,
+              faceit_id_token: idToken as string,
+              faceit_platform_id: data.platform_id,
+              faceit_nick_name: data.nick_name,
+              faceit_avatar: data.avatar,
+            }
+
+            AuthGameStore.setAuthGameUser(gameAccount);
             router.push("/p2e/dashboard");
           }
           setLoadingFaceit(false);
@@ -158,19 +172,6 @@ export default observer(function P2EOverview() {
       isSubscribed = false
     }
   }, [])
-
-  useEffect(() => {
-    let isSubscribed = true
-    if (isSubscribed) {
-      setFaceitUser(getPlatformAccountData?.getPlatformAccount[0])
-      if (!getPlatformAccountLoading) {
-        setLoadingFaceit(false);
-      }
-    }
-    return () => {
-      isSubscribed = false
-    }
-  }, [getPlatformAccountData?.getPlatformAccount, getPlatformAccountLoading])
 
 
   // const loginWithSteam = () => {

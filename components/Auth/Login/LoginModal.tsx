@@ -6,11 +6,12 @@ import FacebookLogin from "@greatsumini/react-facebook-login";
 import AuthStore, { AuthUser } from "../AuthStore";
 import AuthService from "../AuthService";
 import { useCallback, useEffect } from "react";
-import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
+import { getLocalAuthGameInfo, getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 import { isEmpty } from "lodash"
 import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
+import AuthGameStore, { AuthGameUser } from "../AuthGameStore";
 
 type Props = {};
 
@@ -24,11 +25,19 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
 export default observer(function LoginModal(props: Props) {
   useEffect(() => {
     const cachedUser: AuthUser | null = getLocalAuthInfo();
+    const cachedGame: AuthGameUser | null = getLocalAuthGameInfo();
     const token = cachedUser?.token;
     if (token) {
       console.log("{AuthService.login} re-login user: ");
       AuthStore.setAuthUser(cachedUser);
+
     }
+
+    if (cachedGame?.faceit_id_token) {
+      AuthGameStore.setAuthGameUser(cachedGame);
+
+    }
+
   }, []);
 
   const isModalVisible = LoginBoxStore.connectModalVisible,

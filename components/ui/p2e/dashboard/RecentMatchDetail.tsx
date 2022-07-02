@@ -34,7 +34,7 @@ export const RecentMatchDetail = () => {
     tripleKill: Number(data?.match_earning?.triple_kill) * Number(data?.player_statistic?.["Triple Kills"]),
     quadraKill: Number(data?.match_earning?.quadra_kill) * Number(data?.player_statistic?.["Quadro Kills"]),
     pentalKill: Number(data?.match_earning?.pental_kill) * Number(data?.player_statistic?.["Penta Kills"]),
-    winStreak: 0
+    winStreak: Math.max(Number(data?.current_win_streak) - 1, 0)
   };
 
   const totalEarned = lucisPointEarned.kill
@@ -100,7 +100,7 @@ export const RecentMatchDetail = () => {
       img: "/assets/P2E/csgo/achievement/k-r.png",
       lucisPoint: Number(data?.match_earning?.highest_kr) ?? "-",
       lucisToken: "-",
-      isCompleted: false
+      isCompleted: data?.highest_kr
     }
   ];
 
@@ -118,7 +118,7 @@ export const RecentMatchDetail = () => {
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
         <Row gutter={[{ xl: 52, xs: 16, md: 16 }, { xs: 16, md: 16, sm: 16 }]}>
-          <Col xl={0} xs={24}>
+          <Col lg={0} xs={24}>
             <div className={s.sidebarRight}>
               {!getStatisticMatchLoading && (
                 <div className={s.informationDetail}>
@@ -317,7 +317,7 @@ export const RecentMatchDetail = () => {
                           <Col span={4}>
                             <div className={s.parameterItem}>
                               <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
-                              <span>{"-"}</span>
+                              <span>{data?.current_win_streak ?? "-"}</span>
                             </div>
                           </Col>
                           <Col span={8}>
@@ -331,7 +331,7 @@ export const RecentMatchDetail = () => {
                           </div>
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {"??"}</span>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.winStreak ?? "-"}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
                           </div>
                           </Col>
@@ -399,7 +399,7 @@ export const RecentMatchDetail = () => {
 
             </div>
           </Col>
-          <Col xl={16} xs={24}>
+          <Col lg={16} xs={24}>
             <div className={s.achievementListCard}>
               <Row className={s.achievementHeader}>
                 <Col sm={12} xs={24}>
@@ -459,7 +459,7 @@ export const RecentMatchDetail = () => {
               </div>
             </div>
           </Col>
-          <Col xl={8} xs={0}>
+          <Col lg={8} xs={0}>
             <div className={s.sidebarRight}>
               {!getStatisticMatchLoading && (
                 <div className={s.informationDetail}>
@@ -658,7 +658,7 @@ export const RecentMatchDetail = () => {
                           <Col span={4}>
                             <div className={s.parameterItem}>
                               <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
-                              <span>{"-"}</span>
+                              <span>{data?.current_win_streak ?? "-"}</span>
                             </div>
                           </Col>
                           <Col span={8}>
@@ -672,7 +672,7 @@ export const RecentMatchDetail = () => {
                           </div>
                           </Col>
                           <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {"??"}</span>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.winStreak ?? "-"}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
                           </div>
                           </Col>
