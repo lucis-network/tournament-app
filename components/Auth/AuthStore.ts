@@ -16,6 +16,7 @@ export type AuthUser = {
 	status?: string;
 	updated_at?: string;
 	favorite_game?: UserFavoriteGame[];
+	is_exist_pass?: boolean;
 };
 
 type UserProfile = {
@@ -66,6 +67,7 @@ class AuthStore implements AuthUser {
 	private _balance?: string;
 	private _loading: boolean = false;
 	private _favorite_game?: UserFavoriteGame[];
+	private _is_exist_pass: boolean | undefined;
 
 	public get isLoggedIn(): boolean {
 		return !!this._token;
@@ -93,6 +95,7 @@ class AuthStore implements AuthUser {
 		this._status = undefined;
 		this._updated_at = undefined;
 		this._favorite_game = undefined;
+		this._is_exist_pass = undefined;
 	}
 
 	setAuthUser(user: AuthUser) {
@@ -109,6 +112,7 @@ class AuthStore implements AuthUser {
 		this._status = user.status;
 		this._updated_at = user.updated_at;
 		this._favorite_game = user.favorite_game;
+		this._is_exist_pass = user.is_exist_pass;
 	}
 
 	/* ============= Getter & Setter ==============*/
@@ -231,6 +235,15 @@ class AuthStore implements AuthUser {
 
 	set favorite_game(games: UserFavoriteGame[] | undefined) {
 		this._favorite_game = games;
+	}
+
+	get is_exist_pass(): boolean {
+		// @ts-ignore
+		return this._is_exist_pass;
+	}
+
+	set is_exist_pass(value: boolean) {
+		this._is_exist_pass = value;
 	}
 }
 

@@ -111,6 +111,7 @@ export default class AuthService {
               google_id
               status
               facebook_id
+              is_exist_pass
               favorite_game {
                 id
                 user_id
@@ -169,6 +170,7 @@ export default class AuthService {
       facebook_id: u.facebook_id ? u.facebook_id : "",
       status: u.status,
       profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
     };
 
     return user;
@@ -192,6 +194,7 @@ export default class AuthService {
               google_id
               status
               facebook_id
+              is_exist_pass
               favorite_game {
                 id
                 user_id
@@ -252,6 +255,7 @@ export default class AuthService {
       google_id: u.google_id,
       status: u.status,
       profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
     };
 
     return user;
@@ -272,6 +276,7 @@ export default class AuthService {
               google_id
               status
               facebook_id
+              is_exist_pass
               favorite_game {
                 id
                 user_id
@@ -328,6 +333,7 @@ export default class AuthService {
       facebook_id: u.facebook_id,
       status: u.status,
       profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
     };
 
     return user;
