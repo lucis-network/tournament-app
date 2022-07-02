@@ -6,6 +6,10 @@
     background-size: cover
 .rafflesWrapper
   padding: 24px 0
+  @media screen and (min-width: 768px)
+    padding: 56px 0
+  @media screen and (min-width: 1200px)
+    padding: 56px 0 151px
 .sectionTitle
   font-family: 'Revx Neue Demo'
   font-size: 20px
@@ -71,6 +75,12 @@
   margin-right: 8px
   &:last-of-type
     margin-right: 0
+  @media screen and (min-width: 1200px)
+    font-size: 16px
+    line-height: 24px
+    width: auto
+    padding: 4px 9.5px
+    border-radius: 4px
 .sectionRecentWinners
   margin-bottom: 32px
   @media screen and (min-width: 768px)
@@ -85,6 +95,8 @@
       column-gap: 13px
     @media screen and (min-width: 1400px)
       column-gap: 55px
+    @media screen and (min-width: 1600px)
+      column-gap: 82px
     .recentWinnersItem
       min-width: 124px
       max-width: 124px
@@ -225,6 +237,15 @@
         letter-spacing: 0.04em
         color: #FFFFFF
         line-height: 1
+        text-transform: uppercase
+        @media screen and (min-width: 1200px)
+          padding: 19px 26px
+          font-size: 18px
+          line-height: 20px
+          letter-spacing: 0.2em
+          height: auto
+          right: 30px
+          top: -88px
         span
           position: relative
           z-index: 1
@@ -265,6 +286,7 @@
           @media screen and (min-width: 1200px)
             font-size: 32px
             line-height: 35px
+            max-width: 75%
         p
           font-family: 'Poppins'
           font-weight: 400
@@ -295,9 +317,15 @@
             display: flex
             margin-right: 15px
             margin-left: 15px
+          @media screen and (min-width: 1200px)
+            margin-right: 48px
       .featuredRaffleTagWrap
         @media screen and (min-width: 768px)
           min-width: 126px
+        .raffleTag
+          @media screen and (min-width: 1200px)
+            &:first-of-type
+              margin-right: 40px
 .sectionRafflesSponsor
   margin-bottom: 32px
   @media screen and (min-width: 768px)
@@ -314,6 +342,8 @@
       width: 500px
     @media screen and (min-width: 992px)
       width: 800px
+    @media screen and (min-width: 1400px)
+      width: 1160px
     .raffleSponsorItem
       min-width: 50%
       max-width: 50%
@@ -329,6 +359,8 @@
           text-align: unset
         :global(.ant-image)
           width: auto
+      @media screen and (min-width: 1400px)
+        max-width: 210px
 .sectionRaffles
   .raffleTitleWrap
     display: flex
@@ -348,6 +380,9 @@
       border-radius: 4px
       height: 40px
       padding: 10px
+      @media screen and (min-width: 1400px)
+        min-width: 318px
+        max-width: 318px
       :global(.ant-input)
         border-radius: 0
         border: none
@@ -370,6 +405,8 @@
     @media screen and (min-width: 768px)
       grid-template-columns: 1fr 1fr 1fr
       gap: 24px
+    @media screen and (min-width: 768px)
+      gap: 46px
     .rafflesItem
       background: rgba(0, 0, 0, 0.5)
       border-radius: 4px
@@ -387,20 +424,34 @@
         line-height: 18px
         text-transform: uppercase
         color: #D9D9D9
+        @media screen and (min-width: 1200px)
+          font-size: 28px
+          line-height: 31px
     .raffleTagWrap
       display: flex
       justify-content: space-between
       align-items: center
       margin-bottom: 10px
+      @media screen and (min-width: 768px)
+        margin-bottom: 16px
     .raffleTag
       width: auto
       font-size: 6px
       line-height: 9px
       padding: 1px 4px
       border-radius: 2px
+      &:global(.disabled)
+        border-color: rgba(255, 255, 255, 0.5)
+        color: rgba(255, 255, 255, 0.5)
       @media screen and (min-width: 768px)
         font-size: 12px
         line-height: 1.5
+      @media screen and (min-width: 1200px)
+        font-size: 16px
+        line-height: 24px
+        width: auto
+        padding: 4px 9.5px
+        border-radius: 4px
     .raffleThumbnail
       :global(.ant-image)
         width: 100%
@@ -423,6 +474,11 @@
         -webkit-box-orient: vertical
         overflow: hidden
         margin-bottom: 4px
+        @media screen and (min-width: 1200px)
+          font-size: 24px
+          line-height: 26px
+          letter-spacing: 0.04em
+          margin-bottom: 8px
       .rafflePriceWrap
         display: flex
         align-items: center
@@ -433,4 +489,7 @@
           font-size: 12px
           line-height: 18px
           color: rgba(255, 255, 255, 0.7)
+          @media screen and (min-width: 1200px)
+            font-size: 14px
+            line-height: 21px
 
