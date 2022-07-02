@@ -15,7 +15,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
     <>
       {onlyWallet ?
         <Row>
-          <Col xl={0} xs={24}>
+          <Col lg={0} xs={24}>
             <div className={s.walletTitle}>
               <h2>
                 Lucis Wallet
@@ -49,7 +49,7 @@ const SidebarRight = ({ balance, onlyWallet = false }: IProps) => {
         :
         <div className={s.sidebarRight}>
           <Row gutter={[0, 32]}>
-            <Col xs={0} xl={24}>
+            <Col xs={0} lg={24}>
               <div className={s.walletTitle}>
                 <h2>
                   Lucis Wallet

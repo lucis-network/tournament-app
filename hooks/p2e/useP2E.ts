@@ -8,7 +8,7 @@ type UseGetRecentMatchesProps = {
   platform_id: number
 }
 
-export const useGetPlatformAccount = (): {
+export const useGetPlatformAccount = (skip: boolean = true): {
   getPlatformAccountLoading: boolean,
   getPlatformAccountError: ApolloError | undefined,
   refetchPlatformAccount: () => Promise<ApolloQueryResult<any>>,
@@ -24,7 +24,8 @@ export const useGetPlatformAccount = (): {
   } = useQuery(GET_PLATFORM_ACCOUNT, {
     context: {
       endpoint: 'p2e'
-    }
+    },
+    skip: skip
   })
 
   return {
@@ -38,7 +39,12 @@ export const useGetPlatformAccount = (): {
 export const useGetRecentMatches = ({ game_uid, offset, limit, platform_id }: UseGetRecentMatchesProps): {
   getRecentMatchesLoading: boolean,
   getRecentMatchesError: ApolloError | undefined,
-  refetchRecentMatches: () => Promise<ApolloQueryResult<any>>,
+  refetchRecentMatches: (v: {
+    game_uid: string;
+    offset: number;
+    limit: number;
+    platform_id: number;
+  }) => Promise<ApolloQueryResult<any>>,
   getRecentMatchesData: {
     getRecentlyMatch: GMatch
   },
@@ -325,6 +331,7 @@ export const GET_STATISTIC_MATCH = gql`
         most_headshot,
         least_died,
         highest_kda,
+        highest_kr,
         current_win_streak,
         player_statistic,
         end_at,

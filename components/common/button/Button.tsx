@@ -16,6 +16,7 @@ const ButtonWrapper = (props: IProps) => {
             {...props}
             className={`${s.customCss} ${props?.className ?? ""}`}
             style={{
+                ...props.style,
                 minWidth: width,
                 maxWidth: width,
                 minHeight: height,

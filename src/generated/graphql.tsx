@@ -616,7 +616,8 @@ export type ChainWhereUniqueInput = {
 export type ClaimRaffleTransaction = {
   __typename?: 'ClaimRaffleTransaction';
   created_at: Scalars['DateTime'];
-  lucis_point: Scalars['Int'];
+  lucis_point?: Maybe<Scalars['Int']>;
+  lucis_token?: Maybe<Scalars['Decimal']>;
   raffle: Raffle;
   raffle_uid: Scalars['String'];
   uid: Scalars['ID'];
@@ -627,7 +628,8 @@ export type ClaimRaffleTransaction = {
 
 export type ClaimRaffleTransactionCreateManyRaffleInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
+  lucis_point?: InputMaybe<Scalars['Int']>;
+  lucis_token?: InputMaybe<Scalars['Decimal']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user_id: Scalars['Int'];
@@ -640,7 +642,8 @@ export type ClaimRaffleTransactionCreateManyRaffleInputEnvelope = {
 
 export type ClaimRaffleTransactionCreateManyUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
+  lucis_point?: InputMaybe<Scalars['Int']>;
+  lucis_token?: InputMaybe<Scalars['Decimal']>;
   raffle_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -677,7 +680,8 @@ export type ClaimRaffleTransactionCreateOrConnectWithoutUserInput = {
 
 export type ClaimRaffleTransactionCreateWithoutRaffleInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
+  lucis_point?: InputMaybe<Scalars['Int']>;
+  lucis_token?: InputMaybe<Scalars['Decimal']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user: UserCreateNestedOneWithoutClaim_RaffleInput;
@@ -685,7 +689,8 @@ export type ClaimRaffleTransactionCreateWithoutRaffleInput = {
 
 export type ClaimRaffleTransactionCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
-  lucis_point: Scalars['Int'];
+  lucis_point?: InputMaybe<Scalars['Int']>;
+  lucis_token?: InputMaybe<Scalars['Decimal']>;
   raffle: RaffleCreateNestedOneWithoutClaim_RaffleInput;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -1412,6 +1417,7 @@ export type GTournament = {
   donate_transactions?: Maybe<Array<DonateTransaction>>;
   game: Game;
   game_uid: Scalars['String'];
+  is_auto_checkin: Scalars['Boolean'];
   join_fee?: Maybe<Scalars['Decimal']>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   name: Scalars['String'];
@@ -2128,6 +2134,18 @@ export type Mutation = {
   resetPassword: Scalars['Boolean'];
   seenNotification?: Maybe<Scalars['Boolean']>;
   subscribeToTournament?: Maybe<Scalars['Boolean']>;
+  /**
+   *
+   *     Arrangemetn tournament
+   *     Error:
+   *     + BAD_REQUEST: Caller not owner
+   *     + CAN_NOT_UPDATE_NOW: can not update ongoing bracket
+   *     + PLAY_TEAM_NOT_EXIST
+   *     + PLAY_TEAM_JOINED_OTHER_MATCH: can not create new when team joined other match
+   *     + MATCH_NOT_FOUND: matchUid not valid
+   *
+   */
+  teamArrangement?: Maybe<Scalars['String']>;
   unsubscribeToTournament?: Maybe<Scalars['Boolean']>;
   /** Only referee can update match result */
   updateMatchResult?: Maybe<Scalars['String']>;
@@ -2300,6 +2318,14 @@ export type MutationSeenNotificationArgs = {
 
 export type MutationSubscribeToTournamentArgs = {
   tournament_uid: Scalars['String'];
+};
+
+
+export type MutationTeamArrangementArgs = {
+  firstPlayTeamUid: Scalars['String'];
+  matchUid?: InputMaybe<Scalars['String']>;
+  roundUid: Scalars['String'];
+  secondPlayTeamUid: Scalars['String'];
 };
 
 
@@ -3736,13 +3762,13 @@ export type Raffle = {
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
-  is_claim: Scalars['Boolean'];
+  is_claim?: Maybe<Scalars['Boolean']>;
   lucis_point_reward?: Maybe<Scalars['Int']>;
+  lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
+  raffle_sponsors?: Maybe<Scalars['String']>;
   raffle_winner?: Maybe<User>;
-  regions: Scalars['String'];
-  sponsor_raffle?: Maybe<SponsorRaffle>;
-  sponsor_raffle_uid?: Maybe<Scalars['String']>;
+  regions?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
   uid: Scalars['ID'];
@@ -3763,9 +3789,10 @@ export type RaffleCreateManyRaffle_WinnerInput = {
   img?: InputMaybe<Scalars['String']>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   lucis_point_reward?: InputMaybe<Scalars['Int']>;
+  lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
-  regions: Scalars['String'];
-  sponsor_raffle_uid?: InputMaybe<Scalars['String']>;
+  raffle_sponsors?: InputMaybe<Scalars['String']>;
+  regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -3818,10 +3845,11 @@ export type RaffleCreateWithoutClaim_RaffleInput = {
   img?: InputMaybe<Scalars['String']>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   lucis_point_reward?: InputMaybe<Scalars['Int']>;
+  lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
+  raffle_sponsors?: InputMaybe<Scalars['String']>;
   raffle_winner?: InputMaybe<UserCreateNestedOneWithoutWon_RafflesInput>;
-  regions: Scalars['String'];
-  sponsor_raffle?: InputMaybe<SponsorRaffleCreateNestedOneWithoutRaffleInput>;
+  regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
   ticket?: InputMaybe<TicketCreateNestedOneWithoutRaffleInput>;
   uid?: InputMaybe<Scalars['String']>;
@@ -3837,9 +3865,10 @@ export type RaffleCreateWithoutRaffle_WinnerInput = {
   img?: InputMaybe<Scalars['String']>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   lucis_point_reward?: InputMaybe<Scalars['Int']>;
+  lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
-  regions: Scalars['String'];
-  sponsor_raffle?: InputMaybe<SponsorRaffleCreateNestedOneWithoutRaffleInput>;
+  raffle_sponsors?: InputMaybe<Scalars['String']>;
+  regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
   ticket?: InputMaybe<TicketCreateNestedOneWithoutRaffleInput>;
   uid?: InputMaybe<Scalars['String']>;
@@ -3855,10 +3884,11 @@ export type RaffleCreateWithoutTicketInput = {
   img?: InputMaybe<Scalars['String']>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   lucis_point_reward?: InputMaybe<Scalars['Int']>;
+  lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
+  raffle_sponsors?: InputMaybe<Scalars['String']>;
   raffle_winner?: InputMaybe<UserCreateNestedOneWithoutWon_RafflesInput>;
-  regions: Scalars['String'];
-  sponsor_raffle?: InputMaybe<SponsorRaffleCreateNestedOneWithoutRaffleInput>;
+  regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -3866,7 +3896,7 @@ export type RaffleCreateWithoutTicketInput = {
 };
 
 export enum RaffleStatus {
-  Finish = 'FINISH',
+  Closed = 'CLOSED',
   Ongoing = 'ONGOING',
   Upcoming = 'UPCOMING'
 }
@@ -4017,47 +4047,6 @@ export type SponsorCreateInputGql = {
   status?: InputMaybe<TransactionStatus>;
   system_fee?: InputMaybe<Scalars['Decimal']>;
   tx_hash: Scalars['String'];
-};
-
-export type SponsorRaffle = {
-  __typename?: 'SponsorRaffle';
-  _count: SponsorRaffleCount;
-  created_at: Scalars['DateTime'];
-  img?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  raffle?: Maybe<Array<Raffle>>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-};
-
-export type SponsorRaffleCount = {
-  __typename?: 'SponsorRaffleCount';
-  raffle: Scalars['Int'];
-};
-
-export type SponsorRaffleCreateNestedOneWithoutRaffleInput = {
-  connect?: InputMaybe<SponsorRaffleWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<SponsorRaffleCreateOrConnectWithoutRaffleInput>;
-  create?: InputMaybe<SponsorRaffleCreateWithoutRaffleInput>;
-};
-
-export type SponsorRaffleCreateOrConnectWithoutRaffleInput = {
-  create: SponsorRaffleCreateWithoutRaffleInput;
-  where: SponsorRaffleWhereUniqueInput;
-};
-
-export type SponsorRaffleCreateWithoutRaffleInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  img?: InputMaybe<Scalars['String']>;
-  link?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type SponsorRaffleWhereUniqueInput = {
-  uid?: InputMaybe<Scalars['String']>;
 };
 
 export type SponsorSlot = {
@@ -4664,6 +4653,7 @@ export type TTournament = {
   donate_transactions?: Maybe<Array<DonateTransaction>>;
   game: Game;
   game_uid: Scalars['String'];
+  is_auto_checkin: Scalars['Boolean'];
   is_claim?: Maybe<PrizeClaimStatus>;
   join_fee?: Maybe<Scalars['Decimal']>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
@@ -4851,6 +4841,7 @@ export type TeamWhereUniqueInput = {
 export type Ticket = {
   __typename?: 'Ticket';
   _count: TicketCount;
+  bought_count?: Maybe<Scalars['Int']>;
   cost: Scalars['Int'];
   created_at: Scalars['DateTime'];
   raffle: Raffle;
@@ -4889,6 +4880,7 @@ export type TicketCreateOrConnectWithoutUser_TicketInput = {
 };
 
 export type TicketCreateWithoutRaffleInput = {
+  bought_count?: InputMaybe<Scalars['Int']>;
   cost: Scalars['Int'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   uid?: InputMaybe<Scalars['String']>;
@@ -4898,6 +4890,7 @@ export type TicketCreateWithoutRaffleInput = {
 };
 
 export type TicketCreateWithoutUser_TicketInput = {
+  bought_count?: InputMaybe<Scalars['Int']>;
   cost: Scalars['Int'];
   created_at?: InputMaybe<Scalars['DateTime']>;
   raffle: RaffleCreateNestedOneWithoutTicketInput;
@@ -4914,6 +4907,7 @@ export type TicketWhereUniqueInput = {
 export enum TnmStatus {
   Checkin = 'CHECKIN',
   Closed = 'CLOSED',
+  EditBracket = 'EDIT_BRACKET',
   Finish = 'FINISH',
   Prepare = 'PREPARE',
   Registration = 'REGISTRATION',
@@ -4950,6 +4944,7 @@ export type Tournament = {
   game: Game;
   game_uid: Scalars['String'];
   invite_link?: Maybe<Scalars['String']>;
+  is_auto_checkin: Scalars['Boolean'];
   join_fee?: Maybe<Scalars['Decimal']>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   name: Scalars['String'];
@@ -5004,6 +4999,7 @@ export type TournamentCreateInputGql = {
   desc?: InputMaybe<Scalars['String']>;
   discord?: InputMaybe<Scalars['String']>;
   game_uid: Scalars['String'];
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Float']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5034,6 +5030,7 @@ export type TournamentCreateManyCurrencyInput = {
   discord?: InputMaybe<Scalars['String']>;
   game_uid: Scalars['String'];
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   name: Scalars['String'];
   participants: Scalars['Int'];
@@ -5066,6 +5063,7 @@ export type TournamentCreateManyGameInput = {
   desc?: InputMaybe<Scalars['String']>;
   discord?: InputMaybe<Scalars['String']>;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   name: Scalars['String'];
   participants: Scalars['Int'];
@@ -5099,6 +5097,7 @@ export type TournamentCreateManyUserInput = {
   discord?: InputMaybe<Scalars['String']>;
   game_uid: Scalars['String'];
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   name: Scalars['String'];
   participants: Scalars['Int'];
@@ -5259,6 +5258,7 @@ export type TournamentCreateWithoutBracketsInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5299,6 +5299,7 @@ export type TournamentCreateWithoutClaim_TransactionsInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5339,6 +5340,7 @@ export type TournamentCreateWithoutCurrencyInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5379,6 +5381,7 @@ export type TournamentCreateWithoutDonate_TransactionsInput = {
   discord?: InputMaybe<Scalars['String']>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5419,6 +5422,7 @@ export type TournamentCreateWithoutGameInput = {
   discord?: InputMaybe<Scalars['String']>;
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5460,6 +5464,7 @@ export type TournamentCreateWithoutLeader_BoardInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   name: Scalars['String'];
   participants: Scalars['Int'];
@@ -5500,6 +5505,7 @@ export type TournamentCreateWithoutPlayTeamsInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5540,6 +5546,7 @@ export type TournamentCreateWithoutReactionInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5580,6 +5587,7 @@ export type TournamentCreateWithoutSponsorSlotInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5620,6 +5628,7 @@ export type TournamentCreateWithoutTournament_SubscribesInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5660,6 +5669,7 @@ export type TournamentCreateWithoutUserInput = {
   donate_transactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutTournamentsInput>;
   game: GameCreateNestedOneWithoutTournamentsInput;
   invite_link?: InputMaybe<Scalars['String']>;
+  is_auto_checkin?: InputMaybe<Scalars['Boolean']>;
   join_fee?: InputMaybe<Scalars['Decimal']>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutTournamentInput>;
   name: Scalars['String'];
@@ -5761,6 +5771,7 @@ export type TournamentGql = {
   has_password?: Maybe<Scalars['Boolean']>;
   invite_link?: Maybe<Scalars['String']>;
   isConfirmTournamentResult?: Maybe<Scalars['Boolean']>;
+  is_auto_checkin: Scalars['Boolean'];
   join_fee?: Maybe<Scalars['Decimal']>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   name: Scalars['String'];
@@ -7454,9 +7465,9 @@ export type UserTeam = {
 
 export type UserTicket = {
   __typename?: 'UserTicket';
-  amount?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
   ticket: Ticket;
+  ticket_number?: Maybe<Scalars['Int']>;
   ticket_uid: Scalars['String'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -7465,8 +7476,8 @@ export type UserTicket = {
 };
 
 export type UserTicketCreateManyTicketInput = {
-  amount?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  ticket_number?: InputMaybe<Scalars['Int']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user_id: Scalars['Int'];
@@ -7478,8 +7489,8 @@ export type UserTicketCreateManyTicketInputEnvelope = {
 };
 
 export type UserTicketCreateManyUserInput = {
-  amount?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  ticket_number?: InputMaybe<Scalars['Int']>;
   ticket_uid: Scalars['String'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -7515,17 +7526,17 @@ export type UserTicketCreateOrConnectWithoutUserInput = {
 };
 
 export type UserTicketCreateWithoutTicketInput = {
-  amount?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  ticket_number?: InputMaybe<Scalars['Int']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user: UserCreateNestedOneWithoutUser_TicketInput;
 };
 
 export type UserTicketCreateWithoutUserInput = {
-  amount?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   ticket: TicketCreateNestedOneWithoutUser_TicketInput;
+  ticket_number?: InputMaybe<Scalars['Int']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
