@@ -128,16 +128,18 @@
     span
       font-size: 20px
   .recentMatchItem
-    background-repeat: no-repeat
+    background-repeat: no-repeat !important
     background-size: cover
     background-position: center
     cursor: pointer
+    // border: 1px solid transparent
     @media screen and ( max-width: 574px )
       border-radius: 4px !important
 
   .recentMatchItem:hover
     border: 1px solid rgba(0, 255, 255, 0.8)
     box-shadow: inset 0px 1px 16px rgba(0, 255, 255, 0.8)
+    height: 95px
 
   .recentMatchResult
     display: flex
@@ -227,3 +229,16 @@
     transform: rotate(360deg)
   100%
     transform: rotate(0deg)
+.recentMatchTitle
+  margin-top: 44px
+  margin-bottom: 24px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  .recentMatchRewardGeneral
+    display: flex
+    font-size: 14px
+    font-weight: 400
+    line-height: 21px
+    justify-content: flex-end
+    align-items: center

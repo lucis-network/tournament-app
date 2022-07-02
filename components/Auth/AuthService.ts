@@ -7,10 +7,12 @@ import apoloClient, {
 import {
   clearLocalAuthInfo,
   getLocalAuthInfo,
+  setLocalAuthGameInfo,
   setLocalAuthInfo,
 } from "./AuthLocal";
 import LoginBoxStore from "../Auth/Login/LoginBoxStore";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
+import AuthGameStore, { AuthGameUser } from "./AuthGameStore";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -95,7 +97,7 @@ export default class AuthService {
     return user;
   }
 
-  private async loginByGoogle(token: string): Promise<AuthUser> {
+  private async loginByGoogle(token: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
     const loginRes = await apoloClient.mutate({
       mutation: gql`
         mutation loginGoogle($token: String!) {
@@ -149,6 +151,9 @@ export default class AuthService {
                 uid
                 access_token
                 id_token
+                platform_id
+                nick_name
+                avatar
               }
             }
           }
@@ -160,8 +165,8 @@ export default class AuthService {
     });
 
     const u = loginRes.data.loginGoogle.user;
-    console.log(u?.platform_account?.id_token);
-    console.log("u", loginRes.data.loginGoogle);
+    const platformAccounts = loginRes.data?.loginGoogle?.user?.platform_account;
+    console.log(platformAccounts)
     const tokenID = loginRes.data.loginGoogle.token;
     const user: AuthUser = {
       id: u.id,
@@ -174,13 +179,24 @@ export default class AuthService {
       google_id: u.google_id,
       status: u.status,
       profile: u.profile,
-      faceit_id_token: u?.platform_account?.[0]?.id_token
     };
 
-    return user;
+    const gameAccount: AuthGameUser = {
+      faceit_id: platformAccounts[0]?.uid,
+      faceit_access_token: platformAccounts[0]?.access_token,
+      faceit_id_token: platformAccounts[0]?.id_token,
+      faceit_platform_id: platformAccounts[0]?.platform_id,
+      faceit_nick_name: platformAccounts[0]?.nick_name,
+      faceit_avatar: platformAccounts[0]?.avatar,
+    }
+
+    return {
+      user,
+      gameAccount: gameAccount
+    };
   }
 
-  private async loginByFacebook(accessToken: string): Promise<AuthUser> {
+  private async loginByFacebook(accessToken: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
     const loginRes = await apoloClient.mutate({
       mutation: gql`
         mutation loginFacebook($accessToken: String!) {
@@ -234,6 +250,9 @@ export default class AuthService {
                 uid
                 access_token
                 id_token
+                platform_id
+                nick_name
+                avatar
               }
             }
           }
@@ -245,6 +264,7 @@ export default class AuthService {
     });
 
     const u = loginRes.data.loginFacebook.user;
+    const platformAccounts = loginRes.data.loginFacebook?.user?.platform_account;
     const tokenID = loginRes.data.loginFacebook.token;
     const user: AuthUser = {
       id: u.id,
@@ -257,10 +277,21 @@ export default class AuthService {
       facebook_id: u.facebook_id,
       status: u.status,
       profile: u.profile,
-      faceit_id_token: u?.platform_account?.[0]?.id_token
     };
 
-    return user;
+    const gameAccount: AuthGameUser = {
+      faceit_id: platformAccounts[0]?.uid,
+      faceit_access_token: platformAccounts[0]?.access_token,
+      faceit_id_token: platformAccounts[0]?.id_token,
+      faceit_platform_id: platformAccounts[0]?.platform_id,
+      faceit_nick_name: platformAccounts[0]?.nick_name,
+      faceit_avatar: platformAccounts[0]?.avatar,
+    }
+
+    return {
+      user,
+      gameAccount: gameAccount
+    };
   }
 
   /**
@@ -280,23 +311,50 @@ export default class AuthService {
     };
 
     try {
-      let user: any;
+      let data: { user: AuthUser, gameAccount: AuthGameUser } = {
+        user: {
+          id: undefined,
+          code: undefined,
+          token: undefined,
+          email: undefined,
+          facebook_id: undefined,
+          google_id: undefined,
+          name: undefined,
+          profile: undefined,
+          ref_code: undefined,
+          role: undefined,
+          status: undefined,
+          updated_at: undefined,
+          favorite_game: undefined
+        },
+        gameAccount: {
+          faceit_id: undefined,
+          faceit_access_token: undefined,
+          faceit_id_token: undefined,
+          faceit_platform_id: undefined,
+          faceit_nick_name: undefined,
+          faceit_avatar: undefined
+        }
+      };
       if (type === "google") {
-        user = await this.loginByGoogle(tokenId);
+        data = await this.loginByGoogle(tokenId);
       }
 
       if (type === "facebook") {
-        user = await this.loginByFacebook(tokenId);
+        data = await this.loginByFacebook(tokenId);
       }
 
-      console.log("{AuthService.login} new-login user: ", user);
-      user.token && ApoloClient_setAuthToken(user.token);
-      setLocalAuthInfo(user);
+      console.log("{AuthService.login} new-login user: ", data);
+      data.user.token && ApoloClient_setAuthToken(data.user.token);
+      setLocalAuthInfo(data.user);
+      setLocalAuthGameInfo(data.gameAccount);
       if (!delay) {
-        AuthStore.setAuthUser(user);
+        AuthStore.setAuthUser(data.user);
+        AuthGameStore.setAuthGameUser(data.gameAccount)
       } else {
         setTimeout(() => {
-          AuthStore.setAuthUser(user);
+          AuthStore.setAuthUser(data.user);
+          AuthGameStore.setAuthGameUser(data.gameAccount)
         }, delay);
       }
 
@@ -332,6 +390,7 @@ export default class AuthService {
   logout() {
     ApoloClient_setAuthToken("");
     AuthStore.resetStates();
+    AuthGameStore.resetStates();
     clearLocalAuthInfo();
     //Router.push("/");
     LoginBoxStore.signupInfoModalVisible = false;

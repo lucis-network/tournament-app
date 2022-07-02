@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import s from './dashboard.module.sass'
-import { Col, message, Row } from "antd"
+import { Col, message, Modal, Row } from "antd"
 import {
   CLAIM_BOX,
   GET_DAILY_POINT,
@@ -20,12 +20,14 @@ import { handleGraphqlErrors } from 'utils/apollo_client';
 import DailyMissionList from '../missionComponent/DailyMissionList';
 import SidebarRight from '../missionComponent/SidebarRight';
 import { useRouter } from 'next/router';
+import ButtonWrapper from 'components/common/button/Button';
 
 const Dashboard = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
   const [recentlyMatches, setRecentlyMatches] = useState<GPlayerMatch[]>([])
+  const [showGiftBox, setShowGiftBox] = React.useState<boolean>(false);
   const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
       game_uid: '03',
@@ -40,16 +42,6 @@ const Dashboard = () => {
     context: {
       endpoint: 'p2e'
     }
-  });
-
-  const dailyPointQuery = useQuery(GET_DAILY_POINT, {
-    context: {
-      endpoint: 'p2e'
-    },
-    variables: {
-      game_uid: '03',
-      platform_id: 1
-    },
   });
 
   const isClaimBoxQuery = useQuery(IS_CLAIM_BOX, {
@@ -97,8 +89,10 @@ const Dashboard = () => {
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
-  const handleUpdateMissions = async (popup = true) => {
-    setLoading(true);
+  const handleUpdateMissions = async (showMessage = true, loadingUpdateIcon = true) => {
+    if (loadingUpdateIcon) {
+      setLoading(true);
+    }
 
     const promise = await Promise.all([
       updateDailyMission(),
@@ -108,7 +102,7 @@ const Dashboard = () => {
     setDailyMission(promise[0].data.updateDailyMission)
     setRecentlyMatches([...promise[1].data.updateRecentlyMatch, ...recentlyMatches]);
     setLoading(false);
-    if (popup) {
+    if (showMessage) {
       message.success("Success!");
     }
   }
@@ -135,7 +129,7 @@ const Dashboard = () => {
       await statisticQuery.refetch();
       await isClaimBoxQuery.refetch();
 
-      message.success("You have successfully claimed 30 lucis point!");
+      setShowGiftBox(true);
     } catch (error: any) {
       handleGraphqlErrors(error, (code) => {
         switch (code) {
@@ -160,61 +154,60 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="lucis-container-2">
-      <div className={s.dailyContainer}>
-        <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
-        <Row gutter={51}>
-          <Col xl={16} md={24}>
-            <div>
-              {/* <h2>
+    <>
+      <Modal
+        centered
+        closable={false}
+        visible={showGiftBox}
+        onCancel={() => setShowGiftBox(false)}
+        footer={[
+          <div style={{ textAlign: 'center' }}>
+            <ButtonWrapper style={{ textAlign: "center" }} onClick={() => setShowGiftBox(false)}>OK</ButtonWrapper>
+          </div>
+
+        ]}
+      >
+        <div>
+          <p style={{ textAlign: "center" }}>You have successfully claimed 30 lucis point!</p>
+          <img src="/assets/P2E/csgo/box-open.png" alt="" />
+        </div>
+      </Modal>
+      <div className="lucis-container-2">
+        <div className={s.dailyContainer}>
+          <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
+          <Row gutter={51}>
+            <Col lg={16} md={24}>
+              <div>
+                {/* <h2>
                 Your NFTs card
               </h2> */}
-              <NFTList />
-            </div>
-            <div className={s.dailyTitle}>
-              <h2>
-                Daily Mission
-              </h2>
-            </div>
-            <DailyMissionList
-              title="Daily missions"
-              missions={dailyMission}
-              handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
-              onClaimBox={onClaimBox}
-              loading={stateDailyMissionFetch.loading}
-              isClaimBox={isClaimBoxQuery?.data?.isClaimBox ?? false}
-              loadingUpdate={loading} />
-            <Row className={s.recentMatchTitle}>
-              <Col xs={24} sm={12}>
+                <NFTList />
+              </div>
+              <div className={s.dailyTitle}>
                 <h2>
-                  Recent matches
+                  Daily Mission
                 </h2>
-              </Col>
-              <Col xs={24} sm={12} className={s.recentMatchRewardGeneral}>
-                <div style={{ marginRight: 16 }}>
-                  Today:
-                </div>
-                <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{`${dailyPointQuery?.data?.getDailyPoint ?? "--"} / ∞`} </span>
-                  <img src="/assets/P2E/lucis-point.svg" alt="" />
-                </div>
-                <div className={s.rewardItem}>
-                  <span>-- / 300</span>
-                  <img src="/assets/P2E/lucis-token.svg" alt="" />
-                </div>
-              </Col>
-            </Row>
-            <RecentMatchList recentMatches={recentlyMatches} loading={getRecentMatchesLoading} />
-            <div className={s.viewAllHistory}>
-              <span onClick={() => router.push("/p2e/dashboard/history")}>View all history</span>
-            </div>
-          </Col>
-          <Col xl={8} md={24}>
-            <SidebarRight balance={statisticQuery?.data?.getBalance} />
-          </Col>
-        </Row>
+              </div>
+              <DailyMissionList
+                title="Daily missions"
+                missions={dailyMission}
+                handleUpdateMissions={(showMessage) => handleUpdateMissions(showMessage)}
+                onClaimBox={onClaimBox}
+                loading={stateDailyMissionFetch.loading}
+                isClaimBox={isClaimBoxQuery?.data?.isClaimBox ?? false}
+                loadingUpdate={loading} />
+              <RecentMatchList recentMatches={recentlyMatches} loading={getRecentMatchesLoading} />
+              {recentlyMatches?.length !== 0 && <div className={s.viewAllHistory}>
+                <span onClick={() => router.push("/p2e/dashboard/history")}>View all history</span>
+              </div>}
+            </Col>
+            <Col lg={8} md={24}>
+              <SidebarRight balance={statisticQuery?.data?.getBalance} />
+            </Col>
+          </Row>
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 

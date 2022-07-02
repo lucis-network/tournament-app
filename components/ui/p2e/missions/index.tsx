@@ -61,7 +61,7 @@ const Mission = () => {
       <div className={s.dailyContainer}>
         <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
         <Row gutter={51}>
-          <Col xl={16} md={24}>
+          <Col lg={16} md={24}>
             <div>
               {/* <h2>
                 Your NFTs card
@@ -79,7 +79,7 @@ const Mission = () => {
               loading={lucisMissionQuery.loading}
               loadingUpdate={loading} />
           </Col>
-          <Col xl={8} md={24}>
+          <Col lg={8} md={24}>
             <SidebarRight balance={statisticQuery?.data?.getBalance} />
 
           </Col>

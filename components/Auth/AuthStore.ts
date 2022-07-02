@@ -16,7 +16,6 @@ export type AuthUser = {
 	status?: string;
 	updated_at?: string;
 	favorite_game?: UserFavoriteGame[];
-	faceit_id_token?: string;
 
 };
 
@@ -67,14 +66,10 @@ class AuthStore implements AuthUser {
 	private _balance?: string;
 	private _loading: boolean = false;
 	private _favorite_game?: UserFavoriteGame[];
-	private _faceit_id_token?: string;
+	private _isLoggedIn?: boolean;
 
-	public get isLoggedIn(): boolean {
-		return !!this._token;
-	}
-
-	public get isLoggedInFaceit(): boolean {
-		return !!this._faceit_id_token;
+	public get isLoggedIn(): boolean | undefined {
+		return this._isLoggedIn;
 	}
 
 	public get isHasMail(): boolean {
@@ -100,7 +95,7 @@ class AuthStore implements AuthUser {
 		this._status = undefined;
 		this._updated_at = undefined;
 		this._favorite_game = undefined;
-		this.faceit_id_token = undefined;
+		this._isLoggedIn = false;
 	}
 
 	setAuthUser(user: AuthUser) {
@@ -117,7 +112,7 @@ class AuthStore implements AuthUser {
 		this._status = user.status;
 		this._updated_at = user.updated_at;
 		this._favorite_game = user.favorite_game;
-		this._faceit_id_token = user.faceit_id_token;
+		this._isLoggedIn = !!user.token;
 	}
 
 	/* ============= Getter & Setter ==============*/
@@ -240,14 +235,6 @@ class AuthStore implements AuthUser {
 
 	set favorite_game(games: UserFavoriteGame[] | undefined) {
 		this._favorite_game = games;
-	}
-
-	get faceit_id_token(): string | undefined {
-		return this._faceit_id_token;
-	}
-
-	set faceit_id_token(tokenId: string | undefined) {
-		this._faceit_id_token = tokenId;
 	}
 }
 

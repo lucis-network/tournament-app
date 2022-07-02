@@ -9,8 +9,8 @@ export function secondsToTimeStr(secs: number): string {
   return secs < 0
     ? ""
     : `${Math.floor(secs / 60)
-        .toString()
-        .padStart(2, "0")}:${(secs % 60).toString().padStart(2, "0")}`;
+      .toString()
+      .padStart(2, "0")}:${(secs % 60).toString().padStart(2, "0")}`;
 }
 
 /**
@@ -159,4 +159,18 @@ export function useCountDown(timeCountDown: any) {
   //   setTotalTime((totalTime: any) => totalTime - 1);
   // };
   return timer;
+}
+
+export const dateToHoursFormat = (date: Date) => {
+  if (!date) {
+    return "--:--";
+  }
+
+  let hours: number | string = date.getHours();
+  let minutes: number | string = date.getMinutes();
+
+  if (hours < 10) hours = `0${hours}`;
+  if (minutes < 10) minutes = `0${minutes}`;
+
+  return `${hours}:${minutes}`;
 }
