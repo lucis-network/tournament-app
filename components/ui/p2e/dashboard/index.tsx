@@ -161,15 +161,17 @@ const Dashboard = () => {
         visible={showGiftBox}
         onCancel={() => setShowGiftBox(false)}
         footer={[
-          <div style={{ textAlign: 'center' }} key="open-box-ok">
-            <ButtonWrapper style={{ textAlign: "center" }} onClick={() => setShowGiftBox(false)}>OK</ButtonWrapper>
-          </div>
+
 
         ]}
       >
         <div style={{ textAlign: "center" }}>
+          <p style={{ textAlign: "center", fontSize: 30, margin: 0 }}>Congratulations</p>
           <img src="/assets/P2E/csgo/box-open.png" alt="" width="300" />
-          <p style={{ textAlign: "center" }}>You have successfully claimed 30 lucis point!</p>
+          <p style={{ textAlign: "center" }}>You have successfully claimed 30 lucis points!</p>
+          <div style={{ textAlign: 'center' }} key="open-box-ok">
+            <ButtonWrapper style={{ textAlign: "center" }} onClick={() => setShowGiftBox(false)}>OK</ButtonWrapper>
+          </div>
         </div>
       </Modal>
       <div className="lucis-container-2">
