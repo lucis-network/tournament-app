@@ -58,7 +58,7 @@ const PopupDonate = (props: Props) => {
   const [values, setValues] = useState("");
   const [desc, setDesc] = useState("");
   const [isPopupNotify, setIsPopupNotify] = useState(false);
-  const [refereeUid, setRefereeUid] = useState("");
+  const [teamUid, setTeamUid] = useState("");
   const inputRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [nameReceive, setNameReceive] = useState("");
@@ -84,7 +84,10 @@ const PopupDonate = (props: Props) => {
 
   useEffect(() => {
     if (types == "PLAYER") setNameReceive(datas?.user?.profile?.display_name);
-    if (types == "TEAM") setNameReceive(datas?.team?.name);
+    if (types == "TEAM") {
+      setNameReceive(datas?.team?.name);
+      setTeamUid(datas?.uid);
+    }
     if (types == "TOURNAMENT") setNameReceive(name as string);
     if (types == "REFEREE") setNameReceive(datas?.display_name);
   }, [datas]);
@@ -123,8 +126,9 @@ const PopupDonate = (props: Props) => {
 
     if (types == "PLAYER") dnt.to = datas?.user?.id;
     if (types == "TEAM") {
-      setRefereeUid(datas?.uid);
+      //setTeamUid(datas?.uid);
       dnt.to = datas?.uid;
+
     }
     if (types == "TOURNAMENT") dnt.to = tournamentId ? tournamentId : "";
     if (types == "REFEREE") {
@@ -199,7 +203,7 @@ const PopupDonate = (props: Props) => {
         const response = await ethersService.donate(
           tournamentId as string,
           datas?.user?.id,
-          refereeUid,
+          teamUid,
           datas?.user_id,
           Number(values),
           token_address,
