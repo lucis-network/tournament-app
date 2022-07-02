@@ -1,0 +1,15 @@
+[debug] [2022-07-02T04:44:27.673Z] ----------------------------------------------------------------------
+[debug] [2022-07-02T04:44:27.676Z] Command:       /usr/bin/node /usr/bin/firebase deploy
+[debug] [2022-07-02T04:44:27.677Z] CLI Version:   11.1.0
+[debug] [2022-07-02T04:44:27.677Z] Platform:      linux
+[debug] [2022-07-02T04:44:27.677Z] Node Version:  v16.15.1
+[debug] [2022-07-02T04:44:27.681Z] Time:          Sat Jul 02 2022 11:44:27 GMT+0700 (Indochina Time)
+[debug] [2022-07-02T04:44:27.681Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-07-02T04:44:27.686Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[debug] [2022-07-02T04:44:27.787Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-07-02T04:44:27.787Z] > authorizing via signed-in user (vuvl@lucis.network)
+[debug] [2022-07-02T04:44:27.787Z] [iam] checking project p2e-test for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2022-07-02T04:44:27.789Z] > refreshing access token with scopes: []
+[debug] [2022-07-02T04:44:27.790Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2022-07-02T04:44:27.790Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]

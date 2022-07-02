@@ -161,7 +161,7 @@ const Dashboard = () => {
         visible={showGiftBox}
         onCancel={() => setShowGiftBox(false)}
         footer={[
-          <div style={{ textAlign: 'center' }}>
+          <div style={{ textAlign: 'center' }} key="open-box-ok">
             <ButtonWrapper style={{ textAlign: "center" }} onClick={() => setShowGiftBox(false)}>OK</ButtonWrapper>
           </div>
 
