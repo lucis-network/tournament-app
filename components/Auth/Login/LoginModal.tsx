@@ -35,7 +35,11 @@ export default observer(function LoginModal(props: Props) {
 
     if (cachedGame?.faceit_id_token) {
       AuthGameStore.setAuthGameUser(cachedGame);
+    }
 
+    if (AuthStore.isLoggedIn && !cachedGame) {
+      const authService = new AuthService();
+      authService.logout();
     }
 
   }, []);
