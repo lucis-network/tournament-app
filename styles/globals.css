@@ -940,3 +940,19 @@ body .ant-carousel .slick-dots-bottom {
     font-size: 16px;
   }
 }
+
+.DigitRoll__Cell {
+  margin: 0 5px;
+  border: 1px solid brown;
+  background: red;
+  font-size: 24px;
+  color: white;
+}
+
+.DigitRoll {
+  border: none;
+}
+
+.DigitRoll__Divider {
+  width: 10px;
+}

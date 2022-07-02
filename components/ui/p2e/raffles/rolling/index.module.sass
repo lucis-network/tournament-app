@@ -1,0 +1,83 @@
+.rafflesBg
+  background: url('/assets/P2E/raffles/bgRafflesMobile.jpg') no-repeat fixed top center
+  background-size: cover
+  @media screen and (min-width: 768px)
+    background: url('/assets/P2E/raffles/bgRafflesPC.jpg') no-repeat fixed top center
+    background-size: cover
+.rafflesWrapper
+  padding: 24px 0
+  .rolling
+    position: relative
+    margin-bottom: 18px
+    display: inline-block
+    img
+      width: 360px
+    .rollingNumber
+      color: #FFFFFF
+      position: absolute
+      top: 50%
+      left: 50%
+      transform: translate(-50%, -50%)
+      display: flex
+      gap: 0 10px
+      font-weight: 600
+      font-size: 64px
+      line-height: 70px
+  .calender
+    display: flex
+    align-items: center
+    margin-bottom: 30px
+    img
+      width: 20px
+      margin-top: 10px
+      margin-right: 8px
+    .rollingEnd
+      font-weight: 400
+      font-size: 16px
+      line-height: 24px
+      color: #00F9FF
+      margin-right: 5px
+    .rollingTime
+      font-weight: 400
+      font-size: 16px
+      line-height: 24px
+      color: #DF9B16
+  .recentWin
+    .recentWinTitle
+      font-weight: 500
+      font-size: 20px
+      line-height: 30px
+      color: #FFFFFF
+    .recentWinTable
+      margin-top: 12px
+      .recentWinItem
+        margin-bottom: 8px
+        .recentWinItemId
+          color: #00F9FF
+          font-weight: 400
+          font-size: 16px
+          line-height: 24px
+          margin-right: 10px
+        .recentWinItemName
+          color: rgba(255, 255, 255, 0.8)
+          font-weight: 400
+          font-size: 16px
+          line-height: 24px
+
+.sectionTitle
+  font-family: 'Revx Neue Demo'
+  font-size: 24px
+  font-weight: 600
+  line-height: 26px
+  color: #00F9FF
+  //border: 1px solid #000000
+  text-transform: uppercase
+  //text-shadow: 0 4px 4px rgba(0, 0, 0, 0.25)
+  margin-bottom: 36px
+  @media screen and (min-width: 768px)
+    margin-bottom: 24px
+  @media screen and (min-width: 1400px)
+    font-size: 24px
+    line-height: 26px
+
+.digit
