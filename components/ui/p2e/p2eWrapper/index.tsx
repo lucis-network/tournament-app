@@ -9,7 +9,8 @@ import AuthGameStore from "components/Auth/AuthGameStore";
 import { useGetPlatformAccount } from "hooks/p2e/useP2E";
 
 interface IProps {
-  children: React.ReactChild | React.ReactChild[]
+  children: React.ReactChild | React.ReactChild[],
+  mainClassname?: string,
 }
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
@@ -51,17 +52,13 @@ export default observer(function P2EWrapper(props: IProps) {
   ];
 
   const isDisabledTab = (tab: string) => {
-    if (tab === "/p2e/raffles" || tab === "/p2e/items" || tab === "/p2e/battle-pass") {
-      return true;
-    }
-
-    return false;
+    return tab === "/p2e/items" || tab === "/p2e/battle-pass";
   }
 
   return (
     <>
       <DocHead />
-      <main style={{ minHeight: "100vh" }} className={s.homeWrap}>
+      <main style={{ minHeight: "100vh" }} className={`${s.homeWrap} ${props.mainClassname ?? ''}`}>
         <div className={`${s.p2eWrap}`}>
           <div className={s.tabsWrap}>
             <div className="lucis-container-2">
