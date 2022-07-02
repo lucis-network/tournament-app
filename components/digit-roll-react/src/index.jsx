@@ -1,18 +1,18 @@
 import React, { PureComponent } from 'react'
 import Slice from './Slice'
 import { formatDigit } from './util'
-import './default.css'
+import s from './default.module.css'
+// import './default.css'
 
 export default class DigitRoll extends PureComponent {
   render() {
     const { num, length, height, width, divider = '', rollingDuration, oneRoundDuration, className } = this.props
     const numArr = formatDigit(num, length, divider)
-    const validDivider =
-      divider !== undefined &&
-      (typeof divider === 'string' || typeof divider === 'number')
+    const validDivider = divider !== undefined && (typeof divider === 'string' || typeof divider === 'number')
+
     return (
-      <div className="DigitRoll__Out" style={{ display: 'flex' }}>
-        <div className={`DigitRoll ${className}`} style={{ height: height + 'rem' }}>
+      <div className={s.DigitRoll__Out} style={{ display: 'flex' }}>
+        <div className={`${s.DigitRoll} ${className}`} style={{ height: height + 'rem' }}>
           {numArr.map((d, index) => {
             if (validDivider && index % 4 === 3) {
               return <Divider key={index} divider={divider} height={height} />
@@ -43,7 +43,7 @@ DigitRoll.defaultProps = {
 }
 
 const Divider = ({ divider, height }) => (
-  <div style={{ height: height + 'rem' }} className="DigitRoll__Divider">
+  <div style={{ height: height + 'rem' }} className={s.DigitRoll__Divider}>
     {divider}
   </div>
 )

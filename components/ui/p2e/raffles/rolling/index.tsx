@@ -1,22 +1,27 @@
-import s from './index.module.sass'
-// @ts-ignore
-import AnimatedNumber from 'react-animated-number';
 import {useEffect, useState} from "react";
-// @ts-ignore
-import DigitRoll from "digit-roll-react";
+import s from './index.module.sass'
+// import DigitRoll from "digit-roll-react";
+import DigitRoll from "components/digit-roll-react/src";
 
-import {Image} from "antd";
 
 const RollingRaffles = () => {
   const [value, setValue] = useState(0);
-
   const getRandomInt = (min: number, max: number) => (Math.floor(Math.random() * (max - min + 1)) + min);
 
+
+  const [currentTicket, setCurrentTicket] = useState('000000');
+
   useEffect(() => {
-    setInterval(() => {
-      setValue(value == 0 ? 9 : 0)
-    }, 1000);
-  })
+    const rollInterval = setInterval(() => {
+      const digit6 = currentTicket[5];
+      const newDigit6 = digit6 === '0' ? '9' : '0';
+      setCurrentTicket(currentTicket.substring(0, currentTicket.length - 1) + newDigit6)
+    }, 6000);
+
+    return () => {
+      clearInterval(rollInterval)
+    }
+  }, [currentTicket])
 
   const list = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
   // @ts-ignore
@@ -25,20 +30,20 @@ const RollingRaffles = () => {
       <section className={s.sectionRecentWinners}>
         <div className="lucis-container-2">
           <h2 className={s.sectionTitle}>Raffle Rooling</h2>
-          {/*<AnimatedNumber*/}
-          {/*  style={{*/}
-          {/*    // transition: '5s ease-out',*/}
-          {/*    // transitionProperty: 'background-color, color',*/}
-          {/*    fontSize: 40,*/}
 
-          {/*  }}*/}
-          {/*  // frameStyle={(perc: any) => (*/}
-          {/*  //   perc === 100 ? {} : {backgroundColor: '#ffeb3b'}*/}
-          {/*  // )}*/}
-          {/*  stepPrecision={0}*/}
-          {/*  value={value}*/}
-          {/*  formatValue={(n: any) => `${n}`}/>*/}
-          {/*<div><DigitRoll length={9} divider="" delay="1" /></div>*/}
+
+          <div>
+            <p>currentTicket: {currentTicket}</p>
+            {/*Roll the last ticket digit*/}
+            <DigitRoll
+              className={"digit"}
+              length={1} divider=""
+              num={parseInt(currentTicket[5])}
+              rollingDuration={5000}
+              oneRoundDuration={1000}
+            />
+          </div>
+
           <div className={s.rolling}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img

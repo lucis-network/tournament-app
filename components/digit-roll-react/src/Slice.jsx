@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import { getArr } from './util'
+import s from './default.module.css'
 
 export default class Slice extends PureComponent {
   state = {
@@ -52,7 +53,7 @@ export default class Slice extends PureComponent {
 
     return (
       <div
-        className={`DigitRoll__Slice }`}
+        className={s.DigitRoll__Slice}
         style={{
           marginTop: this.state.offset + 'rem',
           transition: this.state.isRolling ? `margin ${rollingDuration}ms ease` : '',
@@ -61,7 +62,7 @@ export default class Slice extends PureComponent {
         {arr.map((d, index) => (
           <div
             key={index}
-            className="DigitRoll__Cell"
+            className={s.DigitRoll__Cell}
             style={{ height: height + 'rem', width: width + 'rem' }}
           >
             {d}

@@ -1,3 +1,5 @@
+.DigitRoll__Out {}
+
 .DigitRoll {
   display: flex;
   flex-direction: row-reverse;
@@ -23,4 +25,22 @@
   padding: 0 2px;
   display: flex;
   align-items: center;
+}
+
+
+/* --- custom styling ---*/
+.DigitRoll__Cell {
+  margin: 0 5px;
+  border: 1px solid brown;
+  background: red;
+  font-size: 24px;
+  color: white;
+}
+
+.DigitRoll {
+  border: none;
+}
+
+.DigitRoll__Divider {
+  width: 10px;
 }
