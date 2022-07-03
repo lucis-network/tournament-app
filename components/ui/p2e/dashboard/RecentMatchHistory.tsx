@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import s from './dashboard.module.sass'
-import { Col, Pagination, Row, Spin } from "antd"
+import { Col, Row, Spin } from "antd"
 import {
 
   GET_STATISTICS,
@@ -10,9 +10,9 @@ import {
 import { useQuery } from "@apollo/client";
 import { GPlayerMatch } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchList } from '../RecentMatchList';
-import { useRouter } from 'next/router';
 import SidebarRight from '../missionComponent/SidebarRight';
-import SpinLoading from 'components/ui/common/Spin';
+
+
 const RecentMatchHistory = () => {
   const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
@@ -28,10 +28,6 @@ const RecentMatchHistory = () => {
     limit: 20,
     platform_id: 1
   })
-
-  const router = useRouter();
-
-
   const onViewMore = async () => {
     setLoading(true);
     await refetchRecentMatches({
@@ -52,7 +48,8 @@ const RecentMatchHistory = () => {
           <Col lg={16} md={24}>
             <RecentMatchList
               recentMatches={getRecentMatchesData?.getRecentlyMatch?.matches as GPlayerMatch[]}
-              loading={getRecentMatchesLoading} title="Recent matches history"
+              loading={getRecentMatchesLoading}
+              title="Recent matches history"
               hasButtonBack
             />
             {currentLimit < (getRecentMatchesData?.getRecentlyMatch?.total as number) &&

@@ -22,8 +22,9 @@ import SidebarRight from '../missionComponent/SidebarRight';
 import { useRouter } from 'next/router';
 import ButtonWrapper from 'components/common/button/Button';
 
-const Dashboard = () => {
+const Dashboard = (props: any) => {
   const router = useRouter();
+  console.log(props)
   const [loading, setLoading] = useState(false);
   const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
   const [recentlyMatches, setRecentlyMatches] = useState<GPlayerMatch[]>([])
