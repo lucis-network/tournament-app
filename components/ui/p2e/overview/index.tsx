@@ -75,7 +75,7 @@ export default observer(function P2EOverview() {
   useEffect(() => {
 
     if (AuthGameStore.isLoggedInFaceit === true) {
-      setIsAuth(true);
+      setIsAuth(false);
 
       const faceitUser = {
         avatar: AuthGameStore.faceit_avatar,
@@ -83,17 +83,18 @@ export default observer(function P2EOverview() {
       }
       setFaceitUser(faceitUser as any as PlatformAccount);
 
-    } else if (AuthGameStore.isLoggedInFaceit === false) {
-      // console.log(123)
-      // refetchPlatformAccount().then(e => console.log(e))
-      setIsAuth(false);
+    } else if (AuthGameStore.isLoggedInFaceit === false && AuthStore.isLoggedIn === true) {
+
+      setIsAuth(true);
       setFaceitUser({} as any);
     } else {
-      setIsAuth(true);
+      setFaceitUser({} as any);
+      setIsAuth(false);
     }
 
     setLoadingFaceit(false);
-  }, [AuthGameStore.isLoggedInFaceit])
+  }, [AuthGameStore.isLoggedInFaceit, AuthStore.isLoggedIn])
+
 
 
   const handleConnectFaceit = () => {
