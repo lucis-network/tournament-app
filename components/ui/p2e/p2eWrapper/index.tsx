@@ -6,22 +6,21 @@ import { useRouter } from "next/router";
 import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react-lite";
 import AuthGameStore from "components/Auth/AuthGameStore";
-import { useGetPlatformAccount } from "hooks/p2e/useP2E";
 
 interface IProps {
   children: React.ReactChild | React.ReactChild[],
   mainClassname?: string,
 }
+
+export enum Game {
+  CSGO,
+  LOL
+}
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
-  const handleTabClick = (path: string) => {
-    if (isDisabledTab(path) || disabledTab) {
-      return;
-    }
-    router.push(path);
-  }
-
   const [disabledTab, setDisabledTab] = React.useState(false);
+  const [currentGame, setCurrentGame] = React.useState<Game>(Game.CSGO);
+
   React.useEffect(() => {
     if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
       setDisabledTab(false);
@@ -42,6 +41,13 @@ export default observer(function P2EWrapper(props: IProps) {
     setDisabledTab(true);
   }, [AuthGameStore.isLoggedInFaceit])
 
+  React.useEffect(() => {
+    const currentGameLocal = localStorage.getItem("currentGame");
+    if (currentGameLocal) {
+      setCurrentGame(Number(currentGameLocal));
+    }
+  }, [])
+
   const tabs = [
     { path: "/", name: "Overview" },
     { path: "/p2e/dashboard", name: "Dashboard" },
@@ -53,6 +59,20 @@ export default observer(function P2EWrapper(props: IProps) {
 
   const isDisabledTab = (tab: string) => {
     return tab === "/p2e/items" || tab === "/p2e/battle-pass";
+  }
+  const handleTabClick = (path: string) => {
+    if (isDisabledTab(path) || disabledTab) {
+      return;
+    }
+    router.push(path);
+  }
+
+  const wrapperChildren = () => {
+    return React.Children.map(props.children, child => {
+      return React.cloneElement(child as any, {
+        currentGame: currentGame
+      })
+    })
   }
 
   return (
@@ -81,16 +101,16 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                <div className={s.chooseGame}>
+                {router.pathname !== "/" && <div className={s.chooseGame}>
                   <img className={s.lolGame} src="/assets/P2E/lol-game.svg" alt="lol-game" />
                   <img className={s.csgoGame} src="/assets/P2E/csgo-game.svg" alt="csgo-game" />
                   <img className={s.addGame} src="/assets/P2E/add-game.svg" alt="add-game" onClick={() => router.push("/")} />
-                </div>
+                </div>}
               </div>
             </div>
           </div>
           <div className={s.p2eContent}>
-            {props.children}
+            {wrapperChildren()}
           </div>
         </div>
       </main>

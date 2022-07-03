@@ -7,10 +7,8 @@ import React from "react";
 import { MAP_CSGO } from "utils/Enum";
 import s from "./dashboard.module.sass";
 
-const { useBreakpoint } = Grid;
 export const RecentMatchDetail = () => {
   const router = useRouter();
-  const screens = useBreakpoint();
 
   const [playerMatchId, setPlayerMatchId] = React.useState<number>(-1);
   const [isLoadData, setIsLoadData] = React.useState<boolean>(false);
@@ -404,9 +402,7 @@ export const RecentMatchDetail = () => {
               <Row className={s.achievementHeader}>
                 <Col sm={12} xs={24}>
                   <h2>
-                    {screens.xl ?
-                      <img src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.back()} />
-                      : null}
+                    <img src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.back()} />
                     Achievement
                   </h2>
                 </Col>
