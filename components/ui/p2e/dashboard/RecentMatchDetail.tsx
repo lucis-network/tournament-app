@@ -4,7 +4,7 @@ import { Game, } from "utils/Enum";
 import { RecentMatchDetailCSGO } from "./csgo/RecentMatchDetailCSGO";
 
 interface IProps {
-  currentGame: Game;
+  currentGame?: Game;
 }
 export const RecentMatchDetail = (props: IProps) => {
 

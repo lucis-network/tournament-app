@@ -15,7 +15,7 @@ import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
 
 interface IProps {
-  currentGame: Game;
+  currentGame?: Game;
 }
 const Mission = (props: IProps) => {
   const [loading, setLoading] = useState(false);

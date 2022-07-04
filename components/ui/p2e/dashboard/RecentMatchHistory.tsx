@@ -14,7 +14,7 @@ import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
 
 interface IProps {
-  currentGame: Game;
+  currentGame?: Game;
 }
 const RecentMatchHistory = (props: IProps) => {
   const statisticQuery = useQuery(GET_STATISTICS, {

@@ -25,7 +25,7 @@ import { RecentMatchListLOL } from '../recentMatchComponent/RecentMatchListLOL';
 
 
 interface IProps {
-  currentGame: Game;
+  currentGame?: Game;
 }
 const Dashboard = (props: IProps) => {
   const router = useRouter();
