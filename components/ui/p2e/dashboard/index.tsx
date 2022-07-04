@@ -3,31 +3,35 @@ import s from './dashboard.module.sass'
 import { Col, message, Modal, Row } from "antd"
 import {
   CLAIM_BOX,
-  GET_DAILY_POINT,
   GET_OR_SET_DAILY_MISSION,
   GET_STATISTICS,
   IS_CLAIM_BOX,
   UPDATE_DAILY_MISSION,
-  UPDATE_RECENTLY_MATCH,
+  UPDATE_CSGO_RECENTLY_MATCH,
   useGetRecentMatches
 } from "../../../../hooks/p2e/useP2E";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { GMatch, GPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
-import { RecentMatchList } from '../RecentMatchList';
+import { CsgoMatch, CsgoPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
+import { RecentMatchListCSGO } from '../recentMatchComponent/RecentMatchListCSGO';
 import NFTList from '../NFTList';
 import { handleGraphqlErrors } from 'utils/apollo_client';
-import DailyMissionList from '../missionComponent/DailyMissionList';
-import SidebarRight from '../missionComponent/SidebarRight';
+import MissionList from '../missionComponent/MissionList';
+import SidebarRight from '../SidebarRight';
 import { useRouter } from 'next/router';
 import ButtonWrapper from 'components/common/button/Button';
+import { Game } from 'utils/Enum';
+import { RecentMatchListLOL } from '../recentMatchComponent/RecentMatchListLOL';
 
-const Dashboard = (props: any) => {
+
+interface IProps {
+  currentGame: Game;
+}
+const Dashboard = (props: IProps) => {
   const router = useRouter();
-  console.log(props)
   const [loading, setLoading] = useState(false);
   const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
-  const [recentlyMatches, setRecentlyMatches] = useState<GPlayerMatch[]>([])
+  const [recentlyMatches, setRecentlyMatches] = useState<CsgoPlayerMatch[]>([])
   const [showGiftBox, setShowGiftBox] = React.useState<boolean>(false);
   const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: {
@@ -65,9 +69,8 @@ const Dashboard = (props: any) => {
     }
   })
 
-  const [updateRecentlyMatch] = useMutation(UPDATE_RECENTLY_MATCH, {
+  const [updateRecentlyMatch] = useMutation(UPDATE_CSGO_RECENTLY_MATCH, {
     variables: {
-      game_uid: '03',
       platform_id: 1
     },
     context: {
@@ -82,7 +85,6 @@ const Dashboard = (props: any) => {
   })
 
   const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentMatches({
-    game_uid: '03',
     offset: 1,
     limit: 5,
     platform_id: 1
@@ -101,7 +103,7 @@ const Dashboard = (props: any) => {
       statisticQuery.refetch()
     ])
     setDailyMission(promise[0].data.updateDailyMission)
-    setRecentlyMatches([...promise[1].data.updateRecentlyMatch, ...recentlyMatches]);
+    setRecentlyMatches([...promise[1].data.updateCsgoRecentlyMatch, ...recentlyMatches]);
     setLoading(false);
     if (showMessage) {
       message.success("Success!");
@@ -116,9 +118,8 @@ const Dashboard = (props: any) => {
   }, [])
 
   useEffect(() => {
-    setRecentlyMatches(getRecentMatchesData?.getRecentlyMatch?.matches as GPlayerMatch[]);
+    setRecentlyMatches(getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
   }, [getRecentMatchesData])
-
   const onClaimBox = async () => {
     try {
       await claimBox({
@@ -149,9 +150,24 @@ const Dashboard = (props: any) => {
         }
       })
     }
+  }
 
+  const RecentMatchListRender = () => {
+    switch (props.currentGame) {
+      case Game.CSGO:
+        return <RecentMatchListCSGO
+          recentMatches={recentlyMatches}
+          loading={getRecentMatchesLoading} />;
+      case Game.LOL:
+        return <RecentMatchListLOL
+          recentMatches={recentlyMatches}
+          loading={getRecentMatchesLoading} />;
 
-
+      default:
+        return <RecentMatchListCSGO
+          recentMatches={recentlyMatches}
+          loading={getRecentMatchesLoading} />;
+    }
   }
 
   return (
@@ -191,15 +207,18 @@ const Dashboard = (props: any) => {
                   Daily Mission
                 </h2>
               </div>
-              <DailyMissionList
+              <MissionList
                 title="Daily missions"
                 missions={dailyMission}
                 handleUpdateMissions={(showMessage, loadingIcon) => handleUpdateMissions(showMessage, loadingIcon)}
                 onClaimBox={onClaimBox}
                 loading={stateDailyMissionFetch.loading}
                 isClaimBox={isClaimBoxQuery?.data?.isClaimBox ?? false}
-                loadingUpdate={loading} />
-              <RecentMatchList recentMatches={recentlyMatches} loading={getRecentMatchesLoading} />
+                loadingUpdate={loading}
+                isDailyMission
+                currentGame={props.currentGame}
+              />
+              {RecentMatchListRender()}
               {recentlyMatches?.length !== 0 && <div className={s.viewAllHistory}>
                 <span onClick={() => router.push("/p2e/dashboard/history")}>View all history</span>
               </div>}

@@ -64,7 +64,27 @@ export const MAP_CSGO: { [s: string]: string } = {
   "de_dust1": "Dust I",
   "de_vertigo": "Vertigo",
   "de_mirage": "Mirage",
+  "de_cache": "Cache",
+  "de_nuke": "Nuke",
+  "de_overpass": "Overpass",
+  "de_anciant": "Anciant",
+  "de_cbble": "Cbble",
+  "de_train": "Train",
   "Dust2": "Dust II"
 
+}
+
+export enum Game {
+  NONE,
+  CSGO,
+  LOL
+}
+
+export enum Platform {
+  NONE,
+  FACEIT,
+  STEAM,
+  RIOT,
+  GARENA
 }
 
