@@ -176,7 +176,6 @@ export const UPDATE_CSGO_RECENTLY_MATCH = gql`
         player_statistic
         match {
           uid
-          game_uid
           winner_team
           loser_team
           score
@@ -253,7 +252,6 @@ export const GET_CSGO_RECENT_MATCHES = gql`
         player_statistic
         match {
           uid
-          game_uid
           winner_team
           loser_team
           score
