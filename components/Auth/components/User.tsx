@@ -39,7 +39,7 @@ export default observer(function User(props: Props) {
   const { name, balance, facebook_id, google_id, profile } = AuthStore;
   const chainId = ConnectWalletStore?.network?.chainId;
   const currency = chainId && getCurrencyFromChainId(chainId);
-  
+
   const changeWallet = () => {
     AuthBoxStore.connectModalVisible = true;
   };
@@ -108,8 +108,8 @@ export default observer(function User(props: Props) {
             name && name?.length >= 24
               ? name.slice(0, 24) + "..."
               : profile?.display_name && profile?.display_name?.length >= 24
-              ? profile?.display_name.slice(0, 24) + "..."
-              : name ?? profile?.display_name
+                ? profile?.display_name.slice(0, 24) + "..."
+                : name ?? profile?.display_name
           }
         </p>
       </Col>
@@ -137,7 +137,7 @@ export default observer(function User(props: Props) {
             My Profile
           </Button>
           <Button type="link" onClick={disconnectWallet}>
-            Disconnect
+            Log out
           </Button>
           {/* <GoogleLogout
             clientId={clientId}

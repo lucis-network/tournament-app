@@ -2,9 +2,9 @@ import { Col, Row } from "antd";
 import { isEmpty } from "lodash";
 import moment from "moment";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { CsgoPlayerMatch } from "src/generated/graphql_p2e";
-import { Game, MAP_CSGO } from "utils/Enum";
+import { MAP_CSGO } from "utils/Enum";
 import { dateToHoursFormat } from "utils/Time";
 import SpinLoading from "../../common/Spin";
 import s from './recentMatch.module.sass'
@@ -19,9 +19,9 @@ interface IProps {
 }
 export const RecentMatchListLOL = (props: IProps) => {
   const router = useRouter();
-  const [recentMatchesFiltered, setRecentMatchesFiltered] = React.useState<{ [endAt: string]: CsgoPlayerMatch[] }>({})
+  const [recentMatchesFiltered, setRecentMatchesFiltered] = useState<{ [endAt: string]: CsgoPlayerMatch[] }>({})
 
-  React.useEffect(() => {
+  useEffect(() => {
     filterDayRecentMatch();
   }, [props.recentMatches])
 

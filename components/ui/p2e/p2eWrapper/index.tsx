@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect, useCallback } from "react"
 import DocHead from 'components/DocHead'
 import Footer from 'components/ui/footer/Footer'
 import s from './w.module.sass'
@@ -7,6 +7,7 @@ import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react-lite";
 import AuthGameStore from "components/Auth/AuthGameStore";
 import { Game } from "utils/Enum";
+import { message } from "antd";
 
 interface IProps {
   children: React.ReactChild | React.ReactChild[],
@@ -15,30 +16,33 @@ interface IProps {
 
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
-  const [disabledTab, setDisabledTab] = React.useState(false);
-  const [currentGame, setCurrentGame] = React.useState<Game>(Game.CSGO);
+  const [disabledTab, setDisabledTab] = useState(false);
+  const [currentGame, setCurrentGame] = useState<Game>(Game.CSGO);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
-      setDisabledTab(false);
+      return;
+    }
+
+    if (whiteListTab()) {
       return;
     }
 
     if (AuthStore.isLoggedIn === false) {
-      setDisabledTab(true);
+
       router.push("/");
       return;
     }
 
     if (AuthGameStore.isLoggedInFaceit === false) {
-      setDisabledTab(true);
+
       router.push("/");
       return;
     }
-    setDisabledTab(true);
+    ;
   }, [AuthGameStore.isLoggedInFaceit])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const currentGameLocal = localStorage.getItem("currentGame");
     if (currentGameLocal) {
       setCurrentGame(Number(currentGameLocal));
@@ -57,14 +61,31 @@ export default observer(function P2EWrapper(props: IProps) {
   const isDisabledTab = (tab: string) => {
     return tab === "/p2e/items" || tab === "/p2e/battle-pass";
   }
+
+
+  const whiteListTab = () => {
+    const raffles = router.pathname.search("/p2e/raffles");
+    return raffles > -1 || router.pathname === "/";
+  }
   const handleTabClick = (path: string) => {
-    if (isDisabledTab(path) || disabledTab) {
+    if (!AuthStore.isLoggedIn &&
+      (path === "/p2e/dashboard" || path === "/p2e/missions")) {
+      message.error("Please sign in first!");
       return;
     }
-    router.push(path);
+
+    if (!AuthGameStore.isLoggedInFaceit &&
+      (path === "/p2e/dashboard" || path === "/p2e/missions")) {
+      message.error("Please connect game to continue!");
+      return;
+    }
+    if (!tabDisabled(path)) {
+      router.push(path);
+    }
+
   }
 
-  const tabActive = React.useCallback((path: string) => {
+  const tabActive = (path: string) => {
     if (router.pathname.search(path) > -1 && path !== "/") {
       return s.tabActive;
     }
@@ -74,7 +95,14 @@ export default observer(function P2EWrapper(props: IProps) {
     }
 
     return "";
-  }, [router.pathname])
+  }
+
+  const tabDisabled = (path: string) => {
+    if (isDisabledTab(path)) {
+      return s.tabDisabled;
+    }
+    return "";
+  }
 
   const wrapperChildren = () => {
     return React.Children.map(props.children, child => {
@@ -110,8 +138,7 @@ export default observer(function P2EWrapper(props: IProps) {
                         className={
                           `${s.tabItem} 
                           ${tabActive(item.path)}
-                        ${isDisabledTab(item.path) ? s.tabDisabled : ""}
-                        ${disabledTab && item.path !== "/" ? s.tabDisabled : ""}
+                          ${tabDisabled(item.path)}
                         `}
                         onClick={() => handleTabClick(item.path)}
                       >{item.name}
@@ -120,9 +147,18 @@ export default observer(function P2EWrapper(props: IProps) {
                   })}
                 </div>
                 {router.pathname !== "/" && <div className={s.chooseGame}>
-                  <img className={s.lolGame} src="/assets/P2E/lol-game.svg" alt="lol-game" />
-                  <img className={s.csgoGame} src="/assets/P2E/csgo-game.svg" alt="csgo-game" />
-                  <img className={s.addGame} src="/assets/P2E/add-game.svg" alt="add-game" onClick={() => router.push("/")} />
+                  <img
+                    className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
+                    src="/assets/P2E/lol-game.svg" alt="lol-game"
+                    title="coming soon" />
+                  <img
+                    className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
+                    src="/assets/P2E/csgo-game.svg" alt="csgo-game" />
+                  <img
+                    className={s.addGame}
+                    src="/assets/P2E/add-game.svg"
+                    alt="add-game"
+                    onClick={() => router.push("/")} />
                 </div>}
               </div>
             </div>
