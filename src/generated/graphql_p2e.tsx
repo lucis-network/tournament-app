@@ -47,13 +47,14 @@ export type BalanceHistory = {
 
 export enum BalanceHistoryType {
   Addition = 'ADDITION',
+  Buyraffleticket = 'BUYRAFFLETICKET',
+  Claimraffle = 'CLAIMRAFFLE',
   Dailymission = 'DAILYMISSION',
   Dailymissionbox = 'DAILYMISSIONBOX',
   Equip = 'EQUIP',
   Joindiscord = 'JOINDISCORD',
   Lucismission = 'LUCISMISSION',
   Match = 'MATCH',
-  Raffle = 'RAFFLE',
   Referfriend = 'REFERFRIEND',
   Reroll = 'REROLL',
   Staked = 'STAKED'
@@ -302,6 +303,11 @@ export enum ContractType {
   Prize = 'PRIZE'
 }
 
+export enum CostType {
+  LucisPoint = 'LUCIS_POINT',
+  LucisToken = 'LUCIS_TOKEN'
+}
+
 export type CsgoMap = {
   __typename?: 'CsgoMap';
   _count: CsgoMapCount;
@@ -355,6 +361,44 @@ export type CsgoMapStatistic = {
   updated_at: Scalars['DateTime'];
   win_rate?: Maybe<Scalars['Decimal']>;
   wins?: Maybe<Scalars['Int']>;
+};
+
+export type CsgoMatch = {
+  __typename?: 'CsgoMatch';
+  matches?: Maybe<Array<CsgoPlayerMatch>>;
+  total?: Maybe<Scalars['Int']>;
+};
+
+export type CsgoMatchStatistics = {
+  __typename?: 'CsgoMatchStatistics';
+  current_win_streak?: Maybe<Scalars['Int']>;
+  end_at?: Maybe<Scalars['DateTime']>;
+  highest_kda?: Maybe<Scalars['Boolean']>;
+  highest_kr?: Maybe<Scalars['Boolean']>;
+  is_win?: Maybe<Scalars['Boolean']>;
+  least_died?: Maybe<Scalars['Boolean']>;
+  map?: Maybe<CsgoMap>;
+  match_earning?: Maybe<MatchEarning>;
+  match_uid?: Maybe<Scalars['String']>;
+  most_headshot?: Maybe<Scalars['Boolean']>;
+  most_kill?: Maybe<Scalars['Boolean']>;
+  most_support?: Maybe<Scalars['Boolean']>;
+  player_statistic?: Maybe<Scalars['JSON']>;
+  point?: Maybe<Scalars['Int']>;
+  score?: Maybe<Scalars['String']>;
+};
+
+export type CsgoPlayerMatch = {
+  __typename?: 'CsgoPlayerMatch';
+  id: Scalars['ID'];
+  is_win: Scalars['Boolean'];
+  lucis_point: Scalars['Int'];
+  map_img?: Maybe<Scalars['String']>;
+  match: Match;
+  match_uid: Scalars['String'];
+  player: PlayerGame;
+  player_game_uid: Scalars['String'];
+  player_statistic?: Maybe<Scalars['JSON']>;
 };
 
 export type Currency = {
@@ -426,25 +470,6 @@ export type GBalance = {
   __typename?: 'GBalance';
   lucis_point?: Maybe<Scalars['Int']>;
   lucis_token?: Maybe<Scalars['Float']>;
-};
-
-export type GMatch = {
-  __typename?: 'GMatch';
-  matches?: Maybe<Array<GPlayerMatch>>;
-  total?: Maybe<Scalars['Int']>;
-};
-
-export type GPlayerMatch = {
-  __typename?: 'GPlayerMatch';
-  id: Scalars['ID'];
-  is_win: Scalars['Boolean'];
-  lucis_point: Scalars['Int'];
-  map_img?: Maybe<Scalars['String']>;
-  match: Match;
-  match_uid: Scalars['String'];
-  player: PlayerGame;
-  player_game_uid: Scalars['String'];
-  player_statistic?: Maybe<Scalars['JSON']>;
 };
 
 export type Game = {
@@ -533,25 +558,6 @@ export type MatchEarning = {
   quadra_kill?: Maybe<Scalars['Int']>;
   triple_kill?: Maybe<Scalars['Int']>;
   win?: Maybe<Scalars['Int']>;
-};
-
-export type MatchStatistics = {
-  __typename?: 'MatchStatistics';
-  current_win_streak?: Maybe<Scalars['Int']>;
-  end_at?: Maybe<Scalars['DateTime']>;
-  highest_kda?: Maybe<Scalars['Boolean']>;
-  highest_kr?: Maybe<Scalars['Boolean']>;
-  is_win?: Maybe<Scalars['Boolean']>;
-  least_died?: Maybe<Scalars['Boolean']>;
-  map?: Maybe<CsgoMap>;
-  match_earning?: Maybe<MatchEarning>;
-  match_uid?: Maybe<Scalars['String']>;
-  most_headshot?: Maybe<Scalars['Boolean']>;
-  most_kill?: Maybe<Scalars['Boolean']>;
-  most_support?: Maybe<Scalars['Boolean']>;
-  player_statistic?: Maybe<Scalars['JSON']>;
-  point?: Maybe<Scalars['Int']>;
-  score?: Maybe<Scalars['String']>;
 };
 
 export type Member = {
@@ -660,7 +666,7 @@ export type Mutation = {
   rerollDailyMission?: Maybe<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
-  updateRecentlyMatch: Array<GPlayerMatch>;
+  updateRecentlyMatch: Array<CsgoPlayerMatch>;
   upgradeLucisMission?: Maybe<PlayerMission>;
   withdrawLucisToken?: Maybe<Scalars['Boolean']>;
 };
@@ -994,29 +1000,42 @@ export type ProgressDailyMission = {
 export type Query = {
   __typename?: 'Query';
   GetAllPlayerNFT?: Maybe<Array<PlayerNft>>;
+  getAllTickets?: Maybe<Array<UserTicket>>;
   getBalance?: Maybe<GBalance>;
+  getCSGOMatchStatistic?: Maybe<CsgoMatchStatistics>;
   getDailyPoint?: Maybe<Scalars['Int']>;
   getLucisMission: Array<PlayerMission>;
-  getMatchStatistic?: Maybe<MatchStatistics>;
-  getMyTicketAmount?: Maybe<Array<UserTicket>>;
+  getMyTickets?: Maybe<Array<UserTicket>>;
   getPlatformAccount?: Maybe<Array<PlatformAccount>>;
-  getPreviousMatch?: Maybe<Array<GPlayerMatch>>;
   getProgressDailyMission?: Maybe<ProgressDailyMission>;
   getRaffleDetail?: Maybe<RaffleDetail>;
-  getRaffles?: Maybe<Array<Raffle>>;
-  getRecentWinners?: Maybe<Array<Raffle>>;
-  getRecentlyMatch?: Maybe<GMatch>;
+  getRaffles?: Maybe<Array<RaffleGql>>;
+  getRecentWinners?: Maybe<Array<RecentWinner>>;
+  getRecentlyCsgoMatch?: Maybe<CsgoMatch>;
   getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
+  getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
+  getWonTickets?: Maybe<Array<UserTicket>>;
+  getmatchlol?: Maybe<Scalars['Boolean']>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
   isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
-  rafflesInCurrentMonth?: Maybe<Array<Raffle>>;
-  searchRaffle?: Maybe<Array<Raffle>>;
+  rafflesInCurrentMonth?: Maybe<Array<RaffleGql>>;
+  searchRaffle?: Maybe<Array<RaffleGql>>;
 };
 
 
 export type QueryGetAllPlayerNftArgs = {
   game_uid: Scalars['String'];
+};
+
+
+export type QueryGetAllTicketsArgs = {
+  raffle_uid: Scalars['String'];
+};
+
+
+export type QueryGetCsgoMatchStatisticArgs = {
+  player_match_id: Scalars['Int'];
 };
 
 
@@ -1032,20 +1051,8 @@ export type QueryGetLucisMissionArgs = {
 };
 
 
-export type QueryGetMatchStatisticArgs = {
-  player_match_id: Scalars['Int'];
-};
-
-
-export type QueryGetMyTicketAmountArgs = {
+export type QueryGetMyTicketsArgs = {
   raffle_uid: Scalars['String'];
-};
-
-
-export type QueryGetPreviousMatchArgs = {
-  game_uid: Scalars['String'];
-  number_of_day: Scalars['Int'];
-  platform_id: Scalars['Int'];
 };
 
 
@@ -1060,11 +1067,21 @@ export type QueryGetRaffleDetailArgs = {
 };
 
 
-export type QueryGetRecentlyMatchArgs = {
+export type QueryGetRafflesArgs = {
+  filter?: InputMaybe<RaffleFilter>;
+};
+
+
+export type QueryGetRecentlyCsgoMatchArgs = {
   game_uid: Scalars['String'];
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   platform_id: Scalars['Int'];
+};
+
+
+export type QueryGetWonTicketsArgs = {
+  raffle_uid: Scalars['String'];
 };
 
 
@@ -1080,7 +1097,7 @@ export type QueryIsConnectPlatformArgs = {
 
 
 export type QuerySearchRaffleArgs = {
-  name: Scalars['String'];
+  name?: InputMaybe<Scalars['String']>;
 };
 
 export type Raffle = {
@@ -1095,15 +1112,17 @@ export type Raffle = {
   lucis_point_reward?: Maybe<Scalars['Int']>;
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
+  nft_reward?: Maybe<Scalars['String']>;
   raffle_sponsors?: Maybe<Scalars['String']>;
-  raffle_winner?: Maybe<User>;
   regions?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
+  type?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
-  valued_at?: Maybe<Scalars['Decimal']>;
-  winner_id?: Maybe<Scalars['Int']>;
+  valued_at?: Maybe<Scalars['String']>;
+  winner_total?: Maybe<Scalars['Int']>;
+  won_tickets?: Maybe<Scalars['String']>;
 };
 
 export type RaffleCount = {
@@ -1123,20 +1142,52 @@ export type RaffleDetail = {
   lucis_point_reward?: Maybe<Scalars['Int']>;
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
+  nft_reward?: Maybe<Scalars['String']>;
   raffle_sponsors?: Maybe<Array<SponsorRaffle>>;
-  raffle_winner?: Maybe<User>;
+  regions?: Maybe<Array<Scalars['String']>>;
+  status?: Maybe<RaffleStatus>;
+  ticket?: Maybe<Ticket>;
+  type?: Maybe<Array<Scalars['String']>>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  valued_at?: Maybe<Scalars['String']>;
+  winner_total?: Maybe<Scalars['Int']>;
+  won_tickets?: Maybe<Scalars['String']>;
+};
+
+export type RaffleFilter = {
+  skip_raffle_uid?: InputMaybe<Scalars['String']>;
+};
+
+export type RaffleGql = {
+  __typename?: 'RaffleGql';
+  _count: RaffleCount;
+  claim_raffle?: Maybe<Array<ClaimRaffleTransaction>>;
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  end_at: Scalars['DateTime'];
+  img?: Maybe<Scalars['String']>;
+  is_claim?: Maybe<Scalars['Boolean']>;
+  lucis_point_reward?: Maybe<Scalars['Int']>;
+  lucis_token_reward?: Maybe<Scalars['Decimal']>;
+  name?: Maybe<Scalars['String']>;
+  nft_reward?: Maybe<Scalars['String']>;
+  raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
+  type?: Maybe<Array<Scalars['String']>>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
-  valued_at?: Maybe<Scalars['Decimal']>;
-  winner_id?: Maybe<Scalars['Int']>;
+  valued_at?: Maybe<Scalars['String']>;
+  winner_total?: Maybe<Scalars['Int']>;
+  won_tickets?: Maybe<Scalars['String']>;
 };
 
 export enum RaffleStatus {
   Closed = 'CLOSED',
   Ongoing = 'ONGOING',
+  Rolled = 'ROLLED',
   Upcoming = 'UPCOMING'
 }
 
@@ -1157,6 +1208,12 @@ export enum ReactionType {
   Hear = 'HEAR',
   Like = 'LIKE'
 }
+
+export type RecentWinner = {
+  __typename?: 'RecentWinner';
+  raffle?: Maybe<Raffle>;
+  user?: Maybe<User>;
+};
 
 export type SponsorRaffle = {
   __typename?: 'SponsorRaffle';
@@ -1274,6 +1331,7 @@ export type StringNullableFilter = {
 export type Subscription = {
   __typename?: 'Subscription';
   pushNotification: Notification;
+  winnerAnnouncement: WinnerAnnouncement;
 };
 
 
@@ -1329,10 +1387,12 @@ export type Ticket = {
   __typename?: 'Ticket';
   _count: TicketCount;
   bought_count?: Maybe<Scalars['Int']>;
-  cost: Scalars['Int'];
+  cost?: Maybe<Scalars['Decimal']>;
+  cost_type?: Maybe<CostType>;
   created_at: Scalars['DateTime'];
   raffle: Raffle;
   raffle_uid: Scalars['String'];
+  total_limit?: Maybe<Scalars['Int']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   user_limit?: Maybe<Scalars['Int']>;
@@ -1514,7 +1574,6 @@ export type User = {
   user_bonus?: Maybe<UserBonus>;
   user_ticket?: Maybe<Array<UserTicket>>;
   withdraws?: Maybe<Array<WithdrawTransaction>>;
-  won_raffles?: Maybe<Array<Raffle>>;
 };
 
 export type UserBonus = {
@@ -1550,7 +1609,6 @@ export type UserCount = {
   tournamentSubscriber: Scalars['Int'];
   user_ticket: Scalars['Int'];
   withdraws: Scalars['Int'];
-  won_raffles: Scalars['Int'];
 };
 
 export type UserDailyMission = {
@@ -1615,7 +1673,7 @@ export type UserTicket = {
   __typename?: 'UserTicket';
   created_at: Scalars['DateTime'];
   ticket: Ticket;
-  ticket_number?: Maybe<Scalars['Int']>;
+  ticket_number?: Maybe<Scalars['String']>;
   ticket_uid: Scalars['String'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -1624,9 +1682,14 @@ export type UserTicket = {
 };
 
 export type UserTicketInputGql = {
-  amount: Scalars['Int'];
+  quantity: Scalars['Int'];
   ticket_uid: Scalars['String'];
-  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type WinnerAnnouncement = {
+  __typename?: 'WinnerAnnouncement';
+  content?: Maybe<Scalars['String']>;
+  time?: Maybe<Scalars['String']>;
 };
 
 export type WithdrawTransaction = {

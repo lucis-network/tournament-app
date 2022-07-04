@@ -6,16 +6,13 @@ import { useRouter } from "next/router";
 import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react-lite";
 import AuthGameStore from "components/Auth/AuthGameStore";
+import { Game } from "utils/Enum";
 
 interface IProps {
   children: React.ReactChild | React.ReactChild[],
   mainClassname?: string,
 }
 
-export enum Game {
-  CSGO,
-  LOL
-}
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
   const [disabledTab, setDisabledTab] = React.useState(false);
@@ -67,6 +64,18 @@ export default observer(function P2EWrapper(props: IProps) {
     router.push(path);
   }
 
+  const tabActive = React.useCallback((path: string) => {
+    if (router.pathname.search(path) > -1 && path !== "/") {
+      return s.tabActive;
+    }
+
+    if (router.pathname === "/" && path === "/") {
+      return s.tabActive;
+    }
+
+    return "";
+  }, [router.pathname])
+
   const wrapperChildren = () => {
     return React.Children.map(props.children, child => {
       return React.cloneElement(child as any, {
@@ -75,10 +84,20 @@ export default observer(function P2EWrapper(props: IProps) {
     })
   }
 
+  const backgroundPage = React.useCallback(() => {
+    if (currentGame === Game.CSGO) {
+      return s.backgroundCSGO;
+    }
+
+    if (currentGame === Game.LOL) {
+      return s.backgroundLOL;
+    }
+    return "";
+  }, [])
   return (
     <>
       <DocHead />
-      <main style={{ minHeight: "100vh" }} className={`${s.homeWrap} ${props.mainClassname ?? ''}`}>
+      <main style={{ minHeight: "100vh" }} className={`${s.homeWrap} ${props.mainClassname ?? ''} ${backgroundPage()}`}>
         <div className={`${s.p2eWrap}`}>
           <div className={s.tabsWrap}>
             <div className="lucis-container-2">
@@ -90,8 +109,7 @@ export default observer(function P2EWrapper(props: IProps) {
                         title={isDisabledTab(item.path) ? "Coming soon" : ""}
                         className={
                           `${s.tabItem} 
-                        ${router.pathname.search(item.path) > -1 && item.path !== "/" ? s.tabActive : ""}
-                        ${router.pathname === "/" && item.path === "/" ? s.tabActive : ""}
+                          ${tabActive(item.path)}
                         ${isDisabledTab(item.path) ? s.tabDisabled : ""}
                         ${disabledTab && item.path !== "/" ? s.tabDisabled : ""}
                         `}

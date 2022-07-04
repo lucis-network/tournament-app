@@ -3,31 +3,30 @@ import { isEmpty } from "lodash";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
-import { GPlayerMatch } from "src/generated/graphql_p2e";
-import { MAP_CSGO } from "utils/Enum";
+import { CsgoPlayerMatch } from "src/generated/graphql_p2e";
+import { Game, MAP_CSGO } from "utils/Enum";
 import { dateToHoursFormat } from "utils/Time";
-import SpinLoading from "../common/Spin";
-import s from './p2e.module.sass'
+import SpinLoading from "../../common/Spin";
+import s from './recentMatch.module.sass'
 
 
 interface IProps {
-  recentMatches: GPlayerMatch[];
+  recentMatches: CsgoPlayerMatch[];
   loading: boolean;
   isHistory?: boolean;
   title?: string;
   hasButtonBack?: boolean;
 }
-export const RecentMatchList = (props: IProps) => {
+export const RecentMatchListCSGO = (props: IProps) => {
   const router = useRouter();
-
-  const [recentMatchesFiltered, setRecentMatchesFiltered] = React.useState<{ [endAt: string]: GPlayerMatch[] }>({})
+  const [recentMatchesFiltered, setRecentMatchesFiltered] = React.useState<{ [endAt: string]: CsgoPlayerMatch[] }>({})
 
   React.useEffect(() => {
     filterDayRecentMatch();
   }, [props.recentMatches])
 
 
-  const lucisPointRewardToday = (matches: GPlayerMatch[]): number => {
+  const lucisPointRewardToday = (matches: CsgoPlayerMatch[]): number => {
     let total = 0;
     matches?.forEach((match) => {
       total += match.lucis_point;
@@ -35,10 +34,12 @@ export const RecentMatchList = (props: IProps) => {
     return total
   }
 
+
+
   const filterDayRecentMatch = () => {
-    let filteredList: { [endAt: string]: GPlayerMatch[] } = {};
+    let filteredList: { [endAt: string]: CsgoPlayerMatch[] } = {};
     props?.recentMatches
-      ?.forEach((item: GPlayerMatch) => {
+      ?.forEach((item: CsgoPlayerMatch) => {
         const endAtString = moment(new Date(item?.match?.end_at)).format("YYYY/MM/DD")
         if (!filteredList[endAtString]) {
           filteredList[endAtString] = [item];
