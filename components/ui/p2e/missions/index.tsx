@@ -7,13 +7,17 @@ import {
 } from "../../../../hooks/p2e/useP2E";
 
 import { useQuery } from "@apollo/client";
-import MissionsList from "../missionComponent/MissionsList";
+import MissionsList from "../missionComponent/MissionList";
 import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import ButtonWrapper from 'components/common/button/Button';
 import NFTList from '../NFTList';
-import SidebarRight from '../missionComponent/SidebarRight';
+import SidebarRight from '../SidebarRight';
+import { Game } from 'utils/Enum';
 
-const Mission = () => {
+interface IProps {
+  currentGame?: Game;
+}
+const Mission = (props: IProps) => {
   const [loading, setLoading] = useState(false);
   const [mission, setMission] = useState<PlayerMission[]>([])
 
@@ -37,8 +41,10 @@ const Mission = () => {
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
-  const handleUpdateMissions = async (popup = true) => {
-    setLoading(true);
+  const handleUpdateMissions = async (showMessage = true, loadingIconUpdate = true) => {
+    if (loadingIconUpdate) {
+      setLoading(true);
+    }
 
     const promise = await Promise.all([
       lucisMissionQuery.refetch(),
@@ -46,7 +52,7 @@ const Mission = () => {
     ])
     setMission(lucisMissionQuery?.data?.getLucisMission)
     setLoading(false);
-    if (popup) {
+    if (showMessage) {
       message.success("update successfully!");
     }
   }
@@ -74,9 +80,11 @@ const Mission = () => {
               </h2>
             </div>
             <MissionsList
+              title="Completed  the Lucis missions to receive"
               missions={mission}
-              handleUpdateMissions={(popup) => handleUpdateMissions(popup)}
+              handleUpdateMissions={(showMessage, loadingIconUpdate) => handleUpdateMissions(showMessage, loadingIconUpdate)}
               loading={lucisMissionQuery.loading}
+              currentGame={props.currentGame}
               loadingUpdate={loading} />
           </Col>
           <Col lg={8} md={24}>

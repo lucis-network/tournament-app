@@ -1,8 +1,7 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { GMatch, MatchStatistics, PlatformAccount } from "../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoMatchStatistics, PlatformAccount } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
-  game_uid: string
   offset: number
   limit: number
   platform_id: number
@@ -36,17 +35,12 @@ export const useGetPlatformAccount = (skip: boolean = true): {
   }
 }
 
-export const useGetRecentMatches = ({ game_uid, offset, limit, platform_id }: UseGetRecentMatchesProps): {
+export const useGetRecentMatches = ({ offset, limit, platform_id }: UseGetRecentMatchesProps): {
   getRecentMatchesLoading: boolean,
   getRecentMatchesError: ApolloError | undefined,
-  refetchRecentMatches: (v: {
-    game_uid: string;
-    offset: number;
-    limit: number;
-    platform_id: number;
-  }) => Promise<ApolloQueryResult<any>>,
+  refetchRecentMatches: (v: UseGetRecentMatchesProps) => Promise<ApolloQueryResult<any>>,
   getRecentMatchesData: {
-    getRecentlyMatch: GMatch
+    getRecentlyCsgoMatch: CsgoMatch
   },
 } => {
   const {
@@ -54,12 +48,11 @@ export const useGetRecentMatches = ({ game_uid, offset, limit, platform_id }: Us
     error: getRecentMatchesError,
     refetch: refetchRecentMatches,
     data: getRecentMatchesData,
-  } = useQuery(GET_RECENT_MATCHES, {
+  } = useQuery(GET_CSGO_RECENT_MATCHES, {
     context: {
       endpoint: 'p2e'
     },
     variables: {
-      game_uid: game_uid,
       offset: offset,
       limit: limit,
       platform_id: platform_id,
@@ -79,7 +72,7 @@ export const useGetStatisticMatch = (player_match_id: number, skip: boolean = tr
   getStatisticMatchError: ApolloError | undefined,
   refetchStatisticMatch: () => Promise<ApolloQueryResult<any>>,
   getStatisticMatchData: {
-    getMatchStatistic: MatchStatistics
+    getCsgoMatchStatistic: CsgoMatchStatistics
   },
 } => {
   const {
@@ -87,7 +80,7 @@ export const useGetStatisticMatch = (player_match_id: number, skip: boolean = tr
     error: getStatisticMatchError,
     refetch: refetchStatisticMatch,
     data: getStatisticMatchData,
-  } = useQuery(GET_STATISTIC_MATCH, {
+  } = useQuery(GET_CSGO_MATCH_STATISTIC, {
     context: {
       endpoint: 'p2e'
     },
@@ -142,8 +135,6 @@ export const GET_OR_SET_DAILY_MISSION = gql`
         game_uid
         img
         goal
-        type
-        map
       }
     }
   }
@@ -167,16 +158,15 @@ export const UPDATE_DAILY_MISSION = gql`
         game_uid
         img
         goal
-        type
       }
       is_claim
     }
   }
 `
 
-export const UPDATE_RECENTLY_MATCH = gql`
-  mutation ($game_uid: String!, $platform_id: Int!) {
-    updateRecentlyMatch(game_uid: $game_uid, platform_id: $platform_id) {
+export const UPDATE_CSGO_RECENTLY_MATCH = gql`
+  mutation ($platform_id: Int!) {
+    updateCsgoRecentlyMatch(platform_id: $platform_id) {
         id
         match_uid
         player_game_uid
@@ -186,7 +176,6 @@ export const UPDATE_RECENTLY_MATCH = gql`
         player_statistic
         match {
           uid
-          game_uid
           winner_team
           loser_team
           score
@@ -250,9 +239,9 @@ const GET_PLATFORM_ACCOUNT = gql`
   }
 `
 
-export const GET_RECENT_MATCHES = gql`
-  query ($game_uid: String!, $offset: Int!, $limit: Int!, $platform_id: Int!) {
-    getRecentlyMatch(game_uid: $game_uid, offset: $offset, limit: $limit, platform_id: $platform_id) {
+export const GET_CSGO_RECENT_MATCHES = gql`
+  query ($offset: Int!, $limit: Int!, $platform_id: Int!) {
+    getRecentlyCsgoMatch(offset: $offset, limit: $limit, platform_id: $platform_id) {
       matches {
         id
         match_uid
@@ -263,7 +252,6 @@ export const GET_RECENT_MATCHES = gql`
         player_statistic
         match {
           uid
-          game_uid
           winner_team
           loser_team
           score
@@ -276,32 +264,10 @@ export const GET_RECENT_MATCHES = gql`
   }
 `
 
-export const GET_RECENT_MATCHES_BY_DAYS = gql`
-  query ($game_uid: String!, $platform_id: Int!,$number_of_day: Int!) {
-    getPreviousMatch(game_uid: $game_uid, platform_id: $platform_id, number_of_day: $number_of_day) {
-      id
-      match_uid
-      player_game_uid
-      is_win
-      map_img
-      lucis_point
-      player_statistic
-      match {
-        uid
-        game_uid
-        winner_team
-        loser_team
-        score
-        end_at
-        map
-      }
-    }
-  }
-`
 
-export const GET_STATISTIC_MATCH = gql`
+export const GET_CSGO_MATCH_STATISTIC = gql`
   query ($player_match_id: Int!) {
-    getMatchStatistic(player_match_id: $player_match_id) {
+    getCsgoMatchStatistic(player_match_id: $player_match_id) {
         match_uid,
         match_earning {
           id,
@@ -360,8 +326,6 @@ export const GET_LUCIS_MISSION = gql`
         game_uid
         img
         goal
-        type
-        map
       }
     }
   }

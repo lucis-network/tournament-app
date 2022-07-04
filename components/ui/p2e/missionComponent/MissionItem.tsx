@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import s from "./mission.module.sass";
+import s from "./dailyMission.module.sass";
 import { Col, message, Progress, Row } from "antd";
 import { MissionType, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
@@ -7,13 +7,16 @@ import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
 import ButtonWrapper from "../../../common/button/Button";
 import moment from "moment";
 import { handleGraphqlErrors } from "utils/apollo_client";
+import { Game } from "utils/Enum";
 
 type MissionItemProp = {
   mission: PlayerMission;
   handleUpdateMissions?: () => Promise<void>;
+  currentGame?: Game;
+  isDailyMission?: boolean;
 };
 
-const MissionItem = (props: MissionItemProp) => {
+const DailyMissionItem = (props: MissionItemProp) => {
   const { mission, handleUpdateMissions } = props;
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +25,12 @@ const MissionItem = (props: MissionItemProp) => {
       endpoint: "p2e",
     },
   });
+
+  // const [rerollMission] = useMutation(REROLL_MISSION, {
+  //   context: {
+  //     endpoint: "p2e",
+  //   },
+  // });
 
   const handleClaimMission = async (mission: PlayerMission) => {
     setLoading(true);
@@ -55,35 +64,27 @@ const MissionItem = (props: MissionItemProp) => {
       })
     }
 
-  };
 
-  // const handleRerollMission = async (mission: PlayerMission) => {
-  //   setLoading(true);
-  //   rerollMission({
-  //     variables: { player_mission_uid: mission?.uid },
-  //     onCompleted: (data) => {
-  //       message.success("Rerolled!");
-  //       if (handleUpdateMissions) {
-  //         handleUpdateMissions();
-  //       }
-  //       setLoading(false);
-  //     },
-  //     onError: (errors) => {
-  //       console.log("errors", errors);
-  //       setLoading(false);
-  //     },
-  //   });
-  // };
+  };
 
   const achieved = mission?.achieved;
   const currentPercent =
     ((achieved as number) / (mission?.mission?.goal as unknown as number)) *
     100;
   const hasDone = currentPercent >= 100;
+  let nextDay = new Date();
+  nextDay.setDate(nextDay.getDate() + 1)
+  nextDay.setHours(0, 0, 0);
 
   const finish = hasDone && mission?.is_claim;
   return (
-    <div className={s.missionItem} style={finish ? { background: "rgba(50, 110, 123, 0.5)" } : {}}>
+    <div className={s.missionItem} style={
+      finish ?
+        { background: "rgba(50, 110, 123, 0.5)" }
+        : hasDone
+          ? { background: "linear-gradient(270deg, #326E7B 74.38%, rgba(50, 110, 123, 0.2) 99.08%)" }
+          : {}
+    }>
       <Row>
         <Col xs={20} xl={18}>
           <Row className={s.missionInfo}>
@@ -93,7 +94,7 @@ const MissionItem = (props: MissionItemProp) => {
                   src={
                     mission?.mission?.img
                       ? mission?.mission?.img
-                      : "/assets/P2E/csgo/avatar-mission.png"
+                      : props.currentGame === Game.LOL ? "/assets/P2E/lol-game.svg" : "/assets/P2E/csgo/avatar-mission.png"
                   }
 
                   alt=""
@@ -101,9 +102,19 @@ const MissionItem = (props: MissionItemProp) => {
               </div>
               <div className={s.missionTitle}>
                 <h4>{mission?.mission?.title}</h4>
-                <div className={s.levelMission}>
-                  Mission level: {mission?.mission?.level?.level}
-                </div> {/**sub title */}
+
+                {props.isDailyMission
+                  ? (
+                    <>
+                      <img src="/assets/P2E/csgo/hourglass.png" alt="hourglass" style={{ marginRight: 5 }} />
+                      <span>{moment(nextDay).fromNow().slice(3)} until next mission</span>
+                    </>
+                  )
+                  :
+                  (<div className={s.levelMission}>
+                    Mission level: {mission?.mission?.level?.level}
+                  </div>)
+                }
               </div>
             </Col>
             <Col xl={8} xs={24}>
@@ -161,4 +172,4 @@ const MissionItem = (props: MissionItemProp) => {
   );
 };
 
-export default MissionItem;
+export default DailyMissionItem;

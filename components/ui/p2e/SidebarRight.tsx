@@ -1,5 +1,5 @@
 import { Row, Col } from "antd";
-import s from "../dashboard/dashboard.module.sass";
+import s from "./p2e.module.sass";
 import ButtonWrapper from "components/common/button/Button";
 import React from "react";
 import { Balance } from "src/generated/graphql_p2e";

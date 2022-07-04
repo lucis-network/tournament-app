@@ -20,8 +20,8 @@
         "destination": "/tournament/[id]/[...slug].html"
       },
       {
-        "source": "/p2e/dashboard/*",
-        "destination": "/p2e/dashboard/[id].html"
+        "source": "/p2e/dashboard/history/*",
+        "destination": "/p2e/dashboard/history[id].html"
       },
       {
         "source": "/p2e/dashboard",
