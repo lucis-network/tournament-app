@@ -99,7 +99,7 @@ export default observer(function P2EOverview() {
 
   const handleConnectFaceit = () => {
     if (!isAuth) {
-      LoginBoxStore.connectModalVisible = true;
+      message.error("Please sign in first!");
       return;
     }
 

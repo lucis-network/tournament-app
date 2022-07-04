@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import s from './dashboard.module.sass'
 import { Col, Row, Spin } from "antd"
 import {
@@ -23,8 +23,8 @@ const RecentMatchHistory = (props: IProps) => {
     }
   });
 
-  const [currentLimit, setCurrentLimit] = React.useState(20);
-  const [loading, setLoading] = React.useState(false);
+  const [currentLimit, setCurrentLimit] = useState(20);
+  const [loading, setLoading] = useState(false);
   const { getRecentMatchesLoading, getRecentMatchesData, refetchRecentMatches } = useGetRecentMatches({
     offset: 1,
     limit: 20,

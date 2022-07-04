@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import s from "./dailyMission.module.sass";
 import { Row, Col } from "antd";
 import SpinLoading from "../../common/Spin";
@@ -30,7 +30,7 @@ const DailyMissionList = ({
   currentGame,
   isDailyMission
 }: MissionsListProp) => {
-  const [loadingOpenBox, setLoadingOpenBox] = React.useState(false);
+  const [loadingOpenBox, setLoadingOpenBox] = useState(false);
   const boxOpen = missions?.[0]?.is_claim
     && missions?.[1]?.is_claim
     && missions?.[2]?.is_claim

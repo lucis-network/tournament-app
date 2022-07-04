@@ -66,9 +66,9 @@
     justify-content: flex-end
     .csgoGame
       cursor: pointer
-      filter: drop-shadow(0px 0px 14px #12B0B4)
       border-radius: 4.5px
       margin: 0px 32px
+      filter: grayscale(1)
       @media screen and ( max-width: 550px )
         margin: 0px 12px
         width: 28px
@@ -82,6 +82,9 @@
         height: 28px
     .addGame
       cursor: pointer
+    .gameActive
+      filter: drop-shadow(0px 0px 14px #12B0B4) !important
+      cursor: pointer !important
 
   :global(ant-tabs-tab-active)
     background: #12B0B41A
