@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import s from "./dailyMission.module.sass";
-import { Row, Col } from "antd";
+import s from "./mission.module.sass";
+import { Row, Col, Skeleton } from "antd";
 import SpinLoading from "../../common/Spin";
 import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { isEmpty } from 'lodash';
 import MissionItem from './MissionItem';
 import { Game } from 'utils/Enum';
+import { SkeletonItem } from './SkeletonItem';
 
 type MissionsListProp = {
   title?: string;
@@ -45,7 +46,7 @@ const DailyMissionList = React.memo(({
   });
 
   const lengthMissionDone = listMissionDone?.filter(item => item)?.length ?? 0;
-  console.log("missionList")
+
   return (
     <div className={s.dailyMissionsList}>
       {isDailyMission ?
@@ -108,7 +109,11 @@ const DailyMissionList = React.memo(({
       </div>
       <div className={s.missionsList}>
         {loading ? (
-          <SpinLoading />
+          [1, 2, 3, 4].map(item => {
+            return (
+              <SkeletonItem key={item} />
+            )
+          })
         ) : (
           isEmpty(missions)
             ? <div className={s.blankState}>No missions found.</div>

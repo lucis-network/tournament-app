@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import s from "./dailyMission.module.sass";
+import s from "./mission.module.sass";
 import { Col, message, Progress, Row } from "antd";
 import { MissionType, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
@@ -16,7 +16,7 @@ type MissionItemProp = {
   isDailyMission?: boolean;
 };
 
-const DailyMissionItem = (props: MissionItemProp) => {
+const DailyMissionItem = React.memo((props: MissionItemProp) => {
   const { mission, handleUpdateMissions } = props;
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +59,7 @@ const DailyMissionItem = (props: MissionItemProp) => {
             message.error("You has claimed.");
             return;
           default:
-            message.error("Something was wrong. Please contact to lucis network for assistance.")
+            message.error("Something was wrong. Please contact to Lucis network for assistance.")
         };
       })
     }
@@ -170,6 +170,11 @@ const DailyMissionItem = (props: MissionItemProp) => {
 
     </div >
   );
-};
+}, (prevProps, currentProps) => {
+  if (JSON.stringify(prevProps.mission) === JSON.stringify(currentProps.mission)) {
+    return true;
+  }
+  return false;
+});
 
 export default DailyMissionItem;

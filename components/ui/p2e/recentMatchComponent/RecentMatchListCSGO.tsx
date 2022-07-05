@@ -24,7 +24,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
     filterDayRecentMatch();
   }, [props.recentMatches])
 
-  console.log("recentMatch")
+
 
   const lucisPointRewardToday = (matches: CsgoPlayerMatch[]): number => {
     let total = 0;

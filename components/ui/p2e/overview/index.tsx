@@ -152,10 +152,10 @@ export default observer(function P2EOverview() {
                   message.error("This account is already connected to another user! Please use another account.")
                   return;
                 case "HAS_NOT_CSGO":
-                  message.error("You must connect csgo to use platform!");
+                  message.error("Your account on Faceit is not connected to CS:GO. Please connect to your game first");
                   return;
                 default:
-                  message.error("Something was wrong. Please contact to lucis network for assistance.")
+                  message.error("Something was wrong. Please contact to Lucis Network!")
               };
             })
           }
