@@ -1,4 +1,5 @@
 import { Col, Row } from "antd";
+import AuthGameStore from "components/Auth/AuthGameStore";
 import { useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
 import moment from "moment";
 import { useRouter } from "next/router";
@@ -12,7 +13,7 @@ export const RecentMatchDetailCSGO = () => {
   const [playerMatchId, setPlayerMatchId] = React.useState<number>(-1);
   const [isLoadData, setIsLoadData] = React.useState<boolean>(false);
   const { getStatisticMatchLoading, getStatisticMatchData } = useGetStatisticMatch(playerMatchId, !isLoadData);
-  const { getPlatformAccountData } = useGetPlatformAccount();
+
   React.useEffect(() => {
     if (router.query?.id) {
       setPlayerMatchId(Number(router.query.id));
@@ -22,7 +23,7 @@ export const RecentMatchDetailCSGO = () => {
 
 
   const data = getStatisticMatchData?.getCsgoMatchStatistic;
-  const faceitAccount = getPlatformAccountData?.getPlatformAccount?.[0];
+  const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
     kill: Number(data?.match_earning?.kill) * Number(data?.player_statistic?.Kills),
     assists: Number(data?.match_earning?.assist) * Number(data?.player_statistic?.Assists),
@@ -116,288 +117,7 @@ export const RecentMatchDetailCSGO = () => {
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
         <Row gutter={[{ xl: 52, xs: 16, md: 16 }, { xs: 16, md: 16, sm: 16 }]}>
-          <Col lg={0} xs={24}>
-            <div className={s.sidebarRight}>
-              {!getStatisticMatchLoading && (
-                <div className={s.informationDetail}>
-                  <div className={s.mapBackground}
-                    style={{
-                      background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
-                    }}
-                  >
-                    <h3 className={s.mapName}>{MAP_CSGO[data?.map?.name as string] ?? data?.map?.name}</h3>
-                    {data?.is_win ?
-                      <h2 className={s.scoreMatch}>{data?.score?.replace("/", "-")}</h2>
-                      : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.score?.replace("/", "-")}</h2>}
-                    <div className={s.endAt}>{moment(data?.end_at).fromNow()}</div>
-                  </div>
-                  <div className={s.matchDetail}>
-                    <div className={s.accountInfo}>
-                      <div className={s.platformInfo}>
-                        <img className={s.platformUserAvatar} src={faceitAccount?.avatar ? faceitAccount?.avatar : "/assets/avatar.jpg"} />
-                        <div className={s.platformUserName}>{faceitAccount?.nick_name}</div>
-                      </div>
-                      {data?.is_win ? <h2>WIN</h2> : <h2 style={{ color: "rgb(204, 132, 110)" }}>LOST</h2>}
-                    </div>
-                    <div className={s.playerParameters}>
-                      <div className={s.parameterHeader}>
-                        <div className={s.headerLeft}>Your stats</div>
-                        <div className={s.headerRight}>Lucis bonus: --%</div>
-                      </div>
-                      <div className={s.parameterBody}>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/kill.svg" alt="" />
-                              <span>{data?.player_statistic?.Kills ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Kill
-                            </div>
-                          </Col>
-                          <Col span={6}>
-                            <div className={s.rewardItem}>
-                              <span>{"-"}</span>
-                              <img src="/assets/P2E/lucis-token.svg" alt="" />
-                            </div>
-                          </Col>
-                          <Col span={6}>
-                            <div className={s.rewardItem}>
-                              <span className={s.lucisPoint}>+ {lucisPointEarned.kill ?? "-"}</span>
-                              <img src="/assets/P2E/lucis-point.svg" alt="" />
-                            </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/support.svg" alt="" />
-                              <span>{data?.player_statistic?.Assists ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Assists
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}>
-                            <div className={s.rewardItem}>
-                              <span className={s.lucisPoint}>+ {lucisPointEarned.assists ?? "-"}</span>
-                              <img src="/assets/P2E/lucis-point.svg" alt="" />
-                            </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/headshot.svg" alt="" />
-                              <span>{data?.player_statistic?.Headshots ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Headshot
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.headshot ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/star.svg" alt="" />
-                              <span>{data?.player_statistic?.MVPs ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              MVPs
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.mvps ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/triple-kill.svg" alt="" />
-                              <span>{data?.player_statistic?.["Triple Kills"] ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Triple kills
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.tripleKill ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/quadra-kill.svg" alt="" />
-                              <span>{data?.player_statistic?.["Quadro Kills"] ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Quadra kills
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.quadraKill ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/pental-kill.svg" alt="" />
-                              <span>{data?.player_statistic?.["Penta Kills"] ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Aces
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.pentalKill ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
-                              <span>{data?.current_win_streak ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Win streaks
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.winStreak ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <div style={{ borderBottom: "1px solid #556281" }} />
-                        <Row className={s.rowTotal}>
-                          <Col span={12}>
-                            <div className={s.parameterItem}>
-                              Total Stats
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.rowTotal}>
-                          <Col span={12}>
-                            <div className={s.parameterItem}>
-                              Total Achievement
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>{`+${lucisPointBonus()}`}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-
-                      </div>
-                    </div>
-                  </div>
-                  <div className={s.grandTotal}>
-                    <Row className={s.rowTotal}>
-                      <Col span={12}>
-                        <div className={s.parameterItem} style={{ color: "#00F9FF", fontFamily: "Revx Neue Demo" }}>
-                          Grand Total
-                        </div>
-                      </Col>
-                      <Col span={6}><div className={s.rewardItem}>
-                        <span>{"-"}</span>
-                        <img src="/assets/P2E/lucis-token.svg" alt="" />
-                      </div>
-                      </Col>
-                      <Col span={6}><div className={s.rewardItem}>
-                        <span className={s.lucisPoint}>{`+${data?.point}`}</span>
-                        <img src="/assets/P2E/lucis-point.svg" alt="" />
-                      </div>
-                      </Col>
-                    </Row>
-                  </div>
-                </div>
-              )}
-
-            </div>
-          </Col>
-          <Col lg={16} xs={24}>
+          <Col lg={{ span: 16, order: 1 }} xs={{ span: 24, order: 2 }}>
             <div className={s.achievementListCard}>
               <Row className={s.achievementHeader}>
                 <Col sm={12} xs={24}>
@@ -455,285 +175,282 @@ export const RecentMatchDetailCSGO = () => {
               </div>
             </div>
           </Col>
-          <Col lg={8} xs={0}>
+          <Col lg={{ span: 8, order: 2 }} xs={{ span: 24, order: 1 }}>
             <div className={s.sidebarRight}>
-              {!getStatisticMatchLoading && (
-                <div className={s.informationDetail}>
-                  <div className={s.mapBackground}
-                    style={{
-                      background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
-                    }}
-                  >
-                    <h3 className={s.mapName}>{MAP_CSGO[data?.map?.name as string] ?? data?.map?.name}</h3>
-                    {data?.is_win ?
-                      <h2 className={s.scoreMatch}>{data?.score?.replace("/", "-")}</h2>
-                      : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.score?.replace("/", "-")}</h2>}
-                    <div className={s.endAt}>{moment(data?.end_at).fromNow()}</div>
-                  </div>
-                  <div className={s.matchDetail}>
-                    <div className={s.accountInfo}>
-                      <div className={s.platformInfo}>
-                        <img className={s.platformUserAvatar} src={faceitAccount?.avatar ? faceitAccount?.avatar : "/assets/avatar.jpg"} />
-                        <div className={s.platformUserName}>{faceitAccount?.nick_name}</div>
-                      </div>
-                      {data?.is_win ? <h2>WIN</h2> : <h2 style={{ color: "rgb(204, 132, 110)" }}>LOST</h2>}
+              <div className={s.informationDetail}>
+                <div className={s.mapBackground}
+                  style={{
+                    background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
+                  }}
+                >
+                  <h3 className={s.mapName}>{MAP_CSGO[data?.map?.name as string] ?? data?.map?.name ?? "-----"}</h3>
+                  {data?.is_win ?
+                    <h2 className={s.scoreMatch}>{data?.score?.replace("/", "-")}</h2>
+                    : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.score?.replace("/", "-") ?? "-- / --"}</h2>}
+                  <div className={s.endAt}>{moment(data?.end_at).fromNow()}</div>
+                </div>
+                <div className={s.matchDetail}>
+                  <div className={s.accountInfo}>
+                    <div className={s.platformInfo}>
+                      <img className={s.platformUserAvatar} src={faceitAccount?.faceit_avatar ? faceitAccount?.faceit_avatar : "/assets/avatar.jpg"} />
+                      <div className={s.platformUserName}>{faceitAccount?.faceit_nick_name}</div>
                     </div>
-                    <div className={s.playerParameters}>
-                      <div className={s.parameterHeader}>
-                        <div className={s.headerLeft}>Your stats</div>
-                        <div className={s.headerRight}>Lucis bonus: --%</div>
-                      </div>
-                      <div className={s.parameterBody}>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/kill.svg" alt="" />
-                              <span>{data?.player_statistic?.Kills ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Kill
-                            </div>
-                          </Col>
-                          <Col span={6}>
-                            <div className={s.rewardItem}>
-                              <span>{"-"}</span>
-                              <img src="/assets/P2E/lucis-token.svg" alt="" />
-                            </div>
-                          </Col>
-                          <Col span={6}>
-                            <div className={s.rewardItem}>
-                              <span className={s.lucisPoint}>+ {lucisPointEarned.kill ?? "-"}</span>
-                              <img src="/assets/P2E/lucis-point.svg" alt="" />
-                            </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/support.svg" alt="" />
-                              <span>{data?.player_statistic?.Assists ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Assists
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}>
-                            <div className={s.rewardItem}>
-                              <span className={s.lucisPoint}>+ {lucisPointEarned.assists ?? "-"}</span>
-                              <img src="/assets/P2E/lucis-point.svg" alt="" />
-                            </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/headshot.svg" alt="" />
-                              <span>{data?.player_statistic?.Headshots ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Headshot
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.headshot ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/star.svg" alt="" />
-                              <span>{data?.player_statistic?.MVPs ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              MVPs
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.mvps ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/triple-kill.svg" alt="" />
-                              <span>{data?.player_statistic?.["Triple Kills"] ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Triple kills
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.tripleKill ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/quadra-kill.svg" alt="" />
-                              <span>{data?.player_statistic?.["Quadro Kills"] ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Quadra kills
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.quadraKill ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/pental-kill.svg" alt="" />
-                              <span>{data?.player_statistic?.["Penta Kills"] ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Aces
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.pentalKill ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.row}>
-                          <Col span={4}>
-                            <div className={s.parameterItem}>
-                              <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
-                              <span>{data?.current_win_streak ?? "-"}</span>
-                            </div>
-                          </Col>
-                          <Col span={8}>
-                            <div className={s.parameterItemText}>
-                              Win streaks
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>+ {lucisPointEarned.winStreak ?? "-"}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <div style={{ borderBottom: "1px solid #556281" }} />
-                        <Row className={s.rowTotal}>
-                          <Col span={12}>
-                            <div className={s.parameterItem}>
-                              Total Stats
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-                        <Row className={s.rowTotal}>
-                          <Col span={12}>
-                            <div className={s.parameterItem}>
-                              Total Achievement
-                            </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span>{"-"}</span>
-                            <img src="/assets/P2E/lucis-token.svg" alt="" />
-                          </div>
-                          </Col>
-                          <Col span={6}><div className={s.rewardItem}>
-                            <span className={s.lucisPoint}>{`+${lucisPointBonus()}`}</span>
-                            <img src="/assets/P2E/lucis-point.svg" alt="" />
-                          </div>
-                          </Col>
-                        </Row>
-
-                      </div>
-                    </div>
+                    {data?.is_win ? <h2>WIN</h2> : <h2 style={{ color: "rgb(204, 132, 110)" }}>LOST</h2>}
                   </div>
-                  <div className={s.grandTotal}>
-                    <Row className={s.rowTotal}>
-                      <Col span={12}>
-                        <div className={s.parameterItem} style={{ color: "#00F9FF", fontFamily: "Revx Neue Demo" }}>
-                          Grand Total
+                  <div className={s.playerParameters}>
+                    <div className={s.parameterHeader}>
+                      <div className={s.headerLeft}>Your stats</div>
+                      <div className={s.headerRight}>Lucis bonus: --%</div>
+                    </div>
+                    <div className={s.parameterBody}>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/kill.svg" alt="" />
+                            <span>{data?.player_statistic?.Kills ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Kill
+                          </div>
+                        </Col>
+                        <Col span={6}>
+                          <div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                        </Col>
+                        <Col span={6}>
+                          <div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.kill ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/support.svg" alt="" />
+                            <span>{data?.player_statistic?.Assists ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Assists
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
-                      </Col>
-                      <Col span={6}><div className={s.rewardItem}>
-                        <span>{"-"}</span>
-                        <img src="/assets/P2E/lucis-token.svg" alt="" />
-                      </div>
-                      </Col>
-                      <Col span={6}><div className={s.rewardItem}>
-                        <span className={s.lucisPoint}>{`+${data?.point}`}</span>
-                        <img src="/assets/P2E/lucis-point.svg" alt="" />
-                      </div>
-                      </Col>
-                    </Row>
+                        </Col>
+                        <Col span={6}>
+                          <div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.assists ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/headshot.svg" alt="" />
+                            <span>{data?.player_statistic?.Headshots ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Headshot
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.headshot ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/star.svg" alt="" />
+                            <span>{data?.player_statistic?.MVPs ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            MVPs
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.mvps ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/triple-kill.svg" alt="" />
+                            <span>{data?.player_statistic?.["Triple Kills"] ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Triple kills
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.tripleKill ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/quadra-kill.svg" alt="" />
+                            <span>{data?.player_statistic?.["Quadro Kills"] ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Quadra kills
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.quadraKill ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/pental-kill.svg" alt="" />
+                            <span>{data?.player_statistic?.["Penta Kills"] ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Aces
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.pentalKill ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
+                            <span>{data?.current_win_streak ?? "-"}</span>
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Win streaks
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.winStreak ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <div style={{ borderBottom: "1px solid #556281" }} />
+                      <Row className={s.rowTotal}>
+                        <Col span={12}>
+                          <div className={s.parameterItem}>
+                            Total Stats
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.rowTotal}>
+                        <Col span={12}>
+                          <div className={s.parameterItem}>
+                            Total Achievement
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>{`+${lucisPointBonus()}`}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+
+                    </div>
                   </div>
                 </div>
-              )}
-
+                <div className={s.grandTotal}>
+                  <Row className={s.rowTotal}>
+                    <Col span={12}>
+                      <div className={s.parameterItem} style={{ color: "#00F9FF", fontFamily: "Revx Neue Demo" }}>
+                        Grand Total
+                      </div>
+                    </Col>
+                    <Col span={6}><div className={s.rewardItem}>
+                      <span>{"-"}</span>
+                      <img src="/assets/P2E/lucis-token.svg" alt="" />
+                    </div>
+                    </Col>
+                    <Col span={6}><div className={s.rewardItem}>
+                      <span className={s.lucisPoint}>{`+${data?.point}`}</span>
+                      <img src="/assets/P2E/lucis-point.svg" alt="" />
+                    </div>
+                    </Col>
+                  </Row>
+                </div>
+              </div>
             </div>
           </Col>
         </Row>

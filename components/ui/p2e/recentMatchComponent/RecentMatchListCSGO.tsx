@@ -134,7 +134,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                           }}
                         >
                           <Row>
-                            <Col md={4} xs={4}>
+                            <Col md={{ span: 4, order: 1 }} xs={4}>
                               <div className={s.recentMatchResult}>
                                 {item?.is_win ?
                                   <span style={{ color: "#00F9FF" }}>WIN</span>
@@ -143,7 +143,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                                 <div className={s.endTime}>{dateToHoursFormat(new Date(item?.match?.end_at))}</div>
                               </div>
                             </Col>
-                            <Col md={10} xs={20}>
+                            <Col md={{ span: 10, order: 2 }} xs={20}>
                               <Row>
                                 <Col span={8}>
                                   <div className={s.scoreMatch}>
@@ -178,12 +178,12 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                                 </Col>
                               </Row>
                             </Col>
-                            <Col md={4} xs={0}>
+                            <Col md={{ span: 4, order: 3 }} xs={{ span: 12, order: 4 }}>
                               <div className={s.recentMatchTime}>
                                 {moment(item?.match?.end_at).fromNow()}
                               </div>
                             </Col>
-                            <Col md={6} xs={0}>
+                            <Col md={{ span: 6, order: 4 }} xs={{ span: 12, order: 3 }}>
                               <Row className={s.recentMatchReward}>
                                 <Col span={12} className={s.rewardItem} style={{ paddingRight: 20 }}>
                                   <span className={s.lucisPoint}>+{item?.lucis_point ?? "0"}</span>
@@ -194,23 +194,6 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                                   <img src="/assets/P2E/lucis-token.svg" alt="" />
                                 </Col>
                               </Row>
-                            </Col>
-                            <Col md={0} xs={12}>
-                              <div className={s.recentMatchRewardResponsive}>
-                                <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                                  <span className={s.lucisPoint}>+{item?.lucis_point ?? "0"}</span>
-                                  <img src="/assets/P2E/lucis-point.svg" alt="" />
-                                </div>
-                                <div className={s.rewardItem}>
-                                  <span>{"-"}</span>
-                                  <img src="/assets/P2E/lucis-token.svg" alt="" />
-                                </div>
-                              </div>
-                            </Col>
-                            <Col md={0} xs={12}>
-                              <div className={s.recentMatchTimeResponsive}>
-                                {moment(item?.match?.end_at).fromNow()}
-                              </div>
                             </Col>
                           </Row>
                         </Col>

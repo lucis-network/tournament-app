@@ -141,7 +141,7 @@
         backdrop-filter: blur(12px)
         height: 62px
         // width: 500px
-        margin-right: 60px
+        margin-right: 65px
         position: relative
         display: flex
         align-items: center
@@ -154,11 +154,18 @@
           height: 24px
           font-size: 10px
           margin-top: 20px
+          margin-right: 50px
         img
           position: absolute
-          right: -155px
-          bottom: -55px
+          right: -90px
+          bottom: 0px
           cursor: pointer
+          width: 150px
+          @media only screen and (max-width: 450px)
+            right: -65px
+            bottom: 0px
+            cursor: pointer
+            width: 100px
   .subHeader
     position: relative
     min-height: 24px

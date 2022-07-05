@@ -73,14 +73,14 @@ const DailyMissionList = React.memo(({
               Complete 4 quests to unlock reward!
               <img src={
                 isClaimBox ?
-                  "/assets/P2E/csgo/box-open.png"
-                  : "/assets/P2E/csgo/box-normal.png"
+                  "/assets/P2E/box-open.png"
+                  : "/assets/P2E/box-normal.png"
               }
                 style={
-                  !boxOpen && lengthMissionDone < 4 ? { filter: "grayscale(100%)", cursor: "auto" }
+                  !boxOpen && lengthMissionDone < 4 ? { filter: "grayscale(100%)", cursor: "no-drop" }
                     : isClaimBox ? { cursor: "auto" } : {}
                 }
-                width="300" alt="" onClick={async () => {
+                alt="" onClick={async () => {
                   if (!boxOpen && lengthMissionDone < 4 || isClaimBox || loadingOpenBox) {
                     return;
                   }
