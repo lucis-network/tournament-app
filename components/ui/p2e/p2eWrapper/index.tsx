@@ -16,7 +16,7 @@ interface IProps {
 
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
-  const [currentGame, setCurrentGame] = useState<Game>(Game.LOL);
+  const [currentGame, setCurrentGame] = useState<Game>(Game.CSGO);
 
   useEffect(() => {
     if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
@@ -35,8 +35,7 @@ export default observer(function P2EWrapper(props: IProps) {
     if (AuthGameStore.isLoggedInFaceit === false) {
       router.push("/");
       return;
-    }
-    ;
+    };
   }, [AuthGameStore.isLoggedInFaceit])
 
   useEffect(() => {

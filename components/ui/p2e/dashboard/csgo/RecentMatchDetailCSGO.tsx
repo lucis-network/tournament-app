@@ -139,7 +139,7 @@ export const RecentMatchDetailCSGO = () => {
                 </Col>
               </Row>
               <div className={s.achievementBody}>
-                <div className={s.listCard}>
+                <div className={s.listCardCsgo}>
                   <Row gutter={[{ xs: 16, sm: 16, md: 16, xl: 53 }, 40]}>
                     {cardList.map((item, index) => (
                       <Col xs={12} sm={8} md={6} xl={6} key={`${item.name}-${index}`}>
