@@ -1,7 +1,10 @@
 
+.backgroundCSGO
+  background-image: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/P2E/csgo/background.jpg")
+.backgroundLOL
+  background-image: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/P2E/lol/background.jpeg")
 .homeWrap
   font-family: 'Poppins'
-  background-image: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/P2E/csgo/background.jpg")
   background-repeat: no-repeat
   background-attachment: fixed
   background-size: cover
@@ -62,14 +65,16 @@
     align-items: center
     justify-content: flex-end
     .csgoGame
-      filter: drop-shadow(0px 0px 14px #12B0B4)
+      cursor: pointer
       border-radius: 4.5px
       margin: 0px 32px
+      filter: grayscale(1)
       @media screen and ( max-width: 550px )
         margin: 0px 12px
         width: 28px
         height: 28px
     .lolGame
+      cursor: pointer
       border-radius: 4.5px
       filter: grayscale(1)
       @media screen and ( max-width: 550px )
@@ -77,6 +82,9 @@
         height: 28px
     .addGame
       cursor: pointer
+    .gameActive
+      filter: drop-shadow(0px 0px 14px #12B0B4) !important
+      cursor: pointer !important
 
   :global(ant-tabs-tab-active)
     background: #12B0B41A

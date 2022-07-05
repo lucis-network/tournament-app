@@ -94,7 +94,7 @@ export default observer(function LoginModal(props: Props) {
           <div className="mb-5">
             <Image src={Logo} />
           </div>
-          <h2 className="mb-1">Welcome to Lucis tournament</h2>
+          <h2 className="mb-1">Welcome to Lucis network</h2>
           <h4>Play to relax, but earn</h4>
         </div>
         <FacebookLogin

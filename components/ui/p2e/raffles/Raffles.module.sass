@@ -4,8 +4,21 @@
   @media screen and (min-width: 768px)
     background: url('/assets/P2E/raffles/bgRafflesPC.jpg') no-repeat fixed top center
     background-size: cover
-.rafflesWrapper
+.rafflesWrapper, .rafflesDetailWrapper
   padding: 24px 0
+  @media screen and (min-width: 768px)
+    padding: 56px 0
+  @media screen and (min-width: 1200px)
+    padding: 56px 0 151px
+  :global(.ant-empty-description)
+    color: white
+.sectionTitleFlex
+  @media screen and (min-width: 414px)
+    display: flex
+    align-items: center
+    justify-content: space-between
+    .sectionTitle
+      margin-bottom: 0
 .sectionTitle
   font-family: 'Revx Neue Demo'
   font-size: 20px
@@ -15,6 +28,7 @@
   -webkit-background-clip: text
   -webkit-text-fill-color: transparent
   margin-bottom: 16px
+  text-transform: capitalize
   @media screen and (min-width: 768px)
     margin-bottom: 24px
   @media screen and (min-width: 1400px)
@@ -71,6 +85,48 @@
   margin-right: 8px
   &:last-of-type
     margin-right: 0
+  @media screen and (min-width: 1200px)
+    font-size: 16px
+    line-height: 24px
+    width: auto
+    padding: 4px 9.5px
+    border-radius: 4px
+.btnViewAll
+  display: block
+  margin-left: auto
+  font-family: 'Revx Neue Demo'
+  font-weight: 400
+  font-size: 14px
+  line-height: 15px
+  color: #00FFFF
+  &:disabled
+    color: #dddddd
+    cursor: no-drop
+.raffleSearch
+  min-width: 180px
+  max-width: 180px
+  display: flex
+  align-items: center
+  border: 1px solid #FFFFFF
+  border-radius: 4px
+  height: 40px
+  padding: 10px
+  @media screen and (min-width: 1400px)
+    min-width: 318px
+    max-width: 318px
+  :global(.ant-input)
+    border-radius: 0
+    border: none
+    background: none !important
+    backdrop-filter: none
+    padding: 0 5px 0 0
+    &:focus
+      outline: none
+      box-shadow: none
+  :global(.ant-image)
+    img
+      min-width: 20px
+      height: 20px
 .sectionRecentWinners
   margin-bottom: 32px
   @media screen and (min-width: 768px)
@@ -81,10 +137,11 @@
     overflow-x: auto
     margin-bottom: 16px
     @media screen and (min-width: 768px)
-      justify-content: space-between
       column-gap: 13px
     @media screen and (min-width: 1400px)
       column-gap: 55px
+    @media screen and (min-width: 1600px)
+      column-gap: 82px
     .recentWinnersItem
       min-width: 124px
       max-width: 124px
@@ -157,14 +214,6 @@
           @media screen and (min-width: 1200px)
             font-size: 14px
             line-height: 21px
-  .btnViewAll
-    display: block
-    margin-left: auto
-    font-family: 'Revx Neue Demo'
-    font-weight: 400
-    font-size: 14px
-    line-height: 15px
-    color: #00FFFF
 .sectionFeaturedRaffle
   margin-bottom: 32px
   @media screen and (min-width: 768px)
@@ -192,9 +241,11 @@
     .featuredRaffleThumbnail
       position: relative
       :global(.ant-image)
+        width: 100%
         img
           aspect-ratio: 343 / 194
           object-fit: cover
+          width: 100%
     .featuredRaffleInfo
       background: rgba(69, 80, 107, 0.5)
       backdrop-filter: blur(9.807px)
@@ -225,6 +276,15 @@
         letter-spacing: 0.04em
         color: #FFFFFF
         line-height: 1
+        text-transform: uppercase
+        @media screen and (min-width: 1200px)
+          padding: 19px 26px
+          font-size: 18px
+          line-height: 20px
+          letter-spacing: 0.2em
+          height: auto
+          right: 30px
+          top: -88px
         span
           position: relative
           z-index: 1
@@ -265,6 +325,7 @@
           @media screen and (min-width: 1200px)
             font-size: 32px
             line-height: 35px
+            max-width: 75%
         p
           font-family: 'Poppins'
           font-weight: 400
@@ -295,9 +356,15 @@
             display: flex
             margin-right: 15px
             margin-left: 15px
+          @media screen and (min-width: 1200px)
+            margin-right: 48px
       .featuredRaffleTagWrap
         @media screen and (min-width: 768px)
           min-width: 126px
+        .raffleTag
+          @media screen and (min-width: 1200px)
+            &:first-of-type
+              margin-right: 40px
 .sectionRafflesSponsor
   margin-bottom: 32px
   @media screen and (min-width: 768px)
@@ -313,7 +380,12 @@
     @media screen and (min-width: 768px)
       width: 500px
     @media screen and (min-width: 992px)
+      justify-content: center
       width: 800px
+      column-gap: 50px
+    @media screen and (min-width: 1400px)
+      width: 1160px
+      column-gap: 100px
     .raffleSponsorItem
       min-width: 50%
       max-width: 50%
@@ -322,13 +394,16 @@
       :global(.ant-image)
         width: 80%
       @media screen and (min-width: 992px)
-        width: auto
+        width: calc((100% / 4) - 38px)
         min-width: 0
-        max-width: 160px
+        max-width: calc((100% / 4) - 38px)
         &:nth-of-type(even)
           text-align: unset
         :global(.ant-image)
           width: auto
+      @media screen and (min-width: 1400px)
+        width: calc((100% / 4) - 75px)
+        max-width: calc((100% / 4) - 75px)
 .sectionRaffles
   .raffleTitleWrap
     display: flex
@@ -339,37 +414,18 @@
       margin-bottom: 24px
     .sectionTitle
       margin-bottom: 0
-    .raffleSearch
-      min-width: 180px
-      max-width: 180px
-      display: flex
-      align-items: center
-      border: 1px solid #FFFFFF
-      border-radius: 4px
-      height: 40px
-      padding: 10px
-      :global(.ant-input)
-        border-radius: 0
-        border: none
-        background: none !important
-        backdrop-filter: none
-        padding: 0 5px 0 0
-        &:focus
-          outline: none
-          box-shadow: none
-      :global(.ant-image)
-        img
-          min-width: 20px
-          height: 20px
   .rafflesList
     display: grid
     gap: 15px
     grid-template-columns: 1fr 1fr
+    grid-auto-rows: 1fr
     @media screen and (min-width: 360px)
       gap: 24px
     @media screen and (min-width: 768px)
       grid-template-columns: 1fr 1fr 1fr
       gap: 24px
+    @media screen and (min-width: 768px)
+      gap: 46px
     .rafflesItem
       background: rgba(0, 0, 0, 0.5)
       border-radius: 4px
@@ -387,20 +443,34 @@
         line-height: 18px
         text-transform: uppercase
         color: #D9D9D9
+        @media screen and (min-width: 1200px)
+          font-size: 28px
+          line-height: 31px
     .raffleTagWrap
       display: flex
       justify-content: space-between
       align-items: center
       margin-bottom: 10px
+      @media screen and (min-width: 768px)
+        margin-bottom: 16px
     .raffleTag
       width: auto
       font-size: 6px
       line-height: 9px
       padding: 1px 4px
       border-radius: 2px
+      &:global(.disabled)
+        border-color: rgba(255, 255, 255, 0.5)
+        color: rgba(255, 255, 255, 0.5)
       @media screen and (min-width: 768px)
         font-size: 12px
         line-height: 1.5
+      @media screen and (min-width: 1200px)
+        font-size: 16px
+        line-height: 24px
+        width: auto
+        padding: 4px 9.5px
+        border-radius: 4px
     .raffleThumbnail
       :global(.ant-image)
         width: 100%
@@ -423,6 +493,11 @@
         -webkit-box-orient: vertical
         overflow: hidden
         margin-bottom: 4px
+        @media screen and (min-width: 1200px)
+          font-size: 24px
+          line-height: 26px
+          letter-spacing: 0.04em
+          margin-bottom: 8px
       .rafflePriceWrap
         display: flex
         align-items: center
@@ -433,4 +508,291 @@
           font-size: 12px
           line-height: 18px
           color: rgba(255, 255, 255, 0.7)
+          @media screen and (min-width: 1200px)
+            font-size: 14px
+            line-height: 21px
+//======================================================
+.tableResponsive
+  width: 100%
+  overflow-x: auto
+.rafflesDetailWrapper
+  section:not(.breadcrumbSection, .buyTicketSection, .rafflesRollingSection)
+    @media screen and (min-width: 992px)
+      width: calc(100% - 350px)
+    @media screen and (min-width: 1400px)
+      width: calc(100% - 475px)
+  .rafflesDetailContainer
+    @media screen and (min-width: 992px)
+      display: flex
+      flex-wrap: wrap
+      position: relative
+  .breadcrumbSection
+    width: 100%
+    display: flex
+    align-items: center
+    margin-bottom: 16px
+    @media screen and (min-width: 1400px)
+      margin-bottom: 48px
+    .sectionTitle
+      margin-bottom: 0
+      margin-left: 14px
+  .rafflesDetailSidebar
+    @media screen and (min-width: 992px)
+      position: absolute
+      top: 40px
+      right: 0
+      width: 320px
+      margin-left: auto
+      height: 100%
+    @media screen and (min-width: 1400px)
+      width: 424px
+      top: 74px
+    .stickySidebar
+      @media screen and (min-width: 992px)
+        position: sticky
+        top: 100px
+      @media screen and (min-width: 1024px)
+        top: 50px
+  .sectionFeaturedRaffle
+    margin-bottom: 12px
+    @media screen and (min-width: 1400px)
+      margin-bottom: 80px
+    .featuredRaffleDesc
+      font-family: 'Poppins'
+      font-weight: 400
+      font-size: 12px
+      line-height: 18px
+      text-align: justify
+      color: rgba(255, 255, 255, 0.8)
+      margin-top: 16px
+      @media screen and (min-width: 1400px)
+        font-size: 16px
+        line-height: 24px
+  .sidebarSection
+    padding: 30px 16px
+    background: rgba(69, 80, 107, 0.5)
+    backdrop-filter: blur(40px)
+    border-radius: 4px
+    margin-bottom: 32px
+    @media screen and (min-width: 1400px)
+      padding: 48px 32px
+  .buyTicketSection
+    .raffleCountdown, .sectionTitle
+      margin-bottom: 21px
+    .buyTicketInfo
+      border-bottom: 1px solid rgba(118, 108, 108, 0.4)
+      margin-bottom: 21px
+      :global(.ant-input-number)
+        border: none
+        width: 61px
+        height: 21px
+        background: none
+      :global(.ant-input-number-input)
+        background: rgba(69, 80, 107, 0.6)
+        backdrop-filter: blur(40px)
+        border: none
+        outline: none !important
+        font-family: 'Poppins'
+        font-weight: 400
+        font-size: 14px
+        line-height: 21px
+        text-align: center
+        color: #FFFFFF
+        padding: 0 5px
+        display: block
+        height: 100%
+        border-radius: 2px
+      .buyTicketInfoItem
+        margin-bottom: 16px
+        display: flex
+        align-items: center
+        justify-content: space-between
+        @media screen and (min-width: 1400px)
+          margin-bottom: 18px
+        .buyTicketInfoLabel
+          font-family: 'Poppins'
+          font-weight: 400
+          font-size: 16px
+          line-height: 24px
+          text-transform: capitalize
+          color: rgba(255, 255, 255, 0.8)
+          min-width: calc(100% - 100px)
+          max-width: calc(100% - 100px)
+        .buyTicketInfoValue
+          font-family: 'Poppins'
+          font-weight: 600
+          font-size: 16px
+          line-height: 24px
+          color: #DF9B16
+    button
+      border: 1px solid rgba(255, 255, 255, 0.5)
+      font-family: 'Revx Neue Demo'
+      font-weight: 600
+      font-size: 12px
+      line-height: 12px
+      color: rgba(255, 255, 255, 0.5)
+      padding: 8px 16px
+      min-width: 90px
+    .buyTicket
+      display: flex
+      align-items: center
+      justify-content: space-between
+      margin-bottom: 36px
+      .buyTicketTotal
+        display: flex
+        align-items: center
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 20px
+        line-height: 22px
+        text-transform: capitalize
+        color: #FFFFFF
+        .rafflePrice
+          margin-left: 8px
+          .rafflePriceText
+            font-size: 18px
+            margin-bottom: 0
+    .buyTicketDesc
+      h2
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 20px
+        line-height: 22px
+        text-transform: uppercase
+        color: rgba(219, 224, 232, 0.8)
+      p
+        font-family: 'Poppins'
+        font-weight: 400
+        font-size: 16px
+        line-height: 24px
+        color: rgba(255, 255, 255, 0.8)
+        margin-bottom: 18px
+  .myTicketsSection
+    margin-bottom: 32px
+    @media screen and (min-width: 1400px)
+      margin-bottom: 80px
+    .myTicketsList
+      display: flex
+      column-gap: 28px
+      row-gap: 16px
+      flex-wrap: wrap
+      @media screen and (min-width: 1400px)
+        column-gap: 22px
+        row-gap: 24px
+      .ticketItem
+        display: inline-block
+        background: rgba(69, 80, 107, 0.5)
+        border-radius: 4px
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 14px
+        line-height: 15px
+        color: #FFFFFF
+        padding: 6px 5px
+        min-width: 64px
+        height: 25px
+        text-align: center
+        @media screen and (min-width: 1400px)
+          font-size: 24px
+          line-height: 34px
+          min-width: 113px
+          height: 41px
+  .allTicketsSection
+    margin-bottom: 32px
+    @media screen and (min-width: 1400px)
+      margin-bottom: 80px
+    .sectionTitleFlex
+      margin-bottom: 24px
+    .raffleSearch
+      width: 100%
+      max-width: 100%
+      @media screen and (min-width: 414px)
+        width: auto
+    .allTicketsList
+      table
+        width: 100%
+        .allTicketItem
+          @media screen and (min-width: 992px)
+            background: rgba(45, 52, 70, 0.5)
+          &:global(.crown)
+            @media screen and (min-width: 992px)
+              background: rgba(0, 6, 37, 0.5)
+            .ownerName
+              color: #FFE600
+              text-shadow: 0 0 4px rgba(254, 255, 185, 0.64)
+            .ownerAvatar
+              :global(.ant-image)
+                img
+                  box-shadow: 0 0 9px rgba(255, 255, 255, 0.9)
+          @media screen and (max-width: 991px)
+            &:nth-of-type(odd)
+              background: rgba(0, 6, 37, 0.5)
+            &:nth-of-type(even)
+              background: rgba(45, 52, 70, 0.5)
+          td
+            padding: 5px
+            white-space: nowrap
+            @media screen and (min-width: 1400px)
+              padding: 20px 10px
+            &:first-of-type
+              padding-left: 10px
+              @media screen and (min-width: 1400px)
+                padding-left: 40px
+            &:last-of-type
+              padding-right: 10px
+              @media screen and (min-width: 1400px)
+                padding-right: 40px
+          .ownerReward
+            font-family: 'Revx Neue Demo'
+            font-weight: 600
+            font-size: 12px
+            line-height: 120%
+            letter-spacing: 0.04em
+            color: #FFFFFF
+            @media screen and (min-width: 1400px)
+              font-size: 24px
+          .ownerAvatar
+            :global(.ant-image)
+              img
+                min-width: 30px
+                max-width: 30px
+                height: 30px
+                object-fit: cover
+                object-position: center
+                border-radius: 2.5px
+                @media screen and (min-width: 1400px)
+                  min-width: 80px
+                  max-width: 80px
+                  height: 80px
+                  border-radius: 5px
 
+          .ownerName
+            font-family: 'Revx Neue Demo'
+            font-weight: 600
+            font-size: 14px
+            line-height: 120%
+            letter-spacing: 0.04em
+            color: rgba(255, 255, 255, 0.8)
+            @media screen and (min-width: 1400px)
+              font-size: 24px
+          .ticketID
+            font-family: 'Poppins'
+            font-weight: 400
+            font-size: 14px
+            line-height: 120%
+            letter-spacing: 0.04em
+            color: #00F9FF
+            @media screen and (min-width: 1400px)
+              font-size: 20px
+          .ticketCrown
+            :global(.ant-image)
+              img
+                min-width: 16px
+                @media screen and (min-width: 1400px)
+                  min-width: 30px
+  .sectionRafflesSponsor
+    @media screen and (min-width: 1400px)
+      margin-bottom: 80px
+    .rafflesSponsorList
+      @media screen and (min-width: 992px)
+        width: auto

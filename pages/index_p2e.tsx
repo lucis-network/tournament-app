@@ -83,10 +83,10 @@ const Home: NextPage = () => {
               <P2EOverview />
             </TabPane>
             <TabPane tab="Daily" key="daily" disabled={isEmpty(faceitUser)}>
-              <Dashboard />
+              {/* <Dashboard /> */}
             </TabPane>
             <TabPane tab="Missions" key="missions" disabled={isEmpty(faceitUser)}>
-              <Missions />
+              {/* <Missions /> */}
             </TabPane>
             <TabPane tab="Raffles" key="raffles" disabled>
               Content of Raffles
