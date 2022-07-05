@@ -34,6 +34,7 @@ const _getArrR = (a,b,r) => {
 //'9','2'  =>  [9,0,1,2]
 //'9','2','2'  =>  [9,    0,1,2,3,4,5,6,7,8,9, 0,1,2,3,4,5,6,7,8,9,   0,1,2]
 export const getArr = (x, y, extra = 0) => {
+  // console.log(x, y , extra);
   const a = parseInt(x, 10)
   const b = parseInt(y, 10)
   if (a === b) {

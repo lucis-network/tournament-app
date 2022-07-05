@@ -58,7 +58,7 @@ export default class Slice extends PureComponent {
     const arr = (!isRolling && canRoll === false)
       ? [digit]
       : getArr(this.state.prevDigit, digit, extra);
-    // console.log('{Slice} arr: ', arr);
+    //console.log('{Slice} arr: ', arr);
 
     return (
       <div

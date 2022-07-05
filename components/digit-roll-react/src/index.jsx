@@ -14,6 +14,7 @@ export default class DigitRoll extends PureComponent {
     } = this.props
     const numArr = formatDigit(num, length, divider)
     const validDivider = divider !== undefined && (typeof divider === 'string' || typeof divider === 'number')
+    //console.log("num", num, rolling);
 
     return (
       <div className={s.DigitRoll__Out} style={{ display: 'flex' }}>
