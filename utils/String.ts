@@ -52,6 +52,6 @@ export function truncateStr(str: Maybe<string>, start: number, end: number) {
 }
 
 // not safe
-export function replaceAt(s: string, idx: number, char: string) {
+export function replaceCharAt(s: string, idx: number, char: string) {
   return s.slice(0, idx) + char + s.slice(idx + 1, s.length)
 }

@@ -11,6 +11,7 @@ import React, {useCallback, useEffect, useState} from "react";
 import SpinLoading from "../../common/Spin";
 import {Raffle} from "../../../../src/generated/graphql_p2e";
 import {debounce, isEmpty} from "lodash";
+import RollingRaffles from "./rolling";
 
 const RafflesDetail = () => {
   const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles('')
@@ -95,7 +96,7 @@ const RafflesDetail = () => {
               </div>
             </section>
             <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-
+              <RollingRaffles></RollingRaffles>
             </section>
           </div>
         </div>
