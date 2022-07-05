@@ -2,18 +2,12 @@ import s from './Raffles.module.sass'
 import {Image, Input, Empty, Space, Spin, InputNumber} from "antd";
 import Link from "next/link";
 import {
-  useGetFeaturedRaffle,
-  useGetRecentWinners,
-  useGetSponsorRaffle,
   useSearchRaffles,
 } from "../../../../hooks/p2e/raffles/useRafflesList";
-import React, {useCallback, useEffect, useState} from "react";
-import SpinLoading from "../../common/Spin";
-import {Raffle} from "../../../../src/generated/graphql_p2e";
-import {debounce, isEmpty} from "lodash";
-import RollingRaffles from "./rolling";
+import React, {useEffect} from "react";
 import {useGetAllTicket, useGetMyTicket, useGetRaffleDetail} from "../../../../hooks/p2e/raffles/useRaffleDetail";
 import {useRouter} from "next/router";
+import RollingRaffles from "./rolling";
 
 const RafflesDetail = () => {
   const router = useRouter()
@@ -32,9 +26,7 @@ const RafflesDetail = () => {
   useEffect(() => {
     console.log('[] getAllTicketsData?.getAllTickets: ', getAllTicketsData?.getAllTickets);
   }, [getAllTicketsData?.getAllTickets])
-
-  // @ts-ignore
-  // @ts-ignore
+  
   return (
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
@@ -62,7 +54,7 @@ const RafflesDetail = () => {
             </div>
           </div>
           <div className={s.featuredRaffleDesc}>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the {"industry's"} standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
           </div>
         </section>
         <div className={s.rafflesDetailSidebar}>
@@ -94,7 +86,7 @@ const RafflesDetail = () => {
                 <div className={s.buyTicketInfoItem}>
                   <div className={s.buyTicketInfoLabel}>My ticket</div>
                   <div className={s.buyTicketInfoValue}>
-                    <InputNumber controls={false}/>
+                    <InputNumber controls={false} />
                   </div>
                 </div>
               </div>
@@ -110,12 +102,12 @@ const RafflesDetail = () => {
               </div>
               <div className={s.buyTicketDesc}>
                 <h2>How you get tickets</h2>
-                <p>You can get a lot of Lucis point while you completed Lucis mission. Let’s get it!</p>
+                <p>You can get a lot of Lucis point while you completed Lucis mission. {`Let’s`} get it!</p>
                 <button>Earn more</button>
               </div>
             </section>
             <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""}></RollingRaffles>
+              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} ></RollingRaffles>
             </section>
           </div>
         </div>

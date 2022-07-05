@@ -34,7 +34,7 @@ const RollingRaffles = (props: Props) => {
   });
 
   const [currentTicket, setCurrentTicket] = useState('000000');
-  const [targetTicket, setTargetTicket] = useState('000000');
+  const [targetTicket, setTargetTicket] = useState('');
   const [currentRollingIdx, setCurrentRollingIdx] = useState(0);
   const [currentDataIdx, setCurrentDataIdx] = useState(0);
   const [dataWinTicket, setDataWinTicket] = useState<[]>([]);
@@ -42,7 +42,7 @@ const RollingRaffles = (props: Props) => {
   useEffect(() => {
     const rollInterval = setInterval(() => {
       const new_digit_n = targetTicket[currentRollingIdx];
-      if (currentRollingIdx <= 5) {
+      if (currentRollingIdx <= 5 && targetTicket.length == 6) {
         if (currentTicket[currentRollingIdx] == new_digit_n) {
           setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, ((parseInt(new_digit_n) + 1) % 10).toString()));
 
@@ -70,7 +70,7 @@ const RollingRaffles = (props: Props) => {
       if (currentRollingIdx == 6) {
         let data = dataWinTicket;
         // @ts-ignore
-        data?.push(dataWonTickets[currentDataIdx-1]);
+        if(currentDataIdx > 0 ) data?.push(dataWonTickets[currentDataIdx-1]);
         setDataWinTicket(data);
       }
     },currentRollingIdx === 6 ? 500 : 5100);
