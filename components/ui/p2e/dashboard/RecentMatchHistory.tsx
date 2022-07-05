@@ -64,7 +64,10 @@ const RecentMatchHistory = (props: IProps) => {
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
-        <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
+        <SidebarRight
+          onlyWallet
+          lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+          lucisToken={statisticQuery?.data?.getBalance?.lucis_token} />
         <Row gutter={40}>
           <Col lg={16} md={24}>
             {RecentMatchListRender()}
@@ -76,7 +79,10 @@ const RecentMatchHistory = (props: IProps) => {
               </div>}
           </Col>
           <Col lg={8} md={24}>
-            <SidebarRight balance={statisticQuery?.data?.getBalance} />
+            <SidebarRight
+              lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+              lucisToken={statisticQuery?.data?.getBalance?.lucis_token}
+            />
           </Col>
         </Row>
       </div>

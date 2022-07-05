@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import s from "./dailyMission.module.sass";
-import { Row, Col } from "antd";
+import s from "./mission.module.sass";
+import { Row, Col, Skeleton } from "antd";
 import SpinLoading from "../../common/Spin";
 import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { isEmpty } from 'lodash';
 import MissionItem from './MissionItem';
 import { Game } from 'utils/Enum';
+import { SkeletonItem } from './SkeletonItem';
 
 type MissionsListProp = {
   title?: string;
@@ -19,7 +20,7 @@ type MissionsListProp = {
   isDailyMission?: boolean;
 };
 
-const DailyMissionList = ({
+const DailyMissionList = React.memo(({
   title,
   missions,
   handleUpdateMissions,
@@ -72,14 +73,14 @@ const DailyMissionList = ({
               Complete 4 quests to unlock reward!
               <img src={
                 isClaimBox ?
-                  "/assets/P2E/csgo/box-open.png"
-                  : "/assets/P2E/csgo/box-normal.png"
+                  "/assets/P2E/box-open.png"
+                  : "/assets/P2E/box-normal.png"
               }
                 style={
-                  !boxOpen && lengthMissionDone < 4 ? { filter: "grayscale(100%)", cursor: "auto" }
+                  !boxOpen && lengthMissionDone < 4 ? { filter: "grayscale(100%)", cursor: "no-drop" }
                     : isClaimBox ? { cursor: "auto" } : {}
                 }
-                width="300" alt="" onClick={async () => {
+                alt="" onClick={async () => {
                   if (!boxOpen && lengthMissionDone < 4 || isClaimBox || loadingOpenBox) {
                     return;
                   }
@@ -108,7 +109,11 @@ const DailyMissionList = ({
       </div>
       <div className={s.missionsList}>
         {loading ? (
-          <SpinLoading />
+          [1, 2, 3, 4].map(item => {
+            return (
+              <SkeletonItem key={item} />
+            )
+          })
         ) : (
           isEmpty(missions)
             ? <div className={s.blankState}>No missions found.</div>
@@ -124,6 +129,6 @@ const DailyMissionList = ({
       </div>
     </div>
   );
-};
+});
 
 export default DailyMissionList;

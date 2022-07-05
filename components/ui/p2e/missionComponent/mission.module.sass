@@ -15,22 +15,50 @@
     align-items: center
   .lucisPoint
     color: #DF9B16
-.missionsList
+.dailyMissionsList
+  .missionSkeleton
+    border-radius: 4px
+    background: rgba(69, 80, 107, 0.5)
+    backdrop-filter: blur(6px)
+    margin-bottom: 16px
+    padding: 5px 16px
+    :global(.ant-skeleton)
+      display: flex
+      align-items: center
+    :global(.ant-skeleton span)
+      background: rgba(69, 80, 107, 0.5) !important
+      backdrop-filter: blur(6px)
+    :global(.ant-skeleton h3)
+      background: rgba(69, 80, 107, 0.5) !important
+      backdrop-filter: blur(6px)
+    :global(.ant-skeleton ul)
+      margin-top: 16px
+    :global(.ant-skeleton ul li)
+      background: rgba(69, 80, 107, 0.5) !important
+      backdrop-filter: blur(6px)
+    :global(.ant-skeleton .ant-skeleton-avatar-lg)
+      width: 64px
+      height: 64px
+      border-radius: 4px
+
   .missionItem
     border-radius: 4px
     background: rgba(69, 80, 107, 0.5)
     backdrop-filter: blur(6px)
     padding: 16px
     // padding: 15px
-    margin-bottom: 20px
+    margin-bottom: 16px
+
     .missionInfo
       .missionContent
         display: flex
         .missionLogo
-          background: #ffffff
           border-radius: 4px
           height: 64px
           min-width: 64px
+          img
+            width: 64px
+
         .missionTitle
           margin-left: 12px
           h4
@@ -39,9 +67,22 @@
             line-height: 24px
             margin: 0
             margin-bottom: 8px
+          span
+            font-size: 14px
+            line-height: 21px
+            font-weight: 400
+            opacity: 0.5
           img
             margin-bottom: 3px
             opacity: 1
+          .levelMission
+            border: 1px solid rgba(255, 255, 255, 0.7)
+            padding: 5px 10px
+            width: 135px
+            font-size: 14px
+            line-height: 21px
+            color: rgba(255, 255, 255, 0.7)
+            text-align: center
 
       .missionReward
         display: flex
@@ -71,27 +112,83 @@
       .missionProgressFinish
         display: flex
         justify-content: center
-        display: flex
         :global(.ant-progress-text)
           color: #fff
         :global(.ant-progress-circle-trail)
           stroke: #6B6C6C
+  .header
+    display: flex
+    margin-bottom: 16px
+    position: relative
+    width: 100%
+    justify-content: space-between
+    .checkListMission
+      display: flex
+      .checkListMissionItem
+        display: flex
+        flex-direction: column
+        align-items: center
+        margin-right: 16px
+        .csgoImage
+          width: 40px
+          height: 40px
+          margin-bottom: 8px
+          filter: drop-shadow(0px 1px 8px rgba(0, 249, 255, 0.8))
+          border-radius: 2px
+    .headerRight
+      .rewardBox
+        background: linear-gradient(90.88deg, rgba(156, 248, 241, 0) 5.37%, rgba(0, 240, 255, 0.26) 99.25%)
+        backdrop-filter: blur(12px)
+        height: 62px
+        // width: 500px
+        margin-right: 65px
+        position: relative
+        display: flex
+        align-items: center
+        justify-content: center
+        color: #12B0B4
+        font-size: 14px
+        line-height: 20px
+        @media only screen and (max-width: 450px)
+          justify-content: flex-start
+          height: 24px
+          font-size: 10px
+          margin-top: 20px
+          margin-right: 50px
+        img
+          position: absolute
+          right: -90px
+          bottom: 0px
+          cursor: pointer
+          width: 150px
+          @media only screen and (max-width: 450px)
+            right: -65px
+            bottom: 0px
+            cursor: pointer
+            width: 100px
   .subHeader
     position: relative
+    min-height: 24px
+    p
+      font-size: 16px
+      margin-bottom: 12px
+      @media screen and ( max-width: 576px  )
+        display: none
     .updateButton
+      display: flex
+      justify-content: flex-end
+      align-items: center
       cursor: pointer
       text-align: right
       position: absolute
       top: 0
       right: 0
       img
+        margin-left: 40px
         margin-right: 5px
         height: 18px
       .spinner
         animation: spin 2s linear 0s infinite
-    p
-      font-size: 16px
-      margin-bottom: 12px
 
 .blankState
   width: 100%

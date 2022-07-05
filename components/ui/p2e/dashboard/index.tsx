@@ -103,7 +103,9 @@ const Dashboard = (props: IProps) => {
       statisticQuery.refetch()
     ])
     setDailyMission(promise[0].data.updateDailyMission)
-    setRecentlyMatches([...promise[1].data.updateCsgoRecentlyMatch, ...recentlyMatches]);
+    if (promise[1].data.updateCsgoRecentlyMatch.length > 0) {
+      setRecentlyMatches([...promise[1].data.updateCsgoRecentlyMatch, ...recentlyMatches]);
+    }
     setLoading(false);
     if (showMessage) {
       message.success("Success!");
@@ -185,7 +187,7 @@ const Dashboard = (props: IProps) => {
         <div style={{ textAlign: "center" }}>
           <p style={{ textAlign: "center", fontSize: 30, margin: 0 }}>Congratulations</p>
           <img src="/assets/P2E/csgo/box-open.png" alt="" width="300" />
-          <p style={{ textAlign: "center" }}>You have successfully claimed 30 lucis points!</p>
+          <p style={{ textAlign: "center" }}>You have successfully claimed 30 Lucis points!</p>
           <div style={{ textAlign: 'center' }} key="open-box-ok">
             <ButtonWrapper style={{ textAlign: "center" }} onClick={() => setShowGiftBox(false)}>OK</ButtonWrapper>
           </div>
@@ -193,7 +195,10 @@ const Dashboard = (props: IProps) => {
       </Modal>
       <div className="lucis-container-2">
         <div className={s.dailyContainer}>
-          <SidebarRight onlyWallet balance={statisticQuery?.data?.getBalance} />
+          <SidebarRight
+            onlyWallet
+            lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+            lucisToken={statisticQuery?.data?.getBalance?.lucis_token} />
           <Row gutter={51}>
             <Col lg={16} md={24}>
               <div>
@@ -224,7 +229,10 @@ const Dashboard = (props: IProps) => {
               </div>}
             </Col>
             <Col lg={8} md={24}>
-              <SidebarRight balance={statisticQuery?.data?.getBalance} />
+              <SidebarRight
+                lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+                lucisToken={statisticQuery?.data?.getBalance?.lucis_token}
+              />
             </Col>
           </Row>
         </div>
