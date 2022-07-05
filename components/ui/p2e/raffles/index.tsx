@@ -49,7 +49,7 @@ const Raffles = () => {
             <div className={s.recentWinnersList}>
               {getRecentWinnersData?.getRecentWinners && getRecentWinnersData?.getRecentWinners.length > 0 && (
                 getRecentWinnersData?.getRecentWinners.map((item, index) => (
-                  <div className={s.recentWinnersItem} key={`${item?.raffle?.uid}${index}`}>
+                  <div className={s.recentWinnersItem} key={item?.raffle?.uid}>
                     <div className={s.recentWinnerThumbnail}>
                       <Image src={item?.raffle?.img as string} preview={false} alt="" />
                     </div>
@@ -114,7 +114,7 @@ const Raffles = () => {
                       {
                         // @ts-ignore
                         getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.type.map((type: string, index: number) => (
-                        <div className={`${s.raffleTag}`} key={`${type}${index}`}>{type}</div>
+                        <div className={`${s.raffleTag}`} key={type}>{type}</div>
                       ))}
                     </div>
                   )}
@@ -135,7 +135,7 @@ const Raffles = () => {
             ) : (getSponsorRaffleData?.getSponsorRaffles && (
               <div className={s.rafflesSponsorList}>
                 {getSponsorRaffleData?.getSponsorRaffles.map((sponsor, index) => (
-                  <div className={s.raffleSponsorItem} key={`${sponsor?.uid}${index}`}>
+                  <div className={s.raffleSponsorItem} key={sponsor?.uid}>
                     <Image src={sponsor?.img as string} preview={false} alt="" />
                   </div>
                 ))}
@@ -160,7 +160,7 @@ const Raffles = () => {
           ) : (((rafflesData.length <= 0) || searchRafflesError) ? <Empty /> : (
             <div className={s.rafflesList}>
               {rafflesData.length > 0 && rafflesData.map((raffle, index) => (
-                <Link href={`/p2e/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
+                <Link href={`/p2e/raffles/${raffle?.uid}`} passHref key={raffle?.uid}>
                   <a className={s.rafflesItem}>
                     <div className={s.raffleThumbnail}>
                       <Image src={raffle?.img as string} preview={false} alt="" />
@@ -171,7 +171,7 @@ const Raffles = () => {
                           {
                             // @ts-ignore
                             raffle?.type.map((type: string, index: number) => (
-                            <div className={s.raffleTag} key={`${type}${index}`}>{type}</div>
+                            <div className={s.raffleTag} key={type}>{type}</div>
                           ))}
                         </div>
                       )}
