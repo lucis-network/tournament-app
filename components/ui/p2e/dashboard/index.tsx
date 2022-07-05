@@ -103,7 +103,9 @@ const Dashboard = (props: IProps) => {
       statisticQuery.refetch()
     ])
     setDailyMission(promise[0].data.updateDailyMission)
-    setRecentlyMatches([...promise[1].data.updateCsgoRecentlyMatch, ...recentlyMatches]);
+    if (promise[1].data.updateCsgoRecentlyMatch.length > 0) {
+      setRecentlyMatches([...promise[1].data.updateCsgoRecentlyMatch, ...recentlyMatches]);
+    }
     setLoading(false);
     if (showMessage) {
       message.success("Success!");

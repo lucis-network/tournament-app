@@ -16,7 +16,7 @@ interface IProps {
   title?: string;
   hasButtonBack?: boolean;
 }
-export const RecentMatchListCSGO = (props: IProps) => {
+export const RecentMatchListCSGO = React.memo((props: IProps) => {
   const router = useRouter();
   const [recentMatchesFiltered, setRecentMatchesFiltered] = useState<{ [endAt: string]: CsgoPlayerMatch[] }>({})
 
@@ -24,6 +24,7 @@ export const RecentMatchListCSGO = (props: IProps) => {
     filterDayRecentMatch();
   }, [props.recentMatches])
 
+  console.log("recentMatch")
 
   const lucisPointRewardToday = (matches: CsgoPlayerMatch[]): number => {
     let total = 0;
@@ -226,4 +227,4 @@ export const RecentMatchListCSGO = (props: IProps) => {
     </>
 
   );
-}
+});
