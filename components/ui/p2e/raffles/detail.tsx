@@ -2,15 +2,9 @@ import s from './Raffles.module.sass'
 import {Image, Input, Empty, Space, Spin, InputNumber} from "antd";
 import Link from "next/link";
 import {
-  useGetFeaturedRaffle,
-  useGetRecentWinners,
-  useGetSponsorRaffle,
   useSearchRaffles,
 } from "../../../../hooks/p2e/raffles/useRafflesList";
-import React, {useCallback, useEffect, useState} from "react";
-import SpinLoading from "../../common/Spin";
-import {Raffle} from "../../../../src/generated/graphql_p2e";
-import {debounce, isEmpty} from "lodash";
+import React, {useEffect} from "react";
 import {useGetAllTicket, useGetMyTicket, useGetRaffleDetail} from "../../../../hooks/p2e/raffles/useRaffleDetail";
 import {useRouter} from "next/router";
 
@@ -107,7 +101,7 @@ const RafflesDetail = () => {
               </div>
               <div className={s.buyTicketDesc}>
                 <h2>How you get tickets</h2>
-                <p>You can get a lot of Lucis point while you completed Lucis mission. Let’s get it!</p>
+                <p>You can get a lot of Lucis point while you completed Lucis mission. {`Let’s`} get it!</p>
                 <button>Earn more</button>
               </div>
             </section>
