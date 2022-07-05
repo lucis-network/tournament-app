@@ -443,6 +443,9 @@
       background: rgba(0, 0, 0, 0.5)
       border-radius: 4px
       overflow: hidden
+      display: flex
+      flex-direction: column
+      justify-content: space-between
       &:global(.comingSoon)
         background: rgba(69, 80, 107, 0.5)
         backdrop-filter: blur(14.8009px)
@@ -489,6 +492,7 @@
         width: 100%
         img
           width: 100%
+          aspect-ratio: 436 / 296
     .raffleInfo
       padding: 5px
       @media screen and (min-width: 768px)

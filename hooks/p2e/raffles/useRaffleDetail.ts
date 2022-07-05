@@ -126,23 +126,6 @@ const GET_RAFFLE_DETAIL = gql`
         created_at
         updated_at
       }
-      claim_raffle {
-        uid
-        user_id
-        lucis_point
-        lucis_token
-        raffle_uid
-        raffle {
-          uid
-          name
-          desc
-          lucis_point_reward
-          lucis_token_reward
-          nft_reward
-          winner_total
-          won_tickets
-        }
-      }
       end_at
       created_at
       updated_at
@@ -176,14 +159,6 @@ const GET_ALL_TICKET = gql`
       user_id
       ticket_number
       ticket_uid
-      ticket {
-        uid
-        raffle_uid
-        cost
-        cost_type
-        user_limit
-        total_limit
-      }
       user {
         profile {
           display_name
