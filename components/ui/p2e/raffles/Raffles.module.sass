@@ -1,6 +1,21 @@
 .rafflesBg
   background: url('/assets/P2E/raffles/bgRafflesMobile.jpg') no-repeat fixed top center
   background-size: cover
+  background-blend-mode: multiply
+  position: relative
+  &:after
+    content: ''
+    display: block
+    position: absolute
+    top: 0
+    right: 0
+    left: 0
+    bottom: 0
+    background: rgb(23 29 46 / 80%)
+    z-index: 0
+  > *
+    z-index: 1
+    position: relative
   @media screen and (min-width: 768px)
     background: url('/assets/P2E/raffles/bgRafflesPC.jpg') no-repeat fixed top center
     background-size: cover
@@ -319,7 +334,7 @@
             margin-right: 15px
             max-width: 66%
             display: -webkit-box
-            -webkit-line-clamp: 1
+            -webkit-line-clamp: 2
             -webkit-box-orient: vertical
             overflow: hidden
           @media screen and (min-width: 1200px)
@@ -338,7 +353,6 @@
         flex-direction: column
         align-items: flex-end
         justify-content: space-between
-        min-width: 130px
         @media screen and (min-width: 768px)
           flex-direction: row
           align-items: center
@@ -359,12 +373,11 @@
           @media screen and (min-width: 1200px)
             margin-right: 48px
       .featuredRaffleTagWrap
-        @media screen and (min-width: 768px)
-          min-width: 126px
         .raffleTag
           @media screen and (min-width: 1200px)
-            &:first-of-type
-              margin-right: 40px
+            margin-right: 40px
+            &:last-of-type
+              margin-right: 0
 .sectionRafflesSponsor
   margin-bottom: 32px
   @media screen and (min-width: 768px)
@@ -557,6 +570,18 @@
     margin-bottom: 12px
     @media screen and (min-width: 1400px)
       margin-bottom: 80px
+    .featuredRaffle
+      .featuredRaffleInfo
+        .featuredRaffleTitleWrap
+          @media screen and (min-width: 768px)
+            margin-right: auto
+            width: 70%
+            max-width: 70%
+          h3
+            @media screen and (min-width: 768px)
+        .featuredRafflePriceWrap
+          @media screen and (min-width: 768px)
+            flex: none
     .featuredRaffleDesc
       font-family: 'Poppins'
       font-weight: 400
