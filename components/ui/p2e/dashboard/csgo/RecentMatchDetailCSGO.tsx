@@ -12,7 +12,7 @@ export const RecentMatchDetailCSGO = () => {
 
   const [playerMatchId, setPlayerMatchId] = React.useState<number>(-1);
   const [isLoadData, setIsLoadData] = React.useState<boolean>(false);
-  const { getStatisticMatchLoading, getStatisticMatchData } = useGetStatisticMatch(playerMatchId, !isLoadData);
+  const { getStatisticMatchData } = useGetStatisticMatch(playerMatchId, !isLoadData);
 
   React.useEffect(() => {
     if (router.query?.id) {
@@ -25,25 +25,25 @@ export const RecentMatchDetailCSGO = () => {
   const data = getStatisticMatchData?.getCsgoMatchStatistic;
   const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
-    kill: Number(data?.match_earning?.kill) * Number(data?.player_statistic?.Kills),
-    assists: Number(data?.match_earning?.assist) * Number(data?.player_statistic?.Assists),
-    headshot: Number(data?.match_earning?.headshot) * Number(data?.player_statistic?.Headshots),
-    mvps: Number(data?.match_earning?.mvp) * Number(data?.player_statistic?.MVPs),
-    tripleKill: Number(data?.match_earning?.triple_kill) * Number(data?.player_statistic?.["Triple Kills"]),
-    quadraKill: Number(data?.match_earning?.quadra_kill) * Number(data?.player_statistic?.["Quadro Kills"]),
-    pentalKill: Number(data?.match_earning?.pental_kill) * Number(data?.player_statistic?.["Penta Kills"]),
-    winStreak: Math.max(Number(data?.current_win_streak) - 1, 0)
+    kill: data ? Number(data?.match_earning?.kill) * Number(data?.player_statistic?.Kills) : null,
+    assists: data ? Number(data?.match_earning?.assist) * Number(data?.player_statistic?.Assists) : null,
+    headshot: data ? Number(data?.match_earning?.headshot) * Number(data?.player_statistic?.Headshots) : null,
+    mvps: data ? Number(data?.match_earning?.mvp) * Number(data?.player_statistic?.MVPs) : null,
+    tripleKill: data ? Number(data?.match_earning?.triple_kill) * Number(data?.player_statistic?.["Triple Kills"]) : null,
+    quadraKill: data ? Number(data?.match_earning?.quadra_kill) * Number(data?.player_statistic?.["Quadro Kills"]) : null,
+    pentalKill: data ? Number(data?.match_earning?.pental_kill) * Number(data?.player_statistic?.["Penta Kills"]) : null,
+    winStreak: data ? Math.max(Number(data?.current_win_streak) - 1, 0) : null
   };
 
 
-  const totalEarned = lucisPointEarned.kill
-    + lucisPointEarned.assists
-    + lucisPointEarned.headshot
-    + lucisPointEarned.mvps
-    + lucisPointEarned.tripleKill
-    + lucisPointEarned.quadraKill
-    + lucisPointEarned.pentalKill
-    + lucisPointEarned.winStreak;
+  const totalEarned = Number(lucisPointEarned.kill)
+    + Number(lucisPointEarned.assists)
+    + Number(lucisPointEarned.headshot)
+    + Number(lucisPointEarned.mvps)
+    + Number(lucisPointEarned.tripleKill)
+    + Number(lucisPointEarned.quadraKill)
+    + Number(lucisPointEarned.pentalKill)
+    + Number(lucisPointEarned.winStreak)
 
   const cardList = [
     {
