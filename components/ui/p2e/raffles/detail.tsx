@@ -1,5 +1,5 @@
 import s from './Raffles.module.sass'
-import {Image, Input, Empty, Space, Spin, InputNumber} from "antd";
+import { Image, Input, Empty, Space, Spin, InputNumber } from "antd";
 import Link from "next/link";
 import {
   useGetFeaturedRaffle,
@@ -7,21 +7,21 @@ import {
   useGetSponsorRaffle,
   useSearchRaffles,
 } from "../../../../hooks/p2e/raffles/useRafflesList";
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import SpinLoading from "../../common/Spin";
-import {Raffle} from "../../../../src/generated/graphql_p2e";
-import {debounce, isEmpty} from "lodash";
+import { Raffle } from "../../../../src/generated/graphql_p2e";
+import { debounce, isEmpty } from "lodash";
 
 const RafflesDetail = () => {
-  const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles('')
+  const { searchRafflesLoading, searchRafflesError, searchRafflesData } = useSearchRaffles('')
 
   return (
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
         <section className={s.breadcrumbSection}>
-            <button>
-              <Image src="/assets/P2E/raffles/iconArrow.svg" preview={false} alt="" />
-            </button>
+          <button>
+            <Image src="/assets/P2E/raffles/iconArrow.svg" preview={false} alt="" />
+          </button>
           <h2 className={s.sectionTitle}>Raffles</h2>
         </section>
         <section className={s.sectionFeaturedRaffle}>
@@ -32,7 +32,7 @@ const RafflesDetail = () => {
             <div className={s.featuredRaffleInfo}>
               <div className={s.featuredRaffleTitleWrap}>
                 <h3>Steam gift card</h3>
-                <p>Valued at {}</p>
+                <p>Valued at { }</p>
               </div>
               <div className={s.featuredRafflePriceWrap}>
                 <div className={s.featuredRaffleTagWrap}>
@@ -42,7 +42,7 @@ const RafflesDetail = () => {
             </div>
           </div>
           <div className={s.featuredRaffleDesc}>
-            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
+            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the {"industry's"} standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. </p>
           </div>
         </section>
         <div className={s.rafflesDetailSidebar}>
@@ -74,7 +74,7 @@ const RafflesDetail = () => {
                 <div className={s.buyTicketInfoItem}>
                   <div className={s.buyTicketInfoLabel}>My ticket</div>
                   <div className={s.buyTicketInfoValue}>
-                    <InputNumber controls={false}/>
+                    <InputNumber controls={false} />
                   </div>
                 </div>
               </div>
@@ -90,7 +90,7 @@ const RafflesDetail = () => {
               </div>
               <div className={s.buyTicketDesc}>
                 <h2>How you get tickets</h2>
-                <p>You can get a lot of Lucis point while you completed Lucis mission. Let’s get it!</p>
+                <p>You can get a lot of Lucis point while you completed Lucis mission. {"Let's"} get it!</p>
                 <button>Earn more</button>
               </div>
             </section>
@@ -123,44 +123,44 @@ const RafflesDetail = () => {
             <div className={s.tableResponsive}>
               <table>
                 <tbody>
-                <tr className={`${s.allTicketItem} crown`}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}>
-                    <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
-                  </td>
-                </tr>
-                <tr className={s.allTicketItem}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}></td>
-                </tr>
-                <tr className={s.allTicketItem}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}></td>
-                </tr>
-                <tr className={s.allTicketItem}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}></td>
-                </tr>
+                  <tr className={`${s.allTicketItem} crown`}>
+                    <td className={s.ownerReward}>1,000,000</td>
+                    <td className={s.ownerAvatar}>
+                      <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                    </td>
+                    <td className={s.ownerName}>Shippou Chan</td>
+                    <td className={s.ticketID}>#123456</td>
+                    <td className={s.ticketCrown}>
+                      <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
+                    </td>
+                  </tr>
+                  <tr className={s.allTicketItem}>
+                    <td className={s.ownerReward}>1,000,000</td>
+                    <td className={s.ownerAvatar}>
+                      <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                    </td>
+                    <td className={s.ownerName}>Shippou Chan</td>
+                    <td className={s.ticketID}>#123456</td>
+                    <td className={s.ticketCrown}></td>
+                  </tr>
+                  <tr className={s.allTicketItem}>
+                    <td className={s.ownerReward}>1,000,000</td>
+                    <td className={s.ownerAvatar}>
+                      <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                    </td>
+                    <td className={s.ownerName}>Shippou Chan</td>
+                    <td className={s.ticketID}>#123456</td>
+                    <td className={s.ticketCrown}></td>
+                  </tr>
+                  <tr className={s.allTicketItem}>
+                    <td className={s.ownerReward}>1,000,000</td>
+                    <td className={s.ownerAvatar}>
+                      <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                    </td>
+                    <td className={s.ownerName}>Shippou Chan</td>
+                    <td className={s.ticketID}>#123456</td>
+                    <td className={s.ticketCrown}></td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -184,49 +184,49 @@ const RafflesDetail = () => {
           </div>
         </section>
         <section className={s.sectionRaffles}>
-        <div className={s.raffleTitleWrap}>
-          <h2 className={s.sectionTitle}>Other Raffles</h2>
-        </div>
-        {searchRafflesLoading ? (
-          <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-            <Spin size="large" />
-          </Space>
-        ) : (((searchRafflesData?.searchRaffle.length <= 0) || searchRafflesError) ? <Empty /> : (
-          <div className={s.rafflesList}>
-            {searchRafflesData?.searchRaffle.length > 0 && searchRafflesData?.searchRaffle.map((raffle, index) => (
-              <Link href={`/p2e/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
-                <a className={s.rafflesItem}>
-                  <div className={s.raffleThumbnail}>
-                    <Image src={raffle?.img as string} preview={false} alt="" />
-                  </div>
-                  <div className={s.raffleInfo}>
-                    {raffle?.type && (
-                      <div className={s.raffleTagWrap}>
-                        {
-                          // @ts-ignore
-                          raffle?.type.map((type: string, index: number) => (
-                            <div className={s.raffleTag} key={`${type}${index}`}>{type}</div>
-                          ))}
-                      </div>
-                    )}
-                    <h3 className={s.raffleTitle}>{raffle?.name}</h3>
-                    <div className={s.rafflePriceWrap}>
-                      <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
-                      <div className={s.rafflePrice}>
-                        <div className={s.rafflePriceText}>{raffle?.lucis_point_reward}</div>
-                        <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt="" />
+          <div className={s.raffleTitleWrap}>
+            <h2 className={s.sectionTitle}>Other Raffles</h2>
+          </div>
+          {searchRafflesLoading ? (
+            <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+              <Spin size="large" />
+            </Space>
+          ) : (((searchRafflesData?.searchRaffle.length <= 0) || searchRafflesError) ? <Empty /> : (
+            <div className={s.rafflesList}>
+              {searchRafflesData?.searchRaffle.length > 0 && searchRafflesData?.searchRaffle.map((raffle, index) => (
+                <Link href={`/p2e/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
+                  <a className={s.rafflesItem}>
+                    <div className={s.raffleThumbnail}>
+                      <Image src={raffle?.img as string} preview={false} alt="" />
+                    </div>
+                    <div className={s.raffleInfo}>
+                      {raffle?.type && (
+                        <div className={s.raffleTagWrap}>
+                          {
+                            // @ts-ignore
+                            raffle?.type.map((type: string, index: number) => (
+                              <div className={s.raffleTag} key={`${type}${index}`}>{type}</div>
+                            ))}
+                        </div>
+                      )}
+                      <h3 className={s.raffleTitle}>{raffle?.name}</h3>
+                      <div className={s.rafflePriceWrap}>
+                        <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
+                        <div className={s.rafflePrice}>
+                          <div className={s.rafflePriceText}>{raffle?.lucis_point_reward}</div>
+                          <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt="" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
-              </Link>
-            ))}
-            <div className={`${s.rafflesItem} comingSoon`}>
-              NEW RAFFLES<br />COMING SOON
+                  </a>
+                </Link>
+              ))}
+              <div className={`${s.rafflesItem} comingSoon`}>
+                NEW RAFFLES<br />COMING SOON
+              </div>
             </div>
-          </div>
-        ))}
-      </section>
+          ))}
+        </section>
       </div>
     </div>
   )
