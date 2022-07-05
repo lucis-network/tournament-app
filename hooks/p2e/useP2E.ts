@@ -1,5 +1,5 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoMatchStatistics, PlatformAccount } from "../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, PlatformAccount } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
   offset: number
@@ -40,7 +40,7 @@ export const useGetRecentMatches = ({ offset, limit, platform_id }: UseGetRecent
   getRecentMatchesError: ApolloError | undefined,
   refetchRecentMatches: (v: UseGetRecentMatchesProps) => Promise<ApolloQueryResult<any>>,
   getRecentMatchesData: {
-    getRecentlyCsgoMatch: CsgoMatch
+    getRecentlyCsgoMatch: GCsgoMatch
   },
 } => {
   const {
@@ -130,6 +130,10 @@ export const GET_OR_SET_DAILY_MISSION = gql`
           level
           lucis_token
         }
+        csgo_mission {
+          type
+          map
+        }
         uid
         title
         game_uid
@@ -152,6 +156,10 @@ export const UPDATE_DAILY_MISSION = gql`
           lucis_point
           level
           lucis_token
+        }
+        csgo_mission {
+          type
+          map
         }
         uid
         title
