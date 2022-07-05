@@ -707,6 +707,7 @@ export type MutationClaimMissionArgs = {
 
 export type MutationClaimRaffleArgs = {
   raffle_uid: Scalars['String'];
+  ticket_number: Scalars['String'];
 };
 
 
@@ -1111,7 +1112,6 @@ export type Raffle = {
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
-  is_claim?: Maybe<Scalars['Boolean']>;
   lucis_point_reward?: Maybe<Scalars['Int']>;
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
@@ -1125,7 +1125,7 @@ export type Raffle = {
   updated_at: Scalars['DateTime'];
   valued_at?: Maybe<Scalars['String']>;
   winner_total?: Maybe<Scalars['Int']>;
-  won_tickets?: Maybe<Scalars['String']>;
+  won_tickets?: Maybe<Scalars['JSON']>;
 };
 
 export type RaffleCount = {
@@ -1141,7 +1141,6 @@ export type RaffleDetail = {
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
-  is_claim?: Maybe<Scalars['Boolean']>;
   lucis_point_reward?: Maybe<Scalars['Int']>;
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
@@ -1155,7 +1154,7 @@ export type RaffleDetail = {
   updated_at: Scalars['DateTime'];
   valued_at?: Maybe<Scalars['String']>;
   winner_total?: Maybe<Scalars['Int']>;
-  won_tickets?: Maybe<Scalars['String']>;
+  won_tickets?: Maybe<Scalars['JSON']>;
 };
 
 export type RaffleFilter = {
@@ -1171,7 +1170,6 @@ export type RaffleGql = {
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
-  is_claim?: Maybe<Scalars['Boolean']>;
   lucis_point_reward?: Maybe<Scalars['Int']>;
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
@@ -1185,7 +1183,7 @@ export type RaffleGql = {
   updated_at: Scalars['DateTime'];
   valued_at?: Maybe<Scalars['String']>;
   winner_total?: Maybe<Scalars['Int']>;
-  won_tickets?: Maybe<Scalars['String']>;
+  won_tickets?: Maybe<Scalars['JSON']>;
 };
 
 export enum RaffleStatus {

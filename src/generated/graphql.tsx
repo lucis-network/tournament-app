@@ -3707,7 +3707,6 @@ export type Raffle = {
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
-  is_claim?: Maybe<Scalars['Boolean']>;
   lucis_point_reward?: Maybe<Scalars['Int']>;
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
@@ -3721,7 +3720,7 @@ export type Raffle = {
   updated_at: Scalars['DateTime'];
   valued_at?: Maybe<Scalars['String']>;
   winner_total?: Maybe<Scalars['Int']>;
-  won_tickets?: Maybe<Scalars['String']>;
+  won_tickets?: Maybe<Scalars['JSON']>;
 };
 
 export type RaffleCount = {
@@ -3756,7 +3755,6 @@ export type RaffleCreateWithoutClaim_RaffleInput = {
   desc?: InputMaybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
-  is_claim?: InputMaybe<Scalars['Boolean']>;
   lucis_point_reward?: InputMaybe<Scalars['Int']>;
   lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
@@ -3770,7 +3768,7 @@ export type RaffleCreateWithoutClaim_RaffleInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
   valued_at?: InputMaybe<Scalars['String']>;
   winner_total?: InputMaybe<Scalars['Int']>;
-  won_tickets?: InputMaybe<Scalars['String']>;
+  won_tickets?: InputMaybe<Scalars['JSON']>;
 };
 
 export type RaffleCreateWithoutTicketInput = {
@@ -3779,7 +3777,6 @@ export type RaffleCreateWithoutTicketInput = {
   desc?: InputMaybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
-  is_claim?: InputMaybe<Scalars['Boolean']>;
   lucis_point_reward?: InputMaybe<Scalars['Int']>;
   lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
@@ -3792,7 +3789,7 @@ export type RaffleCreateWithoutTicketInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
   valued_at?: InputMaybe<Scalars['String']>;
   winner_total?: InputMaybe<Scalars['Int']>;
-  won_tickets?: InputMaybe<Scalars['String']>;
+  won_tickets?: InputMaybe<Scalars['JSON']>;
 };
 
 export enum RaffleStatus {

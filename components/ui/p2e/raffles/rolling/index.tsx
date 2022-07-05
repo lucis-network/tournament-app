@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import s from './index.module.sass'
 import DigitRoll from "components/digit-roll-react/src";
-import {replaceCharAt} from "../../../../../utils/String";
+import {b64DecodeUnicode, replaceCharAt} from "../../../../../utils/String";
 import {useGetWonTickets} from "../../../../../hooks/p2e/useRaffleDetail";
 import {isEmpty, parseInt} from "lodash";
 
@@ -23,12 +23,16 @@ const Digit = function (props: {
     />
   )
 }
-
-const RollingRaffles = () => {
+type Props = {
+  raffleUid?: string;
+}
+const RollingRaffles = (props: Props) => {
 
   const {dataWonTickets} = useGetWonTickets({
-    raffle_uid: "cl56higb718860jnwey5mk5qr",
+    raffle_uid: props.raffleUid,
+    skip: isEmpty(props.raffleUid)
   });
+
   const [currentTicket, setCurrentTicket] = useState('000000');
   const [targetTicket, setTargetTicket] = useState('000000');
   const [currentRollingIdx, setCurrentRollingIdx] = useState(0);
@@ -63,7 +67,6 @@ const RollingRaffles = () => {
   useEffect(() => {
     const changeIdxInterval = setInterval(() => {
       setCurrentRollingIdx(currentRollingIdx + 1);
-      console.log("currentRollingIdx", currentRollingIdx);
       if (currentRollingIdx == 6) {
         let data = dataWinTicket;
         // @ts-ignore
@@ -95,17 +98,6 @@ const RollingRaffles = () => {
       clearInterval(currentDataInterval)
     }
   }, [dataWonTickets, currentDataIdx])
-
-  // Decoding base64 ⇢ UTF8
-  const b64DecodeUnicode = (str: string) => {
-    return decodeURIComponent(
-      Array.prototype.map
-        .call(atob(str), function (c) {
-          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        })
-        .join(''),
-    );
-  }
 
   return (
     <div className={s.rafflesWrapper}>
@@ -165,8 +157,7 @@ const RollingRaffles = () => {
           {dataWinTicket ? dataWinTicket?.map((item: any, index: number) => {
             return (
               <>
-                {/*key={`${item?.ticket_number}`}*/}
-                <div className={s.recentWinItem}>
+                <div className={s.recentWinItem} key={`${item?.ticket_number}`}>
                   <span className={s.recentWinItemId}>#{b64DecodeUnicode(item?.ticket_number)}</span>
                   <span className={s.recentWinItemName}>({item?.user?.profile?.user_name})</span>
                 </div>

@@ -12,10 +12,29 @@ import SpinLoading from "../../common/Spin";
 import {Raffle} from "../../../../src/generated/graphql_p2e";
 import {debounce, isEmpty} from "lodash";
 import RollingRaffles from "./rolling";
+import {useGetAllTicket, useGetMyTicket, useGetRaffleDetail} from "../../../../hooks/p2e/raffles/useRaffleDetail";
+import {useRouter} from "next/router";
 
 const RafflesDetail = () => {
+  const router = useRouter()
+  const raffleUID = router.query.id
   const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles('')
+  const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData} = useGetRaffleDetail(`${raffleUID}`)
+  const {getMyTicketsLoading, getMyTicketslError, refetchMyTickets, getMyTicketsData} = useGetMyTicket(`${raffleUID}`)
+  const {getAllTicketsLoading, getAllTicketslError, refetchAllTickets, getAllTicketsData} = useGetAllTicket(`${raffleUID}`)
 
+  useEffect(() => {
+    console.log('[] getRaffleDetailData?.getRaffleDetail: ', getRaffleDetailData?.getRaffleDetail);
+  }, [getRaffleDetailData?.getRaffleDetail])
+  useEffect(() => {
+    console.log('[] getMyTicketsData?.getMyTickets: ', getMyTicketsData?.getMyTickets);
+  }, [getMyTicketsData?.getMyTickets])
+  useEffect(() => {
+    console.log('[] getAllTicketsData?.getAllTickets: ', getAllTicketsData?.getAllTickets);
+  }, [getAllTicketsData?.getAllTickets])
+
+  // @ts-ignore
+  // @ts-ignore
   return (
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
@@ -96,21 +115,25 @@ const RafflesDetail = () => {
               </div>
             </section>
             <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-              <RollingRaffles></RollingRaffles>
+              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""}></RollingRaffles>
             </section>
           </div>
         </div>
         <section className={s.myTicketsSection}>
-          <h2 className={s.sectionTitle}>My tickets [21]</h2>
-          <div className={s.myTicketsList}>
-            <div className={s.ticketItem}>#123543</div>
-            <div className={s.ticketItem}>#123543</div>
-            <div className={s.ticketItem}>#123543</div>
-            <div className={s.ticketItem}>#123543</div>
-            <div className={s.ticketItem}>#123543</div>
-            <div className={s.ticketItem}>#123543</div>
-            <div className={s.ticketItem}>#123543</div>
-          </div>
+          <h2 className={s.sectionTitle}>My tickets {getMyTicketsData?.getMyTickets.length >= 0 ? `[${getMyTicketsData?.getMyTickets.length}]` : [0]}</h2>
+          {(getMyTicketslError || getMyTicketsData?.getMyTickets.length <= 0) ? <Empty /> :
+            (getMyTicketsLoading ? (
+              <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Spin size="large" />
+              </Space>
+            ) : (
+              <div className={s.myTicketsList}>
+                {getMyTicketsData?.getMyTickets.map((ticket, index) => (
+                  <div className={s.ticketItem} key={ticket?.ticket_uid}>#{ticket?.ticket_number}</div>
+                ))}
+              </div>
+            ))
+          }
         </section>
         <section className={s.allTicketsSection}>
           <div className={s.sectionTitleFlex}>
@@ -120,52 +143,73 @@ const RafflesDetail = () => {
               <Image src="/assets/P2E/raffles/iconSearch.svg" preview={false} alt="" />
             </div>
           </div>
-          <div className={s.allTicketsList}>
-            <div className={s.tableResponsive}>
-              <table>
-                <tbody>
-                <tr className={`${s.allTicketItem} crown`}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}>
-                    <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
-                  </td>
-                </tr>
-                <tr className={s.allTicketItem}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}></td>
-                </tr>
-                <tr className={s.allTicketItem}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}></td>
-                </tr>
-                <tr className={s.allTicketItem}>
-                  <td className={s.ownerReward}>1,000,000</td>
-                  <td className={s.ownerAvatar}>
-                    <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                  </td>
-                  <td className={s.ownerName}>Shippou Chan</td>
-                  <td className={s.ticketID}>#123456</td>
-                  <td className={s.ticketCrown}></td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
+          {(getAllTicketslError || getAllTicketsData?.getAllTickets?.length <= 0) ? <Empty /> :
+            (getAllTicketsLoading ? (
+              <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <Spin size="large" />
+              </Space>
+            ) : (
+              <div className={s.allTicketsList}>
+                <div className={s.tableResponsive}>
+                  <table>
+                    <tbody>
+                    {getAllTicketsData?.getAllTickets?.map((ticket, index) => (
+                      <tr className={`${s.allTicketItem} crown`} key={ticket?.ticket_uid}>
+                        <td className={s.ownerReward}>{index + 1}</td>
+                        <td className={s.ownerAvatar}>
+                          <Image src={ticket?.user?.profile?.avatar as string} preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                        </td>
+                        <td className={s.ownerName}>{ticket?.user?.profile?.display_name}</td>
+                        <td className={s.ticketID}>#{ticket?.ticket_number}</td>
+                        <td className={s.ticketCrown}>
+                          <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
+                        </td>
+                      </tr>
+                    ))}
+                    <tr className={`${s.allTicketItem} crown`}>
+                      <td className={s.ownerReward}>1,000,000</td>
+                      <td className={s.ownerAvatar}>
+                        <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                      </td>
+                      <td className={s.ownerName}>Shippou Chan</td>
+                      <td className={s.ticketID}>#123456</td>
+                      <td className={s.ticketCrown}>
+                        <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
+                      </td>
+                    </tr>
+                    <tr className={s.allTicketItem}>
+                      <td className={s.ownerReward}>1,000,000</td>
+                      <td className={s.ownerAvatar}>
+                        <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                      </td>
+                      <td className={s.ownerName}>Shippou Chan</td>
+                      <td className={s.ticketID}>#123456</td>
+                      <td className={s.ticketCrown}></td>
+                    </tr>
+                    <tr className={s.allTicketItem}>
+                      <td className={s.ownerReward}>1,000,000</td>
+                      <td className={s.ownerAvatar}>
+                        <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                      </td>
+                      <td className={s.ownerName}>Shippou Chan</td>
+                      <td className={s.ticketID}>#123456</td>
+                      <td className={s.ticketCrown}></td>
+                    </tr>
+                    <tr className={s.allTicketItem}>
+                      <td className={s.ownerReward}>1,000,000</td>
+                      <td className={s.ownerAvatar}>
+                        <Image src="/assets/P2E/raffles/defaultAvatar.jpg" preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                      </td>
+                      <td className={s.ownerName}>Shippou Chan</td>
+                      <td className={s.ticketID}>#123456</td>
+                      <td className={s.ticketCrown}></td>
+                    </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))
+          }
         </section>
         <section className={s.sectionRafflesSponsor}>
           <h2 className={s.sectionTitle}>Sponsor</h2>

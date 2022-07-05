@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import s from "./dailyMission.module.sass";
 import { Col, message, Progress, Row } from "antd";
-import { MissionType, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
 import ButtonWrapper from "../../../common/button/Button";
 import moment from "moment";
 import { handleGraphqlErrors } from "utils/apollo_client";
 import { Game } from "utils/Enum";
+import { CsgoMissionType, PlayerMission } from "src/generated/graphql_p2e";
 
 type MissionItemProp = {
   mission: PlayerMission;
@@ -139,7 +139,7 @@ const DailyMissionItem = (props: MissionItemProp) => {
                 strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
                 width={60}
                 percent={currentPercent} format={() => {
-                  if (mission?.mission?.type === MissionType.Kr || mission?.mission?.type === MissionType.Kda) {
+                  if (mission?.mission?.csgo_mission?.type === CsgoMissionType.Kr || mission?.mission?.csgo_mission?.type === CsgoMissionType.Kda) {
                     return `${achieved}`
                   }
                   if (mission?.mission?.goal.length >= 3) {
