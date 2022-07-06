@@ -1,3 +1,5 @@
+@import "styles/common"
+
 .rafflesBg
   background: url('/assets/P2E/raffles/bgRafflesMobile.jpg') no-repeat fixed top center
   background-size: cover
@@ -663,7 +665,7 @@
       font-weight: 600
       font-size: 12px
       line-height: 12px
-      color: #FFFFFF
+      color: #000000
       text-transform: uppercase
       position: relative
       span
@@ -808,30 +810,33 @@
             color: #FFFFFF
             @media screen and (min-width: 1400px)
               font-size: 24px
-          .ownerAvatar
-            :global(.ant-image)
-              img
+          .ownerInfo
+            .ownerInfoFlex
+              @include flex-rear
+              justify-content: flex-start
+              .ownerAvatar
                 min-width: 30px
                 max-width: 30px
                 height: 30px
                 object-fit: cover
                 object-position: center
                 border-radius: 2.5px
+                margin-right: 8px
                 @media screen and (min-width: 1400px)
                   min-width: 80px
                   max-width: 80px
                   height: 80px
                   border-radius: 5px
-
-          .ownerName
-            font-family: 'Revx Neue Demo'
-            font-weight: 600
-            font-size: 14px
-            line-height: 120%
-            letter-spacing: 0.04em
-            color: rgba(255, 255, 255, 0.8)
-            @media screen and (min-width: 1400px)
-              font-size: 24px
+                  margin-right: 40px
+              .ownerName
+                font-family: 'Revx Neue Demo'
+                font-weight: 600
+                font-size: 14px
+                line-height: 120%
+                letter-spacing: 0.04em
+                color: rgba(255, 255, 255, 0.8)
+                @media screen and (min-width: 1400px)
+                  font-size: 24px
           .ticketID
             font-family: 'Poppins'
             font-weight: 400

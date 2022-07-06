@@ -1,6 +1,7 @@
 import s from './Raffles.module.sass'
 import {Image, Input, Empty, Space, Spin, InputNumber, message as antMessage} from "antd";
 import Link from "next/link";
+import {observer} from "mobx-react-lite";
 import {
   useSearchRaffles,
 } from "../../../../hooks/p2e/raffles/useRafflesList";
@@ -19,6 +20,8 @@ import SpinLoading from "../../common/Spin";
 import {BuyRaffleTicketErrorCode, UserTicketGql} from "../../../../src/generated/graphql_p2e";
 import moment from "moment";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
+import RollingRaffles from "./rolling";
+import RafflesStore from "../../../../src/store/RafflesStore";
 
 const RafflesDetail = () => {
   const router = useRouter()
@@ -32,12 +35,15 @@ const RafflesDetail = () => {
   const {getMyTicketsLoading, getMyTicketslError, refetchMyTickets, getMyTicketsData} = useGetMyTicket(`${raffleUID}`)
   const {getAllTicketsLoading, getAllTicketslError, refetchAllTickets, getAllTicketsData} = useGetAllTicket(`${raffleUID}`)
   const {buyRaffleTicket} = useBuyRaffleTicket()
+  const {dataWinTicket} = RafflesStore
 
   useEffect(() => {
     if (getAllTicketsData?.getAllTickets?.user_tickets) {
       setAllTickets(getAllTicketsData?.getAllTickets?.user_tickets)
     }
   }, [getAllTicketsData?.getAllTickets?.user_tickets])
+  console.log('[] allTickets: ', allTickets);
+  console.log('[] dataWinTicket: ', dataWinTicket);
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
   const raffleEndAt = moment(raffleDetailData?.end_at).format('hh:mm MMM Do')
@@ -226,7 +232,7 @@ const RafflesDetail = () => {
               </div>
             </section>
             <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-
+              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
             </section>
           </div>
         </div>
@@ -261,15 +267,19 @@ const RafflesDetail = () => {
                   <table>
                     <tbody>
                       {allTickets.map((ticket, index) => (
-                        <tr className={`${s.allTicketItem} crown`} key={ticket?.uid}>
+                        <tr className={`${s.allTicketItem}`} key={ticket?.uid}>
                           <td className={s.ownerReward}>{index + 1}</td>
-                          <td className={s.ownerAvatar}>
-                            <Image src={ticket?.user?.profile?.avatar as string} preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                          <td className={s.ownerInfo}>
+                            <Link href={`/profile/${ticket?.user?.profile?.user_name}`} passHref>
+                              <a className={s.ownerInfoFlex}>
+                                <Image src={ticket?.user?.profile?.avatar ?? '/assets/P2E/raffles/defaultAvatar.jpg'} className={s.ownerAvatar} preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
+                                <div className={s.ownerName}>{ticket?.user?.profile?.display_name}</div>
+                              </a>
+                            </Link>
                           </td>
-                          <td className={s.ownerName}>{ticket?.user?.profile?.display_name}</td>
                           <td className={s.ticketID}>#{ticket?.ticket_number}</td>
                           <td className={s.ticketCrown}>
-                            <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
+                            {/*<Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />*/}
                           </td>
                         </tr>
                       ))}
@@ -338,4 +348,4 @@ const RafflesDetail = () => {
     </div>
   )
 }
-export default RafflesDetail
+export default observer(RafflesDetail)

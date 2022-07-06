@@ -1,0 +1,122 @@
+.container
+  display: flex
+  align-items: center
+  padding: 20px 0px
+  flex-direction: column
+  @media (min-width: 992px)
+    justify-content: space-between
+    flex-direction: row
+    padding: 80px 0px
+  .banner_heading
+    flex: 50% 0 0
+    text-align: center
+    @media (min-width: 992px)
+      text-align: left
+
+    h1
+      font-size: 30px
+      line-height: 33px
+      font-weight: 600
+      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+      background-clip: text
+      text-fill-color: transparent
+      @media (min-width: 1280px)
+        font-size: 60px
+        line-height: 66px
+
+    p
+      font-weight: 400
+      font-size: 16px
+      line-height: 20px
+      letter-spacing: 0.2em
+      color: #DBE0E8
+      margin: 8px 0px 0px 0px
+      @media (min-width: 1280px)
+        font-size: 32px
+        line-height: 35px
+    span
+      font-weight: 400
+      font-size: 13px
+      line-height: 16px
+      letter-spacing: 0.04em
+      color: #DBE0E8
+      @media (min-width: 1280px)
+        font-size: 24px
+        line-height: 33px
+  .btn_sign_in
+    position: relative
+    width: 130px
+    height: 26px
+    font-weight: 600
+    color: #fff
+    cursor: pointer
+    margin: 20px auto
+    text-align:center
+    border: none
+    display: flex
+    align-items: center
+    justify-content: center
+    background-size: 300% 100%
+
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+    background-image: linear-gradient(to right, #fff, #fff, #1889E4, #0BEBD6)
+    @media (min-width: 992px)
+      margin: 20px 0px
+    @media (min-width: 1280px)
+      width: 240px
+      height: 55px
+    p
+      font-size: 14px
+      font-weight: 300
+      line-height: 31px
+      letter-spacing: 0.2em
+      color: #333333
+      margin: 0
+      transition: .4s
+      @media (min-width: 1280px)
+        font-size: 28px
+  
+  .btn_sign_in:before
+    content: ''
+    position: absolute
+    top: -6px
+    left: -6px
+    right: -6px
+    bottom: -6px
+    z-index: 1
+
+    transition: 0.4s
+    border-radius: inherit
+    padding: 3px
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+    -webkit-mask-composite: xor
+    mask-composite: exclude
+    background: #FFF
+    background-size: 300% 100%
+
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+    background-image: linear-gradient(to right, #fff, #fff, #1889E4, #0BEBD6)
+
+  .btn_sign_in:hover::before,
+  .btn_sign_in:hover
+    background-position: 100% 0
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+  .btn_sign_in:hover p 
+    color: #fff
+
+.banner_thumb
+  order: -1
+  margin-bottom: 20px
+  @media (min-width: 992px)
+    order: 1

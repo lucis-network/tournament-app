@@ -201,6 +201,7 @@ const GET_ALL_TICKET = gql`
           profile {
             display_name
             avatar
+            user_name
           }
         }
       }

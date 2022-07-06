@@ -108,6 +108,7 @@
       flex-direction: column
       width: 100%
       height: 255px
+      background: rgba(69, 80, 107, 1)
       background-repeat: no-repeat !important
       background-size: cover !important
       border-radius: 4px 4px 0 0
@@ -239,7 +240,7 @@
       margin-top: 24px
       width: 100%
       margin-bottom: 24px
-      .listCard
+      .listCardCsgo
         .card
           height: 228px
           background-repeat: no-repeat !important
@@ -278,3 +279,49 @@
             opacity: 0.5
         .card:hover
           box-shadow: inset 0px 1px 27px #90C6F1
+      .listCard
+        .wrapperCard
+          position: relative
+          .card
+            height: 186px
+            width: 100%
+            border-radius: 4px
+          .cardContent
+            height: 40px
+            border-radius: 0 0 4px 4px
+            background: #45506B
+            backdrop-filter: blur(4px)
+            width: 100%
+            clip-path: polygon(0 0, 25% 0, 50% 40%, 75% 0, 100% 0, 100% 100%, 0 100%)
+            display: flex
+            justify-content: space-between
+            padding: 8px 12px
+            align-items: center
+          .cardTitle
+            position: absolute
+            bottom: 45px
+            text-align: center
+            width: 100%
+            font-weight: 600
+            font-size: 16px
+            line-height: 24px
+            z-index: 1
+          .cardBackgroundTitle
+            background: url(/assets/P2E/lol/bg-title.svg)
+            position: absolute
+            bottom: 15px
+            background-size: cover
+            background-repeat: no-repeat
+            width: 100%
+            height: 65px
+          .fillCard
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: #000
+            opacity: 0.5
+            z-index: 2
+          .card:hover
+            box-shadow: inset 0px 1px 27px #90C6F1
