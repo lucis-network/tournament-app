@@ -19,7 +19,7 @@ const SpinLoading: React.FC<SpinLoadingProps> = ({ className, size = 48 }) => {
 
 	return (
 		<div
-			className={`w-full pt-32 flex items-center align-middle justify-center ${className}`}
+			className={`w-full py-10 flex items-center align-middle justify-center ${className}`}
 		>
 			<Spin size="large" indicator={antIcon} />
 		</div>
