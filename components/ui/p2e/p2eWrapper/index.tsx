@@ -16,7 +16,6 @@ interface IProps {
 
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
-  const [disabledTab, setDisabledTab] = useState(false);
   const [currentGame, setCurrentGame] = useState<Game>(Game.CSGO);
 
   useEffect(() => {
@@ -29,17 +28,14 @@ export default observer(function P2EWrapper(props: IProps) {
     }
 
     if (AuthStore.isLoggedIn === false) {
-
       router.push("/");
       return;
     }
 
     if (AuthGameStore.isLoggedInFaceit === false) {
-
       router.push("/");
       return;
-    }
-    ;
+    };
   }, [AuthGameStore.isLoggedInFaceit])
 
   useEffect(() => {
@@ -146,7 +142,7 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {router.pathname !== "/" && <div className={s.chooseGame}>
+                {(router.pathname !== "/" && router.pathname !== "/p2e/raffles") && <div className={s.chooseGame}>
                   <img
                     className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
                     src="/assets/P2E/lol-game.svg" alt="lol-game"

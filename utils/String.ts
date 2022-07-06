@@ -50,3 +50,28 @@ export function truncateStr(str: Maybe<string>, start: number, end: number) {
   str = `${str?.split(" ").splice(start, end).join(" ")}...`;
   return str;
 }
+
+// not safe
+export function replaceCharAt(s: string, idx: number, char: string) {
+  return s.slice(0, idx) + char + s.slice(idx + 1, s.length)
+}
+
+// Decoding base64 ⇢ UTF8
+export function b64DecodeUnicode (str: string) {
+  return decodeURIComponent(
+    Array.prototype.map
+      .call(atob(str), function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join(''),
+  );
+}
+
+// Encoding UTF8 ⇢ base64
+export function b64EncodeUnicode (str: string) {
+  return btoa(
+    encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function (match, p1) {
+      return String.fromCharCode(parseInt(p1, 16));
+    }),
+  );
+}

@@ -17,7 +17,7 @@ interface IProps {
   title?: string;
   hasButtonBack?: boolean;
 }
-export const RecentMatchListLOL = (props: IProps) => {
+export const RecentMatchListLOL = React.memo((props: IProps) => {
   const router = useRouter();
   const [recentMatchesFiltered, setRecentMatchesFiltered] = useState<{ [endAt: string]: CsgoPlayerMatch[] }>({})
 
@@ -222,4 +222,4 @@ export const RecentMatchListLOL = (props: IProps) => {
     </>
 
   );
-}
+})

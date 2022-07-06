@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import s from "./dailyMission.module.sass";
+import s from "./mission.module.sass";
 import { Col, message, Progress, Row } from "antd";
-import { MissionType, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { useMutation } from "@apollo/client";
 import { CLAIM_MISSION, REROLL_MISSION } from "hooks/p2e/useP2E";
 import ButtonWrapper from "../../../common/button/Button";
 import moment from "moment";
 import { handleGraphqlErrors } from "utils/apollo_client";
 import { Game } from "utils/Enum";
+import { CsgoMissionType, PlayerMission } from "src/generated/graphql_p2e";
 
 type MissionItemProp = {
   mission: PlayerMission;
@@ -16,7 +16,7 @@ type MissionItemProp = {
   isDailyMission?: boolean;
 };
 
-const DailyMissionItem = (props: MissionItemProp) => {
+const DailyMissionItem = React.memo((props: MissionItemProp) => {
   const { mission, handleUpdateMissions } = props;
   const [loading, setLoading] = useState(false);
 
@@ -59,7 +59,7 @@ const DailyMissionItem = (props: MissionItemProp) => {
             message.error("You has claimed.");
             return;
           default:
-            message.error("Something was wrong. Please contact to lucis network for assistance.")
+            message.error("Something was wrong. Please contact to Lucis network for assistance.")
         };
       })
     }
@@ -139,7 +139,7 @@ const DailyMissionItem = (props: MissionItemProp) => {
                 strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
                 width={60}
                 percent={currentPercent} format={() => {
-                  if (mission?.mission?.type === MissionType.Kr || mission?.mission?.type === MissionType.Kda) {
+                  if (mission?.mission?.csgo_mission?.type === CsgoMissionType.Kr || mission?.mission?.csgo_mission?.type === CsgoMissionType.Kda) {
                     return `${achieved}`
                   }
                   if (mission?.mission?.goal.length >= 3) {
@@ -170,6 +170,11 @@ const DailyMissionItem = (props: MissionItemProp) => {
 
     </div >
   );
-};
+}, (prevProps, currentProps) => {
+  if (JSON.stringify(prevProps.mission) === JSON.stringify(currentProps.mission)) {
+    return true;
+  }
+  return false;
+});
 
 export default DailyMissionItem;
