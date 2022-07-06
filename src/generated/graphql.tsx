@@ -1906,6 +1906,15 @@ export type LolMatch = {
   _count: LolMatchCount;
   created_at: Scalars['DateTime'];
   end_at: Scalars['DateTime'];
+<<<<<<< HEAD
+  map?: Maybe<Scalars['String']>;
+  match_statistic?: Maybe<Scalars['JSON']>;
+  players?: Maybe<Array<PlayerLolMatch>>;
+  region?: Maybe<Scalars['String']>;
+  type: LolRegime;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+=======
   loser_team?: Maybe<Scalars['String']>;
   map?: Maybe<Scalars['String']>;
   match_statistic?: Maybe<Scalars['JSON']>;
@@ -1914,6 +1923,7 @@ export type LolMatch = {
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   winner_team?: Maybe<Scalars['String']>;
+>>>>>>> 8a0a4bf805b8e95a0aaad4e92feb7ae2ee1bbd97
 };
 
 export type LolMatchCount = {
@@ -1935,6 +1945,14 @@ export type LolMatchCreateOrConnectWithoutPlayersInput = {
 export type LolMatchCreateWithoutPlayersInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   end_at: Scalars['DateTime'];
+<<<<<<< HEAD
+  map?: InputMaybe<Scalars['String']>;
+  match_statistic?: InputMaybe<Scalars['JSON']>;
+  region?: InputMaybe<Scalars['String']>;
+  type: LolRegime;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+=======
   loser_team?: InputMaybe<Scalars['String']>;
   map?: InputMaybe<Scalars['String']>;
   match_statistic?: InputMaybe<Scalars['JSON']>;
@@ -1942,6 +1960,7 @@ export type LolMatchCreateWithoutPlayersInput = {
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   winner_team?: InputMaybe<Scalars['String']>;
+>>>>>>> 8a0a4bf805b8e95a0aaad4e92feb7ae2ee1bbd97
 };
 
 export type LolMatchWhereUniqueInput = {
@@ -2194,7 +2213,9 @@ export type MissionLevel = {
   __typename?: 'MissionLevel';
   _count: MissionLevelCount;
   created_at: Scalars['DateTime'];
+  game_uid?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  is_lucis_mission: Scalars['Boolean'];
   level: Scalars['Int'];
   lucis_point?: Maybe<Scalars['Int']>;
   lucis_token?: Maybe<Scalars['Decimal']>;
@@ -2220,6 +2241,8 @@ export type MissionLevelCreateOrConnectWithoutMissionInput = {
 
 export type MissionLevelCreateWithoutMissionInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
+  game_uid?: InputMaybe<Scalars['String']>;
+  is_lucis_mission?: InputMaybe<Scalars['Boolean']>;
   level: Scalars['Int'];
   lucis_point?: InputMaybe<Scalars['Int']>;
   lucis_token?: InputMaybe<Scalars['Decimal']>;
@@ -3302,26 +3325,74 @@ export type PlayerGameWhereUniqueInput = {
 
 export type PlayerLolMatch = {
   __typename?: 'PlayerLolMatch';
+  aces?: Maybe<Scalars['Int']>;
+  assist?: Maybe<Scalars['Int']>;
   champion_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
+  damage?: Maybe<Scalars['Int']>;
+  double_kill?: Maybe<Scalars['Int']>;
+  eye_destroy?: Maybe<Scalars['Int']>;
+  eye_plugin?: Maybe<Scalars['Int']>;
+  gold?: Maybe<Scalars['Int']>;
+  is_most_damage: Scalars['Boolean'];
+  is_most_eye_destroy: Scalars['Boolean'];
+  is_most_eye_plugin: Scalars['Boolean'];
+  is_most_kill_soldier: Scalars['Boolean'];
+  is_most_take_damage?: Maybe<Scalars['Int']>;
   is_win: Scalars['Boolean'];
+  kill?: Maybe<Scalars['Int']>;
+  kill_soldier?: Maybe<Scalars['Int']>;
+  lane: LolLane;
   lucis_point: Scalars['Int'];
   match: LolMatch;
   match_uid: Scalars['String'];
+  most_assist: Scalars['Boolean'];
+  most_gold: Scalars['Boolean'];
+  most_kill: Scalars['Boolean'];
+  mvp?: Maybe<Scalars['Int']>;
+  pental_kill?: Maybe<Scalars['Int']>;
   player: PlayerGame;
   player_game_uid: Scalars['String'];
   player_statistic?: Maybe<Scalars['JSON']>;
+  point?: Maybe<Scalars['Int']>;
+  quadra_kill?: Maybe<Scalars['Int']>;
+  take_damage?: Maybe<Scalars['Int']>;
+  triple_kill?: Maybe<Scalars['Int']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
 };
 
 export type PlayerLolMatchCreateManyPlayerInput = {
+  aces?: InputMaybe<Scalars['Int']>;
+  assist?: InputMaybe<Scalars['Int']>;
   champion_id: Scalars['Int'];
   created_at?: InputMaybe<Scalars['DateTime']>;
+  damage?: InputMaybe<Scalars['Int']>;
+  double_kill?: InputMaybe<Scalars['Int']>;
+  eye_destroy?: InputMaybe<Scalars['Int']>;
+  eye_plugin?: InputMaybe<Scalars['Int']>;
+  gold?: InputMaybe<Scalars['Int']>;
+  is_most_damage?: InputMaybe<Scalars['Boolean']>;
+  is_most_eye_destroy?: InputMaybe<Scalars['Boolean']>;
+  is_most_eye_plugin?: InputMaybe<Scalars['Boolean']>;
+  is_most_kill_soldier?: InputMaybe<Scalars['Boolean']>;
+  is_most_take_damage?: InputMaybe<Scalars['Int']>;
   is_win?: InputMaybe<Scalars['Boolean']>;
+  kill?: InputMaybe<Scalars['Int']>;
+  kill_soldier?: InputMaybe<Scalars['Int']>;
+  lane?: InputMaybe<LolLane>;
   lucis_point?: InputMaybe<Scalars['Int']>;
   match_uid: Scalars['String'];
+  most_assist?: InputMaybe<Scalars['Boolean']>;
+  most_gold?: InputMaybe<Scalars['Boolean']>;
+  most_kill?: InputMaybe<Scalars['Boolean']>;
+  mvp?: InputMaybe<Scalars['Int']>;
+  pental_kill?: InputMaybe<Scalars['Int']>;
   player_statistic?: InputMaybe<Scalars['JSON']>;
+  point?: InputMaybe<Scalars['Int']>;
+  quadra_kill?: InputMaybe<Scalars['Int']>;
+  take_damage?: InputMaybe<Scalars['Int']>;
+  triple_kill?: InputMaybe<Scalars['Int']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3344,12 +3415,36 @@ export type PlayerLolMatchCreateOrConnectWithoutPlayerInput = {
 };
 
 export type PlayerLolMatchCreateWithoutPlayerInput = {
+  aces?: InputMaybe<Scalars['Int']>;
+  assist?: InputMaybe<Scalars['Int']>;
   champion_id: Scalars['Int'];
   created_at?: InputMaybe<Scalars['DateTime']>;
+  damage?: InputMaybe<Scalars['Int']>;
+  double_kill?: InputMaybe<Scalars['Int']>;
+  eye_destroy?: InputMaybe<Scalars['Int']>;
+  eye_plugin?: InputMaybe<Scalars['Int']>;
+  gold?: InputMaybe<Scalars['Int']>;
+  is_most_damage?: InputMaybe<Scalars['Boolean']>;
+  is_most_eye_destroy?: InputMaybe<Scalars['Boolean']>;
+  is_most_eye_plugin?: InputMaybe<Scalars['Boolean']>;
+  is_most_kill_soldier?: InputMaybe<Scalars['Boolean']>;
+  is_most_take_damage?: InputMaybe<Scalars['Int']>;
   is_win?: InputMaybe<Scalars['Boolean']>;
+  kill?: InputMaybe<Scalars['Int']>;
+  kill_soldier?: InputMaybe<Scalars['Int']>;
+  lane?: InputMaybe<LolLane>;
   lucis_point?: InputMaybe<Scalars['Int']>;
   match: LolMatchCreateNestedOneWithoutPlayersInput;
+  most_assist?: InputMaybe<Scalars['Boolean']>;
+  most_gold?: InputMaybe<Scalars['Boolean']>;
+  most_kill?: InputMaybe<Scalars['Boolean']>;
+  mvp?: InputMaybe<Scalars['Int']>;
+  pental_kill?: InputMaybe<Scalars['Int']>;
   player_statistic?: InputMaybe<Scalars['JSON']>;
+  point?: InputMaybe<Scalars['Int']>;
+  quadra_kill?: InputMaybe<Scalars['Int']>;
+  take_damage?: InputMaybe<Scalars['Int']>;
+  triple_kill?: InputMaybe<Scalars['Int']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };

@@ -108,7 +108,7 @@ export default observer(function P2EWrapper(props: IProps) {
     })
   }
 
-  const backgroundPage = React.useCallback(() => {
+  const backgroundPage = () => {
     if (currentGame === Game.CSGO) {
       return s.backgroundCSGO;
     }
@@ -117,7 +117,26 @@ export default observer(function P2EWrapper(props: IProps) {
       return s.backgroundLOL;
     }
     return "";
-  }, [])
+  }
+
+
+  const setGame = (game: Game) => {
+    switch (game) {
+      case Game.LOL:
+        if (AuthGameStore.isLoggedInLMSS === false) {
+          router.push("/");
+          return;
+        }
+      case Game.CSGO:
+        if (AuthGameStore.isLoggedInFaceit === false) {
+          router.push("/");
+          return;
+        }
+    }
+    localStorage.setItem("currentGame", game.toString());
+    setCurrentGame(game);
+  }
+
   return (
     <>
       <DocHead />
@@ -146,9 +165,10 @@ export default observer(function P2EWrapper(props: IProps) {
                   <img
                     className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
                     src="/assets/P2E/lol-game.svg" alt="lol-game"
-                    title="coming soon" />
+                    onClick={() => setGame(Game.LOL)} />
                   <img
                     className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
+                    onClick={() => setGame(Game.CSGO)}
                     src="/assets/P2E/csgo-game.svg" alt="csgo-game" />
                   <img
                     className={s.addGame}

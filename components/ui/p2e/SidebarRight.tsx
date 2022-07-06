@@ -133,5 +133,5 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
     </>
   );
 });
-
+SidebarRight.displayName = "SidebarRight";
 export default SidebarRight;

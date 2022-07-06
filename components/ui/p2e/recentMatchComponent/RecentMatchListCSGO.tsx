@@ -211,3 +211,5 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
 
   );
 });
+
+RecentMatchListCSGO.displayName = "RecentMatchListCSGO"
