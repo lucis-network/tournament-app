@@ -110,6 +110,16 @@ export const CONNECT_FACEIT = gql`
   }
 `
 
+export const CONNECT_LMSS = gql`
+  mutation ($summoner_name: String!) {
+    connectLmss (summoner_name: $summoner_name) {
+      player_uid
+      avatar
+      nick_name
+    }
+  }
+`
+
 export const CLAIM_BOX = gql`
   mutation ($platform_id: Int!, $game_uid: String!) {
     claimBox (platform_id: $platform_id, game_uid: $game_uid) 

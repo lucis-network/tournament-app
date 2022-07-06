@@ -7,7 +7,7 @@ import { PlatformAccount } from "../../../../src/generated/graphql_p2e";
 import AuthStore from "../../../Auth/AuthStore";
 import { observer } from 'mobx-react-lite';
 import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
-import { CONNECT_FACEIT, useGetPlatformAccount } from 'hooks/p2e/useP2E';
+import { CONNECT_FACEIT, CONNECT_LMSS, useGetPlatformAccount } from 'hooks/p2e/useP2E';
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
@@ -21,10 +21,18 @@ export default observer(function P2EOverview() {
   const [isAuth, setIsAuth] = React.useState<boolean>(false);
 
   const [loadingFaceit, setLoadingFaceit] = useState<boolean>(true);
+  const [loadingLMSS, setLoadingLMSS] = useState<boolean>(true);
   const [openConnectLOLPopup, setOpenConnectLOLPopup] = useState<boolean>(false);
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
+  const [LmssUser, setLmssUser] = useState<PlatformAccount>({} as PlatformAccount)
   const router = useRouter();
   const [connectFaceit] = useMutation(CONNECT_FACEIT, {
+    context: {
+      endpoint: 'p2e'
+    }
+  })
+
+  const [connectLMSS] = useMutation(CONNECT_LMSS, {
     context: {
       endpoint: 'p2e'
     }
@@ -77,7 +85,7 @@ export default observer(function P2EOverview() {
   useEffect(() => {
 
     if (AuthGameStore.isLoggedInFaceit === true) {
-      setIsAuth(false);
+      setIsAuth(true);
 
       const faceitUser = {
         avatar: AuthGameStore.faceit_avatar,
@@ -95,6 +103,7 @@ export default observer(function P2EOverview() {
     }
 
     setLoadingFaceit(false);
+    setLoadingLMSS(false);
   }, [AuthGameStore.isLoggedInFaceit, AuthStore.isLoggedIn])
 
 
@@ -132,6 +141,7 @@ export default observer(function P2EOverview() {
             setFaceitUser(response.data.connectFaceit)
             const data = response.data.connectFaceit;
             const gameAccount: AuthGameUser = {
+              ...AuthGameStore,
               faceit_id: data.player_uid,
               faceit_access_token: accessToken as string,
               faceit_id_token: idToken as string,
@@ -183,10 +193,53 @@ export default observer(function P2EOverview() {
   //   });
   // };
 
-  // const connectLOL = ()
+  const connectLOL = async (summonerName: string) => {
+    setOpenConnectLOLPopup(false);
+    setLoadingLMSS(true);
+    try {
+      const response = await connectLMSS({
+        variables: {
+          summoner_name: summonerName
+        }
+      });
+
+      setLmssUser(response.data.connectLmss);
+      
+
+
+    } catch (e: any) {
+      handleGraphqlErrors(e, (code) => {
+        switch (code) {
+          // case "ALREADY_CONNECTED":
+          //   message.error("This account is already connected to another user! Please use another account.")
+          //   return;
+          // case "HAS_NOT_CSGO":
+          //   message.error("Your account on Faceit is not connected to CS:GO. Please connect to your game first");
+          //   return;
+          default:
+            message.error("Something was wrong. Please contact to Lucis Network!")
+        };
+      })
+    }
+    setLoadingLMSS(false);
+
+  }
+
+  const onClickConnectLMSS = () => {
+    if (!isAuth) {
+      message.error("Please sign in first!");
+      return;
+    }
+
+    setOpenConnectLOLPopup(true);
+  }
   return (
     <div className="lucis-container-2">
-      {openConnectLOLPopup && <ConnectLOLPopup onCancel={() => setOpenConnectLOLPopup(false)}/>}
+      {openConnectLOLPopup &&
+        <ConnectLOLPopup
+          onCancel={() => setOpenConnectLOLPopup(false)}
+          onConnectLOL={(summonerName) => connectLOL(summonerName)}
+        />}
       <div className={s.overviewContainer}>
         <div className={s.overviewSection}>
           <h2 className={s.overviewSectionTitle}>Choose game</h2>
@@ -209,7 +262,10 @@ export default observer(function P2EOverview() {
                 </div>
                 <div className={s.gameName}>
                   <h3>League of Legends</h3>
-                  <Button className={s.btnConnectLol} onClick={() => setOpenConnectLOLPopup(true)}>Connect game</Button>
+                  <Button
+                    className={s.btnConnectLol}
+                    loading={loadingLMSS}
+                    onClick={() => onClickConnectLMSS()}>Connect game</Button>
                 </div>
               </div>
             </Col>
