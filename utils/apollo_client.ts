@@ -248,7 +248,7 @@ export function handleGraphqlErrors(
     }
 
     // @ts-ignore
-    networkError.result.errors.forEach((e) => onSingleError(e, onError));
+    networkError.result && networkError.result.errors.forEach((e) => onSingleError(e, onError));
   }
 
   if (graphQLErrors) {
