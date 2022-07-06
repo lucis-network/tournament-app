@@ -8,6 +8,7 @@ import moment from "moment";
 import CountdownTimeEnd from "../timeEnd";
 import Countdown from "antd/lib/statistic/Countdown";
 import {RaffleDetail, UserTicketGql} from "../../../../../src/generated/graphql_p2e";
+import RafflesStore from "src/store/RafflesStore";
 
 
 const Digit = function (props: {
@@ -32,20 +33,19 @@ type Props = {
   dataRaffleDetail?: RaffleDetail;
 }
 const RollingRaffles = (props: Props) => {
-
   const {raffleUid, dataRaffleDetail} = props;
   const {dataWonTickets} = useGetWonTickets({
     raffle_uid: raffleUid,
     skip: isEmpty(raffleUid)
   },);
 
-  console.log("dataWonTickets", dataWonTickets);
   const [currentTicket, setCurrentTicket] = useState('000000');
   const [targetTicket, setTargetTicket] = useState('');
   const [currentRollingIdx, setCurrentRollingIdx] = useState(0);
   const [currentDataIdx, setCurrentDataIdx] = useState(0);
   const [dataWinTicket, setDataWinTicket] = useState<Array<UserTicketGql | undefined>>([]);
   const [checkDisplayTimeEnd, setCheckDisplayTimeEnd] = useState(false);
+  const [checkDataWinStore, setCheckDataWinStore] = useState(false);
 
   const timeEnd = moment(dataRaffleDetail?.end_at)
     .add(dataRaffleDetail?.winner_total ? dataRaffleDetail?.winner_total : 0, "minutes")
@@ -65,8 +65,10 @@ const RollingRaffles = (props: Props) => {
   }, [dataRaffleDetail])
 
   useEffect(() => {
-    if(dataWonTickets) {
-      setDataWinTicket(Array.from({length: dataWonTickets.length}, (_, i) => undefined))
+    if (dataWonTickets && RafflesStore.dataWinTicket.length === 0) {
+      //setDataWinTicket(Array.from({length: dataWonTickets.length}, (_, i) => undefined))
+      RafflesStore.dataWinTicket = Array.from({length: dataWonTickets.length}, (_, i) => undefined);
+      console.log("vao day khong");
     }
   }, [dataWonTickets])
 
@@ -103,22 +105,26 @@ const RollingRaffles = (props: Props) => {
       changeIdxInterval = setInterval(() => {
         setCurrentRollingIdx(currentRollingIdx + 1);
         if (currentRollingIdx == 6) {
-          let data = dataWinTicket;
+          let data = RafflesStore.dataWinTicket;
 
-          // if (currentDataIdx > 0) data?.push(dataWonTickets[currentDataIdx - 1]);
           if (currentDataIdx > 0) {
             data[currentDataIdx-1] = dataWonTickets![currentDataIdx - 1];
           }
-          setDataWinTicket(data);
+          RafflesStore.dataWinTicket = data;
         }
       }, currentRollingIdx === 6 ? 500 : 5100);
+
+      // if(currentRollingIdx > 6) clearInterval(changeIdxInterval);
     }
     return () => {
       clearInterval(changeIdxInterval)
     }
-  }, [currentRollingIdx, dataWinTicket, targetTicket])
+  }, [currentRollingIdx, targetTicket, currentDataIdx, dataWonTickets, RafflesStore.dataWinTicket])
 
 
+  useEffect(() => {
+    console.log("RafflesStore.dataWinTicket", RafflesStore.dataWinTicket);
+  }, [RafflesStore.dataWinTicket])
   // rolling new ticket
   useEffect(() => {
     let currentDataInterval: NodeJS.Timer;
@@ -195,18 +201,7 @@ const RollingRaffles = (props: Props) => {
       <div className={s.recentWin}>
         <span className={s.recentWinTitle}>Recent Win Ticket ID</span>
         <div className={s.recentWinTable}>
-          {dataWinTicket ? dataWinTicket?.map((item, index: number) => {
-
-            // if (!item) {
-            //   return (
-            //     <>
-            //       <div className={s.recentWinItem}>
-            //         <span className={s.recentWinItemId}>#------</span>
-            //       </div>
-            //     </>
-            //   )
-            // }
-
+          {RafflesStore.dataWinTicket ? RafflesStore.dataWinTicket?.map((item, index: number) => {
             return (
               <>
                 <div className={s.recentWinItem} key={`${item?.ticket_number}`}>
