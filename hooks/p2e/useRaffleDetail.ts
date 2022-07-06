@@ -1,11 +1,16 @@
-import { gql, useQuery } from "@apollo/client";
+import {ApolloError, gql, useQuery} from "@apollo/client";
+import {UserTicketGql} from "../../src/generated/graphql_p2e";
 
 type Props = {
   raffle_uid?: string;
   skip?: boolean;
 };
 
-export function useGetWonTickets(props: Props) {
+export function useGetWonTickets(props: Props): {
+  loading: boolean,
+  error: ApolloError | undefined,
+  dataWonTickets: UserTicketGql[] | undefined
+} {
   const { loading, error, data } = useQuery(GET_WON_TICKETS, {
     variables: { raffle_uid: props?.raffle_uid },
     context: {
@@ -29,7 +34,6 @@ const GET_WON_TICKETS = gql`
       uid
       user_id
       ticket_number
-      ticket_uid
       user {
         id
         code

@@ -4,6 +4,10 @@ import DigitRoll from "components/digit-roll-react/src";
 import {b64DecodeUnicode, replaceCharAt} from "../../../../../utils/String";
 import {useGetWonTickets} from "../../../../../hooks/p2e/useRaffleDetail";
 import {isEmpty, parseInt} from "lodash";
+import moment from "moment";
+import CountdownTimeEnd from "../timeEnd";
+import Countdown from "antd/lib/statistic/Countdown";
+import {RaffleDetail, UserTicketGql} from "../../../../../src/generated/graphql_p2e";
 
 
 const Digit = function (props: {
@@ -25,36 +29,65 @@ const Digit = function (props: {
 }
 type Props = {
   raffleUid?: string;
+  dataRaffleDetail?: RaffleDetail;
 }
 const RollingRaffles = (props: Props) => {
 
+  const {raffleUid, dataRaffleDetail} = props;
   const {dataWonTickets} = useGetWonTickets({
-    raffle_uid: props.raffleUid,
-    skip: isEmpty(props.raffleUid)
-  });
+    raffle_uid: raffleUid,
+    skip: isEmpty(raffleUid)
+  },);
 
+  console.log("dataWonTickets", dataWonTickets);
   const [currentTicket, setCurrentTicket] = useState('000000');
   const [targetTicket, setTargetTicket] = useState('');
   const [currentRollingIdx, setCurrentRollingIdx] = useState(0);
   const [currentDataIdx, setCurrentDataIdx] = useState(0);
-  const [dataWinTicket, setDataWinTicket] = useState<[]>([]);
+  const [dataWinTicket, setDataWinTicket] = useState<Array<UserTicketGql | undefined>>([]);
+  const [checkDisplayTimeEnd, setCheckDisplayTimeEnd] = useState(false);
+
+  const timeEnd = moment(dataRaffleDetail?.end_at)
+    .add(dataRaffleDetail?.winner_total ? dataRaffleDetail?.winner_total : 0, "minutes")
+    .valueOf();
 
   useEffect(() => {
-    const rollInterval = setInterval(() => {
-      const new_digit_n = targetTicket[currentRollingIdx];
-      if (currentRollingIdx <= 5 && targetTicket.length == 6) {
-        if (currentTicket[currentRollingIdx] == new_digit_n) {
-          setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, ((parseInt(new_digit_n) + 1) % 10).toString()));
-
-          setTimeout(() => {
-            setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, new_digit_n));
-          }, 20)
-        }
-        else {
-          setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, new_digit_n));
-        }
+    const checkDateInterval =  setInterval(() => {
+      if(dataRaffleDetail?.end_at <=  (new Date()).toISOString()) {
+        setCheckDisplayTimeEnd(true);
       }
-    }, 5000);
+    }, 1000)
+
+    if(checkDisplayTimeEnd)  clearInterval(checkDateInterval);
+    return () => {
+      clearInterval(checkDateInterval)
+    }
+  }, [dataRaffleDetail])
+
+  useEffect(() => {
+    if(dataWonTickets) {
+      setDataWinTicket(Array.from({length: dataWonTickets.length}, (_, i) => undefined))
+    }
+  }, [dataWonTickets])
+
+  useEffect(() => {
+    let rollInterval: NodeJS.Timer;
+    if (targetTicket.length == 6) {
+      rollInterval = setInterval(() => {
+        const new_digit_n = targetTicket[currentRollingIdx];
+        if (currentRollingIdx <= 5) {
+          if (currentTicket[currentRollingIdx] == new_digit_n) {
+            setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, ((parseInt(new_digit_n) + 1) % 10).toString()));
+
+            setTimeout(() => {
+              setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, new_digit_n));
+            }, 20)
+          } else {
+            setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, new_digit_n));
+          }
+        }
+      }, 5000);
+    }
 
     return () => {
       clearInterval(rollInterval)
@@ -65,32 +98,38 @@ const RollingRaffles = (props: Props) => {
   if (typeof window !== "undefined") window.tmp__setTest = setCurrentTicket
 
   useEffect(() => {
-    const changeIdxInterval = setInterval(() => {
-      setCurrentRollingIdx(currentRollingIdx + 1);
-      if (currentRollingIdx == 6) {
-        let data = dataWinTicket;
-        // @ts-ignore
-        if(currentDataIdx > 0 ) data?.push(dataWonTickets[currentDataIdx-1]);
-        setDataWinTicket(data);
-      }
-    },currentRollingIdx === 6 ? 500 : 5100);
+    let changeIdxInterval: NodeJS.Timer;
+    if (targetTicket.length == 6) {
+      changeIdxInterval = setInterval(() => {
+        setCurrentRollingIdx(currentRollingIdx + 1);
+        if (currentRollingIdx == 6) {
+          let data = dataWinTicket;
 
-
+          // if (currentDataIdx > 0) data?.push(dataWonTickets[currentDataIdx - 1]);
+          if (currentDataIdx > 0) {
+            data[currentDataIdx-1] = dataWonTickets![currentDataIdx - 1];
+          }
+          setDataWinTicket(data);
+        }
+      }, currentRollingIdx === 6 ? 500 : 5100);
+    }
     return () => {
       clearInterval(changeIdxInterval)
     }
-  }, [currentRollingIdx, dataWinTicket])
+  }, [currentRollingIdx, dataWinTicket, targetTicket])
 
 
+  // rolling new ticket
   useEffect(() => {
     let currentDataInterval: NodeJS.Timer;
     if (dataWonTickets) {
       currentDataInterval = setInterval(() => {
-        const ticketNumber = b64DecodeUnicode(dataWonTickets[currentDataIdx]?.ticket_number);
+        const ticketNumber = b64DecodeUnicode(dataWonTickets[currentDataIdx]?.ticket_number ?? '000000');
         setTargetTicket(ticketNumber);
         setCurrentRollingIdx(0);
         setCurrentDataIdx(currentDataIdx + 1);
-      }, currentDataIdx == 0 ? 5000 : 60000)
+        setCurrentTicket('000000');
+      }, currentDataIdx == 0 ? 5000 : 60000) // xu li lan dau wait 5s. lan tiep theo wait 1m vi moi ticket quay trong 1m
 
       if (dataWonTickets.length <= currentDataIdx) clearInterval(currentDataInterval);
     }
@@ -101,7 +140,7 @@ const RollingRaffles = (props: Props) => {
 
   return (
     <div className={s.rafflesWrapper}>
-      <h2 className={s.sectionTitle}>Raffle Rooling</h2>
+      <h2 className={s.sectionTitle}>Raffle Rolling</h2>
       {/*<div>*/}
       {/*  <p className={s.digit}>currentTicket: {currentTicket}</p>*/}
       {/*</div>*/}
@@ -147,19 +186,32 @@ const RollingRaffles = (props: Props) => {
           <span>End rolling at</span>
         </div>
         <div className={s.rollingTime}>
-          <span>00:09:54</span>
+          {checkDisplayTimeEnd &&
+              <CountdownTimeEnd targetDate={timeEnd}/>
+          }
         </div>
       </div>
 
       <div className={s.recentWin}>
         <span className={s.recentWinTitle}>Recent Win Ticket ID</span>
         <div className={s.recentWinTable}>
-          {dataWinTicket ? dataWinTicket?.map((item: any, index: number) => {
+          {dataWinTicket ? dataWinTicket?.map((item, index: number) => {
+
+            // if (!item) {
+            //   return (
+            //     <>
+            //       <div className={s.recentWinItem}>
+            //         <span className={s.recentWinItemId}>#------</span>
+            //       </div>
+            //     </>
+            //   )
+            // }
+
             return (
               <>
                 <div className={s.recentWinItem} key={`${item?.ticket_number}`}>
-                  <span className={s.recentWinItemId}>#{b64DecodeUnicode(item?.ticket_number)}</span>
-                  <span className={s.recentWinItemName}>({item?.user?.profile?.user_name})</span>
+                  <span className={s.recentWinItemId}>#{item?.ticket_number ? b64DecodeUnicode(item?.ticket_number) : '------'}</span>
+                  <span className={s.recentWinItemName}>{item && `(${item?.user?.profile?.user_name})`}</span>
                 </div>
               </>
             );

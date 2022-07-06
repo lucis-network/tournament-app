@@ -107,7 +107,7 @@ const RafflesDetail = () => {
               </div>
             </section>
             <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} ></RollingRaffles>
+              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
             </section>
           </div>
         </div>
