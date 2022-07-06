@@ -172,9 +172,9 @@ const MissionItem = React.memo((props: MissionItemProp) => {
   );
 }, (prevProps, currentProps) => {
   if (JSON.stringify(prevProps.mission) === JSON.stringify(currentProps.mission)) {
-    return true;
+    return false;
   }
-  return false;
+  return true;
 });
 
 export default MissionItem;
