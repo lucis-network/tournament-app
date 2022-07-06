@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
 import AuthGameStore, { AuthGameUser } from 'components/Auth/AuthGameStore';
 import { getLocalAuthGameInfo } from 'components/Auth/AuthLocal';
+import BannerOverview from './component/banner/BannerOverview';
 export default observer(function P2EOverview() {
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
@@ -185,52 +186,32 @@ export default observer(function P2EOverview() {
     <div className="lucis-container-2">
 
       <div className={s.overviewContainer}>
+        <BannerOverview />
+
         <div className={s.overviewSection}>
-          <h2 className={s.overviewSectionTitle}>Choose game</h2>
-          <Row>
-            <Col xs={{ span: 24 }} sm={{ span: 12 }}>
-              <div className={s.gameItem}>
-                <div className={s.gameImage}>
-                  <Image
-                    src="/assets/P2E/lol-cover.jpg"
-                    preview={false}
-                    alt=""
-                    className={s.gameCover}
-                  />
-                  <Image
-                    src="/assets/P2E/lol-logo.webp"
-                    preview={false}
-                    alt=""
-                    className={s.gameLogo}
-                  />
-                </div>
-                <div className={s.gameName}>
-                  <h3>League of Legends</h3>
+          <h2 className={s.overviewSectionTitle}>PLAY YOUR FAVORITE GAME</h2>
+          <Row justify='space-between'>
+            <Col className={s.bg_item} style={{backgroundImage:'url(/assets/P2E/overview/bg_lol.png)'}}>
+              <Row align='middle' className={s.block_game}>
+                <Col className={s.img_game}>
+                  <img src="/assets/P2E/overview/im_lol.png" alt="" />
+                </Col>
+                <Col className={s.content}>
+                  <h1>LEAGUE OF LEGENDS</h1>
                   <Button className={s.btnConnectLol} disabled>Connect game</Button>
-                </div>
-              </div>
+                </Col>
+              </Row>
             </Col>
-            <Col xs={{ span: 24 }} sm={{ span: 12 }}>
-              <div className={s.gameItem}>
-                <div className={s.gameImage}>
-                  <Image
-                    src="/assets/P2E/csgo-cover.webp"
-                    preview={false}
-                    alt=""
-                    className={s.gameCover}
-                  />
-                  <Image
-                    src="/assets/P2E/csgo-logo.webp"
-                    preview={false}
-                    alt=""
-                    className={s.gameLogo}
-                  />
-                </div>
-                <div className={s.gameName}>
-                  <h3>CS:GO FACEIT</h3>
+            <Col className={s.bg_item} style={{backgroundImage:'url(/assets/P2E/overview/bg_cs.png)'}}>
+              <Row align='middle' className={s.block_game}>
+                <Col className={s.img_game}>
+                  <img src="/assets/P2E/overview/im_cs.png" alt="" />
+                </Col>
+                <Col className={s.content}>
+                  <h1>CS:GO</h1>
                   {isEmpty(faceitUser) ? (
                     <>
-                      {/*<div id="faceitLogin" className={s.btnConnectGame}></div>*/}
+                      {/* <div id="faceitLogin" className={s.btnConnectGame}></div> */}
                       <Button
                         onClick={() => handleConnectFaceit()}
                         className={s.btnLoginFaceit}
@@ -243,8 +224,8 @@ export default observer(function P2EOverview() {
                       <div className={s.platformUserName}>{faceitUser?.nick_name}</div>
                     </div>
                   )}
-                </div>
-              </div>
+                </Col>
+              </Row>
             </Col>
           </Row>
         </div>
