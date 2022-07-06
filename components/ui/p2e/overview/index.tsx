@@ -13,13 +13,15 @@ import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
 import AuthGameStore, { AuthGameUser } from 'components/Auth/AuthGameStore';
 import { getLocalAuthGameInfo } from 'components/Auth/AuthLocal';
+import { ConnectLOLPopup } from './ConnectLOLPopup';
 export default observer(function P2EOverview() {
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
   })
   const [isAuth, setIsAuth] = React.useState<boolean>(false);
-  // const { refetchPlatformAccount } = useGetPlatformAccount(false);
+
   const [loadingFaceit, setLoadingFaceit] = useState<boolean>(true);
+  const [openConnectLOLPopup, setOpenConnectLOLPopup] = useState<boolean>(false);
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
   const router = useRouter();
   const [connectFaceit] = useMutation(CONNECT_FACEIT, {
@@ -181,9 +183,10 @@ export default observer(function P2EOverview() {
   //   });
   // };
 
+  // const connectLOL = ()
   return (
     <div className="lucis-container-2">
-
+      {openConnectLOLPopup && <ConnectLOLPopup onCancel={() => setOpenConnectLOLPopup(false)}/>}
       <div className={s.overviewContainer}>
         <div className={s.overviewSection}>
           <h2 className={s.overviewSectionTitle}>Choose game</h2>
@@ -206,7 +209,7 @@ export default observer(function P2EOverview() {
                 </div>
                 <div className={s.gameName}>
                   <h3>League of Legends</h3>
-                  <Button className={s.btnConnectLol} disabled>Connect game</Button>
+                  <Button className={s.btnConnectLol} onClick={() => setOpenConnectLOLPopup(true)}>Connect game</Button>
                 </div>
               </div>
             </Col>

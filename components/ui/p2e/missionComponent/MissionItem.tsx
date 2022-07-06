@@ -16,7 +16,7 @@ type MissionItemProp = {
   isDailyMission?: boolean;
 };
 
-const DailyMissionItem = React.memo((props: MissionItemProp) => {
+const MissionItem = React.memo((props: MissionItemProp) => {
   const { mission, handleUpdateMissions } = props;
   const [loading, setLoading] = useState(false);
 
@@ -177,4 +177,5 @@ const DailyMissionItem = React.memo((props: MissionItemProp) => {
   return false;
 });
 
-export default DailyMissionItem;
+export default MissionItem;
+MissionItem.displayName = "MissionItem"

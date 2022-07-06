@@ -1,7 +1,7 @@
 
 .backgroundCSGO
-  overflow: hidden // added for pseudo-element
   position: relative
+  backface-visibility: hidden
   &::before
     content: ''
     position: fixed
@@ -9,14 +9,16 @@
     height: 100%
     top: 0
     left: 0
-    background-size: cover
+    background-size: 99.9%
     background-repeat: no-repeat
     background-position: center
-    will-change: transform // creates a new paint layer
+    will-change: transform 
     background-image: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/P2E/csgo/background.jpg")
+    @media screen and ( max-width: 992px )
+      background-size: cover
 .backgroundLOL
-  overflow: hidden // added for pseudo-element
   position: relative
+  backface-visibility: hidden
   &::before
     content: ''
     position: fixed
@@ -29,6 +31,8 @@
     background-position: center
     will-change: transform // creates a new paint layer
     background-image: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/P2E/lol/background.jpg")
+    @media screen and ( max-width: 992px )
+      background-size: cover
 .homeWrap
   font-family: 'Poppins'
   button
@@ -48,7 +52,6 @@
     z-index: 1
     top: 0
     @media screen and ( max-width: 550px )
-
       height: 39px
   .tabs
     font-family: 'Revx Neue Demo'
