@@ -1906,6 +1906,7 @@ export type LolMatch = {
   _count: LolMatchCount;
   created_at: Scalars['DateTime'];
   end_at: Scalars['DateTime'];
+<<<<<<< HEAD
   map?: Maybe<Scalars['String']>;
   match_statistic?: Maybe<Scalars['JSON']>;
   players?: Maybe<Array<PlayerLolMatch>>;
@@ -1913,6 +1914,16 @@ export type LolMatch = {
   type: LolRegime;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
+=======
+  loser_team?: Maybe<Scalars['String']>;
+  map?: Maybe<Scalars['String']>;
+  match_statistic?: Maybe<Scalars['JSON']>;
+  players?: Maybe<Array<PlayerLolMatch>>;
+  type: LolRegime;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  winner_team?: Maybe<Scalars['String']>;
+>>>>>>> 8a0a4bf805b8e95a0aaad4e92feb7ae2ee1bbd97
 };
 
 export type LolMatchCount = {
@@ -1934,12 +1945,22 @@ export type LolMatchCreateOrConnectWithoutPlayersInput = {
 export type LolMatchCreateWithoutPlayersInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   end_at: Scalars['DateTime'];
+<<<<<<< HEAD
   map?: InputMaybe<Scalars['String']>;
   match_statistic?: InputMaybe<Scalars['JSON']>;
   region?: InputMaybe<Scalars['String']>;
   type: LolRegime;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+=======
+  loser_team?: InputMaybe<Scalars['String']>;
+  map?: InputMaybe<Scalars['String']>;
+  match_statistic?: InputMaybe<Scalars['JSON']>;
+  type: LolRegime;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  winner_team?: InputMaybe<Scalars['String']>;
+>>>>>>> 8a0a4bf805b8e95a0aaad4e92feb7ae2ee1bbd97
 };
 
 export type LolMatchWhereUniqueInput = {

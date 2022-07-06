@@ -8,6 +8,7 @@ import React, {useEffect} from "react";
 import {useGetAllTicket, useGetMyTicket, useGetRaffleDetail} from "../../../../hooks/p2e/raffles/useRaffleDetail";
 import {useRouter} from "next/router";
 import RollingRaffles from "./rolling";
+import RafflesStore from "../../../../src/store/RafflesStore";
 
 const RafflesDetail = () => {
   const router = useRouter()
@@ -107,7 +108,7 @@ const RafflesDetail = () => {
               </div>
             </section>
             <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} ></RollingRaffles>
+              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
             </section>
           </div>
         </div>
