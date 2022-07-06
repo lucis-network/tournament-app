@@ -1,8 +1,15 @@
-import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
-import {RaffleDetail, UserTicket} from "../../../src/generated/graphql_p2e";
+import {ApolloError, ApolloQueryResult, gql, useApolloClient, useQuery} from "@apollo/client";
+import {RaffleDetail, TicketList, UserTicket} from "../../../src/generated/graphql_p2e";
 import {isEmpty} from "lodash";
 
-export const useGetRaffleDetail = (raffle_uid: string): {
+type BuyRaffleTicketProps = {
+  raffle_ticket_uid?: string,
+  quantity?: number,
+  onError?: (error: ApolloError) => void,
+  onCompleted?: (data: any) => void,
+}
+
+export const useGetRaffleDetail = (raffle_uid?: string): {
   getRaffleDetailLoading: boolean,
   getRaffleDetailError: ApolloError | undefined,
   refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>,
@@ -38,7 +45,7 @@ export const useGetMyTicket = (raffle_uid: string): {
   getMyTicketslError: ApolloError | undefined,
   refetchMyTickets: () => Promise<ApolloQueryResult<any>>,
   getMyTicketsData: {
-    getMyTickets: UserTicket[]
+    getMyTickets: TicketList
   },
 } => {
   const {
@@ -69,7 +76,7 @@ export const useGetAllTicket = (raffle_uid: string): {
   getAllTicketslError: ApolloError | undefined,
   refetchAllTickets: () => Promise<ApolloQueryResult<any>>,
   getAllTicketsData: {
-    getAllTickets: UserTicket[]
+    getAllTickets: TicketList
   },
 } => {
   const {
@@ -95,6 +102,35 @@ export const useGetAllTicket = (raffle_uid: string): {
   }
 }
 
+export const useBuyRaffleTicket = (): {
+  buyRaffleTicket: ({raffle_ticket_uid, quantity, onError, onCompleted}: BuyRaffleTicketProps) => Promise<any>
+} => {
+  const client = useApolloClient()
+  const buyRaffleTicket = async ({raffle_ticket_uid, quantity, onError, onCompleted}: BuyRaffleTicketProps) => {
+    try {
+      const result = await client.mutate({
+        mutation: BUY_RAFFLE_TICKET,
+        variables: {
+          input: {
+            raffle_ticket_uid: raffle_ticket_uid,
+            quantity: quantity,
+          },
+        },
+        context: {
+          endpoint: 'p2e'
+        }
+      })
+      onCompleted && onCompleted(result)
+    } catch (error: any) {
+      onError && onError(error)
+    }
+  }
+
+  return {
+    buyRaffleTicket
+  }
+}
+
 const GET_RAFFLE_DETAIL = gql`
   query($raffle_uid: String!) {
     getRaffleDetail(raffle_uid: $raffle_uid) {
@@ -105,7 +141,6 @@ const GET_RAFFLE_DETAIL = gql`
       lucis_token_reward
       nft_reward
       winner_total
-      won_tickets
       valued_at
       img
       status
@@ -144,10 +179,12 @@ const GET_RAFFLE_DETAIL = gql`
 const GET_MY_TICKET = gql`
   query($raffle_uid: String!) {
     getMyTickets(raffle_uid: $raffle_uid) {
-      uid
-      user_id
-      ticket_number
-      ticket_uid
+      count
+      user_tickets {
+        uid
+        user_id
+        ticket_number
+      }
     }
   }
 `
@@ -155,16 +192,24 @@ const GET_MY_TICKET = gql`
 const GET_ALL_TICKET = gql`
   query($raffle_uid: String!) {
     getAllTickets(raffle_uid: $raffle_uid) {
-      uid
-      user_id
-      ticket_number
-      ticket_uid
-      user {
-        profile {
-          display_name
-          avatar
+      count
+      user_tickets {
+        uid
+        user_id
+        ticket_number
+        user {
+          profile {
+            display_name
+            avatar
+          }
         }
       }
     }
+  }
+`
+
+const BUY_RAFFLE_TICKET = gql`
+  mutation($input: UserTicketInputGql!) {
+    buyRaffleTicket(input: $input)
   }
 `

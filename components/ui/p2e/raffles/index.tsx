@@ -10,6 +10,7 @@ import {
 import React, {useCallback, useEffect, useState} from "react";
 import {Raffle} from "../../../../src/generated/graphql_p2e";
 import {debounce} from "lodash";
+import SpinLoading from "../../common/Spin";
 
 const Raffles = () => {
   const [rafflesData, setRafflesData] = useState<Raffle[]>([])
@@ -42,9 +43,7 @@ const Raffles = () => {
         <div className="lucis-container-2">
           <h2 className={s.sectionTitle}>Recent Winners</h2>
           {getRecentWinnersLoading ? (
-            <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Spin size="large" />
-            </Space>
+            <SpinLoading />
           ) : ((getRecentWinnersError || getRecentWinnersData?.getRecentWinners.length <= 0) ? <Empty /> : (
             <div className={s.recentWinnersList}>
               {getRecentWinnersData?.getRecentWinners && getRecentWinnersData?.getRecentWinners.length > 0 && (
@@ -82,9 +81,7 @@ const Raffles = () => {
             </div>
           </div>
           {getFeaturedRaffleLoading ? (
-            <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Spin size="large" />
-            </Space>
+            <SpinLoading />
           ) : ((getFeaturedRaffleError || getFeaturedRaffleData?.rafflesInCurrentMonth.length <= 0) ? <Empty /> : (
             <div className={s.featuredRaffle}>
               <div className={s.featuredRaffleThumbnail}>
@@ -129,9 +126,7 @@ const Raffles = () => {
           <h2 className={s.sectionTitle}>Sponsor</h2>
           {(getSponsorRaffleError || getSponsorRaffleData?.getSponsorRaffles.length <= 0) ? <Empty /> : (
             getSponsorRaffleLoading ? (
-              <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <Spin size="large" />
-              </Space>
+              <SpinLoading />
             ) : (getSponsorRaffleData?.getSponsorRaffles && (
               <div className={s.rafflesSponsorList}>
                 {getSponsorRaffleData?.getSponsorRaffles.map((sponsor, index) => (
@@ -154,9 +149,7 @@ const Raffles = () => {
             </div>
           </div>
           {searchRafflesLoading ? (
-            <Space size="middle" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Spin size="large" />
-            </Space>
+            <SpinLoading />
           ) : (((rafflesData.length <= 0) || searchRafflesError) ? <Empty /> : (
             <div className={s.rafflesList}>
               {rafflesData.length > 0 && rafflesData.map((raffle, index) => (
