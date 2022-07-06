@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
 import AuthGameStore, { AuthGameUser } from 'components/Auth/AuthGameStore';
 import { getLocalAuthGameInfo } from 'components/Auth/AuthLocal';
+import BannerOverview from './component/banner/BannerOverview';
 export default observer(function P2EOverview() {
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
@@ -185,7 +186,7 @@ export default observer(function P2EOverview() {
     <div className="lucis-container-2">
 
       <div className={s.overviewContainer}>
-        <div className={s.overviewSection}>
+        {/* <div className={s.overviewSection}>
           <h2 className={s.overviewSectionTitle}>Choose game</h2>
           <Row>
             <Col xs={{ span: 24 }} sm={{ span: 12 }}>
@@ -230,7 +231,7 @@ export default observer(function P2EOverview() {
                   <h3>CS:GO FACEIT</h3>
                   {isEmpty(faceitUser) ? (
                     <>
-                      {/*<div id="faceitLogin" className={s.btnConnectGame}></div>*/}
+                      <div id="faceitLogin" className={s.btnConnectGame}></div>
                       <Button
                         onClick={() => handleConnectFaceit()}
                         className={s.btnLoginFaceit}
@@ -247,7 +248,12 @@ export default observer(function P2EOverview() {
               </div>
             </Col>
           </Row>
-        </div>
+        </div> */}
+
+
+
+
+        <BannerOverview />
       </div>
     </div>
   )

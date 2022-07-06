@@ -1,0 +1,94 @@
+.container
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 80px 0px
+
+  .banner_heading
+    flex: 50% 0 0
+    h1
+      font-weight: 600
+      font-size: 60px
+      line-height: 66px
+      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+      background-clip: text
+      text-fill-color: transparent
+    p
+      font-weight: 400
+      font-size: 32px
+      line-height: 35px
+      letter-spacing: 0.2em
+      color: #DBE0E8
+      margin: 8px 0px 0px 0px
+    span
+      font-weight: 400
+      font-size: 24px
+      line-height: 33px
+      letter-spacing: 0.04em
+      color: #DBE0E8
+  .btn_sign_in
+    position: relative
+    width: 240px
+    font-size: 16px
+    font-weight: 600
+    color: #fff
+    cursor: pointer
+    margin: 20px
+    height: 55px
+    text-align:center
+    border: none
+    display: flex
+    align-items: center
+    justify-content: center
+    background-size: 300% 100%
+
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+    background-image: linear-gradient(to right, #fff, #fff, #1889E4, #0BEBD6)
+    
+    p
+      font-weight: 300
+      font-size: 28px
+      line-height: 31px
+      letter-spacing: 0.2em
+      color: #333333
+      margin: 0
+      transition: .4s
+  
+  .btn_sign_in:before
+    content: ''
+    position: absolute
+    top: -6px
+    left: -6px
+    right: -6px
+    bottom: -6px
+    z-index: 1
+
+    transition: 0.4s
+    border-radius: inherit
+    padding: 3px
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+    -webkit-mask-composite: xor
+    mask-composite: exclude
+    background: #FFF
+    background-size: 300% 100%
+
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+    background-image: linear-gradient(to right, #fff, #fff, #1889E4, #0BEBD6)
+
+  .btn_sign_in:hover::before,
+  .btn_sign_in:hover
+    background-position: 100% 0
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+  .btn_sign_in:hover p 
+    color: #fff
