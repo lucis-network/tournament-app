@@ -42,38 +42,38 @@ const Raffles = () => {
 
   return (
     <div className={s.rafflesWrapper}>
-      <section className={s.sectionRecentWinners}>
-        <div className="lucis-container-2">
-          <h2 className={s.sectionTitle}>Recent Winners</h2>
-          {getRecentWinnersLoading ? (
-            <SpinLoading />
-          ) : ((getRecentWinnersError || getRecentWinnersData?.getRecentWinners.length <= 0) ? <Empty /> : (
+      {getRecentWinnersLoading ? (
+        <SpinLoading />
+      ) : ((getRecentWinnersError || getRecentWinnersData?.getRecentWinners.length <= 0) && (
+        <section className={s.sectionRecentWinners}>
+          <div className="lucis-container-2">
+            <h2 className={s.sectionTitle}>Recent Winners</h2>
             <div className={s.recentWinnersList}>
-              {getRecentWinnersData?.getRecentWinners && getRecentWinnersData?.getRecentWinners.length > 0 && (
-                getRecentWinnersData?.getRecentWinners.map((item, index) => (
-                  <div className={s.recentWinnersItem} key={item?.raffle?.uid}>
-                    <div className={s.recentWinnerThumbnail}>
-                      <Image src={item?.raffle?.img ? item?.raffle?.img : '/assets/P2E/raffles/defaultImage.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultImage.jpg" />
+          {getRecentWinnersData?.getRecentWinners && getRecentWinnersData?.getRecentWinners.length > 0 && (
+            getRecentWinnersData?.getRecentWinners.map((item, index) => (
+              <div className={s.recentWinnersItem} key={item?.raffle?.uid}>
+                <div className={s.recentWinnerThumbnail}>
+                  <Image src={item?.raffle?.img ? item?.raffle?.img : '/assets/P2E/raffles/defaultImage.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultImage.jpg" />
+                </div>
+                <div className={s.recentWinnerInfo}>
+                  <div className={s.winner}>
+                    <div className={s.winnerAvatar}>
+                      <Image src={item?.user?.profile?.avatar ? item?.user?.profile?.avatar : '/assets/P2E/raffles/defaultAvatar.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
                     </div>
-                    <div className={s.recentWinnerInfo}>
-                      <div className={s.winner}>
-                        <div className={s.winnerAvatar}>
-                          <Image src={item?.user?.profile?.avatar ? item?.user?.profile?.avatar : '/assets/P2E/raffles/defaultAvatar.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
-                        </div>
-                        <div className={s.winnerUsername}>{item?.user?.profile?.display_name}</div>
-                      </div>
-                      <div className={s.winnerValued}>Valued at {item?.raffle?.valued_at}</div>
-                    </div>
+                    <div className={s.winnerUsername}>{item?.user?.profile?.display_name}</div>
                   </div>
-                ))
-              )}
-            </div>
-          ))}
-          {/*{getRecentWinnersData?.getRecentWinners.length > 0 && (*/}
-          {/*  <button className={s.btnViewAll} disabled>View all</button>*/}
-          {/*)}*/}
+                  <div className={s.winnerValued}>Valued at {item?.raffle?.valued_at}</div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
-      </section>
+            {/*{getRecentWinnersData?.getRecentWinners.length > 0 && (*/}
+            {/*  <button className={s.btnViewAll} disabled>View all</button>*/}
+            {/*)}*/}
+          </div>
+        </section>
+      ))}
       <section className={s.sectionFeaturedRaffle}>
         <div className="lucis-container-2">
           <div className={s.titleFlex}>
