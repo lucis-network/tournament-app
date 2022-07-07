@@ -9,7 +9,7 @@ import {
 } from "../../../../hooks/p2e/raffles/useRafflesList";
 import React, {useCallback, useEffect, useState} from "react";
 import {Raffle, RaffleStatusType} from "../../../../src/generated/graphql_p2e";
-import {debounce} from "lodash";
+import {debounce, isEmpty} from "lodash";
 import SpinLoading from "../../common/Spin";
 
 const Raffles = () => {
@@ -22,6 +22,7 @@ const Raffles = () => {
     name: rafflesKeyword,
     status: RaffleStatusType.Enabled
   })
+  const recentWinnersEmpty = isEmpty(getRecentWinnersData?.getRecentWinners)
 
   useEffect(() => {
     if (searchRafflesData?.searchRaffle) {
@@ -44,7 +45,7 @@ const Raffles = () => {
     <div className={s.rafflesWrapper}>
       {getRecentWinnersLoading ? (
         <SpinLoading />
-      ) : ((!getRecentWinnersError || !(getRecentWinnersData?.getRecentWinners.length <= 0)) && (
+      ) : ((!recentWinnersEmpty) && (
         <section className={s.sectionRecentWinners}>
           <div className="lucis-container-2">
             <h2 className={s.sectionTitle}>Recent Winners</h2>
