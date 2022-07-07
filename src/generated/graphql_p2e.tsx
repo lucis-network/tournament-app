@@ -146,6 +146,17 @@ export enum BracketType {
   Swiss = 'SWISS'
 }
 
+export enum BuyRaffleTicketErrorCode {
+  BalanceNotInitiated = 'BalanceNotInitiated',
+  BuyPhaseEnded = 'BuyPhaseEnded',
+  NotEnoughLucisPoint = 'NotEnoughLucisPoint',
+  NotEnoughLucisToken = 'NotEnoughLucisToken',
+  RaffleNotFound = 'RaffleNotFound',
+  TicketQuantityCannotBeZero = 'TicketQuantityCannotBeZero',
+  TotalLimitExceeded = 'TotalLimitExceeded',
+  UserLimitExceeded = 'UserLimitExceeded'
+}
+
 export type CacheCsgoPlayerStatistic = {
   __typename?: 'CacheCSGOPlayerStatistic';
   _count: CacheCsgoPlayerStatisticCount;
@@ -591,14 +602,13 @@ export type LolMatch = {
   _count: LolMatchCount;
   created_at: Scalars['DateTime'];
   end_at: Scalars['DateTime'];
-  loser_team?: Maybe<Scalars['String']>;
   map?: Maybe<Scalars['String']>;
   match_statistic?: Maybe<Scalars['JSON']>;
   players?: Maybe<Array<PlayerLolMatch>>;
+  region?: Maybe<Scalars['String']>;
   type: LolRegime;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
-  winner_team?: Maybe<Scalars['String']>;
 };
 
 export type LolMatchCount = {
@@ -622,6 +632,7 @@ export type LolMission = {
 };
 
 export enum LolMissionType {
+  Assist = 'Assist',
   Baron = 'Baron',
   Damage = 'Damage',
   DamageToChampion = 'DamageToChampion',
@@ -723,7 +734,9 @@ export type MissionLevel = {
   __typename?: 'MissionLevel';
   _count: MissionLevelCount;
   created_at: Scalars['DateTime'];
+  game_uid?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  is_lucis_mission: Scalars['Boolean'];
   level: Scalars['Int'];
   lucis_point?: Maybe<Scalars['Int']>;
   lucis_token?: Maybe<Scalars['Decimal']>;
@@ -754,6 +767,9 @@ export type Mutation = {
   connect?: Maybe<PlatformAccountDto>;
   /** Connect Faceit */
   connectFaceit: PlatformAccountDto;
+  /** Connect LOL */
+  connectLmss: PlatformAccountDto;
+  createLOlMission?: Maybe<Scalars['Boolean']>;
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
@@ -817,6 +833,20 @@ export type MutationConnectArgs = {
 export type MutationConnectFaceitArgs = {
   accessToken: Scalars['String'];
   idToken: Scalars['String'];
+};
+
+
+export type MutationConnectLmssArgs = {
+  summoner_name: Scalars['String'];
+};
+
+
+export type MutationCreateLOlMissionArgs = {
+  goal: Scalars['Int'];
+  level_id: Scalars['Int'];
+  regime: LolRegime;
+  title: Scalars['String'];
+  type: LolMissionType;
 };
 
 
@@ -1044,15 +1074,39 @@ export type PlayerGameCount = {
 
 export type PlayerLolMatch = {
   __typename?: 'PlayerLolMatch';
+  aces?: Maybe<Scalars['Int']>;
+  assist?: Maybe<Scalars['Int']>;
   champion_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
+  damage?: Maybe<Scalars['Int']>;
+  double_kill?: Maybe<Scalars['Int']>;
+  eye_destroy?: Maybe<Scalars['Int']>;
+  eye_plugin?: Maybe<Scalars['Int']>;
+  gold?: Maybe<Scalars['Int']>;
+  is_most_damage: Scalars['Boolean'];
+  is_most_eye_destroy: Scalars['Boolean'];
+  is_most_eye_plugin: Scalars['Boolean'];
+  is_most_kill_soldier: Scalars['Boolean'];
+  is_most_take_damage?: Maybe<Scalars['Int']>;
   is_win: Scalars['Boolean'];
+  kill?: Maybe<Scalars['Int']>;
+  kill_soldier?: Maybe<Scalars['Int']>;
+  lane: LolLane;
   lucis_point: Scalars['Int'];
   match: LolMatch;
   match_uid: Scalars['String'];
+  most_assist: Scalars['Boolean'];
+  most_gold: Scalars['Boolean'];
+  most_kill: Scalars['Boolean'];
+  mvp?: Maybe<Scalars['Int']>;
+  pental_kill?: Maybe<Scalars['Int']>;
   player: PlayerGame;
   player_game_uid: Scalars['String'];
   player_statistic?: Maybe<Scalars['JSON']>;
+  point?: Maybe<Scalars['Int']>;
+  quadra_kill?: Maybe<Scalars['Int']>;
+  take_damage?: Maybe<Scalars['Int']>;
+  triple_kill?: Maybe<Scalars['Int']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
 };
@@ -1114,12 +1168,13 @@ export type ProgressDailyMission = {
 export type Query = {
   __typename?: 'Query';
   GetAllPlayerNFT?: Maybe<Array<PlayerNft>>;
-  getAllTickets?: Maybe<Array<UserTicketGql>>;
+  getAllTickets?: Maybe<TicketList>;
+  getAppErrorCode?: Maybe<Scalars['Boolean']>;
   getBalance?: Maybe<GBalance>;
   getCsgoMatchStatistic?: Maybe<CsgoMatchStatistics>;
   getDailyPoint?: Maybe<Scalars['Int']>;
   getLucisMission: Array<PlayerMission>;
-  getMyTickets?: Maybe<Array<UserTicketGql>>;
+  getMyTickets?: Maybe<TicketList>;
   getPlatformAccount?: Maybe<Array<PlatformAccount>>;
   getProgressDailyMission?: Maybe<ProgressDailyMission>;
   getRaffleDetail?: Maybe<RaffleDetail>;
@@ -1132,7 +1187,7 @@ export type Query = {
   isClaimBox?: Maybe<Scalars['Boolean']>;
   isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
-  myWonTickets?: Maybe<Array<UserTicketGql>>;
+  myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   rafflesInCurrentMonth?: Maybe<Array<RaffleGql>>;
   searchRaffle?: Maybe<Array<RaffleGql>>;
 };
@@ -1145,6 +1200,11 @@ export type QueryGetAllPlayerNftArgs = {
 
 export type QueryGetAllTicketsArgs = {
   raffle_uid: Scalars['String'];
+};
+
+
+export type QueryGetAppErrorCodeArgs = {
+  BuyRaffleTicketErrorCode: BuyRaffleTicketErrorCode;
 };
 
 
@@ -1513,6 +1573,12 @@ export type TicketCount = {
   user_ticket: Scalars['Int'];
 };
 
+export type TicketList = {
+  __typename?: 'TicketList';
+  count?: Maybe<Scalars['Int']>;
+  user_tickets?: Maybe<Array<UserTicketGql>>;
+};
+
 export type Tournament = {
   __typename?: 'Tournament';
   _count: TournamentCount;
@@ -1809,6 +1875,17 @@ export type UserTicketGql = {
 export type UserTicketInputGql = {
   quantity: Scalars['Int'];
   raffle_ticket_uid: Scalars['String'];
+};
+
+export type UserWonTicketGql = {
+  __typename?: 'UserWonTicketGql';
+  created_at: Scalars['DateTime'];
+  is_claimed?: Maybe<Scalars['Boolean']>;
+  is_winner?: Maybe<Scalars['Boolean']>;
+  ticket_number?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user_id: Scalars['Int'];
 };
 
 export type WinnerAnnouncement = {
