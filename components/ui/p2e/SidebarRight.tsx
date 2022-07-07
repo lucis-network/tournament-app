@@ -27,7 +27,7 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
                 <div className={s.lucisPointWallet}>
                   Lucis Point
                   <img src="/assets/P2E/lucis-point.svg" alt="" width="48" height="48" />
-                  {lucisPoint ?? "-"}
+                  {lucisPoint ?? "--"}
                 </div>
               </Col>
               <Col span={12}>
@@ -98,7 +98,7 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
                 <div className={s.shareBonus}>
                   <p>Join bonus:</p>
                   <div className={s.rewardItem}>
-                    <span className={s.lucisPoint}>+50</span>
+                    <span className={s.lucisPoint}>+0</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                 </div>
@@ -121,7 +121,7 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
                 <div className={s.shareBonus}>
                   <p>Join bonus:</p>
                   <div className={s.rewardItem}>
-                    <span className={s.lucisPoint}>+50</span>
+                    <span className={s.lucisPoint}>+0</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                 </div>

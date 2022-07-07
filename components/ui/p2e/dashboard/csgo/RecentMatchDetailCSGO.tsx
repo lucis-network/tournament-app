@@ -444,7 +444,7 @@ export const RecentMatchDetailCSGO = () => {
                     </div>
                     </Col>
                     <Col span={6}><div className={s.rewardItem}>
-                      <span className={s.lucisPoint}>{`+${data?.point}`}</span>
+                      <span className={s.lucisPoint}>{`+${data?.point ?? "-"}`}</span>
                       <img src="/assets/P2E/lucis-point.svg" alt="" />
                     </div>
                     </Col>

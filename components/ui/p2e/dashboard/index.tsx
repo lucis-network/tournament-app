@@ -8,11 +8,13 @@ import {
   IS_CLAIM_BOX,
   UPDATE_DAILY_MISSION,
   UPDATE_CSGO_RECENTLY_MATCH,
-  useGetRecentMatches
+  useGetRecentCsgoMatches,
+  GET_LOL_RECENT_MATCHES,
+  GET_CSGO_RECENT_MATCHES
 } from "../../../../hooks/p2e/useP2E";
 
 import { useMutation, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoPlayerMatch, PlayerMission } from "../../../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoPlayerMatch, LolPlayerMatchGql, PlayerMission } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchListCSGO } from '../recentMatchComponent/RecentMatchListCSGO';
 import NFTList from '../NFTList';
 import { handleGraphqlErrors } from 'utils/apollo_client';
@@ -31,7 +33,7 @@ const Dashboard = (props: IProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
-  const [recentlyMatches, setRecentlyMatches] = useState<CsgoPlayerMatch[]>([])
+  const [recentlyMatches, setRecentlyMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([])
   const [showGiftBox, setShowGiftBox] = React.useState<boolean>(false);
   const [dailyMissionVariables, setDailyMissionVariables] =
     React.useState<{ game_uid: string, platform_id: number }>({
@@ -49,7 +51,31 @@ const Dashboard = (props: IProps) => {
     context: {
       endpoint: 'p2e'
     }
-  });
+  })
+  
+  const lolRecentMatchQuery = useQuery(GET_LOL_RECENT_MATCHES, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
+      offset: 1,
+      limit: 5,
+      platform_id: 4
+    },
+    skip: true
+  })
+
+  const csgoRecentMatchQuery = useQuery(GET_CSGO_RECENT_MATCHES, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
+      offset: 1,
+      limit: 5,
+      platform_id: 1
+    },
+    skip: true
+  })
 
   const isClaimBoxQuery = useQuery(IS_CLAIM_BOX, {
     variables: dailyMissionVariables,
@@ -82,11 +108,11 @@ const Dashboard = (props: IProps) => {
     }
   })
 
-  const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentMatches({
-    offset: 1,
-    limit: 5,
-    platform_id: 1
-  })
+  // const { getRecentMatchesLoading, getRecentMatchesData } = useGetRecentCsgoMatches({
+  //   offset: 1,
+  //   limit: 5,
+  //   platform_id: 1
+  // })
 
   // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
 
@@ -132,21 +158,46 @@ const Dashboard = (props: IProps) => {
         break;
     }
     if (props.currentGame) {
-      getDailyMission({
-        variables
-      }).then(response => {
-        setDailyMission(response.data.getOrSetDailyMission)
-      });
-
-      isClaimBoxQuery.refetch(variables);
-
+      queryData(variables, props.currentGame);
     }
 
   }, [props.currentGame])
 
-  useEffect(() => {
-    setRecentlyMatches(getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
-  }, [getRecentMatchesData])
+  const queryData = async (variables: { game_uid: string, platform_id: number }, game: Game) => {
+    if (game === Game.CSGO) {
+      const promise = await Promise.all([
+        getDailyMission({variables}),
+        csgoRecentMatchQuery.refetch({
+          offset: 1,
+          limit: 5,
+          platform_id: 1
+        }),
+        isClaimBoxQuery.refetch(variables)
+      ])
+      setDailyMission(promise[0].data.getOrSetDailyMission);
+      setRecentlyMatches(promise[1].data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
+      return;
+    }
+    
+    if (game === Game.LOL) {
+      const promise = await Promise.all([
+        getDailyMission({variables}),
+        lolRecentMatchQuery.refetch({
+          offset: 1,
+          limit: 5,
+          platform_id: 4
+        }),
+        isClaimBoxQuery.refetch(variables)
+      ])
+
+      setDailyMission(promise[0].data.getOrSetDailyMission);
+      setRecentlyMatches(promise[1].data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
+      return;
+    }
+  }
+  // useEffect(() => {
+  //   setRecentlyMatches(getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
+  // }, [getRecentMatchesData])
 
 
   const onClaimBox = async () => {
@@ -185,17 +236,17 @@ const Dashboard = (props: IProps) => {
     switch (props.currentGame) {
       case Game.CSGO:
         return <RecentMatchListCSGO
-          recentMatches={recentlyMatches}
-          loading={getRecentMatchesLoading} />;
+          recentMatches={recentlyMatches as CsgoPlayerMatch[]}
+          loading={csgoRecentMatchQuery.loading} />;
       case Game.LOL:
         return <RecentMatchListLOL
-          recentMatches={recentlyMatches}
-          loading={getRecentMatchesLoading} />;
+          recentMatches={recentlyMatches as LolPlayerMatchGql[]}
+          loading={lolRecentMatchQuery.loading} />;
 
       default:
         return <RecentMatchListCSGO
-          recentMatches={recentlyMatches}
-          loading={getRecentMatchesLoading} />;
+          recentMatches={recentlyMatches as CsgoPlayerMatch[]}
+          loading={csgoRecentMatchQuery.loading} />;
     }
   }
 
