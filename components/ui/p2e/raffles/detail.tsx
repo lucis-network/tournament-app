@@ -17,7 +17,7 @@ import {debounce, isEmpty} from "lodash";
 import Head from "next/head";
 import DefaultErrorPage from "next/error";
 import SpinLoading from "../../common/Spin";
-import {BuyRaffleTicketErrorCode, UserTicketGql} from "../../../../src/generated/graphql_p2e";
+import {BuyRaffleTicketErrorCode, RaffleStatusType, UserTicketGql} from "../../../../src/generated/graphql_p2e";
 import moment from "moment";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
 import RollingRaffles from "./rolling";
@@ -30,10 +30,22 @@ const RafflesDetail = () => {
   const [ticketBuyAmount, setTicketBuyAmount] = useState<number>(0)
   const [totalCost, setTotalCost] = useState<number>(0)
   const [ticketBuying, setTicketBuying] = useState<boolean>(false)
-  const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles('', `${raffleUID}`)
+  const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles({
+    name: '',
+    skipRaflleUid: raffleUID,
+    status: RaffleStatusType.Enabled
+  })
   const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData} = useGetRaffleDetail(`${raffleUID}`)
-  const {getMyTicketsLoading, getMyTicketslError, refetchMyTickets, getMyTicketsData} = useGetMyTicket(`${raffleUID}`)
-  const {getAllTicketsLoading, getAllTicketslError, refetchAllTickets, getAllTicketsData} = useGetAllTicket(`${raffleUID}`)
+  const {getMyTicketsLoading, getMyTicketsError, refetchMyTickets, getMyTicketsData} = useGetMyTicket({
+    raffle_uid: raffleUID,
+    limit: 20,
+    page: 1,
+  })
+  const {getAllTicketsLoading, getAllTicketsError, refetchAllTickets, getAllTicketsData} = useGetAllTicket({
+    raffle_uid: raffleUID,
+    limit: 10,
+    page: 1,
+  })
   const {buyRaffleTicket} = useBuyRaffleTicket()
   const {dataWinTicket} = RafflesStore
 
@@ -42,8 +54,33 @@ const RafflesDetail = () => {
       setAllTickets(getAllTicketsData?.getAllTickets?.user_tickets)
     }
   }, [getAllTicketsData?.getAllTickets?.user_tickets])
-  console.log('[] allTickets: ', allTickets);
-  console.log('[] dataWinTicket: ', dataWinTicket);
+
+  useEffect(() => {
+    const winners = allTickets.some((item, index) => {
+      return dataWinTicket.includes(item)
+    })
+    console.log('[] winners: ', winners);
+    console.log('[RafflesDetail] dataWinTicket: ', dataWinTicket);
+  }, [dataWinTicket])
+
+  const mockData = [allTickets[3], allTickets[7]]
+  let winTickets = [] as any
+  const checkWinners = allTickets.some((item, index) => {
+    const isWinner = mockData.includes(item)
+    if (isWinner) {
+      winTickets.push(index)
+    }
+  })
+  const sortedTickets = [
+    ...allTickets.filter((ticket, index) => {
+      return winTickets.includes(index)
+    }),
+    ...allTickets.filter((ticket, index) => {
+      return !winTickets.includes(index)
+    })
+  ]
+  console.log('[] mockData: ', mockData);
+  console.log('[] sortedTickets: ', sortedTickets);
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
   const raffleEndAt = moment(raffleDetailData?.end_at).format('hh:mm MMM Do')
@@ -86,7 +123,7 @@ const RafflesDetail = () => {
           case BuyRaffleTicketErrorCode.RaffleNotFound:
             antMessage.error('Invalid raffle. Please go back and choose another raffle.')
             break
-          case BuyRaffleTicketErrorCode.AmountExceeded:
+          case BuyRaffleTicketErrorCode.UserLimitExceeded:
             antMessage.error(`You can buy up to ${ticketLimitationPerUser} tickets only.`)
             break
           case BuyRaffleTicketErrorCode.BalanceNotInitiated:
@@ -98,12 +135,19 @@ const RafflesDetail = () => {
           case BuyRaffleTicketErrorCode.NotEnoughLucisToken:
             antMessage.error(`You don't have enough LUCIS token to buy.`)
             break
-          case BuyRaffleTicketErrorCode.BadRequest:
+          case BuyRaffleTicketErrorCode.BuyPhaseEnded:
+            antMessage.error('Buy phase had ended.')
+            break
+          case BuyRaffleTicketErrorCode.TotalLimitExceeded:
             // chaupa todo new message
-            antMessage.error('An unknown error has occurred. Please try again later.' )
+            antMessage.error('An unknown error has occurred. Please try again later.')
+            break
+          case BuyRaffleTicketErrorCode.TicketQuantityCannotBeZero:
+            // chaupa todo new message
+            antMessage.error('An unknown error has occurred. Please try again later.')
             break
           default:
-            antMessage.error('An unknown error has occurred. Please try again later.' )
+            antMessage.error('An unknown error has occurred. Please try again later.')
             break
         }
       }),
@@ -238,7 +282,7 @@ const RafflesDetail = () => {
         </div>
         <section className={s.myTicketsSection}>
           <h2 className={s.sectionTitle}>My tickets [{myTicketsCount}]</h2>
-          {(getMyTicketslError || (getMyTicketsData?.getMyTickets?.user_tickets && (getMyTicketsData?.getMyTickets?.user_tickets.length <= 0))) ? <Empty /> :
+          {(getMyTicketsError || (getMyTicketsData?.getMyTickets?.user_tickets && (getMyTicketsData?.getMyTickets?.user_tickets.length <= 0))) ? <Empty /> :
             (getMyTicketsLoading ? (
               <SpinLoading />
             ) : (
@@ -258,7 +302,7 @@ const RafflesDetail = () => {
               <Image src="/assets/P2E/raffles/iconSearch.svg" preview={false} alt="" />
             </div>
           </div>
-          {(getAllTicketslError || (getAllTicketsData?.getAllTickets?.user_tickets && (getAllTicketsData?.getAllTickets?.user_tickets.length <= 0))) ? <Empty /> :
+          {(getAllTicketsError || (getAllTicketsData?.getAllTickets?.user_tickets && (getAllTicketsData?.getAllTickets?.user_tickets.length <= 0))) ? <Empty /> :
             (getAllTicketsLoading ? (
               <SpinLoading />
             ) : (

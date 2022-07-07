@@ -8,7 +8,7 @@ import {
   useSearchRaffles,
 } from "../../../../hooks/p2e/raffles/useRafflesList";
 import React, {useCallback, useEffect, useState} from "react";
-import {Raffle} from "../../../../src/generated/graphql_p2e";
+import {Raffle, RaffleStatusType} from "../../../../src/generated/graphql_p2e";
 import {debounce} from "lodash";
 import SpinLoading from "../../common/Spin";
 
@@ -18,7 +18,10 @@ const Raffles = () => {
   const {getRecentWinnersLoading, getRecentWinnersError, getRecentWinnersData} = useGetRecentWinners()
   const {getFeaturedRaffleLoading, getFeaturedRaffleError, getFeaturedRaffleData} = useGetFeaturedRaffle()
   const {getSponsorRaffleLoading, getSponsorRaffleError, getSponsorRaffleData} = useGetSponsorRaffle()
-  const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles(rafflesKeyword)
+  const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles({
+    name: rafflesKeyword,
+    status: RaffleStatusType.Enabled
+  })
 
   useEffect(() => {
     if (searchRafflesData?.searchRaffle) {

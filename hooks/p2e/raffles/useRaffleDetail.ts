@@ -1,5 +1,5 @@
 import {ApolloError, ApolloQueryResult, gql, useApolloClient, useQuery} from "@apollo/client";
-import {RaffleDetail, TicketList, UserTicket} from "../../../src/generated/graphql_p2e";
+import {RaffleDetail, TicketList} from "../../../src/generated/graphql_p2e";
 import {isEmpty} from "lodash";
 
 type BuyRaffleTicketProps = {
@@ -7,6 +7,18 @@ type BuyRaffleTicketProps = {
   quantity?: number,
   onError?: (error: ApolloError) => void,
   onCompleted?: (data: any) => void,
+}
+
+type GetAllTicketsProps = {
+  raffle_uid?: string,
+  page?: number,
+  limit?: number,
+}
+
+type GetMyTicketsProps = {
+  raffle_uid?: string,
+  limit?: number,
+  page?: number
 }
 
 export const useGetRaffleDetail = (raffle_uid?: string): {
@@ -40,9 +52,9 @@ export const useGetRaffleDetail = (raffle_uid?: string): {
   }
 }
 
-export const useGetMyTicket = (raffle_uid: string): {
+export const useGetMyTicket = ({raffle_uid, limit, page}: GetMyTicketsProps): {
   getMyTicketsLoading: boolean,
-  getMyTicketslError: ApolloError | undefined,
+  getMyTicketsError: ApolloError | undefined,
   refetchMyTickets: () => Promise<ApolloQueryResult<any>>,
   getMyTicketsData: {
     getMyTickets: TicketList
@@ -50,12 +62,14 @@ export const useGetMyTicket = (raffle_uid: string): {
 } => {
   const {
     loading: getMyTicketsLoading,
-    error: getMyTicketslError,
+    error: getMyTicketsError,
     refetch: refetchMyTickets,
     data: getMyTicketsData,
   } = useQuery(GET_MY_TICKET, {
     variables: {
-      raffle_uid: raffle_uid
+      raffle_uid: raffle_uid,
+      limit: limit,
+      page: page,
     },
     skip: isEmpty(raffle_uid),
     context: {
@@ -65,15 +79,15 @@ export const useGetMyTicket = (raffle_uid: string): {
 
   return {
     getMyTicketsLoading,
-    getMyTicketslError,
+    getMyTicketsError,
     refetchMyTickets,
     getMyTicketsData,
   }
 }
 
-export const useGetAllTicket = (raffle_uid: string): {
+export const useGetAllTicket = ({raffle_uid, page, limit}: GetAllTicketsProps): {
   getAllTicketsLoading: boolean,
-  getAllTicketslError: ApolloError | undefined,
+  getAllTicketsError: ApolloError | undefined,
   refetchAllTickets: () => Promise<ApolloQueryResult<any>>,
   getAllTicketsData: {
     getAllTickets: TicketList
@@ -81,12 +95,14 @@ export const useGetAllTicket = (raffle_uid: string): {
 } => {
   const {
     loading: getAllTicketsLoading,
-    error: getAllTicketslError,
+    error: getAllTicketsError,
     refetch: refetchAllTickets,
     data: getAllTicketsData,
   } = useQuery(GET_ALL_TICKET, {
     variables: {
-      raffle_uid: raffle_uid
+      raffle_uid: raffle_uid,
+      page: page,
+      limit: limit,
     },
     skip: isEmpty(raffle_uid),
     context: {
@@ -96,7 +112,7 @@ export const useGetAllTicket = (raffle_uid: string): {
 
   return {
     getAllTicketsLoading,
-    getAllTicketslError,
+    getAllTicketsError,
     refetchAllTickets,
     getAllTicketsData,
   }
@@ -177,8 +193,8 @@ const GET_RAFFLE_DETAIL = gql`
 `
 
 const GET_MY_TICKET = gql`
-  query($raffle_uid: String!) {
-    getMyTickets(raffle_uid: $raffle_uid) {
+  query($raffle_uid: String!, $page: Int!, $limit: Int!) {
+    getMyTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit) {
       count
       user_tickets {
         uid
@@ -190,8 +206,8 @@ const GET_MY_TICKET = gql`
 `
 
 const GET_ALL_TICKET = gql`
-  query($raffle_uid: String!) {
-    getAllTickets(raffle_uid: $raffle_uid) {
+  query($raffle_uid: String!, $page: Int!, $limit: Int!) {
+    getAllTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit) {
       count
       user_tickets {
         uid
