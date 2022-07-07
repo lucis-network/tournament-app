@@ -113,6 +113,7 @@ const RafflesDetail = observer(() => {
   const ticketLimitationPerUser = getRaffleDetailData?.getRaffleDetail?.ticket?.user_limit
   const cannotBuy = ticketBuying
     || (ticketBuyAmount < 1)
+    || (ticketLimitationPerUser ? ((ticketBuyAmount + myTicketsCount) > ticketLimitationPerUser) : false)
     || (ticketLimitationPerUser ? (ticketBuyAmount > ticketLimitationPerUser) : false)
   const isRaffleClosed = raffleDetailData?.status === RaffleStatus.Closed
 
