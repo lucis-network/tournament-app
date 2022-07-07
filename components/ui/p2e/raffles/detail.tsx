@@ -36,7 +36,7 @@ const RafflesDetail = () => {
     skipRaflleUid: raffleUID,
     status: RaffleStatusType.Enabled
   })
-  const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData} = useGetRaffleDetail(`${raffleUID}`)
+  const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData, refetchRaffleDetail} = useGetRaffleDetail(`${raffleUID}`)
   const {getMyTicketsLoading, getMyTicketsError, refetchMyTickets, getMyTicketsData} = useGetMyTicket({
     raffle_uid: raffleUID,
     limit: 20,
@@ -294,7 +294,7 @@ const RafflesDetail = () => {
             </section>
             {checkDisplayEndAt &&
                 <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""}
+                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} refetchRaffleDetail={refetchRaffleDetail}
                                     dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
                 </section>
             }

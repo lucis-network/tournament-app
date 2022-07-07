@@ -10,7 +10,9 @@ import {RaffleDetail} from "../../../../../src/generated/graphql_p2e";
 import RafflesStore from "src/store/RafflesStore";
 import CountdownTimeBefore from "../timeBefore";
 import PopupClaimTicket from "../popup/popupClaimTickets";
-
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from "antd";
+import {ApolloQueryResult} from "@apollo/client";
 
 const Digit = function (props: {
   value: number,
@@ -32,9 +34,11 @@ const Digit = function (props: {
 type Props = {
   raffleUid?: string;
   dataRaffleDetail?: RaffleDetail;
+  refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>;
 }
 const RollingRaffles = (props: Props) => {
-  const {raffleUid, dataRaffleDetail} = props;
+  const {raffleUid, dataRaffleDetail, refetchRaffleDetail} = props;
+  const antIcon = <LoadingOutlined style={{ fontSize: 20, color: "#00F9FF" }} spin />;
   const {dataWonTickets, refetch} = useGetWonTickets({
     raffle_uid: raffleUid,
     skip: isEmpty(raffleUid)
@@ -52,6 +56,20 @@ const RollingRaffles = (props: Props) => {
   const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
   const [isPopupClaim, setIsPopupClaim] = useState(false);
   const [isCheckHasData, setIsCheckHasData] = useState(false);
+  const [isCheckLoading, setIsCheckLoading] = useState(0);
+
+  const timeEnd = moment(dataRaffleDetail?.end_at)
+    .add(dataRaffleDetail?.winner_total ? dataRaffleDetail?.winner_total : 0, "minutes")
+    .valueOf();
+
+  const endAtBefore = moment(dataRaffleDetail?.end_at)
+    .valueOf();
+
+  useEffect(() => {
+    if (dataWonTickets) {
+      if(dataWonTickets.length === isCheckLoading - 1) refetchRaffleDetail();
+    }
+  }, [dataWonTickets, isCheckLoading]);
 
   useEffect(() => {
     if(dataRaffleDetail?.status === "CLOSED" && dataWonTickets){
@@ -66,12 +84,6 @@ const RollingRaffles = (props: Props) => {
       })
     }
   }, [dataMyWonTickets, dataRaffleDetail]);
-  const timeEnd = moment(dataRaffleDetail?.end_at)
-    .add(dataRaffleDetail?.winner_total ? dataRaffleDetail?.winner_total : 0, "minutes")
-    .valueOf();
-
-  const endAtBefore = moment(dataRaffleDetail?.end_at)
-    .valueOf();
 
   useEffect(() => {
     const checkDateInterval =  setInterval(() => {
@@ -138,23 +150,21 @@ const RollingRaffles = (props: Props) => {
     }
   }, [currentTicket, currentRollingIdx, checkDisplayTimeEnd, isCheckHasData, dataRaffleDetail])
 
-  //@ts-ignore
-  if (typeof window !== "undefined") window.tmp__setTest = setCurrentTicket
-
   useEffect(() => {
     let changeIdxInterval: NodeJS.Timer;
     if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status === "ENABLED") {
       changeIdxInterval = setInterval(() => {
         setCurrentRollingIdx(currentRollingIdx + 1);
-        if (currentRollingIdx == 6) {
+        if (currentRollingIdx == 7) {
           let data = RafflesStore.dataWinTicket;
 
           if (currentDataIdx > 0) {
             data[currentDataIdx-1] = dataWonTickets![currentDataIdx - 1];
           }
           RafflesStore.dataWinTicket = data;
+          setIsCheckLoading(currentDataIdx)
         }
-      }, currentRollingIdx === 6 ? 0 : 5100);
+      }, currentRollingIdx === 7 ? 0 : 5100);
     }
     return () => {
       clearInterval(changeIdxInterval)
@@ -170,7 +180,7 @@ const RollingRaffles = (props: Props) => {
         setTargetTicket(ticketNumber);
         setCurrentRollingIdx(0);
         setCurrentDataIdx(currentDataIdx + 1);
-        //setCurrentTicket('000000');
+        setCurrentTicket('000000');
         setIsCheckHasData(true);
       }, currentDataIdx == 0 ? 0 : 60000) // xu li lan dau wait 0s. lan tiep theo wait 1m vi moi ticket quay trong 1m
 
@@ -270,6 +280,11 @@ const RollingRaffles = (props: Props) => {
                 <div className={s.recentWinItem} key={`${item?.ticket_number}`}>
                   <span className={s.recentWinItemId}>#{item?.ticket_number ? b64DecodeUnicode(item?.ticket_number) : '------'}</span>
                   <span className={s.recentWinItemName}>{item && `(${item?.user?.profile?.user_name})`}</span>
+                  {isCheckLoading === index && checkDisplayEndAt &&
+                    <>
+                        <Spin indicator={antIcon} />
+                    </>
+                  }
                 </div>
               </>
             );
