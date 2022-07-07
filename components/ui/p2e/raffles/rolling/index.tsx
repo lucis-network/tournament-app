@@ -2,13 +2,15 @@ import {useEffect, useState} from "react";
 import s from './index.module.sass'
 import DigitRoll from "components/digit-roll-react/src";
 import {b64DecodeUnicode, replaceCharAt} from "../../../../../utils/String";
-import {useGetWonTickets} from "../../../../../hooks/p2e/useRaffleDetail";
+import {useGetWonTickets, useMyWonTickets} from "../../../../../hooks/p2e/useRaffleDetail";
 import {isEmpty, parseInt} from "lodash";
 import moment from "moment";
 import CountdownTimeEnd from "../timeEnd";
-import Countdown from "antd/lib/statistic/Countdown";
 import {RaffleDetail, UserTicketGql} from "../../../../../src/generated/graphql_p2e";
 import RafflesStore from "src/store/RafflesStore";
+import CountdownTimer from "components/ui/common/CountDown";
+import CountdownTimeBefore from "../timeBefore";
+import PopupClaimTicket from "../popup/popupClaimTickets";
 
 
 const Digit = function (props: {
@@ -34,7 +36,11 @@ type Props = {
 }
 const RollingRaffles = (props: Props) => {
   const {raffleUid, dataRaffleDetail} = props;
-  const {dataWonTickets} = useGetWonTickets({
+  const {dataWonTickets, refetch} = useGetWonTickets({
+    raffle_uid: raffleUid,
+    skip: isEmpty(raffleUid)
+  },);
+  const {dataMyWonTickets, refetchMyWonTickets} = useMyWonTickets({
     raffle_uid: raffleUid,
     skip: isEmpty(raffleUid)
   },);
@@ -43,12 +49,29 @@ const RollingRaffles = (props: Props) => {
   const [targetTicket, setTargetTicket] = useState('');
   const [currentRollingIdx, setCurrentRollingIdx] = useState(0);
   const [currentDataIdx, setCurrentDataIdx] = useState(0);
-  const [dataWinTicket, setDataWinTicket] = useState<Array<UserTicketGql | undefined>>([]);
   const [checkDisplayTimeEnd, setCheckDisplayTimeEnd] = useState(false);
-  const [checkDataWinStore, setCheckDataWinStore] = useState(false);
+  const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
+  const [isPopupClaim, setIsPopupClaim] = useState(false);
+  const [isCheckHasData, setIsCheckHasData] = useState(false);
 
+  useEffect(() => {
+    if(dataRaffleDetail?.status === "CLOSED" && dataWonTickets){
+      RafflesStore.dataWinTicket = dataWonTickets;
+    }
+  }, [dataRaffleDetail, dataWonTickets]);
+
+  useEffect(() => {
+    if(dataMyWonTickets &&  dataRaffleDetail?.status === "CLOSED"){
+      dataMyWonTickets.forEach((item) => {
+        if(!item?.is_claimed) setIsPopupClaim(true);
+      })
+    }
+  }, [dataMyWonTickets, dataRaffleDetail]);
   const timeEnd = moment(dataRaffleDetail?.end_at)
     .add(dataRaffleDetail?.winner_total ? dataRaffleDetail?.winner_total : 0, "minutes")
+    .valueOf();
+
+  const endAtBefore = moment(dataRaffleDetail?.end_at)
     .valueOf();
 
   useEffect(() => {
@@ -58,7 +81,29 @@ const RollingRaffles = (props: Props) => {
       }
     }, 1000)
 
-    if(checkDisplayTimeEnd)  clearInterval(checkDateInterval);
+    if(checkDisplayTimeEnd) {
+      clearInterval(checkDateInterval);
+      setCheckDisplayEndAt(false);
+    };
+    return () => {
+      clearInterval(checkDateInterval)
+    }
+  }, [dataRaffleDetail])
+
+  useEffect(() => {
+    const checkDateInterval =  setInterval(() => {
+      const dateNow = moment(new Date()).valueOf();
+      const endAt = moment(dataRaffleDetail?.end_at)
+        .subtract(5, "minutes")
+        .valueOf()
+      ;
+      const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
+
+      if(timeBefore <= 5) {
+        setCheckDisplayEndAt(true);
+      }
+    }, 1000)
+    if(checkDisplayEndAt)  clearInterval(checkDateInterval);
     return () => {
       clearInterval(checkDateInterval)
     }
@@ -66,15 +111,13 @@ const RollingRaffles = (props: Props) => {
 
   useEffect(() => {
     if (dataWonTickets && RafflesStore.dataWinTicket.length === 0) {
-      //setDataWinTicket(Array.from({length: dataWonTickets.length}, (_, i) => undefined))
       RafflesStore.dataWinTicket = Array.from({length: dataWonTickets.length}, (_, i) => undefined);
-      console.log("vao day khong");
     }
   }, [dataWonTickets])
 
   useEffect(() => {
     let rollInterval: NodeJS.Timer;
-    if (targetTicket.length == 6) {
+    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status !== "CLOSED") {
       rollInterval = setInterval(() => {
         const new_digit_n = targetTicket[currentRollingIdx];
         if (currentRollingIdx <= 5) {
@@ -88,20 +131,20 @@ const RollingRaffles = (props: Props) => {
             setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, new_digit_n));
           }
         }
-      }, 5000);
+      }, currentRollingIdx === 0 ? 5000 : 5000);
     }
 
     return () => {
       clearInterval(rollInterval)
     }
-  }, [currentTicket, currentRollingIdx])
+  }, [currentTicket, currentRollingIdx, checkDisplayTimeEnd, isCheckHasData, dataRaffleDetail])
 
   //@ts-ignore
   if (typeof window !== "undefined") window.tmp__setTest = setCurrentTicket
 
   useEffect(() => {
     let changeIdxInterval: NodeJS.Timer;
-    if (targetTicket.length == 6) {
+    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status !== "CLOSED") {
       changeIdxInterval = setInterval(() => {
         setCurrentRollingIdx(currentRollingIdx + 1);
         if (currentRollingIdx == 6) {
@@ -112,44 +155,39 @@ const RollingRaffles = (props: Props) => {
           }
           RafflesStore.dataWinTicket = data;
         }
-      }, currentRollingIdx === 6 ? 500 : 5100);
-
-      // if(currentRollingIdx > 6) clearInterval(changeIdxInterval);
+      }, currentRollingIdx === 6 ? 0 : 5100);
     }
     return () => {
       clearInterval(changeIdxInterval)
     }
-  }, [currentRollingIdx, targetTicket, currentDataIdx, dataWonTickets, RafflesStore.dataWinTicket])
+  }, [currentRollingIdx, targetTicket, currentDataIdx, dataWonTickets, RafflesStore.dataWinTicket, checkDisplayTimeEnd, isCheckHasData, dataRaffleDetail])
 
-
-  useEffect(() => {
-    console.log("RafflesStore.dataWinTicket", RafflesStore.dataWinTicket);
-  }, [RafflesStore.dataWinTicket])
   // rolling new ticket
   useEffect(() => {
     let currentDataInterval: NodeJS.Timer;
-    if (dataWonTickets) {
+    if (dataWonTickets && checkDisplayTimeEnd && dataRaffleDetail?.status !== "CLOSED") {
       currentDataInterval = setInterval(() => {
         const ticketNumber = b64DecodeUnicode(dataWonTickets[currentDataIdx]?.ticket_number ?? '000000');
         setTargetTicket(ticketNumber);
         setCurrentRollingIdx(0);
         setCurrentDataIdx(currentDataIdx + 1);
-        setCurrentTicket('000000');
-      }, currentDataIdx == 0 ? 5000 : 60000) // xu li lan dau wait 5s. lan tiep theo wait 1m vi moi ticket quay trong 1m
+        //setCurrentTicket('000000');
+        setIsCheckHasData(true);
+      }, currentDataIdx == 0 ? 0 : 60000) // xu li lan dau wait 0s. lan tiep theo wait 1m vi moi ticket quay trong 1m
 
       if (dataWonTickets.length <= currentDataIdx) clearInterval(currentDataInterval);
     }
     return () => {
       clearInterval(currentDataInterval)
     }
-  }, [dataWonTickets, currentDataIdx])
+  }, [dataWonTickets, currentDataIdx, checkDisplayTimeEnd, dataRaffleDetail])
 
+  const closePopupClaimTicket = () => {
+    setIsPopupClaim(false);
+  }
   return (
     <div className={s.rafflesWrapper}>
       <h2 className={s.sectionTitle}>Raffle Rolling</h2>
-      {/*<div>*/}
-      {/*  <p className={s.digit}>currentTicket: {currentTicket}</p>*/}
-      {/*</div>*/}
 
       <div className={s.rolling}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -180,22 +218,44 @@ const RollingRaffles = (props: Props) => {
       </div>
 
       <div className={s.calender}>
-        <div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            className={s.rolling}
-            src={`/assets/Raffles/calender.svg`}
-            alt=""
-          />
-        </div>
-        <div className={s.rollingEnd}>
-          <span>End rolling at</span>
-        </div>
-        <div className={s.rollingTime}>
-          {checkDisplayTimeEnd &&
-              <CountdownTimeEnd targetDate={timeEnd}/>
-          }
-        </div>
+        {
+          checkDisplayEndAt && !checkDisplayTimeEnd &&
+            <>
+                <div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        className={s.rolling}
+                        src={`/assets/Raffles/calender.svg`}
+                        alt=""
+                    />
+                </div>
+                <div className={s.rollingEnd}>
+                    <span>Rolling at</span>
+                </div>
+                <div className={s.rollingTime}>
+                    <CountdownTimeBefore targetDate={endAtBefore}/>
+                </div>
+            </>
+        }
+        {
+          checkDisplayTimeEnd &&
+            <>
+                <div>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                        className={s.rolling}
+                        src={`/assets/Raffles/calender.svg`}
+                        alt=""
+                    />
+                </div>
+                <div className={s.rollingEnd}>
+                    <span>End rolling at</span>
+                </div>
+                <div className={s.rollingTime}>
+                    <CountdownTimeEnd targetDate={timeEnd}/>
+                </div>
+            </>
+        }
       </div>
 
       <div className={s.recentWin}>
@@ -213,6 +273,8 @@ const RollingRaffles = (props: Props) => {
           }) : " "}
         </div>
       </div>
+
+    <PopupClaimTicket status={isPopupClaim} dataMyWonTickets={dataMyWonTickets} raffleUid={raffleUid} closePopupClaimTicket={closePopupClaimTicket}/>
     </div>
   )
 }

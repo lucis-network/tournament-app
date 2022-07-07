@@ -20,7 +20,7 @@ type MissionsListProp = {
   isDailyMission?: boolean;
 };
 
-const DailyMissionList = React.memo(({
+const MissionList = ({
   title,
   missions,
   handleUpdateMissions,
@@ -129,6 +129,6 @@ const DailyMissionList = React.memo(({
       </div>
     </div>
   );
-});
+};
 
-export default DailyMissionList;
+export default MissionList;
