@@ -80,10 +80,22 @@ export default observer(function P2EWrapper(props: IProps) {
       return;
     }
 
-    if ((!AuthGameStore.isLoggedInFaceit || !AuthGameStore.isLoggedInLMSS) &&
-      (path === "/p2e/dashboard" || path === "/p2e/missions")) {
-      message.error("Please connect game to continue!");
-      return;
+    if (path === "/p2e/dashboard" || path === "/p2e/missions") {
+      if (!AuthGameStore.isLoggedInLMSS && !AuthGameStore.isLoggedInFaceit) {
+        message.error("Please connect game to continue!");
+        return;
+      } else {
+        if (!currentGame) {
+          if(AuthGameStore.isLoggedInFaceit) {
+            setGame(Game.CSGO)
+          }
+  
+          if(AuthGameStore.isLoggedInLMSS) {
+            setGame(Game.LOL)
+          }
+        }
+      }
+      
     }
 
 
