@@ -1,5 +1,6 @@
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
+import PopUpOpenBox from './popup'
 export default function LuckyChest() {
     return (
         <div className={`${s.wrapper} lucis-container-2`}>
@@ -18,7 +19,7 @@ export default function LuckyChest() {
                                 <img src="/assets/P2E/luckyChest/ic_lucis_coin.png" alt="icon" />
                             </div>
                         </div>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer</p>
+                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the {"industry's"} standard dummy text ever since the 1500s, when an unknown printer</p>
                     </div>
                 </div>
                 <div className={s.box}>
@@ -35,6 +36,7 @@ export default function LuckyChest() {
             <div style={{paddingTop: 40}}>
                 <HistoryTable />
             </div>
+            <><PopUpOpenBox /></>
         </div>
     )
 }

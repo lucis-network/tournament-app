@@ -33,11 +33,13 @@ const Dashboard = (props: IProps) => {
   const [dailyMission, setDailyMission] = useState<PlayerMission[]>([])
   const [recentlyMatches, setRecentlyMatches] = useState<CsgoPlayerMatch[]>([])
   const [showGiftBox, setShowGiftBox] = React.useState<boolean>(false);
-  const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
-    variables: {
+  const [dailyMissionVariables, setDailyMissionVariables] =
+    React.useState<{ game_uid: string, platform_id: number }>({
       game_uid: '03',
       platform_id: 1
-    },
+    });
+  const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
+    variables: dailyMissionVariables,
     context: {
       endpoint: 'p2e'
     }
@@ -50,20 +52,16 @@ const Dashboard = (props: IProps) => {
   });
 
   const isClaimBoxQuery = useQuery(IS_CLAIM_BOX, {
+    variables: dailyMissionVariables,
     context: {
       endpoint: 'p2e'
     },
-    variables: {
-      game_uid: '03',
-      platform_id: 1
-    },
+
+    skip: true
   });
 
   const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
-    variables: {
-      game_uid: '03',
-      platform_id: 1
-    },
+    variables: dailyMissionVariables,
     context: {
       endpoint: 'p2e'
     }
@@ -113,15 +111,44 @@ const Dashboard = (props: IProps) => {
   }
 
   useEffect(() => {
-    getDailyMission()
-      .then(response => {
+    let variables = dailyMissionVariables;
+    switch (props.currentGame) {
+      case Game.CSGO:
+        variables = {
+          game_uid: '03',
+          platform_id: 1
+        };
+        setDailyMissionVariables(variables);
+        break;
+      case Game.LOL:
+        variables = {
+          game_uid: '06',
+          platform_id: 4
+        };
+        setDailyMissionVariables(variables);
+        break;
+
+      default:
+        break;
+    }
+    if (props.currentGame) {
+      getDailyMission({
+        variables
+      }).then(response => {
         setDailyMission(response.data.getOrSetDailyMission)
       });
-  }, [])
+
+      isClaimBoxQuery.refetch(variables);
+
+    }
+
+  }, [props.currentGame])
 
   useEffect(() => {
     setRecentlyMatches(getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
   }, [getRecentMatchesData])
+
+
   const onClaimBox = async () => {
     try {
       await claimBox({
