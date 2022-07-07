@@ -37,12 +37,13 @@
       font-weight: 400
       font-size: 32px
       line-height: 35px
-      letter-spacing: 0.2em
+      letter-spacing: 5px
       color: #DBE0E8
       margin: 0
-      @media (min-width: 1280px)
-        font-size: 32px
-        line-height: 35px
+      @media (min-width: 1400px)
+        letter-spacing: 5px
+      @media (min-width: 1320px)
+        letter-spacing: 4px
     span
       font-weight: 300
       font-size: 24px
@@ -72,7 +73,7 @@
     -o-transition: all .4s ease-in-out
     -webkit-transition: all .4s ease-in-out
     transition: all .4s ease-in-out
-    background-image: linear-gradient(to right, #fff, #fff, #1889E4, #0BEBD6)
+    background-image: linear-gradient(to right, #2f94e6, #2aead7, #1889E4, #0BEBD6)
     @media (min-width: 992px)
       margin: 32px 0px
     @media (min-width: 1280px)
@@ -84,7 +85,7 @@
       font-weight: 300
       line-height: 31px
       letter-spacing: 0.2em
-      color: #333333
+      color: #fff
       margin: 0
       transition: .4s
       @media (min-width: 1280px)
@@ -102,7 +103,7 @@
     transition: 0.4s
     border-radius: inherit
     padding: 3px
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+    -webkit-mask: linear-gradient(#2f94e6 0 0) content-box, linear-gradient(#2f94e6 0 0)
     -webkit-mask-composite: xor
     mask-composite: exclude
     background: #FFF
@@ -112,7 +113,7 @@
     -o-transition: all .4s ease-in-out
     -webkit-transition: all .4s ease-in-out
     transition: all .4s ease-in-out
-    background-image: linear-gradient(to right, #fff, #fff, #1889E4, #0BEBD6)
+    background-image: linear-gradient(to right, #2f94e6, #0BEBD6, #1889E4, #0BEBD6)
 
   .btn_sign_in:hover::before,
   .btn_sign_in:hover
@@ -125,6 +126,7 @@
     color: #fff
 
 .banner_thumb
+  width: 100%
   order: -1
   margin-bottom: 20px
   @media (min-width: 992px)

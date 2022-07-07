@@ -66,9 +66,10 @@ img {
 
 @font-face {
   font-family: 'Lexend';
-  src: url("/fonts/lexend/RevxNeueDemo-Bold.ttf");
+  src: url("/fonts/lexend/Lexend-Bold.ttf");
   font-weight: 700;
 }
+
 
 
 html,

@@ -279,8 +279,7 @@ export default observer(function P2EOverview() {
             onConnectLOL={(summonerName) => connectLOL(summonerName)}
           />}
         <div className={s.overviewContainer}>
-          {!AuthStore.isLoggedIn && <BannerOverview />}
-
+          <BannerOverview isLogin={AuthStore.isLoggedIn} />
           <div className={s.overviewSection}>
             <h2 className={s.overviewSectionTitle}>PLAY YOUR FAVORITE GAME</h2>
             <Row justify='space-between'>

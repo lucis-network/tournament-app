@@ -20,6 +20,16 @@ export default observer(function P2EWrapper(props: IProps) {
 
   useEffect(() => {
     if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
+      if (!currentGame) {
+        setCurrentGame(Game.CSGO);
+      }
+      return;
+    }
+
+    if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
+      if (!currentGame) {
+        setCurrentGame(Game.LOL);
+      }
       return;
     }
 
@@ -70,11 +80,13 @@ export default observer(function P2EWrapper(props: IProps) {
       return;
     }
 
-    if (!AuthGameStore.isLoggedInFaceit &&
+    if ((!AuthGameStore.isLoggedInFaceit || !AuthGameStore.isLoggedInLMSS) &&
       (path === "/p2e/dashboard" || path === "/p2e/missions")) {
       message.error("Please connect game to continue!");
       return;
     }
+
+
     if (!tabDisabled(path)) {
       router.push(path);
     }
@@ -116,7 +128,7 @@ export default observer(function P2EWrapper(props: IProps) {
     if (currentGame === Game.LOL) {
       return s.backgroundLOL;
     }
-    return s.backgroundDefault;
+    return s.backgroundCSGO;
   }
 
 
@@ -161,7 +173,7 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {(router.pathname !== "/" && router.pathname !== "/p2e/raffles") && <div className={s.chooseGame}>
+                {(AuthStore.isLoggedIn) && <div className={s.chooseGame}>
                   <img
                     className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
                     src="/assets/P2E/lol-game.svg" alt="lol-game"

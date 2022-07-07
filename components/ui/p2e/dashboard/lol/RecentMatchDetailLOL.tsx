@@ -433,7 +433,7 @@ export const RecentMatchDetailLOL = () => {
                         </div>
                         </Col>
                         <Col span={6}><div className={s.rewardItem}>
-                          <span className={s.lucisPoint}>{`+${lucisPointBonus()}`}</span>
+                          <span className={s.lucisPoint}>{`+${lucisPointBonus() ?? "-"}`}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
@@ -455,7 +455,7 @@ export const RecentMatchDetailLOL = () => {
                     </div>
                     </Col>
                     <Col span={6}><div className={s.rewardItem}>
-                      <span className={s.lucisPoint}>{`+${data?.point}`}</span>
+                      <span className={s.lucisPoint}>{`+${data?.point ?? "-"}`}</span>
                       <img src="/assets/P2E/lucis-point.svg" alt="" />
                     </div>
                     </Col>

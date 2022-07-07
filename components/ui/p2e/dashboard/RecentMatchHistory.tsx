@@ -1,14 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import s from './dashboard.module.sass'
 import { Col, Row, Spin } from "antd"
 import {
 
+  GET_CSGO_RECENT_MATCHES,
+  GET_LOL_RECENT_MATCHES,
   GET_STATISTICS,
-  useGetRecentMatches
+  useGetRecentCsgoMatches
 } from "../../../../hooks/p2e/useP2E";
 
 import { useQuery } from "@apollo/client";
-import { CsgoPlayerMatch } from "../../../../src/generated/graphql_p2e";
+import { CsgoPlayerMatch, LolPlayerMatchGql } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchListCSGO } from '../recentMatchComponent/RecentMatchListCSGO';
 import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
@@ -17,6 +19,7 @@ import { RecentMatchListLOL } from '../recentMatchComponent/RecentMatchListLOL';
 interface IProps {
   currentGame?: Game;
 }
+
 const RecentMatchHistory = (props: IProps) => {
   const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
@@ -26,42 +29,86 @@ const RecentMatchHistory = (props: IProps) => {
 
   const [currentLimit, setCurrentLimit] = useState(20);
   const [loading, setLoading] = useState(false);
-  const { getRecentMatchesLoading, getRecentMatchesData, refetchRecentMatches } = useGetRecentMatches({
-    offset: 1,
-    limit: 20,
-    platform_id: 1
-  })
-  const onViewMore = async () => {
-    setLoading(true);
-    await refetchRecentMatches({
+  const [totalItem, setTotalItem] = useState<number>(0);
+  const [recentMatches, setRecentMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([]);
+  const lolRecentMatchQuery = useQuery(GET_LOL_RECENT_MATCHES, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
       offset: 1,
-      limit: currentLimit + 5,
+      limit: 20,
+      platform_id: 4
+    },
+    skip: true
+  })
+
+  const csgoRecentMatchQuery = useQuery(GET_CSGO_RECENT_MATCHES, {
+    context: {
+      endpoint: 'p2e'
+    },
+    variables: {
+      offset: 1,
+      limit: 20,
       platform_id: 1
-    })
-    setLoading(false);
-    setCurrentLimit(currentLimit + 5);
+    },
+    skip: true
+  })
+  const queryData = async () => {
+    setLoading(true);
+    switch (props.currentGame) {
+      case Game.CSGO:
+        const csgo = await csgoRecentMatchQuery.refetch({
+          offset: 1,
+          limit: currentLimit,
+          platform_id: 1
+        })
+        setLoading(false);
+        setCurrentLimit(currentLimit + 5);
+        setRecentMatches(csgo.data?.getRecentlyCsgoMatch?.matches);
+        setTotalItem(csgo.data?.getRecentlyCsgoMatch?.total as number)
+        break;
+      case Game.LOL:
+        const lol = await lolRecentMatchQuery.refetch({
+          offset: 1,
+          limit: currentLimit,
+          platform_id: 4
+        })
+        setLoading(false);
+        setCurrentLimit(currentLimit + 5);
+        setRecentMatches(lol.data?.getRecentlyLolMatch?.matches);
+        setTotalItem(lol.data?.getRecentlyLolMatch?.total as number)
+        break;
+    }
+
   }
+
+  useEffect(() => {
+    if (props.currentGame) {
+      queryData();
+    }
+  }, [props.currentGame])
 
   const RecentMatchListRender = () => {
     switch (props.currentGame) {
       case Game.CSGO:
         return <RecentMatchListCSGO
-          recentMatches={getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]}
-          loading={getRecentMatchesLoading}
+          recentMatches={recentMatches as CsgoPlayerMatch[]}
+          loading={csgoRecentMatchQuery.loading}
           title="Recent matches history"
           hasButtonBack
         />;
-        case Game.LOL:
-          return <RecentMatchListLOL
-            recentMatches={getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]}
-            loading={getRecentMatchesLoading}
-            title="Recent matches history"
-            hasButtonBack
-          />;
+      case Game.LOL:
+        return <RecentMatchListLOL
+          recentMatches={recentMatches as LolPlayerMatchGql[]}
+          loading={lolRecentMatchQuery.loading}
+          title="Recent matches history"
+          hasButtonBack
+        />;
       default:
         return <RecentMatchListCSGO
-          recentMatches={getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]}
-          loading={getRecentMatchesLoading}
+          recentMatches={recentMatches as CsgoPlayerMatch[]}
+          loading={csgoRecentMatchQuery.loading}
           title="Recent matches history"
           hasButtonBack
         />;
@@ -78,9 +125,9 @@ const RecentMatchHistory = (props: IProps) => {
         <Row gutter={40}>
           <Col lg={16} md={24}>
             {RecentMatchListRender()}
-            {currentLimit < (getRecentMatchesData?.getRecentlyCsgoMatch?.total as number) &&
+            {currentLimit < (totalItem as number) &&
               <div className={s.viewAllHistory}>
-                <span onClick={() => onViewMore()}>
+                <span onClick={() => queryData()}>
                   {loading ? <Spin /> :
                     "View more"}</span>
               </div>}

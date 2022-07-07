@@ -16,7 +16,7 @@ type MissionItemProp = {
   isDailyMission?: boolean;
 };
 
-const MissionItem = React.memo((props: MissionItemProp) => {
+const MissionItem = (props: MissionItemProp) => {
   const { mission, handleUpdateMissions } = props;
   const [loading, setLoading] = useState(false);
 
@@ -170,12 +170,6 @@ const MissionItem = React.memo((props: MissionItemProp) => {
 
     </div >
   );
-}, (prevProps, currentProps) => {
-  if (JSON.stringify(prevProps.mission) === JSON.stringify(currentProps.mission)) {
-    return false;
-  }
-  return true;
-});
+};
 
 export default MissionItem;
-MissionItem.displayName = "MissionItem"

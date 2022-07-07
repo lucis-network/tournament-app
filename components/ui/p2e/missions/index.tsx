@@ -9,7 +9,7 @@ import {
 import { useQuery } from "@apollo/client";
 import MissionsList from "../missionComponent/MissionList";
 import { PlayerMission } from "../../../../src/generated/graphql_p2e";
-import ButtonWrapper from 'components/common/button/Button';
+// import ButtonWrapper from 'components/common/button/Button';
 import NFTList from '../NFTList';
 import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
@@ -31,10 +31,7 @@ const Mission = (props: IProps) => {
     context: {
       endpoint: 'p2e'
     },
-    variables: {
-      game_uid: '03',
-      platform_id: 1
-    },
+    skip: true
   })
 
 
@@ -46,11 +43,7 @@ const Mission = (props: IProps) => {
       setLoading(true);
     }
 
-    const promise = await Promise.all([
-      lucisMissionQuery.refetch(),
-      statisticQuery.refetch()
-    ])
-    setMission(lucisMissionQuery?.data?.getLucisMission)
+    await queryData();
     setLoading(false);
     if (showMessage) {
       message.success("Update!");
@@ -58,9 +51,34 @@ const Mission = (props: IProps) => {
   }
 
   useEffect(() => {
-    setMission(lucisMissionQuery?.data?.getLucisMission)
-  }, [lucisMissionQuery?.data])
+    if(props.currentGame) {
+      queryData();
+    }
+  }, [props?.currentGame])
 
+  const queryData = async () => {
+    switch (props.currentGame) {
+      case Game.CSGO:
+        const csgo = await lucisMissionQuery.refetch({
+          game_uid: '03',
+          platform_id: 1
+        });
+
+        setMission(csgo.data.getLucisMission);
+        break;
+      case Game.LOL:
+        const lol = await lucisMissionQuery.refetch({
+          game_uid: '06',
+          platform_id: 4
+        });
+
+        setMission(lol.data.getLucisMission);
+        break;
+
+      default:
+        break;
+    }
+  }
 
   return (
     <div className="lucis-container-2">

@@ -34,7 +34,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
     return total
   }
 
-
+  console.log(props.loading)
 
   const filterDayRecentMatch = () => {
     let filteredList: { [endAt: string]: CsgoPlayerMatch[] } = {};
@@ -69,7 +69,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                   Today :
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{0} / --</span>
+                  <span className={s.lucisPoint}>{0} / ∞</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>
@@ -102,7 +102,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                     {item[0]} :
                   </div>
                   <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                    <span className={s.lucisPoint}>{lucisPointRewardToday(item[1])} / --</span>
+                    <span className={s.lucisPoint}>{lucisPointRewardToday(item[1])} / ∞</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                   <div className={s.rewardItem}>

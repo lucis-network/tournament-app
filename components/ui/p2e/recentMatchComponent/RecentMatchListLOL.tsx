@@ -3,7 +3,7 @@ import { isEmpty } from "lodash";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
-import { CsgoPlayerMatch } from "src/generated/graphql_p2e";
+import { LolPlayerMatchGql } from "src/generated/graphql_p2e";
 import { MAP_CSGO } from "utils/Enum";
 import { dateToHoursFormat } from "utils/Time";
 import SpinLoading from "../../common/Spin";
@@ -11,7 +11,7 @@ import s from './recentMatch.module.sass'
 
 
 interface IProps {
-  recentMatches: CsgoPlayerMatch[];
+  recentMatches: LolPlayerMatchGql[];
   loading: boolean;
   isHistory?: boolean;
   title?: string;
@@ -19,17 +19,17 @@ interface IProps {
 }
 export const RecentMatchListLOL = React.memo((props: IProps) => {
   const router = useRouter();
-  const [recentMatchesFiltered, setRecentMatchesFiltered] = useState<{ [endAt: string]: CsgoPlayerMatch[] }>({})
+  const [recentMatchesFiltered, setRecentMatchesFiltered] = useState<{ [endAt: string]: LolPlayerMatchGql[] }>({})
 
   useEffect(() => {
     filterDayRecentMatch();
   }, [props.recentMatches])
 
 
-  const lucisPointRewardToday = (matches: CsgoPlayerMatch[]): number => {
+  const lucisPointRewardToday = (matches: LolPlayerMatchGql[]): number => {
     let total = 0;
     matches?.forEach((match) => {
-      total += match.lucis_point;
+      total += match?.point as number;
     })
     return total
   }
@@ -37,9 +37,9 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
 
 
   const filterDayRecentMatch = () => {
-    let filteredList: { [endAt: string]: CsgoPlayerMatch[] } = {};
+    let filteredList: { [endAt: string]: LolPlayerMatchGql[] } = {};
     props?.recentMatches
-      ?.forEach((item: CsgoPlayerMatch) => {
+      ?.forEach((item: LolPlayerMatchGql) => {
         const endAtString = moment(new Date(item?.match?.end_at)).format("YYYY/MM/DD")
         if (!filteredList[endAtString]) {
           filteredList[endAtString] = [item];
@@ -69,7 +69,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                   Today :
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                  <span className={s.lucisPoint}>{0} / --</span>
+                  <span className={s.lucisPoint}>{0} / ∞</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>
@@ -102,7 +102,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                     {item[0]} :
                   </div>
                   <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                    <span className={s.lucisPoint}>{lucisPointRewardToday(item[1])} / --</span>
+                    <span className={s.lucisPoint}>{lucisPointRewardToday(item[1])} / ∞</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                   <div className={s.rewardItem}>
@@ -121,7 +121,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                           xs={24}
                           className={s.recentMatchItem}
                           key={`${item?.match_uid}-${index}`}
-                          onClick={() => router.push(`/p2e/dashboard/history/${item?.id}`)}
+                          onClick={() => router.push(`/p2e/dashboard/history/${item?.uid}`)}
                           style={{
                             borderTopLeftRadius: index === 0 ? "4px" : "0px",
                             borderTopRightRadius: index === 0 ? "4px" : "0px",
@@ -149,7 +149,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                                   style={item?.is_win
                                     ? { border: "1px solid #00F9FF" }
                                     : { border: "1px solid #CC846E" }}
-                                  src="/assets/P2E/lol/ys.png" alt="" />
+                                  src="/assets/P2E/lol-game.svg" alt="" />
                               </div>
                             </Col>
                             <Col md={{ span: 4, order: 3 }} xs={{ span: 8, order: 3 }}>
@@ -157,19 +157,19 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                                 <Col span={8}>
                                   <div className={s.recentMatchContentItem}>
                                     <img src="/assets/P2E/lol/kill.svg" alt="" />
-                                    <span className={s.textContentItem}>{item?.player_statistic?.Deaths}</span>
+                                    <span className={s.textContentItem}>{item?.kill ?? "-"}</span>
                                   </div>
                                 </Col>
                                 <Col span={8}>
                                   <div className={s.recentMatchContentItem}>
                                     <img src="/assets/P2E/lol/death.svg" alt="" />
-                                    <span className={s.textContentItem}>{item?.player_statistic?.Assists}</span>
+                                    <span className={s.textContentItem}>{item?.deaths ?? "-"}</span>
                                   </div>
                                 </Col>
                                 <Col span={8}>
                                   <div className={s.recentMatchContentItem} style={{ border: 0 }}>
                                     <img src="/assets/P2E/lol/support.svg" alt="" />
-                                    <span className={s.textContentItem}>{item?.player_statistic?.["Headshots"]}</span>
+                                    <span className={s.textContentItem}>{item?.assist  ?? "-"}</span>
                                   </div>
                                 </Col>
                               </Row>
@@ -179,13 +179,13 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                                 <Col xs={24} md={12} lg={24} xl={12} >
                                   <div className={s.recentMatchContentItemCreepAndGold}>
                                     <img src="/assets/P2E/lol/creep.svg" alt="" />
-                                    <span className={s.textContentItem}>169</span>
+                                    <span className={s.textContentItem}>{item?.minion_killed}</span>
                                   </div>
                                 </Col>
                                 <Col xs={24} md={12} lg={24} xl={12}>
                                   <div className={s.recentMatchContentItemCreepAndGold}>
                                     <img src="/assets/P2E/lol/gold.svg" alt="" />
-                                    <span className={s.textContentItem}>11,567</span>
+                                    <span className={s.textContentItem}>{item?.gold_earned}</span>
                                   </div>
                                 </Col>
                               </Row>
@@ -198,7 +198,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                             <Col md={{ span: 5, order: 6 }} xs={{ span: 12, order: 5 }}>
                               <Row className={s.recentMatchReward}>
                                 <Col span={12} className={s.rewardItem} style={{ paddingRight: 20 }}>
-                                  <span className={s.lucisPoint}>+{item?.lucis_point ?? "0"}</span>
+                                  <span className={s.lucisPoint}>+{item?.point ?? "0"}</span>
                                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                                 </Col>
                                 <Col span={12} className={s.rewardItem}>

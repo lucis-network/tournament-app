@@ -522,6 +522,81 @@ export enum DonateTransactionsType {
   Tournament = 'TOURNAMENT'
 }
 
+export type EarningConfig = {
+  __typename?: 'EarningConfig';
+  id: EarningConfigType;
+  value: Scalars['Int'];
+};
+
+export enum EarningConfigType {
+  Assist = 'assist',
+  AssistAram = 'assist_aram',
+  DamageDealt1 = 'damage_dealt1',
+  DamageDealt2 = 'damage_dealt2',
+  DamageDealt3 = 'damage_dealt3',
+  DamageDealtAram1 = 'damage_dealt_aram1',
+  DamageDealtAram2 = 'damage_dealt_aram2',
+  DamageDealtAram3 = 'damage_dealt_aram3',
+  DamageTaken1 = 'damage_taken1',
+  DamageTaken2 = 'damage_taken2',
+  DamageTaken3 = 'damage_taken3',
+  DamageTakenAram1 = 'damage_taken_aram1',
+  DamageTakenAram2 = 'damage_taken_aram2',
+  DamageTakenAram3 = 'damage_taken_aram3',
+  DoubleKill = 'double_kill',
+  DoubleKillAram = 'double_kill_aram',
+  GoldEarned1 = 'gold_earned1',
+  GoldEarned2 = 'gold_earned2',
+  GoldEarned3 = 'gold_earned3',
+  GoldEarnedAram1 = 'gold_earned_aram1',
+  GoldEarnedAram2 = 'gold_earned_aram2',
+  GoldEarnedAram3 = 'gold_earned_aram3',
+  Headshot = 'headshot',
+  HighestKda = 'highest_kda',
+  HighestKr = 'highest_kr',
+  Kill = 'kill',
+  KillAram = 'kill_aram',
+  LeastDied = 'least_died',
+  MinionKill1 = 'minion_kill1',
+  MinionKill2 = 'minion_kill2',
+  MinionKill3 = 'minion_kill3',
+  MinionKillAram1 = 'minion_kill_aram1',
+  MinionKillAram2 = 'minion_kill_aram2',
+  MinionKillAram3 = 'minion_kill_aram3',
+  MostAssist = 'most_assist',
+  MostAssistAram = 'most_assist_aram',
+  MostDamageDealt = 'most_damage_dealt',
+  MostDamageDealtAram = 'most_damage_dealt_aram',
+  MostDamageTaken = 'most_damage_taken',
+  MostDamageTakenAram = 'most_damage_taken_aram',
+  MostGoldEarned = 'most_gold_earned',
+  MostGoldEarnedAram = 'most_gold_earned_aram',
+  MostHeadshot = 'most_headshot',
+  MostKill = 'most_kill',
+  MostKillAram = 'most_kill_aram',
+  MostMinionKill = 'most_minion_kill',
+  MostMinionKillAram = 'most_minion_kill_aram',
+  MostSupport = 'most_support',
+  MostWardsKilled = 'most_wards_killed',
+  MostWardsPlaced = 'most_wards_placed',
+  Mvp = 'mvp',
+  MvpAram = 'mvp_aram',
+  PentaKill = 'penta_kill',
+  PentaKillAram = 'penta_kill_aram',
+  QuadraKill = 'quadra_kill',
+  QuadraKillAram = 'quadra_kill_aram',
+  TripleKill = 'triple_kill',
+  TripleKillAram = 'triple_kill_aram',
+  WardsKilled1 = 'wards_killed1',
+  WardsKilled2 = 'wards_killed2',
+  WardsKilled3 = 'wards_killed3',
+  WardsPlaced1 = 'wards_placed1',
+  WardsPlaced2 = 'wards_placed2',
+  WardsPlaced3 = 'wards_placed3',
+  Win = 'win',
+  WinAram = 'win_aram'
+}
+
 export type EquipNftInput = {
   game_uid: Scalars['String'];
   nfts?: InputMaybe<Array<EquipNftSlotInput>>;
@@ -616,6 +691,12 @@ export type LolMatchCount = {
   players: Scalars['Int'];
 };
 
+export type LolMatchGql = {
+  __typename?: 'LolMatchGql';
+  matches?: Maybe<Array<LolPlayerMatchGql>>;
+  total?: Maybe<Scalars['Int']>;
+};
+
 export type LolMission = {
   __typename?: 'LolMission';
   champion?: Maybe<Scalars['String']>;
@@ -656,6 +737,44 @@ export enum LolMissionType {
   WinStreak = 'WinStreak'
 }
 
+export type LolPlayerMatchGql = {
+  __typename?: 'LolPlayerMatchGql';
+  aces?: Maybe<Scalars['Int']>;
+  assist?: Maybe<Scalars['Int']>;
+  champion_id: Scalars['Int'];
+  damage_dealt?: Maybe<Scalars['Int']>;
+  damage_taken?: Maybe<Scalars['Int']>;
+  deaths?: Maybe<Scalars['Int']>;
+  double_kill?: Maybe<Scalars['Int']>;
+  eye_killed?: Maybe<Scalars['Int']>;
+  eye_placed?: Maybe<Scalars['Int']>;
+  gold_earned?: Maybe<Scalars['Int']>;
+  is_most_assist: Scalars['Boolean'];
+  is_most_damage_dealt: Scalars['Boolean'];
+  is_most_damage_taken?: Maybe<Scalars['Boolean']>;
+  is_most_eye_killed: Scalars['Boolean'];
+  is_most_eye_placed: Scalars['Boolean'];
+  is_most_gold_earned: Scalars['Boolean'];
+  is_most_minion_killed: Scalars['Boolean'];
+  is_mvp?: Maybe<Scalars['Boolean']>;
+  is_win: Scalars['Boolean'];
+  kill?: Maybe<Scalars['Int']>;
+  lane: LolLane;
+  map_img?: Maybe<Scalars['String']>;
+  match: LolMatch;
+  match_uid: Scalars['String'];
+  minion_killed?: Maybe<Scalars['Int']>;
+  most_kill: Scalars['Boolean'];
+  pental_kill?: Maybe<Scalars['Int']>;
+  player: PlayerGame;
+  player_game_uid: Scalars['String'];
+  player_statistic?: Maybe<Scalars['JSON']>;
+  point?: Maybe<Scalars['Int']>;
+  quadra_kill?: Maybe<Scalars['Int']>;
+  triple_kill?: Maybe<Scalars['Int']>;
+  uid: Scalars['ID'];
+};
+
 export enum LolRegime {
   Arurf = 'ARURF',
   Aram = 'Aram',
@@ -666,6 +785,33 @@ export enum LolRegime {
   RankSingleDouble = 'RankSingleDouble',
   Tft = 'TFT',
   Urf = 'URF'
+}
+
+export type LuckyChestPrize = {
+  __typename?: 'LuckyChestPrize';
+  _count: LuckyChestPrizeCount;
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  prize_amount?: Maybe<Scalars['Decimal']>;
+  prize_type: PrizeType;
+  quantity_in_stock: Scalars['Int'];
+  title: Scalars['String'];
+  updated_at: Scalars['DateTime'];
+  user_prize_history?: Maybe<Array<UserLuckyChestHistory>>;
+  valued_at?: Maybe<Scalars['String']>;
+};
+
+export type LuckyChestPrizeCount = {
+  __typename?: 'LuckyChestPrizeCount';
+  user_prize_history: Scalars['Int'];
+};
+
+export enum LuckyChestType {
+  Csgo = 'CSGO',
+  Lol = 'LOL',
+  Nft = 'NFT',
+  Premium = 'PREMIUM'
 }
 
 export type MatchEarning = {
@@ -1098,6 +1244,7 @@ export type PlayerLolMatch = {
   created_at: Scalars['DateTime'];
   damage_dealt?: Maybe<Scalars['Int']>;
   damage_taken?: Maybe<Scalars['Int']>;
+  deaths?: Maybe<Scalars['Int']>;
   double_kill?: Maybe<Scalars['Int']>;
   eye_killed?: Maybe<Scalars['Int']>;
   eye_placed?: Maybe<Scalars['Int']>;
@@ -1126,6 +1273,44 @@ export type PlayerLolMatch = {
   triple_kill?: Maybe<Scalars['Int']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
+};
+
+export type PlayerLolMatchGql = {
+  __typename?: 'PlayerLolMatchGql';
+  aces?: Maybe<Scalars['Int']>;
+  assist?: Maybe<Scalars['Int']>;
+  champion_id: Scalars['Int'];
+  damage_dealt?: Maybe<Scalars['Int']>;
+  damage_taken?: Maybe<Scalars['Int']>;
+  deaths?: Maybe<Scalars['Int']>;
+  double_kill?: Maybe<Scalars['Int']>;
+  eye_killed?: Maybe<Scalars['Int']>;
+  eye_placed?: Maybe<Scalars['Int']>;
+  gold_earned?: Maybe<Scalars['Int']>;
+  is_most_assist: Scalars['Boolean'];
+  is_most_damage_dealt: Scalars['Boolean'];
+  is_most_damage_taken?: Maybe<Scalars['Boolean']>;
+  is_most_eye_killed: Scalars['Boolean'];
+  is_most_eye_placed: Scalars['Boolean'];
+  is_most_gold_earned: Scalars['Boolean'];
+  is_most_minion_killed: Scalars['Boolean'];
+  is_mvp?: Maybe<Scalars['Boolean']>;
+  is_win: Scalars['Boolean'];
+  kill?: Maybe<Scalars['Int']>;
+  lane: LolLane;
+  match: LolMatch;
+  match_earning?: Maybe<Array<EarningConfig>>;
+  match_uid: Scalars['String'];
+  minion_killed?: Maybe<Scalars['Int']>;
+  most_kill: Scalars['Boolean'];
+  pental_kill?: Maybe<Scalars['Int']>;
+  player: PlayerGame;
+  player_game_uid: Scalars['String'];
+  player_statistic?: Maybe<Scalars['JSON']>;
+  point?: Maybe<Scalars['Int']>;
+  quadra_kill?: Maybe<Scalars['Int']>;
+  triple_kill?: Maybe<Scalars['Int']>;
+  uid: Scalars['ID'];
 };
 
 export type PlayerMission = {
@@ -1175,6 +1360,31 @@ export type PoolWallet = {
   updated_at: Scalars['DateTime'];
 };
 
+export enum PrizeType {
+  BattlePass = 'BATTLE_PASS',
+  CscoKnifeOrGlovePiece_1 = 'CSCO_KNIFE_OR_GLOVE_PIECE_1',
+  CscoKnifeOrGlovePiece_2 = 'CSCO_KNIFE_OR_GLOVE_PIECE_2',
+  CscoKnifeOrGlovePiece_3 = 'CSCO_KNIFE_OR_GLOVE_PIECE_3',
+  CscoKnifeOrGlovePiece_4 = 'CSCO_KNIFE_OR_GLOVE_PIECE_4',
+  CsgoChestTicket = 'CSGO_CHEST_TICKET',
+  CsgoKnife = 'CSGO_KNIFE',
+  CsgoLolSharedTicket = 'CSGO_LOL_SHARED_TICKET',
+  LolChestTicket = 'LOL_CHEST_TICKET',
+  LolCostume = 'LOL_COSTUME',
+  LolCostumePiece_1 = 'LOL_COSTUME_PIECE_1',
+  LolCostumePiece_2 = 'LOL_COSTUME_PIECE_2',
+  LolCostumePiece_3 = 'LOL_COSTUME_PIECE_3',
+  LolCostumePiece_4 = 'LOL_COSTUME_PIECE_4',
+  LucisPoint = 'LUCIS_POINT',
+  LucisToken = 'LUCIS_TOKEN',
+  NftBoxPiece_1 = 'NFT_BOX_PIECE_1',
+  NftBoxPiece_2 = 'NFT_BOX_PIECE_2',
+  NftBoxPiece_3 = 'NFT_BOX_PIECE_3',
+  NftBoxPiece_4 = 'NFT_BOX_PIECE_4',
+  NftChestTicket = 'NFT_CHEST_TICKET',
+  PremiumChestTicket = 'PREMIUM_CHEST_TICKET'
+}
+
 export type ProgressDailyMission = {
   __typename?: 'ProgressDailyMission';
   achieved?: Maybe<Scalars['Int']>;
@@ -1190,6 +1400,7 @@ export type Query = {
   getBalance?: Maybe<GBalance>;
   getCsgoMatchStatistic?: Maybe<CsgoMatchStatistics>;
   getDailyPoint?: Maybe<Scalars['Int']>;
+  getLolMatchStatistic?: Maybe<PlayerLolMatchGql>;
   getLucisMission: Array<PlayerMission>;
   getMyTickets?: Maybe<TicketList>;
   getPlatformAccount?: Maybe<Array<PlatformAccount>>;
@@ -1198,6 +1409,7 @@ export type Query = {
   getRaffles?: Maybe<Array<RaffleGql>>;
   getRecentWinners?: Maybe<Array<RecentWinner>>;
   getRecentlyCsgoMatch?: Maybe<GCsgoMatch>;
+  getRecentlyLolMatch?: Maybe<LolMatchGql>;
   getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
   getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
   getWonTickets?: Maybe<Array<UserTicketGql>>;
@@ -1239,6 +1451,11 @@ export type QueryGetDailyPointArgs = {
 };
 
 
+export type QueryGetLolMatchStatisticArgs = {
+  player_match_id: Scalars['String'];
+};
+
+
 export type QueryGetLucisMissionArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
@@ -1269,6 +1486,13 @@ export type QueryGetRafflesArgs = {
 
 
 export type QueryGetRecentlyCsgoMatchArgs = {
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  platform_id: Scalars['Int'];
+};
+
+
+export type QueryGetRecentlyLolMatchArgs = {
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   platform_id: Scalars['Int'];
@@ -1750,6 +1974,8 @@ export type User = {
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
+  luckychest_history?: Maybe<Array<UserLuckyChestHistory>>;
+  luckychest_ticket?: Maybe<Array<UserLuckyChestTurn>>;
   nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
@@ -1794,6 +2020,8 @@ export type UserCount = {
   daily_history: Scalars['Int'];
   favorite_game: Scalars['Int'];
   leader_board: Scalars['Int'];
+  luckychest_history: Scalars['Int'];
+  luckychest_ticket: Scalars['Int'];
   nfts: Scalars['Int'];
   notification: Scalars['Int'];
   platform_account: Scalars['Int'];
@@ -1829,6 +2057,27 @@ export type UserFavoriteGame = {
   game: Game;
   game_uid: Scalars['String'];
   id: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+export type UserLuckyChestHistory = {
+  __typename?: 'UserLuckyChestHistory';
+  is_claimed: Scalars['Boolean'];
+  prize: LuckyChestPrize;
+  prize_id: Scalars['Int'];
+  type: LuckyChestType;
+  uid: Scalars['ID'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+export type UserLuckyChestTurn = {
+  __typename?: 'UserLuckyChestTurn';
+  amount: Scalars['Int'];
+  created_at: Scalars['DateTime'];
+  type: LuckyChestType;
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
