@@ -1,0 +1,74 @@
+.wrapper
+    position: relative
+    z-index: 1
+
+    .content_lucky_chest_top
+        display: flex
+        align-items: center
+        flex-direction: column
+        justify-content: space-between
+        @media (min-width: 992px)
+            flex-direction: row
+        .heading
+            flex: 45% 0 0
+            padding-top: 40px
+            text-align: center
+            @media (min-width: 992px)
+                text-align: left
+            .content_top
+                border-bottom: 1px solid  rgba(78, 134, 147, 0.32)
+                h1
+                    font-weight: 600
+                    text-transform: uppercase
+                    color: #00F9FF
+                    margin: 0
+                    font-size: 32px
+                    line-height: 36px
+                    @media (min-width: 768px)
+                        font-size: 48px
+                        line-height: 53px
+                p
+                    font-weight: 300
+                    font-size: 16px
+                    line-height: 22px
+                    text-transform: capitalize
+                    color: #DBE0E8
+            h3
+                font-weight: 600
+                font-size: 24px
+                line-height: 26px
+                text-transform: capitalize
+                color: #FFFFFF
+                margin-top: 40px
+            p
+                font-weight: 300
+                font-size: 16px
+                line-height: 22px
+                text-transform: capitalize
+                color: #DBE0E8
+    .group_btn
+        display: flex
+        align-items: center
+        justify-content: center
+        padding-bottom: 40px
+        .number_coin
+            padding-left: 20px
+            display: flex
+            align-items: center
+            .n
+                font-weight: 400
+                font-size: 20px
+                line-height: 25px
+                text-transform: capitalize
+                color: #00F9FF    
+    .group_btn_pc
+        @media (min-width: 0px)
+            display: none
+        @media (min-width: 992px)
+            display: block
+            display: flex
+            align-items: center
+            justify-content: flex-start
+    .group_btn_mobile
+        @media (min-width: 992px)
+            display: none

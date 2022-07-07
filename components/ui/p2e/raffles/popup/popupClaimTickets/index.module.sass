@@ -1,0 +1,81 @@
+.content_modal
+  min-width: 650px
+  :global(.ant-modal-body)
+    padding: 0
+    background-image: url("/assets/P2E/raffles/imagePopClaimRaffes.jpg")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
+    border-radius: 4px 4px 0px 0px
+  :global(.ant-modal-close .ant-modal-close-x)
+    color: #6c6b6b
+    background: none
+.title
+  font-family: 'Revx Neue Demo'
+  text-align: center
+  padding: 13px
+  //margin-bottom: 20px
+  background: rgba(45, 52, 70, 0.5)
+  backdrop-filter: blur(40px)
+  .titleSuccess
+    font-style: normal
+    font-weight: 400
+    font-size: 24px
+    line-height: 26px
+    letter-spacing: 0.2em
+    text-transform: uppercase
+    background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+    -webkit-background-clip: text
+    -webkit-text-fill-color: transparent
+    margin-bottom: 8px
+
+  .titleTicket
+    font-weight: 400
+    font-size: 18px
+    line-height: 20px
+    margin-bottom: 0
+.tickets
+  height: auto
+  display: flex
+  justify-content: space-around
+  flex-wrap: wrap
+  padding: 32px 32px 40px 32px
+  .item
+    //margin-top: 20px
+    display: flex
+    align-items: center
+    gap: 0 16px
+    :global(.ant-btn[disabled])
+      background: #d9d9d9
+    .itemTickets
+      font-weight: 600
+      font-size: 32px
+      line-height: 40px
+      color: #FFD058
+      text-shadow: 0 0 11px #FFD058
+      padding: 10px
+      background: rgba(69, 80, 107, 0.5)
+      border-radius: 4px
+    .itemBtn
+      font-weight: 600
+      font-size: 24px
+      line-height: 20px
+      height: auto
+      padding: 8px 10px
+      //color: #1889E4
+      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+      -webkit-background-clip: text !important
+      -webkit-text-fill-color: transparent
+      border-radius: 2px
+      border: 1px solid #1889E4
+.buttonClaim
+  display: flex
+  justify-content: flex-end
+  button
+    font-weight: 600
+    font-size: 12px
+    line-height: 13px
+    height: auto
+    padding: 8px 20px !important
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+    border: 0.833333px solid #222837

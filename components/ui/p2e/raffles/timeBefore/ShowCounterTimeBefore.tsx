@@ -1,5 +1,4 @@
-import DateTimeDisplay from "components/ui/common/CountDown/DateTimeDisplay";
-import DisplayTimeEnd from "./DisplayTimeEnd";
+import DisplayTimeEnd from "../timeEnd/DisplayTimeEnd";
 
 interface ShowCounterProps {
 	days: number;
@@ -8,7 +7,7 @@ interface ShowCounterProps {
 	seconds: number;
 }
 
-const ShowCounterTimeEnd: React.FC<ShowCounterProps> = ({
+const ShowCounterTimeBefore: React.FC<ShowCounterProps> = ({
 	days,
 	hours,
 	minutes,
@@ -16,12 +15,10 @@ const ShowCounterTimeEnd: React.FC<ShowCounterProps> = ({
 }) => {
 	return (
 		<div className="flex items-center show-counter">
-			{/*<DateTimeDisplay value={days} type={"D"} />*/}
-			<DisplayTimeEnd value={hours} type={":"} />
 			<DisplayTimeEnd value={minutes} type={":"} />
 			<DisplayTimeEnd value={seconds} type={""} />
 		</div>
 	);
 };
 
-export default ShowCounterTimeEnd;
+export default ShowCounterTimeBefore;

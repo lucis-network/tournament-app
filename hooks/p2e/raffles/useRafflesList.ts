@@ -83,7 +83,13 @@ export const useGetSponsorRaffle = (): {
   }
 }
 
-export const useSearchRaffles = (name: string, skipRaflleUid?: string): {
+type SearchRafflesProps = {
+  name?: string,
+  skipRaflleUid?: string,
+  status?: string,
+}
+
+export const useSearchRaffles = ({name, skipRaflleUid, status}: SearchRafflesProps): {
   searchRafflesLoading: boolean,
   searchRafflesError: ApolloError | undefined,
   refetchSearchRafflesRaffle: () => Promise<ApolloQueryResult<any>>,
@@ -100,7 +106,8 @@ export const useSearchRaffles = (name: string, skipRaflleUid?: string): {
     variables: {
       filter: {
         name: name,
-        skip_raffle_uid: skipRaflleUid
+        skip_raffle_uid: skipRaflleUid,
+        status: status,
       }
     },
     context: {

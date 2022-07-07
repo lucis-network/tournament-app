@@ -1,3 +1,5 @@
+@import "styles/common"
+
 .rafflesBg
   background: url('/assets/P2E/raffles/bgRafflesMobile.jpg') no-repeat fixed top center
   background-size: cover
@@ -25,6 +27,8 @@
     padding: 56px 0
   @media screen and (min-width: 1200px)
     padding: 56px 0 151px
+  :global(.ant-empty)
+    opacity: 0.6
   :global(.ant-empty-description)
     color: white
 .sectionTitleFlex
@@ -605,6 +609,8 @@
     margin-bottom: 32px
     @media screen and (min-width: 1400px)
       padding: 48px 32px
+  .sidebarHidden
+    display: none
   .buyTicketSection
     .raffleCountdown, .sectionTitle
       margin-bottom: 21px
@@ -653,15 +659,36 @@
           font-size: 16px
           line-height: 24px
           color: #DF9B16
-    button
-      border: 1px solid rgba(255, 255, 255, 0.5)
+    .sidebarBtn
+      border: 1px solid rgba(0, 249, 255, 1)
+      padding: 8px 16px
+      min-width: 90px
       font-family: 'Revx Neue Demo'
       font-weight: 600
       font-size: 12px
       line-height: 12px
-      color: rgba(255, 255, 255, 0.5)
-      padding: 8px 16px
-      min-width: 90px
+      color: #000000
+      text-transform: uppercase
+      position: relative
+      span
+        position: relative
+        z-index: 1
+      &:before
+        content: ''
+        display: block
+        position: absolute
+        top: 1px
+        left: 1px
+        bottom: 1px
+        right: 1px
+        background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+        z-index: 0
+      &:disabled
+        border: 1px solid rgba(255, 255, 255, 0.5)
+        color: rgba(255, 255, 255, 0.5)
+        cursor: no-drop
+        &:before
+          content: none
     .buyTicket
       display: flex
       align-items: center
@@ -676,11 +703,15 @@
         line-height: 22px
         text-transform: capitalize
         color: #FFFFFF
+        flex: 1
+        justify-content: flex-end
         .rafflePrice
           margin-left: 8px
           .rafflePriceText
             font-size: 18px
             margin-bottom: 0
+            white-space: normal
+            word-break: break-all
     .buyTicketDesc
       h2
         font-family: 'Revx Neue Demo'
@@ -740,6 +771,7 @@
     .allTicketsList
       table
         width: 100%
+        text-align: center
         .allTicketItem
           @media screen and (min-width: 992px)
             background: rgba(45, 52, 70, 0.5)
@@ -780,30 +812,34 @@
             color: #FFFFFF
             @media screen and (min-width: 1400px)
               font-size: 24px
-          .ownerAvatar
-            :global(.ant-image)
-              img
+          .ownerInfo
+            .ownerInfoFlex
+              display: inline-flex
+              justify-content: flex-start
+              align-items: center
+              .ownerAvatar
                 min-width: 30px
                 max-width: 30px
                 height: 30px
                 object-fit: cover
                 object-position: center
                 border-radius: 2.5px
+                margin-right: 8px
                 @media screen and (min-width: 1400px)
                   min-width: 80px
                   max-width: 80px
                   height: 80px
                   border-radius: 5px
-
-          .ownerName
-            font-family: 'Revx Neue Demo'
-            font-weight: 600
-            font-size: 14px
-            line-height: 120%
-            letter-spacing: 0.04em
-            color: rgba(255, 255, 255, 0.8)
-            @media screen and (min-width: 1400px)
-              font-size: 24px
+                  margin-right: 40px
+              .ownerName
+                font-family: 'Revx Neue Demo'
+                font-weight: 600
+                font-size: 14px
+                line-height: 120%
+                letter-spacing: 0.04em
+                color: rgba(255, 255, 255, 0.8)
+                @media screen and (min-width: 1400px)
+                  font-size: 24px
           .ticketID
             font-family: 'Lexend'
             font-weight: 400
