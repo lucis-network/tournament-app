@@ -50,12 +50,12 @@ export default observer(function P2EWrapper(props: IProps) {
     { path: "/p2e/dashboard", name: "Dashboard" },
     { path: "/p2e/missions", name: "Missions" },
     { path: "/p2e/raffles", name: "Raffles" },
-    { path: "/p2e/items", name: "Items" },
+    { path: "/p2e/lucky-chest", name: "Lucky Chest" },
     { path: "/p2e/battle-pass", name: "Battle pass" },
   ];
 
   const isDisabledTab = (tab: string) => {
-    return tab === "/p2e/items" || tab === "/p2e/battle-pass";
+    return tab === "/p2e/battle-pass";
   }
 
 
