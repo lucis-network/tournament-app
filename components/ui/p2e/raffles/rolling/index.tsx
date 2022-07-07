@@ -280,7 +280,7 @@ const RollingRaffles = (props: Props) => {
                 <div className={s.recentWinItem} key={`${item?.ticket_number}`}>
                   <span className={s.recentWinItemId}>#{item?.ticket_number ? b64DecodeUnicode(item?.ticket_number) : '------'}</span>
                   <span className={s.recentWinItemName}>{item && `(${item?.user?.profile?.user_name})`}</span>
-                  {isCheckLoading === index && checkDisplayEndAt &&
+                  {isCheckLoading === index && checkDisplayTimeEnd && dataRaffleDetail?.status === "ENABLED" &&
                     <>
                         <Spin indicator={antIcon} />
                     </>
