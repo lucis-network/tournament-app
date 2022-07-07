@@ -1,0 +1,87 @@
+.modal
+    padding: 0
+    position: fixed
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    max-width: 100%
+    border-radius: 0
+    height: 100vh
+    .content_box
+        display: flex
+        justify-content: space-between
+        // @media ( min-width: 0px )
+        //     flex-direction: column
+        .content_left
+            display: flex
+            flex-direction: column
+            align-items: center
+            flex: 90% 0 0
+
+            h3
+                color: #00F9FF
+                font-weight: 600
+                font-size: 32px
+                line-height: 35px
+            p
+                color: #DBE0E8
+                font-weight: 300
+                font-size: 24px
+                line-height: 30px
+            .im_box
+                max-width: 440px
+                .btn_open
+                    display: flex
+                    justify-content: center
+                    align-items: center
+                    .number_coin
+                        display: flex
+                        align-items: center
+                        p
+                            margin: 0
+                            padding-left: 12px
+
+        .content_right
+            max-height: 460px
+            position: relative
+            // display: none
+            .line
+                position: absolute
+                left: 0
+                top: 0
+            .block_item
+                height: 100%
+                overflow: hidden
+                margin-left: 16px 
+                .item
+                    height: 64px
+                    width: 64px
+                    overflow: hidden
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    background: rgba(69, 82, 107, 0.5) 
+                    margin: 4px 0px 
+                    img
+                        width: 100%
+
+
+    .reward_box
+        h3
+            font-weight: 600
+            font-size: 24px
+            line-height: 26px
+            color: #00F9FF
+    :global(.ant-modal-content)
+        background: rgba(23, 29, 46, 0.9)
+        border-radius: 0
+        padding: 50px 100px 100px 100px
+        height: 100%
+        display: flex
+        flex-direction: column
+        justify-content: center
+        // @media ( min-width: 0px )
+        //     padding: 0           
+    :global(.ant-modal-footer)
+        display: none

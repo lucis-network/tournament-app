@@ -634,22 +634,24 @@ export type LolMission = {
 export enum LolMissionType {
   Assist = 'Assist',
   Baron = 'Baron',
-  Damage = 'Damage',
   DamageToChampion = 'DamageToChampion',
   DestroyTurret = 'DestroyTurret',
   DoubleKill = 'DoubleKill',
   DragonElemental = 'DragonElemental',
   DragonThousandYears = 'DragonThousandYears',
-  EyePLug = 'EyePLug',
   FirstBlood = 'FirstBlood',
   FirstBloodTeam = 'FirstBloodTeam',
   Gold = 'Gold',
-  KillSoldiers = 'KillSoldiers',
-  Kills = 'Kills',
+  Kill = 'Kill',
+  MagicDameToChampion = 'MagicDameToChampion',
   Match = 'Match',
+  MinionKill = 'MinionKill',
   PentalKill = 'PentalKill',
+  PhysicalDamageToChampion = 'PhysicalDamageToChampion',
   QuadraKill = 'QuadraKill',
   TripleKill = 'TripleKill',
+  WardKill = 'WardKill',
+  WardPlace = 'WardPlace',
   Win = 'Win',
   WinStreak = 'WinStreak'
 }
@@ -1214,6 +1216,7 @@ export type QueryGetAllPlayerNftArgs = {
 
 
 export type QueryGetAllTicketsArgs = {
+  display_name?: InputMaybe<Scalars['String']>;
   limit: Scalars['Int'];
   page: Scalars['Int'];
   raffle_uid: Scalars['String'];

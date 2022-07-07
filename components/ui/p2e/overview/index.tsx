@@ -91,15 +91,24 @@ export default observer(function P2EOverview() {
       setFaceitUser({} as any);
       setLmssUser({} as any);
       setIsAuth(false);
+      setLoadingFaceit(false);
+      setLoadingLMSS(false);
     } else {
+      if (AuthStore.isLoggedIn === true) {
+        setIsAuth(true);
+      } else {
+        setIsAuth(false);
+      }
+
       if (AuthGameStore.isLoggedInFaceit === true) {
         const faceitUser = {
           avatar: AuthGameStore.faceit_avatar,
           nick_name: AuthGameStore.faceit_nick_name
         }
         setFaceitUser(faceitUser as any as PlatformAccount);
-        setIsAuth(true);
 
+      } else {
+        setFaceitUser({} as any);
       }
       if (AuthGameStore.isLoggedInLMSS === true) {
         const lmssUser = {
@@ -107,12 +116,7 @@ export default observer(function P2EOverview() {
           nick_name: AuthGameStore.lmss_nick_name
         }
         setLmssUser(lmssUser as any as PlatformAccount);
-        setIsAuth(true);
-      }
-
-      if (AuthGameStore.isLoggedInFaceit === false && AuthGameStore.isLoggedInLMSS === false && AuthStore.isLoggedIn === true) {
-        setIsAuth(true);
-        setFaceitUser({} as any);
+      } else {
         setLmssUser({} as any);
       }
 
@@ -267,65 +271,67 @@ export default observer(function P2EOverview() {
 
   const prefixAvatar = "https://lmssplus.com/static_image/img/profileicon/";
   return (
-    <div className="lucis-container-2">
-      {openConnectLOLPopup &&
-        <ConnectLOLPopup
-          onCancel={() => setOpenConnectLOLPopup(false)}
-          onConnectLOL={(summonerName) => connectLOL(summonerName)}
-        />}
-      <div className={s.overviewContainer}>
-        {!AuthStore.isLoggedIn && <BannerOverview />}
+    <div className={s.background}>
+      <div className="lucis-container-2">
+        {openConnectLOLPopup &&
+          <ConnectLOLPopup
+            onCancel={() => setOpenConnectLOLPopup(false)}
+            onConnectLOL={(summonerName) => connectLOL(summonerName)}
+          />}
+        <div className={s.overviewContainer}>
+          {!AuthStore.isLoggedIn && <BannerOverview />}
 
-        <div className={s.overviewSection}>
-          <h2 className={s.overviewSectionTitle}>PLAY YOUR FAVORITE GAME</h2>
-          <Row justify='space-between'>
-            <Col className={s.bg_item} style={{ backgroundImage: 'url(/assets/P2E/overview/bg_lol.png)' }}>
-              <Row align='middle' className={s.block_game}>
-                <Col className={s.img_game}>
-                  <img src="/assets/P2E/overview/im_lol.png" alt="" />
-                </Col>
-                <Col className={s.content}>
-                  <h1>LEAGUE OF LEGENDS</h1>
-                  {isEmpty(lmssUser) ? (
-                    <Button
-                      className={s.btnConnectLol}
-                      onClick={() => onClickConnectLMSS()}
-                      disabled={loadingLMSS}>Connect game</Button>
-                  ) : (
-                    <div className={s.platformUser}>
-                      <Image src={lmssUser?.avatar ? `${prefixAvatar}${lmssUser?.avatar}` : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
-                      <div className={s.platformUserName}>{lmssUser?.nick_name}</div>
-                    </div>
-                  )}
-                </Col>
-              </Row>
-            </Col>
-            <Col className={s.bg_item} style={{ backgroundImage: 'url(/assets/P2E/overview/bg_cs.png)' }}>
-              <Row align='middle' className={s.block_game}>
-                <Col className={s.img_game}>
-                  <img src="/assets/P2E/overview/im_cs.png" alt="" />
-                </Col>
-                <Col className={s.content}>
-                  <h1>CS:GO</h1>
-                  {isEmpty(faceitUser) ? (
-                    <>
-                      {/* <div id="faceitLogin" className={s.btnConnectGame}></div> */}
+          <div className={s.overviewSection}>
+            <h2 className={s.overviewSectionTitle}>PLAY YOUR FAVORITE GAME</h2>
+            <Row justify='space-between'>
+              <Col className={s.bg_item} style={{ backgroundImage: 'url(/assets/P2E/overview/bg_lol.png)' }}>
+                <Row align='middle' className={s.block_game}>
+                  <Col className={s.img_game}>
+                    <img src="/assets/P2E/overview/im_lol.png" alt="" />
+                  </Col>
+                  <Col className={s.content}>
+                    <h1>LEAGUE OF LEGENDS</h1>
+                    {isEmpty(lmssUser) ? (
                       <Button
-                        onClick={() => handleConnectFaceit()}
                         className={s.btnLoginFaceit}
-                        loading={loadingFaceit}
-                      >CONNECT WITH FACEIT</Button>
-                    </>
-                  ) : (
-                    <div className={s.platformUser}>
-                      <Image src={faceitUser?.avatar ? faceitUser?.avatar : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
-                      <div className={s.platformUserName}>{faceitUser?.nick_name}</div>
-                    </div>
-                  )}
-                </Col>
-              </Row>
-            </Col>
-          </Row>
+                        onClick={() => onClickConnectLMSS()}
+                        loading={loadingLMSS}>CONNECT GAME</Button>
+                    ) : (
+                      <div className={s.platformUser}>
+                        <Image src={lmssUser?.avatar ? `${prefixAvatar}${lmssUser?.avatar}` : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
+                        <div className={s.platformUserName}>{lmssUser?.nick_name}</div>
+                      </div>
+                    )}
+                  </Col>
+                </Row>
+              </Col>
+              <Col className={s.bg_item} style={{ backgroundImage: 'url(/assets/P2E/overview/bg_cs.png)' }}>
+                <Row align='middle' className={s.block_game}>
+                  <Col className={s.img_game}>
+                    <img src="/assets/P2E/overview/im_cs.png" alt="" />
+                  </Col>
+                  <Col className={s.content}>
+                    <h1>CS:GO</h1>
+                    {isEmpty(faceitUser) ? (
+                      <>
+                        {/* <div id="faceitLogin" className={s.btnConnectGame}></div> */}
+                        <Button
+                          onClick={() => handleConnectFaceit()}
+                          className={s.btnLoginFaceit}
+                          loading={loadingFaceit}
+                        >CONNECT GAME</Button>
+                      </>
+                    ) : (
+                      <div className={s.platformUser}>
+                        <Image src={faceitUser?.avatar ? faceitUser?.avatar : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
+                        <div className={s.platformUserName}>{faceitUser?.nick_name}</div>
+                      </div>
+                    )}
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </div>
         </div>
       </div>
     </div>

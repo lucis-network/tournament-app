@@ -15,16 +15,11 @@ import {debounce, isEmpty} from "lodash";
 import Head from "next/head";
 import DefaultErrorPage from "next/error";
 import SpinLoading from "../../common/Spin";
-import {
-  BuyRaffleTicketErrorCode,
-  RaffleStatus,
-  RaffleStatusType,
-  UserTicketGql
-} from "../../../../src/generated/graphql_p2e";
-import moment from "moment";
+import {BuyRaffleTicketErrorCode, RaffleStatusType, UserTicketGql, RaffleStatus} from "../../../../src/generated/graphql_p2e";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
 import RollingRaffles from "./rolling";
 import RafflesStore from "../../../../src/store/RafflesStore";
+import moment from "moment";
 import {mapToDict} from "../../../../utils/Array";
 
 const RafflesDetail = observer(() => {
@@ -34,12 +29,13 @@ const RafflesDetail = observer(() => {
   const [ticketBuyAmount, setTicketBuyAmount] = useState<number>(0)
   const [totalCost, setTotalCost] = useState<number>(0)
   const [ticketBuying, setTicketBuying] = useState<boolean>(false)
+  const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
   const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles({
     name: '',
     skipRaflleUid: raffleUID,
     status: RaffleStatusType.Enabled
   })
-  const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData} = useGetRaffleDetail(`${raffleUID}`)
+  const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData, refetchRaffleDetail} = useGetRaffleDetail(`${raffleUID}`)
   const {getMyTicketsLoading, getMyTicketsError, refetchMyTickets, getMyTicketsData} = useGetMyTicket({
     raffle_uid: raffleUID,
     limit: 9999,
@@ -90,6 +86,23 @@ const RafflesDetail = observer(() => {
       isSubscribed = false
     }
   }, [RafflesStore.dataWinTicketLastUpdated])
+
+  useEffect(() => {
+    const checkDateInterval =  setInterval(() => {
+      const dateNow = moment(new Date()).valueOf();
+      const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
+        .valueOf();
+      const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
+
+      if(timeBefore <= 5) {
+        setCheckDisplayEndAt(true);
+      }
+    }, 1000)
+    if(checkDisplayEndAt)  clearInterval(checkDateInterval);
+    return () => {
+      clearInterval(checkDateInterval)
+    }
+  }, [getRaffleDetailData?.getRaffleDetail])
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
   const raffleEndAt = moment(raffleDetailData?.end_at).format('hh:mm MMM Do')
@@ -230,7 +243,7 @@ const RafflesDetail = observer(() => {
         </section>
         <div className={s.rafflesDetailSidebar}>
           <div className={s.stickySidebar}>
-            <section className={`${s.buyTicketSection} ${s.sidebarSection}`}>
+            <section className={`${s.buyTicketSection} ${s.sidebarSection} ${checkDisplayEndAt ? s.sidebarHidden : ''}`} >
               <div className={s.raffleCountdown}>
                 <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt="" fallback=""/>
                 <span className={s.raffleCountdownText}>Rolling at <span
@@ -293,10 +306,12 @@ const RafflesDetail = observer(() => {
                 </Link>
               </div>
             </section>
-            <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""}
-                              dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
-            </section>
+            {checkDisplayEndAt &&
+                <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
+                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} refetchRaffleDetail={refetchRaffleDetail}
+                                    dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
+                </section>
+            }
           </div>
         </div>
         <section className={s.myTicketsSection}>
