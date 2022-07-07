@@ -18,7 +18,7 @@ export default class Slice extends PureComponent {
     }, 100)
   }
 
-  componentWillReceiveProps = nextProps => {
+  UNSAFE_componentWillReceiveProps = nextProps => {
     if (nextProps.digit !== this.props.digit) {
       this.reset(this.props.digit)
 

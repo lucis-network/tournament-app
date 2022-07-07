@@ -13,6 +13,8 @@ import {
 import LoginBoxStore from "../Auth/Login/LoginBoxStore";
 import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWalletStore";
 import AuthGameStore, { AuthGameUser } from "./AuthGameStore";
+import { Platform } from "utils/Enum";
+import { PlatformAccount } from "src/generated/graphql_p2e";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -166,7 +168,7 @@ export default class AuthService {
 
     const u = loginRes.data.loginGoogle.user;
     const platformAccounts = loginRes.data?.loginGoogle?.user?.platform_account;
-    console.log(platformAccounts)
+    // console.log(platformAccounts)
     const tokenID = loginRes.data.loginGoogle.token;
     const user: AuthUser = {
       id: u.id,
@@ -181,14 +183,44 @@ export default class AuthService {
       profile: u.profile,
     };
 
-    const gameAccount: AuthGameUser = {
-      faceit_id: platformAccounts[0]?.uid,
-      faceit_access_token: platformAccounts[0]?.access_token,
-      faceit_id_token: platformAccounts[0]?.id_token,
-      faceit_platform_id: platformAccounts[0]?.platform_id,
-      faceit_nick_name: platformAccounts[0]?.nick_name,
-      faceit_avatar: platformAccounts[0]?.avatar,
+    let gameAccount: AuthGameUser = {
+      // faceit_id: item?.uid,
+      // faceit_access_token: item?.access_token,
+      // faceit_id_token: item?.id_token,
+      // faceit_platform_id: item?.platform_id,
+      // faceit_nick_name: item?.nick_name,
+      // faceit_avatar: item?.avatar,
     }
+
+    platformAccounts.forEach((item: any) => {
+      switch (item.platform_id) {
+        case Platform.FACEIT:
+          gameAccount = {
+            ...gameAccount,
+            faceit_id: item?.uid,
+            faceit_access_token: item?.access_token,
+            faceit_id_token: item?.id_token,
+            faceit_platform_id: item?.platform_id,
+            faceit_nick_name: item?.nick_name,
+            faceit_avatar: item?.avatar,
+          }
+          break;
+          case Platform.GARENA:
+            gameAccount = {
+              ...gameAccount,
+              lmss_id: item?.uid,
+              lmss_access_token: "item?.access_token",
+              lmss_id_token: "item?.id_token",
+              lmss_platform_id: item?.platform_id,
+              lmss_nick_name: item?.nick_name,
+              lmss_avatar: item?.avatar,
+            }
+            break;
+
+        default:
+          break;
+      }
+    })
 
     return {
       user,
@@ -279,14 +311,45 @@ export default class AuthService {
       profile: u.profile,
     };
 
-    const gameAccount: AuthGameUser = {
-      faceit_id: platformAccounts[0]?.uid,
-      faceit_access_token: platformAccounts[0]?.access_token,
-      faceit_id_token: platformAccounts[0]?.id_token,
-      faceit_platform_id: platformAccounts[0]?.platform_id,
-      faceit_nick_name: platformAccounts[0]?.nick_name,
-      faceit_avatar: platformAccounts[0]?.avatar,
+    let gameAccount: AuthGameUser = {
+      // faceit_id: item?.uid,
+      // faceit_access_token: item?.access_token,
+      // faceit_id_token: item?.id_token,
+      // faceit_platform_id: item?.platform_id,
+      // faceit_nick_name: item?.nick_name,
+      // faceit_avatar: item?.avatar,
     }
+
+    platformAccounts.forEach((item: any) => {
+      switch (item.platform_id) {
+        case Platform.FACEIT:
+          gameAccount = {
+            ...gameAccount,
+            faceit_id: item?.uid,
+            faceit_access_token: item?.access_token,
+            faceit_id_token: item?.id_token,
+            faceit_platform_id: item?.platform_id,
+            faceit_nick_name: item?.nick_name,
+            faceit_avatar: item?.avatar,
+          }
+          break;
+          case Platform.GARENA:
+            gameAccount = {
+              ...gameAccount,
+              lmss_id: item?.uid,
+              lmss_access_token: "item?.access_token",
+              lmss_id_token: "item?.id_token",
+              lmss_platform_id: item?.platform_id,
+              lmss_nick_name: item?.nick_name,
+              lmss_avatar: item?.avatar,
+            }
+            break;
+
+        default:
+          break;
+      }
+
+    })
 
     return {
       user,

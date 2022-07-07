@@ -53,7 +53,7 @@ const Mission = (props: IProps) => {
     setMission(lucisMissionQuery?.data?.getLucisMission)
     setLoading(false);
     if (showMessage) {
-      message.success("update successfully!");
+      message.success("Update!");
     }
   }
 

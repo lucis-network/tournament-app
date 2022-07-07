@@ -12,6 +12,7 @@ import { CsgoPlayerMatch } from "../../../../src/generated/graphql_p2e";
 import { RecentMatchListCSGO } from '../recentMatchComponent/RecentMatchListCSGO';
 import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
+import { RecentMatchListLOL } from '../recentMatchComponent/RecentMatchListLOL';
 
 interface IProps {
   currentGame?: Game;
@@ -50,7 +51,13 @@ const RecentMatchHistory = (props: IProps) => {
           title="Recent matches history"
           hasButtonBack
         />;
-
+        case Game.LOL:
+          return <RecentMatchListLOL
+            recentMatches={getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]}
+            loading={getRecentMatchesLoading}
+            title="Recent matches history"
+            hasButtonBack
+          />;
       default:
         return <RecentMatchListCSGO
           recentMatches={getRecentMatchesData?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]}

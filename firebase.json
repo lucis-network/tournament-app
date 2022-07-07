@@ -21,7 +21,11 @@
       },
       {
         "source": "/p2e/dashboard/history/*",
-        "destination": "/p2e/dashboard/history[id].html"
+        "destination": "/p2e/dashboard/history/[id].html"
+      },
+      {
+        "source": "/p2e/raffles/*",
+        "destination": "/p2e/raffles/[id].html"
       },
       {
         "source": "/p2e/dashboard",
@@ -30,6 +34,10 @@
       {
         "source": "/p2e/missions",
         "destination": "/p2e/missions.html"
+      },
+      {
+        "source": "/p2e/raffles",
+        "destination": "/p2e/raffles.html"
       }
     ]
   },

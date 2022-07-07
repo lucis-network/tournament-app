@@ -669,12 +669,27 @@ export enum LolRegime {
 export type MatchEarning = {
   __typename?: 'MatchEarning';
   assist?: Maybe<Scalars['Int']>;
+  damage_taken1?: Maybe<Scalars['Int']>;
+  damage_taken2?: Maybe<Scalars['Int']>;
+  damage_taken3?: Maybe<Scalars['Int']>;
+  damage_taken_aram1?: Maybe<Scalars['Int']>;
+  damage_taken_aram2?: Maybe<Scalars['Int']>;
+  damage_taken_aram3?: Maybe<Scalars['Int']>;
+  double_kill?: Maybe<Scalars['Int']>;
+  game_uid?: Maybe<Scalars['String']>;
   headshot?: Maybe<Scalars['Int']>;
   highest_kda?: Maybe<Scalars['Int']>;
   highest_kr?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
   kill?: Maybe<Scalars['Int']>;
   least_died?: Maybe<Scalars['Int']>;
+  minion_kill1?: Maybe<Scalars['Int']>;
+  minion_kill2?: Maybe<Scalars['Int']>;
+  minion_kill3?: Maybe<Scalars['Int']>;
+  minion_kill_map_aram1?: Maybe<Scalars['Int']>;
+  minion_kill_map_aram2?: Maybe<Scalars['Int']>;
+  minion_kill_map_aram3?: Maybe<Scalars['Int']>;
+  most_damage_taken?: Maybe<Scalars['Int']>;
   most_headshot?: Maybe<Scalars['Int']>;
   most_kill?: Maybe<Scalars['Int']>;
   most_support?: Maybe<Scalars['Int']>;
@@ -683,6 +698,7 @@ export type MatchEarning = {
   quadra_kill?: Maybe<Scalars['Int']>;
   triple_kill?: Maybe<Scalars['Int']>;
   win?: Maybe<Scalars['Int']>;
+  win_map_aram?: Maybe<Scalars['Int']>;
 };
 
 export type Member = {
@@ -1078,34 +1094,33 @@ export type PlayerLolMatch = {
   assist?: Maybe<Scalars['Int']>;
   champion_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
-  damage?: Maybe<Scalars['Int']>;
+  damage_dealt?: Maybe<Scalars['Int']>;
+  damage_taken?: Maybe<Scalars['Int']>;
   double_kill?: Maybe<Scalars['Int']>;
-  eye_destroy?: Maybe<Scalars['Int']>;
-  eye_plugin?: Maybe<Scalars['Int']>;
-  gold?: Maybe<Scalars['Int']>;
-  is_most_damage: Scalars['Boolean'];
-  is_most_eye_destroy: Scalars['Boolean'];
-  is_most_eye_plugin: Scalars['Boolean'];
-  is_most_kill_soldier: Scalars['Boolean'];
-  is_most_take_damage?: Maybe<Scalars['Int']>;
+  eye_killed?: Maybe<Scalars['Int']>;
+  eye_placed?: Maybe<Scalars['Int']>;
+  gold_earned?: Maybe<Scalars['Int']>;
+  is_most_assist: Scalars['Boolean'];
+  is_most_damage_dealt: Scalars['Boolean'];
+  is_most_damage_taken?: Maybe<Scalars['Boolean']>;
+  is_most_eye_killed: Scalars['Boolean'];
+  is_most_eye_placed: Scalars['Boolean'];
+  is_most_gold_earned: Scalars['Boolean'];
+  is_most_minion_killed: Scalars['Boolean'];
+  is_mvp?: Maybe<Scalars['Boolean']>;
   is_win: Scalars['Boolean'];
   kill?: Maybe<Scalars['Int']>;
-  kill_soldier?: Maybe<Scalars['Int']>;
   lane: LolLane;
-  lucis_point: Scalars['Int'];
   match: LolMatch;
   match_uid: Scalars['String'];
-  most_assist: Scalars['Boolean'];
-  most_gold: Scalars['Boolean'];
+  minion_killed?: Maybe<Scalars['Int']>;
   most_kill: Scalars['Boolean'];
-  mvp?: Maybe<Scalars['Int']>;
   pental_kill?: Maybe<Scalars['Int']>;
   player: PlayerGame;
   player_game_uid: Scalars['String'];
   player_statistic?: Maybe<Scalars['JSON']>;
   point?: Maybe<Scalars['Int']>;
   quadra_kill?: Maybe<Scalars['Int']>;
-  take_damage?: Maybe<Scalars['Int']>;
   triple_kill?: Maybe<Scalars['Int']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -1199,7 +1214,9 @@ export type QueryGetAllPlayerNftArgs = {
 
 
 export type QueryGetAllTicketsArgs = {
+  page: Scalars['Float'];
   raffle_uid: Scalars['String'];
+  take: Scalars['Float'];
 };
 
 

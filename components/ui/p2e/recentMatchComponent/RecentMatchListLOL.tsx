@@ -223,3 +223,5 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
 
   );
 })
+
+RecentMatchListLOL.displayName = "RecentMatchListLOL"
