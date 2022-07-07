@@ -42,8 +42,6 @@ export default observer(function P2EWrapper(props: IProps) {
     const currentGameLocal = localStorage.getItem("currentGame");
     if (currentGameLocal) {
       setCurrentGame(Number(currentGameLocal));
-    } else {
-      setCurrentGame(Game.CSGO);
     }
   }, [])
 
@@ -118,7 +116,7 @@ export default observer(function P2EWrapper(props: IProps) {
     if (currentGame === Game.LOL) {
       return s.backgroundLOL;
     }
-    return "";
+    return s.backgroundDefault;
   }
 
 

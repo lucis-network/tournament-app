@@ -70,6 +70,7 @@ export function getLocalAuthGameInfo(): AuthGameUser | null {
 export function clearLocalAuthInfo(): void {
   localStorage.setItem("user", "");
   localStorage.setItem("gameAccounts", "");
+  localStorage.setItem("currentGame", "");
 }
 
 export function debug__forceToken_LocalAuthInfo(

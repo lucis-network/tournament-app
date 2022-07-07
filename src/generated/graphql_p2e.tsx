@@ -146,6 +146,17 @@ export enum BracketType {
   Swiss = 'SWISS'
 }
 
+export enum BuyRaffleTicketErrorCode {
+  BalanceNotInitiated = 'BalanceNotInitiated',
+  BuyPhaseEnded = 'BuyPhaseEnded',
+  NotEnoughLucisPoint = 'NotEnoughLucisPoint',
+  NotEnoughLucisToken = 'NotEnoughLucisToken',
+  RaffleNotFound = 'RaffleNotFound',
+  TicketQuantityCannotBeZero = 'TicketQuantityCannotBeZero',
+  TotalLimitExceeded = 'TotalLimitExceeded',
+  UserLimitExceeded = 'UserLimitExceeded'
+}
+
 export type CacheCsgoPlayerStatistic = {
   __typename?: 'CacheCSGOPlayerStatistic';
   _count: CacheCsgoPlayerStatisticCount;
@@ -621,23 +632,26 @@ export type LolMission = {
 };
 
 export enum LolMissionType {
+  Assist = 'Assist',
   Baron = 'Baron',
-  Damage = 'Damage',
   DamageToChampion = 'DamageToChampion',
   DestroyTurret = 'DestroyTurret',
   DoubleKill = 'DoubleKill',
   DragonElemental = 'DragonElemental',
   DragonThousandYears = 'DragonThousandYears',
-  EyePLug = 'EyePLug',
   FirstBlood = 'FirstBlood',
   FirstBloodTeam = 'FirstBloodTeam',
   Gold = 'Gold',
-  KillSoldiers = 'KillSoldiers',
-  Kills = 'Kills',
+  Kill = 'Kill',
+  MagicDameToChampion = 'MagicDameToChampion',
   Match = 'Match',
+  MinionKill = 'MinionKill',
   PentalKill = 'PentalKill',
+  PhysicalDamageToChampion = 'PhysicalDamageToChampion',
   QuadraKill = 'QuadraKill',
   TripleKill = 'TripleKill',
+  WardKill = 'WardKill',
+  WardPlace = 'WardPlace',
   Win = 'Win',
   WinStreak = 'WinStreak'
 }
@@ -657,12 +671,27 @@ export enum LolRegime {
 export type MatchEarning = {
   __typename?: 'MatchEarning';
   assist?: Maybe<Scalars['Int']>;
+  damage_taken1?: Maybe<Scalars['Int']>;
+  damage_taken2?: Maybe<Scalars['Int']>;
+  damage_taken3?: Maybe<Scalars['Int']>;
+  damage_taken_aram1?: Maybe<Scalars['Int']>;
+  damage_taken_aram2?: Maybe<Scalars['Int']>;
+  damage_taken_aram3?: Maybe<Scalars['Int']>;
+  double_kill?: Maybe<Scalars['Int']>;
+  game_uid?: Maybe<Scalars['String']>;
   headshot?: Maybe<Scalars['Int']>;
   highest_kda?: Maybe<Scalars['Int']>;
   highest_kr?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
   kill?: Maybe<Scalars['Int']>;
   least_died?: Maybe<Scalars['Int']>;
+  minion_kill1?: Maybe<Scalars['Int']>;
+  minion_kill2?: Maybe<Scalars['Int']>;
+  minion_kill3?: Maybe<Scalars['Int']>;
+  minion_kill_map_aram1?: Maybe<Scalars['Int']>;
+  minion_kill_map_aram2?: Maybe<Scalars['Int']>;
+  minion_kill_map_aram3?: Maybe<Scalars['Int']>;
+  most_damage_taken?: Maybe<Scalars['Int']>;
   most_headshot?: Maybe<Scalars['Int']>;
   most_kill?: Maybe<Scalars['Int']>;
   most_support?: Maybe<Scalars['Int']>;
@@ -671,6 +700,7 @@ export type MatchEarning = {
   quadra_kill?: Maybe<Scalars['Int']>;
   triple_kill?: Maybe<Scalars['Int']>;
   win?: Maybe<Scalars['Int']>;
+  win_map_aram?: Maybe<Scalars['Int']>;
 };
 
 export type Member = {
@@ -757,6 +787,7 @@ export type Mutation = {
   connectFaceit: PlatformAccountDto;
   /** Connect LOL */
   connectLmss: PlatformAccountDto;
+  createLOlMission?: Maybe<Scalars['Boolean']>;
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
@@ -825,6 +856,15 @@ export type MutationConnectFaceitArgs = {
 
 export type MutationConnectLmssArgs = {
   summoner_name: Scalars['String'];
+};
+
+
+export type MutationCreateLOlMissionArgs = {
+  goal: Scalars['Int'];
+  level_id: Scalars['Int'];
+  regime: LolRegime;
+  title: Scalars['String'];
+  type: LolMissionType;
 };
 
 
@@ -1056,34 +1096,33 @@ export type PlayerLolMatch = {
   assist?: Maybe<Scalars['Int']>;
   champion_id: Scalars['Int'];
   created_at: Scalars['DateTime'];
-  damage?: Maybe<Scalars['Int']>;
+  damage_dealt?: Maybe<Scalars['Int']>;
+  damage_taken?: Maybe<Scalars['Int']>;
   double_kill?: Maybe<Scalars['Int']>;
-  eye_destroy?: Maybe<Scalars['Int']>;
-  eye_plugin?: Maybe<Scalars['Int']>;
-  gold?: Maybe<Scalars['Int']>;
-  is_most_damage: Scalars['Boolean'];
-  is_most_eye_destroy: Scalars['Boolean'];
-  is_most_eye_plugin: Scalars['Boolean'];
-  is_most_kill_soldier: Scalars['Boolean'];
-  is_most_take_damage?: Maybe<Scalars['Int']>;
+  eye_killed?: Maybe<Scalars['Int']>;
+  eye_placed?: Maybe<Scalars['Int']>;
+  gold_earned?: Maybe<Scalars['Int']>;
+  is_most_assist: Scalars['Boolean'];
+  is_most_damage_dealt: Scalars['Boolean'];
+  is_most_damage_taken?: Maybe<Scalars['Boolean']>;
+  is_most_eye_killed: Scalars['Boolean'];
+  is_most_eye_placed: Scalars['Boolean'];
+  is_most_gold_earned: Scalars['Boolean'];
+  is_most_minion_killed: Scalars['Boolean'];
+  is_mvp?: Maybe<Scalars['Boolean']>;
   is_win: Scalars['Boolean'];
   kill?: Maybe<Scalars['Int']>;
-  kill_soldier?: Maybe<Scalars['Int']>;
   lane: LolLane;
-  lucis_point: Scalars['Int'];
   match: LolMatch;
   match_uid: Scalars['String'];
-  most_assist: Scalars['Boolean'];
-  most_gold: Scalars['Boolean'];
+  minion_killed?: Maybe<Scalars['Int']>;
   most_kill: Scalars['Boolean'];
-  mvp?: Maybe<Scalars['Int']>;
   pental_kill?: Maybe<Scalars['Int']>;
   player: PlayerGame;
   player_game_uid: Scalars['String'];
   player_statistic?: Maybe<Scalars['JSON']>;
   point?: Maybe<Scalars['Int']>;
   quadra_kill?: Maybe<Scalars['Int']>;
-  take_damage?: Maybe<Scalars['Int']>;
   triple_kill?: Maybe<Scalars['Int']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -1147,6 +1186,7 @@ export type Query = {
   __typename?: 'Query';
   GetAllPlayerNFT?: Maybe<Array<PlayerNft>>;
   getAllTickets?: Maybe<TicketList>;
+  getAppErrorCode?: Maybe<Scalars['Boolean']>;
   getBalance?: Maybe<GBalance>;
   getCsgoMatchStatistic?: Maybe<CsgoMatchStatistics>;
   getDailyPoint?: Maybe<Scalars['Int']>;
@@ -1176,7 +1216,15 @@ export type QueryGetAllPlayerNftArgs = {
 
 
 export type QueryGetAllTicketsArgs = {
+  display_name?: InputMaybe<Scalars['String']>;
+  limit: Scalars['Int'];
+  page: Scalars['Int'];
   raffle_uid: Scalars['String'];
+};
+
+
+export type QueryGetAppErrorCodeArgs = {
+  BuyRaffleTicketErrorCode: BuyRaffleTicketErrorCode;
 };
 
 
@@ -1198,6 +1246,8 @@ export type QueryGetLucisMissionArgs = {
 
 
 export type QueryGetMyTicketsArgs = {
+  limit: Scalars['Int'];
+  page: Scalars['Int'];
   raffle_uid: Scalars['String'];
 };
 
