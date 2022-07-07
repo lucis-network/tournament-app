@@ -43,9 +43,10 @@
   font-size: 20px
   font-weight: 600
   line-height: 22px
-  background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
-  -webkit-background-clip: text
-  -webkit-text-fill-color: transparent
+  //background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
+  //-webkit-background-clip: text
+  //-webkit-text-fill-color: transparent
+  color: #0BEBD6
   margin-bottom: 16px
   text-transform: capitalize
   @media screen and (min-width: 768px)
@@ -69,9 +70,9 @@
     font-weight: 400
     font-size: 14px
     line-height: 21px
-    background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
-    -webkit-background-clip: text
-    -webkit-text-fill-color: transparent
+    color: #00FFFF
+    .countdownTextColored
+      color: #DF9B16
 .rafflePrice
   font-family: 'Lexend'
   font-weight: 600
@@ -366,7 +367,7 @@
           font-weight: 400
           font-size: 14px
           line-height: 21px
-          color: rgba(255, 208, 88, 0.7)
+          color: rgba(255, 255, 255, 0.7)
           margin-bottom: 0
       .featuredRafflePriceWrap
         display: flex
@@ -570,6 +571,9 @@
     margin-bottom: 16px
     @media screen and (min-width: 1400px)
       margin-bottom: 48px
+    button
+      img
+        width: 23px
     .sectionTitle
       margin-bottom: 0
       margin-left: 14px
@@ -675,6 +679,8 @@
           font-size: 16px
           line-height: 24px
           color: #DF9B16
+          :global(.ant-input-number-input-wrap)
+            height: 100%
     .sidebarBtn
       border: 1px solid rgba(0, 249, 255, 1)
       padding: 8px 16px
