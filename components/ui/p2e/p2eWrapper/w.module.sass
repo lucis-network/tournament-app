@@ -1,5 +1,4 @@
-
-.backgroundCSGO
+.backgroundDefault
   position: relative
   backface-visibility: hidden
   &::before
@@ -9,10 +8,26 @@
     height: 100%
     top: 0
     left: 0
+    background-repeat: no-repeat
+    background-position: center
+    will-change: transform
+    background: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8))
+    z-index: -1
+.backgroundCSGO
+  position: relative
+  backface-visibility: hidden
+  &::before
+    content: ''
+    position: fixed
+    z-index: -1
+    width: 100%
+    height: 100%
+    top: 0
+    left: 0
     background-size: 99.9%
     background-repeat: no-repeat
     background-position: center
-    will-change: transform 
+    will-change: transform
     background-image: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/P2E/csgo/background.jpg")
     @media screen and ( max-width: 992px )
       background-size: cover
@@ -22,6 +37,7 @@
   &::before
     content: ''
     position: fixed
+    z-index: -1
     width: 100%
     height: 100%
     top: 0
@@ -34,7 +50,8 @@
     @media screen and ( max-width: 992px )
       background-size: cover
 .homeWrap
-  font-family: 'Poppins'
+  font-family: 'Lexend'
+  overflow-x: hidden
   button
     font-family: 'Revx Neue Demo'
     font-weight: 600
@@ -42,15 +59,18 @@
   :global(.lucis-container-2)
     @media screen and (min-width: 1600px)
       width: 1400px
-    @media screen and (min-width: 1400px)
-      width: 1400px
   .tabsWrap
     height: 60px
     background: rgba(255, 255, 255, 0.1)
     // position: sticky
     backdrop-filter: blur(40px)
+    position: relative
     z-index: 1
     top: 0
+    @media screen and ( max-width: 1024px )
+      position: fixed
+      width: 100%
+      top: 70px
     @media screen and ( max-width: 550px )
       height: 39px
   .tabs
@@ -113,7 +133,9 @@
     .gameActive
       filter: drop-shadow(0px 0px 14px #12B0B4) !important
       cursor: pointer !important
-
+  .p2eContent
+    @media screen and ( max-width: 1024px )
+      margin-top: 130px
   :global(ant-tabs-tab-active)
     background: #12B0B41A
   :global(.ant-tabs-nav::before)
