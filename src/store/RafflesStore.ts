@@ -6,6 +6,7 @@ import {UserTicketGql} from "../generated/graphql_p2e";
 class RafflesStore {
 
   private _dataWinTicket?: Array<UserTicketGql | undefined> = [];
+  private _dataWinTicketLastUpdated?: number;
 
   constructor() {
     makeAutoObservable(this);
@@ -18,6 +19,11 @@ class RafflesStore {
 
   set dataWinTicket(value: Array<UserTicketGql | undefined>) {
     this._dataWinTicket = value;
+    this._dataWinTicketLastUpdated = Date.now();
+  }
+
+  get dataWinTicketLastUpdated(): number | undefined {
+    return this._dataWinTicketLastUpdated;
   }
 }
 

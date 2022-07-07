@@ -13,6 +13,7 @@ type GetAllTicketsProps = {
   raffle_uid?: string,
   page?: number,
   limit?: number,
+  display_name?: string,
 }
 
 type GetMyTicketsProps = {
@@ -85,7 +86,7 @@ export const useGetMyTicket = ({raffle_uid, limit, page}: GetMyTicketsProps): {
   }
 }
 
-export const useGetAllTicket = ({raffle_uid, page, limit}: GetAllTicketsProps): {
+export const useGetAllTicket = ({raffle_uid, page, limit, display_name}: GetAllTicketsProps): {
   getAllTicketsLoading: boolean,
   getAllTicketsError: ApolloError | undefined,
   refetchAllTickets: () => Promise<ApolloQueryResult<any>>,
@@ -103,6 +104,7 @@ export const useGetAllTicket = ({raffle_uid, page, limit}: GetAllTicketsProps): 
       raffle_uid: raffle_uid,
       page: page,
       limit: limit,
+      display_name: display_name,
     },
     skip: isEmpty(raffle_uid),
     context: {
@@ -206,13 +208,14 @@ const GET_MY_TICKET = gql`
 `
 
 const GET_ALL_TICKET = gql`
-  query($raffle_uid: String!, $page: Int!, $limit: Int!) {
-    getAllTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit) {
+  query($raffle_uid: String!, $page: Int!, $limit: Int!, $display_name: String) {
+    getAllTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit, display_name: $display_name) {
       count
       user_tickets {
         uid
         user_id
         ticket_number
+        is_winner
         user {
           profile {
             display_name

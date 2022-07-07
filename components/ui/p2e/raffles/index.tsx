@@ -53,12 +53,12 @@ const Raffles = () => {
                 getRecentWinnersData?.getRecentWinners.map((item, index) => (
                   <div className={s.recentWinnersItem} key={item?.raffle?.uid}>
                     <div className={s.recentWinnerThumbnail}>
-                      <Image src={item?.raffle?.img as string} preview={false} alt="" />
+                      <Image src={item?.raffle?.img ? item?.raffle?.img : '/assets/P2E/raffles/defaultImage.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultImage.jpg" />
                     </div>
                     <div className={s.recentWinnerInfo}>
                       <div className={s.winner}>
                         <div className={s.winnerAvatar}>
-                          <Image src={item?.user?.profile?.avatar as string} preview={false} alt="" />
+                          <Image src={item?.user?.profile?.avatar ? item?.user?.profile?.avatar : '/assets/P2E/raffles/defaultAvatar.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
                         </div>
                         <div className={s.winnerUsername}>{item?.user?.profile?.display_name}</div>
                       </div>
