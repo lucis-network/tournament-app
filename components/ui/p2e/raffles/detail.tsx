@@ -4,11 +4,12 @@ import Link from "next/link";
 import {
   useSearchRaffles,
 } from "../../../../hooks/p2e/raffles/useRafflesList";
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import {useGetAllTicket, useGetMyTicket, useGetRaffleDetail} from "../../../../hooks/p2e/raffles/useRaffleDetail";
 import {useRouter} from "next/router";
 import RollingRaffles from "./rolling";
 import RafflesStore from "../../../../src/store/RafflesStore";
+import moment from "moment";
 
 const RafflesDetail = () => {
   const router = useRouter()
@@ -17,6 +18,7 @@ const RafflesDetail = () => {
   const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData} = useGetRaffleDetail(`${raffleUID}`)
   const {getMyTicketsLoading, getMyTicketslError, refetchMyTickets, getMyTicketsData} = useGetMyTicket(`${raffleUID}`)
   const {getAllTicketsLoading, getAllTicketslError, refetchAllTickets, getAllTicketsData} = useGetAllTicket(`${raffleUID}`)
+  const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
 
   useEffect(() => {
     console.log('[] getRaffleDetailData?.getRaffleDetail: ', getRaffleDetailData?.getRaffleDetail);
@@ -27,7 +29,24 @@ const RafflesDetail = () => {
   useEffect(() => {
     console.log('[] getAllTicketsData?.getAllTickets: ', getAllTicketsData?.getAllTickets);
   }, [getAllTicketsData?.getAllTickets])
-  
+
+  useEffect(() => {
+    const checkDateInterval =  setInterval(() => {
+      const dateNow = moment(new Date()).valueOf();
+      const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
+        .valueOf();
+      const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
+
+      if(timeBefore <= 5) {
+        setCheckDisplayEndAt(true);
+      }
+    }, 1000)
+    if(checkDisplayEndAt)  clearInterval(checkDateInterval);
+    return () => {
+      clearInterval(checkDateInterval)
+    }
+  }, [getRaffleDetailData?.getRaffleDetail])
+
   return (
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
@@ -60,7 +79,7 @@ const RafflesDetail = () => {
         </section>
         <div className={s.rafflesDetailSidebar}>
           <div className={s.stickySidebar}>
-            <section className={`${s.buyTicketSection} ${s.sidebarSection}`}>
+            <section className={`${s.buyTicketSection} ${s.sidebarSection} ${checkDisplayEndAt ? s.sidebarHidden : ''}`} >
               <div className={s.raffleCountdown}>
                 <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt="" fallback="" />
                 <span className={s.raffleCountdownText}>Rolling at <span className={s.countdownTextColored}>00:00 Jun 26th</span></span>
@@ -107,9 +126,13 @@ const RafflesDetail = () => {
                 <button>Earn more</button>
               </div>
             </section>
-            <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-              <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
-            </section>
+
+            {checkDisplayEndAt &&
+                <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
+                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""}
+                                    dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
+                </section>
+            }
           </div>
         </div>
         <section className={s.myTicketsSection}>

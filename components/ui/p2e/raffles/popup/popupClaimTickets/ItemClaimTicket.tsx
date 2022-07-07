@@ -53,7 +53,11 @@ const ItemClaimTicket = (props: Props) => {
   return (
     <div className={s.item}>
       <span className={s.itemTickets}>#{item?.ticket_number}</span>
-      <Button loading={isLoading} disabled={isDisable || item?.is_claimed as boolean } className={s.itemBtn} onClick={() => handleClaim()}>Claim</Button>
+      {isDisable || item?.is_claimed as boolean ?
+        <img src="/assets/P2E/raffles/checked.svg"/> :
+        <Button loading={isLoading} disabled={isDisable || item?.is_claimed as boolean} className={s.itemBtn}
+                onClick={() => handleClaim()}>Claim</Button>
+      }
     </div>
   );
 };

@@ -1,11 +1,22 @@
 .content_modal
-  min-width: 700px
+  min-width: 650px
+  :global(.ant-modal-body)
+    padding: 0
+    background-image: url("/assets/P2E/raffles/imagePopClaimRaffes.jpg")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
+    border-radius: 4px 4px 0px 0px
+  :global(.ant-modal-close .ant-modal-close-x)
+    color: #6c6b6b
+    background: none
 .title
   font-family: 'Revx Neue Demo'
   text-align: center
   padding: 13px
-  margin-bottom: 20px
+  //margin-bottom: 20px
   background: rgba(45, 52, 70, 0.5)
+  backdrop-filter: blur(40px)
   .titleSuccess
     font-style: normal
     font-weight: 400
@@ -17,21 +28,23 @@
     -webkit-background-clip: text
     -webkit-text-fill-color: transparent
     margin-bottom: 8px
+
   .titleTicket
     font-weight: 400
     font-size: 18px
     line-height: 20px
     margin-bottom: 0
 .tickets
-  min-height: 100px
+  height: auto
   display: flex
   justify-content: space-around
   flex-wrap: wrap
-
+  padding: 32px 32px 40px 32px
   .item
+    //margin-top: 20px
     display: flex
     align-items: center
-    gap: 0 5px
+    gap: 0 16px
     :global(.ant-btn[disabled])
       background: #d9d9d9
     .itemTickets
@@ -41,10 +54,12 @@
       color: #FFD058
       text-shadow: 0 0 11px #FFD058
       padding: 10px
+      background: rgba(69, 80, 107, 0.5)
+      border-radius: 4px
     .itemBtn
       font-weight: 600
       font-size: 24px
-      line-height: 26px
+      line-height: 20px
       height: auto
       padding: 8px 10px
       //color: #1889E4

@@ -6,9 +6,8 @@ import {useGetWonTickets, useMyWonTickets} from "../../../../../hooks/p2e/useRaf
 import {isEmpty, parseInt} from "lodash";
 import moment from "moment";
 import CountdownTimeEnd from "../timeEnd";
-import {RaffleDetail, UserTicketGql} from "../../../../../src/generated/graphql_p2e";
+import {RaffleDetail} from "../../../../../src/generated/graphql_p2e";
 import RafflesStore from "src/store/RafflesStore";
-import CountdownTimer from "components/ui/common/CountDown";
 import CountdownTimeBefore from "../timeBefore";
 import PopupClaimTicket from "../popup/popupClaimTickets";
 
@@ -117,7 +116,7 @@ const RollingRaffles = (props: Props) => {
 
   useEffect(() => {
     let rollInterval: NodeJS.Timer;
-    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status !== "CLOSED") {
+    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status === "ENABLED") {
       rollInterval = setInterval(() => {
         const new_digit_n = targetTicket[currentRollingIdx];
         if (currentRollingIdx <= 5) {
@@ -144,7 +143,7 @@ const RollingRaffles = (props: Props) => {
 
   useEffect(() => {
     let changeIdxInterval: NodeJS.Timer;
-    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status !== "CLOSED") {
+    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status === "ENABLED") {
       changeIdxInterval = setInterval(() => {
         setCurrentRollingIdx(currentRollingIdx + 1);
         if (currentRollingIdx == 6) {
@@ -165,7 +164,7 @@ const RollingRaffles = (props: Props) => {
   // rolling new ticket
   useEffect(() => {
     let currentDataInterval: NodeJS.Timer;
-    if (dataWonTickets && checkDisplayTimeEnd && dataRaffleDetail?.status !== "CLOSED") {
+    if (dataWonTickets && checkDisplayTimeEnd && dataRaffleDetail?.status === "ENABLED") {
       currentDataInterval = setInterval(() => {
         const ticketNumber = b64DecodeUnicode(dataWonTickets[currentDataIdx]?.ticket_number ?? '000000');
         setTargetTicket(ticketNumber);
@@ -216,47 +215,51 @@ const RollingRaffles = (props: Props) => {
           </div>
         </div>
       </div>
-
-      <div className={s.calender}>
-        {
-          checkDisplayEndAt && !checkDisplayTimeEnd &&
-            <>
-                <div>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                        className={s.rolling}
-                        src={`/assets/Raffles/calender.svg`}
-                        alt=""
-                    />
-                </div>
-                <div className={s.rollingEnd}>
-                    <span>Rolling at</span>
-                </div>
-                <div className={s.rollingTime}>
-                    <CountdownTimeBefore targetDate={endAtBefore}/>
-                </div>
-            </>
-        }
-        {
-          checkDisplayTimeEnd &&
-            <>
-                <div>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                        className={s.rolling}
-                        src={`/assets/Raffles/calender.svg`}
-                        alt=""
-                    />
-                </div>
-                <div className={s.rollingEnd}>
-                    <span>End rolling at</span>
-                </div>
-                <div className={s.rollingTime}>
-                    <CountdownTimeEnd targetDate={timeEnd}/>
-                </div>
-            </>
-        }
-      </div>
+      {
+        dataRaffleDetail?.status !== "CLOSED" &&
+          <>
+              <div className={s.calender}>
+                {
+                  checkDisplayEndAt && !checkDisplayTimeEnd &&
+                    <>
+                        <div>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                className={s.rolling}
+                                src={`/assets/Raffles/calender.svg`}
+                                alt=""
+                            />
+                        </div>
+                        <div className={s.rollingEnd}>
+                            <span>Rolling at</span>
+                        </div>
+                        <div className={s.rollingTime}>
+                            <CountdownTimeBefore targetDate={endAtBefore}/>
+                        </div>
+                    </>
+                }
+                {
+                  checkDisplayTimeEnd &&
+                    <>
+                        <div>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                                className={s.rolling}
+                                src={`/assets/Raffles/calender.svg`}
+                                alt=""
+                            />
+                        </div>
+                        <div className={s.rollingEnd}>
+                            <span>End rolling at</span>
+                        </div>
+                        <div className={s.rollingTime}>
+                            <CountdownTimeEnd targetDate={timeEnd}/>
+                        </div>
+                    </>
+                }
+              </div>
+          </>
+      }
 
       <div className={s.recentWin}>
         <span className={s.recentWinTitle}>Recent Win Ticket ID</span>
