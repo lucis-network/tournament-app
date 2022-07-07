@@ -1,8 +1,27 @@
-import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
-import {RaffleDetail, UserTicket} from "../../../src/generated/graphql_p2e";
+import {ApolloError, ApolloQueryResult, gql, useApolloClient, useQuery} from "@apollo/client";
+import {RaffleDetail, TicketList} from "../../../src/generated/graphql_p2e";
 import {isEmpty} from "lodash";
 
-export const useGetRaffleDetail = (raffle_uid: string): {
+type BuyRaffleTicketProps = {
+  raffle_ticket_uid?: string,
+  quantity?: number,
+  onError?: (error: ApolloError) => void,
+  onCompleted?: (data: any) => void,
+}
+
+type GetAllTicketsProps = {
+  raffle_uid?: string,
+  page?: number,
+  limit?: number,
+}
+
+type GetMyTicketsProps = {
+  raffle_uid?: string,
+  limit?: number,
+  page?: number
+}
+
+export const useGetRaffleDetail = (raffle_uid?: string): {
   getRaffleDetailLoading: boolean,
   getRaffleDetailError: ApolloError | undefined,
   refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>,
@@ -33,22 +52,24 @@ export const useGetRaffleDetail = (raffle_uid: string): {
   }
 }
 
-export const useGetMyTicket = (raffle_uid: string): {
+export const useGetMyTicket = ({raffle_uid, limit, page}: GetMyTicketsProps): {
   getMyTicketsLoading: boolean,
-  getMyTicketslError: ApolloError | undefined,
+  getMyTicketsError: ApolloError | undefined,
   refetchMyTickets: () => Promise<ApolloQueryResult<any>>,
   getMyTicketsData: {
-    getMyTickets: UserTicket[]
+    getMyTickets: TicketList
   },
 } => {
   const {
     loading: getMyTicketsLoading,
-    error: getMyTicketslError,
+    error: getMyTicketsError,
     refetch: refetchMyTickets,
     data: getMyTicketsData,
   } = useQuery(GET_MY_TICKET, {
     variables: {
-      raffle_uid: raffle_uid
+      raffle_uid: raffle_uid,
+      limit: limit,
+      page: page,
     },
     skip: isEmpty(raffle_uid),
     context: {
@@ -58,28 +79,30 @@ export const useGetMyTicket = (raffle_uid: string): {
 
   return {
     getMyTicketsLoading,
-    getMyTicketslError,
+    getMyTicketsError,
     refetchMyTickets,
     getMyTicketsData,
   }
 }
 
-export const useGetAllTicket = (raffle_uid: string): {
+export const useGetAllTicket = ({raffle_uid, page, limit}: GetAllTicketsProps): {
   getAllTicketsLoading: boolean,
-  getAllTicketslError: ApolloError | undefined,
+  getAllTicketsError: ApolloError | undefined,
   refetchAllTickets: () => Promise<ApolloQueryResult<any>>,
   getAllTicketsData: {
-    getAllTickets: UserTicket[]
+    getAllTickets: TicketList
   },
 } => {
   const {
     loading: getAllTicketsLoading,
-    error: getAllTicketslError,
+    error: getAllTicketsError,
     refetch: refetchAllTickets,
     data: getAllTicketsData,
   } = useQuery(GET_ALL_TICKET, {
     variables: {
-      raffle_uid: raffle_uid
+      raffle_uid: raffle_uid,
+      page: page,
+      limit: limit,
     },
     skip: isEmpty(raffle_uid),
     context: {
@@ -89,9 +112,38 @@ export const useGetAllTicket = (raffle_uid: string): {
 
   return {
     getAllTicketsLoading,
-    getAllTicketslError,
+    getAllTicketsError,
     refetchAllTickets,
     getAllTicketsData,
+  }
+}
+
+export const useBuyRaffleTicket = (): {
+  buyRaffleTicket: ({raffle_ticket_uid, quantity, onError, onCompleted}: BuyRaffleTicketProps) => Promise<any>
+} => {
+  const client = useApolloClient()
+  const buyRaffleTicket = async ({raffle_ticket_uid, quantity, onError, onCompleted}: BuyRaffleTicketProps) => {
+    try {
+      const result = await client.mutate({
+        mutation: BUY_RAFFLE_TICKET,
+        variables: {
+          input: {
+            raffle_ticket_uid: raffle_ticket_uid,
+            quantity: quantity,
+          },
+        },
+        context: {
+          endpoint: 'p2e'
+        }
+      })
+      onCompleted && onCompleted(result)
+    } catch (error: any) {
+      onError && onError(error)
+    }
+  }
+
+  return {
+    buyRaffleTicket
   }
 }
 
@@ -141,29 +193,40 @@ const GET_RAFFLE_DETAIL = gql`
 `
 
 const GET_MY_TICKET = gql`
-  query($raffle_uid: String!) {
-    getMyTickets(raffle_uid: $raffle_uid) {
-      uid
-      user_id
-      ticket_number
-      ticket_uid
+  query($raffle_uid: String!, $page: Int!, $limit: Int!) {
+    getMyTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit) {
+      count
+      user_tickets {
+        uid
+        user_id
+        ticket_number
+      }
     }
   }
 `
 
 const GET_ALL_TICKET = gql`
-  query($raffle_uid: String!) {
-    getAllTickets(raffle_uid: $raffle_uid) {
-      uid
-      user_id
-      ticket_number
-      ticket_uid
-      user {
-        profile {
-          display_name
-          avatar
+  query($raffle_uid: String!, $page: Int!, $limit: Int!) {
+    getAllTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit) {
+      count
+      user_tickets {
+        uid
+        user_id
+        ticket_number
+        user {
+          profile {
+            display_name
+            avatar
+            user_name
+          }
         }
       }
     }
+  }
+`
+
+const BUY_RAFFLE_TICKET = gql`
+  mutation($input: UserTicketInputGql!) {
+    buyRaffleTicket(input: $input)
   }
 `
