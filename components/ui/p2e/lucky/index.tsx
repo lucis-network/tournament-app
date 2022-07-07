@@ -1,5 +1,6 @@
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
+import PopUpOpenBox from './popup'
 export default function LuckyChest() {
     return (
         <div className={`${s.wrapper} lucis-container-2`}>
@@ -35,6 +36,7 @@ export default function LuckyChest() {
             <div style={{paddingTop: 40}}>
                 <HistoryTable />
             </div>
+            <><PopUpOpenBox /></>
         </div>
     )
 }
