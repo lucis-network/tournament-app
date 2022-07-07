@@ -44,7 +44,7 @@ const Raffles = () => {
     <div className={s.rafflesWrapper}>
       {getRecentWinnersLoading ? (
         <SpinLoading />
-      ) : ((getRecentWinnersError || getRecentWinnersData?.getRecentWinners.length <= 0) && (
+      ) : ((!getRecentWinnersError || !(getRecentWinnersData?.getRecentWinners.length <= 0)) && (
         <section className={s.sectionRecentWinners}>
           <div className="lucis-container-2">
             <h2 className={s.sectionTitle}>Recent Winners</h2>
