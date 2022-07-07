@@ -1214,9 +1214,9 @@ export type QueryGetAllPlayerNftArgs = {
 
 
 export type QueryGetAllTicketsArgs = {
-  page: Scalars['Float'];
+  limit: Scalars['Int'];
+  page: Scalars['Int'];
   raffle_uid: Scalars['String'];
-  take: Scalars['Float'];
 };
 
 
@@ -1243,6 +1243,8 @@ export type QueryGetLucisMissionArgs = {
 
 
 export type QueryGetMyTicketsArgs = {
+  limit: Scalars['Int'];
+  page: Scalars['Int'];
   raffle_uid: Scalars['String'];
 };
 
