@@ -213,6 +213,7 @@ const GET_ALL_TICKET = gql`
         uid
         user_id
         ticket_number
+        is_winner
         user {
           profile {
             display_name

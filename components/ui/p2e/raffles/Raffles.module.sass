@@ -69,9 +69,9 @@
     font-weight: 400
     font-size: 14px
     line-height: 21px
-    background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
-    -webkit-background-clip: text
-    -webkit-text-fill-color: transparent
+    color: #00FFFF
+    .countdownTextColored
+      color: #DF9B16
 .rafflePrice
   font-family: 'Poppins'
   font-weight: 600
@@ -155,6 +155,16 @@
     column-gap: 8px
     overflow-x: auto
     margin-bottom: 16px
+    padding-bottom: 5px
+    &::-webkit-scrollbar
+      display: block
+      height: 5px
+    &::-webkit-scrollbar-track
+      background: rgb(116 116 116 / 66%)
+      border-radius: 5px
+    &::-webkit-scrollbar-thumb
+      background: rgb(2 253 251 / 56%)
+      border-radius: 5px
     @media screen and (min-width: 768px)
       column-gap: 13px
     @media screen and (min-width: 1400px)
@@ -777,11 +787,11 @@
         width: 100%
         text-align: center
         .allTicketItem
-          @media screen and (min-width: 992px)
-            background: rgba(45, 52, 70, 0.5)
+          &:nth-of-type(odd)
+            background: rgba(0, 6, 37, 0.5)
+          &:nth-of-type(even)
+            background: rgba(69, 80, 107, 0.5)
           &:global(.crown)
-            @media screen and (min-width: 992px)
-              background: rgba(0, 6, 37, 0.5)
             .ownerName
               color: #FFE600
               text-shadow: 0 0 4px rgba(254, 255, 185, 0.64)
@@ -789,11 +799,6 @@
               :global(.ant-image)
                 img
                   box-shadow: 0 0 9px rgba(255, 255, 255, 0.9)
-          @media screen and (max-width: 991px)
-            &:nth-of-type(odd)
-              background: rgba(0, 6, 37, 0.5)
-            &:nth-of-type(even)
-              background: rgba(45, 52, 70, 0.5)
           td
             padding: 5px
             white-space: nowrap
