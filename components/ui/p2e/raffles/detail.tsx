@@ -145,36 +145,41 @@ const RafflesDetail = observer(() => {
       raffle_ticket_uid: raffleDetailData?.ticket?.uid,
       quantity: ticketBuyAmount,
       onError: (error) => handleGraphqlErrors(error, (code, message) => {
-        switch (code) {
-          case BuyRaffleTicketErrorCode.RaffleNotFound:
-            antMessage.error('Invalid raffle. Please go back and choose another raffle.')
-            break
-          case BuyRaffleTicketErrorCode.UserLimitExceeded:
-            antMessage.error(`You can buy up to ${ticketLimitationPerUser} tickets only.`)
-            break
-          case BuyRaffleTicketErrorCode.BalanceNotInitiated:
-            antMessage.error(`You don't have enough balance to buy.`)
-            break
-          case BuyRaffleTicketErrorCode.NotEnoughLucisPoint:
-            antMessage.error(`You don't have enough Lucis point to buy.`)
-            break
-          case BuyRaffleTicketErrorCode.NotEnoughLucisToken:
-            antMessage.error(`You don't have enough LUCIS token to buy.`)
-            break
-          case BuyRaffleTicketErrorCode.BuyPhaseEnded:
-            antMessage.error('Buy phase had ended.')
-            break
-          case BuyRaffleTicketErrorCode.TotalLimitExceeded:
-            // chaupa todo new message
-            antMessage.error('An unknown error has occurred. Please try again later.')
-            break
-          case BuyRaffleTicketErrorCode.TicketQuantityCannotBeZero:
-            // chaupa todo new message
-            antMessage.error('An unknown error has occurred. Please try again later.')
-            break
-          default:
-            antMessage.error('An unknown error has occurred. Please try again later.')
-            break
+        if (code !== 'UnAuth') {
+          switch (code) {
+            case BuyRaffleTicketErrorCode.RaffleNotFound:
+              antMessage.error('Invalid raffle. Please go back and choose another raffle.')
+              break
+            case BuyRaffleTicketErrorCode.UserLimitExceeded:
+              antMessage.error(`You can buy up to ${ticketLimitationPerUser} tickets only.`)
+              break
+            case BuyRaffleTicketErrorCode.BalanceNotInitiated:
+              antMessage.error(`You don't have enough balance to buy.`)
+              break
+            case BuyRaffleTicketErrorCode.NotEnoughLucisPoint:
+              antMessage.error(`You don't have enough Lucis point to buy.`)
+              break
+            case BuyRaffleTicketErrorCode.NotEnoughLucisToken:
+              antMessage.error(`You don't have enough LUCIS token to buy.`)
+              break
+            case BuyRaffleTicketErrorCode.BuyPhaseEnded:
+              antMessage.error('Buy phase had ended.')
+              break
+            case BuyRaffleTicketErrorCode.TotalLimitExceeded:
+              // chaupa todo new message
+              antMessage.error('An unknown error has occurred. Please try again later.')
+              break
+            case BuyRaffleTicketErrorCode.TicketQuantityCannotBeZero:
+              // chaupa todo new message
+              antMessage.error('An unknown error has occurred. Please try again later.')
+              break
+            case 'UNAUTHENTICATED':
+              antMessage.error('Please sign in first.')
+              break
+            default:
+              antMessage.error('An unknown error has occurred. Please try again later.')
+              break
+          }
         }
       }),
       onCompleted: (data) => {
