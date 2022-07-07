@@ -29,6 +29,7 @@ const RafflesDetail = observer(() => {
   const [ticketBuyAmount, setTicketBuyAmount] = useState<number>(0)
   const [totalCost, setTotalCost] = useState<number>(0)
   const [ticketBuying, setTicketBuying] = useState<boolean>(false)
+  const [ticketSearchKeyword, setTicketSearchKeyword] = useState<string>('')
   const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
   const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles({
     name: '',
@@ -43,8 +44,9 @@ const RafflesDetail = observer(() => {
   })
   const {getAllTicketsLoading, getAllTicketsError, refetchAllTickets, getAllTicketsData} = useGetAllTicket({
     raffle_uid: raffleUID,
-    limit: 10,
+    limit: 9999,
     page: 1,
+    display_name: ticketSearchKeyword
   })
   const {buyRaffleTicket} = useBuyRaffleTicket()
   const {dataWinTicket} = RafflesStore
@@ -116,7 +118,7 @@ const RafflesDetail = observer(() => {
 
   const debouncedInputTyping = useCallback(
     debounce((value: string) => {
-      console.log('[debouncedInputTyping] value: ', value);
+      setTicketSearchKeyword(value)
     }, 500),
     []
   )
@@ -206,9 +208,11 @@ const RafflesDetail = observer(() => {
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
         <section className={s.breadcrumbSection}>
-          <button>
-            <Image src="/assets/P2E/raffles/iconArrow.svg" preview={false} alt=""/>
-          </button>
+          <Link href="/p2e/raffles" passHref>
+            <button>
+              <Image src="/assets/P2E/raffles/iconArrow.svg" preview={false} alt=""/>
+            </button>
+          </Link>
           <h2 className={s.sectionTitle}>Raffles</h2>
         </section>
         <section className={s.sectionFeaturedRaffle}>
@@ -333,7 +337,7 @@ const RafflesDetail = observer(() => {
           <div className={s.sectionTitleFlex}>
             <h2 className={s.sectionTitle}>Sold tickets [{allTicketsCount}]</h2>
             <div className={s.raffleSearch}>
-              <Input placeholder="ID of raffle" onChange={handleTicketSearch}/>
+              <Input placeholder="Search by name" onChange={handleTicketSearch}/>
               <Image src="/assets/P2E/raffles/iconSearch.svg" preview={false} alt=""/>
             </div>
           </div>

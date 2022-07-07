@@ -824,6 +824,7 @@
             @media screen and (min-width: 1400px)
               font-size: 24px
           .ownerInfo
+            text-align: left
             .ownerInfoFlex
               display: inline-flex
               justify-content: flex-start
@@ -864,8 +865,13 @@
             :global(.ant-image)
               img
                 min-width: 16px
+                max-width: 16px
+                @media screen and (min-width: 768px)
+                  min-width: 20px
+                  max-width: 20px
                 @media screen and (min-width: 1400px)
                   min-width: 30px
+                  max-width: 30px
   .sectionRafflesSponsor
     @media screen and (min-width: 1400px)
       margin-bottom: 80px
