@@ -158,14 +158,14 @@
     @media screen and (min-width: 768px)
       column-gap: 13px
     @media screen and (min-width: 1400px)
-      column-gap: 55px
-    @media screen and (min-width: 1600px)
-      column-gap: 82px
+      column-gap: 20px
     .recentWinnersItem
       min-width: 124px
       max-width: 124px
       border-radius: 4px
       overflow: hidden
+      display: flex
+      flex-direction: column
       @media screen and (min-width: 768px)
         min-width: 170px
         max-width: 170px
@@ -176,8 +176,8 @@
         min-width: 250px
         max-width: 250px
       @media screen and (min-width: 1400px)
-        min-width: 288px
-        max-width: 288px
+        min-width: 335px
+        max-width: 335px
       .recentWinnerThumbnail
         width: 100%
         :global(.ant-image)
@@ -185,12 +185,13 @@
           height: 100%
           img
             width: 100%
-            height: 100%
             object-fit: cover
+            aspect-ratio: 335 / 146
       .recentWinnerInfo
         background: rgba(69, 80, 107, 0.3)
         backdrop-filter: blur(40px)
-        padding: 8px 13px 16px
+        padding: 8px
+        height: 100%
         @media screen and (min-width: 992px)
           display: flex
           justify-content: space-between
@@ -199,7 +200,7 @@
         .winner
           display: flex
           align-items: center
-          margin-bottom: 12px
+          margin-bottom: 4px
           @media screen and (min-width: 992px)
             margin-bottom: 0
             max-width: 50%
@@ -216,18 +217,23 @@
           .winnerUsername
             color: #FFFFFF
             font-family: 'Poppins'
-            font-size: 14px
+            font-size: 12px
             line-height: 21px
-            @media screen and (min-width: 992px)
+            display: -webkit-box
+            -webkit-line-clamp: 1
+            -webkit-box-orient: vertical
+            overflow: hidden
+            @media screen and (min-width: 1400px)
               font-size: 14px
               line-height: 18px
-            @media screen and (min-width: 1200px)
-              font-size: 14px
         .winnerValued
           font-family: 'Poppins'
           font-size: 12px
           line-height: 18px
-          color: rgba(255, 255, 255, 0.8)
+          background: linear-gradient(90deg, #BB7239 0%, #FCEEAE 22.75%, #E09E5B 52.16%, #FCE9A4 75.29%, #F1D693 82.75%, #E1BD7C 92.16%, #D08A4A 100%)
+          -webkit-background-clip: text
+          -webkit-text-fill-color: transparent
+          text-fill-color: transparent
           @media screen and (min-width: 992px)
             max-width: 50%
           @media screen and (min-width: 1200px)
