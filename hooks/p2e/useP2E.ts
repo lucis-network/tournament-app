@@ -1,5 +1,5 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, PlatformAccount, PlayerLolMatchGql } from "../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, LolMatchStatisticGql, PlatformAccount } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
   offset: number
@@ -137,7 +137,7 @@ export const useGetLOLStatisticMatch = (player_match_id: string, skip: boolean =
   getStatisticMatchError: ApolloError | undefined,
   refetchStatisticMatch: () => Promise<ApolloQueryResult<any>>,
   getStatisticMatchData: {
-    getLolMatchStatistic: PlayerLolMatchGql
+    getLolMatchStatistic: LolMatchStatisticGql
   },
 } => {
   const {
@@ -362,7 +362,6 @@ export const GET_LOL_RECENT_MATCHES = gql`
         point
         gold_earned
         minion_killed
-        player_statistic
         deaths
         match {
           uid
@@ -423,10 +422,6 @@ export const GET_CSGO_MATCH_STATISTIC = gql`
 export const GET_LOL_MATCH_STATISTIC = gql`
   query ($player_match_id: String!) {
     getLolMatchStatistic(player_match_id: $player_match_id) {
-        match_earning {
-          id,
-          value
-        }
         match_uid
         point
         is_win
@@ -453,9 +448,12 @@ export const GET_LOL_MATCH_STATISTIC = gql`
         is_most_damage_dealt
         gold_earned
         is_most_gold_earned
+        player_statistic
         match {
           end_at
           map
+          type
+          score
         }
     }
   }

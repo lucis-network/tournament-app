@@ -4,7 +4,7 @@
     top: 0
     left: 0
     position: fixed
-    background: url(/assets/P2E/overview/background-1.png)
+    background: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url(/assets/P2E/overview/background-1.jpg)
     background-size: cover
     background-repeat: no-repeat
     z-index: -1
@@ -16,10 +16,10 @@
     position: absolute
     height: 100%
     width: 100%
-    left: -45%
+    left: -50%
     top: 0
     transform: skew(-25deg)
-    mix-blend-mode: hard-light
+    mix-blend-mode: soft-light
     z-index: -1
     background: linear-gradient(25.36deg, #242424 68.01%, #AFAFAF 90.25%)
 
@@ -28,32 +28,14 @@
     position: absolute
     height: 100%
     width: 100%
-    left: 55%
+    left: 50%
     top: 0
     transform: skew(-25deg)
     mix-blend-mode: soft-light
     z-index: -1
     background: linear-gradient(35.2deg, rgba(0, 0, 10, 0) 23.09%, rgba(0, 0, 10, 0.58) 58.32%, rgba(0, 0, 10, 0.37) 61.71%, rgba(0, 0, 10, 0) 98.79%)
-
   *
     color: #FFFFFF
-  :global(.ant-btn)
-    &[disabled]
-      font-weight: 700
-      background: #6a6a6a
-      width: 100%
-      @media ( min-width: 992px )
-        width: 160px
-      span
-        color: #d7d7d7
-  // .btnLoginFaceit
-  //   color: #fff
-  //   background-color: #f05100
-  //   border-color: #e64d00
-  //   font-weight: 700
-  //   &:hover
-  //     background-color: #f05100
-  //     border-color: #e64d00
   .overviewSection
     padding: 30px 0 140px 0
   .overviewSectionTitle
@@ -64,17 +46,28 @@
     text-align: center
     letter-spacing: 5px
     margin-bottom: 62px
+    @media screen and ( max-width: 768px )
+      font-size: 30px
+    @media screen and ( max-width: 467px )
+      font-size: 20px
   .platformUser
     display: flex
     align-items: center
     .platformUserAvatar
-      width: 35px
-      height: 35px
+      width: 40px
+      height: 40px
       object-fit: contain
       object-position: center
+      border-radius: 50%
     .platformUserName
       margin-left: 10px
+      font-family: 'Revx Neue Demo'
+      font-style: normal
+      font-weight: 600
       font-size: 16px
+      line-height: 18px
+      span
+        margin-left: 10px
   .gameItem
     @media screen and (min-width: 768px)
       display: flex
@@ -138,8 +131,58 @@
       flex: 60% 0 0
     @media (min-width: 992px)
       padding-left: 20px
+    .logoPublisher
+      height: 20px
+      width: auto
+      margin-bottom: 40px
     h1
+      font-family: 'Revx Neue Demo'
+      font-style: normal
       font-weight: 600
-      line-height: 20px
+      font-size: 32px
+      line-height: 26px
       text-transform: uppercase
-      font-size: 16px
+      color: #FFFFFF
+      margin-bottom: 8px
+    p
+      font-weight: 300
+      font-size: 15px
+      line-height: 22px
+    .like
+      width: 62px
+      height: 30px
+      background: #333333
+      border-radius: 4px
+      text-align: center
+      line-height: 32px
+      margin-bottom: 16px
+      img
+        height: 16px
+        width: auto
+        margin: 0
+.overviewBtnConnect
+  width: 200px
+  height: 45px
+  border: 1px solid #FFFFFF
+  background: transparent
+  padding: 0.5px
+  padding-left: 1px
+  cursor: pointer
+  
+  div
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    font-size: 16px
+    line-height: 1
+    letter-spacing: 3px
+    width: 100%
+    height: 100%
+    background: #fff
+    color: #333333
+    align-items: center
+    justify-content: center
+    display: flex
+    padding-top: 2px
+    &:hover
+      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+      color: #fff

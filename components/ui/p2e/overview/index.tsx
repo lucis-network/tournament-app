@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import s from './P2EOverview.module.sass'
-import { Button, Col, Image, message, Row } from "antd";
+import { Button, Col, Image, message, Row, Spin } from "antd";
 import { isEmpty } from "lodash";
 import { isDevMode } from "../../../../utils/Env";
 import { PlatformAccount } from "../../../../src/generated/graphql_p2e";
@@ -131,7 +131,7 @@ export default observer(function P2EOverview() {
 
   const handleConnectFaceit = () => {
     if (!isAuth) {
-      message.error("Please sign in first!");
+      LoginBoxStore.connectModalVisible = true;
       return;
     }
 
@@ -262,7 +262,7 @@ export default observer(function P2EOverview() {
 
   const onClickConnectLMSS = () => {
     if (!isAuth) {
-      message.error("Please sign in first!");
+      LoginBoxStore.connectModalVisible = true;
       return;
     }
 
@@ -289,12 +289,19 @@ export default observer(function P2EOverview() {
                     <img src="/assets/P2E/overview/im_lol.png" alt="" />
                   </Col>
                   <Col className={s.content}>
+                    <img className={s.logoPublisher} src="/assets/P2E/overview/garena-icon.svg" alt="" />
                     <h1>LEAGUE OF LEGENDS</h1>
+                    <p>Normal, Ranked and Clash available</p>
+                    <div className={s.like}>
+                      <img src="/assets/P2E/overview/like-icon.svg" alt="" /> 10
+                    </div>
                     {isEmpty(lmssUser) ? (
-                      <Button
-                        className={s.btnLoginFaceit}
+                      <div
+                        className={s.overviewBtnConnect}
                         onClick={() => onClickConnectLMSS()}
-                        loading={loadingLMSS}>CONNECT GAME</Button>
+                      >
+                        <div><span>{loadingLMSS && <Spin/>}</span>CONNECT GAME</div>
+                      </div>
                     ) : (
                       <div className={s.platformUser}>
                         <Image src={lmssUser?.avatar ? `${prefixAvatar}${lmssUser?.avatar}` : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
@@ -310,20 +317,29 @@ export default observer(function P2EOverview() {
                     <img src="/assets/P2E/overview/im_cs.png" alt="" />
                   </Col>
                   <Col className={s.content}>
+                    <img className={s.logoPublisher} src="/assets/P2E/overview/valve-icon.svg" alt="" />
                     <h1>CS:GO</h1>
+                    <p>Normal, Ranked and Clash available</p>
+                    <div className={s.like}>
+                      <img src="/assets/P2E/overview/like-icon.svg" alt="" /> 10
+                    </div>
                     {isEmpty(faceitUser) ? (
                       <>
                         {/* <div id="faceitLogin" className={s.btnConnectGame}></div> */}
-                        <Button
+                        <div
+                          className={s.overviewBtnConnect}
                           onClick={() => handleConnectFaceit()}
-                          className={s.btnLoginFaceit}
-                          loading={loadingFaceit}
-                        >CONNECT GAME</Button>
+                        >
+                          <div><span>{loadingFaceit && <Spin/>}</span> CONNECT GAME</div>
+                        </div>
                       </>
                     ) : (
                       <div className={s.platformUser}>
                         <Image src={faceitUser?.avatar ? faceitUser?.avatar : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
-                        <div className={s.platformUserName}>{faceitUser?.nick_name}</div>
+                        {/* <div className={s.platformUserName}>{faceitUser?.nick_name}</div> */}
+                        <div className={s.platformUserName}>{faceitUser?.nick_name}<span>
+                          <img src="/assets/P2E/overview/check-icon.svg" alt="" />
+                          </span></div>
                       </div>
                     )}
                   </Col>

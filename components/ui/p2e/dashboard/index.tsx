@@ -40,6 +40,9 @@ const Dashboard = (props: IProps) => {
       game_uid: '03',
       platform_id: 1
     });
+
+  const [isClaimBox, setIsClaimBox] = React.useState<boolean>(false);
+  const [statistic, setStatistic] = React.useState<{ lucis_point: number, lucis_token: number }>({ lucis_point: 0, lucis_token: 0 });
   const [getDailyMission, stateDailyMissionFetch] = useMutation(GET_OR_SET_DAILY_MISSION, {
     variables: dailyMissionVariables,
     context: {
@@ -52,7 +55,7 @@ const Dashboard = (props: IProps) => {
       endpoint: 'p2e'
     }
   })
-  
+
   const lolRecentMatchQuery = useQuery(GET_LOL_RECENT_MATCHES, {
     context: {
       endpoint: 'p2e'
@@ -81,9 +84,7 @@ const Dashboard = (props: IProps) => {
     variables: dailyMissionVariables,
     context: {
       endpoint: 'p2e'
-    },
-
-    skip: true
+    }
   });
 
   const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
@@ -124,8 +125,9 @@ const Dashboard = (props: IProps) => {
     const promise = await Promise.all([
       updateDailyMission(),
       updateRecentlyMatch(),
-      statisticQuery.refetch()
     ])
+    const sta = await statisticQuery.refetch();
+    setStatistic({ lucis_point: sta?.data?.getBalance?.lucis_point, lucis_token: sta?.data?.getBalance?.lucis_token })
     setDailyMission(promise[0].data.updateDailyMission)
     if (promise[1].data.updateCsgoRecentlyMatch.length > 0) {
       setRecentlyMatches([...promise[1].data.updateCsgoRecentlyMatch, ...recentlyMatches]);
@@ -158,40 +160,53 @@ const Dashboard = (props: IProps) => {
         break;
     }
     if (props.currentGame) {
-      queryData(variables, props.currentGame);
+      queryDataDailyMission(variables, props.currentGame);
+      queryDataRecentMatches(props.currentGame);
+
     }
 
   }, [props.currentGame])
 
-  const queryData = async (variables: { game_uid: string, platform_id: number }, game: Game) => {
+  React.useEffect(() => {
+    setStatistic({ lucis_point: statisticQuery.data?.getBalance?.lucis_point, lucis_token: statisticQuery?.data?.getBalance?.lucis_token })
+  },[statisticQuery.data])
+  const queryDataDailyMission = async (variables: { game_uid: string, platform_id: number }, game: Game) => {
     if (game === Game.CSGO) {
-      const promise = await Promise.all([
-        getDailyMission({variables}),
-        csgoRecentMatchQuery.refetch({
-          offset: 1,
-          limit: 5,
-          platform_id: 1
-        }),
-        isClaimBoxQuery.refetch(variables)
-      ])
-      setDailyMission(promise[0].data.getOrSetDailyMission);
-      setRecentlyMatches(promise[1].data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
+      const promiseDaily = await getDailyMission({ variables });
+      setDailyMission(promiseDaily.data.getOrSetDailyMission);
+      const is = await isClaimBoxQuery.refetch(variables);
+      setIsClaimBox(is?.data?.isClaimBox);
       return;
     }
-    
-    if (game === Game.LOL) {
-      const promise = await Promise.all([
-        getDailyMission({variables}),
-        lolRecentMatchQuery.refetch({
-          offset: 1,
-          limit: 5,
-          platform_id: 4
-        }),
-        isClaimBoxQuery.refetch(variables)
-      ])
 
-      setDailyMission(promise[0].data.getOrSetDailyMission);
-      setRecentlyMatches(promise[1].data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
+    if (game === Game.LOL) {
+      const promiseDaily = await getDailyMission({ variables });
+      setDailyMission(promiseDaily.data.getOrSetDailyMission);
+      const is = await isClaimBoxQuery.refetch(variables);
+      setIsClaimBox(is?.data?.isClaimBox);
+      return;
+    }
+
+  }
+
+  const queryDataRecentMatches = async (game: Game) => {
+    if (game === Game.CSGO) {
+      const promise = await csgoRecentMatchQuery.refetch({
+        offset: 1,
+        limit: 5,
+        platform_id: 1
+      });
+      setRecentlyMatches(promise.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
+      return;
+    }
+
+    if (game === Game.LOL) {
+      const promise = await lolRecentMatchQuery.refetch({
+        offset: 1,
+        limit: 5,
+        platform_id: 4
+      })
+      setRecentlyMatches(promise.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
       return;
     }
   }
@@ -203,13 +218,12 @@ const Dashboard = (props: IProps) => {
   const onClaimBox = async () => {
     try {
       await claimBox({
-        variables: {
-          game_uid: '03',
-          platform_id: 1
-        }
+        variables: dailyMissionVariables
       })
-      await statisticQuery.refetch();
-      await isClaimBoxQuery.refetch();
+      const is = await isClaimBoxQuery.refetch(dailyMissionVariables);
+      const sta = await statisticQuery.refetch();
+      setStatistic({ lucis_point: sta?.data?.getBalance?.lucis_point, lucis_token: sta?.data?.getBalance?.lucis_token })
+      setIsClaimBox(is?.data?.isClaimBox);
 
       setShowGiftBox(true);
     } catch (error: any) {
@@ -296,7 +310,7 @@ const Dashboard = (props: IProps) => {
                 handleUpdateMissions={(showMessage, loadingIcon) => handleUpdateMissions(showMessage, loadingIcon)}
                 onClaimBox={onClaimBox}
                 loading={stateDailyMissionFetch.loading}
-                isClaimBox={isClaimBoxQuery?.data?.isClaimBox ?? false}
+                isClaimBox={isClaimBox ?? false}
                 loadingUpdate={loading}
                 isDailyMission
                 currentGame={props.currentGame}
@@ -308,8 +322,8 @@ const Dashboard = (props: IProps) => {
             </Col>
             <Col lg={8} md={24}>
               <SidebarRight
-                lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
-                lucisToken={statisticQuery?.data?.getBalance?.lucis_token}
+                lucisPoint={statistic.lucis_point}
+                lucisToken={statistic.lucis_token}
               />
             </Col>
           </Row>
