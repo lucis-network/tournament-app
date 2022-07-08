@@ -3,8 +3,14 @@ import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
 import PopUpOpenBox from './popup'
+import {useGetChestDetail} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {LuckyChestTier, LuckyChestType} from "../../../../src/generated/graphql_p2e";
 export default function LuckyChest() {
     const [showPopupOpenBox, setShowPopupOpenBox] = useState(false);
+    const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
+        type: LuckyChestType.Csgo,
+        tier: LuckyChestTier.Standard,
+    })
 
     return (
         <div className={`${s.wrapper} lucis-container-2`}>
