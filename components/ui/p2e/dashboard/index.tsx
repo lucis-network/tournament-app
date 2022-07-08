@@ -289,8 +289,8 @@ const Dashboard = (props: IProps) => {
         <div className={s.dailyContainer}>
           <SidebarRight
             onlyWallet
-            lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
-            lucisToken={statisticQuery?.data?.getBalance?.lucis_token} />
+            lucisPoint={statistic.lucis_point}
+            lucisToken={statistic.lucis_point} />
           <Row gutter={51}>
             <Col lg={16} md={24}>
               <div>
