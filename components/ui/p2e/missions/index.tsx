@@ -20,7 +20,7 @@ interface IProps {
 const Mission = (props: IProps) => {
   const [loading, setLoading] = useState(false);
   const [mission, setMission] = useState<PlayerMission[]>([])
-
+  const [statistic, setStatistic] = React.useState<{ lucis_point: number, lucis_token: number }>({ lucis_point: 0, lucis_token: 0 });
   const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
       endpoint: 'p2e'
@@ -44,11 +44,17 @@ const Mission = (props: IProps) => {
     }
 
     await queryData();
+    const sta = await statisticQuery.refetch();
+    setStatistic({ lucis_point: sta?.data?.getBalance?.lucis_point, lucis_token: sta?.data?.getBalance?.lucis_token })
     setLoading(false);
     if (showMessage) {
       message.success("Update!");
     }
   }
+
+  React.useEffect(() => {
+    setStatistic({ lucis_point: statisticQuery.data?.getBalance?.lucis_point, lucis_token: statisticQuery?.data?.getBalance?.lucis_token })
+  },[statisticQuery.data])
 
   useEffect(() => {
     if(props.currentGame) {
@@ -85,8 +91,8 @@ const Mission = (props: IProps) => {
       <div className={s.dailyContainer}>
         <SidebarRight
           onlyWallet
-          lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
-          lucisToken={statisticQuery?.data?.getBalance?.lucis_token} />
+          lucisPoint={statistic?.lucis_point}
+          lucisToken={statistic?.lucis_token} />
         <Row gutter={51}>
           <Col lg={16} md={24}>
             <div>
@@ -110,8 +116,8 @@ const Mission = (props: IProps) => {
           </Col>
           <Col lg={8} md={24}>
             <SidebarRight
-              lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
-              lucisToken={statisticQuery?.data?.getBalance?.lucis_token}
+              lucisPoint={statistic?.lucis_point}
+              lucisToken={statistic?.lucis_token}
             />
 
           </Col>

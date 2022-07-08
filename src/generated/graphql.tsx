@@ -172,6 +172,7 @@ export enum BalanceHistoryType {
   Joindiscord = 'JOINDISCORD',
   Lucismission = 'LUCISMISSION',
   Match = 'MATCH',
+  Openluckychest = 'OPENLUCKYCHEST',
   Referfriend = 'REFERFRIEND',
   Reroll = 'REROLL',
   Staked = 'STAKED'
@@ -1915,6 +1916,7 @@ export type LolMatch = {
   match_statistic?: Maybe<Scalars['JSON']>;
   players?: Maybe<Array<PlayerLolMatch>>;
   region?: Maybe<Scalars['String']>;
+  score?: Maybe<Scalars['String']>;
   type: LolRegime;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -1942,6 +1944,7 @@ export type LolMatchCreateWithoutPlayersInput = {
   map?: InputMaybe<Scalars['String']>;
   match_statistic?: InputMaybe<Scalars['JSON']>;
   region?: InputMaybe<Scalars['String']>;
+  score?: InputMaybe<Scalars['String']>;
   type: LolRegime;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -7609,22 +7612,26 @@ export type UserGraphql = {
 
 export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
+  created_at: Scalars['DateTime'];
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
   type: LuckyChestType;
   uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
 };
 
 export type UserLuckyChestHistoryCreateManyUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
   is_claimed: Scalars['Boolean'];
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
   type: LuckyChestType;
   uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type UserLuckyChestHistoryCreateManyUserInputEnvelope = {
@@ -7645,11 +7652,13 @@ export type UserLuckyChestHistoryCreateOrConnectWithoutUserInput = {
 };
 
 export type UserLuckyChestHistoryCreateWithoutUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrizeCreateNestedOneWithoutUser_Prize_HistoryInput;
   tier: LuckyChestTier;
   type: LuckyChestType;
   uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type UserLuckyChestHistoryWhereUniqueInput = {

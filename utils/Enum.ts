@@ -74,6 +74,12 @@ export const MAP_CSGO: { [s: string]: string } = {
 
 }
 
+export const MAP_LOL: { [type: string]: string } = {
+  "NormalDraft": "SUMMONER'S RIFT",
+  "Aram": "ARAM"
+
+}
+
 export enum Game {
   NONE,
   CSGO,
