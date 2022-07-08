@@ -8,23 +8,24 @@ type Props = {
   status: boolean;
 };
 
+
 const PopupRollingChest = (props: Props) => {
   const { status, closePopupRollingChest } = props;
   const [width] = useWindowSize();
   const [autoRolling, setAutoRolling] = useState(false)
-
+  
   const styles = {
-    // width: width < 768
-    // ? width - 50 
-    // : width < 1280
-    // ? width - 100 
-    // : width - 220 ,
-    
     transform: autoRolling ? 'translateX(-6000px)': 'translateX(0px)'
   }
+  const styleWidth = {
+    maxWidth:
+      width < 768 ? width - 50 : width < 1280 ? width - 100 : width - 220,
+      overflow: "hidden",
+      margin: "0 auto",
+    };
 
-  const datas = [
-    {},
+    const datas = [
+      {},
     {},
     {},
     {},
@@ -65,7 +66,7 @@ const PopupRollingChest = (props: Props) => {
           <div className={s.bg_rolling}>
             <img src="/assets/P2E/luckychest/bg_rolling.png" alt="" />
           </div>
-          <div style={{maxWidth:' 1440px', overflow: 'hidden', margin: '0 auto'}}>
+          <div style={styleWidth}>
           <div
             className={s.rolling}
             style={styles}
