@@ -1,13 +1,14 @@
 import { Button, Modal } from 'antd';
 import React, { useState } from 'react';
-
+import { useWindowSize } from '../../../../../hooks/useWindowSize'
 import s from './PopupBox.module.sass';
 import SliderBox from '../slider'
 
 
 export default function PopUpOpenBox() {
     const [isModalVisible, setIsModalVisible] = useState(false);
-
+    const [width] = useWindowSize()
+    console.log(width);
     const showModal = () => {
         setIsModalVisible(true);
     };
@@ -42,7 +43,14 @@ export default function PopUpOpenBox() {
                             </div>
                         </div>
                         <div className={s.content_right}>
-                            <div className={s.line}><img src="/assets/P2E/luckychest/ic_line.svg" alt="" /></div>
+                            <div className={s.line}>
+                                {
+                                    width >= 1024 ?
+                                        <img src="/assets/P2E/luckychest/ic_line.svg" alt="" />
+                                        :
+                                        <img src="/assets/P2E/luckychest/ic_line_top.png" alt="" />
+                                }
+                            </div>
                             <div className={s.block_item}>
                                 <div className={s.item}>
                                     <img src="/assets/P2E/luckychest/im_box.png" alt="" />
