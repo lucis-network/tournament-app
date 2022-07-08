@@ -12,7 +12,7 @@ function BannerOverview(props: IProps) {
   return (
   <Row className={s.container}>
     <Col xs={24} lg={10} className={s.banner_heading}>
-      <h1>PLAY TO EARN 2.0</h1>
+      <h1>PlayCore</h1>
       <p>PLAY - ENJOY - EARN - REPEAT</p>
       <span>Get reward from playing your favourite traditional games</span>
       {!props.isLogin &&
