@@ -123,7 +123,6 @@ const PopupRollingChest = (props: Props) => {
         onCancel={closePopupRollingChest}
         width={"100%"}
       >
-            <button onClick={() => setAutoRolling(true)}>run</button>
         <div className={s.container}>
           <div className={s.bg_rolling}>
             <img src="/assets/P2E/lucky-chest/bg_rolling.png" alt="" />
