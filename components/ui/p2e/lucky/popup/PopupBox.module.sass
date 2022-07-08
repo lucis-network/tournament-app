@@ -13,6 +13,10 @@
         justify-content: space-between
         @media ( min-width: 0px )
             flex-direction: column
+        @media ( min-width: 1024px )
+            flex-direction: row
+            padding: 100px 120px 40px 120px
+
         .content_left
             display: flex
             flex-direction: column
@@ -60,6 +64,10 @@
                 align-items: center
                 justify-content: center
                 width: 100%
+                @media ( min-width: 1024px)
+                    justify-content: flex-start
+                    z-index: -1
+                    left: -20px
             .block_item
                 height: 100%
                 overflow: auto
@@ -70,7 +78,10 @@
                     display: flex
                     align-items: center
                     margin: 0 auto
-                     
+                @media ( min-width: 1024px)
+                     flex-direction: column
+                     width: auto
+                     justify-content: space-between
                 .item
                     height: 64px
                     width: 64px
@@ -79,12 +90,16 @@
                     align-items: center
                     justify-content: center
                     background: rgba(69, 82, 107, 0.5) 
-                    margin: 4px 0px
                     @media ( min-width: 0px)
                         min-width: 36px
                         min-height: 36px
                         max-height: 36px
                         margin: 0px 1px
+                    @media ( min-width: 1024px)
+                        min-width: 64px
+                        min-height: 64px
+                        max-height: 64px
+                        margin: 4px 0px
                     img
                         width: 100%
 

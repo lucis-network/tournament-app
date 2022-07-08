@@ -1,11 +1,78 @@
 .content_modal
-  min-height: 500px
+  :global(.ant-modal)
+    max-width: 100%
   :global(.ant-modal-body)
     padding: 0
+    height: 100vh
   :global(.ant-modal-close .ant-modal-close-x)
     color: #6c6b6b
     background: none
+  :global(.ant-modal-content)
+    background: transparent
+    backdrop-filter: blur(0)
+  .bg_rolling
+    position: absolute
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 100%
+    img
+      min-height: 160px
 
-.wrapper
-  min-height: 500px
+.wrapper_popup_rolling_chest
+.container
+  display: flex
+  justify-content: center
+  flex-direction: column
+  height: 100%
+  background: rgba(23, 29, 46, 1)
   .rolling
+    overflow: auto
+    margin: 0 auto
+    display: flex
+    justify-content: flex-start
+    will-change: transform
+    transition: transform 8s
+    transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1)
+    .box_item
+      max-width: 214px
+      min-width: 214px
+      max-height: 214px
+      background: rgba(69, 82, 107, 0.5)
+      margin: 0px 10px
+      @media (min-width: 0px)
+        max-width: 100px
+        min-width: 100px
+        margin: 0px 4px
+      @media (min-width: 768px)
+        max-width: 160px
+        min-width: 160px
+        max-height: 160px
+      @media (min-width: 1280px)
+        max-width: 214px
+        min-width: 214px
+        max-height: 214px
+
+    .title
+      background: rgba(45, 52, 70, 0.5)
+      padding: 4px 0px
+      display: flex
+      align-items: center
+      justify-content: center
+      border-top: 4px solid #618FC5
+      font-weight: 500
+      font-size: 20px
+      line-height: 22px
+      @media (min-width: 0px)
+        font-size: 10px
+        line-height: 11px
+        border-top: 2px solid #618FC5
+      @media (min-width: 768px)
+        font-size: 14px
+        line-height: 16px
+      @media (min-width: 1280px)
+        font-size: 20px
+        line-height: 22px
+        border-top: 4px solid #618FC5
+      p
+        margin: 0
