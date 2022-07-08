@@ -11,8 +11,8 @@
     .content_box
         display: flex
         justify-content: space-between
-        // @media ( min-width: 0px )
-        //     flex-direction: column
+        @media ( min-width: 0px )
+            flex-direction: column
         .content_left
             display: flex
             flex-direction: column
@@ -24,11 +24,17 @@
                 font-weight: 600
                 font-size: 32px
                 line-height: 35px
+                @media ( min-width: 0px )
+                    font-size: 20px
+                    line-height: 22px
             p
                 color: #DBE0E8
                 font-weight: 300
                 font-size: 24px
                 line-height: 30px
+                @media ( min-width: 0px )
+                    font-size: 14px
+                    line-height: 18px
             .im_box
                 max-width: 440px
                 .btn_open
@@ -45,15 +51,26 @@
         .content_right
             max-height: 460px
             position: relative
-            // display: none
+            @media (min-width: 0px)
+                padding: 20px 0px
             .line
                 position: absolute
-                left: 0
-                top: 0
+                top: 5px
+                display: flex
+                align-items: center
+                justify-content: center
+                width: 100%
             .block_item
                 height: 100%
-                overflow: hidden
-                margin-left: 16px 
+                overflow: auto
+                margin-left: 16px
+                @media ( min-width: 0px)
+                    margin: 0
+                    width: 190px
+                    display: flex
+                    align-items: center
+                    margin: 0 auto
+                     
                 .item
                     height: 64px
                     width: 64px
@@ -62,7 +79,12 @@
                     align-items: center
                     justify-content: center
                     background: rgba(69, 82, 107, 0.5) 
-                    margin: 4px 0px 
+                    margin: 4px 0px
+                    @media ( min-width: 0px)
+                        min-width: 36px
+                        min-height: 36px
+                        max-height: 36px
+                        margin: 0px 1px
                     img
                         width: 100%
 
@@ -73,6 +95,9 @@
             font-size: 24px
             line-height: 26px
             color: #00F9FF
+            @media ( min-width: 0px )
+                font-size: 14px
+                line-height: 18px
     :global(.ant-modal-content)
         background: rgba(23, 29, 46, 0.9)
         border-radius: 0
@@ -81,7 +106,8 @@
         display: flex
         flex-direction: column
         justify-content: center
-        // @media ( min-width: 0px )
-        //     padding: 0           
+        @media ( min-width: 0px )
+            padding: 0         
+            justify-content: flex-start
     :global(.ant-modal-footer)
         display: none
