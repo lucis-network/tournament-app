@@ -10,51 +10,49 @@
     height: 100vh
     .content_box
         display: flex
-        justify-content: space-between
-        @media ( min-width: 0px )
-            flex-direction: column
-        @media ( min-width: 1024px )
-            flex-direction: row
-            padding: 100px 120px 40px 120px
-
-        .content_left
-            display: flex
-            flex-direction: column
-            align-items: center
-            flex: 90% 0 0
-
-            h3
-                color: #00F9FF
-                font-weight: 600
+        align-items: center
+        position: relative
+        flex-direction: column
+        font-family: 'Lexend'
+        .content_box_heading
+            color: #00F9FF
+            font-weight: 600
+            font-size: 20px
+            line-height: 22px
+            margin-bottom: 10px
+            @media ( min-width: 1200px )
                 font-size: 32px
                 line-height: 35px
-                @media ( min-width: 0px )
-                    font-size: 20px
-                    line-height: 22px
-            p
-                color: #DBE0E8
-                font-weight: 300
+        .content_box_des
+            color: #DBE0E8
+            font-weight: 300
+            font-size: 14px
+            line-height: 18px
+            margin-bottom: 0
+            @media ( min-width: 1200px )
                 font-size: 24px
                 line-height: 30px
-                @media ( min-width: 0px )
-                    font-size: 14px
-                    line-height: 18px
-            .im_box
-                max-width: 440px
-                .btn_open
+        .content_box_img
+            max-width: 440px
+        .im_box
+            max-width: 440px
+            .btn_open
+                display: flex
+                justify-content: center
+                margin-top: 24px
+                .number_coin
                     display: flex
                     justify-content: center
-                    align-items: center
-                    .number_coin
-                        display: flex
-                        align-items: center
-                        p
-                            margin: 0
-                            padding-left: 12px
+                    p
+                        margin: 0
+                        padding-left: 12px
 
         .content_right
             max-height: 460px
-            position: relative
+            position: absolute
+            right: 0
+            top: 0
+            bottom: 0
             @media (min-width: 0px)
                 padding: 20px 0px
             .line
@@ -76,7 +74,7 @@
                     margin: 0
                     width: 190px
                     display: flex
-                    align-items: center
+                    //align-items: center
                     margin: 0 auto
                 @media ( min-width: 1024px)
                      flex-direction: column
@@ -105,14 +103,18 @@
 
 
     .reward_box
+        overflow: auto
+        margin-top: 48px
         h3
             font-weight: 600
-            font-size: 24px
-            line-height: 26px
+            font-size: 14px
+            line-height: 18px
             color: #00F9FF
-            @media ( min-width: 0px )
-                font-size: 14px
-                line-height: 18px
+            padding-bottom: 4px
+            border-bottom: 2px solid rgba(78, 134, 147, 0.32)
+            @media ( min-width: 1200px )
+                font-size: 24px
+                line-height: 26px
     :global(.ant-modal-content)
         background: rgba(23, 29, 46, 0.9)
         border-radius: 0
@@ -123,6 +125,31 @@
         justify-content: center
         @media ( min-width: 0px )
             padding: 0         
-            justify-content: flex-start
+            //justify-content: flex-start
     :global(.ant-modal-footer)
         display: none
+    :global(.ant-modal-body)
+        padding: 0
+.container
+    display: flex
+    justify-content: center
+    .wrapper
+        display: flex
+        justify-content: center
+        //align-items: center
+        flex-direction: column
+        @media (min-width: 360px)
+            min-width: 360px
+            //margin-top: 85px
+        @media (min-width: 768px)
+            min-width: 768px !important
+        @media (min-width: 992px)
+            min-width: 992px !important
+        @media (min-width: 1024px)
+            min-width: 1024px !important
+        @media (min-width: 1200px)
+            min-width: 1200px !important
+        @media (min-width: 1200px)
+            min-width: 1200px !important
+        @media (min-width: 1400px)
+            max-width: 1400px !important

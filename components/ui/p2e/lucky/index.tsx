@@ -42,7 +42,7 @@ export default function LuckyChest() {
             <div style={{paddingTop: 40}}>
                 <HistoryTable />
             </div>
-            <><PopUpOpenBox status={showPopupOpenBox} closePopupOpenBox={() => setShowPopupOpenBox(false)} /></>
+            <PopUpOpenBox status={showPopupOpenBox} closePopupOpenBox={() => setShowPopupOpenBox(false)} />
         </div>
     )
 }
