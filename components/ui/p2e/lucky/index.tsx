@@ -20,21 +20,21 @@ export default function LuckyChest() {
                             <div onClick={() => setShowPopupOpenBox(true)}><ButtonOpenBox>Open</ ButtonOpenBox></div>
                             <div className={s.number_coin}>
                                 <div className={s.n}>5.000</div>
-                                <img src="/assets/P2E/luckyChest/ic_lucis_coin.png" alt="icon" />
+                                <img src="/assets/P2E/lucky-chest/ic_lucis_coin.png" alt="icon" />
                             </div>
                         </div>
                         <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the {"industry's"} standard dummy text ever since the 1500s, when an unknown printer</p>
                     </div>
                 </div>
                 <div className={s.box}>
-                    <img onClick={() => setShowPopupOpenBox(true)} src="/assets/P2E/luckyChest/im_box.png" alt="" />
+                    <img onClick={() => setShowPopupOpenBox(true)} src="/assets/P2E/lucky-chest/im_box.png" alt="" />
                     <div className={`${s.group_btn} ${s.group_btn_mobile}`}>
                         <div onClick={() => setShowPopupOpenBox(true)}>
                             <ButtonOpenBox>Open</ButtonOpenBox>
                         </div>
                         <div className={s.number_coin}>
                             <div className={s.n}>5.000</div>
-                            <img src="/assets/P2E/luckyChest/ic_lucis_coin.png" alt="icon" />
+                            <img src="/assets/P2E/lucky-chest/ic_lucis_coin.png" alt="icon" />
                         </div>
                     </div>
                 </div>

@@ -9,103 +9,103 @@ const SliderBox: React.FC = () => {
     <div className={s.wrapper}>
       <div className={s.block_reward_box} style={{width : width - 40}}>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
         </div>
         <div className={s.item}>
-            <img src="/assets/P2E/luckychest/im_box.png" alt="" />
+            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
             <div className={s.title}>
                 <p>Good luck!</p>
             </div>
