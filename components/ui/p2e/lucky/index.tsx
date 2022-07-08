@@ -1,7 +1,11 @@
+import { useState } from 'react'
+import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
 import PopUpOpenBox from './popup'
 export default function LuckyChest() {
+    const [showPopupOpenBox, setShowPopupOpenBox] = useState(false);
+
     return (
         <div className={`${s.wrapper} lucis-container-2`}>
             <div className={s.content_lucky_chest_top}>
@@ -13,7 +17,7 @@ export default function LuckyChest() {
                     <div>
                         <h3>Your ticket</h3>
                         <div className={`${s.group_btn} ${s.group_btn_pc}`}>
-                            <div>Open</div>
+                            <div onClick={() => setShowPopupOpenBox(true)}><ButtonOpenBox>Open</ ButtonOpenBox></div>
                             <div className={s.number_coin}>
                                 <div className={s.n}>5.000</div>
                                 <img src="/assets/P2E/luckyChest/ic_lucis_coin.png" alt="icon" />
@@ -23,9 +27,11 @@ export default function LuckyChest() {
                     </div>
                 </div>
                 <div className={s.box}>
-                    <img src="/assets/P2E/luckyChest/im_box.png" alt="" />
+                    <img onClick={() => setShowPopupOpenBox(true)} src="/assets/P2E/luckyChest/im_box.png" alt="" />
                     <div className={`${s.group_btn} ${s.group_btn_mobile}`}>
-                        <div>Open</div>
+                        <div onClick={() => setShowPopupOpenBox(true)}>
+                            <ButtonOpenBox>Open</ButtonOpenBox>
+                        </div>
                         <div className={s.number_coin}>
                             <div className={s.n}>5.000</div>
                             <img src="/assets/P2E/luckyChest/ic_lucis_coin.png" alt="icon" />
@@ -36,7 +42,7 @@ export default function LuckyChest() {
             <div style={{paddingTop: 40}}>
                 <HistoryTable />
             </div>
-            <><PopUpOpenBox /></>
+            <><PopUpOpenBox status={showPopupOpenBox} closePopupOpenBox={() => setShowPopupOpenBox(false)} /></>
         </div>
     )
 }
