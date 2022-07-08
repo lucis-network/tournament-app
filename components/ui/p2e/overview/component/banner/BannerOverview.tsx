@@ -14,7 +14,7 @@ function BannerOverview(props: IProps) {
     <Col xs={24} lg={10} className={s.banner_heading}>
       <h1>PLAY TO EARN 2.0</h1>
       <p>PLAY - ENJOY - EARN - REPEAT</p>
-      <span>Join Lucis Network to get rewards from playing traditiones</span>
+      <span>Get reward from playing your favourite traditional games</span>
       {!props.isLogin &&
       <div className={s.btn_sign_in} onClick={() => onSignIn()}>
         <p>SIGN IN</p>
