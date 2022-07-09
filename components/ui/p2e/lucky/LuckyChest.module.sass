@@ -1,3 +1,33 @@
+.luckyChestBg
+    background: url('/assets/P2E/luckyChest/bgLuckyChestMobile.jpg') no-repeat fixed top center
+    background-size: cover
+    background-blend-mode: multiply
+    position: relative
+    overflow-x: unset
+    &:after
+        content: ''
+        display: block
+        position: absolute
+        top: 0
+        right: 0
+        left: 0
+        bottom: 0
+        background: rgb(23 29 46 / 80%)
+        z-index: 0
+    > *
+        z-index: 1
+        position: relative
+    @media screen and (min-width: 768px)
+        background: url('/assets/P2E/luckyChest/bgLuckyChest.jpg') no-repeat fixed top center
+        background-size: cover
+.luckyChestContentWrapper
+    margin-top: 120px !important
+    @media screen and (min-width: 551px)
+        margin-top: 142px !important
+    @media screen and (min-width: 1024px)
+        margin-top: 45px !important
+    @media screen and (min-width: 1025px)
+        margin-top: 15px !important
 .wrapper
     position: relative
     z-index: 1
@@ -72,3 +102,63 @@
     .group_btn_mobile
         @media (min-width: 992px)
             display: none
+.luckyChestTabsSection
+    :global(.lucis-container-2)
+        position: relative
+        &:after
+            content: ''
+            display: block
+            height: 1px
+            position: absolute
+            bottom: 10px
+            left: 0
+            right: 0
+            background: #38505F
+            z-index: -1
+    .luckyChestTabs
+        display: flex
+        align-items: center
+        justify-content: flex-start
+        width: 100%
+        overflow-x: auto
+        padding-bottom: 20px
+        position: relative
+        .luckyChestTabsItem
+            min-width: 125px
+            padding: 10px
+            text-align: center
+            position: relative
+            font-family: 'Revx Neue Demo'
+            font-weight: 400
+            font-size: 12px
+            line-height: 13px
+            color: rgba(255, 255, 255, 0.3)
+            @media screen and (min-width: 768px)
+                font-size: 16px
+                line-height: 18px
+            &:global(.active)
+                color: #00F9FF
+                font-weight: 600
+                &:before
+                    content: ''
+                    width: 15px
+                    height: 15px
+                    background: url("/assets/P2E/lucky-chest/iconTabActive.svg") no-repeat top center
+                    background-size: cover
+                    display: block
+                    position: absolute
+                    left: 50%
+                    transform: translateX(-50%)
+                    bottom: -17px
+            &:after
+                content: ''
+                position: absolute
+            &:after
+                width: 1px
+                background: rgba(255, 255, 255, 0.3)
+                top: 3px
+                bottom: 3px
+                right: 0
+            &:last-of-type
+                &:after
+                    content: none
