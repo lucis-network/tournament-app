@@ -7,10 +7,13 @@
         overflow: auto
         gap: 0 12px
         .item
-            min-width: 130px
-            max-width: 130px
+            min-width: 100px
+            max-width: 100px
             background: rgba(69, 82, 107, 0.5)
             backdrop-filter: blur(24.2991px)
+            @media (min-width: 768px)
+                min-width: 130px
+                max-width: 130px
         .title
             font-weight: 400
             font-size: 12px

@@ -20,7 +20,7 @@
             font-size: 20px
             line-height: 22px
             margin-bottom: 10px
-            @media ( min-width: 1200px )
+            @media ( min-width: 768px )
                 font-size: 32px
                 line-height: 35px
         .content_box_des
@@ -29,32 +29,45 @@
             font-size: 14px
             line-height: 18px
             margin-bottom: 0
-            @media ( min-width: 1200px )
+            @media ( min-width: 768px )
                 font-size: 24px
                 line-height: 30px
         .content_box_img
-            max-width: 440px
+            max-width: 340px
+            @media ( min-width: 768px )
+                max-width: 440px
         .im_box
             max-width: 440px
             .btn_open
                 display: flex
-                justify-content: center
-                margin-top: 24px
+                align-items: center
+                margin-left: 70px
+                @media (min-width: 575px)
+                    margin-left: 90px
+                @media (min-width: 1024px)
+                    margin-top: 24px
                 .number_coin
                     display: flex
-                    justify-content: center
+                    align-items: center
                     p
                         margin: 0
                         padding-left: 12px
-
+                        font-weight: 400
+                        font-size: 10px
+                        line-height: 25px
+                        @media (min-width: 575px)
+                            font-size: 14px
+                        @media (min-width: 768px)
+                            font-size: 20px
         .content_right
             max-height: 460px
-            position: absolute
-            right: 0
-            top: 0
-            bottom: 0
-            @media (min-width: 0px)
-                padding: 20px 0px
+            padding: 20px 0
+            position: relative
+            @media (min-width: 1024px)
+                position: absolute
+                right: 0
+                top: 0
+                bottom: 0
             .line
                 position: absolute
                 top: 5px
@@ -70,16 +83,19 @@
                 height: 100%
                 overflow: auto
                 margin-left: 16px
+                gap: 0 2px
                 @media ( min-width: 0px)
-                    margin: 0
-                    width: 190px
+                    width: 188px
                     display: flex
-                    //align-items: center
                     margin: 0 auto
+                @media (min-width: 575px)
+                    width: 280px
                 @media ( min-width: 1024px)
                      flex-direction: column
                      width: auto
                      justify-content: space-between
+                     gap: 5px 0
+                     height: 460px
                 .item
                     height: 64px
                     width: 64px
@@ -87,24 +103,28 @@
                     display: flex
                     align-items: center
                     justify-content: center
-                    background: rgba(69, 82, 107, 0.5) 
-                    @media ( min-width: 0px)
+                    background: rgba(69, 82, 107, 0.5)
+                    @media (min-width: 0px)
                         min-width: 36px
                         min-height: 36px
                         max-height: 36px
-                        margin: 0px 1px
-                    @media ( min-width: 1024px)
+                    @media (min-width: 575px)
+                        min-width: 54px
+                        min-height: 54px
+                        max-height: 54px
+                    @media (min-width: 1024px)
                         min-width: 64px
                         min-height: 64px
                         max-height: 64px
-                        margin: 4px 0px
                     img
                         width: 100%
 
 
     .reward_box
         overflow: auto
-        margin-top: 48px
+        margin-top: 32px
+        @media (min-width: 768px)
+            margin-top: 48px
         h3
             font-weight: 600
             font-size: 14px
@@ -112,7 +132,7 @@
             color: #00F9FF
             padding-bottom: 4px
             border-bottom: 2px solid rgba(78, 134, 147, 0.32)
-            @media ( min-width: 1200px )
+            @media ( min-width: 1024px )
                 font-size: 24px
                 line-height: 26px
     :global(.ant-modal-content)
@@ -136,11 +156,14 @@
     .wrapper
         display: flex
         justify-content: center
-        //align-items: center
         flex-direction: column
+        padding: 0 16px
         @media (min-width: 360px)
             min-width: 360px
             //margin-top: 85px
+        @media (min-width: 414px)
+            min-width: 360px
+            padding: 0
         @media (min-width: 768px)
             min-width: 768px !important
         @media (min-width: 992px)

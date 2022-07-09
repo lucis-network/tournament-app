@@ -1,16 +1,23 @@
-.wraper
+.wrapper
   position: relative
-  width: 130px
+  width: 80px
   display: flex
   align-items: center
   justify-content: center
+  @media (min-width: 1024px)
+    width: 130px
   .bt_btn
     position: absolute
     z-index: -1
+
   span
-    margin-bottom: 6px
     font-weight: 400
-    font-size: 20px
     line-height: 30px
     text-transform: capitalize
     color: #00F9FF
+    font-size: 10px
+    @media (min-width: 575px)
+      font-size: 14px
+    @media (min-width: 1024px)
+      font-size: 20px
+      margin-bottom: 6px

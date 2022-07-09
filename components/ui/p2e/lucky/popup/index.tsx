@@ -94,28 +94,6 @@ export default function PopUpOpenBox(props: Props) {
                   </div>
                 </div>
               </div>
-              {/*<div className={s.content_left}>*/}
-              {/*  <h3>OPEN BOX !</h3>*/}
-              {/*  <p>Open the box to receive many attractive gifts</p>*/}
-              {/*  <div className={s.im_box}>*/}
-              {/*    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>*/}
-              {/*    <div className={s.btn_open}>*/}
-              {/*      <div onClick={() => setIsPopupRollingChest(true)}>*/}
-              {/*        <ButtonOpenBox>Open</ButtonOpenBox>*/}
-              {/*      </div>*/}
-              {/*      /!*<div onClick={() => setIsPopupRewardChest(true)}>*!/*/}
-              {/*      /!*  <ButtonOpenBox>OpenChest</ButtonOpenBox>*!/*/}
-              {/*      /!*</div>*!/*/}
-              {/*      <div className={s.number_coin}>*/}
-              {/*        <p>5.000</p>*/}
-              {/*        <img*/}
-              {/*          src="/assets/P2E/luckychest/ic_lucis_coin.png"*/}
-              {/*          alt=""*/}
-              {/*        />*/}
-              {/*      </div>*/}
-              {/*    </div>*/}
-              {/*  </div>*/}
-              {/*</div>*/}
             </div>
 
           <div className={s.reward_box}>
