@@ -95,7 +95,6 @@ const RafflesDetail = observer(() => {
       const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
         .valueOf();
       const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
-
       if(timeBefore <= 5) {
         setCheckDisplayEndAt(true);
       }

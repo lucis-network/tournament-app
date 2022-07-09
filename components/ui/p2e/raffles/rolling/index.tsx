@@ -65,11 +65,6 @@ const RollingRaffles = (props: Props) => {
   const endAtBefore = moment(dataRaffleDetail?.end_at)
     .valueOf();
 
-  useEffect(() => {
-    if (dataWonTickets) {
-      if(dataWonTickets.length === isCheckLoading - 1) refetchRaffleDetail();
-    }
-  }, [dataWonTickets, isCheckLoading]);
 
   useEffect(() => {
     if(dataRaffleDetail?.status === "CLOSED" && dataWonTickets){
@@ -84,6 +79,8 @@ const RollingRaffles = (props: Props) => {
       })
     }
   }, [dataMyWonTickets, dataRaffleDetail]);
+
+  const dateNow = moment(new Date()).valueOf();
 
   useEffect(() => {
     const checkDateInterval =  setInterval(() => {

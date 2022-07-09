@@ -18,8 +18,10 @@ export default function PopUpOpenBox(props: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
   const [isPopupRewardChest, setIsPopupRewardChest] = useState(false);
-  const [width] = useWindowSize();
+  const [width] = useWindowSize()
 
+
+  console.log("chestDetail", chestDetail);
   const handleOk = () => {
     setIsModalVisible(false);
   };
@@ -100,7 +102,7 @@ export default function PopUpOpenBox(props: Props) {
 
           <div className={s.reward_box}>
             <h3>Items that might be in this Box:</h3>
-            <SliderBox />
+            <SliderBox chestDetail={chestDetail}/>
           </div>
         </div>
           <div>
