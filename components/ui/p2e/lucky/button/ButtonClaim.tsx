@@ -1,16 +1,14 @@
-import { useState } from 'react'
 import s from './ButtonClaim.module.sass'
 
-export default function ButtonClaim() {
-    const [iClaim, setIsClaim] = useState(true)
+type ButtonClaimProps = {
+    isClaimed?: boolean,
+    onClick?: () => void
+}
+
+export default function ButtonClaim({isClaimed, onClick}: ButtonClaimProps) {
     return (
         <div className={s.wrapper}>
-            {
-                iClaim ?
-                    <button className={s.btn}>Claim</button>
-                    :
-                    <button className={s.btn_disable}>Claim</button>
-            }
+            <button className={!isClaimed ? s.btn : s.btn_disable} onClick={onClick}>Claim</button>
         </div>
     )
 }

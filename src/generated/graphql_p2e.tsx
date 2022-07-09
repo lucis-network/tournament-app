@@ -49,6 +49,7 @@ export type BalanceHistory = {
 export enum BalanceHistoryType {
   Addition = 'ADDITION',
   Buyraffleticket = 'BUYRAFFLETICKET',
+  Claimchestprize = 'CLAIMCHESTPRIZE',
   Claimraffle = 'CLAIMRAFFLE',
   Dailymission = 'DAILYMISSION',
   Dailymissionbox = 'DAILYMISSIONBOX',
@@ -162,27 +163,22 @@ export enum BuyRaffleTicketErrorCode {
 export type CacheCsgoPlayerStatistic = {
   __typename?: 'CacheCSGOPlayerStatistic';
   _count: CacheCsgoPlayerStatisticCount;
-  aces: Scalars['Int'];
-  assists: Scalars['Int'];
   average_headshots: Scalars['Int'];
+  average_headshots_percent?: Maybe<Scalars['Int']>;
+  average_kd_ratio: Scalars['Decimal'];
   created_at: Scalars['DateTime'];
   current_win_streak: Scalars['Int'];
-  deaths: Scalars['Int'];
-  double_kill: Scalars['Int'];
   id: Scalars['ID'];
   kd_ratio: Scalars['Decimal'];
-  kills: Scalars['Int'];
-  kr_ratio: Scalars['Decimal'];
   last_match_uid?: Maybe<Scalars['String']>;
   longest_win_streak: Scalars['Int'];
   map_detail?: Maybe<Array<CsgoMapStatistic>>;
   matches: Scalars['Int'];
-  mvps: Scalars['Int'];
   player_game_uid: Scalars['String'];
-  quadra_kill: Scalars['Int'];
+  recent_result?: Maybe<Scalars['String']>;
   total_headshots: Scalars['Int'];
-  triple_kill: Scalars['Int'];
   updated_at: Scalars['DateTime'];
+  win_rate?: Maybe<Scalars['Int']>;
   wins: Scalars['Int'];
 };
 
@@ -249,19 +245,6 @@ export type ChestDetail = {
   tier: LuckyChestTier;
   type: LuckyChestType;
   updated_at: Scalars['DateTime'];
-};
-
-export type ClaimRaffleTransaction = {
-  __typename?: 'ClaimRaffleTransaction';
-  created_at: Scalars['DateTime'];
-  lucis_point?: Maybe<Scalars['Int']>;
-  lucis_token?: Maybe<Scalars['Decimal']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-  user_ticket: UserTicket;
-  user_ticket_uid: Scalars['String'];
 };
 
 export type ClaimStakedTransaction = {
@@ -454,18 +437,17 @@ export type CsgoMission = {
 export enum CsgoMissionType {
   Aces = 'Aces',
   Assists = 'Assists',
-  AverageHeadshot = 'AverageHeadshot',
-  CurrentWinStreak = 'CurrentWinStreak',
   Deaths = 'Deaths',
+  HeadshotPercentage = 'HeadshotPercentage',
+  Headshots = 'Headshots',
   Kda = 'Kda',
   Kills = 'Kills',
   Kr = 'Kr',
-  LongestWinStreak = 'LongestWinStreak',
   Matches = 'Matches',
   Mvps = 'Mvps',
   QuadraKill = 'QuadraKill',
-  TotalHeadshots = 'TotalHeadshots',
   Triplekill = 'Triplekill',
+  WinStreak = 'WinStreak',
   Wins = 'Wins'
 }
 
@@ -775,6 +757,7 @@ export type LuckyChestPrize = {
   prize_amount?: Maybe<Scalars['Decimal']>;
   prize_type: PrizeType;
   quantity_in_stock: Scalars['Int'];
+  rarity: PrizeRarity;
   title: Scalars['String'];
   updated_at: Scalars['DateTime'];
   user_prize_history?: Maybe<Array<UserLuckyChestHistory>>;
@@ -859,6 +842,7 @@ export type Mission = {
   level_id: Scalars['Int'];
   lol_mission?: Maybe<LolMission>;
   mission_status: MissionStatus;
+  number_match?: Maybe<Scalars['Int']>;
   player_mission?: Maybe<Array<PlayerMission>>;
   title?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
@@ -925,6 +909,8 @@ export type Mutation = {
   connectLmss: PlatformAccountDto;
   createLOlMission?: Maybe<Scalars['Boolean']>;
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
+  /** Disconnect LOL */
+  disconnectLmss: Scalars['Boolean'];
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
   joinDiscord?: Maybe<Scalars['Boolean']>;
@@ -1331,6 +1317,16 @@ export type PoolWallet = {
   updated_at: Scalars['DateTime'];
 };
 
+export enum PrizeRarity {
+  Common = 'Common',
+  Divine = 'Divine',
+  Epic = 'Epic',
+  Legendary = 'Legendary',
+  Mythic = 'Mythic',
+  Rare = 'Rare',
+  Uncommon = 'Uncommon'
+}
+
 export enum PrizeType {
   BattlePass = 'BATTLE_PASS',
   CsgoChestTicket = 'CSGO_CHEST_TICKET',
@@ -1390,6 +1386,7 @@ export type Query = {
   isClaimBox?: Maybe<Scalars['Boolean']>;
   isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
+  isEnable?: Maybe<Scalars['Boolean']>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   rafflesInCurrentMonth?: Maybe<Array<RaffleGql>>;
   searchRaffle?: Maybe<Array<RaffleGql>>;
@@ -1498,6 +1495,11 @@ export type QueryIsClaimBoxArgs = {
 
 export type QueryIsConnectPlatformArgs = {
   platform_id: Scalars['Int'];
+};
+
+
+export type QueryIsEnableArgs = {
+  game_uid: Scalars['String'];
 };
 
 
@@ -1947,7 +1949,6 @@ export type User = {
   _count: UserCount;
   balace_history?: Maybe<Array<BalanceHistory>>;
   balance?: Maybe<Balance>;
-  claim_raffle?: Maybe<Array<ClaimRaffleTransaction>>;
   claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
   claim_tournament?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
@@ -1999,7 +2000,6 @@ export type UserBonus = {
 export type UserCount = {
   __typename?: 'UserCount';
   balace_history: Scalars['Int'];
-  claim_raffle: Scalars['Int'];
   claim_staked: Scalars['Int'];
   claim_tournament: Scalars['Int'];
   dailyMission: Scalars['Int'];
@@ -2109,7 +2109,6 @@ export enum UserStatus {
 
 export type UserTicket = {
   __typename?: 'UserTicket';
-  claim_transaction?: Maybe<ClaimRaffleTransaction>;
   created_at: Scalars['DateTime'];
   is_claimed?: Maybe<Scalars['Boolean']>;
   is_winner?: Maybe<Scalars['Boolean']>;
