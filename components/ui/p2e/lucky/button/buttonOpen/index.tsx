@@ -12,7 +12,7 @@ function ButtonOpenBox(props: Props) {
       <div className={s.wrapper}>
         <div className={s.bt_btn}>
           {
-            width < 575 ? <img src="/assets/Raffles/bg_btn_sm.svg" alt=""/> : <img src="/assets/P2E/bg_btn.svg" alt=""/>
+            width < 575 ? <img src="/assets/P2E/lucky-chest/btn_open_sm.svg" alt=""/> : <img src="/assets/P2E/lucky-chest/btn_open.svg" alt=""/>
           }
         </div>
         <span>{children}</span>

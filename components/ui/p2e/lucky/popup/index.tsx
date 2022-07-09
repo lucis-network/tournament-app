@@ -6,15 +6,17 @@ import SliderBox from "../slider";
 import PopupRollingChest from "./popupRollingChest";
 import ButtonOpenBox from "../button/buttonOpen";
 import PopupRewardChest from "./popupRewardChest";
+import {ChestDetail} from "../../../../../src/generated/graphql_p2e";
 
 type Props = {
   status: boolean;
   closePopupOpenBox: () => void;
+  chestDetail: ChestDetail;
 };
 export default function PopUpOpenBox(props: Props) {
-  const { status, closePopupOpenBox } = props;
+  const { status, closePopupOpenBox, chestDetail } = props;
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isPopupRollingChest, setIsPopupRollingChest] = useState(false);
+  const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
   const [isPopupRewardChest, setIsPopupRewardChest] = useState(false);
   const [width] = useWindowSize();
 
@@ -40,46 +42,46 @@ export default function PopUpOpenBox(props: Props) {
               <h3 className={s.content_box_heading}>OPEN BOX !</h3>
               <p className={s.content_box_des}>Open the box to receive many attractive gifts</p>
               <div className={s.content_box_img}>
-                <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
               </div>
               <div className={s.content_right}>
                 <div className={s.line}>
                   {width >= 1024 ? (
-                    <img src="/assets/P2E/luckychest/ic_line.svg" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/ic_line.svg" alt=""/>
                   ) : (
-                    <img src="/assets/P2E/luckychest/ic_line_top.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/ic_line_top.png" alt=""/>
                   )}
                 </div>
                 <div className={s.block_item}>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                   <div className={s.item}>
-                    <img src="/assets/P2E/luckychest/im_box.png" alt=""/>
+                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
                   </div>
                 </div>
               </div>
               <div className={s.im_box}>
                 <div className={s.btn_open}>
-                  <div onClick={() => setIsPopupRollingChest(true)}>
+                  <div onClick={() => setRollingChestPopupVisible(true)}>
                     <ButtonOpenBox>Open</ButtonOpenBox>
                   </div>
                   {/*<div onClick={() => setIsPopupRewardChest(true)}>*/}
@@ -88,7 +90,7 @@ export default function PopUpOpenBox(props: Props) {
                   <div className={s.number_coin}>
                     <p>5.000</p>
                     <img
-                      src="/assets/P2E/luckychest/ic_lucis_coin.png"
+                      src="/assets/P2E/lucky-chest/ic_lucis_coin.png"
                       alt=""
                     />
                   </div>
@@ -103,8 +105,9 @@ export default function PopUpOpenBox(props: Props) {
         </div>
           <div>
             <PopupRollingChest
-              status={isPopupRollingChest}
-              closePopupRollingChest={() => setIsPopupRollingChest(false)}
+              visible={rollingChestPopupVisible}
+              closePopupRollingChest={() => setRollingChestPopupVisible(false)}
+              chestDetail={chestDetail}
             />
             <PopupRewardChest
               status={isPopupRewardChest}

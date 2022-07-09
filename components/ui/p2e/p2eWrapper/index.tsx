@@ -185,7 +185,7 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {(AuthStore.isLoggedIn) && <div className={s.chooseGame}>
+                {(AuthStore.isLoggedIn && router.pathname !== "/") && <div className={s.chooseGame}>
                   <img
                     className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
                     src="/assets/P2E/lol-game.svg" alt="lol-game"

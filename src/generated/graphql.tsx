@@ -110,6 +110,7 @@ export type BalanceHistory = {
   __typename?: 'BalanceHistory';
   created_at: Scalars['DateTime'];
   decs?: Maybe<Scalars['String']>;
+  game_uid?: Maybe<Scalars['String']>;
   lucis_point?: Maybe<Scalars['Int']>;
   lucis_token?: Maybe<Scalars['Decimal']>;
   reference?: Maybe<Scalars['String']>;
@@ -123,6 +124,7 @@ export type BalanceHistory = {
 export type BalanceHistoryCreateManyUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   decs?: InputMaybe<Scalars['String']>;
+  game_uid?: InputMaybe<Scalars['String']>;
   lucis_point?: InputMaybe<Scalars['Int']>;
   lucis_token?: InputMaybe<Scalars['Decimal']>;
   reference?: InputMaybe<Scalars['String']>;
@@ -151,6 +153,7 @@ export type BalanceHistoryCreateOrConnectWithoutUserInput = {
 export type BalanceHistoryCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   decs?: InputMaybe<Scalars['String']>;
+  game_uid?: InputMaybe<Scalars['String']>;
   lucis_point?: InputMaybe<Scalars['Int']>;
   lucis_token?: InputMaybe<Scalars['Decimal']>;
   reference?: InputMaybe<Scalars['String']>;
@@ -169,6 +172,7 @@ export enum BalanceHistoryType {
   Joindiscord = 'JOINDISCORD',
   Lucismission = 'LUCISMISSION',
   Match = 'MATCH',
+  Openluckychest = 'OPENLUCKYCHEST',
   Referfriend = 'REFERFRIEND',
   Reroll = 'REROLL',
   Staked = 'STAKED'
@@ -1912,6 +1916,7 @@ export type LolMatch = {
   match_statistic?: Maybe<Scalars['JSON']>;
   players?: Maybe<Array<PlayerLolMatch>>;
   region?: Maybe<Scalars['String']>;
+  score?: Maybe<Scalars['String']>;
   type: LolRegime;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -1939,6 +1944,7 @@ export type LolMatchCreateWithoutPlayersInput = {
   map?: InputMaybe<Scalars['String']>;
   match_statistic?: InputMaybe<Scalars['JSON']>;
   region?: InputMaybe<Scalars['String']>;
+  score?: InputMaybe<Scalars['String']>;
   type: LolRegime;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -2034,6 +2040,7 @@ export type LuckyChestPrize = {
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  img?: Maybe<Scalars['String']>;
   prize_amount?: Maybe<Scalars['Decimal']>;
   prize_type: PrizeType;
   quantity_in_stock: Scalars['Int'];
@@ -2062,6 +2069,7 @@ export type LuckyChestPrizeCreateOrConnectWithoutUser_Prize_HistoryInput = {
 export type LuckyChestPrizeCreateWithoutUser_Prize_HistoryInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
+  img?: InputMaybe<Scalars['String']>;
   prize_amount?: InputMaybe<Scalars['Decimal']>;
   prize_type: PrizeType;
   quantity_in_stock: Scalars['Int'];
@@ -2074,11 +2082,15 @@ export type LuckyChestPrizeWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
 };
 
+export enum LuckyChestTier {
+  Nft = 'NFT',
+  Premium = 'PREMIUM',
+  Standard = 'STANDARD'
+}
+
 export enum LuckyChestType {
   Csgo = 'CSGO',
-  Lol = 'LOL',
-  Nft = 'NFT',
-  Premium = 'PREMIUM'
+  Lol = 'LOL'
 }
 
 export type Member = {
@@ -3804,13 +3816,14 @@ export enum PrizeClaimStatus {
 
 export enum PrizeType {
   BattlePass = 'BATTLE_PASS',
-  CscoKnifeOrGlovePiece_1 = 'CSCO_KNIFE_OR_GLOVE_PIECE_1',
-  CscoKnifeOrGlovePiece_2 = 'CSCO_KNIFE_OR_GLOVE_PIECE_2',
-  CscoKnifeOrGlovePiece_3 = 'CSCO_KNIFE_OR_GLOVE_PIECE_3',
-  CscoKnifeOrGlovePiece_4 = 'CSCO_KNIFE_OR_GLOVE_PIECE_4',
   CsgoChestTicket = 'CSGO_CHEST_TICKET',
   CsgoKnife = 'CSGO_KNIFE',
+  CsgoKnifeOrGlovePiece_1 = 'CSGO_KNIFE_OR_GLOVE_PIECE_1',
+  CsgoKnifeOrGlovePiece_2 = 'CSGO_KNIFE_OR_GLOVE_PIECE_2',
+  CsgoKnifeOrGlovePiece_3 = 'CSGO_KNIFE_OR_GLOVE_PIECE_3',
+  CsgoKnifeOrGlovePiece_4 = 'CSGO_KNIFE_OR_GLOVE_PIECE_4',
   CsgoLolSharedTicket = 'CSGO_LOL_SHARED_TICKET',
+  GoodLuck = 'GOOD_LUCK',
   LolChestTicket = 'LOL_CHEST_TICKET',
   LolCostume = 'LOL_COSTUME',
   LolCostumePiece_1 = 'LOL_COSTUME_PIECE_1',
@@ -7599,20 +7612,26 @@ export type UserGraphql = {
 
 export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
+  created_at: Scalars['DateTime'];
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
+  tier: LuckyChestTier;
   type: LuckyChestType;
   uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
 };
 
 export type UserLuckyChestHistoryCreateManyUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
   is_claimed: Scalars['Boolean'];
   prize_id: Scalars['Int'];
+  tier: LuckyChestTier;
   type: LuckyChestType;
   uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type UserLuckyChestHistoryCreateManyUserInputEnvelope = {
@@ -7633,10 +7652,13 @@ export type UserLuckyChestHistoryCreateOrConnectWithoutUserInput = {
 };
 
 export type UserLuckyChestHistoryCreateWithoutUserInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrizeCreateNestedOneWithoutUser_Prize_HistoryInput;
+  tier: LuckyChestTier;
   type: LuckyChestType;
   uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type UserLuckyChestHistoryWhereUniqueInput = {
@@ -7645,8 +7667,10 @@ export type UserLuckyChestHistoryWhereUniqueInput = {
 
 export type UserLuckyChestTurn = {
   __typename?: 'UserLuckyChestTurn';
-  amount: Scalars['Int'];
+  amount?: Maybe<Scalars['Int']>;
   created_at: Scalars['DateTime'];
+  id: Scalars['ID'];
+  tier: LuckyChestTier;
   type: LuckyChestType;
   updated_at: Scalars['DateTime'];
   user: User;
@@ -7654,8 +7678,10 @@ export type UserLuckyChestTurn = {
 };
 
 export type UserLuckyChestTurnCreateManyUserInput = {
-  amount: Scalars['Int'];
+  amount?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  id?: InputMaybe<Scalars['Int']>;
+  tier: LuckyChestTier;
   type: LuckyChestType;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -7678,15 +7704,15 @@ export type UserLuckyChestTurnCreateOrConnectWithoutUserInput = {
 };
 
 export type UserLuckyChestTurnCreateWithoutUserInput = {
-  amount: Scalars['Int'];
+  amount?: InputMaybe<Scalars['Int']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  tier: LuckyChestTier;
   type: LuckyChestType;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type UserLuckyChestTurnWhereUniqueInput = {
-  type?: InputMaybe<LuckyChestType>;
-  user_id?: InputMaybe<Scalars['Int']>;
+  id?: InputMaybe<Scalars['Int']>;
 };
 
 export type UserProfile = {
