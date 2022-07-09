@@ -6,7 +6,7 @@ import s from "../../../components/ui/p2e/lucky/LuckyChest.module.sass"
 const LuckyChestPage = () => {
   return (
     <>
-      <P2eWrapper mainClassname={s.luckyChestBg}>
+      <P2eWrapper mainClassname={s.luckyChestBg} wrapperChildrenClassname={s.luckyChestContentWrapper}>
         <LuckyChest />
       </P2eWrapper>
     </>

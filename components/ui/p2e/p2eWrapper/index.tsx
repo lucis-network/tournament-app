@@ -12,6 +12,7 @@ import { message } from "antd";
 interface IProps {
   children: React.ReactChild | React.ReactChild[],
   mainClassname?: string,
+  wrapperChildrenClassname?: string,
 }
 
 export default observer(function P2EWrapper(props: IProps) {
@@ -203,7 +204,7 @@ export default observer(function P2EWrapper(props: IProps) {
               </div>
             </div>
           </div>
-          <div className={s.p2eContent}>
+          <div className={`${s.p2eContent} ${props.wrapperChildrenClassname ?? ''}`}>
             {wrapperChildren()}
           </div>
         </div>
