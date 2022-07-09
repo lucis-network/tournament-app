@@ -63,7 +63,9 @@ const Raffles = () => {
                     </div>
                     <div className={s.winnerUsername}>{item?.user?.profile?.display_name}</div>
                   </div>
-                  <div className={s.winnerValued}>Valued at {item?.raffle?.valued_at}</div>
+                  {item?.raffle?.valued_at && (
+                    <div className={s.winnerValued}>Valued at {item?.raffle?.valued_at}</div>
+                  )}
                 </div>
               </div>
             ))

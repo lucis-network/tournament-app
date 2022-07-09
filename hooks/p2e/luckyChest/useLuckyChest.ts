@@ -1,10 +1,21 @@
-import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
+import {ApolloError, ApolloQueryResult, gql, useApolloClient, useQuery} from "@apollo/client";
 import {ChestDetail, LuckyChestUserInfo} from "../../../src/generated/graphql_p2e";
 import {isEmpty} from "lodash";
 
 type GetChestDetailProps = {
   type?: string,
   tier?: string,
+}
+
+type GetUserHistoryProps = {
+  type?: string,
+  tier?: string,
+}
+
+export type ClaimChestPrizeProps = {
+  user_prize_history_uid: string,
+  onError?: (error: ApolloError) => void,
+  onCompleted?: (data: any) => void,
 }
 
 export const useGetChestDetail = ({type, tier}: GetChestDetailProps): {
@@ -71,6 +82,32 @@ export const useGetLuckyChestUserInfo = ({type, tier}: GetChestDetailProps): {
   }
 }
 
+export const useClaimChestPrize = (): {
+  claimChestPrize: ({user_prize_history_uid, onCompleted, onError}: ClaimChestPrizeProps) => Promise<any>
+} => {
+  const client = useApolloClient()
+  const claimChestPrize = async ({user_prize_history_uid, onCompleted, onError}: ClaimChestPrizeProps) => {
+    try {
+      const result = await client.mutate({
+        mutation: CLAIM_CHEST_PRIZE,
+        variables: {
+          user_prize_history_uid: user_prize_history_uid,
+        },
+        context: {
+          endpoint: 'p2e'
+        }
+      })
+      onCompleted && onCompleted(result)
+    } catch (error: any) {
+      onError && onError(error)
+    }
+  }
+
+  return {
+    claimChestPrize
+  }
+}
+
 const GET_CHEST_DETAIL = gql`
   query($type: LuckyChestType!, $tier: LuckyChestTier!) {
     getChestDetail(type: $type, tier: $tier) {
@@ -115,16 +152,22 @@ const GET_CHEST_DETAIL = gql`
 const GET_LUCKY_CHEST_USER_INFO = gql`
   query($type: LuckyChestType!, $tier: LuckyChestTier!) {
     getLuckyChestUserInfo(type: $type, tier: $tier) {
-      open_turn
       history {
         uid
+        type
+        tier
         prize_id
         prize {
           id
           title
           desc
           img
+          prize_type
+          rarity
+          prize_amount
+          updated_at
         }
+        is_claimed
       }
     }
   }
@@ -145,5 +188,11 @@ export const OPEN_CHEST = gql`
       }
       user_prize_history_uid
     }
+  }
+`
+
+const CLAIM_CHEST_PRIZE = gql`
+  mutation($user_prize_history_uid: String!) {
+    claimChestPrize(user_prize_history_uid: $user_prize_history_uid)
   }
 `

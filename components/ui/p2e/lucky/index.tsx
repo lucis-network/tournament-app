@@ -1,22 +1,67 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
 import PopUpOpenBox from './popup'
-import {useGetChestDetail} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
-import {LuckyChestTier, LuckyChestType} from "../../../../src/generated/graphql_p2e";
+import {
+  useClaimChestPrize,
+  useGetChestDetail,
+  useGetLuckyChestUserInfo
+} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {CostType, LuckyChestTier, LuckyChestType} from "../../../../src/generated/graphql_p2e";
 import SpinLoading from "../../common/Spin";
 import {isEmpty} from "lodash";
 import Head from "next/head";
 import DefaultErrorPage from "next/error";
+import {handleGraphqlErrors} from "../../../../utils/apollo_client";
+import {Empty, Image, message as antMessage} from "antd";
 
 export default function LuckyChest() {
     const [showPopupOpenBox, setShowPopupOpenBox] = useState(false);
+    const [claimingChestPrize, setClaimingChestPrize] = useState(false);
     const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
         type: LuckyChestType.Csgo,
         tier: LuckyChestTier.Standard,
     })
+    const {getLuckyChestUserInfoLoading, getLuckyChestUserInfoError, refetchGetLuckyChestUserInfo, dataLuckyChestUserInfo} = useGetLuckyChestUserInfo({
+        type: LuckyChestType.Csgo,
+        tier: LuckyChestTier.Standard,
+    })
+    const {claimChestPrize} = useClaimChestPrize()
     const chestDetail = getChestDetailData?.getChestDetail
+    const userHistory = dataLuckyChestUserInfo?.history
+    const ticketCost = chestDetail?.ticket_cost
+    const ticketCostType = chestDetail?.ticket_cost_type
+    const luckyChestSponsor = chestDetail?.sponsors
+
+    const handleClaimChestPrize = (user_prize_history_uid: string) => {
+      if (!user_prize_history_uid) return null
+      console.log('[handleClaimChestPrize] user_prize_history_uid: ', user_prize_history_uid);
+      setClaimingChestPrize(true)
+      claimChestPrize({
+        user_prize_history_uid: user_prize_history_uid,
+        onError: (error) => handleGraphqlErrors(error, (code, message) => {
+          if (code !== 'UnAuth') {
+            switch (code) {
+              // chaupa todo claimChestPrize error messages
+              case '':
+                antMessage.error('An unknown error has occurred. Please try again later.')
+                break
+              default:
+                antMessage.error('An unknown error has occurred. Please try again later.')
+                break
+            }
+          }
+        }),
+        onCompleted: (data) => {
+          if (data?.data?.buyRaffleTicket && data?.data?.buyRaffleTicket !== null) {
+            refetchGetLuckyChestUserInfo()
+            antMessage.success('Success!')
+          }
+        }
+      }).finally(() => setClaimingChestPrize(false))
+    }
+    console.log('[LuckyChest] userHistory: ', userHistory);
 
     if (getChestDetailLoading) return (
       <div className={`${s.wrapper} lucis-container-2`}>
@@ -57,8 +102,10 @@ export default function LuckyChest() {
                 <div className={`${s.group_btn} ${s.group_btn_pc}`}>
                   <div onClick={() => setShowPopupOpenBox(true)}><ButtonOpenBox>Open</ ButtonOpenBox></div>
                   <div className={s.number_coin}>
-                    <div className={s.n}>5.000</div>
-                    <img src="/assets/P2E/lucky-chest/ic_lucis_coin.png" alt="icon" />
+                    <div className={s.n}>
+                      {ticketCost}
+                    </div>
+                    <img src={ticketCostType === CostType.LucisToken ? '/assets/P2E/lucky-chest/ic_lucis_coin.png' : '/assets/P2E/lucky-chest/iconLucisPoint.svg'} alt="icon" />
                   </div>
                 </div>
                 {chestDetail?.desc && (
@@ -77,11 +124,26 @@ export default function LuckyChest() {
                   <img src="/assets/P2E/lucky-chest/ic_lucis_coin.png" alt="icon" />
                 </div>
               </div>
+
             </div>
           </div>
           <div style={{paddingTop: 40}}>
-            <HistoryTable />
+            <HistoryTable userHistoryData={userHistory} claimChestPrize={handleClaimChestPrize}/>
           </div>
+          {luckyChestSponsor && (
+            <div className={s.luckyChestSponsor}>
+              <div className="lucis-container-2">
+                <h2>Sponsor</h2>
+                <div className={s.luckyChestSponsorList}>
+                  {luckyChestSponsor.map((sponsor, index) => (
+                    <div className={s.luckyChestSponsorItem} key={sponsor?.uid}>
+                      <Image src={sponsor?.img as string} preview={false} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
           <PopUpOpenBox status={showPopupOpenBox} closePopupOpenBox={() => setShowPopupOpenBox(false)} chestDetail={getChestDetailData?.getChestDetail}/>
         </div>
       </>
