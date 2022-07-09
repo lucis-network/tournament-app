@@ -12,48 +12,22 @@ type HistoryTableProps = {
 
 export default function HistoryTable({userHistoryData, claimChestPrize}: HistoryTableProps) {
     const dataSource: any = []
-    const mockData = [
-        {
-            uid: 1,
-            type: 'CSGO',
-            tier: 'STANDARD',
-            prize_id: '1',
-            id: 1,
-            prize: {
-                title: 'prize 1',
-                rarity: 'Common',
-            },
-            is_claimed: false,
-            updated_at: 'asdfasdf',
+    const mockData = Array(50).fill({
+        uid: 1,
+        type: 'CSGO',
+        tier: 'STANDARD',
+        prize_id: '1',
+        id: 1,
+        prize: {
+            title: 'prize 1',
+            rarity: 'Common',
         },
-        {
-            uid: 1,
-            type: 'CSGO',
-            tier: 'STANDARD',
-            prize_id: '1',
-            id: 1,
-            prize: {
-                title: 'prize 1',
-                rarity: 'Common',
-            },
-            is_claimed: false,
-            updated_at: 'asdfasdf',
-        },
-        {
-            uid: 1,
-            type: 'CSGO',
-            tier: 'STANDARD',
-            prize_id: '1',
-            id: 1,
-            prize: {
-                title: 'prize 1',
-                rarity: 'Common',
-            },
-            is_claimed: false,
-            updated_at: 'asdfasdf',
-        },
-    ] as unknown as UserLuckyChestHistory[]
+        is_claimed: false,
+        updated_at: 'asdfasdf',
+    }) as unknown as UserLuckyChestHistory[]
+
     userHistoryData && userHistoryData.map((item, index) => {
+    // mockData.map((item, index) => {
         dataSource.push({
             count: index,
             updated_at: item?.updated_at,
@@ -89,7 +63,6 @@ export default function HistoryTable({userHistoryData, claimChestPrize}: History
                 return(
                     <>
                         <ButtonClaim isClaimed={row.is_claimed} onClick={() => claimChestPrize(row.prize_id)} />
-                        {row.prize_id} {`${row.is_claimed}`}
                     </>
                 )
             },

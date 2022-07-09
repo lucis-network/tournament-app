@@ -90,7 +90,10 @@
                 font-size: 20px
                 line-height: 25px
                 text-transform: capitalize
-                color: #00F9FF    
+                color: #00F9FF
+            img
+                width: 30px
+                height: 30px
     .group_btn_pc
         @media (min-width: 0px)
             display: none
@@ -162,3 +165,49 @@
             &:last-of-type
                 &:after
                     content: none
+.luckyChestSponsor
+    margin-bottom: 32px
+    @media screen and (min-width: 768px)
+        margin-bottom: 80px
+    h2
+        font-family: 'Revx Neue Demo'
+        font-style: normal
+        font-weight: 600
+        font-size: 20px
+        line-height: 22px
+        color: #00F9FF
+    .luckyChestSponsorList
+        display: flex
+        flex-wrap: wrap
+        row-gap: 32px
+        align-items: center
+        justify-content: space-between
+        width: 287px
+        margin: 0 auto
+        @media screen and (min-width: 768px)
+            width: 500px
+        @media screen and (min-width: 992px)
+            justify-content: center
+            width: 800px
+            column-gap: 50px
+        @media screen and (min-width: 1400px)
+            width: 1160px
+            column-gap: 100px
+        .luckyChestSponsorItem
+            min-width: 50%
+            max-width: 50%
+            &:nth-of-type(even)
+                text-align: right
+            :global(.ant-image)
+                width: 80%
+            @media screen and (min-width: 992px)
+                width: calc((100% / 4) - 38px)
+                min-width: 0
+                max-width: calc((100% / 4) - 38px)
+                &:nth-of-type(even)
+                    text-align: unset
+                :global(.ant-image)
+                    width: auto
+            @media screen and (min-width: 1400px)
+                width: calc((100% / 4) - 75px)
+                max-width: calc((100% / 4) - 75px)
