@@ -16,108 +16,16 @@ export default function SliderBox (props: Props)  {
   return (
     <div className={s.wrapper}>
       <div className={s.block_reward_box} style={{width : width - 40}}>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
+        {prizeShuffled.map((prize, index) => {
+          return (
+            <div className={s.item} key={'k' + index + prize?.id}>
+              <img src={prize.img ? prize.img : "/assets/P2E/lucky-chest/im_box.png"} alt=""/>
+              <div className={s.title}>
+                <p>{prize?.title}</p>
+              </div>
             </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
-        <div className={s.item}>
-            <img src="/assets/P2E/lucky-chest/im_box.png" alt="" />
-            <div className={s.title}>
-                <p>Good luck!</p>
-            </div>
-        </div>
+          )
+        })}
       </div>
     </div>
   );

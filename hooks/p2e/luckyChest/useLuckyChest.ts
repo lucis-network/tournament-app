@@ -51,19 +51,17 @@ export const useGetChestDetail = ({type, tier}: GetChestDetailProps): {
   }
 }
 
-export const useGetUserHistory = ({type, tier}: GetUserHistoryProps): {
-  getUserHistoryLoading: boolean,
-  getUserHistoryError: ApolloError | undefined,
-  refetchUserHistory: () => Promise<ApolloQueryResult<any>>,
-  getUserHistoryData: {
-    getLuckyChestUserInfo: LuckyChestUserInfo
-  },
+export const useGetLuckyChestUserInfo = ({type, tier}: GetChestDetailProps): {
+  getLuckyChestUserInfoLoading: boolean,
+  getLuckyChestUserInfoError: ApolloError | undefined,
+  refetchGetLuckyChestUserInfo: () => Promise<ApolloQueryResult<any>>,
+  dataLuckyChestUserInfo: LuckyChestUserInfo,
 } => {
   const {
-    loading: getUserHistoryLoading,
-    error: getUserHistoryError,
-    refetch: refetchUserHistory,
-    data: getUserHistoryData,
+    loading: getLuckyChestUserInfoLoading,
+    error: getLuckyChestUserInfoError,
+    refetch: refetchGetLuckyChestUserInfo,
+    data,
   } = useQuery(GET_LUCKY_CHEST_USER_INFO, {
     variables: {
       type: type,
@@ -77,10 +75,10 @@ export const useGetUserHistory = ({type, tier}: GetUserHistoryProps): {
   })
 
   return {
-    getUserHistoryLoading,
-    getUserHistoryError,
-    refetchUserHistory,
-    getUserHistoryData,
+    getLuckyChestUserInfoLoading,
+    getLuckyChestUserInfoError,
+    refetchGetLuckyChestUserInfo,
+    dataLuckyChestUserInfo: data?.getLuckyChestUserInfo,
   }
 }
 
@@ -134,6 +132,7 @@ const GET_CHEST_DETAIL = gql`
         prize_amount
         quantity_in_stock
         valued_at
+        img
         user_prize_history {
           uid
           type
@@ -170,6 +169,24 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
         }
         is_claimed
       }
+    }
+  }
+`
+
+export const OPEN_CHEST = gql`
+  mutation ($type: LuckyChestType!, $tier: LuckyChestTier!) {
+    openChest (type: $type, tier: $tier) {
+      prize {
+        id
+        title
+        desc
+        img
+        prize_type
+        prize_amount
+        quantity_in_stock
+        valued_at
+      }
+      user_prize_history_uid
     }
   }
 `

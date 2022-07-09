@@ -1,4 +1,4 @@
-import { Button, Modal } from "antd";
+import {message, Modal} from "antd";
 import React, { useState } from "react";
 import { useWindowSize } from "../../../../../hooks/useWindowSize";
 import s from "./PopupBox.module.sass";
@@ -6,7 +6,10 @@ import SliderBox from "../slider";
 import PopupRollingChest from "./popupRollingChest";
 import ButtonOpenBox from "../button/buttonOpen";
 import PopupRewardChest from "./popupRewardChest";
-import {ChestDetail} from "../../../../../src/generated/graphql_p2e";
+import {ChestDetail, LuckyChestPrize, LuckyChestTier, LuckyChestType, OpenChestResponse} from "../../../../../src/generated/graphql_p2e";
+import {OPEN_CHEST, useGetLuckyChestUserInfo} from "../../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {useMutation} from "@apollo/client";
+import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 
 type Props = {
   status: boolean;
@@ -15,20 +18,48 @@ type Props = {
 };
 export default function PopUpOpenBox(props: Props) {
   const { status, closePopupOpenBox, chestDetail } = props;
-  const [isModalVisible, setIsModalVisible] = useState(false);
   const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
-  const [isPopupRewardChest, setIsPopupRewardChest] = useState(false);
-  const [width] = useWindowSize()
+  const [chestResponse, setChestResponse] = useState<OpenChestResponse>({} as OpenChestResponse);
+  const [width] = useWindowSize();
 
+  const {dataLuckyChestUserInfo} = useGetLuckyChestUserInfo({
+    type: LuckyChestType.Csgo,
+    tier: LuckyChestTier.Standard,
+  })
 
-  console.log("chestDetail", chestDetail);
-  const handleOk = () => {
-    setIsModalVisible(false);
-  };
+  const [openLuckyChest] = useMutation(OPEN_CHEST, {
+    context: {
+      endpoint: 'p2e'
+    }
+  })
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  const openRollingLuckyChest = async () => {
+    try {
+      await openLuckyChest({
+        variables: {
+          type: LuckyChestType.Csgo,
+          tier: LuckyChestTier.Standard,
+        },
+        onCompleted: (data) => {
+          setChestResponse(data?.openChest);
+          setRollingChestPopupVisible(true);
+        }
+      })
+    } catch (error: any) {
+      handleGraphqlErrors(error, (code) => {
+        console.log(code);
+        switch (code) {
+          case "NotEnoughLucisPoint":
+            message.error("You not enough lucis point!");
+            return;
+          default:
+            message.error("Something was wrong! Please contact to Lucis network!");
+            return;
+        }
+      })
+    }
+  }
+
   return (
     <div className={s.wrapper}>
       <Modal
@@ -55,42 +86,22 @@ export default function PopUpOpenBox(props: Props) {
                   )}
                 </div>
                 <div className={s.block_item}>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
-                  <div className={s.item}>
-                    <img src="/assets/P2E/lucky-chest/im_box.png" alt=""/>
-                  </div>
+                  {dataLuckyChestUserInfo && dataLuckyChestUserInfo?.history?.map((item, index) => {
+                    return (
+                      <div className={s.item} key={'k' + index + item?.prize.id}>
+                        <img src={item?.prize?.img ? item?.prize?.img : "/assets/P2E/lucky-chest/im_box.png"} alt=""/>
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
               <div className={s.im_box}>
                 <div className={s.btn_open}>
-                  <div onClick={() => setRollingChestPopupVisible(true)}>
+                  <div onClick={openRollingLuckyChest}>
                     <ButtonOpenBox>Open</ButtonOpenBox>
                   </div>
-                  {/*<div onClick={() => setIsPopupRewardChest(true)}>*/}
-                  {/*  <ButtonOpenBox>OpenChest</ButtonOpenBox>*/}
-                  {/*</div>*/}
                   <div className={s.number_coin}>
-                    <p>5.000</p>
+                    <p>{chestDetail?.ticket_cost}</p>
                     <img
                       src="/assets/P2E/lucky-chest/ic_lucis_coin.png"
                       alt=""
@@ -106,15 +117,12 @@ export default function PopUpOpenBox(props: Props) {
           </div>
         </div>
           <div>
-            <PopupRollingChest
-              visible={rollingChestPopupVisible}
-              closePopupRollingChest={() => setRollingChestPopupVisible(false)}
-              chestDetail={chestDetail}
-            />
-            <PopupRewardChest
-              status={isPopupRewardChest}
-              closePopupRewardChest={() => setIsPopupRewardChest(false)}
-            />
+            {rollingChestPopupVisible && <PopupRollingChest
+                visible={rollingChestPopupVisible}
+                closePopupRollingChest={() => setRollingChestPopupVisible(false)}
+                chestDetail={chestDetail}
+                chestResponse={chestResponse}
+            />}
           </div>
         </div>
       </Modal>

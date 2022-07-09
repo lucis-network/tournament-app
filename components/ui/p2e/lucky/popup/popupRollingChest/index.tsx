@@ -1,29 +1,27 @@
 import { Modal } from "antd";
 import { useWindowSize } from "hooks/useWindowSize";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import s from "./index.module.sass";
-import { openChestResponse } from "../mock/getChestDetail";
-import { ChestDetail } from "../../../../../../src/generated/graphql_p2e";
+import { ChestDetail, OpenChestResponse } from "../../../../../../src/generated/graphql_p2e";
 import Img from "../../../../common/Img";
+import PopupRewardChest from "../popupRewardChest";
 
 type Props = {
-  closePopupRollingChest?: () => void;
+  closePopupRollingChest: () => void;
   visible: boolean;
   chestDetail: ChestDetail;
+  chestResponse?: OpenChestResponse;
 };
 
-
 const PopupRollingChest = (props: Props) => {
-  const { visible, closePopupRollingChest, chestDetail } = props;
+  const { visible, closePopupRollingChest, chestDetail, chestResponse } = props;
   const [viewportWidth] = useWindowSize();
   const [autoRolling, setAutoRolling] = useState(false)
+  const [isPopupRewardChest, setIsPopupRewardChest] = useState(false);
 
+  const prize = chestResponse?.prize!;
 
-  const openChestRes = openChestResponse;
-  const prize = openChestRes.prize!;
-
-
-
+  console.log("chestResponse", chestResponse);
   const duplications = new Array(10).fill(true);
 
   // Follow CSS
@@ -111,6 +109,17 @@ const PopupRollingChest = (props: Props) => {
         setAutoRolling(true)
       }, 1000);
     }
+
+  }, [visible])
+
+  useEffect(() => {
+    if(visible) {
+      const transition = document.querySelector('.rollingEvent');
+      //@ts-ignore
+      transition.addEventListener('transitionend', () => {
+        setIsPopupRewardChest(true);
+      });
+    }
   }, [visible])
 
   return (
@@ -129,7 +138,7 @@ const PopupRollingChest = (props: Props) => {
           </div>
           <div style={styleWidth}>
           <div
-            className={s.rolling}
+            className={`${s.rolling} rollingEvent`}
             style={styles}
           >
             {
@@ -149,6 +158,14 @@ const PopupRollingChest = (props: Props) => {
           </div>
           </div>
         </div>
+        {
+          isPopupRewardChest && <PopupRewardChest
+                status={isPopupRewardChest}
+                closePopupRewardChest={() => setIsPopupRewardChest(false)}
+                prize={prize}
+                closePopupRollingChest={closePopupRollingChest}
+            />
+        }
       </Modal>
     </div>
   );

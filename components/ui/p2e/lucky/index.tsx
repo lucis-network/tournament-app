@@ -3,7 +3,7 @@ import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
 import PopUpOpenBox from './popup'
-import {useClaimChestPrize, useGetChestDetail, useGetUserHistory} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {useClaimChestPrize, useGetChestDetail, useGetLuckyChestUserInfo} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {BuyRaffleTicketErrorCode, LuckyChestTier, LuckyChestType} from "../../../../src/generated/graphql_p2e";
 import SpinLoading from "../../common/Spin";
 import {isEmpty} from "lodash";
@@ -19,13 +19,13 @@ export default function LuckyChest() {
         type: LuckyChestType.Csgo,
         tier: LuckyChestTier.Standard,
     })
-    const {getUserHistoryLoading, getUserHistoryError, refetchUserHistory, getUserHistoryData} = useGetUserHistory({
+    const {getLuckyChestUserInfoLoading, getLuckyChestUserInfoError, refetchGetLuckyChestUserInfo, dataLuckyChestUserInfo} = useGetLuckyChestUserInfo({
         type: LuckyChestType.Csgo,
         tier: LuckyChestTier.Standard,
     })
     const {claimChestPrize} = useClaimChestPrize()
     const chestDetail = getChestDetailData?.getChestDetail
-    const userHistory = getUserHistoryData?.getLuckyChestUserInfo?.history
+    const userHistory = dataLuckyChestUserInfo?.history
 
     const handleClaimChestPrize = (user_prize_history_uid: string) => {
       if (!user_prize_history_uid) return null
@@ -70,7 +70,7 @@ export default function LuckyChest() {
         }),
         onCompleted: (data) => {
           if (data?.data?.buyRaffleTicket && data?.data?.buyRaffleTicket !== null) {
-            refetchUserHistory()
+            refetchGetLuckyChestUserInfo()
             antMessage.success('Success!')
           }
         }
