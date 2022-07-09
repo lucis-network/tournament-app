@@ -2,8 +2,16 @@ import React from 'react';
 import { useWindowSize } from '../../../../../hooks/useWindowSize'
 
 import s from './RewardBox.module.sass'
-const SliderBox: React.FC = () => {
-    const [ width ] = useWindowSize()
+import {ChestDetail} from "../../../../../src/generated/graphql_p2e";
+
+type Props = {
+  chestDetail: ChestDetail;
+};
+
+export default function SliderBox (props: Props)  {
+  const [ width ] = useWindowSize()
+  const { chestDetail } = props;
+  const prizeShuffled = chestDetail.prizes;
 
   return (
     <div className={s.wrapper}>
@@ -114,5 +122,3 @@ const SliderBox: React.FC = () => {
     </div>
   );
 };
-
-export default SliderBox;
