@@ -56,6 +56,7 @@ export enum BalanceHistoryType {
   Joindiscord = 'JOINDISCORD',
   Lucismission = 'LUCISMISSION',
   Match = 'MATCH',
+  Openluckychest = 'OPENLUCKYCHEST',
   Referfriend = 'REFERFRIEND',
   Reroll = 'REROLL',
   Staked = 'STAKED'
@@ -621,6 +622,7 @@ export type LolMatch = {
   match_statistic?: Maybe<Scalars['JSON']>;
   players?: Maybe<Array<PlayerLolMatch>>;
   region?: Maybe<Scalars['String']>;
+  score?: Maybe<Scalars['String']>;
   type: LolRegime;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
@@ -912,6 +914,7 @@ export type Mutation = {
   buyRaffleTicket?: Maybe<Scalars['Boolean']>;
   claimAllMission?: Maybe<Scalars['Boolean']>;
   claimBox?: Maybe<Scalars['Boolean']>;
+  claimChestPrize?: Maybe<Scalars['Boolean']>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimRaffle?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
@@ -925,6 +928,7 @@ export type Mutation = {
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
   joinDiscord?: Maybe<Scalars['Boolean']>;
+  openChest?: Maybe<OpenChestResponse>;
   rerollDailyMission?: Maybe<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateCsgoRecentlyMatch: Array<CsgoPlayerMatch>;
@@ -953,6 +957,11 @@ export type MutationClaimAllMissionArgs = {
 export type MutationClaimBoxArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
+};
+
+
+export type MutationClaimChestPrizeArgs = {
+  user_prize_history_uid: Scalars['String'];
 };
 
 
@@ -1009,6 +1018,12 @@ export type MutationEquipNftArgs = {
 export type MutationGetOrSetDailyMissionArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
+};
+
+
+export type MutationOpenChestArgs = {
+  tier: LuckyChestTier;
+  type: LuckyChestType;
 };
 
 
@@ -1096,6 +1111,13 @@ export type Notification = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
+};
+
+export type OpenChestResponse = {
+  __typename?: 'OpenChestResponse';
+  prize?: Maybe<LuckyChestPrize>;
+  /** ClaimChestPrize argument */
+  user_prize_history_uid?: Maybe<Scalars['String']>;
 };
 
 export type Platform = {
@@ -2028,12 +2050,14 @@ export type UserFavoriteGame = {
 
 export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
+  created_at: Scalars['DateTime'];
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
   type: LuckyChestType;
   uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
 };

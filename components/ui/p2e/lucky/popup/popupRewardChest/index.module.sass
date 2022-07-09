@@ -1,0 +1,77 @@
+.content_modal
+  :global(.ant-modal)
+    max-width: 100%
+  :global(.ant-modal-body)
+    padding: 0
+    height: 100vh
+  :global(.ant-modal-close .ant-modal-close-x)
+    color: #6c6b6b
+    background: none
+  :global(.ant-modal-content)
+    background: transparent
+    backdrop-filter: blur(0)
+
+.container
+  display: flex
+  align-items: center
+  flex-direction: column
+  height: 100%
+  //max-width: 1080px
+  background: rgba(23, 29, 46, 1)
+  //@media (min-width: 360px)
+  //  margin-top: 85px
+  @media (min-width: 992px)
+    justify-content: center
+  .wrapper
+    //max-width: 1080px
+    text-align: center
+    margin: 0 16px
+    @media (min-width: 360px)
+      min-width: 360px
+      margin-top: 85px
+    @media (min-width: 768px)
+      min-width: 768px !important
+    @media (min-width: 992px)
+      margin: 0
+      min-width: 992px !important
+    @media (min-width: 1024px)
+      min-width: 1024px !important
+  .reward_title
+    color: #FF7607
+    font-weight: 600
+    font-size: 20px
+    line-height: 22px
+    padding-bottom: 16px
+    border-bottom: 1px solid #FF7607
+    margin: 0 40px
+    //width: 100%
+    @media (min-width: 768px)
+      font-size: 36px
+      padding-bottom: 24px
+    @media (min-width: 992px)
+      font-size: 48px
+      line-height: 53px
+      padding-bottom: 32px
+  .reward_img
+    margin: 48px 0
+    img
+      width: 162px
+    @media (min-width: 768px)
+      margin: 56px 0
+      img
+        width: 280px
+    @media (min-width: 992px)
+      margin: 64px 0
+      img
+        width: 400px
+  .reward_des
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 300
+    font-size: 14px
+    line-height: 18px
+    text-transform: capitalize
+    color: #DBE0E8
+    @media (min-width: 992px)
+      font-size: 16px
+      line-height: 20px

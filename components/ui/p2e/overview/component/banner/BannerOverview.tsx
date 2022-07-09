@@ -17,7 +17,7 @@ function BannerOverview(props: IProps) {
       <span>Get reward from playing your favourite traditional games</span>
       {!props.isLogin &&
       <div className={s.btn_sign_in} onClick={() => onSignIn()}>
-        <p>SIGN IN</p>
+        <span>SIGN IN</span>
       </div>
       }
       <div className={s.group_ic_banner}></div>
@@ -25,7 +25,7 @@ function BannerOverview(props: IProps) {
 
     
     <Col xs={24} lg={14} className={s.banner_thumb}>
-      <img src="/assets/P2E/overview/thumb_banner.png" alt="" />
+      <img src="/assets/P2E/overview/thumb_banner-1.png" alt="" />
     </Col>
   </Row>
   );

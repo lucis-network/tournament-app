@@ -1,15 +1,19 @@
 .wrapper
+    margin-top: 16px
     .block_reward_box
         display: flex
         align-items: center
         justify-content: flex-start
         overflow: auto
+        gap: 0 12px
         .item
-            min-width: 130px
-            max-width: 130px
+            min-width: 100px
+            max-width: 100px
             background: rgba(69, 82, 107, 0.5)
             backdrop-filter: blur(24.2991px)
-            margin: 0px 6px 0px 0px
+            @media (min-width: 768px)
+                min-width: 130px
+                max-width: 130px
         .title
             font-weight: 400
             font-size: 12px

@@ -1,161 +1,163 @@
 import { Col, Row } from "antd";
 import AuthGameStore from "components/Auth/AuthGameStore";
-import { useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
+import { useGetLOLStatisticMatch, useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
-import { MAP_CSGO } from "utils/Enum";
+import { MAP_CSGO, MAP_LOL } from "utils/Enum";
 import s from "../dashboard.module.sass";
 
 export const RecentMatchDetailLOL = () => {
   const router = useRouter();
 
-  const [playerMatchId, setPlayerMatchId] = React.useState<number>(-1);
+  const [playerMatchId, setPlayerMatchId] = React.useState<string>("");
   const [isLoadData, setIsLoadData] = React.useState<boolean>(false);
-  const { getStatisticMatchData } = useGetStatisticMatch(playerMatchId, !isLoadData);
+  const { getStatisticMatchData } = useGetLOLStatisticMatch(playerMatchId, !isLoadData);
 
   React.useEffect(() => {
     if (router.query?.id) {
-      setPlayerMatchId(Number(router.query.id));
+      setPlayerMatchId(router.query.id as string);
       setIsLoadData(true);
     }
   }, [router.query]);
 
 
-  const data = getStatisticMatchData?.getCsgoMatchStatistic;
+  const data = getStatisticMatchData?.getLolMatchStatistic;
   const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
-    kill: data ? Number(data?.match_earning?.kill) * Number(data?.player_statistic?.Kills) : null,
-    assists: data ? Number(data?.match_earning?.assist) * Number(data?.player_statistic?.Assists) : null,
-    headshot: data ? Number(data?.match_earning?.headshot) * Number(data?.player_statistic?.Headshots) : null,
-    mvps: data ? Number(data?.match_earning?.mvp) * Number(data?.player_statistic?.MVPs) : null,
-    tripleKill: data ? Number(data?.match_earning?.triple_kill) * Number(data?.player_statistic?.["Triple Kills"]) : null,
-    quadraKill: data ? Number(data?.match_earning?.quadra_kill) * Number(data?.player_statistic?.["Quadro Kills"]) : null,
-    pentalKill: data ? Number(data?.match_earning?.pental_kill) * Number(data?.player_statistic?.["Penta Kills"]) : null,
-    winStreak: data ? Math.max(Number(data?.current_win_streak) - 1, 0) : null
+    win: data?.player_statistic?.win ?? null,
+    kill: data?.player_statistic?.kill ?? null,
+    assists: data?.player_statistic?.assist ?? null,
+    creep: data?.player_statistic?.["minion_kill"] ?? null,
+    gold: data?.player_statistic?.["gold_earned"] ?? null,
+    damage: data?.player_statistic?.damage_dealt ?? null,
+    tank: data?.player_statistic?.damage_taken ?? null,
+    eyesKilled: data?.player_statistic?.wards_killed ?? null,
+    eyesPlaced: data?.player_statistic?.wards_placed ?? null,
   };
 
 
   const totalEarned = Number(lucisPointEarned.kill)
     + Number(lucisPointEarned.assists)
-    + Number(lucisPointEarned.headshot)
-    + Number(lucisPointEarned.mvps)
-    + Number(lucisPointEarned.tripleKill)
-    + Number(lucisPointEarned.quadraKill)
-    + Number(lucisPointEarned.pentalKill)
-    + Number(lucisPointEarned.winStreak)
+    + Number(lucisPointEarned.creep)
+    + Number(lucisPointEarned.gold)
+    + Number(lucisPointEarned.damage)
+    + Number(lucisPointEarned.tank)
+    + Number(lucisPointEarned.win)
+    + Number(lucisPointEarned.eyesKilled)
+    + Number(lucisPointEarned.eyesPlaced)
 
   const cardList = [
     {
       name: "Double Kill",
       img: "/assets/P2E/lol/detail/doublekill.svg",
-      lucisPoint: data?.match_earning?.win ?? "-",
+      lucisPoint: data?.player_statistic?.double_kill ?? "-",
       lucisToken: "-",
-      isCompleted: data?.is_win ?? false
+      isCompleted: data?.player_statistic?.double_kill ?? false
     },
 
     {
       name: "Triple Kill",
       img: "/assets/P2E/lol/detail/triplekill.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.triple_kill ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.player_statistic?.triple_kill ?? false
     },
 
     {
       name: "Quadra Kill",
       img: "/assets/P2E/lol/detail/quadrakill.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.quadra_kill ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.player_statistic?.quadra_kill ?? false
     },
 
     {
       name: "Penta Kill",
       img: "/assets/P2E/lol/detail/pentakill.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.penta_kill ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.player_statistic?.penta_kill ?? false
     },
 
     {
       name: "Aces",
       img: "/assets/P2E/lol/detail/aces.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: false
     },
 
     {
       name: "Creep Aces",
       img: "/assets/P2E/lol/detail/creep-aces.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_minion_kill ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_most_minion_killed ?? false
     },
 
     {
       name: "MVP",
       img: "/assets/P2E/lol/detail/mvp.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.mvp ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_mvp ?? false
     },
 
     {
       name: "Tank Aces",
       img: "/assets/P2E/lol/detail/tank-aces.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_damage_taken ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_most_damage_taken ?? false
     },
 
     {
       name: "Damage Aces",
       img: "/assets/P2E/lol/detail/dame-aces.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_damage_dealt ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_most_damage_dealt ?? false
     },
 
     {
       name: "Gold Aces",
       img: "/assets/P2E/lol/detail/gold-aces.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_gold_earned ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_most_gold_earned ?? false
     },
 
     {
       name: "Kill Aces",
       img: "/assets/P2E/lol/detail/kill-aces.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_kill ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.player_statistic?.most_kill ?? false
     },
 
     {
       name: "Assist Aces",
       img: "/assets/P2E/lol/detail/assist-aces.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_assist ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_most_assist ?? false
     },
 
     {
       name: "Break Eyes",
       img: "/assets/P2E/lol/detail/break-eyes.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_wards_killed ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_most_eye_killed ?? false
     },
 
     {
       name: "Eyes Plug",
       img: "/assets/P2E/lol/detail/eye-plug.svg",
-      lucisPoint: data?.match_earning?.most_kill,
+      lucisPoint: data?.player_statistic?.most_wards_placed ?? "-",
       lucisToken: "-",
-      isCompleted: data?.most_kill ?? false
+      isCompleted: data?.is_most_eye_placed ?? false
     },
 
 
@@ -171,6 +173,10 @@ export const RecentMatchDetailLOL = () => {
 
     return point ?? "-";
   }
+
+  const mapSummonerRift = "https://i.ytimg.com/vi/88Nh8irxfA8/maxresdefault.jpg";
+  const mapAram = "https://media.altchar.com/prod/images/940_530/gm-d281cccf-f6aa-41df-801b-d0250df7b6e5-aram.jpg"
+  const prefixAvatar = "https://lmssplus.com/static_image/img/profileicon/";
   return (
     <div className="lucis-container-2">
       <div className={s.dailyContainer}>
@@ -238,22 +244,22 @@ export const RecentMatchDetailLOL = () => {
               <div className={s.informationDetail}>
                 <div className={s.mapBackground}
                   style={{
-                    background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.map?.img_lg}")`
+                    background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.match?.type === "NormalDraft" ? mapSummonerRift : mapAram}")`
                   }}
                 >
-                  <h3 className={s.mapName}>{MAP_CSGO[data?.map?.name as string] ?? data?.map?.name ?? "-----"}</h3>
+                  <h3 className={s.mapName}>{MAP_LOL[data?.match?.type as string] ?? data?.match?.type ?? "-----"}</h3>
                   {data?.is_win ?
-                    <h2 className={s.scoreMatch}>{data?.score?.replace("/", "-")}</h2>
-                    : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.score?.replace("/", "-") ?? "-- / --"}</h2>}
-                  <div className={s.endAt}>{moment(data?.end_at).fromNow()}</div>
+                    <h2 className={s.scoreMatch}>{data?.match?.score?.replace("/", "-")}</h2>
+                    : <h2 className={s.scoreMatch} style={{ color: "rgb(204, 132, 110)" }}>{data?.match?.score?.replace("/", "-") ?? "-- / --"}</h2>}
+                  <div className={s.endAt}>{moment(data?.match?.end_at).fromNow()}</div>
                 </div>
                 <div className={s.matchDetail}>
                   <div className={s.accountInfo}>
                     <div className={s.platformInfo}>
-                      <img className={s.platformUserAvatar} src={faceitAccount?.faceit_avatar ? faceitAccount?.faceit_avatar : "/assets/avatar.jpg"} />
-                      <div className={s.platformUserName}>{faceitAccount?.faceit_nick_name}</div>
+                      <img className={s.platformUserAvatar} src={faceitAccount?.lmss_avatar ? `${prefixAvatar}${faceitAccount?.lmss_avatar}` : "/assets/avatar.jpg"} />
+                      <div className={s.platformUserName}>{faceitAccount?.lmss_nick_name}</div>
                     </div>
-                    {data?.is_win ? <h2>WIN</h2> : <h2 style={{ color: "rgb(204, 132, 110)" }}>LOST</h2>}
+                    {data?.is_win ? <h2>VICTORY</h2> : <h2 style={{ color: "rgb(204, 132, 110)" }}>DEFEAT</h2>}
                   </div>
                   <div className={s.playerParameters}>
                     <div className={s.parameterHeader}>
@@ -261,11 +267,34 @@ export const RecentMatchDetailLOL = () => {
                       <div className={s.headerRight}>Lucis bonus: --%</div>
                     </div>
                     <div className={s.parameterBody}>
+                    <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/lol/damage-icon.svg" alt="" />
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Win
+                          </div>
+                        </Col>
+                        <Col span={6}>
+                          <div className={s.rewardItem}>
+                            <span>{"-"}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt="" />
+                          </div>
+                        </Col>
+                        <Col span={6}>
+                          <div className={s.rewardItem}>
+                            <span className={s.lucisPoint}>+ {lucisPointEarned.win ?? "-"}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt="" />
+                          </div>
+                        </Col>
+                      </Row>
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/csgo/kill.svg" alt="" />
-                            <span>{data?.player_statistic?.Kills ?? "-"}</span>
+                            <img src="/assets/P2E/lol/kill.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -289,8 +318,7 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/csgo/support.svg" alt="" />
-                            <span>{data?.player_statistic?.Assists ?? "-"}</span>
+                            <img src="/assets/P2E/lol/support.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -313,8 +341,7 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/csgo/headshot.svg" alt="" />
-                            <span>{data?.player_statistic?.Headshots ?? "-"}</span>
+                            <img src="/assets/P2E/lol/creep-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -328,7 +355,7 @@ export const RecentMatchDetailLOL = () => {
                         </div>
                         </Col>
                         <Col span={6}><div className={s.rewardItem}>
-                          <span className={s.lucisPoint}>+ {lucisPointEarned.headshot ?? "-"}</span>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.creep ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
@@ -336,8 +363,7 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/csgo/star.svg" alt="" />
-                            <span>{data?.player_statistic?.MVPs ?? "-"}</span>
+                            <img src="/assets/P2E/lol/gold-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -351,7 +377,7 @@ export const RecentMatchDetailLOL = () => {
                         </div>
                         </Col>
                         <Col span={6}><div className={s.rewardItem}>
-                          <span className={s.lucisPoint}>+ {lucisPointEarned.mvps ?? "-"}</span>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.gold ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
@@ -359,8 +385,7 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/csgo/triple-kill.svg" alt="" />
-                            <span>{data?.player_statistic?.["Triple Kills"] ?? "-"}</span>
+                            <img src="/assets/P2E/lol/damage-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -374,7 +399,7 @@ export const RecentMatchDetailLOL = () => {
                         </div>
                         </Col>
                         <Col span={6}><div className={s.rewardItem}>
-                          <span className={s.lucisPoint}>+ {lucisPointEarned.tripleKill ?? "-"}</span>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.damage ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
@@ -383,8 +408,7 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/csgo/quadra-kill.svg" alt="" />
-                            <span>{data?.player_statistic?.["Quadro Kills"] ?? "-"}</span>
+                            <img src="/assets/P2E/lol/tank-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -398,7 +422,51 @@ export const RecentMatchDetailLOL = () => {
                         </div>
                         </Col>
                         <Col span={6}><div className={s.rewardItem}>
-                          <span className={s.lucisPoint}>+ {lucisPointEarned.quadraKill ?? "-"}</span>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.tank ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/lol/tank-icon.svg" alt="" />
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Eyes killed
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.eyesKilled ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={4}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/lol/tank-icon.svg" alt="" />
+                          </div>
+                        </Col>
+                        <Col span={8}>
+                          <div className={s.parameterItemText}>
+                            Eyes placed
+                          </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={6}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.eyesPlaced ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
