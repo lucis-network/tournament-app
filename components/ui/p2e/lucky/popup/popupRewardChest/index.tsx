@@ -1,13 +1,18 @@
 import { Modal } from "antd";
+import { LuckyChestPrize } from "src/generated/graphql_p2e";
 import s from "./index.module.sass";
+import Img from "../../../../common/Img";
+import React from "react";
 
 type Props = {
-  closePopupRewardChest?: () => void;
+  closePopupRewardChest: () => void;
   status: boolean;
+  prize?: LuckyChestPrize;
+  closePopupRollingChest: () => void;
 };
 
 const PopupRewardChest = (props: Props) => {
-  const { status, closePopupRewardChest } = props;
+  const { status, closePopupRewardChest, closePopupRollingChest, prize} = props;
 
   return (
     <div className={s.wrapper_popup_reward_chest}>
@@ -16,20 +21,23 @@ const PopupRewardChest = (props: Props) => {
         centered
         wrapClassName={s.content_modal}
         footer={null}
-        onCancel={closePopupRewardChest}
+        onCancel={() => {
+          closePopupRollingChest();
+          closePopupRewardChest();
+        }}
         width={"100%"}
       >
         <div className={s.container}>
           <div className={s.wrapper}>
             <div className={s.reward_title}>
-              Weapon drawing
+              {prize?.title}
             </div>
             <div className={s.reward_img}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/Raffles/imageReward.png"/>
+
+              <Img src={prize?.img as string} srcFallback="/assets/Raffles/imageReward.png" />
             </div>
             <div className={s.reward_des}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+              {prize?.desc}
             </div>
           </div>
 
