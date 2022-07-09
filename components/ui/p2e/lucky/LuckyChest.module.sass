@@ -1,3 +1,25 @@
+.luckyChestBg
+    background: url('/assets/P2E/luckyChest/bgLuckyChestMobile.jpg') no-repeat fixed top center
+    background-size: cover
+    background-blend-mode: multiply
+    position: relative
+    overflow-x: unset
+    &:after
+        content: ''
+        display: block
+        position: absolute
+        top: 0
+        right: 0
+        left: 0
+        bottom: 0
+        background: rgb(23 29 46 / 80%)
+        z-index: 0
+    > *
+        z-index: 1
+        position: relative
+    @media screen and (min-width: 768px)
+        background: url('/assets/P2E/luckyChest/bgLuckyChest.jpg') no-repeat fixed top center
+        background-size: cover
 .wrapper
     position: relative
     z-index: 1

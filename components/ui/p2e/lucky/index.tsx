@@ -1,16 +1,38 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
 import PopUpOpenBox from './popup'
 import {useGetChestDetail} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {LuckyChestTier, LuckyChestType} from "../../../../src/generated/graphql_p2e";
+import SpinLoading from "../../common/Spin";
+import {isEmpty} from "lodash";
+import Head from "next/head";
+import DefaultErrorPage from "next/error";
+
 export default function LuckyChest() {
     const [showPopupOpenBox, setShowPopupOpenBox] = useState(false);
     const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
         type: LuckyChestType.Csgo,
         tier: LuckyChestTier.Standard,
     })
+    const chestDetail = getChestDetailData?.getChestDetail
+
+    if (getChestDetailLoading) return (
+      <div className={`${s.wrapper} lucis-container-2`}>
+        <SpinLoading/>
+      </div>
+    )
+
+    if (getChestDetailError || isEmpty(chestDetail)) return (
+      <>
+          <Head>
+              <meta name="robots" content="noindex"/>
+              <title>404 | This page could not be found.</title>
+          </Head>
+          <DefaultErrorPage statusCode={404}/>
+      </>
+    )
 
     return (
         <div className={`${s.wrapper} lucis-container-2`}>
@@ -29,7 +51,9 @@ export default function LuckyChest() {
                                 <img src="/assets/P2E/luckyChest/ic_lucis_coin.png" alt="icon" />
                             </div>
                         </div>
-                        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the {"industry's"} standard dummy text ever since the 1500s, when an unknown printer</p>
+                        {chestDetail?.desc && (
+                          <p>{chestDetail?.desc}</p>
+                        )}
                     </div>
                 </div>
                 <div className={s.box}>
