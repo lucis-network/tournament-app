@@ -33,6 +33,7 @@ export default function LuckyChest() {
     const ticketCost = chestDetail?.ticket_cost
     const ticketCostType = chestDetail?.ticket_cost_type
     const luckyChestSponsor = chestDetail?.sponsors
+    const chestPrizes = chestDetail?.prizes
 
     const handleClaimChestPrize = (user_prize_history_uid: string) => {
       if (!user_prize_history_uid) return null
@@ -54,7 +55,7 @@ export default function LuckyChest() {
           }
         }),
         onCompleted: (data) => {
-          if (data?.data?.buyRaffleTicket && data?.data?.buyRaffleTicket !== null) {
+          if (data?.data?.claimChestPrize && data?.data?.claimChestPrize !== null) {
             refetchGetLuckyChestUserInfo()
             antMessage.success('Success!')
           }
@@ -114,7 +115,23 @@ export default function LuckyChest() {
               </div>
             </div>
             <div className={s.box}>
-              <img onClick={() => setShowPopupOpenBox(true)} src="/assets/P2E/lucky-chest/im_box.png" alt="" />
+              <div className={s.boxWrap}>
+                <img onClick={() => setShowPopupOpenBox(true)} src="/assets/P2E/lucky-chest/im_box.png" alt="" className={s.boxImg} />
+                {chestPrizes && (
+                  <div className={s.content_right}>
+                    <img src="/assets/P2E/lucky-chest/ic_line.svg" alt=""/>
+                    <div className={s.block_item}>
+                      {chestPrizes.map((item, index) => {
+                        return (
+                          <div className={s.item} key={'k' + index + item?.id}>
+                            <img src={item?.img ? item?.img : "/assets/P2E/lucky-chest/im_box.png"} alt=""/>
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                )}
+              </div>
               <div className={`${s.group_btn} ${s.group_btn_mobile}`}>
                 <div onClick={() => setShowPopupOpenBox(true)}>
                   <ButtonOpenBox>Open</ButtonOpenBox>
@@ -127,9 +144,7 @@ export default function LuckyChest() {
 
             </div>
           </div>
-          <div style={{paddingTop: 40}}>
-            <HistoryTable userHistoryData={userHistory} claimChestPrize={handleClaimChestPrize}/>
-          </div>
+          <HistoryTable userHistoryData={userHistory} claimChestPrize={handleClaimChestPrize}/>
           {luckyChestSponsor && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">

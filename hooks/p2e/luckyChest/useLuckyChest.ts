@@ -166,8 +166,11 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
           rarity
           prize_amount
           updated_at
+          created_at
         }
         is_claimed
+        updated_at
+        created_at
       }
     }
   }

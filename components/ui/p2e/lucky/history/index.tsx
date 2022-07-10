@@ -4,6 +4,7 @@ import s from './history.module.sass'
 import {UserLuckyChestHistory} from "../../../../../src/generated/graphql_p2e";
 import {Maybe} from "@graphql-tools/utils";
 import {ClaimChestPrizeProps} from "../../../../../hooks/p2e/luckyChest/useLuckyChest";
+import moment from "moment";
 
 type HistoryTableProps = {
     userHistoryData: Maybe<UserLuckyChestHistory[]> | undefined,
@@ -31,8 +32,8 @@ export default function HistoryTable({userHistoryData, claimChestPrize}: History
         dataSource.push({
             count: index,
             updated_at: item?.updated_at,
-            title: item?.prize?.title,
-            prize_id: item?.prize_id,
+            prize: item?.prize,
+            user_prize_history_uid: item?.uid,
             is_claimed: item?.is_claimed,
         })
     })
@@ -42,37 +43,37 @@ export default function HistoryTable({userHistoryData, claimChestPrize}: History
             title: 'No',
             dataIndex: 'count',
             key: 'count',
-            width: '5%'
+            className: s.columnCounter,
         },
         {
             title: 'Time',
             dataIndex: 'updated_at',
             key: 'updated_at',
-            width: '20%'
+            className: s.columnTime,
+            render: (text: string) => moment(text).format('YYYY/MM/DD - hh:mm:ss')
         },
         {
             title: 'Reward',
-            dataIndex: 'title',
+            dataIndex: ['prize', 'user_prize_history_uid', 'is_claimed'],
             key: 'title',
-        },
-        {
-            title: '',
-            dataIndex: ['prize_id', 'is_claimed'],
-            key: 'claim',
-            render: (text: string, row: any) => {
-                return(
-                    <>
-                        <ButtonClaim isClaimed={row.is_claimed} onClick={() => claimChestPrize(row.prize_id)} />
-                    </>
+            className: s.columnReward,
+            render: (text: string, data: any) => {
+                return (
+                  <div className={s.prizeWrap}>
+                      <div className={`${s.prize} ${data.prize.rarity}`}>
+                          {data.prize.title}
+                      </div>
+                      <ButtonClaim isClaimed={data.is_claimed} onClick={() => claimChestPrize(data.user_prize_history_uid.toString())} />
+                  </div>
                 )
-            },
-            width: '10%'
-        },
-    ];
+            }
+        }
+    ]
+
     return (
         <div className={s.wrapper}>
             <h2>Your history</h2>
-            <Table dataSource={dataSource} columns={columns} />
+            <Table dataSource={dataSource} columns={columns} pagination={false} />
         </div>
     )
 }
