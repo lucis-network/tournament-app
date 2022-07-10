@@ -1,17 +1,47 @@
 .wrapper
+    margin-bottom: 32px
+    @media screen and (min-width: 1200px)
+        margin-bottom: 64px
+    :global(.ant-table)
+        table
+            border-collapse: collapse
+            font-family: 'Lexend'
+            font-weight: 300
+            font-size: 16px
+            line-height: 115%
+            color: #DBE0E8
+    :global(.ant-table-content)
+        overflow-x: auto
     :global(.ant-table-thead > tr > th)
         text-align: center
         background: rgba(0, 240, 255, 0.15)
+        backdrop-filter: blur(40px)
         color: #00F9FF
+        border: 1px solid transparent
+        padding: 10px
+        @media screen and (min-width: 768px)
+            padding: 16px
+            font-family: 'Revx Neue Demo'
+            font-weight: 400
+            font-size: 24px
+            line-height: 115%
+        &:first-of-type
+            border-top-left-radius: 8px !important
+        &:last-of-type
+            border-top-right-radius: 8px !important
     :global(.ant-table-tbody .ant-table-cell-row-hover)
         background: rgba(0, 240, 255, 0.10) !important
+    :global(.ant-table-tbody > tr)
+        background: none
     :global(.ant-table-tbody > tr > td)
         color: #DBE0E8
         text-align: center
-    :global(.ant-table-tbody > tr:nth-child(even))
+        border: 1px solid transparent
+    :global(.ant-table-tbody > tr:nth-child(even) td)
         background: rgba(0, 6, 37, 0.1)
-    :global(.ant-table-tbody > tr)
+    :global(.ant-table-tbody > tr td)
         background: rgba(69, 80, 107, 0.1)
+        backdrop-filter: blur(40px)
     :global(.ant-table)
         background: transparent
     h2
@@ -21,3 +51,75 @@
         font-size: 20px
         line-height: 22px
         color: #00F9FF
+        margin-bottom: 16px
+        @media screen and (min-width: 768px)
+            margin-bottom: 24px
+    .prizeWrap
+        display: flex
+        align-items: center
+        position: relative
+        @media screen and (min-width: 1200px)
+            button
+                position: absolute
+                top: 50%
+                right: 0
+                transform: translateY(-50%)
+    .prize
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 14px
+        line-height: 15px
+        flex: 1
+        padding: 0 10px 0 0
+        @media screen and (min-width: 768px)
+            font-weight: 600
+            font-size: 20px
+            line-height: 22px
+        @media screen and (min-width: 1200px)
+            padding: 0 120px
+        &:global(.Common)
+            color: #787878
+        &:global(.Uncommon)
+            color: #618FC5
+        &:global(.Rare)
+            color: #07FF3E
+        &:global(.Epic)
+            color: #07D2FF
+        &:global(.Legendary)
+            color: #EBFF07
+        &:global(.Mythic)
+            color: #FA07FF
+        &:global(.Divine)
+            color: #FF7607
+    .columnCounter
+        width: 50px
+        min-width: 50px
+        &:not(th)
+            font-family: 'Poppins'
+            font-weight: 400
+            font-size: 14px
+            line-height: 115%
+            color: #00F9FF !important
+            @media screen and (min-width: 768px)
+                font-family: 'Revx Neue Demo'
+                font-weight: 400
+                font-size: 24px
+                line-height: 115%
+        @media screen and (min-width: 768px)
+            width: 118px
+            min-width: 118px
+    .columnTime
+        @media screen and (max-width: 767px)
+            display: none
+        @media screen and (min-width: 768px)
+            width: 240px
+            min-width: 240px
+        @media screen and (min-width: 1200px)
+            width: 298px
+            min-width: 298px
+
+    .columnReward
+        width: 285px
+        min-width: 285px
+        @media screen and (min-width: 768px)
+            width: auto

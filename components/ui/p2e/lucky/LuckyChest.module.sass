@@ -1,5 +1,5 @@
 .luckyChestBg
-    background: url('/assets/P2E/luckyChest/bgLuckyChestMobile.jpg') no-repeat fixed top center
+    background: url('/assets/P2E/lucky-chest/bgLuckyChestMobile.jpg') no-repeat fixed top center
     background-size: cover
     background-blend-mode: multiply
     position: relative
@@ -18,7 +18,7 @@
         z-index: 1
         position: relative
     @media screen and (min-width: 768px)
-        background: url('/assets/P2E/luckyChest/bgLuckyChest.jpg') no-repeat fixed top center
+        background: url('/assets/P2E/lucky-chest/bgLuckyChest.jpg') no-repeat fixed top center
         background-size: cover
 .luckyChestContentWrapper
     margin-top: 120px !important
@@ -37,6 +37,9 @@
         align-items: center
         flex-direction: column
         justify-content: space-between
+        margin-bottom: 28px
+        @media (min-width: 768px)
+            margin-bottom: 64px
         @media (min-width: 992px)
             flex-direction: row
         .heading
@@ -76,11 +79,62 @@
                 line-height: 22px
                 text-transform: capitalize
                 color: #DBE0E8
+        .box
+            .boxWrap
+                display: flex
+                align-items: center
+                .boxImg
+                    width: 100%
+                    min-width: 0
+                .content_right
+                    height: 188px
+                    min-width: 48px
+                    display: flex
+                    justify-content: space-between
+                    @media screen and (min-width: 360px)
+                        height: 250px
+                    @media screen and (min-width: 768px)
+                        min-width: 84px
+                        height: 460px
+                    .line
+                        position: absolute
+                        top: 5px
+                        display: flex
+                        align-items: center
+                        justify-content: center
+                        width: 100%
+                        @media ( min-width: 1024px)
+                            justify-content: flex-start
+                            z-index: -1
+                            left: -20px
+                    .block_item
+                        height: 100%
+                        overflow: auto
+                        gap: 0 2px
+                        display: flex
+                        flex-direction: column
+                        justify-content: flex-start
+                        @media ( min-width: 1024px)
+                            gap: 5px 0
+                        .item
+                            min-height: 36px
+                            width: 36px
+                            overflow: hidden
+                            display: flex
+                            align-items: center
+                            justify-content: center
+                            background: rgba(69, 82, 107, 0.5)
+                            @media ( min-width: 768px)
+                                min-height: 64px
+                                width: 64px
+                            img
+                                width: 100%
     .group_btn
         display: flex
         align-items: center
         justify-content: center
-        padding-bottom: 40px
+        @media (min-width: 992px)
+            padding-bottom: 40px
         .number_coin
             padding-left: 20px
             display: flex

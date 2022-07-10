@@ -8,7 +8,9 @@ type ButtonClaimProps = {
 export default function ButtonClaim({isClaimed, onClick}: ButtonClaimProps) {
     return (
         <div className={s.wrapper}>
-            <button className={!isClaimed ? s.btn : s.btn_disable} onClick={onClick}>Claim</button>
+            <button className={s.btn} disabled={isClaimed} onClick={onClick}>
+                <span>Claim</span>
+            </button>
         </div>
     )
 }
