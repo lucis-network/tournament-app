@@ -11,8 +11,8 @@ assignees: ''
 A clear and concise description of what the bug is.
 
 Screenshots
-If applicable, add screenshots to help explain your problem.
-You can paste your image right here
+- You can paste your screenshots image right here.
+- Or Can drag and drop image / video here
 
 **Expected behavior**
 A clear and concise description of what you expected to happen.
