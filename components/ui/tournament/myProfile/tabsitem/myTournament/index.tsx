@@ -9,16 +9,15 @@ import s from "./MyTournament.module.sass";
 import { Button, Col, Input, message, Row } from "antd";
 import { debounce, isEmpty } from "lodash";
 import Link from "next/link";
-import { UserGraphql } from "../../../../../../src/generated/graphql";
 import { ApolloQueryResult } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
-import AuthStore from "components/Auth/AuthStore";
+import AuthStore, {AuthUser} from "components/Auth/AuthStore";
 import { useRouter } from "next/router";
 
 type MyTournamentProps = {
   isOwner?: boolean;
-  userInfo: UserGraphql;
+  userInfo: AuthUser;
   getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>;
 };
 
@@ -40,8 +39,8 @@ const MyTournament = ({
     skip: isEmpty(userInfo.id),
   });
 
-  const router = useRouter()
-  
+  const router = useRouter();
+
   const handleSearchOwnedTournament = (
     event: React.FormEvent<HTMLInputElement>
   ) => {
@@ -67,11 +66,11 @@ const MyTournament = ({
   );
 
   const createTournament = () => {
-    console.log("AuthStore.isLoggedIn", AuthStore.isLoggedIn)
+    console.log("AuthStore.isLoggedIn", AuthStore.isLoggedIn);
     if (!AuthStore.isLoggedIn) {
       message.warn("Please login first");
     } else {
-      router.push('/tournament/create')
+      router.push("/tournament/create");
     }
   };
 
@@ -90,14 +89,16 @@ const MyTournament = ({
               <span>My owned tournament</span>
             </h2>
           </Col>
-          <Col span={24} lg={{ span: 4 }}>
-            <div className="flex justify-end">
-              <Input
-                placeholder="Search"
-                onChange={handleSearchOwnedTournament}
-              />
-            </div>
-          </Col>
+          {ownedTournamentData?.searchOwnerTournament.length > 0 && (
+            <Col span={24} lg={{ span: 4 }} style={{ marginBottom: 30 }}>
+              <div className="flex justify-end">
+                <Input
+                  placeholder="Search"
+                  onChange={handleSearchOwnedTournament}
+                />
+              </div>
+            </Col>
+          )}
         </Row>
         {ownedTournamentData?.searchOwnerTournament &&
         ownedTournamentData?.searchOwnerTournament.length > 0 ? (
@@ -109,7 +110,7 @@ const MyTournament = ({
             isMyTournament
           />
         ) : (
-          <div>Don&apos;t own any tournaments yet</div>
+          <div>Don&apos;t own any tournaments yet. Please join a tournament of <Link href="/">Lucis Network</Link></div>
         )}
       </div>
       <div className={s.myTournament}>
@@ -120,14 +121,16 @@ const MyTournament = ({
               <span>Joined tournament</span>
             </h2>
           </Col>
-          <Col span={24} lg={{ span: 4 }}>
-            <div className="flex justify-end">
-              <Input
-                placeholder="Search"
-                onChange={handleSearchJoinedTournament}
-              />
-            </div>
-          </Col>
+          {joinedTournamentData?.searchJoinedTournament.length > 0 && (
+            <Col span={24} lg={{ span: 4 }}>
+              <div className="flex justify-end">
+                <Input
+                  placeholder="Search"
+                  onChange={handleSearchJoinedTournament}
+                />
+              </div>
+            </Col>
+          )}
         </Row>
         {joinedTournamentData?.searchJoinedTournament &&
         joinedTournamentData?.searchJoinedTournament.length > 0 ? (
@@ -151,7 +154,7 @@ const MyTournament = ({
             />
           )
         ) : (
-          <div>Don&apos;t own any tournaments yet</div>
+          <div>Don&apos;t own any tournaments yet. Please join a tournament of <Link href="/">Lucis Network</Link></div>
         )}
       </div>
     </div>

@@ -9,12 +9,19 @@
   background: linear-gradient(333deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
   backdrop-filter: blur(42px)
   padding: 32px
+  .search
+    display: flex
+    justify-content: flex-end
+    margin-bottom: 40px
+    .searchInput
+      max-width: 400px
+      :global(.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button)
+        background: none
 .container_table
   :global(.ant-table)
-    color: #FFF
+    color: #FFF !important
     background: none
     padding: 0px
-
   :global(.ant-table table)
     text-align: center
   :global(.ant-table-thead > tr > th)
@@ -40,8 +47,8 @@
     border-color: rgb(189 189 189 / 42%) !important
   :global(.ant-table-tbody > tr:hover > td)
     background: rgba(255, 255, 255, 0.2) !important
-  :global(.ant-pagination)
-    display: none
+  // :global(.ant-pagination)
+  //   display: none
 
   :global(.ant-table-tbody > tr > td)
     @media (max-width: 640px)
@@ -62,7 +69,7 @@
     height: 30px
     border-radius: 50px
     margin-right: 10px
-    
+
 .wrapper::-webkit-scrollbar
   width: 4px
   height: 4px

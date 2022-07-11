@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
-import { message, Modal, Table } from "antd";
+import {Button, message, Modal, Table} from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
@@ -8,13 +9,16 @@ import TournamentService from "components/service/tournament/TournamentService";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import AuthService from "components/Auth/AuthService";
 import { to_hex_str } from "utils/String";
-import { useEffect, useState } from "react";
 import { LUCIS_FEE_DONATION } from "utils/Enum";
+import ClaimResultModal from "../claimResultModal/ClaimResultModal";
 
 type Props = {
   tournamentId?: string;
   dataDonation?: any;
   totalFromDonation?: number;
+  currency?: any;
+  name?: string;
+  isCheckUserReferee?: boolean;
 };
 
 export type ClaimDonation = {
@@ -23,15 +27,27 @@ export type ClaimDonation = {
 };
 
 export default observer(function ClaimDonationModal(props: Props) {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { tournamentId, dataDonation, totalFromDonation } = props;
+  const [loadingBtn, setLoadingBtn] = useState(false);
+  const [symbol, setSymbol] = useState("");
+  const {
+    tournamentId,
+    dataDonation,
+    totalFromDonation,
+    name,
+    isCheckUserReferee,
+  } = props;
   const isModalVisible = TournamentStore.claimDonationModalVisible,
     setIsModalVisible = (v: boolean) =>
       (TournamentStore.claimDonationModalVisible = v);
 
+  const [claimStatus, setClaimStatus] = useState(false);
+
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const handleCancelClaim = () => {
+    setClaimStatus(false);
   };
 
   useEffect(() => {
@@ -39,6 +55,8 @@ export default observer(function ClaimDonationModal(props: Props) {
       let totalObj = dataDonation.filter((item: any) => {
         return item.reward_type === "Total";
       });
+
+      setSymbol(totalObj[0]?.symbol);
 
       let objFee = {
         reward_type: "LUCISFEE",
@@ -64,27 +82,35 @@ export default observer(function ClaimDonationModal(props: Props) {
     if (!ConnectWalletStore.address) {
       AuthBoxStore.connectModalVisible = true;
     } else {
-      setIsLoading(true);
+      setLoadingBtn(true);
 
       const claim: ClaimDonation = {
         tournament_uid: tournamentId,
         address: ConnectWalletStore.address,
       };
-      const authService = new AuthService();
-      const msg = `0x${to_hex_str(`Lucis verification`)}`;
-      console.log(msg);
+
       let tournamentService = new TournamentService();
+      if (isCheckUserReferee) {
+        const response = tournamentService.claimRefereeFee(claim).then(
+          (res) => {
+            console.log(res);
+          },
+          (error) => {
+          }
+        );
+      }
+
       const response = tournamentService.claimDonation(claim).then(
         (res) => {
-          setIsLoading(false);
+          setLoadingBtn(false);
           if (res) {
-            //message.success("You claim success");
-            authService.sign([msg, ConnectWalletStore.address]);
+            setClaimStatus(true);
+            handleCancel();
           }
         },
         (error) => {
-          setIsLoading(false);
-          message.warning("You have received this donation");
+          setLoadingBtn(false);
+          message.warning("You have received this donation", 10);
         }
       );
     }
@@ -103,8 +129,10 @@ export default observer(function ClaimDonationModal(props: Props) {
               <>For our tournament</>
             )}
             {item.reward_type == "DONATEFORPLAYER" && <>For you</>}
+            {item.reward_type == "REFEREE_FEE" && <>From referee fee</>}
+            {item.reward_type == "DONATE_FOR_REFEREE" && <>From donation</>}
             {item.reward_type == "DONATEFORTEAM" && <>For your team</>}
-            {item.reward_type == "Total" && <>Total</>}
+            {item.reward_type == "Total" && <><strong>Total</strong></>}
             {item.reward_type == "LUCISFEE" && <>Lucis Fee (5%)</>}
             {item.reward_type == "RECEIVED" && <>You received</>}
           </>
@@ -119,7 +147,7 @@ export default observer(function ClaimDonationModal(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {fomatNumber(item.amount)} {item.symbol}
+            {format(item.amount, 2, {zero_trim: true})} {item.symbol}
           </>
         );
       },
@@ -127,14 +155,21 @@ export default observer(function ClaimDonationModal(props: Props) {
   ];
 
   return (
-    <div style={{ width: "400px" }}>
+    <div style={{width: "400px"}}>
       <Modal
-        title={<span className="font-[600]">Your reward from donation</span>}
+        title={
+          <span className="font-[600]">
+            {isCheckUserReferee
+              ? "Reward for referee"
+              : "Your reward from donation"}
+          </span>
+        }
         visible={isModalVisible}
         onOk={handleOk}
         className={`${s.container}`}
         onCancel={handleCancel}
         okText="Claim"
+        footer={null}
       >
         <Table
           dataSource={dataDonation}
@@ -143,10 +178,31 @@ export default observer(function ClaimDonationModal(props: Props) {
           rowKey={(record) => `${record?.reward_type}`}
           className={s.container_table}
         />
-        <div style={{ marginTop: "10px" }}>
-          Lucis will take 5% each donation as fee
+        <div style={{marginTop: "10px"}}>
+          {isCheckUserReferee ? "Lucis will take 5% the reward as fee" : "Lucis will take 5% each donation as fee"}
+        </div>
+        <div className={s.btnContainter}>
+          <Button onClick={handleCancel} className="mr-2">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleOk}
+            className={s.btnConfirm}
+            loading={loadingBtn}
+          >
+            Confirm
+          </Button>
         </div>
       </Modal>
+
+      <ClaimResultModal
+        totalPrizePool={totalFromDonation as number}
+        currency={symbol}
+        name={name as string}
+        claim={true}
+        status={claimStatus}
+        onCancel={handleCancelClaim}
+      />
     </div>
   );
 });

@@ -17,19 +17,19 @@ export const UserCard: React.FC<UserCardType> = ({
 }) => {
 	return (
 		<div
-			className={`flex border justify-between items-center bg-white mb-4 p-2 ${className}`}
+			className={`flex border justify-between items-center bg-white mb-4 p-1 ${className}`}
 		>
 			<div className="flex items-center align-middle">
 				<div className="rounded-[30px] w-[30px] h-[30px] overflow-hidden bg-white border border-nav">
 					<img
 						className="object-cover w-full h-full"
-						src={user?.avatar}
+						src={user?.avatar ? user?.avatar : "/assets/avatar.jpg"}
 						alt=""
 						width={30}
 						height={30}
 					/>
 				</div>
-				<h3 className="mb-0 ml-2 font-normal">{user?.display_name}</h3>
+				<h4 className="mb-0 ml-2">{user?.display_name}</h4>
 			</div>
 			{user?.is_leader ? (
 				<StarFilled style={{ color: "black", fontSize: 18 }} />

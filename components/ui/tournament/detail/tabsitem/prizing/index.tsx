@@ -1,6 +1,6 @@
-import { message, Table } from "antd";
+import { Table } from "antd";
 import { Prize } from "src/generated/graphql";
-import { fomatNumber } from "utils/Number";
+import { format } from "utils/Number";
 
 import s from "./Prizing.module.sass";
 
@@ -43,7 +43,7 @@ export default function Prizing(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {fomatNumber(item.reward)} {currency.symbol}
+            {format(item.reward, 2, {zero_trim: true})} {currency.symbol}
           </>
         );
       },

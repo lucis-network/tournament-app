@@ -1,22 +1,24 @@
 import s from "./EditProfile.module.sass";
-import {Button, Col, Form, Input, InputNumber, message as antMessage, Row, Select, Space} from "antd";
+import {Button, Col, Form, Input, message as antMessage, Row} from "antd";
 import {InfoCircleOutlined, LinkOutlined} from "@ant-design/icons";
 import TextArea from "antd/lib/input/TextArea";
-import React, {useCallback, useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {useUpdateProfile, useVerifyEmail} from "../../../../../hooks/myProfile/useMyProfile";
 import {observer} from "mobx-react-lite";
 import debounce from "lodash/debounce";
-import {ProfileUpdateInput, UserGraphql} from "../../../../../src/generated/graphql";
+import {ProfileUpdateInput} from "../../../../../src/generated/graphql";
 import {isEmpty} from "lodash";
-import {ApolloError, ApolloQueryResult} from "@apollo/client";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { isPhoneNumber } from 'class-validator';
 import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
+import AuthStore, {AuthUser} from "../../../../Auth/AuthStore";
+import {getLocalAuthInfo, setLocalAuthInfo} from "../../../../Auth/AuthLocal";
+import {useRouter} from "next/router";
 
 type EditProfileProps = {
-  userInfo: UserGraphql,
-  getUserProfileRefetch: () => Promise<ApolloQueryResult<any>>,
+  userInfo: AuthUser,
+  onEditedProfile: () => void,
 };
 
 type CountryOption = {
@@ -25,11 +27,15 @@ type CountryOption = {
   dial_code: string,
 }
 
-export default observer(function EditProfile({ userInfo, getUserProfileRefetch }: EditProfileProps) {
+export default observer(function EditProfile({ userInfo, onEditedProfile }: EditProfileProps) {
   const [newProfileData, setNewProfileData] = useState<ProfileUpdateInput>({});
   const [emailValue, setEmailValue] = useState<string>('');
+  const [emailVerifying, setEmailVerifying] = useState<boolean>(false);
   const [countryData, setCountryData] = useState<CountryOption[]>([]);
   const [phone, setPhone] = useState<string>(userInfo?.profile?.phone as string);
+  const [phoneError, setPhoneError] = useState<string | undefined>(undefined)
+  const broadcastChannel = new BroadcastChannel('VerifyEmailListening')
+  const router = useRouter()
   const {verifyEmail} = useVerifyEmail(
     {
       email: emailValue,
@@ -42,7 +48,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
             antMessage.error('The email address is already in use. Please try another email address.')
             break
           default:
-            antMessage.error('An unknown error has occurred. Please try again later.' )
+            antMessage.error('An unknown error has occurred. Please try again later.')
             break
         }
       }),
@@ -53,16 +59,37 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
       }
     }
   );
-  const { updateProfile } = useUpdateProfile({
-    data: newProfileData
+
+  const {updateProfile, profileUpdating} = useUpdateProfile({
+    data: newProfileData,
+    onError: (error) => handleGraphqlErrors(error, (code, message) => {
+      console.log('[updateProfile onError] code, message: ', code, message);
+      switch (code) {
+        case 'BAD_USER_INPUT':
+          antMessage.error('The information you entered is not correct. Please try again.')
+          break
+        default:
+          antMessage.error('An unknown error has occurred. Please try again later.')
+          break
+      }
+    }),
+    onCompleted: response => {
+      console.log('[useUpdateProfile onCompleted] response: ', response.updateProfile);
+      AuthStore.profile = response.updateProfile
+      let localUserInfo = getLocalAuthInfo()
+      if (localUserInfo) {
+        localUserInfo.profile = response.updateProfile
+        setLocalAuthInfo(localUserInfo)
+      }
+      console.log('[useUpdateProfile onCompleted] localUserInfo: ', localUserInfo);
+      // setLocalAuthInfo()
+      antMessage.success("Profile updated.")
+        .then(() => {
+          onEditedProfile()
+        })
+    },
   });
   const [form] = Form.useForm();
-  const emailRef = useRef<HTMLInputElement>(null);
-  const { Option } = Select;
-
-  const handleRegionChange = (data: any) => {
-    console.log(data)
-  }
 
   const fetchCountryList = async (): Promise<any> => {
     try {
@@ -91,18 +118,16 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
   }
 
   const handleVerifyEmail = () => {
+    setEmailVerifying(true)
     verifyEmail()
+      .finally(() => {
+        setEmailVerifying(false)
+      })
   }
 
   const handleSaveChange = () => {
     form.validateFields()
       .then(result => {
-        let formattedPhone = '';
-        if (result.phone && result.dial_code) {
-          const dialCode = countryData.filter(country => country.code === result.dial_code)[0].dial_code;
-          formattedPhone = dialCode + result.phone
-        }
-
         let newResult: any = {
           user_name: {
             set: result.user_name ?? ''
@@ -134,8 +159,16 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
         }
 
         if (!isEmpty(phone)) {
+          const _phone = (!phone.includes('+')) ? ('+' + phone) : phone
+          console.log('_phone: ', _phone);
+          if(!isPhoneNumber(_phone)) {
+            // message.error("")
+            console.log('invalid phone')
+            setPhoneError("Invalid phone number")
+            return
+          }
           newResult.phone = {
-            set: (!phone.includes('+')) ? ('+' + phone) : phone
+            set: _phone
           }
         }
 
@@ -146,13 +179,8 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
       });
   }
 
-  const handlePhoneChange = (phone: string) => {
-    console.log(phone)
-  }
-
   useEffect(() => {
     let isSubscribed = true;
-
     fetchCountryList()
       .then(response => response.json())
       .then(result => {
@@ -173,32 +201,39 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
   useEffect(() => {
     if (!isEmpty(newProfileData)) {
       updateProfile()
-        .then(response => {
-          getUserProfileRefetch()
-        })
-        .catch(error => {
-          console.log('updateProfile error: ', error)
-        })
     }
   }, [newProfileData])
-
+  useEffect(() => {
+    broadcastChannel.onmessage = event => {
+      if (event.data === 'Verify success.') {
+        window.location.reload()
+      }
+    }
+    if (router.query.verify === 'success') {
+      broadcastChannel.postMessage('Verify success.');
+      router.replace('/profile?page=edit', undefined, { shallow: true });
+    }
+    return () => {
+      broadcastChannel.close()
+    }
+  }, [router.query])
   return (
     <div className={s.editProfile}>
       <Form
         form={form}
         initialValues={{
-          user_name: !isEmpty(userInfo?.profile?.user_name) ? userInfo?.profile?.user_name : '',
-          display_name: !isEmpty(userInfo?.profile?.display_name) ? userInfo.profile?.display_name : (userInfo?.profile?.user_name ?? ''),
-          email: !isEmpty(userInfo?.email) ? userInfo?.email : '',
-          biography: !isEmpty(userInfo?.profile?.biography) ? userInfo?.profile?.biography : '',
-          facebook: !isEmpty(userInfo?.profile?.facebook) ? userInfo?.profile?.facebook : '',
-          twitter: !isEmpty(userInfo?.profile?.twitter) ? userInfo?.profile?.twitter : '',
-          // telegram: !isEmpty(userInfo?.profile?.telegram) ? userInfo?.profile?.telegram : '',
-          twitch: !isEmpty(userInfo?.profile?.twitch) ? userInfo?.profile?.twitch : '',
-          discord: !isEmpty(userInfo?.profile?.discord) ? userInfo?.profile?.discord : '',
-          youtube: !isEmpty(userInfo?.profile?.youtube) ? userInfo?.profile?.youtube : '',
-          dial_code: !isEmpty(userInfo?.profile?.country_code) ? userInfo?.profile?.country_code : '',
-          phone: !isEmpty(userInfo?.profile?.phone) ? userInfo?.profile?.phone : '',
+          user_name: !isEmpty(AuthStore?.profile?.user_name) ? AuthStore?.profile?.user_name : '',
+          display_name: !isEmpty(AuthStore?.profile?.display_name) ? AuthStore.profile?.display_name : (AuthStore?.profile?.user_name ?? ''),
+          email: !isEmpty(AuthStore?.email) ? AuthStore?.email : '',
+          biography: !isEmpty(AuthStore?.profile?.biography) ? AuthStore?.profile?.biography : '',
+          facebook: !isEmpty(AuthStore?.profile?.facebook) ? AuthStore?.profile?.facebook : '',
+          twitter: !isEmpty(AuthStore?.profile?.twitter) ? AuthStore?.profile?.twitter : '',
+          // telegram: !isEmpty(AuthStore?.profile?.telegram) ? AuthStore?.profile?.telegram : '',
+          twitch: !isEmpty(AuthStore?.profile?.twitch) ? AuthStore?.profile?.twitch : '',
+          discord: !isEmpty(AuthStore?.profile?.discord) ? AuthStore?.profile?.discord : '',
+          youtube: !isEmpty(AuthStore?.profile?.youtube) ? AuthStore?.profile?.youtube : '',
+          dial_code: !isEmpty(AuthStore?.profile?.country_code) ? AuthStore?.profile?.country_code : '',
+          phone: !isEmpty(AuthStore?.profile?.phone) ? AuthStore?.profile?.phone : '',
         }}
       >
         <Row gutter={30}>
@@ -246,7 +281,6 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
                 label="Email"
                 name="email"
                 labelCol={{ span: 24 }}
-                style={{ marginBottom: 0 }}
                 className={s.emailField}
                 rules={[
                   {
@@ -259,7 +293,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
               </Form.Item>
               <Button
                 onClick={handleVerifyEmail}
-                disabled={(emailValue.length <= 0) || (emailValue === userInfo.email)}
+                disabled={(emailValue.length <= 0) || (emailValue === userInfo.email) || emailVerifying}
                 className={s.btnVerify}
               >
                 Verify
@@ -270,7 +304,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
               name="biography"
               labelCol={{ span: 24 }}
             >
-              <TextArea placeholder="Enter biography" />
+              <TextArea placeholder="Enter biography" rows={4} />
             </Form.Item>
             <Form.Item
               label="Phone"
@@ -280,36 +314,23 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
                 country={`${userInfo?.profile?.country_code?.toLowerCase()}`}
                 enableSearch
                 value={phone}
-                // isValid={(value) => {
-                //   return isPhoneNumber(value)
+                // isValid={(value, country: any) => {
+                //   let _phone = '+'+ value;
+                //   if(!isPhoneNumber(_phone)) {
+                //     setPhoneError("Invalid phone number")
+                //   } else {
+                //     setPhoneError(undefined)
+                //   }
+                //   return isPhoneNumber(_phone)
                 // }}
-                onChange={(phone) => setPhone(phone)}
+                onChange={(phone) => {
+                  setPhoneError(undefined)
+                  setPhone(phone)
+                }}
                 placeholder="Enter phone number"
+                buttonClass={s.inputPhone}
               />
-              {/*<Row>*/}
-              {/*  <Col span={8}>*/}
-              {/*    <Form.Item name="dial_code">*/}
-              {/*      <Select*/}
-              {/*        showSearch*/}
-              {/*        filterOption={(input, option) => {*/}
-              {/*          return option?.key.toLowerCase().indexOf(input.toLowerCase()) >= 0*/}
-              {/*        }}*/}
-              {/*        onChange={handleRegionChange}*/}
-              {/*      >*/}
-              {/*        {countryData.length > 0 && countryData.map((item: CountryOption) => (*/}
-              {/*          <Option key={item.name} value={item.code}>{item.name} {item.dial_code}</Option>*/}
-              {/*        ))}*/}
-              {/*      </Select>*/}
-              {/*    </Form.Item>*/}
-              {/*  </Col>*/}
-              {/*  <Col span={16}>*/}
-              {/*    <Form.Item*/}
-              {/*      name="phone"*/}
-              {/*    >*/}
-              {/*      <InputNumber controls={false} type="number" placeholder="Enter phone number" style={{ width: "100%" }} />*/}
-              {/*    </Form.Item>*/}
-              {/*  </Col>*/}
-              {/*</Row>*/}
+              <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
             </Form.Item>
           </Col>
           <Col xs={{ span: 24 }} lg={{ span: 12 }}>
@@ -386,7 +407,7 @@ export default observer(function EditProfile({ userInfo, getUserProfileRefetch }
           </Col>
         </Row>
         <div className="text-center mt-5">
-          <Button onClick={handleSaveChange}>Save change</Button>
+          <Button onClick={handleSaveChange} disabled={profileUpdating}>Save change</Button>
         </div>
       </Form>
     </div>

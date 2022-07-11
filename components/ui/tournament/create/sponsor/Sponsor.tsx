@@ -10,37 +10,37 @@ type Props = {};
 const tiersDataInit: SponsorTierStore[] = [
   new SponsorTierStore(uniqueId('tier_'), "Diamond", {
     min_deposit: 0,
-    max_slot: 1,
-    show_ads: true,
+    max_slot: 4,
+    show_ads: false,
     show_logo: true,
     show_name: true,
-    slots: [new SponsorSlot()],
+    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
   }),
   new SponsorTierStore(uniqueId('tier_'), "Gold", {
     min_deposit: 0,
-    max_slot: 2,
+    max_slot: 8,
     show_logo: true,
     show_name: false,
     show_ads: false,
-    slots: [new SponsorSlot(), new SponsorSlot()],
+    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
   }),
-  new SponsorTierStore(uniqueId('tier_'), "Silver", {
-    min_deposit: 0,
-    max_slot: 3,
-    show_logo: true,
-    show_name: false,
-    show_ads: false,
-
-    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
-  }),
-  new SponsorTierStore(uniqueId('tier_'), "Enthusiast", {
-    min_deposit: 0,
-    max_slot: 5,
-    show_logo: true,
-    show_name: false,
-    show_ads: false,
-    slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
-  }),
+  // new SponsorTierStore(uniqueId('tier_'), "Silver", {
+  //   min_deposit: 0,
+  //   max_slot: 3,
+  //   show_logo: true,
+  //   show_name: false,
+  //   show_ads: false,
+  //
+  //   slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
+  // }),
+  // new SponsorTierStore(uniqueId('tier_'), "Enthusiast", {
+  //   min_deposit: 0,
+  //   max_slot: 5,
+  //   show_logo: true,
+  //   show_name: false,
+  //   show_ads: false,
+  //   slots: [new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot(), new SponsorSlot()],
+  // }),
 ];
 
 sponsorStore.setState({

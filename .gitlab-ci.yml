@@ -7,7 +7,6 @@ stages:
   - deploy
 default:
   before_script:
-    - ./deploy/env.sh
     - cp ./deploy/docker-compose.yml.example ./deploy/docker-compose.yml
     - docker info
     - docker-compose --version
@@ -24,6 +23,20 @@ deploy-dev:
   only:
     - develop
   script:
+    - echo NEXT_PUBLIC_GRAPHQL_URL=$NEXT_PUBLIC_GRAPHQL_URL >> .env
+    - echo NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL=$NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL_TRIAL >> .env
+    - echo NEXT_PUBLIC_GRAPHQL_P2E_URL=$NEXT_PUBLIC_GRAPHQL_P2E_URL >> .env
+    - echo NEXT_PUBLIC_GOOGLE_ID=$NEXT_PUBLIC_GOOGLE_ID >> .env
+    - echo NEXT_PUBLIC_FACEBOOK_ID=$NEXT_PUBLIC_FACEBOOK_ID >> .env
+    - echo NEXT_PUBLIC_CHAIN_ID__ETH=$NEXT_PUBLIC_CHAIN_ID__ETH >> .env
+    - echo NEXT_PUBLIC_CHAIN_ID__BSC=$NEXT_PUBLIC_CHAIN_ID__BSC >> .env
+    - echo NEXT_PUBLIC_CHAIN_ID__POLYGON=$NEXT_PUBLIC_CHAIN_ID__POLYGON >> .env
+    - echo NEXT_PUBLIC_BUCKET_NAME=$NEXT_PUBLIC_BUCKET_NAME >> .env
+    - echo NEXT_PUBLIC_REGION=$NEXT_PUBLIC_REGION >> .env
+    - echo NEXT_PUBLIC_ACCESS_KEY=$NEXT_PUBLIC_ACCESS_KEY >> .env
+    - echo NEXT_PUBLIC_SECRET_ACCESS_KEY=$NEXT_PUBLIC_SECRET_ACCESS_KEY >> .env
+    - echo NEXT_PUBLIC_FACEIT_CLIENT_ID_TEST=$NEXT_PUBLIC_FACEIT_CLIENT_ID_TEST >> .env
+    - echo NEXT_PUBLIC_FACEIT_CLIENT_ID_DEV=$NEXT_PUBLIC_FACEIT_CLIENT_ID_DEV >> .env
     - cd ./deploy;
     - docker-compose up --build -d
 

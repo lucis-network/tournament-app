@@ -20,14 +20,21 @@ export default function BannerPage() {
     if (data) {
       const length = data.length;
       interval = setInterval(() => {
-        if (arr >= length) {
-          setArr(0);
+        if (arr == 0) {
           setTitleSpotlight(data[0]?.content);
+          setTimer(data[0]?.time);
         } else {
-          setArr((prve) => prve + 1);
           const title = data[arr]?.content;
-          setTitleSpotlight(title);
-          setTimer(data[arr]?.time);
+          if (title) {
+            setTitleSpotlight(title);
+            setTimer(data[arr]?.time);
+          }
+        }
+        setArr((prve) => prve + 1);
+        if (arr == length) {
+          setTitleSpotlight(data[0]?.content);
+          setTimer(data[0]?.time);
+          setArr(1);
         }
         setShow(true);
       }, 5000);
@@ -55,7 +62,11 @@ export default function BannerPage() {
               {moment(timer).format("MMMM Do hh:mm:ss")}
             </div>
             <div className={s.title_spotlight}>
-              {show && <TextyAnim delay={1000}>{titleSpotlight}</TextyAnim>}
+              {show && (
+                <TextyAnim delay={0} interval={12}>
+                  {titleSpotlight}
+                </TextyAnim>
+              )}
             </div>
           </div>
         ) : (

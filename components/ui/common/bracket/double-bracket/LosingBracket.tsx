@@ -51,20 +51,20 @@ const LosingBracket: React.FC<LosingProps> = ({
         <SeedItem>
           <div>
             <SeedTeam className={style.topSeed} style={{ padding: 0 }}>
-              <div className={style.team}>
+              <div className={`${style.team} ${style.teamWin}`}>
                 {seed.teams[0]?.name ?? `Team ...`}
               </div>
-              <div className={style.score}
+              <div className={`${style.score} ${style.scoreWin}`}
                 // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
               >
                 {seed.teams[0]?.score ?? "--"}
               </div>
             </SeedTeam>
             <SeedTeam className={style.bottomSeed} style={{ padding: 0 }}>
-              <div className={style.team}>
+              <div className={`${style.team} ${style.teamJoined}`}>
                 {seed.teams[1]?.name ?? `Team ...`}
               </div>
-              <div className={style.score}
+              <div className={`${style.score} ${style.scoreJoined}`}
                 // onClick={() => openModal(seedIndex, roundIndex, seed.teams)}
               >
                 {seed.teams[1]?.score ?? "--"}
@@ -80,14 +80,11 @@ const LosingBracket: React.FC<LosingProps> = ({
     <>
       <Bracket
         rounds={losing}
-        mobileBreakpoint={360}
+        mobileBreakpoint={0}
         renderSeedComponent={RenderLosingSeed}
         swipeableProps={{
           enableMouseEvents: true,
-          animateHeight: true,
-          style: {
-            padding: "0 50px 0 0",
-          },
+          animateHeight: false,
         }}
       />
       {/* <UpdateScore

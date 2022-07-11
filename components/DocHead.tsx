@@ -1,5 +1,6 @@
 import Head from "next/head";
 import {isClientDevMode} from "../utils/Env";
+import { app_env } from "../utils/Env";
 
 type Props = {
   title?: string;
@@ -8,9 +9,10 @@ type Props = {
 
 export default function DocHead(props: Props) {
   const titleSuffix = props.title ?? "A Platform for creating, running tournament events for both traditional games and NFT games.";
-  const title = "Lucis Tournament - " + titleSuffix;
+  const env_str = app_env !== "prod" ? `[${app_env}] ` : '';
+  const title = env_str + "Lucis Tournament - " + titleSuffix;
   const desc = props.description ?? 'Team will get more popular and big prizes, big donation amount from Lucis Tournament platform';
-  const thumb = "https://lucis.network/assets/lucis_preview_169.jpg";
+  const thumb = "https://lucis.network/assets/lucis_preview_169.jpg?v=1656073943366";
 
   return (
     <Head>

@@ -1,5 +1,4 @@
-import DocHead from "components/DocHead";
-import { useEffect, useState } from "react";
+import {useEffect, useRef, useState} from "react";
 import AWS from "aws-sdk";
 import { observer } from "mobx-react";
 import TournamentStore from "src/store/TournamentStore";
@@ -12,6 +11,7 @@ type Props = {
   parentCallback?: any;
   value?: string;
   url?: string;
+  className?: string;
 };
 
 export const S3_BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME
@@ -21,7 +21,7 @@ const REGION = process.env.NEXT_PUBLIC_REGION;
 const ACCESS_KEY = process.env.NEXT_PUBLIC_ACCESS_KEY;
 const SECRET_ACCESS_KEY = process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY;
 const LINK_URL =
-  "https://lucis-tour-01.s3.ap-southeast-1.amazonaws.com/tournaments/";
+  "https://image-upload-s3-demo.s3.ap-southeast-1.amazonaws.com/tournaments/";
 AWS.config.update({
   accessKeyId: ACCESS_KEY,
   secretAccessKey: SECRET_ACCESS_KEY,
@@ -34,6 +34,7 @@ export const myBucket = new AWS.S3({
 
 export default observer(function UploadImage(props: Props) {
   const [url, setUrl] = useState("");
+  const inputUpload = useRef<HTMLInputElement>(null)
   const handleFileInput = (e: any) => {
     const file = e.target.files[0];
     if (file && ["image/jpeg", "image/png", "image/gif"].includes(file.type)) {
@@ -71,52 +72,36 @@ export default observer(function UploadImage(props: Props) {
 
     if (props.value === "thumbnail" && TournamentStore.thumbnail)
       setUrl(TournamentStore.thumbnail);
-  }, [TournamentStore.cover || TournamentStore.thumbnail]);
+  }, [TournamentStore.cover, TournamentStore.thumbnail]);
 
   return (
     <>
-      <DocHead />
-
-      <div className="">
-        {url ? (
-          <img
-            src={url}
-            alt="Picture of the author"
-            style={{
-              objectFit: "cover",
-              aspectRatio: `${props.width} / ${props.heigh}`,
-              marginBottom: "10px",
-            }}
-          />
-        ) : (
-          <img
-            src="/assets/default.jpg"
-            alt="Default images"
-            style={{
-              objectFit: "cover",
-              aspectRatio: `${props.width} / ${props.heigh}`,
-              marginBottom: "10px",
-            }}
-          />
-        )}
-        <p
-          style={{
-            color: "white",
-            textAlign: "center",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
+      <div className={props.className ?? ''}>
+        <img
+          src={url ? url : '/assets/iconDefaultImg.svg'}
+          alt={url ? 'Picture of the author' : 'Default images'}
+          style={(props.width && props.heigh) ? {
+            aspectRatio: `${props.width} / ${props.heigh}`,
+            marginBottom: "10px",
+          } : {
+            marginBottom: "10px",
           }}
-        >
-          {url.slice(LINK_URL.length, url.length)}
-        </p>
+          onClick={() => inputUpload?.current?.click()}
+        />
+        {url && (
+          <p className="file-name">
+            {url.slice(LINK_URL.length, url.length)}
+          </p>
+        )}
         <input
           //style={{ display: "none" }}
           type="file"
-          style={{ color: "transparent" }}
+          style={{ color: "transparent", display: "none" }}
           onChange={handleFileInput}
           accept=".jpg, .jpeg, .png"
           title=""
-        ></input>
+          ref={inputUpload}
+        />
 
         {/* <input
           style={{ display: "none" }}

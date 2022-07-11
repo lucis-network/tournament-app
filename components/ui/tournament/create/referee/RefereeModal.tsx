@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { Checkbox, Input, Modal, Pagination, Radio } from "antd";
+import {Button, Checkbox, Input, Modal, Pagination, Radio} from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import Search from "antd/lib/input/Search";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -8,6 +8,7 @@ import { useReferees } from "hooks/tournament/useCreateTournament";
 import debounce from "lodash/debounce";
 import { UserAddOutlined, UserOutlined } from "@ant-design/icons";
 import { isEmpty } from "lodash";
+import Link from "next/link";
 
 type Props = {
   handCallbackReferee?: any;
@@ -81,9 +82,6 @@ export default observer(function RefereeModal(props: Props) {
   };
 
   useEffect(() => {
-    if (inputRef && inputRef.current) {
-      inputRef.current!.focus();
-    }
     if (TournamentStore.participants) {
       TournamentStore.participants / 2 >= checkedValue.length
         ? setCheckedParticipants(true)
@@ -105,20 +103,24 @@ export default observer(function RefereeModal(props: Props) {
       visible={isModalVisible}
       onOk={handleOk}
       onCancel={handleCancel}
-      className={`${s.container}`}
+      wrapClassName={s.container}
       okButtonProps={{
         disabled: !checkedParticipants,
       }}
+      footer={[
+        <Button key="cancel" className={s.btnCancel} onClick={handleCancel}>Cancel</Button>,
+        <Button key="confirm" className={s.btnConfirm} onClick={handleOk}>Confirm</Button>
+      ]}
     >
       <Input
         placeholder="Search by name or username"
         onChange={onSearch}
         className={`${s.searchText}`}
         ref={inputRef}
-      ></Input>
+      />
       <Checkbox.Group
         onChange={onChange}
-        className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 gap-2 mt-4"
+        className={s.refereeList}
       >
         {getDataReferees
           ? getDataReferees?.users?.map((ele: any, index: number) => {
@@ -137,50 +139,44 @@ export default observer(function RefereeModal(props: Props) {
                 //   ></Checkbox>
                 //   <p className="mt-5px">{ele?.profile?.display_name}</p>
                 // </div>
-                <div className={`${s.item} border p-2 mt-2`} key={ele.id}>
-                  <div className="flex align-middle items-center mb-2">
-                    <div className="rounded-[30px] overflow-hidden h-full bg-white">
-                      <img
-                        alt=""
-                        src={ele?.profile?.avatar}
-                        width={50}
-                        height={50}
-                      />
-                    </div>
-                    <div className="w-full ml-2">
-                      <h3 className="text-18px m-0 text-white">
-                        {ele?.profile?.display_name}
-                      </h3>
-                      <p className="mb-0 text-[12px]">
-                        Username: @{ele?.profile?.user_name}
-                      </p>
-                    </div>
-                  </div>
-
-                  <a
-                    target="_blank"
-                    href={`/profile/${ele?.profile?.user_name}`}
-                    rel="noopener noreferrer"
-                    style={{ color: "white" }}
-                  >
-                    <button className={s.button_add}>
-                      {" "}
-                      <UserOutlined className="mr-2" />
-                      Profile
-                    </button>
-                  </a>
-
+                <div className={s.item} key={ele.id}>
                   <Checkbox
-                    className={`${s.itemCheckbox}`}
+                    className={`${s.avtWrap}`}
                     value={index}
-                  ></Checkbox>
+                  >
+                    <img
+                      alt=""
+                      src={ele?.profile?.avatar ? ele?.profile?.avatar : '/assets/avatar.jpg'}
+                      width={50}
+                      height={50}
+                    />
+                  </Checkbox>
+                  <div className={s.infoWrap}>
+                    <h3>
+                      {ele?.profile?.display_name}
+                    </h3>
+                    <p>
+                      Username: @{ele?.profile?.user_name}
+                    </p>
+                    <Link href={`/profile/${ele?.profile?.user_name}`} passHref>
+                      <a
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "white" }}
+                      >
+                        <button className={s.btnProfile}>
+                          Profile
+                        </button>
+                      </a>
+                    </Link>
+                  </div>
                 </div>
               );
             })
           : ""}
       </Checkbox.Group>
       <div className={s.message_error}>{messageError}</div>
-      <div style={{ textAlign: "center" }}>
+      <div className={s.paginationWrap}>
         <Pagination
           defaultCurrent={1}
           total={getDataReferees?.total}

@@ -12,6 +12,7 @@ import s from "../index.module.sass";
 import TournamentStore from "src/store/TournamentStore";
 import moment from "moment";
 import { range } from "lodash";
+import {handleDatepickerScroll} from "../double-bracket/DoubleBracket";
 
 interface RoundNewProps extends RoundProps {
   title: any;
@@ -64,6 +65,8 @@ const createRounds = ({
           // disabledTime={disabledDateTime}
           showTime
           onChange={(date, dateString) => handleSelectDate('single', date, dateString, i, roundName)}
+          inputReadOnly={true}
+          onOpenChange={(open: boolean) => handleDatepickerScroll(open)}
         />
       </div>
     );
@@ -91,18 +94,18 @@ const CustomSeed = ({
       <SeedItem>
         <div>
           <SeedTeam className={s.topSeed} style={{ padding: 0 }}>
-            <div className={s.team}>
+            <div className={`${s.team} ${s.teamWin}`}>
               {seed.teams[0]?.name || `Team ...`}
             </div>
-            <div className={s.score}>
+            <div className={`${s.score} ${s.scoreWin}`}>
               {seed.teams[0]?.score || "--"}
             </div>
           </SeedTeam>
           <SeedTeam className={s.bottomSeed} style={{ padding: 0 }}>
-            <div className={s.team}>
+            <div className={`${s.team} ${s.teamJoined}`}>
               {seed.teams[1]?.name || `Team ...`}
             </div>
-            <div className={s.score}>
+            <div className={`${s.score} ${s.scoreJoined}`}>
               {seed.teams[1]?.score || "--"}
             </div>
           </SeedTeam>
@@ -122,11 +125,15 @@ const SingleBracket = ({ numRounds, handleSelectDate }: any) => {
   });
 
   return (
-    <div className={s.bracketContainer}>
+    <div className={`${s.bracketContainer} has-scrollbar`}>
       <Bracket
         rounds={roundsTemp}
         renderSeedComponent={CustomSeed}
-        mobileBreakpoint={768}
+        mobileBreakpoint={0}
+        swipeableProps={{
+          enableMouseEvents: true,
+          animateHeight: false,
+        }}
       />
     </div>
   );

@@ -11,7 +11,7 @@ export default function GroupLink(props: Props) {
       {datas?.facebook && (
         <div className={s.ic_item}>
           <a href={datas?.facebook} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/MyProfile/iconFacebookWhite.svg" alt="" />
+            <img src="/assets/MyProfile/ic_fb.svg" alt="" />
           </a>
         </div>
       )}
@@ -19,31 +19,23 @@ export default function GroupLink(props: Props) {
       {datas?.youtube && (
         <div className={s.ic_item}>
           <a href={datas?.youtube} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/MyProfile/iconYoutubeWhite.svg" alt="" />
+            <img src="/assets/MyProfile/ic_ytb.svg" alt="" />
+          </a>
+        </div>
+      )}
+      
+      {datas?.twitch && (
+        <div className={s.ic_item}>
+          <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
+            <img src="/assets/MyProfile/ic_twitchIcon.svg" alt="" />
           </a>
         </div>
       )}
 
-      {/* <div className={s.ic_item}>
-        {datas?.telegram && (
-          <a href={datas?.telegram} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/footer/tele.svg" alt="" />
-          </a>
-        )}
-      </div> */}
-
-      {datas?.twitch && (
+      {datas?.twitter && (
         <div className={s.ic_item}>
-          <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/MyProfile/iconTwitchWhite.svg" alt="" />
-          </a>
-        </div>
-      )}
-
-      {datas?.twitch && (
-        <div className={s.ic_item}>
-          <a href={datas?.twitch} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/MyProfile/iconTwitterWhite.svg" alt="" />
+          <a href={datas?.twitter} target="_blank" rel="noopener noreferrer">
+            <img src="/assets/MyProfile/ic_tw.svg" alt="" />
           </a>
         </div>
       )}
@@ -51,7 +43,7 @@ export default function GroupLink(props: Props) {
       {datas.discord && (
         <div className={s.ic_item}>
           <a href={datas.discord} target="_blank" rel="noopener noreferrer">
-            <img src="/assets/MyProfile/iconDiscordWhite.svg" alt="" />
+            <img src="/assets/MyProfile/ic_discord.svg" alt="" />
           </a>
         </div>
       )}

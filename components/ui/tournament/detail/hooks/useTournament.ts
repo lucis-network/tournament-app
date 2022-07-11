@@ -1,7 +1,8 @@
-import { gql, useMutation } from "@apollo/client";
+import { ApolloError, gql, useMutation } from "@apollo/client";
 import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
 import { useState } from "react";
 import { message as antd_message } from "antd";
+import { handleGraphqlErrors } from "utils/apollo_client";
 
 const useTournament = (tournamentId: string) => {
   const [openModal, setOpenModal] = useState<boolean>(false);
@@ -56,11 +57,17 @@ const useTournament = (tournamentId: string) => {
         refetch();
         refreshParticipant();
       },
-      onError: (err) => {
-        // antd_message.error(err.message, 10);
-        antd_message.error("You are not a leader team", 10);
+      onError: (err : ApolloError ) => handleGraphqlErrors(err, (code, messageErr) => {
+        console.log(code);
+        if(code === "INVALID_TIME_CHECKIN") {
+          antd_message.error("The Checkin phase ended", 10);  
+        }
+        else {
+          antd_message.error("You are not a leader team", 10);  
+        }
+        
         setLoading(false);
-      },
+      })
     });
   };
 

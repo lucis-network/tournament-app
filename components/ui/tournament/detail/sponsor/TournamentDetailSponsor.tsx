@@ -7,7 +7,6 @@ import { SponsorSlot, SponsorTransaction } from "src/generated/graphql";
 import s from "../../../../../styles/tournament/sponsor/index.module.sass";
 import TournamentDetailBecomeSponsor from "./TournamentDetailBecomeSponsor";
 import TournamentDetailSponsorTier from "./TournamentDetailSponsorTier";
-import { isEmpty } from "lodash";
 
 export type TiersSelectType = {
   uid: string;
@@ -17,7 +16,6 @@ export type TiersSelectType = {
   show_name?: Maybe<boolean> | undefined;
   is_full?: boolean;
   dataSponsors?: any;
-  refetchSponsor?: any;
 };
 
 type Props = {
@@ -25,15 +23,17 @@ type Props = {
   tournament_status: string;
   refetchTounament?: any;
   currency: any;
+  type?: string;
+  //refetchSponsor?: any;
 };
 
 export default function TournamentDetailSponsor(props: Props) {
-  const { tournamentId, tournament_status, refetchTounament, currency } = props;
+  const { tournamentId, tournament_status, refetchTounament, currency, type } = props;
   const [isBecome, setIsBecome] = useState(false);
   const {
     loading,
     dataSponsors,
-    refetchSponsor: refetch,
+    refetchSponsor
   } = useSponsors({
     tournament_uid: tournamentId,
   });
@@ -58,12 +58,22 @@ export default function TournamentDetailSponsor(props: Props) {
       };
     });
   }
-
   return (
     <>
-      <div className={s.sponsorContainer}>
-        {tournament_status !== "CLOSED" ? (
-          <div className={s.becomeWrap}>
+      <div className={`${s.sponsorContainer} ${type === "banner" ? "" : s.sponsorBecome}`}>
+        <Row>
+          <Col span={24}>
+            {dataSponsors?.getSponsorSlot.length > 0 &&
+              dataSponsors.getSponsorSlot.map((tier: SponsorSlot, index: number) => {
+                const { uid: tierUid } = tier;
+                return (
+                  <TournamentDetailSponsorTier key={tierUid} tier={tier} index={index} type={type}/>
+                );
+              })}
+          </Col>
+        </Row>
+        {tournament_status !== "CLOSED" && type !== "banner" ? (
+          <div className={`${s.becomeWrap} lucis-container-2`}>
             <Button
               onClick={() => {
                 if (!AuthStore.isLoggedIn) {
@@ -85,24 +95,13 @@ export default function TournamentDetailSponsor(props: Props) {
         ) : (
           ""
         )}
-        <Row>
-          <Col span={24}>
-            {dataSponsors?.getSponsorSlot.length > 0 &&
-              dataSponsors.getSponsorSlot.map((tier: SponsorSlot) => {
-                const { uid: tierUid } = tier;
-                return (
-                  <TournamentDetailSponsorTier key={tierUid} tier={tier} />
-                );
-              })}
-          </Col>
-        </Row>
       </div>
       {isBecome && (
         <TournamentDetailBecomeSponsor
           isBecome={isBecome}
           setIsBecome={setIsBecome}
           tiersSelect={tiersSelect}
-          refetch={refetch}
+          refetchSponsor={refetchSponsor}
           tournamentId={tournamentId}
           refetchTounament={refetchTounament}
           currency={currency}

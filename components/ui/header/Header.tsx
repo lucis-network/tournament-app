@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { MenuMobile } from "../common/Menu/MenuMobile";
 import { useEffect } from "react";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import AlertInAppModal from "../../Auth/Login/AlertInAppModal";
 
 type Props = {
   handleMenuOpen: Function;
@@ -62,7 +63,7 @@ export default observer(function Header(props: Props) {
                   ("IS_TESTNET" == "true") && <p>Testnet</p>
                 }
               </Col>
-              <Col span={17} style={{paddingLeft: 60}}>
+              <Col span={17} style={{paddingLeft: "60px"}}>
                 <ul className={s.block_item_menu}>
                   <li><Link href="/">HOME</Link></li>
                   <li><Link href="/tournament">TOURNAMENT</Link></li>
@@ -95,6 +96,7 @@ export default observer(function Header(props: Props) {
         )}
       </div>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal />}
+      {LoginBoxStore.alertInAppModalVisible && <AlertInAppModal />}
     </>
   );
 });

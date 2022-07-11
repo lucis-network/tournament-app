@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { observer } from "mobx-react-lite";
-import { Button } from "antd";
+import {Button, Image} from "antd";
 import s from "./index.module.sass";
-import CircleImage from "components/ui/common/images/CircleImage";
 import SponsorDetail from "./SponsorDetail";
 import { SponsorSlot, SponsorTierStore } from "./SponsorStore";
 
@@ -35,8 +34,11 @@ export default observer(
       <>
         <div className={s.sponsorSlot}>
           <div className={s.sponsorLogoWrap}>
-            <CircleImage
-              src={slot.logo || "/assets/avatar.jpg"}
+            <Image
+              src={slot.logo || "/assets/TournamentCreate/defaultSponsorLogo.svg"}
+              // src={"/assets/TournamentCreate/gameloft.png"}
+              preview={false}
+              alt=""
               className={s.sponsorLogo}
             />
             <Button

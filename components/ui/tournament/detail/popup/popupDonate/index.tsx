@@ -1,17 +1,17 @@
 import { Button, Col, Input, message, Modal, Row, Spin } from "antd";
 import TournamentService from "components/service/tournament/TournamentService";
-import { memo, useCallback, useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import PopupNotify from "../popupNotify";
 import s from "./PopupDonate.module.sass";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData,
 } from "components/Auth/ConnectWalletStore";
-import { BUSD, LUCIS, USDT } from "utils/Enum";
 import EthersService from "../../../../../../services/blockchain/Ethers";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import { useGetContract } from "hooks/tournament/useCreateTournament";
-import TournamentStore from "src/store/TournamentStore";
 import BigNumber from "bignumber.js";
+import { useTournamentDetail } from "hooks/tournament/useTournamentDetail";
+import { isEmpty } from "lodash";
 
 type Props = {
   datas?: any;
@@ -50,11 +50,15 @@ const PopupDonate = (props: Props) => {
   } = props;
   const { getContract } = useGetContract({});
 
+  const { refetchDataDonation } = useTournamentDetail({
+    tournament_uid: tournamentId,
+    skip: isEmpty(tournamentId),
+  });
   const [titleMessage, setTitleMessage] = useState("");
   const [values, setValues] = useState("");
   const [desc, setDesc] = useState("");
   const [isPopupNotify, setIsPopupNotify] = useState(false);
-  const [refereeUid, setRefereeUid] = useState("");
+  const [teamUid, setTeamUid] = useState("");
   const inputRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [nameReceive, setNameReceive] = useState("");
@@ -80,7 +84,10 @@ const PopupDonate = (props: Props) => {
 
   useEffect(() => {
     if (types == "PLAYER") setNameReceive(datas?.user?.profile?.display_name);
-    if (types == "TEAM") setNameReceive(datas?.team?.name);
+    if (types == "TEAM") {
+      setNameReceive(datas?.team?.name);
+      setTeamUid(datas?.uid);
+    }
     if (types == "TOURNAMENT") setNameReceive(name as string);
     if (types == "REFEREE") setNameReceive(datas?.display_name);
   }, [datas]);
@@ -119,8 +126,9 @@ const PopupDonate = (props: Props) => {
 
     if (types == "PLAYER") dnt.to = datas?.user?.id;
     if (types == "TEAM") {
-      setRefereeUid(datas?.uid);
+      //setTeamUid(datas?.uid);
       dnt.to = datas?.uid;
+
     }
     if (types == "TOURNAMENT") dnt.to = tournamentId ? tournamentId : "";
     if (types == "REFEREE") {
@@ -138,6 +146,7 @@ const PopupDonate = (props: Props) => {
         if (res) {
           setIsPopupNotify(true);
           refetch();
+          refetchDataDonation();
         }
       });
     }
@@ -156,7 +165,7 @@ const PopupDonate = (props: Props) => {
       }
     }
   };
-  
+
   const donation = async () => {
     setIsLoading(true);
     let token_address = currency?.address;
@@ -194,7 +203,7 @@ const PopupDonate = (props: Props) => {
         const response = await ethersService.donate(
           tournamentId as string,
           datas?.user?.id,
-          refereeUid,
+          teamUid,
           datas?.user_id,
           Number(values),
           token_address,
