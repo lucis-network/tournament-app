@@ -139,3 +139,11 @@ if (isClientDevMode) {
     }
   }
 }
+
+export const formatNumber = (number: number, style?: string, currency?: string) => {
+  return number.toLocaleString("en-US", {
+    style: style ?? "currency",
+    currency: currency ?? "USD",
+    maximumFractionDigits: 0,
+  });
+};

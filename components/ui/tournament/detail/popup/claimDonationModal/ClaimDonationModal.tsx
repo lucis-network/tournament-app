@@ -10,7 +10,6 @@ import AuthService from "components/Auth/AuthService";
 import { to_hex_str } from "utils/String";
 import { useEffect, useState } from "react";
 import { LUCIS_FEE_DONATION } from "utils/Enum";
-import formatNumber from "format/formatNumber";
 
 type Props = {
   tournamentId?: string;
