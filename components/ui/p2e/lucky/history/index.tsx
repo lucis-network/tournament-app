@@ -30,7 +30,7 @@ export default function HistoryTable({userHistoryData, claimChestPrize}: History
     userHistoryData && userHistoryData.map((item, index) => {
     // mockData.map((item, index) => {
         dataSource.push({
-            count: index,
+            count: index + 1,
             updated_at: item?.updated_at,
             prize: item?.prize,
             user_prize_history_uid: item?.uid,
