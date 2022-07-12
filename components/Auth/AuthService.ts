@@ -6,6 +6,7 @@ import apoloClient, {
 } from "utils/apollo_client";
 import {
   clearLocalAuthInfo,
+  getLocalAuthGameInfo,
   getLocalAuthInfo,
   setLocalAuthGameInfo,
   setLocalAuthInfo,
@@ -34,13 +35,12 @@ function delay(time: number) {
 }
 
 export default class AuthService {
-  async fetchUserData(): Promise<AuthUser> {
+  async fetchUserData(): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
     const res = await apoloClient.mutate({
       mutation: gql`
         query {
           me {
             id
-            address
             code
             email
             favorite_game {
@@ -59,19 +59,32 @@ export default class AuthService {
               }
             }
             profile {
-              full_name
+              user_id
+              given_name
+              family_name
+              phone
+              avatar
+              cover
+              user_name
+              country_code
               twitter
               facebook
               discord
               telegram
               twitch
-              phone
-              avatar
               user_name
-              country_code
               display_name
               biography
               cover
+            }
+
+            platform_account {
+              uid
+              access_token
+              id_token
+              platform_id
+              nick_name
+              avatar
             }
           }
         }
@@ -84,19 +97,65 @@ export default class AuthService {
     //   url: '/user/get',
     // })
     const u = res.data.me;
+    const platformAccounts = res.data?.me?.platform_account;
+    // console.log(platformAccounts)
+    const tokenID = res.data.me.token;
     const user: AuthUser = {
       id: u.id,
+      token: tokenID,
       code: u.code,
       email: u.email,
       role: u.role,
-      name: u.name,
+      name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
       ref_code: u.ref_code,
       google_id: u.google_id,
       status: u.status,
       profile: u.profile,
     };
 
-    return user;
+    let gameAccount: AuthGameUser = {
+      // faceit_id: item?.uid,
+      // faceit_access_token: item?.access_token,
+      // faceit_id_token: item?.id_token,
+      // faceit_platform_id: item?.platform_id,
+      // faceit_nick_name: item?.nick_name,
+      // faceit_avatar: item?.avatar,
+    }
+
+    platformAccounts.forEach((item: any) => {
+      switch (item.platform_id) {
+        case Platform.FACEIT:
+          gameAccount = {
+            ...gameAccount,
+            faceit_id: item?.uid,
+            faceit_access_token: item?.access_token,
+            faceit_id_token: item?.id_token,
+            faceit_platform_id: item?.platform_id,
+            faceit_nick_name: item?.nick_name,
+            faceit_avatar: item?.avatar,
+          }
+          break;
+          case Platform.GARENA:
+            gameAccount = {
+              ...gameAccount,
+              lmss_id: item?.uid,
+              lmss_access_token: "item?.access_token",
+              lmss_id_token: "item?.id_token",
+              lmss_platform_id: item?.platform_id,
+              lmss_nick_name: item?.nick_name,
+              lmss_avatar: item?.avatar,
+            }
+            break;
+
+        default:
+          break;
+      }
+    })
+
+    return {
+      user,
+      gameAccount: gameAccount
+    };
   }
 
   private async loginByGoogle(token: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
@@ -457,5 +516,26 @@ export default class AuthService {
     clearLocalAuthInfo();
     //Router.push("/");
     LoginBoxStore.signupInfoModalVisible = false;
+  }
+
+  async getUserData() {
+    const cachedUser: AuthUser | null = getLocalAuthInfo();
+    const cachedGame: AuthGameUser | null = getLocalAuthGameInfo();
+    const token = cachedUser?.token;
+    if (token) {
+      console.log("{AuthService.login} re-login user");
+      AuthStore.setAuthUser(cachedUser);
+      AuthGameStore.setAuthGameUser(cachedGame);
+      // ApoloClient_setAuthToken(token);
+
+      // const data = await this.fetchUserData();
+
+      // data.user.token && ApoloClient_setAuthToken(data.user.token);
+      // setLocalAuthInfo(data.user);
+      // setLocalAuthGameInfo(data.gameAccount);
+
+      // AuthStore.setAuthUser(data.user);
+      // AuthGameStore.setAuthGameUser(data.gameAccount)
+    }
   }
 }
