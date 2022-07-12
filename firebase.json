@@ -8,11 +8,19 @@
     ],
     "rewrites": [
       {
+        "source": "/tournament",
+        "destination": "/tournament.html"
+      },
+      {
         "source": "/tournament/*/edit$",
         "destination": "/tournament/[id]/edit.html"
       },
       {
         "source": "/tournament/*/*",
+        "destination": "/tournament/[id]/[...slug].html"
+      },
+      {
+        "source": "/tournament/*/*/**",
         "destination": "/tournament/[id]/[...slug].html"
       },
       {
@@ -38,6 +46,22 @@
       {
         "source": "/p2e/raffles",
         "destination": "/p2e/raffles.html"
+      },
+      {
+        "source": "/p2e/lucky-chest",
+        "destination": "/p2e/lucky-chest.html"
+      },
+      {
+        "source": "/profile",
+        "destination": "/profile.html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
       }
     ]
   },
