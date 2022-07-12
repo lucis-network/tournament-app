@@ -12,11 +12,17 @@ import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
 import AuthGameStore, { AuthGameUser } from 'components/Auth/AuthGameStore';
-import { getLocalAuthGameInfo, setLocalAuthGameInfo } from 'components/Auth/AuthLocal';
+import { setLocalAuthGameInfo } from 'components/Auth/AuthLocal';
 import { ConnectLOLPopup } from './ConnectLOLPopup';
 import BannerOverview from './component/banner/BannerOverview';
-import { Game } from 'utils/Enum';
-export default observer(function P2EOverview() {
+import { Game, OverviewSection } from 'utils/Enum';
+
+interface IProps {
+  overviewSection?: OverviewSection;
+  resetOverviewSection?: () => void;
+}
+export default observer(function P2EOverview(props: IProps) {
+  const connectGameRef = React.useRef<HTMLDivElement>();
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
   })
@@ -209,6 +215,15 @@ export default observer(function P2EOverview() {
     }
   }, [])
 
+  useEffect(() => {
+    if (props.overviewSection && props.overviewSection === OverviewSection.CONNECT_GAME) {
+      connectGameRef.current?.scrollIntoView();
+      if (props.resetOverviewSection) {
+        props.resetOverviewSection();
+      }
+    }
+  }, [props.overviewSection])
+
 
   // const loginWithSteam = () => {
   //   steam.resolve("https://steamcommunity.com/id/IMAPOORKID").then((id: string) => {
@@ -280,7 +295,7 @@ export default observer(function P2EOverview() {
           />}
         <div className={s.overviewContainer}>
           <BannerOverview isLogin={AuthStore.isLoggedIn} />
-          <div className={s.overviewSection}>
+          <div className={s.overviewSection} ref={connectGameRef as any}>
             <h2 className={s.overviewSectionTitle}>PLAY YOUR FAVORITE GAME</h2>
             <Row justify='space-between'>
               <Col className={s.bg_item} style={{ backgroundImage: 'url(/assets/P2E/overview/bg_lol.png)' }}>

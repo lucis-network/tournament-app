@@ -20,7 +20,8 @@ interface IProps {
 const Mission = (props: IProps) => {
   const [loading, setLoading] = useState(false);
   const [mission, setMission] = useState<PlayerMission[]>([])
-  const [statistic, setStatistic] = React.useState<{ lucis_point: number, lucis_token: number }>({ lucis_point: 0, lucis_token: 0 });
+  const [loadingLucisMission, setLoadingLucisMission] = useState(false);
+  // const [statistic, setStatistic] = React.useState<{ lucis_point: number, lucis_token: number }>({ lucis_point: 0, lucis_token: 0 });
   const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
       endpoint: 'p2e'
@@ -44,17 +45,12 @@ const Mission = (props: IProps) => {
     }
 
     await queryData();
-    const sta = await statisticQuery.refetch();
-    setStatistic({ lucis_point: sta?.data?.getBalance?.lucis_point, lucis_token: sta?.data?.getBalance?.lucis_token })
+    await statisticQuery.refetch();
     setLoading(false);
     if (showMessage) {
       message.success("Update!");
     }
   }
-
-  React.useEffect(() => {
-    setStatistic({ lucis_point: statisticQuery.data?.getBalance?.lucis_point, lucis_token: statisticQuery?.data?.getBalance?.lucis_token })
-  },[statisticQuery.data])
 
   useEffect(() => {
     if(props.currentGame) {
@@ -63,6 +59,7 @@ const Mission = (props: IProps) => {
   }, [props?.currentGame])
 
   const queryData = async () => {
+    setLoadingLucisMission(true);
     switch (props.currentGame) {
       case Game.CSGO:
         const csgo = await lucisMissionQuery.refetch({
@@ -84,6 +81,7 @@ const Mission = (props: IProps) => {
       default:
         break;
     }
+    setLoadingLucisMission(false);
   }
 
   return (
@@ -91,8 +89,8 @@ const Mission = (props: IProps) => {
       <div className={s.dailyContainer}>
         <SidebarRight
           onlyWallet
-          lucisPoint={statistic?.lucis_point}
-          lucisToken={statistic?.lucis_token} />
+          lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+          lucisToken={statisticQuery?.data?.getBalance?.lucis_point} />
         <Row gutter={51}>
           <Col lg={16} md={24}>
             <div>
@@ -110,14 +108,14 @@ const Mission = (props: IProps) => {
               title="Completed  the Lucis missions to receive"
               missions={mission}
               handleUpdateMissions={(showMessage, loadingIconUpdate) => handleUpdateMissions(showMessage, loadingIconUpdate)}
-              loading={lucisMissionQuery.loading}
+              loading={loadingLucisMission}
               currentGame={props.currentGame}
               loadingUpdate={loading} />
           </Col>
           <Col lg={8} md={24}>
             <SidebarRight
-              lucisPoint={statistic?.lucis_point}
-              lucisToken={statistic?.lucis_token}
+              lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+              lucisToken={statisticQuery?.data?.getBalance?.lucis_point}
             />
 
           </Col>

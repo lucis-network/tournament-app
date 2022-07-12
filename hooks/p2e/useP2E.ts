@@ -269,6 +269,30 @@ export const UPDATE_CSGO_RECENTLY_MATCH = gql`
   }
 `
 
+export const UPDATE_LOL_RECENTLY_MATCH = gql`
+  mutation ($platform_id: Int!) {
+    updateLolRecentlyMatch(platform_id: $platform_id) {
+        uid
+        match_uid
+        player_game_uid
+        is_win
+        kill
+        assist
+        map_img
+        point
+        gold_earned
+        minion_killed
+        deaths
+        match {
+          uid
+          type
+          end_at
+          map
+        }
+    }
+  }
+`
+
 export const CLAIM_MISSION = gql`
   mutation ($player_mission_uid: String!) {
     claimMission(player_mission_uid: $player_mission_uid)
