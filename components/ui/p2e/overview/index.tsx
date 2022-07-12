@@ -260,9 +260,9 @@ export default observer(function P2EOverview(props: IProps) {
     } catch (e: any) {
       handleGraphqlErrors(e, (code) => {
         switch (code) {
-          // case "ALREADY_CONNECTED":
-          //   message.error("This account is already connected to another user! Please use another account.")
-          //   return;
+          case "HAS_CONNECTED":
+            message.error("This summoner name is already connected to another user! Please use another summoner name.")
+            return;
           // case "HAS_NOT_CSGO":
           //   message.error("Your account on Faceit is not connected to CS:GO. Please connect to your game first");
           //   return;
