@@ -243,6 +243,7 @@ export type ChestDetail = {
   ticket_cost?: Maybe<Scalars['Decimal']>;
   ticket_cost_type?: Maybe<CostType>;
   tier: LuckyChestTier;
+  title?: Maybe<Scalars['String']>;
   type: LuckyChestType;
   updated_at: Scalars['DateTime'];
 };
@@ -251,6 +252,12 @@ export enum ClaimChestPrizeErrorCode {
   UserHasClaimed = 'UserHasClaimed',
   UserHistoryNotFound = 'UserHistoryNotFound'
 }
+
+export type ClaimResponse = {
+  __typename?: 'ClaimResponse';
+  /** claiming prize required contacting admin */
+  required_contact: Scalars['Boolean'];
+};
 
 export type ClaimStakedTransaction = {
   __typename?: 'ClaimStakedTransaction';
@@ -909,7 +916,7 @@ export type Mutation = {
   buyRaffleTicket?: Maybe<Scalars['Boolean']>;
   claimAllMission?: Maybe<Scalars['Boolean']>;
   claimBox?: Maybe<Scalars['Boolean']>;
-  claimChestPrize?: Maybe<Scalars['Boolean']>;
+  claimChestPrize?: Maybe<ClaimResponse>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimRaffle?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
@@ -1115,6 +1122,7 @@ export enum OpenChestErrorCode {
   ChestNotFound = 'ChestNotFound',
   NotEnoughLucisPoint = 'NotEnoughLucisPoint',
   NotEnoughLucisToken = 'NotEnoughLucisToken',
+  PrizeNotFound = 'PrizeNotFound',
   ServerError = 'ServerError'
 }
 
@@ -1348,15 +1356,12 @@ export enum PrizeRarity {
 
 export enum PrizeType {
   BattlePass = 'BATTLE_PASS',
-  CsgoChestTicket = 'CSGO_CHEST_TICKET',
   CsgoKnife = 'CSGO_KNIFE',
   CsgoKnifeOrGlovePiece_1 = 'CSGO_KNIFE_OR_GLOVE_PIECE_1',
   CsgoKnifeOrGlovePiece_2 = 'CSGO_KNIFE_OR_GLOVE_PIECE_2',
   CsgoKnifeOrGlovePiece_3 = 'CSGO_KNIFE_OR_GLOVE_PIECE_3',
   CsgoKnifeOrGlovePiece_4 = 'CSGO_KNIFE_OR_GLOVE_PIECE_4',
-  CsgoLolSharedTicket = 'CSGO_LOL_SHARED_TICKET',
   GoodLuck = 'GOOD_LUCK',
-  LolChestTicket = 'LOL_CHEST_TICKET',
   LolCostume = 'LOL_COSTUME',
   LolCostumePiece_1 = 'LOL_COSTUME_PIECE_1',
   LolCostumePiece_2 = 'LOL_COSTUME_PIECE_2',
@@ -1367,9 +1372,7 @@ export enum PrizeType {
   NftBoxPiece_1 = 'NFT_BOX_PIECE_1',
   NftBoxPiece_2 = 'NFT_BOX_PIECE_2',
   NftBoxPiece_3 = 'NFT_BOX_PIECE_3',
-  NftBoxPiece_4 = 'NFT_BOX_PIECE_4',
-  NftChestTicket = 'NFT_CHEST_TICKET',
-  PremiumChestTicket = 'PREMIUM_CHEST_TICKET'
+  NftBoxPiece_4 = 'NFT_BOX_PIECE_4'
 }
 
 export type ProgressDailyMission = {
@@ -2006,7 +2009,6 @@ export type User = {
   id: Scalars['ID'];
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   luckychest_history?: Maybe<Array<UserLuckyChestHistory>>;
-  luckychest_ticket?: Maybe<Array<UserLuckyChestTurn>>;
   nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
@@ -2051,7 +2053,6 @@ export type UserCount = {
   favorite_game: Scalars['Int'];
   leader_board: Scalars['Int'];
   luckychest_history: Scalars['Int'];
-  luckychest_ticket: Scalars['Int'];
   nfts: Scalars['Int'];
   notification: Scalars['Int'];
   platform_account: Scalars['Int'];
@@ -2094,6 +2095,7 @@ export type UserFavoriteGame = {
 
 export type UserHistory = {
   __typename?: 'UserHistory';
+  code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
@@ -2106,6 +2108,7 @@ export type UserHistory = {
 
 export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
+  code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
@@ -2113,18 +2116,6 @@ export type UserLuckyChestHistory = {
   tier: LuckyChestTier;
   type: LuckyChestType;
   uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type UserLuckyChestTurn = {
-  __typename?: 'UserLuckyChestTurn';
-  amount?: Maybe<Scalars['Int']>;
-  created_at: Scalars['DateTime'];
-  id: Scalars['ID'];
-  tier: LuckyChestTier;
-  type: LuckyChestType;
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
