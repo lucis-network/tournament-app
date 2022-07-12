@@ -1,2 +1,0 @@
-- name: Link GitHub Issue and Pull Request with Trello Card
-  uses: jessicazu/trello-github-actions@v1.0
