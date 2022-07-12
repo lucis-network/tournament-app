@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react-lite";
 import AuthGameStore from "components/Auth/AuthGameStore";
-import { Game } from "utils/Enum";
+import { Game, OverviewSection } from "utils/Enum";
 import { message } from "antd";
 
 interface IProps {
@@ -18,6 +18,7 @@ interface IProps {
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
   const [currentGame, setCurrentGame] = useState<Game | null>(null);
+  const [overviewSection, setOverviewSection] = useState<OverviewSection>(OverviewSection.NONE);
 
   useEffect(() => {
     if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
@@ -83,7 +84,7 @@ export default observer(function P2EWrapper(props: IProps) {
 
     if (path === "/p2e/dashboard" || path === "/p2e/missions") {
       if (!AuthGameStore.isLoggedInLMSS && !AuthGameStore.isLoggedInFaceit) {
-        message.error("Please connect game to continue!");
+        setOverviewSection(OverviewSection.CONNECT_GAME);
         return;
       } else {
         if (!currentGame) {
@@ -128,7 +129,9 @@ export default observer(function P2EWrapper(props: IProps) {
   const wrapperChildren = () => {
     return React.Children.map(props.children, child => {
       return React.cloneElement(child as any, {
-        currentGame: currentGame
+        currentGame: currentGame,
+        overviewSection: overviewSection,
+        resetOverviewSection: () => setOverviewSection(OverviewSection.NONE)
       })
     })
   }
@@ -160,6 +163,7 @@ export default observer(function P2EWrapper(props: IProps) {
     }
     localStorage.setItem("currentGame", game.toString());
     setCurrentGame(game);
+    router.push("/p2e/dashboard");
   }
 
   return (
@@ -187,14 +191,14 @@ export default observer(function P2EWrapper(props: IProps) {
                   })}
                 </div>
                 {(AuthStore.isLoggedIn && router.pathname !== "/") && <div className={s.chooseGame}>
-                  <img
+                  {AuthGameStore.isLoggedInLMSS && <img
                     className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
                     src="/assets/P2E/lol-game.svg" alt="lol-game"
-                    onClick={() => setGame(Game.LOL)} />
-                  <img
+                    onClick={() => setGame(Game.LOL)} />}
+                  {AuthGameStore.isLoggedInFaceit && <img
                     className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
                     onClick={() => setGame(Game.CSGO)}
-                    src="/assets/P2E/csgo-game.svg" alt="csgo-game" />
+                    src="/assets/P2E/csgo-game.svg" alt="csgo-game" />}
                   <img
                     className={s.addGame}
                     src="/assets/P2E/add-game.svg"
