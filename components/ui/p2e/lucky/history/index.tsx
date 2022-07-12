@@ -1,13 +1,13 @@
 import { Table } from 'antd';
 import ButtonClaim from '../button/ButtonClaim';
 import s from './history.module.sass'
-import {UserLuckyChestHistory} from "../../../../../src/generated/graphql_p2e";
+import {UserHistory, UserLuckyChestHistory} from "../../../../../src/generated/graphql_p2e";
 import {Maybe} from "@graphql-tools/utils";
 import {ClaimChestPrizeProps} from "../../../../../hooks/p2e/luckyChest/useLuckyChest";
 import moment from "moment";
 
 type HistoryTableProps = {
-    userHistoryData: Maybe<UserLuckyChestHistory[]> | undefined,
+    userHistoryData: Maybe<UserHistory[]> | undefined,
     claimChestPrize: (user_prize_history_uid: string) => void
 }
 
@@ -24,14 +24,14 @@ export default function HistoryTable({userHistoryData, claimChestPrize}: History
             rarity: 'Common',
         },
         is_claimed: false,
-        updated_at: 'asdfasdf',
+        created_at: 'asdfasdf',
     }) as unknown as UserLuckyChestHistory[]
 
     userHistoryData && userHistoryData.map((item, index) => {
     // mockData.map((item, index) => {
         dataSource.push({
             count: index + 1,
-            updated_at: item?.updated_at,
+            created_at: item?.created_at,
             prize: item?.prize,
             user_prize_history_uid: item?.uid,
             is_claimed: item?.is_claimed,
@@ -47,8 +47,8 @@ export default function HistoryTable({userHistoryData, claimChestPrize}: History
         },
         {
             title: 'Time',
-            dataIndex: 'updated_at',
-            key: 'updated_at',
+            dataIndex: 'created_at',
+            key: 'created_at',
             className: s.columnTime,
             render: (text: string) => moment(text).format('YYYY/MM/DD - hh:mm:ss')
         },
