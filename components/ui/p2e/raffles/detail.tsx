@@ -21,6 +21,7 @@ import RollingRaffles from "./rolling";
 import RafflesStore from "../../../../src/store/RafflesStore";
 import moment from "moment";
 import {mapToDict} from "../../../../utils/Array";
+import RollinTestRaffles from "./rollingtest";
 
 const RafflesDetail = observer(() => {
   const router = useRouter()

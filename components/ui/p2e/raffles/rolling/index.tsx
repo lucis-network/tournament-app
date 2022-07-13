@@ -5,20 +5,22 @@ import {b64DecodeUnicode, replaceCharAt} from "../../../../../utils/String";
 import {useGetWonTickets, useMyWonTickets} from "../../../../../hooks/p2e/useRaffleDetail";
 import {isEmpty, parseInt} from "lodash";
 import moment from "moment";
-import CountdownTimeEnd from "../timeEnd";
-import {RaffleDetail} from "../../../../../src/generated/graphql_p2e";
-import RafflesStore from "src/store/RafflesStore";
-import CountdownTimeBefore from "../timeBefore";
-import PopupClaimTicket from "../popup/popupClaimTickets";
-import { LoadingOutlined } from '@ant-design/icons';
-import { Spin } from "antd";
+import {RaffleDetail, UserTicketGql} from "../../../../../src/generated/graphql_p2e";
+
 import {ApolloQueryResult} from "@apollo/client";
+import RafflesStore from "../../../../../src/store/RafflesStore";
+import CountdownTimeBefore from "../timeBefore";
+import CountdownTimeEnd from "../timeEnd";
+import {Spin} from "antd";
+import {LoadingOutlined} from "@ant-design/icons";
+import PopupClaimTicket from "../popup/popupClaimTickets";
 
 const Digit = function (props: {
   value: number,
   rolling: boolean,
+  realtime: boolean,
 }) {
-  const {value, rolling} = props;
+  const {value, rolling, realtime} = props;
 
   return (
     <DigitRoll
@@ -26,7 +28,7 @@ const Digit = function (props: {
       length={1} divider=""
       num={value}
       rolling={rolling}
-      rollingDuration={5000}
+      rollingDuration={realtime ? 4900 : 1000}
       oneRoundDuration={1000}
     />
   )
@@ -36,161 +38,225 @@ type Props = {
   dataRaffleDetail?: RaffleDetail;
   refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>;
 }
+
+const antIcon = <LoadingOutlined style={{fontSize: 20, color: "#00F9FF"}} spin/>;
+
 const RollingRaffles = (props: Props) => {
   const {raffleUid, dataRaffleDetail, refetchRaffleDetail} = props;
-  const antIcon = <LoadingOutlined style={{ fontSize: 20, color: "#00F9FF" }} spin />;
   const {dataWonTickets, refetch} = useGetWonTickets({
     raffle_uid: raffleUid,
     skip: isEmpty(raffleUid)
   },);
+
   const {dataMyWonTickets, refetchMyWonTickets} = useMyWonTickets({
     raffle_uid: raffleUid,
     skip: isEmpty(raffleUid)
   },);
 
   const [currentTicket, setCurrentTicket] = useState('000000');
-  const [targetTicket, setTargetTicket] = useState('');
+  const [targetTicket, setTargetTicket] = useState('000000');
+  const [timeLine, setTimeLine] = useState([]);
   const [currentRollingIdx, setCurrentRollingIdx] = useState(0);
-  const [currentDataIdx, setCurrentDataIdx] = useState(0);
-  const [checkDisplayTimeEnd, setCheckDisplayTimeEnd] = useState(false);
-  const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
-  const [isPopupClaim, setIsPopupClaim] = useState(false);
-  const [isCheckHasData, setIsCheckHasData] = useState(false);
   const [isCheckLoading, setIsCheckLoading] = useState(0);
+  const [dataTickets, setDataTickets] = useState([]);
 
+  const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
+  const [checkDisplayTimeEnd, setCheckDisplayTimeEnd] = useState(false);
+  const [isCheckFirstTime, setIsCheckFistTime] = useState(false);
+  const [isPopupClaim, setIsPopupClaim] = useState(false);
+
+  const endAtBefore = moment(dataRaffleDetail?.end_at).valueOf();
   const timeEnd = moment(dataRaffleDetail?.end_at)
     .add(dataRaffleDetail?.winner_total ? dataRaffleDetail?.winner_total : 0, "minutes")
     .valueOf();
 
-  const endAtBefore = moment(dataRaffleDetail?.end_at)
-    .valueOf();
-
-
+  //Show popup claim when status = closed
   useEffect(() => {
-    if(dataRaffleDetail?.status === "CLOSED" && dataWonTickets){
-      RafflesStore.dataWinTicket = dataWonTickets;
+    if (dataRaffleDetail?.status === "CLOSED" && dataTickets) {
+      RafflesStore.dataWinTicket = dataTickets;
     }
-  }, [dataRaffleDetail, dataWonTickets]);
 
-  useEffect(() => {
-    if(dataMyWonTickets &&  dataRaffleDetail?.status === "CLOSED"){
+    if (dataMyWonTickets && dataRaffleDetail?.status === "CLOSED") {
       dataMyWonTickets.forEach((item) => {
-        if(!item?.is_claimed) setIsPopupClaim(true);
+        if (!item?.is_claimed) setIsPopupClaim(true);
       })
     }
-  }, [dataMyWonTickets, dataRaffleDetail]);
+  }, [dataMyWonTickets, dataRaffleDetail?.status, dataTickets]);
 
-  const dateNow = moment(new Date()).valueOf();
-
+  //Check time before end at  5 minius
   useEffect(() => {
-    const checkDateInterval =  setInterval(() => {
-      if(dataRaffleDetail?.end_at <=  (new Date()).toISOString()) {
-        setCheckDisplayTimeEnd(true);
-      }
-    }, 1000)
-
-    if(checkDisplayTimeEnd) {
-      clearInterval(checkDateInterval);
-      setCheckDisplayEndAt(false);
-    };
-    return () => {
-      clearInterval(checkDateInterval)
-    }
-  }, [dataRaffleDetail])
-
-  useEffect(() => {
-    const checkDateInterval =  setInterval(() => {
+    const checkDateInterval = setInterval(() => {
       const dateNow = moment(new Date()).valueOf();
-      const endAt = moment(dataRaffleDetail?.end_at)
-        .subtract(5, "minutes")
-        .valueOf()
-      ;
-      const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
+      const timeBefore = (endAtBefore - dateNow) / (1000 * 60);
 
-      if(timeBefore <= 5) {
+      if (timeBefore <= 5) {
         setCheckDisplayEndAt(true);
       }
     }, 1000)
-    if(checkDisplayEndAt)  clearInterval(checkDateInterval);
+    if (checkDisplayEndAt) clearInterval(checkDateInterval);
     return () => {
       clearInterval(checkDateInterval)
     }
   }, [dataRaffleDetail])
 
+  //Rolling when new date = time end at
   useEffect(() => {
-    if (dataWonTickets && RafflesStore.dataWinTicket.length === 0) {
-      RafflesStore.dataWinTicket = Array.from({length: dataWonTickets.length}, (_, i) => undefined);
+    const checkDateInterval = setInterval(() => {
+      const timeStampBefore1s = moment(new Date())
+        .add(1, "seconds")
+        .valueOf();
+      if (moment(dataRaffleDetail?.end_at).valueOf() <= timeStampBefore1s) {
+        setCheckDisplayTimeEnd(true);
+      }
+    }, 1000);
+
+    if (checkDisplayTimeEnd) {
+      clearInterval(checkDateInterval);
+      setCheckDisplayEndAt(false);
     }
+
+    return () => {
+      clearInterval(checkDateInterval)
+    }
+  }, [dataRaffleDetail])
+
+  const formatDateToHMS = (date: any) => {
+    return moment(date).format("YYYY-MM-DD  HH:mm:ss");
+  }
+
+  //Rolling when new date > time end at
+  useEffect(() => {
+    let rollingInterval: NodeJS.Timer;
+
+    if (checkDisplayTimeEnd && timeLine && dataRaffleDetail?.status === "ENABLED") {
+
+      rollingInterval = setInterval(async () => {
+        timeLine.forEach((item, index) => {
+          const dateNow = moment((new Date()).toISOString()).format("YYYY-MM-DD  HH:mm:ss");
+          const targetDate = moment(item).format("YYYY-MM-DD  HH:mm:ss");
+          //Check raffles realtime first time when mount component
+          if (!isCheckFirstTime && dateNow > formatDateToHMS(timeLine[index]) && dateNow < formatDateToHMS(timeLine[index + 1])) {
+            const dataIdxRealTime = Math.floor(index / 6);
+            setRaffleRealTime(index, dataIdxRealTime);
+            setDataRealTime(dataIdxRealTime);
+            setIsCheckFistTime(true);
+            return;
+          }
+          else {
+            setIsCheckFistTime(true);
+          }
+
+          if (dateNow === targetDate) {
+            const currentRollingIdxC = index % 6;
+            const dataIdx = Math.floor(index / 6);
+            setDataRealTime(dataIdx);
+            setCurrentRollingIdx(currentRollingIdxC);
+            setNumberRollingIdx(currentRollingIdxC, dataIdx, index);
+            setListDataWinner(currentRollingIdxC, dataIdx);
+            return;
+          }
+        })
+      }, 1000);
+    }
+
+    return () => {
+      clearInterval(rollingInterval)
+    }
+  }, [currentTicket, checkDisplayTimeEnd, timeLine, isCheckFirstTime])
+
+  const setRaffleRealTime = (index: number, dataIdx: number) => {
+    let str = targetTicket.slice(dataIdx * 6, index + 1);
+    str = currentTicket.replace(currentTicket.substring(0,str.length), str);
+    setCurrentTicket(str);
+  }
+
+  const setNumberRollingIdx = (currentRollingIdxC: number, dataIdx: number, index: number) => {
+    const new_digit_n = targetTicket[index];
+    if (currentTicket[currentRollingIdxC] == new_digit_n) {
+      setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdxC, ((parseInt(new_digit_n) + 1) % 10).toString()));
+
+      setTimeout(() => {
+        setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdxC, new_digit_n));
+      }, 20)
+    } else {
+      setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdxC, new_digit_n));
+    }
+  }
+
+  const setDataRealTime = (dataIdx: number) => {
+    let data: (UserTicketGql | undefined)[] = [];
+    for (let i = 0; i < dataIdx; i++) {
+      data.push(dataTickets[i]);
+    }
+    Object.assign(RafflesStore.dataWinTicket,data);
+    setIsCheckLoading(dataIdx);
+  }
+
+  const setListDataWinner = (currentRollingIdxC: number, dataIdx: number) => {
+    setTimeout(function () {
+      let data = RafflesStore.dataWinTicket;
+      data[dataIdx] = dataTickets[dataIdx];
+      RafflesStore.dataWinTicket = data;
+      setIsCheckLoading(dataIdx+1);
+      if(dataIdx >= dataTickets.length && dataMyWonTickets) setIsPopupClaim(true);
+    }, 30000);
+  }
+
+  useEffect(() => {
+    if (dataTickets && RafflesStore.dataWinTicket.length === 0) {
+      RafflesStore.dataWinTicket = Array.from({length: dataTickets.length}, (_, i) => undefined);
+    }
+  }, [dataTickets])
+
+  //decode data won tickets
+  useEffect(() => {
+    let data: any[] = [];
+    if(dataWonTickets) {
+      let obj = {};
+      dataWonTickets.forEach((item) => {
+        obj = b64DecodeUnicode(item);
+        // @ts-ignore
+        data.push(JSON.parse(obj));
+      })
+    }
+    // @ts-ignore
+    setDataTickets(data);
+    let str = "";
+    data.forEach((item) => {
+      str += item?.ticket_number;
+    })
+
+    //set Target ticket follow timeline
+    setTargetTicket(str);
+    setTimeLineTargetNumber(str);
   }, [dataWonTickets])
 
-  useEffect(() => {
-    let rollInterval: NodeJS.Timer;
-    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status === "ENABLED") {
-      rollInterval = setInterval(() => {
-        const new_digit_n = targetTicket[currentRollingIdx];
-        if (currentRollingIdx <= 5) {
-          if (currentTicket[currentRollingIdx] == new_digit_n) {
-            setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, ((parseInt(new_digit_n) + 1) % 10).toString()));
-
-            setTimeout(() => {
-              setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, new_digit_n));
-            }, 20)
-          } else {
-            setCurrentTicket(replaceCharAt(currentTicket, currentRollingIdx, new_digit_n));
-          }
+  const setTimeLineTargetNumber = (str: string) => {
+    let arr = [];
+    for (let i = 0; i < str.length; i++) {
+      let date;
+      if(i == 0)  date = dataRaffleDetail?.end_at;
+      else {
+        // @ts-ignore
+        const dateIndex = arr[arr.length-1];
+        if (i % 6 == 0) {
+          date = moment(dateIndex).add(35, "seconds").toISOString();
         }
-      }, currentRollingIdx === 0 ? 5000 : 5000);
-    }
+        else {
+          date = moment(dateIndex).add(5, "seconds").toISOString();
 
-    return () => {
-      clearInterval(rollInterval)
-    }
-  }, [currentTicket, currentRollingIdx, checkDisplayTimeEnd, isCheckHasData, dataRaffleDetail])
-
-  useEffect(() => {
-    let changeIdxInterval: NodeJS.Timer;
-    if (targetTicket.length == 6 && checkDisplayTimeEnd && isCheckHasData && dataRaffleDetail?.status === "ENABLED") {
-      changeIdxInterval = setInterval(() => {
-        setCurrentRollingIdx(currentRollingIdx + 1);
-        if (currentRollingIdx == 7) {
-          let data = RafflesStore.dataWinTicket;
-
-          if (currentDataIdx > 0) {
-            data[currentDataIdx-1] = dataWonTickets![currentDataIdx - 1];
-          }
-          RafflesStore.dataWinTicket = data;
-          setIsCheckLoading(currentDataIdx)
         }
-      }, currentRollingIdx === 7 ? 0 : 5100);
+      }
+      arr.push(date);
     }
-    return () => {
-      clearInterval(changeIdxInterval)
-    }
-  }, [currentRollingIdx, targetTicket, currentDataIdx, dataWonTickets, RafflesStore.dataWinTicket, checkDisplayTimeEnd, isCheckHasData, dataRaffleDetail])
-
-  // rolling new ticket
-  useEffect(() => {
-    let currentDataInterval: NodeJS.Timer;
-    if (dataWonTickets && checkDisplayTimeEnd && dataRaffleDetail?.status === "ENABLED") {
-      currentDataInterval = setInterval(() => {
-        const ticketNumber = b64DecodeUnicode(dataWonTickets[currentDataIdx]?.ticket_number ?? '000000');
-        setTargetTicket(ticketNumber);
-        setCurrentRollingIdx(0);
-        setCurrentDataIdx(currentDataIdx + 1);
-        setCurrentTicket('000000');
-        setIsCheckHasData(true);
-      }, currentDataIdx == 0 ? 0 : 60000) // xu li lan dau wait 0s. lan tiep theo wait 1m vi moi ticket quay trong 1m
-
-      if (dataWonTickets.length <= currentDataIdx) clearInterval(currentDataInterval);
-    }
-    return () => {
-      clearInterval(currentDataInterval)
-    }
-  }, [dataWonTickets, currentDataIdx, checkDisplayTimeEnd, dataRaffleDetail])
+    //@ts-ignore
+    setTimeLine(arr);
+  }
 
   const closePopupClaimTicket = () => {
     setIsPopupClaim(false);
   }
+
   return (
     <div className={s.rafflesWrapper}>
       <h2 className={s.sectionTitle}>Raffle Rolling</h2>
@@ -203,25 +269,26 @@ const RollingRaffles = (props: Props) => {
         />
         <div className={s.rollingNumber}>
           <div>
-            <Digit value={parseInt(currentTicket[0])} rolling={currentRollingIdx === 0}/>
+            <Digit value={parseInt(currentTicket[0])} rolling={currentRollingIdx === 0} realtime={isCheckFirstTime}/>
           </div>
           <div>
-            <Digit value={parseInt(currentTicket[1])} rolling={currentRollingIdx === 1}/>
+            <Digit value={parseInt(currentTicket[1])} rolling={currentRollingIdx === 1} realtime={isCheckFirstTime} />
           </div>
           <div>
-            <Digit value={parseInt(currentTicket[2])} rolling={currentRollingIdx === 2}/>
+            <Digit value={parseInt(currentTicket[2])} rolling={currentRollingIdx === 2} realtime={isCheckFirstTime} />
           </div>
           <div>
-            <Digit value={parseInt(currentTicket[3])} rolling={currentRollingIdx === 3}/>
+            <Digit value={parseInt(currentTicket[3])} rolling={currentRollingIdx === 3} realtime={isCheckFirstTime} />
           </div>
           <div>
-            <Digit value={parseInt(currentTicket[4])} rolling={currentRollingIdx === 4}/>
+            <Digit value={parseInt(currentTicket[4])} rolling={currentRollingIdx === 4} realtime={isCheckFirstTime} />
           </div>
           <div>
-            <Digit value={parseInt(currentTicket[5])} rolling={currentRollingIdx === 5}/>
+            <Digit value={parseInt(currentTicket[5])} rolling={currentRollingIdx === 5} realtime={isCheckFirstTime} />
           </div>
         </div>
       </div>
+
       {
         dataRaffleDetail?.status !== "CLOSED" &&
           <>
@@ -241,7 +308,7 @@ const RollingRaffles = (props: Props) => {
                             <span>Rolling at</span>
                         </div>
                         <div className={s.rollingTime}>
-                            <CountdownTimeBefore targetDate={endAtBefore}/>
+                            <CountdownTimeBefore targetDate={endAtBefore} />
                         </div>
                     </>
                 }
@@ -260,7 +327,7 @@ const RollingRaffles = (props: Props) => {
                             <span>End rolling at</span>
                         </div>
                         <div className={s.rollingTime}>
-                            <CountdownTimeEnd targetDate={timeEnd}/>
+                            <CountdownTimeEnd targetDate={timeEnd} refetchRaffleDetail={refetchRaffleDetail} refetchMyWonTickets={refetchMyWonTickets}/>
                         </div>
                     </>
                 }
@@ -274,14 +341,14 @@ const RollingRaffles = (props: Props) => {
           {RafflesStore.dataWinTicket ? RafflesStore.dataWinTicket?.map((item, index: number) => {
             return (
               <>
-                <div className={s.recentWinItem} key={`${item?.ticket_number}`}>
-                  <span className={s.recentWinItemId}>#{item?.ticket_number ? b64DecodeUnicode(item?.ticket_number) : '------'}</span>
+                <div className={s.recentWinItem} key={`${item?.ticket_number}${index}`}>
+                  <span className={s.recentWinItemId}>#{item?.ticket_number ?? '------'}</span>
                   <span className={s.recentWinItemName}>{item && `(${item?.user?.profile?.user_name})`}</span>
-                  {isCheckLoading === index && checkDisplayTimeEnd && dataRaffleDetail?.status === "ENABLED" &&
-                    <>
-                        <Spin indicator={antIcon} />
-                    </>
-                  }
+                    {isCheckLoading === index && checkDisplayTimeEnd && dataRaffleDetail?.status === "ENABLED" &&
+                      <>
+                          <Spin indicator={antIcon}/>
+                      </>
+                    }
                 </div>
               </>
             );
@@ -289,7 +356,7 @@ const RollingRaffles = (props: Props) => {
         </div>
       </div>
 
-    <PopupClaimTicket status={isPopupClaim} dataMyWonTickets={dataMyWonTickets} raffleUid={raffleUid} closePopupClaimTicket={closePopupClaimTicket}/>
+      <PopupClaimTicket status={isPopupClaim} dataMyWonTickets={dataMyWonTickets} raffleUid={raffleUid} closePopupClaimTicket={closePopupClaimTicket}/>
     </div>
   )
 }
