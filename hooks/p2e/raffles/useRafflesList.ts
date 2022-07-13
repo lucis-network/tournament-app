@@ -1,5 +1,5 @@
 import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client"
-import {PlatformAccount, Raffle, RecentWinner, SponsorRaffle, UserTicket} from "../../../src/generated/graphql_p2e";
+import {P2eSponsor, PlatformAccount, Raffle, RecentWinner, UserTicket} from "../../../src/generated/graphql_p2e";
 import {isEmpty} from "lodash";
 
 export const useGetRecentWinners = (): {
@@ -61,7 +61,7 @@ export const useGetSponsorRaffle = (): {
   getSponsorRaffleError: ApolloError | undefined,
   refetchSponsorRaffle: () => Promise<ApolloQueryResult<any>>,
   getSponsorRaffleData: {
-    getSponsorRaffles: SponsorRaffle[]
+    getSponsorRaffles: P2eSponsor[]
   },
 } => {
   const {
