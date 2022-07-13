@@ -123,3 +123,35 @@
         min-width: 285px
         @media screen and (min-width: 768px)
             width: auto
+.paginationWrap
+    text-align: right
+    margin-top: 24px
+    padding: 0 24px
+    .historyPagination
+        display: inline-block
+        :global(.anticon)
+            color: #00F9FF
+        :global(.ant-pagination-item a), :global(.ant-pagination-item-ellipsis)
+            color: rgba(219, 224, 232, 0.5)
+        :global(.ant-pagination-jump-next), :global(.ant-pagination-jump-prev)
+            a
+                display: block
+                height: 100%
+                :global(.ant-pagination-item-container)
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    height: 100%
+        :global(.ant-pagination-next), :global(.ant-pagination-prev)
+            button
+                display: flex
+                align-items: center
+                justify-content: center
+        :global(.ant-pagination-item-active)
+            background: none
+            border-color: #00F9FF
+            border-radius: 0
+            a
+                color: #00F9FF
+                font-weight: 400
+

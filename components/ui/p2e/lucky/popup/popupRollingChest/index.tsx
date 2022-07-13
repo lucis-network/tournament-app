@@ -2,9 +2,17 @@ import { Modal } from "antd";
 import { useWindowSize } from "hooks/useWindowSize";
 import React, { useEffect, useState } from "react";
 import s from "./index.module.sass";
-import { ChestDetail, OpenChestResponse } from "../../../../../../src/generated/graphql_p2e";
+import {
+  ChestDetail,
+  LuckyChestTier,
+  LuckyChestType,
+  OpenChestResponse
+} from "../../../../../../src/generated/graphql_p2e";
 import Img from "../../../../common/Img";
 import PopupRewardChest from "../popupRewardChest";
+import {ApolloQueryResult} from "@apollo/client";
+import {useGetLuckyChestUserInfo} from "../../../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {AppEmitter} from "../../../../../../services/emitter";
 
 type Props = {
   closePopupRollingChest: () => void;
@@ -118,6 +126,7 @@ const PopupRollingChest = (props: Props) => {
       //@ts-ignore
       transition.addEventListener('transitionend', () => {
         setIsPopupRewardChest(true);
+        AppEmitter.emit('refresh_history')
       });
     }
   }, [visible])
