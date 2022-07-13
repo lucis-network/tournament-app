@@ -1010,3 +1010,39 @@ body .ant-carousel .slick-dots-bottom {
     margin: 0 5px !important;
   }
 }
+
+
+.connect-lmss-modal .ant-modal-header {
+  background: rgba(45, 52, 70, 0.5);
+  backdrop-filter: blur(40px);
+
+  border-radius: 4px 4px 0px 0px;
+}
+
+.connect-lmss-modal .ant-modal-body {
+  background: rgba(69, 80, 107, 0.5);
+  /* 40 blur */
+
+  backdrop-filter: blur(40px);
+}
+
+.connect-lmss-modal .ant-modal-footer {
+  background: rgba(69, 80, 107, 0.5);
+  /* 40 blur */
+
+  backdrop-filter: blur(40px);
+  border: 0
+}
+
+.connect-lmss-modal .ant-modal-close-x {
+  background: transparent;
+  color: #fff;
+}
+
+.connect-lmss-modal .ant-modal-title {
+  color: #00F9FF;
+  font-family: 'Revx Neue Demo';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+}

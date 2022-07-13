@@ -34,7 +34,6 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
     return total
   }
 
-  console.log(props.loading)
 
   const filterDayRecentMatch = () => {
     let filteredList: { [endAt: string]: CsgoPlayerMatch[] } = {};
