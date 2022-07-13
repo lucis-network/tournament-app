@@ -28,8 +28,8 @@ export default observer(function P2EOverview(props: IProps) {
   })
   const [isAuth, setIsAuth] = React.useState<boolean>(false);
 
-  const [loadingFaceit, setLoadingFaceit] = useState<boolean>(true);
-  const [loadingLMSS, setLoadingLMSS] = useState<boolean>(true);
+  const [loadingFaceit, setLoadingFaceit] = useState<boolean>(false);
+  const [loadingLMSS, setLoadingLMSS] = useState<boolean>(false);
   const [openConnectLOLPopup, setOpenConnectLOLPopup] = useState<boolean>(false);
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
   const [lmssUser, setLmssUser] = useState<PlatformAccount>({} as PlatformAccount)
@@ -235,15 +235,15 @@ export default observer(function P2EOverview(props: IProps) {
     setOpenConnectLOLPopup(false);
     setLoadingLMSS(true);
 
-      const gameAccount: AuthGameUser = {
-        ...AuthGameStore,
-        ...data
-      }
-      AuthGameStore.setAuthGameUser(gameAccount);
-      setLmssUser({...lmssUser, avatar: data.lmss_avatar, nick_name: data.lmss_nick_name});
-      localStorage.setItem("currentGame", Game.LOL.toString());
-      setLocalAuthGameInfo(gameAccount);
-      router.push("/p2e/dashboard");
+    const gameAccount: AuthGameUser = {
+      ...AuthGameStore,
+      ...data
+    }
+    AuthGameStore.setAuthGameUser(gameAccount);
+    setLmssUser({ ...lmssUser, avatar: data.lmss_avatar, nick_name: data.lmss_nick_name });
+    localStorage.setItem("currentGame", Game.LOL.toString());
+    setLocalAuthGameInfo(gameAccount);
+    router.push("/p2e/dashboard");
 
     setLoadingLMSS(false);
 
@@ -289,7 +289,7 @@ export default observer(function P2EOverview(props: IProps) {
                         className={s.overviewBtnConnect}
                         onClick={() => onClickConnectLMSS()}
                       >
-                        <div><span>{loadingLMSS && <Spin/>}</span>CONNECT GAME</div>
+                        <div><span>{loadingLMSS && <Spin />}</span>CONNECT GAME</div>
                       </div>
                     ) : (
                       <div className={s.platformUser}>
@@ -319,16 +319,18 @@ export default observer(function P2EOverview(props: IProps) {
                           className={s.overviewBtnConnect}
                           onClick={() => handleConnectFaceit()}
                         >
-                          <div><span>{loadingFaceit && <Spin/>}</span> CONNECT GAME</div>
+                          <div><span>{loadingFaceit && <Spin />}</span> CONNECT GAME</div>
                         </div>
                       </>
                     ) : (
                       <div className={s.platformUser}>
                         <Image src={faceitUser?.avatar ? faceitUser?.avatar : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
                         {/* <div className={s.platformUserName}>{faceitUser?.nick_name}</div> */}
-                        <div className={s.platformUserName}>{faceitUser?.nick_name}<span>
-                          <img src="/assets/P2E/overview/check-icon.svg" alt="" />
-                          </span></div>
+                        <div className={s.platformUserName}>{faceitUser?.nick_name}
+                          <span>
+                            <img src="/assets/P2E/overview/check-icon.svg" alt="" />
+                          </span>
+                        </div>
                       </div>
                     )}
                   </Col>
