@@ -24,6 +24,8 @@ export default observer(function P2EWrapper(props: IProps) {
     if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
       if (!currentGame) {
         setCurrentGame(Game.CSGO);
+        localStorage.setItem("currentGame", Game.CSGO.toString());
+        
       }
       return;
     }
@@ -31,6 +33,7 @@ export default observer(function P2EWrapper(props: IProps) {
     if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
       if (!currentGame) {
         setCurrentGame(Game.LOL);
+        localStorage.setItem("currentGame", Game.LOL.toString());
       }
       return;
     }
@@ -48,12 +51,20 @@ export default observer(function P2EWrapper(props: IProps) {
       router.push("/");
       return;
     };
-  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn])
+  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn, currentGame])
 
   useEffect(() => {
     const currentGameLocal = localStorage.getItem("currentGame");
     if (currentGameLocal) {
-      setCurrentGame(Number(currentGameLocal));
+      if (Number(currentGameLocal) === Game.CSGO && AuthGameStore.isLoggedInFaceit) {
+        setCurrentGame(Number(currentGameLocal));
+        return;
+      }
+
+      if (Number(currentGameLocal) === Game.LOL && AuthGameStore.isLoggedInLMSS) {
+        setCurrentGame(Number(currentGameLocal));
+        return;
+      }
     }
   }, [])
 
