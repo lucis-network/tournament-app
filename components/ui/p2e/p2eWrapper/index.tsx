@@ -48,7 +48,7 @@ export default observer(function P2EWrapper(props: IProps) {
       router.push("/");
       return;
     };
-  }, [AuthGameStore.isLoggedInFaceit])
+  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn])
 
   useEffect(() => {
     const currentGameLocal = localStorage.getItem("currentGame");
@@ -87,17 +87,15 @@ export default observer(function P2EWrapper(props: IProps) {
         setOverviewSection(OverviewSection.CONNECT_GAME);
         return;
       } else {
-        if (!currentGame) {
-          if(AuthGameStore.isLoggedInFaceit) {
-            setGame(Game.CSGO)
-          }
-  
-          if(AuthGameStore.isLoggedInLMSS) {
-            setGame(Game.LOL)
-          }
+        if (AuthGameStore.isLoggedInFaceit) {
+          setGame(Game.CSGO)
+        }
+
+        if (AuthGameStore.isLoggedInLMSS) {
+          setGame(Game.LOL)
         }
       }
-      
+
     }
 
 
@@ -190,21 +188,22 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {(AuthStore.isLoggedIn && router.pathname !== "/") && <div className={s.chooseGame}>
-                  {AuthGameStore.isLoggedInLMSS && <img
-                    className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
-                    src="/assets/P2E/lol-game.svg" alt="lol-game"
-                    onClick={() => setGame(Game.LOL)} />}
-                  {AuthGameStore.isLoggedInFaceit && <img
-                    className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
-                    onClick={() => setGame(Game.CSGO)}
-                    src="/assets/P2E/csgo-game.svg" alt="csgo-game" />}
-                  <img
-                    className={s.addGame}
-                    src="/assets/P2E/add-game.svg"
-                    alt="add-game"
-                    onClick={() => router.push("/")} />
-                </div>}
+                {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/p2e/raffles") &&
+                  <div className={s.chooseGame}>
+                    {AuthGameStore.isLoggedInLMSS && <img
+                      className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
+                      src="/assets/P2E/lol-game.svg" alt="lol-game"
+                      onClick={() => setGame(Game.LOL)} />}
+                    {AuthGameStore.isLoggedInFaceit && <img
+                      className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
+                      onClick={() => setGame(Game.CSGO)}
+                      src="/assets/P2E/csgo-game.svg" alt="csgo-game" />}
+                    <img
+                      className={s.addGame}
+                      src="/assets/P2E/add-game.svg"
+                      alt="add-game"
+                      onClick={() => router.push("/")} />
+                  </div>}
               </div>
             </div>
           </div>
