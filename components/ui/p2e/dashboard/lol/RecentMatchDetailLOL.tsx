@@ -166,7 +166,7 @@ export const RecentMatchDetailLOL = () => {
   const lucisPointBonus = () => {
     let point = 0;
     cardList.forEach((item, index) => {
-      if (item.isCompleted) {
+      if (item.isCompleted && !isNaN(Number(item.lucisPoint))) {
         point += Number(item.lucisPoint);
       }
     });
