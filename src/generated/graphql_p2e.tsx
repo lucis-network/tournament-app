@@ -240,7 +240,7 @@ export type ChestDetail = {
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   prizes: Array<LuckyChestPrize>;
-  sponsors?: Maybe<Array<SponsorRaffle>>;
+  sponsors?: Maybe<Array<P2eSponsor>>;
   ticket_cost?: Maybe<Scalars['Decimal']>;
   ticket_cost_type?: Maybe<CostType>;
   tier: LuckyChestTier;
@@ -1139,9 +1139,20 @@ export enum OpenChestErrorCode {
 
 export type OpenChestResponse = {
   __typename?: 'OpenChestResponse';
-  prize?: Maybe<LuckyChestPrize>;
+  prize?: Maybe<Scalars['String']>;
   /** ClaimChestPrize argument */
   user_prize_history_uid?: Maybe<Scalars['String']>;
+};
+
+export type P2eSponsor = {
+  __typename?: 'P2eSponsor';
+  created_at: Scalars['DateTime'];
+  img?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<SponsorType>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Platform = {
@@ -1416,7 +1427,7 @@ export type Query = {
   getRecentWinners?: Maybe<Array<RecentWinner>>;
   getRecentlyCsgoMatch?: Maybe<GCsgoMatch>;
   getRecentlyLolMatch?: Maybe<LolMatchGql>;
-  getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
+  getSponsorRaffles?: Maybe<Array<P2eSponsor>>;
   getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
   getWonTickets?: Maybe<Array<Scalars['String']>>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
@@ -1602,7 +1613,7 @@ export type RaffleDetail = {
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
   nft_reward?: Maybe<Scalars['String']>;
-  raffle_sponsors?: Maybe<Array<SponsorRaffle>>;
+  raffle_sponsors?: Maybe<Array<P2eSponsor>>;
   regions?: Maybe<Array<Scalars['String']>>;
   status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
@@ -1676,16 +1687,6 @@ export type RecentWinner = {
   user?: Maybe<User>;
 };
 
-export type SponsorRaffle = {
-  __typename?: 'SponsorRaffle';
-  created_at: Scalars['DateTime'];
-  img?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-};
-
 export type SponsorSlot = {
   __typename?: 'SponsorSlot';
   _count: SponsorSlotCount;
@@ -1738,6 +1739,12 @@ export type SponsorTransaction = {
 export enum SponsorTransactionType {
   Become = 'BECOME',
   Existing = 'EXISTING'
+}
+
+export enum SponsorType {
+  CsgoLuckyChest = 'CsgoLuckyChest',
+  LolLuckyChest = 'LolLuckyChest',
+  Raffle = 'Raffle'
 }
 
 export type SpotlightAnnouncement = {

@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import AuthStore from "components/Auth/AuthStore";
 import { observer } from "mobx-react-lite";
 import AuthGameStore from "components/Auth/AuthGameStore";
-import { Game } from "utils/Enum";
+import { Game, OverviewSection } from "utils/Enum";
 import { message } from "antd";
 
 interface IProps {
@@ -18,11 +18,14 @@ interface IProps {
 export default observer(function P2EWrapper(props: IProps) {
   const router = useRouter();
   const [currentGame, setCurrentGame] = useState<Game | null>(null);
+  const [overviewSection, setOverviewSection] = useState<OverviewSection>(OverviewSection.NONE);
 
   useEffect(() => {
     if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
       if (!currentGame) {
         setCurrentGame(Game.CSGO);
+        localStorage.setItem("currentGame", Game.CSGO.toString());
+        
       }
       return;
     }
@@ -30,6 +33,7 @@ export default observer(function P2EWrapper(props: IProps) {
     if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
       if (!currentGame) {
         setCurrentGame(Game.LOL);
+        localStorage.setItem("currentGame", Game.LOL.toString());
       }
       return;
     }
@@ -47,12 +51,20 @@ export default observer(function P2EWrapper(props: IProps) {
       router.push("/");
       return;
     };
-  }, [AuthGameStore.isLoggedInFaceit])
+  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn, currentGame])
 
   useEffect(() => {
     const currentGameLocal = localStorage.getItem("currentGame");
     if (currentGameLocal) {
-      setCurrentGame(Number(currentGameLocal));
+      if (Number(currentGameLocal) === Game.CSGO && AuthGameStore.isLoggedInFaceit) {
+        setCurrentGame(Number(currentGameLocal));
+        return;
+      }
+
+      if (Number(currentGameLocal) === Game.LOL && AuthGameStore.isLoggedInLMSS) {
+        setCurrentGame(Number(currentGameLocal));
+        return;
+      }
     }
   }, [])
 
@@ -83,20 +95,23 @@ export default observer(function P2EWrapper(props: IProps) {
 
     if (path === "/p2e/dashboard" || path === "/p2e/missions") {
       if (!AuthGameStore.isLoggedInLMSS && !AuthGameStore.isLoggedInFaceit) {
-        message.error("Please connect game to continue!");
+        setOverviewSection(OverviewSection.CONNECT_GAME);
         return;
       } else {
         if (!currentGame) {
-          if(AuthGameStore.isLoggedInFaceit) {
-            setGame(Game.CSGO)
+          if (AuthGameStore.isLoggedInFaceit) {
+            setGame(Game.CSGO);
+          } else {
+            if (AuthGameStore.isLoggedInLMSS) {
+              setGame(Game.LOL);
+            }
           }
   
-          if(AuthGameStore.isLoggedInLMSS) {
-            setGame(Game.LOL)
-          }
+          
         }
+        
       }
-      
+
     }
 
 
@@ -128,7 +143,9 @@ export default observer(function P2EWrapper(props: IProps) {
   const wrapperChildren = () => {
     return React.Children.map(props.children, child => {
       return React.cloneElement(child as any, {
-        currentGame: currentGame
+        currentGame: currentGame,
+        overviewSection: overviewSection,
+        resetOverviewSection: () => setOverviewSection(OverviewSection.NONE)
       })
     })
   }
@@ -160,6 +177,7 @@ export default observer(function P2EWrapper(props: IProps) {
     }
     localStorage.setItem("currentGame", game.toString());
     setCurrentGame(game);
+    router.push("/p2e/dashboard");
   }
 
   return (
@@ -186,21 +204,22 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {(AuthStore.isLoggedIn && router.pathname !== "/") && <div className={s.chooseGame}>
-                  <img
-                    className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
-                    src="/assets/P2E/lol-game.svg" alt="lol-game"
-                    onClick={() => setGame(Game.LOL)} />
-                  <img
-                    className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
-                    onClick={() => setGame(Game.CSGO)}
-                    src="/assets/P2E/csgo-game.svg" alt="csgo-game" />
-                  <img
-                    className={s.addGame}
-                    src="/assets/P2E/add-game.svg"
-                    alt="add-game"
-                    onClick={() => router.push("/")} />
-                </div>}
+                {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/p2e/raffles") &&
+                  <div className={s.chooseGame}>
+                    {AuthGameStore.isLoggedInLMSS && <img
+                      className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
+                      src="/assets/P2E/lol-game.svg" alt="lol-game"
+                      onClick={() => setGame(Game.LOL)} />}
+                    {AuthGameStore.isLoggedInFaceit && <img
+                      className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
+                      onClick={() => setGame(Game.CSGO)}
+                      src="/assets/P2E/csgo-game.svg" alt="csgo-game" />}
+                    <img
+                      className={s.addGame}
+                      src="/assets/P2E/add-game.svg"
+                      alt="add-game"
+                      onClick={() => router.push("/")} />
+                  </div>}
               </div>
             </div>
           </div>

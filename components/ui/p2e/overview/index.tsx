@@ -11,12 +11,18 @@ import { CONNECT_FACEIT, CONNECT_LMSS, useGetPlatformAccount } from 'hooks/p2e/u
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
-import AuthGameStore, { AuthGameUser } from 'components/Auth/AuthGameStore';
-import { getLocalAuthGameInfo, setLocalAuthGameInfo } from 'components/Auth/AuthLocal';
+import AuthGameStore, { AuthGameUser, AuthLMSSGameUser } from 'components/Auth/AuthGameStore';
+import { setLocalAuthGameInfo } from 'components/Auth/AuthLocal';
 import { ConnectLOLPopup } from './ConnectLOLPopup';
 import BannerOverview from './component/banner/BannerOverview';
-import { Game } from 'utils/Enum';
-export default observer(function P2EOverview() {
+import { Game, OverviewSection } from 'utils/Enum';
+
+interface IProps {
+  overviewSection?: OverviewSection;
+  resetOverviewSection?: () => void;
+}
+export default observer(function P2EOverview(props: IProps) {
+  const connectGameRef = React.useRef<HTMLDivElement>();
   const [faceitLogin, setFaceitLogin] = useState({
     login: () => { }
   })
@@ -209,6 +215,15 @@ export default observer(function P2EOverview() {
     }
   }, [])
 
+  useEffect(() => {
+    if (props.overviewSection && props.overviewSection === OverviewSection.CONNECT_GAME) {
+      connectGameRef.current?.scrollIntoView();
+      if (props.resetOverviewSection) {
+        props.resetOverviewSection();
+      }
+    }
+  }, [props.overviewSection])
+
 
   // const loginWithSteam = () => {
   //   steam.resolve("https://steamcommunity.com/id/IMAPOORKID").then((id: string) => {
@@ -216,46 +231,20 @@ export default observer(function P2EOverview() {
   //   });
   // };
 
-  const connectLOL = async (summonerName: string) => {
+  const connectLOL = async (data: AuthLMSSGameUser) => {
     setOpenConnectLOLPopup(false);
     setLoadingLMSS(true);
-    try {
-      const response = await connectLMSS({
-        variables: {
-          summoner_name: summonerName
-        }
-      });
 
-      const data = response.data.connectLmss;
       const gameAccount: AuthGameUser = {
         ...AuthGameStore,
-        lmss_id: data.player_uid,
-        lmss_access_token: "This is a access token" as string,
-        lmss_id_token: "This is a id token" as string,
-        lmss_platform_id: data.platform_id,
-        lmss_nick_name: data.nick_name,
-        lmss_avatar: data.avatar,
+        ...data
       }
       AuthGameStore.setAuthGameUser(gameAccount);
-      setLmssUser(data);
+      setLmssUser({...lmssUser, avatar: data.lmss_avatar, nick_name: data.lmss_nick_name});
       localStorage.setItem("currentGame", Game.LOL.toString());
       setLocalAuthGameInfo(gameAccount);
       router.push("/p2e/dashboard");
 
-    } catch (e: any) {
-      handleGraphqlErrors(e, (code) => {
-        switch (code) {
-          // case "ALREADY_CONNECTED":
-          //   message.error("This account is already connected to another user! Please use another account.")
-          //   return;
-          // case "HAS_NOT_CSGO":
-          //   message.error("Your account on Faceit is not connected to CS:GO. Please connect to your game first");
-          //   return;
-          default:
-            message.error("Something was wrong. Please contact to Lucis Network!")
-        };
-      })
-    }
     setLoadingLMSS(false);
 
   }
@@ -280,7 +269,7 @@ export default observer(function P2EOverview() {
           />}
         <div className={s.overviewContainer}>
           <BannerOverview isLogin={AuthStore.isLoggedIn} />
-          <div className={s.overviewSection}>
+          <div className={s.overviewSection} ref={connectGameRef as any}>
             <h2 className={s.overviewSectionTitle}>PLAY YOUR FAVORITE GAME</h2>
             <Row justify='space-between'>
               <Col className={s.bg_item} style={{ backgroundImage: 'url(/assets/P2E/overview/bg_lol.png)' }}>
