@@ -8,8 +8,9 @@ import ButtonOpenBox from "../button/buttonOpen";
 import PopupRewardChest from "./popupRewardChest";
 import {ChestDetail, LuckyChestPrize, LuckyChestTier, LuckyChestType, OpenChestResponse} from "../../../../../src/generated/graphql_p2e";
 import {OPEN_CHEST, useGetLuckyChestUserInfo} from "../../../../../hooks/p2e/luckyChest/useLuckyChest";
-import {useMutation} from "@apollo/client";
+import {ApolloQueryResult, useMutation} from "@apollo/client";
 import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
+import {b64DecodeUnicode} from "../../../../../utils/String";
 
 type Props = {
   status: boolean;
@@ -41,7 +42,12 @@ export default function PopUpOpenBox(props: Props) {
           tier: LuckyChestTier.Standard,
         },
         onCompleted: (data) => {
-          setChestResponse(data?.openChest);
+          const decodedData = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
+          const newOpenChestResponse = {
+            prize: decodedData
+          } as OpenChestResponse
+
+          setChestResponse(newOpenChestResponse);
           setRollingChestPopupVisible(true);
         }
       })
