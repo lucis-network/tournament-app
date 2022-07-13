@@ -45,7 +45,7 @@ export default function PopUpOpenBox(props: Props) {
           const decodedData = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
           const newOpenChestResponse = {
             prize: decodedData
-          } as OpenChestResponse
+          }
 
           setChestResponse(newOpenChestResponse);
           setRollingChestPopupVisible(true);

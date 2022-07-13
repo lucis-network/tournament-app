@@ -18,7 +18,7 @@ type Props = {
   closePopupRollingChest: () => void;
   visible: boolean;
   chestDetail: ChestDetail;
-  chestResponse?: OpenChestResponse;
+  chestResponse?: any;
 };
 
 const PopupRollingChest = (props: Props) => {
