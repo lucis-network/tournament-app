@@ -11,7 +11,7 @@ import { CONNECT_FACEIT, CONNECT_LMSS, useGetPlatformAccount } from 'hooks/p2e/u
 import { useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
-import AuthGameStore, { AuthGameUser } from 'components/Auth/AuthGameStore';
+import AuthGameStore, { AuthGameUser, AuthLMSSGameUser } from 'components/Auth/AuthGameStore';
 import { setLocalAuthGameInfo } from 'components/Auth/AuthLocal';
 import { ConnectLOLPopup } from './ConnectLOLPopup';
 import BannerOverview from './component/banner/BannerOverview';
@@ -231,46 +231,20 @@ export default observer(function P2EOverview(props: IProps) {
   //   });
   // };
 
-  const connectLOL = async (summonerName: string) => {
+  const connectLOL = async (data: AuthLMSSGameUser) => {
     setOpenConnectLOLPopup(false);
     setLoadingLMSS(true);
-    try {
-      const response = await connectLMSS({
-        variables: {
-          summoner_name: summonerName
-        }
-      });
 
-      const data = response.data.connectLmss;
       const gameAccount: AuthGameUser = {
         ...AuthGameStore,
-        lmss_id: data.player_uid,
-        lmss_access_token: "This is a access token" as string,
-        lmss_id_token: "This is a id token" as string,
-        lmss_platform_id: data.platform_id,
-        lmss_nick_name: data.nick_name,
-        lmss_avatar: data.avatar,
+        ...data
       }
       AuthGameStore.setAuthGameUser(gameAccount);
-      setLmssUser(data);
+      setLmssUser({...lmssUser, avatar: data.lmss_avatar, nick_name: data.lmss_nick_name});
       localStorage.setItem("currentGame", Game.LOL.toString());
       setLocalAuthGameInfo(gameAccount);
       router.push("/p2e/dashboard");
 
-    } catch (e: any) {
-      handleGraphqlErrors(e, (code) => {
-        switch (code) {
-          case "HAS_CONNECTED":
-            message.error("This summoner name is already connected to another user! Please use another summoner name.")
-            return;
-          // case "HAS_NOT_CSGO":
-          //   message.error("Your account on Faceit is not connected to CS:GO. Please connect to your game first");
-          //   return;
-          default:
-            message.error("Something was wrong. Please contact to Lucis Network!")
-        };
-      })
-    }
     setLoadingLMSS(false);
 
   }

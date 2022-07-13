@@ -47,7 +47,7 @@ class KYCLmssService {
     const response = await apoloClient.query({
       query: gql`
         query ($summoner_name: String!){
-          KycAccount(summoner_name: $summoner_name)
+          kycAccount(summoner_name: $summoner_name)
         }
       `,
       context: {
