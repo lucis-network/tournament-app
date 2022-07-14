@@ -552,3 +552,13 @@ query ($game_uid: String!, $platform_id: Int!) {
   isClaimBox(game_uid: $game_uid, platform_id: $platform_id)
 }
 `
+
+export const GET_NUMBER_CONNECTED_USER = gql`
+query {
+  getNumberConnectedUser {
+    game,
+    platform,
+    number_user
+  }
+}
+`

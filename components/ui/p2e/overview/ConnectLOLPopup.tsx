@@ -57,10 +57,12 @@ export const ConnectLOLPopup = (props: IProps) => {
       setLoadingSearch(true)
       const res = await KYCLmssService.searchBySummonerName(summonerName);
       setLmssUser({ avatar: res?.data?.searchBySummonerName?.avatar, nickName: res?.data?.searchBySummonerName?.nick_name })
-      const roomNameResponse = await KYCLmssService.generateToken();
-      setExpireAt(new Date().getTime() + 5 * 60 * 1000);
+      if (!res?.data?.searchBySummonerName?.connected_user_name) {
+        const roomNameResponse = await KYCLmssService.generateToken();
+        setExpireAt(new Date().getTime() + 5 * 60 * 1000);
+        setRoomName(roomNameResponse.data?.generateToken);
+      }
       setExpired(false);
-      setRoomName(roomNameResponse.data?.generateToken);
       setLoadingSearch(false)
       setHasFind(true);
       setConnectedUser(res?.data?.searchBySummonerName?.connected_user_name);
@@ -167,7 +169,7 @@ export const ConnectLOLPopup = (props: IProps) => {
               <Form
                 layout="vertical"
               >
-                <Form.Item label={<span style={{ color: "#fff" }}>Your Summoner Name:</span>}>
+                <Form.Item label={<span style={{ color: "#fff" }}>1. Your Summoner Name:</span>}>
                   <Input
                     autoFocus
                     placeholder="Enter your summoner name ..."
@@ -209,7 +211,7 @@ export const ConnectLOLPopup = (props: IProps) => {
                         layout="vertical"
 
                       >
-                        <Form.Item label={<span style={{ color: "#fff" }}>Room Name:</span>}>
+                        <Form.Item label={<span style={{ color: "#fff" }}>2. Room Name:</span>}>
                           <Input
                             value={roomName}
                             ref={refInput as any}
@@ -239,7 +241,8 @@ export const ConnectLOLPopup = (props: IProps) => {
                       </Form>
                     </Col>
                     <Col span={24}>
-                      <button onClick={() => KYC()} className={s.actionButton} style={{ float: "right" }}>
+                      <span style={{fontSize: 14}}>3. Verify your account</span>
+                      <button onClick={() => KYC()} className={s.actionButton} style={{ float: "left", marginTop: 8 }}>
                         <span>I created the room!</span>
                       </button>
                     </Col>
@@ -260,9 +263,9 @@ export const ConnectLOLPopup = (props: IProps) => {
                 </div>
                 <div className={s.step2}>
                   {roomName ?
-                    <div>Step 2: Open your LOL game and create a custom room with the name is <span style={{ color: "#00F9FF" }}>{roomName}</span>. The room name will expire within 5 minutes</div>
+                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the name is <span style={{ color: "#00F9FF" }}>{roomName}</span><br />The room name will expire within 5 minutes</div>
                     :
-                    <div>Step 2: Open your LOL game and create a custom room with the generated room name. The room name will expire within 5 minutes</div>
+                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the generated room name<br />The room name will expire within 5 minutes</div>
                   }
                   <img src="/assets/P2E/overview/tutorial-step1.jpg" alt="" />
                   <img className={s.arrow} src="/assets/P2E/overview/arrow.svg" alt="" />
