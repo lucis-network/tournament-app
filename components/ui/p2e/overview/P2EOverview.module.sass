@@ -154,12 +154,15 @@
       background: #333333
       border-radius: 4px
       text-align: center
-      line-height: 32px
+      display: flex
+      justify-content: center
+      align-items: center
       margin-bottom: 16px
       img
         height: 16px
         width: auto
         margin: 0
+        margin-right: 6px
 .overviewBtnConnect
   width: 200px
   height: 45px
@@ -188,6 +191,7 @@
       color: #fff
 
 .connectLmssModal
+  font-family: 'Lexend'
   p
     margin: 0
     color: #fff
@@ -246,11 +250,12 @@
         content: none
   .verify
     .subItem
+      display: flex
+      color: #fff
+      justify-content: space-between
+      align-items: center
+      margin-top:8px
       .refresh
         color: #00F9FF
         text-decoration: underline
         cursor: pointer
-      margin-top: 8px
-      display: flex
-      color: #fff
-      justify-content: space-between

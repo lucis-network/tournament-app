@@ -7,15 +7,15 @@ import { PlatformAccount } from "../../../../src/generated/graphql_p2e";
 import AuthStore from "../../../Auth/AuthStore";
 import { observer } from 'mobx-react-lite';
 import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
-import { CONNECT_FACEIT, CONNECT_LMSS, useGetPlatformAccount } from 'hooks/p2e/useP2E';
-import { useMutation } from '@apollo/client';
+import { CONNECT_FACEIT, CONNECT_LMSS, GET_NUMBER_CONNECTED_USER, useGetPlatformAccount } from 'hooks/p2e/useP2E';
+import { useMutation, useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { handleGraphqlErrors } from 'utils/apollo_client';
 import AuthGameStore, { AuthGameUser, AuthLMSSGameUser } from 'components/Auth/AuthGameStore';
 import { setLocalAuthGameInfo } from 'components/Auth/AuthLocal';
 import { ConnectLOLPopup } from './ConnectLOLPopup';
 import BannerOverview from './component/banner/BannerOverview';
-import { Game, OverviewSection } from 'utils/Enum';
+import { Game, OverviewSection, Platform } from 'utils/Enum';
 
 interface IProps {
   overviewSection?: OverviewSection;
@@ -40,7 +40,7 @@ export default observer(function P2EOverview(props: IProps) {
     }
   })
 
-  const [connectLMSS] = useMutation(CONNECT_LMSS, {
+  const connectedUserQuery = useQuery(GET_NUMBER_CONNECTED_USER, {
     context: {
       endpoint: 'p2e'
     }
@@ -231,6 +231,10 @@ export default observer(function P2EOverview(props: IProps) {
   //   });
   // };
 
+  const connectedUserLOL = connectedUserQuery?.data?.getNumberConnectedUser?.filter((item: any) => item.game === "League of Legends" && item.platform === "GARENA")[0]?.number_user;
+  const connectedUserCSGO = connectedUserQuery?.data?.getNumberConnectedUser?.filter((item: any) => item.game === "CS:GO" && item.platform === "FACEIT")[0]?.number_user;
+
+
   const connectLOL = async (data: AuthLMSSGameUser) => {
     setOpenConnectLOLPopup(false);
     setLoadingLMSS(true);
@@ -282,7 +286,7 @@ export default observer(function P2EOverview(props: IProps) {
                     <h1>LEAGUE OF LEGENDS</h1>
                     <p>Normal, Ranked and Clash available</p>
                     <div className={s.like}>
-                      <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> 10
+                      <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> {connectedUserLOL ?? "-"}
                     </div>
                     {isEmpty(lmssUser) ? (
                       <div
@@ -314,7 +318,7 @@ export default observer(function P2EOverview(props: IProps) {
                     <h1>CS:GO</h1>
                     <p>Normal, Ranked and Clash available</p>
                     <div className={s.like}>
-                      <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> 10
+                      <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> {connectedUserCSGO ?? "-"}
                     </div>
                     {isEmpty(faceitUser) ? (
                       <>
