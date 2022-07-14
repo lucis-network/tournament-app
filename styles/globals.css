@@ -1052,14 +1052,35 @@ body .ant-carousel .slick-dots-bottom {
   border-radius: 4px;
 }
 
+.connect-lmss-modal .ant-input-affix-wrapper .ant-input {
+  border-radius: 0;
+  border: none;
+  background: none !important;
+  backdrop-filter: none;
+  padding: 0 5px 0 0;
+}
+
+
+.connect-lmss-modal .ant-input-affix-wrapper-focused {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: #fff !important;
+}
 .connect-lmss-modal .ant-input-affix-wrapper  input {
   background: transparent !important;
 }
 
+.connect-lmss-modal .ant-input-affix-wrapper:hover {
+  border-color: #fff !important;
+}
+
 .connect-lmss-modal .ant-input-group-addon {
   background: transparent !important;
+  border-color: #fff;
+
 }
 .connect-lmss-modal .ant-input-wrapper input{
   border-radius: 4px 0 0 4px;
   background: transparent !important;
+  border-color: #fff;
 }

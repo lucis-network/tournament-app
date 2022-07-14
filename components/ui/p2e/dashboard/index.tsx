@@ -317,7 +317,7 @@ const Dashboard = (props: IProps) => {
               />
               {RecentMatchListRender()}
               {recentlyMatches?.length !== 0 && <div className={s.viewAllHistory}>
-                <span onClick={() => router.push("/p2e/dashboard/history")}>View all history</span>
+                <span onClick={() => router.push("/playcore/dashboard/history")}>View all history</span>
               </div>}
             </Col>
             <Col lg={8} md={24}>

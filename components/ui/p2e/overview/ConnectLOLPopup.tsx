@@ -2,7 +2,6 @@ import { Form, Input, message, Modal, Image, Spin, Button, Row, Col, Tooltip } f
 import { AuthLMSSGameUser } from "components/Auth/AuthGameStore";
 import ButtonWrapper from "components/common/button/Button";
 import KYCLmssService from "components/service/p2e/KYCLmssService";
-import moment from "moment";
 import React from "react";
 import { handleGraphqlErrors } from "utils/apollo_client";
 import CountdownTimeBefore from "../raffles/timeBefore";
@@ -25,7 +24,9 @@ export const ConnectLOLPopup = (props: IProps) => {
   const [roomName, setRoomName] = React.useState<string>("");
   const [expireAt, setExpireAt] = React.useState(new Date().getTime() * 5 * 60 * 1000);
   const [expired, setExpired] = React.useState(false);
-
+  const [inputEmpty, setInputEmpty] = React.useState(false);
+  const [hasSummonerName, setHasSummonerName] = React.useState(false);
+  const [connectedUser, setConnectedUser] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const to = setTimeout(() => {
@@ -34,32 +35,47 @@ export const ConnectLOLPopup = (props: IProps) => {
 
     return () => clearTimeout(to);
   }, [expireAt])
+
+  React.useEffect(() => {
+    const to = setTimeout(() => {
+      setIsCopy(false);
+    }, 3000);
+
+    return () => clearTimeout(to);
+  }, [isCopy])
   const onSearch = async () => {
     if (loadingSearch) {
       return;
     }
     if (!summonerName) {
-      message.error("You can enter summoner name to continue!");
+      setInputEmpty(true);
       return;
     }
     try {
+      setConnectedUser(null);
       setHasFind(false);
       setLoadingSearch(true)
       const res = await KYCLmssService.searchBySummonerName(summonerName);
       setLmssUser({ avatar: res?.data?.searchBySummonerName?.avatar, nickName: res?.data?.searchBySummonerName?.nick_name })
-      const roomNameResponse = await KYCLmssService.generateToken();
-      setExpireAt(new Date().getTime() + 5 * 60 * 1000);
+      if (!res?.data?.searchBySummonerName?.connected_user_name) {
+        const roomNameResponse = await KYCLmssService.generateToken();
+        setExpireAt(new Date().getTime() + 5 * 60 * 1000);
+        setRoomName(roomNameResponse.data?.generateToken);
+      }
       setExpired(false);
-      setRoomName(roomNameResponse.data?.generateToken);
       setLoadingSearch(false)
       setHasFind(true);
+      setConnectedUser(res?.data?.searchBySummonerName?.connected_user_name);
     } catch (e: any) {
       setLoadingSearch(false)
       setHasFind(false);
       handleGraphqlErrors(e, (code) => {
         switch (code) {
-          case "BAD_REQUEST":
-            message.error("Summoner name is not exist!")
+          case "LMSS_ERROR":
+            message.error("Connection failed. Please try again after 1 minute.");
+            return;
+          case "LMSS_ERROR_SEARCH":
+            setHasSummonerName(true);
             return;
           default:
             message.error("Something was wrong. Please contact to Lucis Network!")
@@ -84,6 +100,9 @@ export const ConnectLOLPopup = (props: IProps) => {
 
       handleGraphqlErrors(e, (code) => {
         switch (code) {
+          case "LMSS_ERROR":
+            message.error("Connection failed. Please try again after 1 minute.");
+            return;
           default:
             message.error("Something was wrong. Please contact to Lucis Network!")
         };
@@ -94,7 +113,7 @@ export const ConnectLOLPopup = (props: IProps) => {
   const KYC = async () => {
     try {
       setKycLoading(true);
-      const kycResponse = await KYCLmssService.kycAccount(summonerName);
+      const kycResponse = await KYCLmssService.kycAccount(lmssUser.nickName);
       if (kycResponse.data.kycAccount) {
         const data: AuthLMSSGameUser = {
           lmss_id: "this is lmss id",
@@ -118,6 +137,9 @@ export const ConnectLOLPopup = (props: IProps) => {
         switch (code) {
           case "TOKEN_EXPIRED":
             message.error("Room name expired!");
+            return;
+          case "LMSS_ERROR":
+            message.error("Connection failed. Please try again after 1 minute.");
             return;
           case "BAD_REQUEST":
             message.error("Room name is not generated.");
@@ -147,16 +169,20 @@ export const ConnectLOLPopup = (props: IProps) => {
               <Form
                 layout="vertical"
               >
-                <Form.Item label={<span style={{ color: "#fff" }}>Your summoner Name:</span>}>
+                <Form.Item label={<span style={{ color: "#fff" }}>1. Your Summoner Name:</span>}>
                   <Input
                     autoFocus
                     placeholder="Enter your summoner name ..."
-                    onChange={(e) => { setSummonerName(e.currentTarget.value) }}
+                    onChange={(e) => { setSummonerName(e.currentTarget.value); setInputEmpty(false); setHasSummonerName(false); }}
                     // onSearch={() => onSearch()}
                     suffix={<img onClick={() => onSearch()} style={{ cursor: "pointer" }} src="/assets/P2E/overview/search-icon.svg" />}
                     size="large"
                     onPressEnter={() => onSearch()}
                   />
+                  <div style={{ marginTop: 4 }}>
+                    {inputEmpty && <span style={{ color: "#ff4d4f" }}>Summoner name must not be empty!</span>}
+                    {hasSummonerName && <span style={{ color: "#ff4d4f" }}>Summoner name is not exist!</span>}
+                  </div>
                 </Form.Item>
               </Form>
               <div>
@@ -167,18 +193,25 @@ export const ConnectLOLPopup = (props: IProps) => {
                   <>
                     <Image src={lmssUser?.avatar ? `${prefixAvatar}${lmssUser?.avatar}` : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
                     <div className={s.platformUserName}>{lmssUser?.nickName}</div>
+                    {connectedUser &&
+                      <div
+                        className={s.platformUserName}
+                        style={{ textAlign: 'center' }}>
+                        This LOL account has been connected to <span style={{ color: "#00F9FF" }}>{connectedUser}</span>. Please connect to another account
+                      </div>}
                   </>
                   : (loadingSearch ? <Spin /> : null)
                 }
               </div>
-              {hasFind &&
-                <div style={{ marginTop: 20 }}>
+              {hasFind && !connectedUser &&
+                <div style={{ marginTop: 20 }} className={s.verify}>
                   <Row gutter={[0, 16]}>
                     <Col span={24}>
                       <Form
                         layout="vertical"
+
                       >
-                        <Form.Item label={<span style={{ color: "#fff" }}>Room Name: {isCopy ? "Copied" : ""}</span>}>
+                        <Form.Item label={<span style={{ color: "#fff" }}>2. Room Name:</span>}>
                           <Input
                             value={roomName}
                             ref={refInput as any}
@@ -187,34 +220,31 @@ export const ConnectLOLPopup = (props: IProps) => {
                               setIsCopy(true);
                               navigator.clipboard.writeText(roomName);
                             }}
-                            onBlur={() => setIsCopy(false)}
                             addonAfter={<img width="20"
                               onClick={() => {
                                 setIsCopy(true);
                                 navigator.clipboard.writeText(roomName);
                               }}
                               style={{ cursor: "pointer" }}
-                              src="/assets/P2E/overview/copy-icon.svg" />
+                              src={isCopy ? "/assets/P2E/overview/copied.svg" : "/assets/P2E/overview/copy-icon.svg"} />
                             }
                           />
+                          <div className={s.subItem}>
+                            <span className={s.refresh} onClick={() => generateNewRoomName()}>Refresh {generateRoomNameLoading && <Spin size="small" />}</span>
+                            {!expired ?
+                              <p><span style={{ marginRight: 4 }}>Expire in:</span> {<CountdownTimeBefore targetDate={expireAt} />}</p>
+                              : <p>Room name expired</p>
+                            }
+                          </div>
                         </Form.Item>
-                        {!expired ?
-                          <p><span style={{ marginRight: 4 }}>Expire in:</span> {<CountdownTimeBefore targetDate={expireAt} />}</p>
-                          : <p>Room name expired</p>
-                        }
+
                       </Form>
                     </Col>
                     <Col span={24}>
-                      <Row justify="space-between">
-                        <Col span={12}>
-                          <ButtonWrapper width={150} height={40} type="primary" onClick={() => generateNewRoomName()} loading={generateRoomNameLoading}>Refresh room name</ButtonWrapper>
-                        </Col>
-                        <Col span={12}>
-                          <ButtonWrapper width={100} height={40} type="primary" onClick={() => KYC()} style={{ marginLeft: 20 }} >Confirm</ButtonWrapper>
-                        </Col>
-                      </Row>
-
-
+                      <span style={{fontSize: 14}}>3. Verify your account</span>
+                      <button onClick={() => KYC()} className={s.actionButton} style={{ float: "left", marginTop: 8 }}>
+                        <span>I created the room!</span>
+                      </button>
                     </Col>
                     <Col span={24} style={{ textAlign: 'center', marginTop: 20 }}>
                       {kycLoading && <Spin tip="Wait to verify..." size="large" />}
@@ -229,16 +259,20 @@ export const ConnectLOLPopup = (props: IProps) => {
               <div className={s.tutorial}>
                 <h1>Connect LOL account step by step:</h1>
                 <div className={s.step1}>
-                  Step 1: Search your summoner name, the system will automatically generate the room name
+                  Step 1: Enter your summoner name in the search box
                 </div>
                 <div className={s.step2}>
-                  <div>Step 2: Open your game and create a custom room with the generated room name. The room name will expire within 5 minutes</div>
-                  <img src="/assets/P2E/overview/tutorial.jpg" alt="" />
+                  {roomName ?
+                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the name is <span style={{ color: "#00F9FF" }}>{roomName}</span><br />The room name will expire within 5 minutes</div>
+                    :
+                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the generated room name<br />The room name will expire within 5 minutes</div>
+                  }
+                  <img src="/assets/P2E/overview/tutorial-step1.jpg" alt="" />
                   <img className={s.arrow} src="/assets/P2E/overview/arrow.svg" alt="" />
-                  <img src="/assets/P2E/overview/tutorial-p2.jpg" alt="" />
+                  <img src="/assets/P2E/overview/tutorial-step2.jpg" alt="" />
                 </div>
                 <div className={s.step3}>
-                  Step 3: After create room, click on [Confirm] button on this popup to verify your account
+                  Step 3: After create room, click on [I created the room!] button on this popup to verify your account
                 </div>
               </div>
             </Col>
