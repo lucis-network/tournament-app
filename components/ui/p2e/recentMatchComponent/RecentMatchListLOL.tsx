@@ -121,7 +121,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                           xs={24}
                           className={s.recentMatchItem}
                           key={`${item?.match_uid}-${index}`}
-                          onClick={() => router.push(`/p2e/dashboard/history/${item?.uid}`)}
+                          onClick={() => router.push(`/playcore/dashboard/history/${item?.uid}`)}
                           style={{
                             borderTopLeftRadius: index === 0 ? "4px" : "0px",
                             borderTopRightRadius: index === 0 ? "4px" : "0px",

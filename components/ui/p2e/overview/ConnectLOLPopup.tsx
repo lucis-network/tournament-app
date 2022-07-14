@@ -191,11 +191,17 @@ export const ConnectLOLPopup = (props: IProps) => {
                   <>
                     <Image src={lmssUser?.avatar ? `${prefixAvatar}${lmssUser?.avatar}` : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
                     <div className={s.platformUserName}>{lmssUser?.nickName}</div>
+                    {connectedUser &&
+                      <div
+                        className={s.platformUserName}
+                        style={{ textAlign: 'center' }}>
+                        This LOL account has been connected to <span style={{ color: "#00F9FF" }}>{connectedUser}</span>. Please connect to another account
+                      </div>}
                   </>
                   : (loadingSearch ? <Spin /> : null)
                 }
               </div>
-              {hasFind &&
+              {hasFind && !connectedUser &&
                 <div style={{ marginTop: 20 }} className={s.verify}>
                   <Row gutter={[0, 16]}>
                     <Col span={24}>
@@ -253,7 +259,11 @@ export const ConnectLOLPopup = (props: IProps) => {
                   Step 1: Enter your summoner name in the search box
                 </div>
                 <div className={s.step2}>
-                  <div>Step 2: Open your LOL game and create a custom room with the name is "{roomName}". The room name will expire within 5 minutes</div>
+                  {roomName ?
+                    <div>Step 2: Open your LOL game and create a custom room with the name is <span style={{ color: "#00F9FF" }}>{roomName}</span>. The room name will expire within 5 minutes</div>
+                    :
+                    <div>Step 2: Open your LOL game and create a custom room with the generated room name. The room name will expire within 5 minutes</div>
+                  }
                   <img src="/assets/P2E/overview/tutorial-step1.jpg" alt="" />
                   <img className={s.arrow} src="/assets/P2E/overview/arrow.svg" alt="" />
                   <img src="/assets/P2E/overview/tutorial-step2.jpg" alt="" />
