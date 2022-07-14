@@ -3,7 +3,7 @@ import s from "./index.module.sass";
 import {UserWonTicketGql} from "../../../../../../src/generated/graphql_p2e";
 
 import ItemClaimTicket from "./ItemClaimTicket";
-import {useState} from "react";
+import React, {useState} from "react";
 import PopupContactRaffles from "../popupContact";
 
 type Props = {
@@ -21,6 +21,9 @@ const PopupClaimTicket = (props: Props) => {
     setIsPopupContactVisible(false);
   }
 
+  const openPopupContactRaffes = () => {
+    setIsPopupContactVisible(true)
+  }
   return (
     <Modal
       visible={status}
@@ -31,6 +34,7 @@ const PopupClaimTicket = (props: Props) => {
     >
       <div>
         <div className={s.title}>
+          <img className={s.logo} src="/assets/Raffles/LucisLogo.svg"/>
           <p className={s.titleSuccess}>CONGRATULATIONS</p>
         </div>
         <div className={s.tickets}>
@@ -38,15 +42,12 @@ const PopupClaimTicket = (props: Props) => {
             dataMyWonTickets ? dataMyWonTickets.map((item, index) => {
               return(
                 <div key={`${item.uid}${index}`}>
-                  <ItemClaimTicket item={item} raffleUid={raffleUid}></ItemClaimTicket>
+                  <ItemClaimTicket item={item} raffleUid={raffleUid} openPopupContactRaffes={openPopupContactRaffes}></ItemClaimTicket>
                 </div>
               )
             })
               : ""
           }
-        </div>
-        <div className={s.buttonClaim}>
-          <Button onClick={() => setIsPopupContactVisible(true)}>Claim</Button>
         </div>
       </div>
       {isPopupContactVisible &&

@@ -9,10 +9,11 @@ import { useState } from "react";
 type Props = {
   item?: UserWonTicketGql;
   raffleUid?: string;
+  openPopupContactRaffes: () => void;
 };
 
 const ItemClaimTicket = (props: Props) => {
-  const { item, raffleUid } = props;
+  const { item, raffleUid, openPopupContactRaffes } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const [claimRaffleTicket] = useMutation(CLAIM_RAFFLE_TICKETS, {
@@ -33,6 +34,7 @@ const ItemClaimTicket = (props: Props) => {
           message.success("Claim success!");
           setIsLoading(false);
           setIsDisable(true);
+          openPopupContactRaffes();
         }
       })
     } catch (error: any) {
@@ -52,11 +54,27 @@ const ItemClaimTicket = (props: Props) => {
 
   return (
     <div className={s.item}>
-      <span className={s.itemTickets}>#{item?.ticket_number}</span>
+      {/*<span className={s.itemTickets}>#{item?.ticket_number}</span>*/}
+      {/*{isDisable || item?.is_claimed as boolean ?*/}
+      {/*  <img src="/assets/Raffles/checked.svg"/> :*/}
+      {/*  <Button loading={isLoading} disabled={isDisable || item?.is_claimed as boolean} className={s.itemBtn}*/}
+      {/*          onClick={() => handleClaim()}>Claim</Button>*/}
+      {/*}*/}
+      {/*<span className={s.itemTickets}>#{item?.ticket_number}</span>*/}
       {isDisable || item?.is_claimed as boolean ?
-        <img src="/assets/P2E/raffles/checked.svg"/> :
-        <Button loading={isLoading} disabled={isDisable || item?.is_claimed as boolean} className={s.itemBtn}
-                onClick={() => handleClaim()}>Claim</Button>
+        <>
+          <span className={`${s.itemTickets} ${s.itemTicketsClaimed}`}>#{item?.ticket_number}</span>
+          <div className={s.imgChecked}>
+            <img  src="/assets/Raffles/checked.svg"/>
+          </div>
+        </>
+         :
+        <>
+          <span className={s.itemTickets}>#{item?.ticket_number}</span>
+          <Button loading={isLoading} disabled={isDisable || item?.is_claimed as boolean} className={s.itemBtn}
+                  onClick={() => handleClaim()}>Claim</Button>
+        </>
+
       }
     </div>
   );

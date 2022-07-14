@@ -16,8 +16,7 @@ const PopupContactRaffles = (props: Props) => {
     <Modal
       visible={status}
       centered
-      //className={s.content_modal}
-      wrapClassName={s.content_modal}
+      className={s.content_modal}
       footer={null}
       onCancel={closePopupContact}
     >
@@ -30,7 +29,13 @@ const PopupContactRaffles = (props: Props) => {
             Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize.
           </div>
           <div>
-            <ButtonWrapper className={s.button} width={236} onClick={() => window.open("https://discord.gg/7SdtYpGENT")}>CHAT WITH US</ButtonWrapper>
+            {/*<ButtonWrapper className={s.button} width={236} onClick={() => window.open("https://discord.gg/7SdtYpGENT")}>CHAT WITH US</ButtonWrapper>*/}
+            <Button
+              target="_blank"
+              className={`${s.customCss}`}
+              onClick={() => window.open("https://discord.gg/7SdtYpGENT")}
+              href={"https://discord.gg/7SdtYpGENT"}
+              >CHAT WITH US</Button>
           </div>
           <div className={`${s.thankTo} ${s.desc}`}>
             Thank you for joining us!

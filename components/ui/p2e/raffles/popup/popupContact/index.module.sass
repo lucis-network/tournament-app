@@ -1,3 +1,10 @@
+.content_modal
+  min-width: 650px
+  :global(.ant-modal-body)
+    background-image: url("/assets/Raffles/BgContact.png")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
 .container
   //min-width: 650px
   display: flex
@@ -7,13 +14,6 @@
   .logo
     margin-top: 22px
     margin-bottom: 20px
-  :global(.ant-modal-body)
-    padding: 0
-    background-image: url("/assets/P2E/raffles/imagePopClaimRaffes.jpg")
-    background-repeat: no-repeat
-    background-size: cover
-    background-position: center
-    border-radius: 4px 4px 0px 0px
   :global(.ant-modal-close .ant-modal-close-x)
     color: #6c6b6b
     background: none
@@ -23,11 +23,12 @@
   justify-content: center
   flex-direction: column
   align-items: center
-  .button:global(.ant-btn-primary)
-    margin-bottom: 22px
-    span:not(:global(.ant-btn-loading-icon), :global(.anticon-loading))
-      color: #FFFFFF !important
-      padding: 12px 32px
+  //.button
+  //  margin-bottom: 22px
+  //  :global(.ant-btn-primary)
+  //    span:not(:global(.ant-btn-loading-icon), :global(.anticon-loading))
+  //      color: #FFFFFF !important
+  //      padding: 12px 32px
   .desc
     font-family: 'Lexend'
     font-style: normal
@@ -39,3 +40,107 @@
     text-shadow: 0 4px 20px #000000
     letter-spacing: 0.04em
     margin-bottom: 22px
+.customCss
+  min-width: 240px
+  max-width: 240px
+  min-height: 42px
+  max-height: 42px
+.customCss:global(.ant-btn-primary)
+  background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+  border-color: none
+  border: none
+  width: inherit
+  :global(.ant-btn-loading-icon)
+    z-index: 1
+    position: absolute
+    left: 10px
+    top: 50%
+    transform: translateY(-50%)
+  span:not(:global(.ant-btn-loading-icon), :global(.anticon-loading))
+    color: #000625
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+    border: 1px solid #000
+    // display: flex
+    position: absolute
+    top: 1.5px
+    left: 1.5px
+    right: 1.5px
+    bottom: 1.5px
+    // justify-content: center
+    // align-items: center
+    // line-height: 1
+    font-size: 12px
+
+.customCss:global(.ant-btn-primary:hover)
+  background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
+  border-color: none
+  border: none
+/* transform: scale(1.1) */
+
+// .customCss:global(.ant-btn-ghost)
+//   background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%)
+//   border-color: none
+//   border: none
+//   color: white
+
+// .customCss:global(.ant-btn-ghost:hover)
+//   background: linear-gradient(99.92deg, #ce28e8bd 0%, #0bebd5be 100%)
+//   border-color: none
+//   border: none
+//   color: white
+
+.customCss:global(.ant-btn-default)
+  background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+  border-color: none
+  border: none
+  width: inherit
+  span:not(:global(.anticon-loading))
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+    border: 2px solid #000
+    // display: flex
+    position: absolute
+    top: 2px
+    left: 2px
+    right: 2px
+    bottom: 2px
+    display: flex
+    justify-content: center
+    align-items: center
+    font-family: 'Revx Neue Demo'
+    font-style: normal
+    font-weight: 400
+    font-size: 16px
+    line-height: 18px
+    letter-spacing: 0.2em
+    text-transform: uppercase
+
+.customCss:global(.ant-btn-default:hover)
+  background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
+  border-color: none
+  border: none
+.customCss:global(.ant-btn-default:focus)
+  background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
+  border-color: none
+  border: none
+.customCss:global(.ant-btn-default:active)
+  background: linear-gradient(91.09deg, #3c9ff0 0.33%, #35ecda 99.88%)
+  border-color: none
+  border: none
+.customCss:global(.ant-btn)
+  &[disabled]
+    background: transparent
+    span
+      color: #808080
+      background: transparent
+      border: 2px solid #808080
+      display: flex
+      position: absolute
+      top: -1px
+      left: -1px
+      right: -1px
+      bottom: -1px
+      justify-content: center
+      align-items: center
+      line-height: 1
+      font-size: 12px
+
