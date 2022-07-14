@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
@@ -15,54 +15,28 @@ import Head from "next/head";
 import DefaultErrorPage from "next/error";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
 import {Empty, Image, message as antMessage} from "antd";
+import ChestPrize from "./prize";
 
 export default function LuckyChest() {
     const [showPopupOpenBox, setShowPopupOpenBox] = useState(false);
-    const [claimingChestPrize, setClaimingChestPrize] = useState(false);
     const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
         type: LuckyChestType.Csgo,
         tier: LuckyChestTier.Standard,
     })
-    const {getLuckyChestUserInfoLoading, getLuckyChestUserInfoError, refetchGetLuckyChestUserInfo, dataLuckyChestUserInfo} = useGetLuckyChestUserInfo({
-        type: LuckyChestType.Csgo,
-        tier: LuckyChestTier.Standard,
-    })
-    const {claimChestPrize} = useClaimChestPrize()
     const chestDetail = getChestDetailData?.getChestDetail
-    const userHistory = dataLuckyChestUserInfo?.history
     const ticketCost = chestDetail?.ticket_cost
     const ticketCostType = chestDetail?.ticket_cost_type
     const luckyChestSponsor = chestDetail?.sponsors
     const chestPrizes = chestDetail?.prizes
 
-    const handleClaimChestPrize = (user_prize_history_uid: string) => {
-      if (!user_prize_history_uid) return null
-      console.log('[handleClaimChestPrize] user_prize_history_uid: ', user_prize_history_uid);
-      setClaimingChestPrize(true)
-      claimChestPrize({
-        user_prize_history_uid: user_prize_history_uid,
-        onError: (error) => handleGraphqlErrors(error, (code, message) => {
-          if (code !== 'UnAuth') {
-            switch (code) {
-              // chaupa todo claimChestPrize error messages
-              case '':
-                antMessage.error('An unknown error has occurred. Please try again later.')
-                break
-              default:
-                antMessage.error('An unknown error has occurred. Please try again later.')
-                break
-            }
-          }
-        }),
-        onCompleted: (data) => {
-          if (data?.data?.claimChestPrize && data?.data?.claimChestPrize !== null) {
-            refetchGetLuckyChestUserInfo()
-            antMessage.success('Success!')
-          }
-        }
-      }).finally(() => setClaimingChestPrize(false))
-    }
-    console.log('[LuckyChest] userHistory: ', userHistory);
+    // useEffect(() => {
+    //   const scrollContainer = document.querySelector(".horizontalScroll");
+    //   scrollContainer && scrollContainer.addEventListener("wheel", (evt) => {
+    //     evt.preventDefault();
+    //     console.log('[] evt: ', evt);
+    //     // scrollContainer.scrollLeft += evt.;
+    //   });
+    // }, [])
 
     if (getChestDetailLoading) return (
       <div className={`${s.wrapper} lucis-container-2`}>
@@ -141,10 +115,25 @@ export default function LuckyChest() {
                   <img src="/assets/P2E/lucky-chest/ic_lucis_coin.png" alt="icon" />
                 </div>
               </div>
-
             </div>
           </div>
-          <HistoryTable userHistoryData={userHistory} claimChestPrize={handleClaimChestPrize}/>
+          {/*{chestPrizes && (*/}
+          {/*  <div className={s.chestPrizesWrap}>*/}
+          {/*    <h2>Items that might be in this Box:</h2>*/}
+          {/*    <div className={`${s.chestPrizesList} horizontalScroll`}>*/}
+          {/*      {chestPrizes.map(prize => (*/}
+          {/*        <ChestPrize*/}
+          {/*          key={prize?.id}*/}
+          {/*          description={prize?.desc}*/}
+          {/*          image={prize?.img ?? ''}*/}
+          {/*          title={prize?.title}*/}
+          {/*          rarity={prize?.rarity}*/}
+          {/*        />*/}
+          {/*      ))}*/}
+          {/*    </div>*/}
+          {/*  </div>*/}
+          {/*)}*/}
+          <HistoryTable/>
           {luckyChestSponsor && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">
@@ -159,7 +148,11 @@ export default function LuckyChest() {
               </div>
             </div>
           )}
-          <PopUpOpenBox status={showPopupOpenBox} closePopupOpenBox={() => setShowPopupOpenBox(false)} chestDetail={getChestDetailData?.getChestDetail}/>
+          <PopUpOpenBox
+            status={showPopupOpenBox}
+            closePopupOpenBox={() => setShowPopupOpenBox(false)}
+            chestDetail={getChestDetailData?.getChestDetail}
+          />
         </div>
       </>
     )

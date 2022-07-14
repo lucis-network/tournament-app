@@ -94,3 +94,9 @@ export enum Platform {
   GARENA
 }
 
+
+export enum OverviewSection {
+  NONE,
+  CONNECT_GAME
+}
+

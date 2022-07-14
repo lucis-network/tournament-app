@@ -22,6 +22,7 @@ import RafflesStore from "../../../../src/store/RafflesStore";
 import moment from "moment";
 import {mapToDict} from "../../../../utils/Array";
 
+
 const RafflesDetail = observer(() => {
   const router = useRouter()
   const raffleUID = router.query.id as string | undefined

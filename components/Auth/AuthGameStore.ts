@@ -114,14 +114,14 @@ export type AuthGameUser = AuthFaceitGameUser & AuthLMSSGameUser;
 
 
 class AuthGameStore implements AuthFaceitGameUser, AuthLMSSGameUser {
-  lmss_id: string | undefined  = undefined;
+  lmss_id: string | undefined = undefined;
   lmss_access_token: string | undefined = undefined;
   lmss_id_token: string | undefined = undefined;
   lmss_platform_id: string | undefined = undefined;
   lmss_nick_name: string | undefined = undefined;
   lmss_avatar: string | undefined = undefined;
 
-  faceit_id: string | undefined  = undefined;
+  faceit_id: string | undefined = undefined;
   faceit_access_token: string | undefined = undefined;
   faceit_id_token: string | undefined = undefined;
   faceit_platform_id: string | undefined = undefined;
@@ -163,23 +163,25 @@ class AuthGameStore implements AuthFaceitGameUser, AuthLMSSGameUser {
     this._isLoggedInFaceit = false;
   }
 
-  setAuthGameUser(gameAccount: AuthGameUser) {
-    this.lmss_id = gameAccount.lmss_id;
-    this.lmss_access_token = gameAccount.lmss_access_token;
-    this.lmss_id_token = gameAccount.lmss_id_token;
-    this.lmss_platform_id = gameAccount.lmss_platform_id;
-    this.lmss_nick_name = gameAccount.lmss_nick_name;
-    this.lmss_avatar = gameAccount.lmss_avatar;
+  setAuthGameUser(gameAccount: AuthGameUser | null) {
+    if (gameAccount) {
+      this.lmss_id = gameAccount.lmss_id;
+      this.lmss_access_token = gameAccount.lmss_access_token;
+      this.lmss_id_token = gameAccount.lmss_id_token;
+      this.lmss_platform_id = gameAccount.lmss_platform_id;
+      this.lmss_nick_name = gameAccount.lmss_nick_name;
+      this.lmss_avatar = gameAccount.lmss_avatar;
 
-    this.faceit_id = gameAccount.faceit_id;
-    this.faceit_access_token = gameAccount.faceit_access_token;
-    this.faceit_id_token = gameAccount.faceit_id_token;
-    this.faceit_platform_id = gameAccount.faceit_platform_id;
-    this.faceit_nick_name = gameAccount.faceit_nick_name;
-    this.faceit_avatar = gameAccount.faceit_avatar;
+      this.faceit_id = gameAccount.faceit_id;
+      this.faceit_access_token = gameAccount.faceit_access_token;
+      this.faceit_id_token = gameAccount.faceit_id_token;
+      this.faceit_platform_id = gameAccount.faceit_platform_id;
+      this.faceit_nick_name = gameAccount.faceit_nick_name;
+      this.faceit_avatar = gameAccount.faceit_avatar;
 
-    this._isLoggedInLMSS = !!gameAccount.lmss_id_token;
-    this._isLoggedInFaceit = !!gameAccount.faceit_id_token;
+      this._isLoggedInLMSS = !!gameAccount.lmss_id_token;
+      this._isLoggedInFaceit = !!gameAccount.faceit_id_token;
+    }
   }
 }
 const s = new AuthGameStore();

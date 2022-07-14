@@ -157,7 +157,8 @@ export enum BuyRaffleTicketErrorCode {
   RaffleNotFound = 'RaffleNotFound',
   TicketQuantityCannotBeZero = 'TicketQuantityCannotBeZero',
   TotalLimitExceeded = 'TotalLimitExceeded',
-  UserLimitExceeded = 'UserLimitExceeded'
+  UserLimitExceeded = 'UserLimitExceeded',
+  UserRegionInvalid = 'UserRegionInvalid'
 }
 
 export type CacheCsgoPlayerStatistic = {
@@ -239,7 +240,7 @@ export type ChestDetail = {
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   prizes: Array<LuckyChestPrize>;
-  sponsors?: Maybe<Array<SponsorRaffle>>;
+  sponsors?: Maybe<Array<P2eSponsor>>;
   ticket_cost?: Maybe<Scalars['Decimal']>;
   ticket_cost_type?: Maybe<CostType>;
   tier: LuckyChestTier;
@@ -591,6 +592,7 @@ export type GamePlatform = {
 export type LolAccountDto = {
   __typename?: 'LolAccountDto';
   avatar?: Maybe<Scalars['String']>;
+  connected_user_name?: Maybe<Scalars['String']>;
   nick_name?: Maybe<Scalars['String']>;
 };
 
@@ -710,6 +712,7 @@ export enum LolMissionType {
   PhysicalDamageToChampion = 'PhysicalDamageToChampion',
   QuadraKill = 'QuadraKill',
   TripleKill = 'TripleKill',
+  UseChampion = 'UseChampion',
   WardKill = 'WardKill',
   WardPlace = 'WardPlace',
   Win = 'Win',
@@ -747,6 +750,7 @@ export type LolPlayerMatchGql = {
   pental_kill?: Maybe<Scalars['Int']>;
   player: PlayerGame;
   player_game_uid: Scalars['String'];
+  player_statistic?: Maybe<Scalars['JSON']>;
   point?: Maybe<Scalars['Int']>;
   quadra_kill?: Maybe<Scalars['Int']>;
   triple_kill?: Maybe<Scalars['Int']>;
@@ -937,6 +941,7 @@ export type Mutation = {
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateCsgoRecentlyMatch: Array<CsgoPlayerMatch>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
+  updateLolRecentlyMatch: Array<LolPlayerMatchGql>;
   upgradeLucisMission?: Maybe<PlayerMission>;
   withdrawLucisToken?: Maybe<Scalars['Boolean']>;
 };
@@ -1053,6 +1058,11 @@ export type MutationUpdateDailyMissionArgs = {
 };
 
 
+export type MutationUpdateLolRecentlyMatchArgs = {
+  platform_id: Scalars['Int'];
+};
+
+
 export type MutationUpgradeLucisMissionArgs = {
   platform_id: Scalars['Int'];
   player_mission_uid: Scalars['String'];
@@ -1120,6 +1130,7 @@ export type Notification = {
 export enum OpenChestErrorCode {
   BalanceNotInitiated = 'BalanceNotInitiated',
   ChestNotFound = 'ChestNotFound',
+  GameNotConnected = 'GameNotConnected',
   NotEnoughLucisPoint = 'NotEnoughLucisPoint',
   NotEnoughLucisToken = 'NotEnoughLucisToken',
   PrizeNotFound = 'PrizeNotFound',
@@ -1128,9 +1139,20 @@ export enum OpenChestErrorCode {
 
 export type OpenChestResponse = {
   __typename?: 'OpenChestResponse';
-  prize?: Maybe<LuckyChestPrize>;
+  prize?: Maybe<Scalars['String']>;
   /** ClaimChestPrize argument */
   user_prize_history_uid?: Maybe<Scalars['String']>;
+};
+
+export type P2eSponsor = {
+  __typename?: 'P2eSponsor';
+  created_at: Scalars['DateTime'];
+  img?: Maybe<Scalars['String']>;
+  link?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  type?: Maybe<SponsorType>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
 };
 
 export type Platform = {
@@ -1385,7 +1407,6 @@ export type ProgressDailyMission = {
 export type Query = {
   __typename?: 'Query';
   GetAllPlayerNFT?: Maybe<Array<PlayerNft>>;
-  KycAccount?: Maybe<Scalars['Boolean']>;
   /** this token will expire after 5 minutes */
   generateToken?: Maybe<Scalars['String']>;
   getAllTickets?: Maybe<TicketList>;
@@ -1406,13 +1427,14 @@ export type Query = {
   getRecentWinners?: Maybe<Array<RecentWinner>>;
   getRecentlyCsgoMatch?: Maybe<GCsgoMatch>;
   getRecentlyLolMatch?: Maybe<LolMatchGql>;
-  getSponsorRaffles?: Maybe<Array<SponsorRaffle>>;
+  getSponsorRaffles?: Maybe<Array<P2eSponsor>>;
   getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
-  getWonTickets?: Maybe<Array<UserTicketGql>>;
+  getWonTickets?: Maybe<Array<Scalars['String']>>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
   isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   isEnable?: Maybe<Scalars['Boolean']>;
+  kycAccount?: Maybe<Scalars['Boolean']>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   rafflesInCurrentMonth?: Maybe<Array<RaffleGql>>;
   searchBySummonerName?: Maybe<LolAccountDto>;
@@ -1422,11 +1444,6 @@ export type Query = {
 
 export type QueryGetAllPlayerNftArgs = {
   game_uid: Scalars['String'];
-};
-
-
-export type QueryKycAccountArgs = {
-  summoner_name: Scalars['String'];
 };
 
 
@@ -1545,6 +1562,11 @@ export type QueryIsEnableArgs = {
 };
 
 
+export type QueryKycAccountArgs = {
+  summoner_name: Scalars['String'];
+};
+
+
 export type QueryMyWonTicketsArgs = {
   raffle_uid: Scalars['String'];
 };
@@ -1591,7 +1613,7 @@ export type RaffleDetail = {
   lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
   nft_reward?: Maybe<Scalars['String']>;
-  raffle_sponsors?: Maybe<Array<SponsorRaffle>>;
+  raffle_sponsors?: Maybe<Array<P2eSponsor>>;
   regions?: Maybe<Array<Scalars['String']>>;
   status?: Maybe<RaffleStatus>;
   ticket?: Maybe<Ticket>;
@@ -1665,16 +1687,6 @@ export type RecentWinner = {
   user?: Maybe<User>;
 };
 
-export type SponsorRaffle = {
-  __typename?: 'SponsorRaffle';
-  created_at: Scalars['DateTime'];
-  img?: Maybe<Scalars['String']>;
-  link?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-};
-
 export type SponsorSlot = {
   __typename?: 'SponsorSlot';
   _count: SponsorSlotCount;
@@ -1727,6 +1739,12 @@ export type SponsorTransaction = {
 export enum SponsorTransactionType {
   Become = 'BECOME',
   Existing = 'EXISTING'
+}
+
+export enum SponsorType {
+  CsgoLuckyChest = 'CsgoLuckyChest',
+  LolLuckyChest = 'LolLuckyChest',
+  Raffle = 'Raffle'
 }
 
 export type SpotlightAnnouncement = {

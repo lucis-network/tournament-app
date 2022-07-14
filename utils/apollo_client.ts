@@ -146,6 +146,11 @@ const client = new ApolloClient({
   link: from([errorLink, splitLink != null ? splitLink : httpLink]),
   cache,
   connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }
 });
 
 export default client;

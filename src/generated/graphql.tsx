@@ -1936,6 +1936,7 @@ export enum LolMissionType {
   PhysicalDamageToChampion = 'PhysicalDamageToChampion',
   QuadraKill = 'QuadraKill',
   TripleKill = 'TripleKill',
+  UseChampion = 'UseChampion',
   WardKill = 'WardKill',
   WardPlace = 'WardPlace',
   Win = 'Win',

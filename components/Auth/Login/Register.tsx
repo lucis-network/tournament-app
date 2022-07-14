@@ -20,19 +20,8 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
 
 export default observer(function LoginModal(props: Props) {
   useEffect(() => {
-    const cachedUser: AuthUser | null = getLocalAuthInfo();
-    const cachedGame: AuthGameUser | null = getLocalAuthGameInfo();
-    const token = cachedUser?.token;
-    if (token) {
-      console.log("{AuthService.login} re-login user: ");
-      AuthStore.setAuthUser(cachedUser);
-
-    }
-
-    if (cachedGame?.faceit_id_token) {
-      AuthGameStore.setAuthGameUser(cachedGame);
-    }
-
+    const authService = new AuthService();
+    authService.getUserData();
   }, []);
 
   const isModalVisible = LoginBoxStore.connectModalVisible,

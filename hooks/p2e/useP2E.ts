@@ -269,6 +269,30 @@ export const UPDATE_CSGO_RECENTLY_MATCH = gql`
   }
 `
 
+export const UPDATE_LOL_RECENTLY_MATCH = gql`
+  mutation ($platform_id: Int!) {
+    updateLolRecentlyMatch(platform_id: $platform_id) {
+        uid
+        match_uid
+        player_game_uid
+        is_win
+        kill
+        assist
+        map_img
+        point
+        gold_earned
+        minion_killed
+        deaths
+        match {
+          uid
+          type
+          end_at
+          map
+        }
+    }
+  }
+`
+
 export const CLAIM_MISSION = gql`
   mutation ($player_mission_uid: String!) {
     claimMission(player_mission_uid: $player_mission_uid)
@@ -476,6 +500,30 @@ export const GET_LUCIS_MISSION = gql`
         uid
         title
         game_uid
+        img
+        goal
+      }
+    }
+  }
+`
+
+
+export const UPGRADE_LUCIS_MISSION = gql`
+  mutation ($player_mission_uid: String!, $platform_id: Int!) {
+    upgradeLucisMission(player_mission_uid: $player_mission_uid, platform_id: $platform_id) {
+      achieved
+      uid
+      mission_uid
+      is_claim
+      updated_at
+      mission {
+        level {
+          lucis_point
+          level
+          lucis_token
+        }
+        uid
+        title
         img
         goal
       }

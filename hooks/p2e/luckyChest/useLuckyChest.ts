@@ -10,6 +10,8 @@ type GetChestDetailProps = {
 type GetUserHistoryProps = {
   type?: string,
   tier?: string,
+  page?: number,
+  limit?: number,
 }
 
 export type ClaimChestPrizeProps = {
@@ -51,7 +53,7 @@ export const useGetChestDetail = ({type, tier}: GetChestDetailProps): {
   }
 }
 
-export const useGetLuckyChestUserInfo = ({type, tier}: GetChestDetailProps): {
+export const useGetLuckyChestUserInfo = ({type, tier, page, limit}: GetUserHistoryProps): {
   getLuckyChestUserInfoLoading: boolean,
   getLuckyChestUserInfoError: ApolloError | undefined,
   refetchGetLuckyChestUserInfo: () => Promise<ApolloQueryResult<any>>,
@@ -66,6 +68,8 @@ export const useGetLuckyChestUserInfo = ({type, tier}: GetChestDetailProps): {
     variables: {
       type: type,
       tier: tier,
+      page: page,
+      limit: limit,
     },
     skip: isEmpty(type) || isEmpty(tier),
     context: {
@@ -150,10 +154,12 @@ const GET_CHEST_DETAIL = gql`
 `
 
 const GET_LUCKY_CHEST_USER_INFO = gql`
-  query($type: LuckyChestType!, $tier: LuckyChestTier!) {
-    getLuckyChestUserInfo(type: $type, tier: $tier) {
+  query($type: LuckyChestType!, $tier: LuckyChestTier!, $page: Int, $limit: Int) {
+    getLuckyChestUserInfo(type: $type, tier: $tier, page: $page ,limit: $limit) {
+      history_count
       history {
         uid
+        code
         type
         tier
         prize_id
@@ -165,11 +171,9 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
           prize_type
           rarity
           prize_amount
-          updated_at
           created_at
         }
         is_claimed
-        updated_at
         created_at
       }
     }
@@ -179,16 +183,7 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
 export const OPEN_CHEST = gql`
   mutation ($type: LuckyChestType!, $tier: LuckyChestTier!) {
     openChest (type: $type, tier: $tier) {
-      prize {
-        id
-        title
-        desc
-        img
-        prize_type
-        prize_amount
-        quantity_in_stock
-        valued_at
-      }
+      prize
       user_prize_history_uid
     }
   }

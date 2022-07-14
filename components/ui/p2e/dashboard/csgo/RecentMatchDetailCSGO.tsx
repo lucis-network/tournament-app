@@ -99,7 +99,7 @@ export const RecentMatchDetailCSGO = () => {
       img: "/assets/P2E/csgo/achievement/k-r.png",
       lucisPoint: data?.match_earning?.highest_kr ?? "-",
       lucisToken: "-",
-      isCompleted: data?.highest_kr
+      isCompleted: data?.highest_kr ?? false,
     }
   ];
 
@@ -107,7 +107,9 @@ export const RecentMatchDetailCSGO = () => {
     let point = 0;
     cardList.forEach((item, index) => {
       if (item.isCompleted) {
-        point += Number(item.lucisPoint);
+        if (!isNaN(Number(item.lucisPoint))) {
+          point += Number(item.lucisPoint);
+        }
       }
     });
 
@@ -405,7 +407,7 @@ export const RecentMatchDetailCSGO = () => {
                         </div>
                         </Col>
                         <Col span={6}><div className={s.rewardItem}>
-                          <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
+                          <span className={s.lucisPoint}>{`+${!isNaN(totalEarned) ? totalEarned : "-"}`}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
