@@ -507,6 +507,30 @@ export const GET_LUCIS_MISSION = gql`
   }
 `
 
+
+export const UPGRADE_LUCIS_MISSION = gql`
+  mutation ($player_mission_uid: String!, $platform_id: Int!) {
+    upgradeLucisMission(player_mission_uid: $player_mission_uid, platform_id: $platform_id) {
+      achieved
+      uid
+      mission_uid
+      is_claim
+      updated_at
+      mission {
+        level {
+          lucis_point
+          level
+          lucis_token
+        }
+        uid
+        title
+        img
+        goal
+      }
+    }
+  }
+`
+
 export const GET_STATISTICS = gql`
   query {
     getBalance {

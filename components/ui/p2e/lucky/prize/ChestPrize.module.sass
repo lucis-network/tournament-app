@@ -1,0 +1,112 @@
+.chestPrize
+  min-width: 90px
+  margin-right: 16px
+  height: 100%
+  display: flex
+  flex-direction: column
+  color: #787878
+  @media screen and (min-width: 1200px)
+    min-width: 130px
+  &:global(.Common)
+    color: #787878
+    .prizeImg
+      border-bottom-color: #787878
+  &:global(.Uncommon)
+    color: #618FC5
+    .prizeImg
+      border-bottom-color: #618FC5
+  &:global(.Rare)
+    color: #07FF3E
+    .prizeImg
+      border-bottom-color: #07FF3E
+  &:global(.Epic)
+    color: #07D2FF
+    .prizeImg
+      border-bottom-color: #07D2FF
+  &:global(.Legendary)
+    color: #EBFF07
+    .prizeImg
+      border-bottom-color: #EBFF07
+  &:global(.Mythic)
+    color: #FA07FF
+    .prizeImg
+      border-bottom-color: #FA07FF
+  &:global(.Divine)
+    color: #FF7607
+    .prizeImg
+      border-bottom-color: #FF7607
+  &:last-of-type
+    margin-right: 0
+  .prizeImg
+    display: flex
+    align-items: center
+    justify-content: center
+    padding: 15px
+    background: rgba(69, 82, 107, 0.5)
+    backdrop-filter: blur(24.2991px)
+    border-bottom: 2px solid #787878
+    @media screen and (min-width: 1200px)
+      padding: 34px
+    img
+      width: 60px
+      object-fit: contain
+  .prizeTitle
+    background: rgba(45, 52, 70, 0.5)
+    backdrop-filter: blur(40px)
+    height: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+    text-align: center
+    padding: 7px
+    font-family: 'Revx Neue Demo'
+    font-weight: 600
+    font-size: 12px
+    line-height: 13px
+    text-transform: uppercase
+.prizeDetail
+  border: none
+  border-radius: 0
+  &:global(.Common)
+    :global(.ant-popover-title)
+      color: #787878
+  &:global(.Uncommon)
+    :global(.ant-popover-title)
+      color: #618FC5
+  &:global(.Rare)
+    :global(.ant-popover-title)
+      color: #07FF3E
+  &:global(.Epic)
+    :global(.ant-popover-title)
+      color: #07D2FF
+  &:global(.Legendary)
+    :global(.ant-popover-title)
+      color: #EBFF07
+  &:global(.Mythic)
+    :global(.ant-popover-title)
+      color: #FA07FF
+  &:global(.Divine)
+    :global(.ant-popover-title)
+      color: #FF7607
+  :global(.ant-popover-content)
+    :global(.ant-popover-inner)
+      :global(.ant-popover-title)
+        border-top-left-radius: 4px
+        border-top-right-radius: 4px
+        background: rgba(45, 52, 70, 0.5)
+        backdrop-filter: blur(40px)
+        border-bottom: 0
+      :global(.ant-popover-inner-content)
+        background: rgba(69, 80, 107, 0.5)
+        backdrop-filter: blur(40px)
+        font-family: 'Lexend'
+        font-weight: 300
+        font-size: 16px
+        line-height: 20px
+        color: #DBE0E8
+      background: none
+      backdrop-filter: none
+      border-radius: 0
+      &:before
+        content: none !important
+

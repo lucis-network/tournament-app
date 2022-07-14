@@ -58,7 +58,7 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
   const router = useRouter();
 
   const handleJoinNowDetail = () => {
-    router.push(`/tournament/${item.uid}/${slugify(item.name)}`);
+    router.push(`/arena/${item.uid}/${slugify(item.name)}`);
   };
   const elimination = BracketType.find(
     (bracket) => bracket.value === item.brackets?.[0].type

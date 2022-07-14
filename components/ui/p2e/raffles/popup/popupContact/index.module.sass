@@ -23,9 +23,11 @@
   justify-content: center
   flex-direction: column
   align-items: center
-  .button
+  .button:global(.ant-btn-primary)
     margin-bottom: 22px
-    color: #FFFFFF
+    span:not(:global(.ant-btn-loading-icon), :global(.anticon-loading))
+      color: #FFFFFF !important
+      padding: 12px 32px
   .desc
     font-family: 'Lexend'
     font-style: normal

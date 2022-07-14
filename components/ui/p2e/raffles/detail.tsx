@@ -49,15 +49,8 @@ const RafflesDetail = observer(() => {
     page: 1,
     display_name: ticketSearchKeyword
   })
-
-  const {dataWonTickets, refetch} = useGetWonTickets({
-    raffle_uid: raffleUID,
-    skip: isEmpty(raffleUID)
-  },);
-
   const {buyRaffleTicket} = useBuyRaffleTicket()
   const {dataWinTicket} = RafflesStore
-
 
   useEffect(() => {
     if (getAllTicketsData?.getAllTickets?.user_tickets) {
@@ -326,8 +319,7 @@ const RafflesDetail = observer(() => {
             {checkDisplayEndAt &&
                 <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
                     <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} refetchRaffleDetail={refetchRaffleDetail}
-                                    dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}
-                                    dataWonTickets={dataWonTickets}></RollingRaffles>
+                                    dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
                 </section>
             }
           </div>

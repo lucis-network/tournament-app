@@ -40,7 +40,7 @@ export default function TabHome() {
       message.warn("Please sign in first");
     } else {
       setCreating(true);
-      router.push("/tournament/create");
+      router.push("/arena/create");
     }
   };
 

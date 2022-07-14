@@ -29,8 +29,8 @@ const PopupContactRaffles = (props: Props) => {
           <div className={s.desc}>
             Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize.
           </div>
-          <div className={s.button}>
-            <ButtonWrapper width={236} onClick={() => window.open("https://discord.gg/Y3E4x4U38k")}>CHAT WITH US</ButtonWrapper>
+          <div>
+            <ButtonWrapper className={s.button} width={236} onClick={() => window.open("https://discord.gg/7SdtYpGENT")}>CHAT WITH US</ButtonWrapper>
           </div>
           <div className={`${s.thankTo} ${s.desc}`}>
             Thank you for joining us!
