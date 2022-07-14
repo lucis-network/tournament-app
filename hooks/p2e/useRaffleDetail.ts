@@ -10,7 +10,7 @@ export function useGetWonTickets(props: Props): {
   loading: boolean,
   error: ApolloError | undefined,
   refetch: () => Promise<ApolloQueryResult<any>>;
-  dataWonTickets: UserTicketGql[] | undefined
+  dataWonTickets: string[] | undefined
 } {
   const { loading, error, data, refetch } = useQuery(GET_WON_TICKETS, {
     variables: { raffle_uid: props?.raffle_uid },
@@ -54,20 +54,7 @@ export function useMyWonTickets(props: Props): {
 
 const GET_WON_TICKETS = gql`
   query ($raffle_uid: String!) {
-    getWonTickets(raffle_uid: $raffle_uid) {
-      uid
-      user_id
-      ticket_number
-      user {
-        id
-        code
-        profile {
-          display_name
-          avatar
-          user_name
-        }
-      }
-    }
+    getWonTickets(raffle_uid: $raffle_uid)
   }
 `;
 

@@ -1046,3 +1046,20 @@ body .ant-carousel .slick-dots-bottom {
   font-weight: 600;
   font-size: 24px;
 }
+
+.connect-lmss-modal .ant-input-affix-wrapper {
+  background-color: transparent;
+  border-radius: 4px;
+}
+
+.connect-lmss-modal .ant-input-affix-wrapper  input {
+  background: transparent !important;
+}
+
+.connect-lmss-modal .ant-input-group-addon {
+  background: transparent !important;
+}
+.connect-lmss-modal .ant-input-wrapper input{
+  border-radius: 4px 0 0 4px;
+  background: transparent !important;
+}

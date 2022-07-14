@@ -129,17 +129,12 @@ const Dashboard = (props: IProps) => {
     if (loadingUpdateIcon) {
       setLoading(true);
     }
+    const missionUpdate = await updateDailyMission();
+    
+    queryDataRecentMatches(props.currentGame as Game);
+    statisticQuery.refetch();
+    setDailyMission(missionUpdate.data.updateDailyMission);
 
-    const promise = await Promise.all([
-      updateDailyMission(),
-      (props.currentGame === Game.CSGO ? updateCSGORecentlyMatch() : updateLOLRecentlyMatch()),
-    ])
-    await statisticQuery.refetch();
-
-    setDailyMission(promise[0].data.updateDailyMission)
-    if (promise[1].data.updateCsgoRecentlyMatch?.length > 0 || promise[1].data.updateLolRecentlyMatch?.length > 0) {
-      setRecentlyMatches([...promise[1].data.updateCsgoRecentlyMatch, ...recentlyMatches]);
-    }
     setLoading(false);
     if (showMessage) {
       message.success("Success!");
@@ -312,6 +307,7 @@ const Dashboard = (props: IProps) => {
                 title="Daily missions"
                 missions={dailyMission}
                 handleUpdateMissions={(showMessage, loadingIcon) => handleUpdateMissions(showMessage, loadingIcon)}
+                handleUpdateStatistic={() => statisticQuery.refetch()}
                 onClaimBox={onClaimBox}
                 loading={stateDailyMissionFetch.loading}
                 isClaimBox={isClaimBoxQuery?.data?.isClaimBox ?? false}

@@ -14,6 +14,7 @@ type MissionsListProp = {
   loading?: boolean;
   loadingUpdate?: boolean;
   handleUpdateMissions: (showMessage: boolean, loadingIconUpdate?: boolean) => Promise<void>;
+  handleUpdateStatistic: () => void;
   onClaimBox?: () => Promise<void>;
   isClaimBox?: boolean;
   currentGame?: Game;
@@ -24,6 +25,7 @@ const MissionList = ({
   title,
   missions,
   handleUpdateMissions,
+  handleUpdateStatistic,
   onClaimBox,
   loading,
   loadingUpdate,
@@ -47,6 +49,13 @@ const MissionList = ({
 
   const lengthMissionDone = listMissionDone?.filter(item => item)?.length ?? 0;
 
+
+  const clickUpdateButton = async () => {
+    if (loadingUpdate) {
+      return;
+    }
+    await handleUpdateMissions(true);
+  }
   return (
     <div className={s.dailyMissionsList}>
       {isDailyMission ?
@@ -100,7 +109,7 @@ const MissionList = ({
         <p>
           {title ?? "Completed all the daily misions to receive"}
         </p>
-        <div className={s.updateButton} onClick={() => handleUpdateMissions(true)}>
+        <div className={s.updateButton} onClick={() => clickUpdateButton()}>
           <img src="/assets/P2E/reload-icon.png"
             alt=""
             className={loadingUpdate ? `${s.spinner}` : ""} />
@@ -123,7 +132,8 @@ const MissionList = ({
                 currentGame={currentGame}
                 mission={mission}
                 key={`${mission?.mission?.game_uid}-${index}`}
-                handleUpdateMissions={async () => await handleUpdateMissions(false, false)} />;
+                handleUpdateMission={async () => await handleUpdateMissions(false, false)}
+                handleUpdateStatistic={() =>  handleUpdateStatistic()} />;
             })
         )}
       </div>

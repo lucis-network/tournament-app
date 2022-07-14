@@ -45,7 +45,7 @@ const Mission = (props: IProps) => {
     }
 
     await queryData();
-    await statisticQuery.refetch();
+    // await statisticQuery.refetch();
     setLoading(false);
     if (showMessage) {
       message.success("Update!");
@@ -59,7 +59,6 @@ const Mission = (props: IProps) => {
   }, [props?.currentGame])
 
   const queryData = async () => {
-    setLoadingLucisMission(true);
     switch (props.currentGame) {
       case Game.CSGO:
         const csgo = await lucisMissionQuery.refetch({
@@ -81,7 +80,7 @@ const Mission = (props: IProps) => {
       default:
         break;
     }
-    setLoadingLucisMission(false);
+
   }
 
   return (
@@ -108,6 +107,7 @@ const Mission = (props: IProps) => {
               title="Completed  the Lucis missions to receive"
               missions={mission}
               handleUpdateMissions={(showMessage, loadingIconUpdate) => handleUpdateMissions(showMessage, loadingIconUpdate)}
+              handleUpdateStatistic={()=> statisticQuery.refetch()}
               loading={loadingLucisMission}
               currentGame={props.currentGame}
               loadingUpdate={loading} />

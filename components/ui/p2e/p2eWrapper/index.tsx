@@ -97,19 +97,6 @@ export default observer(function P2EWrapper(props: IProps) {
       if (!AuthGameStore.isLoggedInLMSS && !AuthGameStore.isLoggedInFaceit) {
         setOverviewSection(OverviewSection.CONNECT_GAME);
         return;
-      } else {
-        if (!currentGame) {
-          if (AuthGameStore.isLoggedInFaceit) {
-            setGame(Game.CSGO);
-          } else {
-            if (AuthGameStore.isLoggedInLMSS) {
-              setGame(Game.LOL);
-            }
-          }
-  
-          
-        }
-        
       }
 
     }
