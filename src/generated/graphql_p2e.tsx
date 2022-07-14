@@ -769,6 +769,19 @@ export enum LolRegime {
   Urf = 'URF'
 }
 
+export type LucisMission = {
+  __typename?: 'LucisMission';
+  created_at: Scalars['DateTime'];
+  game_uid?: Maybe<Scalars['String']>;
+  mission: Mission;
+  mission_uid: Scalars['String'];
+  player_mission: PlayerMission;
+  player_mission_uid: Scalars['String'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user_id: Scalars['Int'];
+};
+
 export type LuckyChestPrize = {
   __typename?: 'LuckyChestPrize';
   _count: LuckyChestPrizeCount;
@@ -863,6 +876,7 @@ export type Mission = {
   level: MissionLevel;
   level_id: Scalars['Int'];
   lol_mission?: Maybe<LolMission>;
+  lucis_mission?: Maybe<Array<LucisMission>>;
   mission_status: MissionStatus;
   number_match?: Maybe<Scalars['Int']>;
   player_mission?: Maybe<Array<PlayerMission>>;
@@ -874,6 +888,7 @@ export type Mission = {
 
 export type MissionCount = {
   __typename?: 'MissionCount';
+  lucis_mission: Scalars['Int'];
   player_mission: Scalars['Int'];
   user_daily_mission: Scalars['Int'];
 };
@@ -939,9 +954,7 @@ export type Mutation = {
   openChest?: Maybe<OpenChestResponse>;
   rerollDailyMission?: Maybe<PlayerMission>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
-  updateCsgoRecentlyMatch: Array<CsgoPlayerMatch>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
-  updateLolRecentlyMatch: Array<LolPlayerMatchGql>;
   upgradeLucisMission?: Maybe<PlayerMission>;
   withdrawLucisToken?: Maybe<Scalars['Boolean']>;
 };
@@ -1047,18 +1060,8 @@ export type MutationUnStakedNftArgs = {
 };
 
 
-export type MutationUpdateCsgoRecentlyMatchArgs = {
-  platform_id: Scalars['Int'];
-};
-
-
 export type MutationUpdateDailyMissionArgs = {
   game_uid: Scalars['String'];
-  platform_id: Scalars['Int'];
-};
-
-
-export type MutationUpdateLolRecentlyMatchArgs = {
   platform_id: Scalars['Int'];
 };
 
@@ -1327,6 +1330,7 @@ export type PlayerMission = {
   daily_mission?: Maybe<Array<UserDailyMission>>;
   history?: Maybe<Array<MissionHistory>>;
   is_claim: Scalars['Boolean'];
+  lucis_mission?: Maybe<Array<LucisMission>>;
   mission: Mission;
   mission_uid: Scalars['String'];
   player_game: PlayerGame;
@@ -1339,6 +1343,7 @@ export type PlayerMissionCount = {
   __typename?: 'PlayerMissionCount';
   daily_mission: Scalars['Int'];
   history: Scalars['Int'];
+  lucis_mission: Scalars['Int'];
 };
 
 export type PlayerNft = {
