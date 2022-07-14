@@ -374,7 +374,7 @@ export const RecentMatchDetailCSGO = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/csgo/win-streak.svg" alt="" />
+                            <img src="/assets/P2E/lol/win-icon.svg" alt="" />
                             <span>{data?.current_win_streak ?? "-"}</span>
                           </div>
                         </Col>

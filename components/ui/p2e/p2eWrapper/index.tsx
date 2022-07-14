@@ -21,22 +21,22 @@ export default observer(function P2EWrapper(props: IProps) {
   const [overviewSection, setOverviewSection] = useState<OverviewSection>(OverviewSection.NONE);
 
   useEffect(() => {
-    if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
-      if (!currentGame) {
-        setCurrentGame(Game.CSGO);
-        localStorage.setItem("currentGame", Game.CSGO.toString());
+    // if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
+    //   if (!currentGame) {
+    //     setCurrentGame(Game.CSGO);
+    //     localStorage.setItem("currentGame", Game.CSGO.toString());
         
-      }
-      return;
-    }
+    //   }
+    //   return;
+    // }
 
-    if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
-      if (!currentGame) {
-        setCurrentGame(Game.LOL);
-        localStorage.setItem("currentGame", Game.LOL.toString());
-      }
-      return;
-    }
+    // if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
+    //   if (!currentGame) {
+    //     setCurrentGame(Game.LOL);
+    //     localStorage.setItem("currentGame", Game.LOL.toString());
+    //   }
+    //   return;
+    // }
 
     if (whiteListTab()) {
       return;
@@ -51,7 +51,7 @@ export default observer(function P2EWrapper(props: IProps) {
       router.push("/");
       return;
     };
-  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn, currentGame])
+  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn])
 
   useEffect(() => {
     const currentGameLocal = localStorage.getItem("currentGame");
@@ -65,35 +65,38 @@ export default observer(function P2EWrapper(props: IProps) {
         setCurrentGame(Number(currentGameLocal));
         return;
       }
+    } else {
+      setCurrentGame(Game.CSGO);
+      localStorage.setItem("currentGame", Game.CSGO.toString());
     }
   }, [])
 
   const tabs = [
     { path: "/", name: "Overview" },
-    { path: "/p2e/dashboard", name: "Dashboard" },
-    { path: "/p2e/missions", name: "Missions" },
-    { path: "/p2e/raffles", name: "Raffles" },
-    { path: "/p2e/lucky-chest", name: "Lucky Chest" },
-    { path: "/p2e/battle-pass", name: "Battle pass" },
+    { path: "/playcore/dashboard", name: "Dashboard" },
+    { path: "/playcore/missions", name: "Missions" },
+    { path: "/playcore/raffles", name: "Raffles" },
+    { path: "/playcore/lucky-chest", name: "Lucky Chest" },
+    { path: "/playcore/battle-pass", name: "Battle pass" },
   ];
 
   const isDisabledTab = (tab: string) => {
-    return tab === "/p2e/battle-pass";
+    return tab === "/playcore/battle-pass";
   }
 
 
   const whiteListTab = () => {
-    const raffles = router.pathname.search("/p2e/raffles");
+    const raffles = router.pathname.search("/playcore/raffles");
     return raffles > -1 || router.pathname === "/";
   }
   const handleTabClick = (path: string) => {
     if (!AuthStore.isLoggedIn &&
-      (path === "/p2e/dashboard" || path === "/p2e/missions")) {
+      (path === "/playcore/dashboard" || path === "/playcore/missions")) {
       message.error("Please sign in first!");
       return;
     }
 
-    if (path === "/p2e/dashboard" || path === "/p2e/missions") {
+    if (path === "/playcore/dashboard" || path === "/playcore/missions") {
       if (!AuthGameStore.isLoggedInLMSS && !AuthGameStore.isLoggedInFaceit) {
         setOverviewSection(OverviewSection.CONNECT_GAME);
         return;
@@ -164,7 +167,7 @@ export default observer(function P2EWrapper(props: IProps) {
     }
     localStorage.setItem("currentGame", game.toString());
     setCurrentGame(game);
-    router.push("/p2e/dashboard");
+    router.push("/playcore/dashboard");
   }
 
   return (
@@ -191,7 +194,7 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/p2e/raffles") &&
+                {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/playcore/raffles") &&
                   <div className={s.chooseGame}>
                     {AuthGameStore.isLoggedInLMSS && <img
                       className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
