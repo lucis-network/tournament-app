@@ -241,8 +241,8 @@ export const ConnectLOLPopup = (props: IProps) => {
                       </Form>
                     </Col>
                     <Col span={24}>
-                      <span style={{fontSize: 14}}>3. Verify your account</span>
-                      <button onClick={() => KYC()} className={s.actionButton} style={{ float: "left", marginTop: 8 }}>
+                      <div style={{fontSize: 14}}>3. Verify your account</div>
+                      <button onClick={() => KYC()} className={s.actionButton} style={{ marginTop: 8 }}>
                         <span>I created the room!</span>
                       </button>
                     </Col>
