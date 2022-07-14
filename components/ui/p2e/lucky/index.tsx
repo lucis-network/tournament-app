@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
@@ -15,6 +15,7 @@ import Head from "next/head";
 import DefaultErrorPage from "next/error";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
 import {Empty, Image, message as antMessage} from "antd";
+import ChestPrize from "./prize";
 
 export default function LuckyChest() {
     const [showPopupOpenBox, setShowPopupOpenBox] = useState(false);
@@ -27,6 +28,15 @@ export default function LuckyChest() {
     const ticketCostType = chestDetail?.ticket_cost_type
     const luckyChestSponsor = chestDetail?.sponsors
     const chestPrizes = chestDetail?.prizes
+
+    // useEffect(() => {
+    //   const scrollContainer = document.querySelector(".horizontalScroll");
+    //   scrollContainer && scrollContainer.addEventListener("wheel", (evt) => {
+    //     evt.preventDefault();
+    //     console.log('[] evt: ', evt);
+    //     // scrollContainer.scrollLeft += evt.;
+    //   });
+    // }, [])
 
     if (getChestDetailLoading) return (
       <div className={`${s.wrapper} lucis-container-2`}>
@@ -107,12 +117,22 @@ export default function LuckyChest() {
               </div>
             </div>
           </div>
-          {/*<div className={s.chestPrizesWrap}>*/}
-          {/*  <h2>Items that might be in this Box:</h2>*/}
-          {/*  <div className={s.chestPrizesList}>*/}
-
+          {/*{chestPrizes && (*/}
+          {/*  <div className={s.chestPrizesWrap}>*/}
+          {/*    <h2>Items that might be in this Box:</h2>*/}
+          {/*    <div className={`${s.chestPrizesList} horizontalScroll`}>*/}
+          {/*      {chestPrizes.map(prize => (*/}
+          {/*        <ChestPrize*/}
+          {/*          key={prize?.id}*/}
+          {/*          description={prize?.desc}*/}
+          {/*          image={prize?.img ?? ''}*/}
+          {/*          title={prize?.title}*/}
+          {/*          rarity={prize?.rarity}*/}
+          {/*        />*/}
+          {/*      ))}*/}
+          {/*    </div>*/}
           {/*  </div>*/}
-          {/*</div>*/}
+          {/*)}*/}
           <HistoryTable/>
           {luckyChestSponsor && (
             <div className={s.luckyChestSponsor}>
