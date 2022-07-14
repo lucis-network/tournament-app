@@ -180,7 +180,7 @@ export default observer(function P2EOverview(props: IProps) {
             AuthGameStore.setAuthGameUser(gameAccount);
             localStorage.setItem("currentGame", Game.CSGO.toString());
             setLocalAuthGameInfo(gameAccount);
-            router.push("/p2e/dashboard");
+            router.push("/playcore/dashboard");
           }
           setLoadingFaceit(false);
         } catch (e: any) {
@@ -243,7 +243,7 @@ export default observer(function P2EOverview(props: IProps) {
     setLmssUser({ ...lmssUser, avatar: data.lmss_avatar, nick_name: data.lmss_nick_name });
     localStorage.setItem("currentGame", Game.LOL.toString());
     setLocalAuthGameInfo(gameAccount);
-    router.push("/p2e/dashboard");
+    router.push("/playcore/dashboard");
 
     setLoadingLMSS(false);
 
