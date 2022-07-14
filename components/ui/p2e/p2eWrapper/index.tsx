@@ -21,22 +21,22 @@ export default observer(function P2EWrapper(props: IProps) {
   const [overviewSection, setOverviewSection] = useState<OverviewSection>(OverviewSection.NONE);
 
   useEffect(() => {
-    if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
-      if (!currentGame) {
-        setCurrentGame(Game.CSGO);
-        localStorage.setItem("currentGame", Game.CSGO.toString());
+    // if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
+    //   if (!currentGame) {
+    //     setCurrentGame(Game.CSGO);
+    //     localStorage.setItem("currentGame", Game.CSGO.toString());
         
-      }
-      return;
-    }
+    //   }
+    //   return;
+    // }
 
-    if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
-      if (!currentGame) {
-        setCurrentGame(Game.LOL);
-        localStorage.setItem("currentGame", Game.LOL.toString());
-      }
-      return;
-    }
+    // if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
+    //   if (!currentGame) {
+    //     setCurrentGame(Game.LOL);
+    //     localStorage.setItem("currentGame", Game.LOL.toString());
+    //   }
+    //   return;
+    // }
 
     if (whiteListTab()) {
       return;
@@ -51,7 +51,7 @@ export default observer(function P2EWrapper(props: IProps) {
       router.push("/");
       return;
     };
-  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn, currentGame])
+  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn])
 
   useEffect(() => {
     const currentGameLocal = localStorage.getItem("currentGame");
@@ -65,6 +65,9 @@ export default observer(function P2EWrapper(props: IProps) {
         setCurrentGame(Number(currentGameLocal));
         return;
       }
+    } else {
+      setCurrentGame(Game.CSGO);
+      localStorage.setItem("currentGame", Game.CSGO.toString());
     }
   }, [])
 

@@ -25,7 +25,7 @@ export const RecentMatchDetailLOL = () => {
   const data = getStatisticMatchData?.getLolMatchStatistic;
   const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
-    win: data?.player_statistic?.win ?? null,
+    win: data ? (data.is_win ? data?.player_statistic?.win : 0) : null,
     kill: data?.player_statistic?.kill ?? null,
     assists: data?.player_statistic?.assist ?? null,
     creep: data?.player_statistic?.["minion_kill"] ?? null,
@@ -270,7 +270,7 @@ export const RecentMatchDetailLOL = () => {
                     <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/lol/damage-icon.svg" alt="" />
+                            <img src="/assets/P2E/lol/win-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -430,7 +430,7 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/lol/tank-icon.svg" alt="" />
+                            <img src="/assets/P2E/lol/eyes-killer-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>
@@ -452,7 +452,7 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={4}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/lol/tank-icon.svg" alt="" />
+                            <img src="/assets/P2E/lol/eyes-placer-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={8}>

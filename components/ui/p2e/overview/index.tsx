@@ -282,7 +282,7 @@ export default observer(function P2EOverview(props: IProps) {
                     <h1>LEAGUE OF LEGENDS</h1>
                     <p>Normal, Ranked and Clash available</p>
                     <div className={s.like}>
-                      <img src="/assets/P2E/overview/like-icon.svg" alt="" /> 10
+                      <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> 10
                     </div>
                     {isEmpty(lmssUser) ? (
                       <div
@@ -294,7 +294,11 @@ export default observer(function P2EOverview(props: IProps) {
                     ) : (
                       <div className={s.platformUser}>
                         <Image src={lmssUser?.avatar ? `${prefixAvatar}${lmssUser?.avatar}` : "/assets/avatar.jpg"} preview={false} alt="" className={s.platformUserAvatar} />
-                        <div className={s.platformUserName}>{lmssUser?.nick_name}</div>
+                        <div className={s.platformUserName}>{lmssUser?.nick_name}
+                          <span>
+                            <img src="/assets/P2E/overview/check-icon.svg" alt="" />
+                          </span>
+                        </div>
                       </div>
                     )}
                   </Col>
@@ -310,7 +314,7 @@ export default observer(function P2EOverview(props: IProps) {
                     <h1>CS:GO</h1>
                     <p>Normal, Ranked and Clash available</p>
                     <div className={s.like}>
-                      <img src="/assets/P2E/overview/like-icon.svg" alt="" /> 10
+                      <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> 10
                     </div>
                     {isEmpty(faceitUser) ? (
                       <>
