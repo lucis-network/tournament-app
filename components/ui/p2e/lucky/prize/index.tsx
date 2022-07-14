@@ -22,6 +22,7 @@ const PrizeDetail = ({description}: PrizeDetailProps) => {
 }
 
 const ChestPrize = ({image, title, description, rarity}: ChestPrizeProps) => {
+  console.log('[ChestPrize] rarity: ', rarity);
   return (
     <Popover content={<PrizeDetail description={description} />} title="Title">
       <div className={`${s.chestPrize} ${rarity ?? ''}`}>
