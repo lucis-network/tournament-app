@@ -155,9 +155,8 @@ const GET_RAFFLE_DETAIL = gql`
       uid
       name
       desc
-      lucis_point_reward
-      lucis_token_reward
-      nft_reward
+      prize_type
+      prize_amount
       winner_total
       valued_at
       img

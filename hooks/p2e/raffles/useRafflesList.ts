@@ -150,7 +150,8 @@ const GET_RAFFLE_IN_CURRENT_MONTH = gql`
       uid
       name
       valued_at
-      lucis_point_reward
+      prize_type
+      prize_amount
       img
       type
       end_at
@@ -179,7 +180,9 @@ const SEARCH_RAFFLE = gql`
       img
       type
       valued_at
-      lucis_point_reward
+      prize_type
+      prize_amount
+      status
     }
   }
 `
