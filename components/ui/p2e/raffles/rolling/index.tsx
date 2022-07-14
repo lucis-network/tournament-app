@@ -37,16 +37,17 @@ type Props = {
   raffleUid?: string;
   dataRaffleDetail?: RaffleDetail;
   refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>;
+  dataWonTickets?: string[];
 }
 
 const antIcon = <LoadingOutlined style={{fontSize: 20, color: "#00F9FF"}} spin/>;
 
 const RollingRaffles = (props: Props) => {
-  const {raffleUid, dataRaffleDetail, refetchRaffleDetail} = props;
-  const {dataWonTickets, refetch} = useGetWonTickets({
-    raffle_uid: raffleUid,
-    skip: isEmpty(raffleUid)
-  },);
+  const {raffleUid, dataRaffleDetail, dataWonTickets, refetchRaffleDetail} = props;
+  // const {dataWonTickets, refetch} = useGetWonTickets({
+  //   raffle_uid: raffleUid,
+  //   skip: isEmpty(raffleUid)
+  // },);
 
   const {dataMyWonTickets, refetchMyWonTickets} = useMyWonTickets({
     raffle_uid: raffleUid,

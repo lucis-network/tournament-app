@@ -21,7 +21,7 @@ import RollingRaffles from "./rolling";
 import RafflesStore from "../../../../src/store/RafflesStore";
 import moment from "moment";
 import {mapToDict} from "../../../../utils/Array";
-
+import {useGetWonTickets} from "../../../../hooks/p2e/useRaffleDetail";
 
 const RafflesDetail = observer(() => {
   const router = useRouter()
@@ -430,7 +430,7 @@ const RafflesDetail = observer(() => {
                       <div className={s.rafflePriceWrap}>
                         <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
                         <div className={s.rafflePrice}>
-                          <div className={s.rafflePriceText}>{raffle?.lucis_point_reward}</div>
+                          <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
                           <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt=""/>
                         </div>
                       </div>

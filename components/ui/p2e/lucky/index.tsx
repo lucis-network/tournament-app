@@ -16,6 +16,7 @@ import DefaultErrorPage from "next/error";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
 import {Empty, Image, message as antMessage} from "antd";
 import ChestPrize from "./prize";
+import {ScrollMenu} from "react-horizontal-scrolling-menu";
 
 export default function LuckyChest() {
     const [showPopupOpenBox, setShowPopupOpenBox] = useState(false);
@@ -28,15 +29,36 @@ export default function LuckyChest() {
     const ticketCostType = chestDetail?.ticket_cost_type
     const luckyChestSponsor = chestDetail?.sponsors
     const chestPrizes = chestDetail?.prizes
+    console.log('[LuckyChest] chestPrizes: ', chestPrizes);
+    const preventDefault = (ev: any) => {
+      if (ev.preventDefault) {
+        ev.preventDefault();
+      }
+      ev.returnValue = false;
+    };
+    const enableBodyScroll = () => {
+      document && document.removeEventListener("wheel", preventDefault, false);
+    };
+    const disableBodyScroll = () => {
+      document &&
+      document.addEventListener("wheel", preventDefault, {
+        passive: false
+      });
+    };
+    const onWheel = (apiObj: any, ev: any) => {
+      const isThouchpad = Math.abs(ev.deltaX) !== 0 || Math.abs(ev.deltaY) < 15;
 
-    // useEffect(() => {
-    //   const scrollContainer = document.querySelector(".horizontalScroll");
-    //   scrollContainer && scrollContainer.addEventListener("wheel", (evt) => {
-    //     evt.preventDefault();
-    //     console.log('[] evt: ', evt);
-    //     // scrollContainer.scrollLeft += evt.;
-    //   });
-    // }, [])
+      if (isThouchpad) {
+        ev.stopPropagation();
+        return;
+      }
+
+      if (ev.deltaY > 0) {
+        apiObj.scrollNext();
+      } else if (ev.deltaY < 0) {
+        apiObj.scrollPrev();
+      }
+    }
 
     if (getChestDetailLoading) return (
       <div className={`${s.wrapper} lucis-container-2`}>
@@ -91,20 +113,20 @@ export default function LuckyChest() {
             <div className={s.box}>
               <div className={s.boxWrap}>
                 <img onClick={() => setShowPopupOpenBox(true)} src="/assets/P2E/lucky-chest/im_box.png" alt="" className={s.boxImg} />
-                {chestPrizes && (
-                  <div className={s.content_right}>
-                    <img src="/assets/P2E/lucky-chest/ic_line.svg" alt=""/>
-                    <div className={s.block_item}>
-                      {chestPrizes.map((item, index) => {
-                        return (
-                          <div className={s.item} key={'k' + index + item?.id}>
-                            <img src={item?.img ? item?.img : "/assets/P2E/lucky-chest/im_box.png"} alt=""/>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-                )}
+                {/*{chestPrizes && (*/}
+                {/*  <div className={s.content_right}>*/}
+                {/*    <img src="/assets/P2E/lucky-chest/ic_line.svg" alt=""/>*/}
+                {/*    <div className={s.block_item}>*/}
+                {/*      {chestPrizes.map((item, index) => {*/}
+                {/*        return (*/}
+                {/*          <div className={s.item} key={'k' + index + item?.id}>*/}
+                {/*            <img src={item?.img ? item?.img : "/assets/P2E/lucky-chest/im_box.png"} alt=""/>*/}
+                {/*          </div>*/}
+                {/*        )*/}
+                {/*      })}*/}
+                {/*    </div>*/}
+                {/*  </div>*/}
+                {/*)}*/}
               </div>
               <div className={`${s.group_btn} ${s.group_btn_mobile}`}>
                 <div onClick={() => setShowPopupOpenBox(true)}>
@@ -117,22 +139,28 @@ export default function LuckyChest() {
               </div>
             </div>
           </div>
-          {/*{chestPrizes && (*/}
-          {/*  <div className={s.chestPrizesWrap}>*/}
-          {/*    <h2>Items that might be in this Box:</h2>*/}
-          {/*    <div className={`${s.chestPrizesList} horizontalScroll`}>*/}
-          {/*      {chestPrizes.map(prize => (*/}
-          {/*        <ChestPrize*/}
-          {/*          key={prize?.id}*/}
-          {/*          description={prize?.desc}*/}
-          {/*          image={prize?.img ?? ''}*/}
-          {/*          title={prize?.title}*/}
-          {/*          rarity={prize?.rarity}*/}
-          {/*        />*/}
-          {/*      ))}*/}
-          {/*    </div>*/}
-          {/*  </div>*/}
-          {/*)}*/}
+          {chestPrizes && (
+            <div className={s.chestPrizesWrap}>
+              <h2>Items that might be in this Box:</h2>
+              <div className={s.chestPrizesList} onMouseEnter={disableBodyScroll} onMouseLeave={enableBodyScroll}>
+                <ScrollMenu
+                  onWheel={onWheel}
+                >
+                  {chestPrizes.map(prize => (
+                    <>
+                      <ChestPrize
+                        key={prize?.id}
+                        description={prize?.desc}
+                        image={prize?.img ?? ''}
+                        title={prize?.title}
+                        rarity={prize?.rarity}
+                      />
+                    </>
+                  ))}
+                </ScrollMenu>
+                </div>
+            </div>
+          )}
           <HistoryTable/>
           {luckyChestSponsor && (
             <div className={s.luckyChestSponsor}>

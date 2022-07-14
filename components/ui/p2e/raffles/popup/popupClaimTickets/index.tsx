@@ -1,8 +1,10 @@
-import { Modal } from "antd";
+import {Button, Modal } from "antd";
 import s from "./index.module.sass";
 import {UserWonTicketGql} from "../../../../../../src/generated/graphql_p2e";
 
 import ItemClaimTicket from "./ItemClaimTicket";
+import {useState} from "react";
+import PopupContactRaffles from "../popupContact";
 
 type Props = {
   closePopupClaimTicket: () => void;
@@ -13,6 +15,11 @@ type Props = {
 
 const PopupClaimTicket = (props: Props) => {
   const { status, closePopupClaimTicket, dataMyWonTickets, raffleUid } = props;
+  const [isPopupContactVisible, setIsPopupContactVisible] = useState<boolean>(false);
+
+  const closePopupContact = () => {
+    setIsPopupContactVisible(false);
+  }
 
   return (
     <Modal
@@ -25,7 +32,6 @@ const PopupClaimTicket = (props: Props) => {
       <div>
         <div className={s.title}>
           <p className={s.titleSuccess}>CONGRATULATIONS</p>
-          <p className={s.titleTicket}>Your won raffles</p>
         </div>
         <div className={s.tickets}>
           {
@@ -39,11 +45,13 @@ const PopupClaimTicket = (props: Props) => {
               : ""
           }
         </div>
-        {/*<div className={s.buttonClaim}>*/}
-        {/*  <Button>Claim</Button>*/}
-        {/*</div>*/}
+        <div className={s.buttonClaim}>
+          <Button onClick={() => setIsPopupContactVisible(true)}>Claim</Button>
+        </div>
       </div>
-
+      {isPopupContactVisible &&
+          <PopupContactRaffles status={isPopupContactVisible} closePopupContact={closePopupContact}></PopupContactRaffles>
+      }
     </Modal>
   );
 };

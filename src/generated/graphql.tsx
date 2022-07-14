@@ -1960,6 +1960,99 @@ export enum LolRegime {
   Urf = 'URF'
 }
 
+export type LucisMission = {
+  __typename?: 'LucisMission';
+  created_at: Scalars['DateTime'];
+  game_uid?: Maybe<Scalars['String']>;
+  mission: Mission;
+  mission_uid: Scalars['String'];
+  player_mission: PlayerMission;
+  player_mission_uid: Scalars['String'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user_id: Scalars['Int'];
+};
+
+export type LucisMissionCreateManyMissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game_uid?: InputMaybe<Scalars['String']>;
+  player_mission_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type LucisMissionCreateManyMissionInputEnvelope = {
+  data: Array<LucisMissionCreateManyMissionInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type LucisMissionCreateManyPlayer_MissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game_uid?: InputMaybe<Scalars['String']>;
+  mission_uid: Scalars['String'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type LucisMissionCreateManyPlayer_MissionInputEnvelope = {
+  data: Array<LucisMissionCreateManyPlayer_MissionInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type LucisMissionCreateNestedManyWithoutMissionInput = {
+  connect?: InputMaybe<Array<LucisMissionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<LucisMissionCreateOrConnectWithoutMissionInput>>;
+  create?: InputMaybe<Array<LucisMissionCreateWithoutMissionInput>>;
+  createMany?: InputMaybe<LucisMissionCreateManyMissionInputEnvelope>;
+};
+
+export type LucisMissionCreateNestedManyWithoutPlayer_MissionInput = {
+  connect?: InputMaybe<Array<LucisMissionWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<LucisMissionCreateOrConnectWithoutPlayer_MissionInput>>;
+  create?: InputMaybe<Array<LucisMissionCreateWithoutPlayer_MissionInput>>;
+  createMany?: InputMaybe<LucisMissionCreateManyPlayer_MissionInputEnvelope>;
+};
+
+export type LucisMissionCreateOrConnectWithoutMissionInput = {
+  create: LucisMissionCreateWithoutMissionInput;
+  where: LucisMissionWhereUniqueInput;
+};
+
+export type LucisMissionCreateOrConnectWithoutPlayer_MissionInput = {
+  create: LucisMissionCreateWithoutPlayer_MissionInput;
+  where: LucisMissionWhereUniqueInput;
+};
+
+export type LucisMissionCreateWithoutMissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game_uid?: InputMaybe<Scalars['String']>;
+  player_mission: PlayerMissionCreateNestedOneWithoutLucis_MissionInput;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type LucisMissionCreateWithoutPlayer_MissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game_uid?: InputMaybe<Scalars['String']>;
+  mission: MissionCreateNestedOneWithoutLucis_MissionInput;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type LucisMissionLucis_MissionCompoundUniqueInput = {
+  player_mission_uid: Scalars['String'];
+  user_id: Scalars['Int'];
+};
+
+export type LucisMissionWhereUniqueInput = {
+  lucis_mission?: InputMaybe<LucisMissionLucis_MissionCompoundUniqueInput>;
+  uid?: InputMaybe<Scalars['String']>;
+};
+
 export type LuckyChestPrize = {
   __typename?: 'LuckyChestPrize';
   _count: LuckyChestPrizeCount;
@@ -2041,6 +2134,7 @@ export type Mission = {
   level: MissionLevel;
   level_id: Scalars['Int'];
   lol_mission?: Maybe<LolMission>;
+  lucis_mission?: Maybe<Array<LucisMission>>;
   mission_status: MissionStatus;
   number_match?: Maybe<Scalars['Int']>;
   player_mission?: Maybe<Array<PlayerMission>>;
@@ -2052,8 +2146,15 @@ export type Mission = {
 
 export type MissionCount = {
   __typename?: 'MissionCount';
+  lucis_mission: Scalars['Int'];
   player_mission: Scalars['Int'];
   user_daily_mission: Scalars['Int'];
+};
+
+export type MissionCreateNestedOneWithoutLucis_MissionInput = {
+  connect?: InputMaybe<MissionWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<MissionCreateOrConnectWithoutLucis_MissionInput>;
+  create?: InputMaybe<MissionCreateWithoutLucis_MissionInput>;
 };
 
 export type MissionCreateNestedOneWithoutPlayer_MissionInput = {
@@ -2068,6 +2169,11 @@ export type MissionCreateNestedOneWithoutUser_Daily_MissionInput = {
   create?: InputMaybe<MissionCreateWithoutUser_Daily_MissionInput>;
 };
 
+export type MissionCreateOrConnectWithoutLucis_MissionInput = {
+  create: MissionCreateWithoutLucis_MissionInput;
+  where: MissionWhereUniqueInput;
+};
+
 export type MissionCreateOrConnectWithoutPlayer_MissionInput = {
   create: MissionCreateWithoutPlayer_MissionInput;
   where: MissionWhereUniqueInput;
@@ -2076,6 +2182,24 @@ export type MissionCreateOrConnectWithoutPlayer_MissionInput = {
 export type MissionCreateOrConnectWithoutUser_Daily_MissionInput = {
   create: MissionCreateWithoutUser_Daily_MissionInput;
   where: MissionWhereUniqueInput;
+};
+
+export type MissionCreateWithoutLucis_MissionInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  csgo_mission?: InputMaybe<CsgoMissionCreateNestedOneWithoutMissionInput>;
+  game_uid: Scalars['String'];
+  goal?: InputMaybe<Scalars['Decimal']>;
+  img?: InputMaybe<Scalars['String']>;
+  is_daily_mission?: InputMaybe<Scalars['Boolean']>;
+  level: MissionLevelCreateNestedOneWithoutMissionInput;
+  lol_mission?: InputMaybe<LolMissionCreateNestedOneWithoutMissionInput>;
+  mission_status?: InputMaybe<MissionStatus>;
+  number_match?: InputMaybe<Scalars['Int']>;
+  player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
+  title?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutMissionInput>;
 };
 
 export type MissionCreateWithoutPlayer_MissionInput = {
@@ -2087,6 +2211,7 @@ export type MissionCreateWithoutPlayer_MissionInput = {
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   level: MissionLevelCreateNestedOneWithoutMissionInput;
   lol_mission?: InputMaybe<LolMissionCreateNestedOneWithoutMissionInput>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutMissionInput>;
   mission_status?: InputMaybe<MissionStatus>;
   number_match?: InputMaybe<Scalars['Int']>;
   title?: InputMaybe<Scalars['String']>;
@@ -2104,6 +2229,7 @@ export type MissionCreateWithoutUser_Daily_MissionInput = {
   is_daily_mission?: InputMaybe<Scalars['Boolean']>;
   level: MissionLevelCreateNestedOneWithoutMissionInput;
   lol_mission?: InputMaybe<LolMissionCreateNestedOneWithoutMissionInput>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutMissionInput>;
   mission_status?: InputMaybe<MissionStatus>;
   number_match?: InputMaybe<Scalars['Int']>;
   player_mission?: InputMaybe<PlayerMissionCreateNestedManyWithoutMissionInput>;
@@ -3446,6 +3572,7 @@ export type PlayerMission = {
   daily_mission?: Maybe<Array<UserDailyMission>>;
   history?: Maybe<Array<MissionHistory>>;
   is_claim: Scalars['Boolean'];
+  lucis_mission?: Maybe<Array<LucisMission>>;
   mission: Mission;
   mission_uid: Scalars['String'];
   player_game: PlayerGame;
@@ -3458,6 +3585,7 @@ export type PlayerMissionCount = {
   __typename?: 'PlayerMissionCount';
   daily_mission: Scalars['Int'];
   history: Scalars['Int'];
+  lucis_mission: Scalars['Int'];
 };
 
 export type PlayerMissionCreateManyMissionInput = {
@@ -3514,6 +3642,12 @@ export type PlayerMissionCreateNestedOneWithoutHistoryInput = {
   create?: InputMaybe<PlayerMissionCreateWithoutHistoryInput>;
 };
 
+export type PlayerMissionCreateNestedOneWithoutLucis_MissionInput = {
+  connect?: InputMaybe<PlayerMissionWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlayerMissionCreateOrConnectWithoutLucis_MissionInput>;
+  create?: InputMaybe<PlayerMissionCreateWithoutLucis_MissionInput>;
+};
+
 export type PlayerMissionCreateOrConnectWithoutDaily_MissionInput = {
   create: PlayerMissionCreateWithoutDaily_MissionInput;
   where: PlayerMissionWhereUniqueInput;
@@ -3521,6 +3655,11 @@ export type PlayerMissionCreateOrConnectWithoutDaily_MissionInput = {
 
 export type PlayerMissionCreateOrConnectWithoutHistoryInput = {
   create: PlayerMissionCreateWithoutHistoryInput;
+  where: PlayerMissionWhereUniqueInput;
+};
+
+export type PlayerMissionCreateOrConnectWithoutLucis_MissionInput = {
+  create: PlayerMissionCreateWithoutLucis_MissionInput;
   where: PlayerMissionWhereUniqueInput;
 };
 
@@ -3539,6 +3678,7 @@ export type PlayerMissionCreateWithoutDaily_MissionInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   history?: InputMaybe<MissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutPlayer_MissionInput>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
@@ -3549,6 +3689,19 @@ export type PlayerMissionCreateWithoutHistoryInput = {
   achieved?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
+  is_claim?: InputMaybe<Scalars['Boolean']>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutPlayer_MissionInput>;
+  mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
+  player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlayerMissionCreateWithoutLucis_MissionInput = {
+  achieved?: InputMaybe<Scalars['Decimal']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
+  history?: InputMaybe<MissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
@@ -3562,6 +3715,7 @@ export type PlayerMissionCreateWithoutMissionInput = {
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
   history?: InputMaybe<MissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutPlayer_MissionInput>;
   player_game: PlayerGameCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -3573,6 +3727,7 @@ export type PlayerMissionCreateWithoutPlayer_GameInput = {
   daily_mission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutPlayer_MissionInput>;
   history?: InputMaybe<MissionHistoryCreateNestedManyWithoutPlayer_MissionInput>;
   is_claim?: InputMaybe<Scalars['Boolean']>;
+  lucis_mission?: InputMaybe<LucisMissionCreateNestedManyWithoutPlayer_MissionInput>;
   mission: MissionCreateNestedOneWithoutPlayer_MissionInput;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -4041,10 +4196,9 @@ export type Raffle = {
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
-  lucis_point_reward?: Maybe<Scalars['Int']>;
-  lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
-  nft_reward?: Maybe<Scalars['String']>;
+  prize_amount?: Maybe<Scalars['Decimal']>;
+  prize_type?: Maybe<RafflePrizeType>;
   raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
@@ -4073,10 +4227,9 @@ export type RaffleCreateWithoutTicketInput = {
   desc?: InputMaybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
-  lucis_point_reward?: InputMaybe<Scalars['Int']>;
-  lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
-  nft_reward?: InputMaybe<Scalars['String']>;
+  prize_amount?: InputMaybe<Scalars['Decimal']>;
+  prize_type?: InputMaybe<RafflePrizeType>;
   raffle_sponsors?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
@@ -4087,6 +4240,14 @@ export type RaffleCreateWithoutTicketInput = {
   winner_total?: InputMaybe<Scalars['Int']>;
   won_tickets?: InputMaybe<Scalars['String']>;
 };
+
+export enum RafflePrizeType {
+  CsgoKnife = 'CsgoKnife',
+  LucisPoint = 'LucisPoint',
+  LucisToken = 'LucisToken',
+  NftBox = 'NftBox',
+  Sponsored = 'Sponsored'
+}
 
 export enum RaffleStatus {
   Closed = 'CLOSED',

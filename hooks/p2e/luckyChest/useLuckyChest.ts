@@ -137,6 +137,7 @@ const GET_CHEST_DETAIL = gql`
         quantity_in_stock
         valued_at
         img
+        rarity
         user_prize_history {
           uid
           type

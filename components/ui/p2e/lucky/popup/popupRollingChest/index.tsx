@@ -145,7 +145,9 @@ const PopupRollingChest = (props: Props) => {
           <div className={s.bg_rolling}>
             <img src="/assets/P2E/lucky-chest/bg_rolling.png" alt="" />
           </div>
-          <div style={styleWidth}>
+          <div
+            style={styleWidth}
+          >
           <div
             className={`${s.rolling} rollingEvent`}
             style={styles}
