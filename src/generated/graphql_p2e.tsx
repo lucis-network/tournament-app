@@ -304,6 +304,13 @@ export enum ClaimType {
   RefereeFee = 'REFEREE_FEE'
 }
 
+export type ConnectesUser = {
+  __typename?: 'ConnectesUser';
+  game?: Maybe<Scalars['String']>;
+  number_user?: Maybe<Scalars['Int']>;
+  platform?: Maybe<Scalars['String']>;
+};
+
 export type Contract = {
   __typename?: 'Contract';
   abi?: Maybe<Scalars['JSON']>;
@@ -936,7 +943,7 @@ export type Mutation = {
   claimBox?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<ClaimResponse>;
   claimMission?: Maybe<Scalars['Boolean']>;
-  claimRaffle?: Maybe<Scalars['Boolean']>;
+  claimRaffle?: Maybe<ClaimResponse>;
   claimStaked?: Maybe<Scalars['Boolean']>;
   connect?: Maybe<PlatformAccountDto>;
   /** Connect Faceit */
@@ -1417,7 +1424,7 @@ export type Query = {
   getLucisMission: Array<PlayerMission>;
   getLuckyChestUserInfo?: Maybe<LuckyChestUserInfo>;
   getMyTickets?: Maybe<TicketList>;
-  getNumberConnectedUser?: Maybe<Scalars['Int']>;
+  getNumberConnectedUser?: Maybe<Array<ConnectesUser>>;
   getPlatformAccount?: Maybe<Array<PlatformAccount>>;
   getProgressDailyMission?: Maybe<ProgressDailyMission>;
   getRaffleDetail?: Maybe<RaffleDetail>;
@@ -1500,12 +1507,6 @@ export type QueryGetMyTicketsArgs = {
   limit: Scalars['Int'];
   page: Scalars['Int'];
   raffle_uid: Scalars['String'];
-};
-
-
-export type QueryGetNumberConnectedUserArgs = {
-  game_uid: Scalars['String'];
-  platform_id: Scalars['Int'];
 };
 
 

@@ -1,19 +1,23 @@
 .content_modal
-  min-width: 650px
+  min-width: 325px
+  @media (min-width: 768px)
+    min-width: 650px
   :global(.ant-modal-body)
     background-image: url("/assets/Raffles/BgContact.png")
     background-repeat: no-repeat
     background-size: cover
     background-position: center
 .container
-  //min-width: 650px
   display: flex
   justify-content: center
   flex-direction: column
   align-items: center
   .logo
-    margin-top: 22px
-    margin-bottom: 20px
+    margin-top: 15px
+    margin-bottom: 15px
+    @media (min-width: 768px)
+      margin-top: 22px
+      margin-bottom: 20px
   :global(.ant-modal-close .ant-modal-close-x)
     color: #6c6b6b
     background: none
@@ -23,23 +27,19 @@
   justify-content: center
   flex-direction: column
   align-items: center
-  //.button
-  //  margin-bottom: 22px
-  //  :global(.ant-btn-primary)
-  //    span:not(:global(.ant-btn-loading-icon), :global(.anticon-loading))
-  //      color: #FFFFFF !important
-  //      padding: 12px 32px
   .desc
     font-family: 'Lexend'
     font-style: normal
     font-weight: 300
-    font-size: 18px
+    font-size: 16px
     line-height: 22px
     letter-spacing: 0.04em
     text-align: center
     text-shadow: 0 4px 20px #000000
     letter-spacing: 0.04em
     margin-bottom: 22px
+    @media (min-width: 768px)
+      font-size: 18px
 .customCss
   min-width: 240px
   max-width: 240px

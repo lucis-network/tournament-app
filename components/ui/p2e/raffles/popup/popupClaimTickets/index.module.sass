@@ -1,14 +1,19 @@
 .content_modal
-  min-width: 650px
+  min-width: 325px
+  @media (min-width: 768px)
+    min-width: 650px
   :global(.ant-modal-body)
     background-image: url("/assets/Raffles/BgClaim.png")
     background-repeat: no-repeat
     background-size: cover
     background-position: center
-    padding: 24px 115px 24px 115px
+    padding: 20px 40px 20px 40px
+    @media (min-width: 768px)
+      padding: 24px 100px 24px 100px
   :global(.ant-modal-close .ant-modal-close-x)
     color: #6c6b6b
     background: none
+
 .title
   font-family: 'Revx Neue Demo'
   text-align: center
@@ -20,8 +25,8 @@
     font-family: 'Lexend'
     font-style: normal
     font-weight: 700
-    font-size: 32px
-    line-height: 40px
+    font-size: 20px
+    line-height: 30px
     letter-spacing: 0.04em
     text-transform: uppercase
     background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
@@ -29,6 +34,11 @@
     -webkit-text-fill-color: transparent
     text-fill-color: transparent
     margin-bottom: 0
+    @media (min-width: 525px)
+      font-size: 26px
+    @media (min-width: 768px)
+      font-size: 32px
+      line-height: 40px
   .titleTicket
     font-weight: 400
     font-size: 18px
@@ -54,6 +64,7 @@
       background: #F0B90B
       border-radius: 4px 0px 0px 4px
       padding: 10px 14px
+      min-width: 130px
     .itemTicketsClaimed
       background: rgba(69, 80, 107, 0.5)
     .imgChecked
