@@ -113,7 +113,7 @@ export const ConnectLOLPopup = (props: IProps) => {
   const KYC = async () => {
     try {
       setKycLoading(true);
-      const kycResponse = await KYCLmssService.kycAccount(lmssUser.nickName);
+      const kycResponse = await KYCLmssService.kycAccount(lmssUser.nickName.trim());
       if (kycResponse.data.kycAccount) {
         const data: AuthLMSSGameUser = {
           lmss_id: "this is lmss id",
@@ -263,16 +263,16 @@ export const ConnectLOLPopup = (props: IProps) => {
                 </div>
                 <div className={s.step2}>
                   {roomName ?
-                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the name is <span style={{ color: "#00F9FF" }}>{roomName}</span><br />The room name will expire within 5 minutes</div>
+                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the name <span style={{ color: "#00F9FF" }}>{roomName}</span><br />The room name will expire within 5 minutes</div>
                     :
                     <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the generated room name<br />The room name will expire within 5 minutes</div>
                   }
-                  <img src="/assets/P2E/overview/tutorial-step1.jpg" alt="" />
+                  <img src="/assets/P2E/overview/tutorial-step1.png" alt="" />
                   <img className={s.arrow} src="/assets/P2E/overview/arrow.svg" alt="" />
-                  <img src="/assets/P2E/overview/tutorial-step2.jpg" alt="" />
+                  <img src="/assets/P2E/overview/tutorial-step2.png" alt="" />
                 </div>
                 <div className={s.step3}>
-                  Step 3: After create room, click on [I created the room!] button on this popup to verify your account
+                  Step 3: After creating room, click on [I created the room!] button on this popup to verify your account
                 </div>
               </div>
             </Col>
