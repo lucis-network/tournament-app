@@ -31,10 +31,15 @@ const ItemClaimTicket = (props: Props) => {
           ticket_number: item?.ticket_number,
         },
         onCompleted: (data) => {
-          message.success("Claim success!");
           setIsLoading(false);
           setIsDisable(true);
-          openPopupContactRaffes();
+
+          if(data?.required_contact) {
+            openPopupContactRaffes();
+          }
+          else {
+            message.success("Claim success!");
+          }
         }
       })
     } catch (error: any) {
