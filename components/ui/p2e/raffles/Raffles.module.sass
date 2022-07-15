@@ -449,6 +449,33 @@
       margin-bottom: 24px
     .sectionTitle
       margin-bottom: 0
+    .raffleSearchBar
+      display: flex
+      align-items: center
+      gap: 0 30px
+      :global(.ant-radio-group)
+        display: flex
+        span
+          font-family: 'Revx Neue Demo'
+          font-style: normal
+          color: #FFFFFF
+          font-weight: 400
+          font-size: 16px
+          line-height: 18px
+          padding-left: 0
+          //width: 24px
+          //height: 24px
+        :global(.ant-radio-wrapper)
+          display: flex
+          flex-direction: row-reverse
+          margin-left: 32px
+          margin-right: 0
+        :global(.ant-radio-inner::after)
+          background-color: #0BEBD6
+        :global(.ant-radio-checked, .ant-radio-inner)
+          border-color: #0BEBD6
+        :global(.ant-radio-inner)
+          background-color: none
   .rafflesList
     display: grid
     gap: 15px

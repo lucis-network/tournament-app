@@ -136,6 +136,7 @@ const GET_CHEST_DETAIL = gql`
         quantity_in_stock
         valued_at
         img
+        rarity
         user_prize_history {
           uid
           type
@@ -190,6 +191,8 @@ export const OPEN_CHEST = gql`
 
 const CLAIM_CHEST_PRIZE = gql`
   mutation($user_prize_history_uid: String!) {
-    claimChestPrize(user_prize_history_uid: $user_prize_history_uid)
+    claimChestPrize(user_prize_history_uid: $user_prize_history_uid) {
+      required_contact
+    }
   }
 `

@@ -1,34 +1,44 @@
 .content_modal
-  min-width: 650px
+  min-width: 325px
+  @media (min-width: 768px)
+    min-width: 650px
   :global(.ant-modal-body)
-    padding: 0
-    background-image: url("/assets/P2E/raffles/imagePopClaimRaffes.jpg")
+    background-image: url("/assets/Raffles/BgClaim.png")
     background-repeat: no-repeat
     background-size: cover
     background-position: center
-    border-radius: 4px 4px 0px 0px
+    padding: 20px 40px 20px 40px
+    @media (min-width: 768px)
+      padding: 24px 100px 24px 100px
   :global(.ant-modal-close .ant-modal-close-x)
     color: #6c6b6b
     background: none
+
 .title
   font-family: 'Revx Neue Demo'
   text-align: center
-  padding: 13px
-  //margin-bottom: 20px
-  background: rgba(45, 52, 70, 0.5)
-  backdrop-filter: blur(40px)
+  margin-bottom: 18px
+  .logo
+    margin-top: 14px
+    margin-bottom: 8px
   .titleSuccess
+    font-family: 'Lexend'
     font-style: normal
-    font-weight: 400
-    font-size: 24px
-    line-height: 26px
-    letter-spacing: 0.2em
+    font-weight: 700
+    font-size: 20px
+    line-height: 30px
+    letter-spacing: 0.04em
     text-transform: uppercase
     background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
     -webkit-background-clip: text
     -webkit-text-fill-color: transparent
-    margin-bottom: 8px
-
+    text-fill-color: transparent
+    margin-bottom: 0
+    @media (min-width: 525px)
+      font-size: 26px
+    @media (min-width: 768px)
+      font-size: 32px
+      line-height: 40px
   .titleTicket
     font-weight: 400
     font-size: 18px
@@ -39,35 +49,48 @@
   display: flex
   justify-content: space-around
   flex-wrap: wrap
-  padding: 32px 32px 40px 32px
+  gap: 18px 10px
   .item
-    //margin-top: 20px
     display: flex
     align-items: center
-    gap: 0 16px
     :global(.ant-btn[disabled])
       background: #d9d9d9
     .itemTickets
-      font-weight: 600
-      font-size: 32px
-      line-height: 40px
-      color: #FFD058
-      text-shadow: 0 0 11px #FFD058
-      padding: 10px
-      background: rgba(69, 80, 107, 0.5)
-      border-radius: 4px
-    .itemBtn
+      font-family: 'Revx Neue Demo'
+      font-style: normal
       font-weight: 600
       font-size: 24px
-      line-height: 20px
-      height: auto
-      padding: 8px 10px
-      //color: #1889E4
-      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
-      -webkit-background-clip: text !important
-      -webkit-text-fill-color: transparent
-      border-radius: 2px
-      border: 1px solid #1889E4
+      line-height: 26px
+      background: #F0B90B
+      border-radius: 4px 0px 0px 4px
+      padding: 10px 14px
+      min-width: 130px
+    .itemTicketsClaimed
+      background: rgba(69, 80, 107, 0.5)
+    .imgChecked
+      display: flex
+      align-items: center
+      justify-content: center
+      background: rgba(69, 80, 107, 0.5)
+      min-height: 46px
+      max-height: 46px
+      padding: 0 30px
+      border-radius: 0 4px 4px 0
+    .itemBtn
+      font-family: 'Revx Neue Demo'
+      font-style: normal
+      font-weight: 600
+      font-size: 14px
+      line-height: 15px
+      padding: 10px 22px
+      //display: flex;
+      //align-items: center;
+      //text-align: center;
+      border: 1px solid #F0B90B
+      margin-left: -1px
+      min-height: 46px
+      max-height: 46px
+      border-radius: 0px 4px 4px 0px
 .buttonClaim
   display: flex
   justify-content: flex-end

@@ -37,16 +37,17 @@ type Props = {
   raffleUid?: string;
   dataRaffleDetail?: RaffleDetail;
   refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>;
+  dataWonTickets?: string[];
 }
 
 const antIcon = <LoadingOutlined style={{fontSize: 20, color: "#00F9FF"}} spin/>;
 
 const RollingRaffles = (props: Props) => {
-  const {raffleUid, dataRaffleDetail, refetchRaffleDetail} = props;
-  const {dataWonTickets, refetch} = useGetWonTickets({
-    raffle_uid: raffleUid,
-    skip: isEmpty(raffleUid)
-  },);
+  const {raffleUid, dataRaffleDetail, dataWonTickets, refetchRaffleDetail} = props;
+  // const {dataWonTickets, refetch} = useGetWonTickets({
+  //   raffle_uid: raffleUid,
+  //   skip: isEmpty(raffleUid)
+  // },);
 
   const {dataMyWonTickets, refetchMyWonTickets} = useMyWonTickets({
     raffle_uid: raffleUid,
@@ -138,7 +139,7 @@ const RollingRaffles = (props: Props) => {
           if (!isCheckFirstTime && dateNow > formatDateToHMS(timeLine[index]) && dateNow < formatDateToHMS(timeLine[index + 1])) {
             const dataIdxRealTime = Math.floor(index / 6);
             setRaffleRealTime(index, dataIdxRealTime);
-            setDataRealTime(dataIdxRealTime);
+            setDataRealTime(index, dataIdxRealTime);
             setIsCheckFistTime(true);
             return;
           }
@@ -149,7 +150,7 @@ const RollingRaffles = (props: Props) => {
           if (dateNow === targetDate) {
             const currentRollingIdxC = index % 6;
             const dataIdx = Math.floor(index / 6);
-            setDataRealTime(dataIdx);
+            setDataRealTime(currentRollingIdxC, dataIdx);
             setCurrentRollingIdx(currentRollingIdxC);
             setNumberRollingIdx(currentRollingIdxC, dataIdx, index);
             setListDataWinner(currentRollingIdxC, dataIdx);
@@ -183,7 +184,8 @@ const RollingRaffles = (props: Props) => {
     }
   }
 
-  const setDataRealTime = (dataIdx: number) => {
+  const setDataRealTime = (index: number, dataIdx: number) => {
+    console.log("index", index);
     let data: (UserTicketGql | undefined)[] = [];
     for (let i = 0; i < dataIdx; i++) {
       data.push(dataTickets[i]);
@@ -356,7 +358,12 @@ const RollingRaffles = (props: Props) => {
         </div>
       </div>
 
-      <PopupClaimTicket status={isPopupClaim} dataMyWonTickets={dataMyWonTickets} raffleUid={raffleUid} closePopupClaimTicket={closePopupClaimTicket}/>
+      {
+        isPopupClaim
+      &&
+          <PopupClaimTicket status={isPopupClaim} dataMyWonTickets={dataMyWonTickets} raffleUid={raffleUid} closePopupClaimTicket={closePopupClaimTicket}/>
+      }
+
     </div>
   )
 }

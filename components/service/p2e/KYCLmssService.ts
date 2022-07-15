@@ -12,6 +12,7 @@ class KYCLmssService {
           searchBySummonerName(name: $name) {
             avatar
             nick_name
+            connected_user_name
           }
         }
       `,

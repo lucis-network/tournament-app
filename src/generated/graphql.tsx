@@ -4196,10 +4196,9 @@ export type Raffle = {
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
-  lucis_point_reward?: Maybe<Scalars['Int']>;
-  lucis_token_reward?: Maybe<Scalars['Decimal']>;
   name?: Maybe<Scalars['String']>;
-  nft_reward?: Maybe<Scalars['String']>;
+  prize_amount?: Maybe<Scalars['Decimal']>;
+  prize_type?: Maybe<RafflePrizeType>;
   raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
@@ -4228,10 +4227,9 @@ export type RaffleCreateWithoutTicketInput = {
   desc?: InputMaybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
-  lucis_point_reward?: InputMaybe<Scalars['Int']>;
-  lucis_token_reward?: InputMaybe<Scalars['Decimal']>;
   name?: InputMaybe<Scalars['String']>;
-  nft_reward?: InputMaybe<Scalars['String']>;
+  prize_amount?: InputMaybe<Scalars['Decimal']>;
+  prize_type?: InputMaybe<RafflePrizeType>;
   raffle_sponsors?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
@@ -4242,6 +4240,14 @@ export type RaffleCreateWithoutTicketInput = {
   winner_total?: InputMaybe<Scalars['Int']>;
   won_tickets?: InputMaybe<Scalars['String']>;
 };
+
+export enum RafflePrizeType {
+  CsgoKnife = 'CsgoKnife',
+  LucisPoint = 'LucisPoint',
+  LucisToken = 'LucisToken',
+  NftBox = 'NftBox',
+  Sponsored = 'Sponsored'
+}
 
 export enum RaffleStatus {
   Closed = 'CLOSED',

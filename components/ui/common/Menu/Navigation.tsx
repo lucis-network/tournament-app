@@ -96,7 +96,7 @@ export const Navigation = () => {
       color: "#FF008C",
       text: "TOURNAMENT",
       isBlank: false,
-      to: "/tournament",
+      to: "/arena",
     },
     {
       color: "#FF008C",

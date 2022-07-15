@@ -138,14 +138,16 @@ const PopupRollingChest = (props: Props) => {
         centered
         wrapClassName={s.content_modal}
         footer={null}
-        onCancel={closePopupRollingChest}
+        closable={false}
         width={"100%"}
       >
         <div className={s.container}>
           <div className={s.bg_rolling}>
             <img src="/assets/P2E/lucky-chest/bg_rolling.png" alt="" />
           </div>
-          <div style={styleWidth}>
+          <div
+            style={styleWidth}
+          >
           <div
             className={`${s.rolling} rollingEvent`}
             style={styles}
@@ -154,7 +156,7 @@ const PopupRollingChest = (props: Props) => {
               duplications.map((i, idx) => {
                 return prizeShuffled.map((prize) => (
                   <div className={s.box_item} key={'k' + idx + prize?.id}>
-                    <div>
+                    <div className={s.prizeImg}>
                       <Img src={prize?.img as string} srcFallback="/assets/P2E/lucky-chest/im_box.png" />
                     </div>
                     <div className={s.title}>

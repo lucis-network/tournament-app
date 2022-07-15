@@ -190,7 +190,7 @@ export default observer(function CreateTournament(props: Props) {
       router.events.off("routeChangeStart", beforeRouteHandler);
       window.onbeforeunload = () => {};
     };
-  }, [router.asPath === "/tournament/create"]);
+  }, [router.asPath === "/arena/create"]);
 
   const callbackFunction = (childData: string, value: string) => {
     if (value === "cover") {
@@ -455,7 +455,7 @@ export default observer(function CreateTournament(props: Props) {
   const user = getLocalAuthInfo();
 
   useEffect(() => {
-    if (!AuthStore.isLoggedIn) Router.push("/tournament");
+    if (!AuthStore.isLoggedIn) Router.push("/arena");
   }, [AuthStore]);
 
   return (
