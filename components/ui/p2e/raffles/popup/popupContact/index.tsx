@@ -6,7 +6,7 @@ import React from "react";
 type Props = {
   closePopupContact: () => void;
   status: boolean;
-
+  contactURL: string
 };
 
 const PopupContactRaffles = (props: Props) => {
@@ -33,8 +33,8 @@ const PopupContactRaffles = (props: Props) => {
             <Button
               target="_blank"
               className={`${s.customCss}`}
-              onClick={() => window.open("https://discord.gg/7SdtYpGENT")}
-              href={"https://discord.gg/7SdtYpGENT"}
+              // onClick={() => window.open("https://discord.gg/7SdtYpGENT")}
+              href={props.contactURL}
               >CHAT WITH US</Button>
           </div>
           <div className={`${s.thankTo} ${s.desc}`}>
