@@ -13,6 +13,7 @@ import { PlayerMission } from "../../../../src/generated/graphql_p2e";
 import NFTList from '../NFTList';
 import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
+import MissionService from 'components/service/p2e/MissionService';
 
 interface IProps {
   currentGame?: Game;
@@ -21,19 +22,12 @@ const Mission = (props: IProps) => {
   const [loading, setLoading] = useState(false);
   const [mission, setMission] = useState<PlayerMission[]>([])
   const [loadingLucisMission, setLoadingLucisMission] = useState(false);
-  // const [statistic, setStatistic] = React.useState<{ lucis_point: number, lucis_token: number }>({ lucis_point: 0, lucis_token: 0 });
   const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
       endpoint: 'p2e'
     }
   });
 
-  const lucisMissionQuery = useQuery(GET_LUCIS_MISSION, {
-    context: {
-      endpoint: 'p2e'
-    },
-    skip: true
-  })
 
 
 
@@ -43,7 +37,7 @@ const Mission = (props: IProps) => {
     if (loadingIconUpdate) {
       setLoading(true);
     }
-
+    await MissionService.getOrSerDailyMission();
     await queryData();
     // await statisticQuery.refetch();
     setLoading(false);
@@ -53,33 +47,28 @@ const Mission = (props: IProps) => {
   }
 
   useEffect(() => {
-    if(props.currentGame) {
-      queryData();
-    }
-  }, [props?.currentGame])
-
-  const queryData = async () => {
     switch (props.currentGame) {
       case Game.CSGO:
-        const csgo = await lucisMissionQuery.refetch({
-          game_uid: '03',
-          platform_id: 1
-        });
-
-        setMission(csgo.data.getLucisMission);
+        MissionService.setVariable("03", 1);
         break;
       case Game.LOL:
-        const lol = await lucisMissionQuery.refetch({
-          game_uid: '06',
-          platform_id: 4
-        });
-
-        setMission(lol.data.getLucisMission);
+        MissionService.setVariable("06", 4);
         break;
 
       default:
         break;
     }
+    if (props.currentGame) {
+      queryData();
+    }
+  }, [props?.currentGame])
+
+  const queryData = async () => {
+    setLoadingLucisMission(true);
+    const res = await MissionService.getLucisMission();
+    setMission(res.data.getLucisMission);
+    setLoadingLucisMission(false);
+
 
   }
 
@@ -107,7 +96,7 @@ const Mission = (props: IProps) => {
               title="Completed  the Lucis missions to receive"
               missions={mission}
               handleUpdateMissions={(showMessage, loadingIconUpdate) => handleUpdateMissions(showMessage, loadingIconUpdate)}
-              handleUpdateStatistic={()=> statisticQuery.refetch()}
+              handleUpdateStatistic={() => statisticQuery.refetch()}
               loading={loadingLucisMission}
               currentGame={props.currentGame}
               loadingUpdate={loading} />

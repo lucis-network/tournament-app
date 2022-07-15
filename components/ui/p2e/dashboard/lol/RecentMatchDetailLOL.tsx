@@ -1,28 +1,30 @@
 import { Col, Row } from "antd";
 import AuthGameStore from "components/Auth/AuthGameStore";
+import MissionService from "components/service/p2e/MissionService";
 import { useGetLOLStatisticMatch, useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
+import { LolMatchStatisticGql } from "src/generated/graphql_p2e";
 import { MAP_CSGO, MAP_LOL } from "utils/Enum";
 import s from "../dashboard.module.sass";
 
 export const RecentMatchDetailLOL = () => {
   const router = useRouter();
 
-  const [playerMatchId, setPlayerMatchId] = React.useState<string>("");
-  const [isLoadData, setIsLoadData] = React.useState<boolean>(false);
-  const { getStatisticMatchData } = useGetLOLStatisticMatch(playerMatchId, !isLoadData);
-
+  const [statistic, setStatistic] = React.useState<LolMatchStatisticGql>();
   React.useEffect(() => {
     if (router.query?.id) {
-      setPlayerMatchId(router.query.id as string);
-      setIsLoadData(true);
+      queryData(router.query.id as string);
     }
   }, [router.query]);
 
-
-  const data = getStatisticMatchData?.getLolMatchStatistic;
+  const queryData = async (player_match_id: string) => {
+    const res = await MissionService.getLOLMatchStatistic(player_match_id);
+    setStatistic(res?.data?.getLolMatchStatistic);
+  }
+  
+  const data = statistic;
   const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
     win: data ? (data.is_win ? data?.player_statistic?.win : 0) : null,
@@ -78,14 +80,6 @@ export const RecentMatchDetailLOL = () => {
       lucisPoint: data?.player_statistic?.penta_kill ?? "-",
       lucisToken: "-",
       isCompleted: data?.player_statistic?.penta_kill ?? false
-    },
-
-    {
-      name: "Aces",
-      img: "/assets/P2E/lol/detail/aces.svg",
-      lucisPoint: "-",
-      lucisToken: "-",
-      isCompleted: false
     },
 
     {
