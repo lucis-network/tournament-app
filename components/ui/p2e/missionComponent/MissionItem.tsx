@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import s from "./mission.module.sass";
 import { Col, message, Progress, Row } from "antd";
-import { useMutation } from "@apollo/client";
-import { CLAIM_MISSION, REROLL_MISSION, UPGRADE_LUCIS_MISSION } from "hooks/p2e/useP2E";
 import ButtonWrapper from "../../../common/button/Button";
 import moment from "moment";
 import { handleGraphqlErrors } from "utils/apollo_client";
 import { Game } from "utils/Enum";
 import { CsgoMissionType, PlayerMission } from "src/generated/graphql_p2e";
+import MissionService from "components/service/p2e/MissionService";
 
 type MissionItemProp = {
   mission: PlayerMission;
@@ -20,37 +19,18 @@ type MissionItemProp = {
 const MissionItem = (props: MissionItemProp) => {
   const [loading, setLoading] = useState(false);
   const [currentMission, setCurrentMission] = useState<PlayerMission>(props.mission);
-  const [claimMission] = useMutation(CLAIM_MISSION, {
-    context: {
-      endpoint: "p2e",
-    },
-  });
 
   React.useEffect(() => {
     setCurrentMission(props.mission);
   }, [props.mission])
 
-  // const [upgradeLucisMission] = useMutation(UPGRADE_LUCIS_MISSION, {
-  //   context: {
-  //     endpoint: "p2e",
-  //   },
-  // });
-
-  // const [rerollMission] = useMutation(REROLL_MISSION, {
-  //   context: {
-  //     endpoint: "p2e",
-  //   },
-  // });
 
   const handleClaimMission = async () => {
     setLoading(true);
 
     // const platformId = props.currentGame === Game.CSGO ? 1 : 4;
     try {
-      await claimMission({
-        variables: { player_mission_uid: currentMission?.uid },
-      });
-
+      await MissionService.claimMission(currentMission?.uid);
       let updatedMission: PlayerMission = {
         ...currentMission,
         is_claim: true
