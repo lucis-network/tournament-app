@@ -1,6 +1,5 @@
 import {Button, Modal } from "antd";
 import s from "./index.module.sass";
-import ButtonWrapper from "../../../../../common/button/Button";
 import React from "react";
 
 type Props = {

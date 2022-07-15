@@ -9,7 +9,7 @@ type Props = {
 export function useGetWonTickets(props: Props): {
   loading: boolean,
   error: ApolloError | undefined,
-  refetch: () => Promise<ApolloQueryResult<any>>;
+  refetchDataWonTickets: () => Promise<ApolloQueryResult<any>>;
   dataWonTickets: string[] | undefined
 } {
   const { loading, error, data, refetch } = useQuery(GET_WON_TICKETS, {
@@ -24,7 +24,7 @@ export function useGetWonTickets(props: Props): {
   return {
     loading,
     error,
-    refetch,
+    refetchDataWonTickets: refetch,
     dataWonTickets: data?.getWonTickets,
   };
 }
@@ -72,6 +72,8 @@ const GET_MY_WON_TICKETS = gql`
 
 export const CLAIM_RAFFLE_TICKETS = gql`
   mutation ($raffle_uid: String!, $ticket_number: String!) {
-    claimRaffle (raffle_uid: $raffle_uid, ticket_number: $ticket_number) 
+    claimRaffle (raffle_uid: $raffle_uid, ticket_number: $ticket_number) {
+      required_contact
+    }
   }
 `

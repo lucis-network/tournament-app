@@ -32,6 +32,13 @@ const RafflesDetail = observer(() => {
   const [ticketBuying, setTicketBuying] = useState<boolean>(false)
   const [ticketSearchKeyword, setTicketSearchKeyword] = useState<string>('')
   const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
+  const [isCheckRefetchDataWonTickets, setIsCheckRefetchDataWonTickets] = useState(false);
+
+  const {dataWonTickets, refetchDataWonTickets} = useGetWonTickets({
+    raffle_uid: raffleUID,
+    skip: isEmpty(raffleUID)
+  },);
+
   const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles({
     name: '',
     skipRaflleUid: raffleUID,
@@ -51,6 +58,7 @@ const RafflesDetail = observer(() => {
   })
   const {buyRaffleTicket} = useBuyRaffleTicket()
   const {dataWinTicket} = RafflesStore
+
 
   useEffect(() => {
     if (getAllTicketsData?.getAllTickets?.user_tickets) {
@@ -90,7 +98,10 @@ const RafflesDetail = observer(() => {
     }
   }, [RafflesStore.dataWinTicketLastUpdated])
 
+
+
   useEffect(() => {
+    let k = false;
     const checkDateInterval =  setInterval(() => {
       const dateNow = moment(new Date()).valueOf();
       const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
@@ -99,12 +110,18 @@ const RafflesDetail = observer(() => {
       if(timeBefore <= 5) {
         setCheckDisplayEndAt(true);
       }
+      if(timeBefore <= 0.5) {
+        if (!isCheckRefetchDataWonTickets) {
+          refetchDataWonTickets();
+          setIsCheckRefetchDataWonTickets(true);
+        }
+      }
     }, 1000)
-    if(checkDisplayEndAt)  clearInterval(checkDateInterval);
+    if(checkDisplayEndAt && isCheckRefetchDataWonTickets)  clearInterval(checkDateInterval);
     return () => {
       clearInterval(checkDateInterval)
     }
-  }, [getRaffleDetailData?.getRaffleDetail])
+  }, [getRaffleDetailData?.getRaffleDetail, checkDisplayEndAt, isCheckRefetchDataWonTickets])
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
   const raffleEndAt = moment(raffleDetailData?.end_at).format('hh:mm MMM Do')
@@ -318,7 +335,7 @@ const RafflesDetail = observer(() => {
             </section>
             {checkDisplayEndAt &&
                 <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} refetchRaffleDetail={refetchRaffleDetail}
+                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} refetchRaffleDetail={refetchRaffleDetail} dataWonTickets={dataWonTickets}
                                     dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
                 </section>
             }
