@@ -15,7 +15,7 @@ export const RecentMatchDetail = (props: IProps) => {
     case Game.LOL:
       return <RecentMatchDetailLOL />
     default:
-      return <RecentMatchDetailCSGO />
+      return null;
   }
 }
 
