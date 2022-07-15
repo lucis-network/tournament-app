@@ -1,5 +1,5 @@
-import React from "react";
-import { message, Modal, Table, Image } from "antd";
+import React, { useState } from "react";
+import { message, Modal, Table, Image, Button } from "antd";
 import s from "./PopupConfirm.module.sass";
 import { useConfirmTournamentResult } from "hooks/tournament/useTournamentDetail";
 import TournamentService from "components/service/tournament/TournamentService";
@@ -27,6 +27,8 @@ export default function PopupConfirm(props: Props) {
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
+
+  const [loadingBtn, setLoadingBtn] = useState(false);
 
   if (loading) return null;
 
@@ -64,17 +66,20 @@ export default function PopupConfirm(props: Props) {
   ];
 
   const handOk = () => {
+    setLoadingBtn(true);
     const tournamentService = new TournamentService();
     const res = tournamentService
       .confirmTournamentResult(tournamentId)
       .then((res) => {
         if (res) {
           message.success("Success");
+          setLoadingBtn(false);
           onCancel();
           refetchConfirmResult();
           refetchTounament();
         } else {
           message.success("Fail. Plesase try again.");
+          setLoadingBtn(false);
         }
       });
   };
@@ -88,6 +93,7 @@ export default function PopupConfirm(props: Props) {
       okText="Confirm"
       onCancel={onCancel}
       onOk={handOk}
+      footer={null}
     >
       <div className={s.wrapper}>
         <Table
@@ -101,6 +107,12 @@ export default function PopupConfirm(props: Props) {
       <div className={s.text}>
         Please review the tournament result first. If you do not agree with this
         result, please contact to the referee(s) to resolve your problem
+      </div>
+      <div className={s.btnContainter}>
+        <Button onClick={onCancel} className="mr-2">Cancel</Button>
+        <Button onClick={handOk} className={s.btnConfirm} loading={loadingBtn}>
+          Confirm
+        </Button>
       </div>
     </Modal>
   );

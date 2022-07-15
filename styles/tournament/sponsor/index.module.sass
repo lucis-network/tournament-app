@@ -1,18 +1,31 @@
 .sponsorContainer
+  // margin-top: 100px
+  // margin-bottom: 100px
   color: white
+  // @media screen and (min-width: 768px)
+  //   margin-top: 200px
+  //   margin-bottom: 200px
   *
     word-break: break-word
     white-space: normal
   > :global(.ant-row)
-    @media screen and (min-width: 1200px)
-      width: 900px
-      margin: auto
+    // @media screen and (min-width: 1200px)
+    //   width: 1200px
+    //   margin: auto
+
   .becomeWrap
+    display: flex
     text-align: center
+    justify-content: center
+    margin-top: 50px
+
     @media screen and (min-width: 768px)
       text-align: right
       margin-bottom: 50px
     button
+      background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.4) 0.33%, rgba(11, 235, 214, 0.4) 99.88%) !important
+      //opacity: 0.4
+      border-radius: 4px !important
       width: 100%
       @media screen and (min-width: 576px)
         width: auto
@@ -22,58 +35,57 @@
       margin-bottom: 0
     &:first-of-type
       .slotWrap
-        padding-top: 60px
+        padding-bottom: 20px
+        padding-top: 20px
+        background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.2) 0.33%, rgba(11, 235, 214, 0.2) 99.88%)
+        mix-blend-mode: normal
+        //opacity: 0.4
+        backdrop-filter: blur(20px)
+        border-radius: 8px
         @media screen and (min-width: 768px)
-          padding-top: 0
+          padding-bottom: 50px
+          padding-top: 50px
         .sponsorSlot
-          width: 150px
           position: relative
-          margin-bottom: 40px
-          @media screen and (min-width: 992px)
-            width: 200px
-          @media screen and (min-width: 1200px)
-            width: 230px
+          //margin-bottom: 40px
+          //margin-bottom: 20px
           &:after
             content: ""
             display: block
             width: 180px
             height: 180px
             position: absolute
-            background: url("/assets/TournamentDetail/polygon.png") no-repeat center
+            //background: url("/assets/TournamentDetail/polygon.png") no-repeat center
             background-size: 135%
             top: -35px
             left: 50%
             transform: translateX(-50%)
             z-index: -1
           .sponsorLogoWrap
-            margin-bottom: 40px
-            width: 110px
+            //margin-bottom: 40px
+            margin: 20px 0px
+            //height: 60px
+            //width: 110px
           .sponsorName
             font-size: 16px
             position: relative
             z-index: 1
     &:nth-of-type(2)
       .slotWrap
+        margin-top: 40px
         .sponsorSlot
-          width: 120px
-          @media screen and (min-width: 992px)
-            width: 160px
-          @media screen and (min-width: 1200px)
-            width: 180px
           .sponsorLogoWrap
-            width: 95px
+            img
+              height: 24px
+              width: auto
+              margin-bottom: 20px
+              @media screen and (min-width: 575px)
+                height: 50px
           .sponsorName
             font-size: 14px
     &:nth-of-type(3)
       .slotWrap
         .sponsorSlot
-          width: 90px
-          @media screen and (min-width: 992px)
-            width: 130px
-          @media screen and (min-width: 1200px)
-            width: 160px
-          .sponsorLogoWrap
-            width: 72px
           .sponsorName
             font-size: 12px
     :global(.ant-input-group-addon)
@@ -111,33 +123,24 @@
       display: flex
       flex-wrap: wrap
       justify-content: center
-      margin: 0 -5px
-      @media screen and (min-width: 992px)
-        margin: 0 -10px
+      align-items: center
+      gap: 0 30px
+      @media screen and (min-width: 768px)
+        gap: 0 60px
       .sponsorSlot
         padding: 0 5px
-        margin-bottom: 20px
-        width: 70px
         display: flex
         flex-direction: column
         align-items: center
-        @media screen and (min-width: 992px)
-          width: 100px
-        @media screen and (min-width: 1200px)
-          width: 130px
         .sponsorLogoWrap
           position: relative
           margin-bottom: 10px
           text-align: center
-          border-radius: 50%
-          overflow: hidden
-          background: #ffffff
-          aspect-ratio: 1 / 1
-          width: 50px
           img
-            aspect-ratio: 1 / 1
-            object-fit: cover
-            width: 100%
+            height: 28px
+            width: auto
+            @media screen and (min-width: 575px)
+              height: 60px
         .sponsorEdit
           display: block
           width: 40px
@@ -173,6 +176,8 @@
 .sponsorDetailForm
   label
     color: #ffffff !important
+  .selectTier
+    width: 100%
 .message_error
   font-size: 14px
   margin-top: 4px
@@ -184,3 +189,26 @@
   :global(.ant-input[disabled])
     background: #8b8b8b
     color: #ffffff
+.sponsorSlotHidden
+  display: none !important
+
+.btnContainter
+  display: flex
+  justify-content: flex-end
+  margin-top: 10px
+  .btnConfirm
+    color: #FFF !important
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%) !important
+    border-radius: 4px
+    border: none
+  :global(.ant-btn-default:hover)
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+
+.sponsorBecome
+  margin-bottom: 20px
+  @media screen and (min-width: 867px)
+    margin-top: 100px
+    margin-bottom: 100px
+  @media screen and (min-width: 1200px)
+    margin-top: 200px
+    margin-bottom: 200px

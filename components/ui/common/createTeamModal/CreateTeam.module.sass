@@ -1,11 +1,26 @@
 .mdl
-  :global(.ant-modal-content)
+  .teamAvatar
+    @media (max-width: 1023px)
+      flex-direction: column
+      gap: 5px 0px
+    .chooseTeamAvatar
+      font-size: 14px
+      @media (min-width: 767px)
+        font-size: 16px
+  :global(.ant-modal)
     max-width: 372px
     margin: 0 auto
     @media (min-width: 1024px)
       max-width: 560px
   :global(.anticon )
     color: #CD28E8
+  :global(.ant-btn)
+    border: none
+    height: auto
+  :global(.ant-modal-body)
+    padding: 15px
+  :global(.ant-input)
+    font-size: 16px
   .avatar_team
     border-radius: 99%
     width: 70px
@@ -18,12 +33,15 @@
     background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
     padding: 4px 16px
     border-radius: 4px
-    margin-top: 32px
+    margin-top: 16px
     color: #FFF
+    font-size: 16px
     span
       color: #FFF
     img
       padding-right: 4px
+    @media (min-width: 767px)
+      font-size: 18px
   .button_create
     display: flex
     align-items: center
@@ -32,8 +50,8 @@
     padding: 6px 24px
     border-radius: 8px
     margin: auto
-    margin-top: 32px
-    font-size: 20px
+    margin-top: 16px
+    font-size: 16px
     color: #FFF
     span
       color: #FFF
@@ -42,3 +60,25 @@
     &:disabled
       background: gray
       opacity: 0.7
+    @media (min-width: 767px)
+      font-size: 18px
+  :global(.ant-btn-default:hover)
+    display: flex
+    align-items: center
+    justify-content: center
+    background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+    padding: 6px 24px
+    border-radius: 8px
+    margin: auto
+    margin-top: 10px
+    font-size: 20px
+    color: #FFF
+    &:disabled
+      background: gray
+      opacity: 0.7
+  .uploadAvatar
+    input
+      min-width: 210px
+    @media (min-width: 374px)
+      input
+        min-width: 260px

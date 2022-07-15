@@ -43,7 +43,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
                   <div className={s.line}></div>
                   <p className={s.name}>{name}</p>
                   <div className={s.detail}>
-                    <div style={{ paddingRight: 12 }}>
+                    <div style={{ paddingRight: "12px" }}>
                       <p className={s.pl}>Prize pool</p>
                       <div className={s.total}>
                         <img

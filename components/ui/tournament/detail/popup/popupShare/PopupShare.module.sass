@@ -10,18 +10,32 @@
   .ic_item
     max-width: 54px
     margin: 12px
-
+    img
+      width: 50px
+      transition: 0.3s
+      &:hover
+        transform: scale(1.2)
 
 .group_ic::before
   content: ''
   position: absolute
-  top:0
-  left:0
-  right:0
-  bottom:0
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
   border-radius: 12px
-  padding: 2px
-  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 100%)
+  padding: 1px
+  z-index: -1
+  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 115%)
   -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
   -webkit-mask-composite: xor
   mask-composite: exclude
+
+.inputUrl
+  background: transparent
+  color: white
+  width: 100%
+  border-radius: 5px
+  border: 1px solid #fff
+  padding: 0 10px
+  font-size: 18px

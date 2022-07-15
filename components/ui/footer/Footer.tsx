@@ -1,4 +1,5 @@
 import { Button } from "antd";
+import Link from "next/link";
 import s from "./Footer.module.sass";
 
 type Props = {};
@@ -41,7 +42,7 @@ export default function Footer(props: Props) {
               </div>
               <div className={s.ic_item}>
                 <a
-                  href="https://discord.gg/mnPXR3ag"
+                  href="https://discord.com/invite/kdDUjJcSF5"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
@@ -51,7 +52,9 @@ export default function Footer(props: Props) {
             </div>
 
             <div className={s.btn_help}>
-              <Button>NEED HELP?</Button>
+              <Link href={`https://discord.gg/BMgT6mckTg`}>
+                <a className={s.link}>NEED HELP?</a>
+              </Link>
             </div>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import s from "./ListRank.module.sass";
 import { Image, Table } from "antd";
 import { useState } from "react";
-import { fomatNumber, format, currency as currencyFomat } from "utils/Number";
+import { format } from "utils/Number";
 import { useGetListRank } from "hooks/tournament/useTournamentDetail";
 import { isEmpty } from "lodash";
 import { AppEmitter } from "services/emitter";
@@ -113,7 +113,7 @@ export default function ListRanks(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {currencyFomat(item.prize,2)} {currency.symbol}
+            {format(item.prize,2, {zero_trim: true})} {currency.symbol}
           </>
         );
       },
@@ -126,7 +126,7 @@ export default function ListRanks(props: Props) {
       render: (_: any, item: any) => {
         return (
           <>
-            {currencyFomat(item.donated, 2)} {currency.symbol}
+            {format(item.donated, 2, {zero_trim: true})} {currency.symbol}
           </>
         );
       },

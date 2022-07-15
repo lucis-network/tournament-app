@@ -40,16 +40,40 @@
         "destination": "/playcore/dashboard.html"
       },
       {
-        "source": "/playcore/missions",
-        "destination": "/playcore/missions.html"
+        "source": "/p2e/dashboard/history/*",
+        "destination": "/p2e/dashboard/history/[id].html"
       },
       {
         "source": "/playcore/raffles",
         "destination": "/playcore/raffles.html"
       },
       {
+        "source": "/p2e/dashboard",
+        "destination": "/p2e/dashboard.html"
+      },
+      {
         "source": "/playcore/lucky-chest",
         "destination": "/playcore/lucky-chest.html"
+      },
+      {
+        "source": "/playcore/missions",
+        "destination": "/playcore/missions.html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
+      },
+      {
+        "source": "/p2e/raffles",
+        "destination": "/p2e/raffles.html"
+      },
+      {
+        "source": "/p2e/lucky-chest",
+        "destination": "/p2e/lucky-chest.html"
       },
       {
         "source": "/profile",

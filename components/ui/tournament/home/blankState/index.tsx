@@ -1,9 +1,9 @@
-import s from "./Blankstate.module.sass";
+import s from "./BlankState.module.sass";
 
 type Props = {
-  title: string;
+  title?: string;
 };
-const BlankState = (props: Props) => {
+export default function BlankState (props: Props) {
   const { title } = props;
   return (
     <div style={{ position: "relative", zIndex: 0 }}>
@@ -44,11 +44,9 @@ const BlankState = (props: Props) => {
             fontWeight: "600",
           }}
         >
-          No {title} campaigns
+          No {title} tournament
         </p>
       </div>
     </div>
   );
 };
-
-export default BlankState;

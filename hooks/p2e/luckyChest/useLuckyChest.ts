@@ -121,7 +121,6 @@ const GET_CHEST_DETAIL = gql`
       ticket_cost
       ticket_cost_type
       created_at
-      updated_at
       sponsors {
         uid
         name

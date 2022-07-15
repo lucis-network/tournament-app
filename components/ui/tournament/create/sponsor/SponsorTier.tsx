@@ -36,9 +36,9 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
   
   return (
     <div className={s.tierRow}>
-      <Row align="middle">
+      <Row>
         <Col xs={{ span: 8, order: 1 }} lg={{ span: 3 }}>
-          <div className={s.tierTitle}>{name}</div>
+          <div className={`${s.tierTitle} ${name}`}>{name}</div>
           <div>(Min {`${min_deposit} ${currency_symbol ? currency_symbol : ""}`})</div>
         </Col>
 
@@ -71,7 +71,7 @@ export default observer(function SponsorTier(props: SponsorTierProps) {
 
       {showEdit && (
         <Row className={s.collapse}>
-          <Col xl={{ span: 18, offset: 3 }}>
+          <Col xl={{ span: 21, offset: 3 }}>
             <SponsorTierEdit
               data={tierStore}
               currencyUid={currency_uid}

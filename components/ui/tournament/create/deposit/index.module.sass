@@ -4,6 +4,9 @@
     padding: 8px
     backdrop-filter: blur(0px)
 
+  :global(.ant-modal-body)
+    padding-bottom: 0px
+
 .bracketType
   display: flex
   flex-direction: column
@@ -11,6 +14,7 @@
 
 .radioFee
   display: flex
+
   p
     min-width: 100px
 
@@ -19,6 +23,7 @@
   flex-direction: column
   width: 25%
   position: relative
+
   img
     margin-bottom: 5px
 
@@ -31,9 +36,18 @@
   :global(.ant-input-group-addon)
     position: relative
     overflow: hidden
+
     :global(.ant-input-search-button)
       display: block
       width: 100%
       height: 100%
       position: absolute
       top: 0
+
+.button
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.5) 0.33%, rgba(11, 235, 214, 0.5) 99.88%) !important
+  padding: 4px 16px
+  border-radius: 4px
+  border: none
+  margin: 8px 0
+  font-size: 14px

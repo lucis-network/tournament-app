@@ -6,7 +6,6 @@ type Props = {};
 
 export default function PlayerHome() {
   const { dataTopPlayer, loading } = useTopPlayer();
-  console.log("dataTopPlayer: ", dataTopPlayer);
   return (
     <div className={s.wrapper_player}>
       <div className="lucis-container" style={{ width: "100%" }}>

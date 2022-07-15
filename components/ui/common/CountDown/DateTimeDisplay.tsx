@@ -8,7 +8,7 @@ interface DateTimeDisplayProps {
 const DateTimeDisplay: React.FC<DateTimeDisplayProps> = ({ value, type }) => {
 	return (
 		<div className="flex items-center mr-2">
-			<p className="mb-0">{value}</p>
+			<span className="mb-0">{value}</span>
 			<span>{type}</span>
 		</div>
 	);

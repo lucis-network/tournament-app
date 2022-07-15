@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import {gql} from "@apollo/client";
 
-import AuthStore, { AuthUser } from "./AuthStore";
+import AuthStore, {AuthUser} from "./AuthStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
 } from "utils/apollo_client";
@@ -16,6 +16,7 @@ import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWall
 import AuthGameStore, { AuthGameUser } from "./AuthGameStore";
 import { Platform } from "utils/Enum";
 import { PlatformAccount } from "src/generated/graphql_p2e";
+import {JoinTournamentType} from "../ui/common/types";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -173,6 +174,7 @@ export default class AuthService {
               google_id
               status
               facebook_id
+              is_exist_pass
               favorite_game {
                 id
                 user_id
@@ -207,7 +209,6 @@ export default class AuthService {
                 biography
                 cover
               }
-
               platform_account {
                 uid
                 access_token
@@ -237,9 +238,11 @@ export default class AuthService {
       role: u.role,
       name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
       ref_code: u.ref_code,
-      google_id: u.google_id,
+      google_id: u.google_id ? u.google_id : "",
+      facebook_id: u.facebook_id ? u.facebook_id : "",
       status: u.status,
       profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
     };
 
     let gameAccount: AuthGameUser = {
@@ -264,6 +267,7 @@ export default class AuthService {
             faceit_avatar: item?.avatar,
           }
           break;
+
           case Platform.GARENA:
             gameAccount = {
               ...gameAccount,
@@ -287,11 +291,14 @@ export default class AuthService {
     };
   }
 
-  private async loginByFacebook(accessToken: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
+  private async loginByUsername(
+    username: string,
+    password: string
+  ): Promise<AuthUser> {
     const loginRes = await apoloClient.mutate({
       mutation: gql`
-        mutation loginFacebook($accessToken: String!) {
-          loginFacebook(accessToken: $accessToken) {
+        mutation login($username: String!, $password: String!) {
+          login(username: $username, password: $password) {
             token
             user {
               id
@@ -302,6 +309,7 @@ export default class AuthService {
               google_id
               status
               facebook_id
+              is_exist_pass
               favorite_game {
                 id
                 user_id
@@ -336,7 +344,88 @@ export default class AuthService {
                 biography
                 cover
               }
+            }
+          }
+        }
+      `,
+      variables: {
+        username,
+        password,
+      },
+    }).catch(err => {
+      console.log("catch", err);
+    });
 
+    const u = loginRes?.data.login.user;
+    console.log("u", loginRes?.data.login);
+    const tokenID = loginRes?.data.login.token;
+    const user: AuthUser = {
+      id: u.id,
+      token: tokenID,
+      code: u.code,
+      email: u.email,
+      role: u.role,
+      name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
+      ref_code: u.ref_code,
+      google_id: u.google_id,
+      status: u.status,
+      profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
+    };
+
+    return user;
+  }
+
+  private async loginByFacebook(accessToken: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
+    const loginRes = await apoloClient.mutate({
+      mutation: gql`
+        mutation loginFacebook($accessToken: String!) {
+          loginFacebook(accessToken: $accessToken) {
+            token
+            user {
+              id
+              email
+              role
+              code
+              ref_code
+              google_id
+              status
+              facebook_id
+              is_exist_pass
+              favorite_game {
+                id
+                user_id
+                game_uid
+                enable_favorite
+                game {
+                  uid
+                  name
+                  logo
+                  desc
+                }
+                user {
+                  id
+                }
+              }
+              profile {
+                user_id
+                given_name
+                family_name
+                phone
+                avatar
+                cover
+                user_name
+                country_code
+                twitter
+                facebook
+                discord
+                telegram
+                twitch
+                user_name
+                display_name
+                biography
+                cover
+              }
               platform_account {
                 uid
                 access_token
@@ -368,6 +457,7 @@ export default class AuthService {
       facebook_id: u.facebook_id,
       status: u.status,
       profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
     };
 
     let gameAccount: AuthGameUser = {
@@ -426,7 +516,9 @@ export default class AuthService {
   async login(
     tokenId: string,
     delay = 1000,
-    type?: string
+    type?: string,
+    username?: string,
+    password?: string
   ): Promise<LoginResponse> {
     let res: LoginResponse = {
       error: null,
@@ -464,6 +556,13 @@ export default class AuthService {
 
       if (type === "facebook") {
         data = await this.loginByFacebook(tokenId);
+      }
+      if (type === "username") {
+        data.user = await this.loginByUsername(
+          username ? username : "",
+          password ? password : ""
+        );
+        // todo add platformGameAccount
       }
 
       console.log("{AuthService.login} new-login user: ", data);

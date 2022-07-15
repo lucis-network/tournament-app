@@ -2,15 +2,17 @@ import s from "./Banner.module.sass";
 
 type Props = {
   cover?: string
+  className?: string
+  bannerClassName?: string
 }
 const Banner = (props: Props) => {
   const {cover} = props
 
   return (
-    <div className={s.wrapper_banner}>
-      <div className="lucis-container-2">
+    <div className={`${s.wrapper_banner} ${props.className ? props.className : ''}`}>
+      <div>
         <div
-          className={s.im_cover}
+          className={`${s.im_cover} ${props.bannerClassName ? props.bannerClassName : ''}`}
           style={{
             background: `url("${cover}") center center / cover no-repeat`
           }}
