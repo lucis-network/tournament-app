@@ -113,7 +113,7 @@ const Raffles = () => {
                 <Image src={getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.img as string} preview={false} alt="" />
               </div>
               <div className={s.featuredRaffleInfo}>
-                <Link href={`/p2e/raffles/${getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.uid}`} passHref>
+                <Link href={`/playcore/raffles/${getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.uid}`} passHref>
                   <a className={s.btnViewRaffle}>
                     <span>View Raffle</span>
                   </a>
@@ -187,7 +187,7 @@ const Raffles = () => {
           ) : (((rafflesData.length <= 0) || searchRafflesError) ? <Empty /> : (
             <div className={s.rafflesList}>
               {rafflesData.length > 0 && rafflesData.map((raffle, index) => (
-                <Link href={`/p2e/raffles/${raffle?.uid}`} passHref key={raffle?.uid}>
+                <Link href={`/playcore/raffles/${raffle?.uid}`} passHref key={raffle?.uid}>
                   <a className={s.rafflesItem}>
                     <div className={s.raffleThumbnail}>
                       <Image src={raffle?.img as string} preview={false} alt="" />

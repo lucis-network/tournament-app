@@ -1,40 +1,50 @@
+@import "/styles/playcore/variables"
+
 .chestPrize
   min-width: 90px
   margin-right: 16px
   height: 100%
   display: flex
   flex-direction: column
-  color: #787878
+  color: $colorPrizeCommon
   @media screen and (min-width: 1200px)
     min-width: 130px
   &:global(.Common)
-    color: #787878
+    color: $colorPrizeCommon
     .prizeImg
-      border-bottom-color: #787878
+      border-bottom-color: $colorPrizeCommon
+      &:before
+        background: $bgPrizeCommon
   &:global(.Uncommon)
-    color: #618FC5
+    color: $colorPrizeUncommon
     .prizeImg
-      border-bottom-color: #618FC5
+      border-bottom-color: $colorPrizeUncommon
+      &:before
+        background: $bgPrizeUncommon
   &:global(.Rare)
-    color: #07FF3E
+    color: $colorPrizeRare
     .prizeImg
-      border-bottom-color: #07FF3E
+      border-bottom-color: $colorPrizeRare
+      &:before
+        background: $bgPrizeRare
   &:global(.Epic)
-    color: #07D2FF
+    color: $colorPrizeEpic
     .prizeImg
-      border-bottom-color: #07D2FF
+      border-bottom-color: $colorPrizeEpic
+      &:before
+        background: $bgPrizeEpic
   &:global(.Legendary)
-    color: #EBFF07
+    color: $colorPrizeLegendary
     .prizeImg
-      border-bottom-color: #EBFF07
+      border-bottom-color: $colorPrizeLegendary
+      &:before
+        background: $bgPrizeLegendary
   &:global(.Mythic)
-    color: #FA07FF
+    color: $colorPrizeMythic
     .prizeImg
-      border-bottom-color: #FA07FF
-  &:global(.Divine)
-    color: #FF7607
-    .prizeImg
-      border-bottom-color: #FF7607
+      border-bottom-color: $colorPrizeMythic
+      &:before
+        background: $bgPrizeMythic
   &:last-of-type
     margin-right: 0
   .prizeImg
@@ -42,11 +52,20 @@
     align-items: center
     justify-content: center
     padding: 15px
-    background: rgba(69, 82, 107, 0.5)
-    backdrop-filter: blur(24.2991px)
+    background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    backdrop-filter: blur(40px)
     border-bottom: 2px solid #787878
+    position: relative
     @media screen and (min-width: 1200px)
       padding: 34px
+    &:before
+      content: ''
+      display: block
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
     img
       width: 60px
       object-fit: contain
@@ -67,29 +86,33 @@
 .prizeDetail
   border: none
   border-radius: 0
+  background: rgba(69, 80, 107, 0.5)
+  backdrop-filter: blur(40px)
+  width: 343px
+  max-width: 100%
   &:global(.Common)
-    :global(.ant-popover-title)
-      color: #787878
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeCommon
   &:global(.Uncommon)
-    :global(.ant-popover-title)
-      color: #618FC5
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeUncommon
   &:global(.Rare)
-    :global(.ant-popover-title)
-      color: #07FF3E
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeRare
   &:global(.Epic)
-    :global(.ant-popover-title)
-      color: #07D2FF
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeEpic
   &:global(.Legendary)
-    :global(.ant-popover-title)
-      color: #EBFF07
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeLegendary
   &:global(.Mythic)
-    :global(.ant-popover-title)
-      color: #FA07FF
-  &:global(.Divine)
-    :global(.ant-popover-title)
-      color: #FF7607
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeMythic
   :global(.ant-popover-content)
+    :global(.ant-popover-arrow)
+      display: none
     :global(.ant-popover-inner)
+      box-shadow: none
       :global(.ant-popover-title)
         border-top-left-radius: 4px
         border-top-right-radius: 4px
@@ -97,8 +120,6 @@
         backdrop-filter: blur(40px)
         border-bottom: 0
       :global(.ant-popover-inner-content)
-        background: rgba(69, 80, 107, 0.5)
-        backdrop-filter: blur(40px)
         font-family: 'Lexend'
         font-weight: 300
         font-size: 16px
@@ -109,4 +130,71 @@
       border-radius: 0
       &:before
         content: none !important
-
+.prizeDetailContent
+  display: flex
+  &:global(.Common)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeCommon
+      &:before
+        background: $bgPrizeCommon
+  &:global(.Uncommon)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeUncommon
+      &:before
+        background: $bgPrizeUncommon
+  &:global(.Rare)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeRare
+      &:before
+        background: $bgPrizeRare
+  &:global(.Epic)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeEpic
+      &:before
+        background: $bgPrizeEpic
+  &:global(.Legendary)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeLegendary
+      &:before
+        background: $bgPrizeLegendary
+  &:global(.Mythic)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeMythic
+      &:before
+        background: $bgPrizeMythic
+  .detailPrizeCard
+    min-width: 80px
+    max-width: 80px
+    margin-right: 16px
+    .detailPrizeImage
+      background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+      backdrop-filter: blur(40px)
+      position: relative
+      &:before
+        content: ''
+        display: block
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+      img
+        width: 100%
+  .detailPrizeTitle
+    font-family: 'Revx Neue Demo'
+    font-weight: 600
+    font-size: 12px
+    text-align: center
+    background: rgba(69, 80, 107, 0.5)
+    backdrop-filter: blur(40px)
+    padding: 4px
+  .detailPrizeRarity
+    font-family: 'Lexend'
+    font-weight: 500
+    font-size: 16px
+    line-height: 20px
+  .detailPrizeDesc
+    font-family: 'Lexend'
+    font-weight: 300
+    font-size: 16px
+    line-height: 20px

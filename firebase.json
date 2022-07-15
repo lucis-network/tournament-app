@@ -8,36 +8,60 @@
     ],
     "rewrites": [
       {
-        "source": "/tournament/*/edit$",
-        "destination": "/tournament/[id]/edit.html"
+        "source": "/arena",
+        "destination": "/arena.html"
       },
       {
-        "source": "/tournament/*/*",
-        "destination": "/tournament/[id]/[...slug].html"
+        "source": "/arena/*/edit$",
+        "destination": "/arena/[id]/edit.html"
       },
       {
-        "source": "/tournament/1",
-        "destination": "/tournament/[id]/[...slug].html"
+        "source": "/arena/*/*",
+        "destination": "/arena/[id]/[...slug].html"
       },
       {
-        "source": "/p2e/dashboard/history/*",
-        "destination": "/p2e/dashboard/history/[id].html"
+        "source": "/arena/*/*/**",
+        "destination": "/arena/[id]/[...slug].html"
       },
       {
-        "source": "/p2e/raffles/*",
-        "destination": "/p2e/raffles/[id].html"
+        "source": "/arena/1",
+        "destination": "/arena/[id]/[...slug].html"
       },
       {
-        "source": "/p2e/dashboard",
-        "destination": "/p2e/dashboard.html"
+        "source": "/playcore/dashboard/history/*",
+        "destination": "/playcore/dashboard/history/[id].html"
       },
       {
-        "source": "/p2e/missions",
-        "destination": "/p2e/missions.html"
+        "source": "/playcore/raffles/**",
+        "destination": "/playcore/raffles/[id].html"
       },
       {
-        "source": "/p2e/raffles",
-        "destination": "/p2e/raffles.html"
+        "source": "/playcore/dashboard",
+        "destination": "/playcore/dashboard.html"
+      },
+      {
+        "source": "/playcore/missions",
+        "destination": "/playcore/missions.html"
+      },
+      {
+        "source": "/playcore/raffles",
+        "destination": "/playcore/raffles.html"
+      },
+      {
+        "source": "/playcore/lucky-chest",
+        "destination": "/playcore/lucky-chest.html"
+      },
+      {
+        "source": "/profile",
+        "destination": "/profile.html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
       }
     ]
   },

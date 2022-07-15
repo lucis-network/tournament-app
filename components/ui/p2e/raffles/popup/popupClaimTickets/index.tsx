@@ -51,7 +51,7 @@ const PopupClaimTicket = (props: Props) => {
         </div>
       </div>
       {isPopupContactVisible &&
-          <PopupContactRaffles status={isPopupContactVisible} closePopupContact={closePopupContact}></PopupContactRaffles>
+          <PopupContactRaffles status={isPopupContactVisible} closePopupContact={closePopupContact} contactURL="https://discord.gg/7SdtYpGENT" description="Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize." />
       }
     </Modal>
   );

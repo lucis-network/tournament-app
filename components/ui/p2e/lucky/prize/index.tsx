@@ -11,7 +11,7 @@ type ChestPrizeProps = {
 
 const PrizeDetail = ({image, title, description, rarity}: ChestPrizeProps) => {
   return (
-    <div className={s.prizeDetail}>
+    <div className={`${s.prizeDetailContent} ${rarity ?? ''}`}>
       <div className={s.detailPrizeCard}>
         <div className={s.detailPrizeImage}>
           <img src={image ?? '/assets/P2E/lucky-chest/defaultPrizeImage.png'} alt="" onError={(e) => {
@@ -23,10 +23,9 @@ const PrizeDetail = ({image, title, description, rarity}: ChestPrizeProps) => {
       <div className={s.detailPrizeInfo}>
         <h3 className={s.detailPrizeRarity}>Quality: {rarity ?? ''}</h3>
         {description && (
-          <p>{description}</p>
+          <p className={s.detailPrizeDesc}>{description}</p>
         )}
       </div>
-      {description}
     </div>
   )
 }
@@ -38,8 +37,9 @@ const ChestPrize = ({image, title, description, rarity}: ChestPrizeProps) => {
       content={<PrizeDetail description={description} image={image} rarity={rarity} title={title} />}
       title={title}
       overlayClassName={`${s.prizeDetail} ${rarity}`}
-      defaultVisible={true}
-      visible={true}
+      placement="top"
+      // defaultVisible={true}
+      // visible={true}
     >
       <div className={`${s.chestPrize} ${rarity ?? ''}`}>
         <div className={s.prizeImg}>
