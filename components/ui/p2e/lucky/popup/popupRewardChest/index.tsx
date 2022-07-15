@@ -33,7 +33,6 @@ const PopupRewardChest = (props: Props) => {
               {prize?.title}
             </div>
             <div className={s.reward_img}>
-
               <Img src={prize?.img as string} srcFallback="/assets/Raffles/imageReward.png" />
             </div>
             <div className={s.reward_des}>
