@@ -1,3 +1,5 @@
+@import "/styles/playcore/variables"
+
 .wrapper
     margin-bottom: 32px
     @media screen and (min-width: 1200px)
@@ -10,6 +12,10 @@
             font-size: 16px
             line-height: 115%
             color: #DBE0E8
+        :global(.ant-table-placeholder)
+            &:hover
+                td
+                    background: unset
     :global(.ant-table-content)
         overflow-x: auto
     :global(.ant-table-thead > tr > th)
@@ -64,6 +70,26 @@
                 top: 50%
                 right: 0
                 transform: translateY(-50%)
+    .prizeImg
+        min-width: 50px
+        max-width: 50px
+        margin-right: 20px
+        background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+        backdrop-filter: blur(40px)
+        position: relative
+        border-bottom: 2px solid
+        &:before
+            content: ''
+            display: block
+            position: absolute
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+        img
+            width: 100%
+            aspect-ratio: 1/1
+            object-fit: cover
     .prize
         font-family: 'Revx Neue Demo'
         font-weight: 600
@@ -71,6 +97,8 @@
         line-height: 15px
         flex: 1
         padding: 0 10px 0 0
+        display: flex
+        align-items: center
         @media screen and (min-width: 768px)
             font-weight: 600
             font-size: 20px
@@ -78,19 +106,42 @@
         @media screen and (min-width: 1200px)
             padding: 0 120px
         &:global(.Common)
-            color: #787878
+            color: $colorPrizeCommon
+            .prizeImg
+                border-bottom-color: $colorPrizeCommon
+                &:before
+                    background: $bgPrizeCommon
         &:global(.Uncommon)
-            color: #618FC5
+            color: $colorPrizeUncommon
+            .prizeImg
+                border-bottom-color: $colorPrizeUncommon
+                &:before
+                    background: $bgPrizeUncommon
         &:global(.Rare)
-            color: #07FF3E
+            color: $colorPrizeRare
+            .prizeImg
+                border-bottom-color: $colorPrizeRare
+                &:before
+                    background: $bgPrizeRare
         &:global(.Epic)
-            color: #07D2FF
+            color: $colorPrizeEpic
+            .prizeImg
+                border-bottom-color: $colorPrizeEpic
+                &:before
+                    background: $bgPrizeEpic
         &:global(.Legendary)
-            color: #EBFF07
+            color: $colorPrizeLegendary
+            .prizeImg
+                border-bottom-color: $colorPrizeLegendary
+                &:before
+                    background: $bgPrizeLegendary
         &:global(.Mythic)
-            color: #FA07FF
-        &:global(.Divine)
-            color: #FF7607
+            color: $colorPrizeMythic
+            .prizeImg
+                border-bottom-color: $colorPrizeMythic
+                &:before
+                    background: $bgPrizeMythic
+
     .columnCounter
         width: 50px
         min-width: 50px
@@ -100,6 +151,7 @@
             font-size: 14px
             line-height: 115%
             color: #00F9FF !important
+            text-align: left !important
             @media screen and (min-width: 768px)
                 font-family: 'Revx Neue Demo'
                 font-weight: 400

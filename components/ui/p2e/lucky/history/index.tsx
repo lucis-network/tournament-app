@@ -11,6 +11,7 @@ import moment from "moment";
 import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 import {AppEmitter} from "../../../../../services/emitter";
 import PopupContactRaffles from "../../raffles/popup/popupContact";
+import PrizePopover from "../prize/popover";
 
 const historyLimit = 10
 
@@ -80,14 +81,16 @@ export default function HistoryTable() {
 
   useEffect(() => {
     let isSubscribed = true
-    const a = Math.ceil(20 / 6)
-    if (isSubscribed && historyCount) setPageCount(a)
+    if (isSubscribed && historyCount) {
+      const totalPage = Math.ceil(historyCount / historyLimit)
+      setPageCount(totalPage)
+    }
 
     return () => {
       isSubscribed = false
     }
   }, [historyCount])
-
+  console.log('[HistoryTable] historyCount, historyLimit, currentPage, pageCount: ', historyCount, historyLimit, currentPage, pageCount);
   const columns = [
     {
       title: 'Code',
@@ -109,15 +112,25 @@ export default function HistoryTable() {
       className: s.columnReward,
       render: (text: string, data: any) => {
         return (
-          <div className={s.prizeWrap}>
-            <div className={`${s.prize} ${data.prize.rarity}`}>
-              {data.prize.title}
+            <div className={s.prizeWrap}>
+              <div className={`${s.prize} ${data.prize.rarity}`}>
+                <PrizePopover
+                  image={data.prize.img}
+                  title={data.prize.title}
+                  description={data.prize.description}
+                  rarity={data.prize.rarity}
+                >
+                  <div className={s.prizeImg}>
+                    <img src={data.prize.img ? (data.prize.img) : '/assets/P2E/lucky-chest/defaultPrizeImage.png'} alt=""/>
+                  </div>
+                </PrizePopover>
+                {data.prize.title}
+              </div>
+              <ButtonClaim
+                isClaimed={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
+                onClick={() => handleClaimChestPrize(data.user_prize_history_uid.toString(), data.code)}
+              />
             </div>
-            <ButtonClaim
-              isClaimed={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
-              onClick={() => handleClaimChestPrize(data.user_prize_history_uid.toString(), data.code)}
-            />
-          </div>
         )
       }
     }
@@ -172,7 +185,16 @@ export default function HistoryTable() {
     <>
       <div className={s.wrapper}>
         <h2>Your history</h2>
-        <Table dataSource={historyData} columns={columns} pagination={false} loading={getLuckyChestUserInfoLoading} />
+        <Table
+          dataSource={historyData}
+          // dataSource={[]}
+          columns={columns}
+          pagination={false}
+          loading={getLuckyChestUserInfoLoading}
+          locale={{
+            emptyText: `You haven't opened the chest yet.`
+          }}
+        />
         <div className={s.paginationWrap}>
           <Pagination className={s.historyPagination} size="small" total={pageCount} current={currentPage} pageSize={historyLimit} onChange={(page) => setCurrentPage(page)} />
         </div>
