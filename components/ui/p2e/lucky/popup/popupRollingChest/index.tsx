@@ -155,7 +155,7 @@ const PopupRollingChest = (props: Props) => {
             {
               duplications.map((i, idx) => {
                 return prizeShuffled.map((prize) => (
-                  <div className={s.box_item} key={'k' + idx + prize?.id}>
+                  <div className={`${s.box_item} ${prize?.rarity ?? ''}`} key={'k' + idx + prize?.id}>
                     <div className={s.prizeImg}>
                       <Img src={prize?.img as string} srcFallback="/assets/P2E/lucky-chest/im_box.png" />
                     </div>
@@ -175,6 +175,7 @@ const PopupRollingChest = (props: Props) => {
                 closePopupRewardChest={() => setIsPopupRewardChest(false)}
                 prize={prize}
                 closePopupRollingChest={closePopupRollingChest}
+                rarity={prize.rarity}
             />
         }
       </Modal>
