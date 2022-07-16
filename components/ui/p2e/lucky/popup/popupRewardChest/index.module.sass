@@ -1,3 +1,5 @@
+@import "/styles/playcore/variables"
+
 .content_modal
   :global(.ant-modal)
     max-width: 100%
@@ -53,17 +55,46 @@
       line-height: 53px
       padding-bottom: 32px
   .reward_img
-    margin: 48px 0
-    img
-      width: 162px
+    margin: 48px auto
+    display: flex
+    align-items: center
+    justify-content: center
+    background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    backdrop-filter: blur(40px)
+    width: 280px
+    aspect-ratio: 1/1
     @media (min-width: 768px)
-      margin: 56px 0
-      img
-        width: 280px
-    @media (min-width: 992px)
-      margin: 64px 0
-      img
-        width: 400px
+      width: 400px
+    &:before
+      content: ''
+      display: block
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+    &:global(.Common)
+      &:before
+        background: $bgPrizeCommon
+    &:global(.Uncommon)
+      &:before
+        background: $bgPrizeUncommon
+    &:global(.Rare)
+      &:before
+        background: $bgPrizeRare
+    &:global(.Epic)
+      &:before
+        background: $bgPrizeEpic
+    &:global(.Legendary)
+      &:before
+        background: $bgPrizeLegendary
+    &:global(.Mythic)
+      &:before
+        background: $bgPrizeMythic
+    img
+      width: 100%
+      aspect-ratio: 1/1
+      object-fit: cover
   .reward_des
     font-family: 'Lexend'
     font-style: normal

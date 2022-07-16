@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import s from "./index.module.sass";
+import { app_env } from "../../utils/Env";
 
 const LucisDebugPage: NextPage = () => {
   return (
@@ -14,7 +15,7 @@ const LucisDebugPage: NextPage = () => {
             <table className={s.table}>
               <tr><th>Key:</th><th>Value</th></tr>
               <tr><td>Version (commit id)</td><td>LUCIS_VERSION_COMMIT_ID</td></tr>
-              <tr><td>Example</td><td>Example</td></tr>
+              <tr><td>APP_ENV</td><td>{app_env}</td></tr>
             </table>
           </div>
         </div>

@@ -231,7 +231,7 @@ const RafflesDetail = observer(() => {
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
         <section className={s.breadcrumbSection}>
-          <Link href="/p2e/raffles" passHref>
+          <Link href="/playcore/raffles" passHref>
             <button>
               <Image src="/assets/P2E/raffles/iconArrow.svg" preview={false} alt=""/>
             </button>
@@ -428,7 +428,7 @@ const RafflesDetail = observer(() => {
           ) : (((searchRafflesData?.searchRaffle.length <= 0) || searchRafflesError) ? <Empty/> : (
             <div className={s.rafflesList}>
               {searchRafflesData?.searchRaffle.length > 0 && searchRafflesData?.searchRaffle.map((raffle, index) => (
-                <Link href={`/p2e/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
+                <Link href={`/playcore/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
                   <a className={s.rafflesItem}>
                     <div className={s.raffleThumbnail}>
                       <Image src={raffle?.img as string} preview={false} alt=""/>

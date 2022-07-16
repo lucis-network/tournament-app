@@ -6,13 +6,12 @@ import Layout from "components/layout";
 import { ApolloProvider } from "@apollo/client";
 import client from "utils/apollo_client";
 import "quill/dist/quill.snow.css";
-import Head from "next/head";
 import {useRouter} from "next/router";
 import {useEffect, useState} from "react";
 import {AppEmitter} from "../services/emitter";
 import AuthStore from "../components/Auth/AuthStore";
 import UtmService from "../components/service/p2e/UtmService";
-
+import { ErrorBoundary } from "../components/ErrorBoundary";
 function MyApp({ Component, pageProps }: AppProps) {
   const [isCheckUtm, setIsCheckUtm] = useState(false);
   const route = useRouter();
@@ -56,12 +55,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={client}>
       <Layout>
-        <Head>
-          <link rel="shortcut icon" href="/favicon.png" />
-          <title></title>
-        </Head>
+        {/* @ts-ignore */}
+        <ErrorBoundary>
         {/* @ts-ignore */}
         <Component {...pageProps} />
+        </ErrorBoundary>
       </Layout>
     </ApolloProvider>
   );

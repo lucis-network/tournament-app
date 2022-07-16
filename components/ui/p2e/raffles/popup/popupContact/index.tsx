@@ -1,11 +1,12 @@
 import {Button, Modal } from "antd";
 import s from "./index.module.sass";
-import React from "react";
+import React, {ReactNode} from "react";
 
 type Props = {
   closePopupContact: () => void;
   status: boolean;
-
+  contactURL: string;
+  description: string | ReactNode;
 };
 
 const PopupContactRaffles = (props: Props) => {
@@ -25,15 +26,14 @@ const PopupContactRaffles = (props: Props) => {
         </div>
         <div className={s.wrapContainer}>
           <div className={s.desc}>
-            Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize.
+            {props?.description}
           </div>
           <div>
             {/*<ButtonWrapper className={s.button} width={236} onClick={() => window.open("https://discord.gg/7SdtYpGENT")}>CHAT WITH US</ButtonWrapper>*/}
             <Button
               target="_blank"
               className={`${s.customCss}`}
-              onClick={() => window.open("https://discord.gg/7SdtYpGENT")}
-              href={"https://discord.gg/7SdtYpGENT"}
+              href={props.contactURL}
               >CHAT WITH US</Button>
           </div>
           <div className={`${s.thankTo} ${s.desc}`}>

@@ -1,3 +1,5 @@
+@import "/styles/playcore/variables"
+
 .content_modal
   :global(.ant-modal)
     max-width: 100%
@@ -52,7 +54,61 @@
       @media (min-width: 1280px)
         max-width: 214px
         min-width: 214px
-
+      &:global(.Common)
+        color: $colorPrizeCommon
+        .prizeImg
+          border-bottom-color: $colorPrizeCommon
+          &:before
+            background: $bgPrizeCommon
+      &:global(.Uncommon)
+        color: $colorPrizeUncommon
+        .prizeImg
+          border-bottom-color: $colorPrizeUncommon
+          &:before
+            background: $bgPrizeUncommon
+      &:global(.Rare)
+        color: $colorPrizeRare
+        .prizeImg
+          border-bottom-color: $colorPrizeRare
+          &:before
+            background: $bgPrizeRare
+      &:global(.Epic)
+        color: $colorPrizeEpic
+        .prizeImg
+          border-bottom-color: $colorPrizeEpic
+          &:before
+            background: $bgPrizeEpic
+      &:global(.Legendary)
+        color: $colorPrizeLegendary
+        .prizeImg
+          border-bottom-color: $colorPrizeLegendary
+          &:before
+            background: $bgPrizeLegendary
+      &:global(.Mythic)
+        color: $colorPrizeMythic
+        .prizeImg
+          border-bottom-color: $colorPrizeMythic
+          &:before
+            background: $bgPrizeMythic
+      .prizeImg
+        background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+        backdrop-filter: blur(40px)
+        position: relative
+        border-bottom: 2px solid
+        @media screen and (min-width: 768px)
+          border-bottom: 6px solid
+        &:before
+          content: ''
+          display: block
+          position: absolute
+          top: 0
+          left: 0
+          right: 0
+          bottom: 0
+        img
+          width: 100%
+          aspect-ratio: 1/1
+          object-fit: cover
     .title
       background: rgba(45, 52, 70, 0.5)
       backdrop-filter: blur(40px)
@@ -60,21 +116,18 @@
       display: flex
       align-items: center
       justify-content: center
-      border-top: 4px solid #618FC5
       font-weight: 500
       font-size: 20px
       line-height: 22px
       @media (min-width: 0px)
         font-size: 10px
         line-height: 11px
-        border-top: 2px solid #618FC5
       @media (min-width: 768px)
         font-size: 14px
         line-height: 16px
       @media (min-width: 1280px)
         font-size: 20px
         line-height: 22px
-        border-top: 4px solid #618FC5
       p
         margin: 0
 

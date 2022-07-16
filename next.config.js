@@ -31,6 +31,7 @@ const nextConfig = withAntdLess({
 		const rules = config.module.rules;
 
 		inject_git_commit_id_to_page(rules);
+		inject_app_env(rules);
 
 		return config;
 	},
@@ -55,12 +56,47 @@ function inject_git_commit_id_to_page(rules) {
 	rules.push(stringReplaceLoaderRule);
 }
 
+function inject_app_env(rules) {
+	const git_branch = require("child_process")
+		/**
+		 * NOTE: You need to run in on Mac, Linux, or WSL, We prohibit Windows
+		 */
+		.execSync("cat .git/HEAD")
+		// .execSync('git branch --show-current')
+		.toString()
+		.trim();
+
+	let app_env = '';
+	if (git_branch === "ref: refs/heads/main") {
+		app_env = 'prod'
+	} else if (git_branch === "ref: refs/heads/beta") {
+		app_env = 'beta'
+	} else if (git_branch === "ref: refs/heads/test") {
+		app_env = 'stg'
+	} else {
+		app_env = 'dev'
+	}
+
+	rules.push({
+		test: /utils\/Env\.ts$/,
+		loader: "string-replace-loader",
+		options: {
+			search: '"APP_ENV"',
+			replace: `"${app_env}"`,
+		},
+	});
+}
+
+
 function show_testnet_text_on_header(rules) {
 	/**
 	 * Show testnet text on the header
 	 */
 	const git_branch = require("child_process")
-		// .execSync("cat .git/HEAD")
+		/**
+		 * NOTE: You need to run in on Mac, Linux, or WSL, We prohibit Windows
+		 */
+		.execSync("cat .git/HEAD")
 		// .execSync('git branch --show-current')
 		.toString()
 		.trim();

@@ -13,7 +13,7 @@ const MemberBox: React.FC<MemberBoxProps> = ({ member, onAdd }) => {
     <div className="border p-2 mt-2">
       <div className="flex align-middle items-center mb-2">
         <div className="rounded-[30px] overflow-hidden h-full bg-white">
-          <img src={member.avatar} alt="" width={50} height={50} />
+          <img src={member.avatar ? member.avatar : "/assets/avatar.jpg" } alt="" width={50} height={50} />
         </div>
         <div className="w-full ml-2">
           <h3 className="text-18px m-0 text-white">{member.display_name}</h3>
@@ -28,7 +28,7 @@ const MemberBox: React.FC<MemberBoxProps> = ({ member, onAdd }) => {
             target="_blank"
             href={`/profile/${member.user_name}`}
             rel="noopener noreferrer"
-			style={{color: "white0"}}
+			      style={{color: "white"}}
           >
             Profile
           </a>

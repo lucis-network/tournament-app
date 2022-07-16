@@ -1,16 +1,17 @@
 import s from "./Info.module.sass";
 import {observer} from "mobx-react-lite";
-import {UserGraphql} from "../../../../../src/generated/graphql";
 import {ApolloQueryResult} from "@apollo/client";
+import {AuthUser} from "../../../../Auth/AuthStore";
 
 type InfoMyProfileProps = {
   click?: () => void;
-  userInfo: UserGraphql,
+  userInfo: AuthUser,
   getUserProfileRefetch?: () => Promise<ApolloQueryResult<any>>,
   isOwner?: boolean,
+  isShowEdit?: boolean
 };
 
-export default observer(function InfoMyProfile({ click, userInfo, getUserProfileRefetch, isOwner }: InfoMyProfileProps) {
+export default observer(function InfoMyProfile({ click, userInfo, getUserProfileRefetch, isOwner, isShowEdit }: InfoMyProfileProps) {
   return (
     <div className={s.container}>
       <div
@@ -32,7 +33,7 @@ export default observer(function InfoMyProfile({ click, userInfo, getUserProfile
           </div>
         </div>
         <div className={s.user_information_right}>
-          {isOwner && <button onClick={click}>Edit Profile</button>}
+          {isOwner && <button onClick={click}>{!!isShowEdit ? 'Cancel' : 'Edit Profile'}</button>}
         </div>
       </div>
     </div>

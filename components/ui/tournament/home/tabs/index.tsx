@@ -23,7 +23,6 @@ export default function TabHome() {
     handleOrder,
   } = useHomePage();
   const [creating, setCreating] = useState(false);
-  console.log('data',data);
   const handleChangeTab = (item: string) => {
     handleChangeFilter("type", item);
   };
@@ -71,8 +70,7 @@ export default function TabHome() {
           <Col className={s.container_search}>
             <Search
               className={s.search}
-              placeholder="Search by game"
-              autoFocus
+              placeholder="Search"
               value={filter.search}
               onChange={(e) => handleChangeFilter("search", e.target.value)}
             />

@@ -47,27 +47,41 @@ export default observer(function P2EWrapper(props: IProps) {
       return;
     }
 
-    if (AuthGameStore.isLoggedInFaceit === false) {
-      router.push("/");
-      return;
-    };
-  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn])
+  }, [AuthStore.isLoggedIn])
 
   useEffect(() => {
+    // 
+    const overviewSection = sessionStorage.getItem("overviewSection");
+    if (overviewSection) {
+      setOverviewSection(Number(overviewSection));
+      sessionStorage.removeItem("overviewSection");
+    }
     const currentGameLocal = localStorage.getItem("currentGame");
+    let currentGameTmp = null;
     if (currentGameLocal) {
       if (Number(currentGameLocal) === Game.CSGO && AuthGameStore.isLoggedInFaceit) {
+        currentGameTmp = Number(currentGameLocal);
         setCurrentGame(Number(currentGameLocal));
         return;
       }
 
       if (Number(currentGameLocal) === Game.LOL && AuthGameStore.isLoggedInLMSS) {
+        currentGameTmp = Number(currentGameLocal);
         setCurrentGame(Number(currentGameLocal));
         return;
       }
-    } else {
-      setCurrentGame(Game.CSGO);
-      localStorage.setItem("currentGame", Game.CSGO.toString());
+    }
+
+    if (!currentGameTmp) {
+      if (AuthGameStore.isLoggedInLMSS) {
+        setCurrentGame(Game.LOL);
+        localStorage.setItem("currentGame", Game.LOL.toString());
+      }
+
+      if (AuthGameStore.isLoggedInFaceit) {
+        setCurrentGame(Game.CSGO);
+        localStorage.setItem("currentGame", Game.CSGO.toString());
+      }
     }
   }, [])
 
@@ -87,7 +101,8 @@ export default observer(function P2EWrapper(props: IProps) {
 
   const whiteListTab = () => {
     const raffles = router.pathname.search("/playcore/raffles");
-    return raffles > -1 || router.pathname === "/";
+    const luckyChest = router.pathname.search("/playcore/lucky-chest");
+    return raffles > -1 || luckyChest > -1 ||  router.pathname === "/";
   }
   const handleTabClick = (path: string) => {
     if (!AuthStore.isLoggedIn &&
@@ -99,6 +114,10 @@ export default observer(function P2EWrapper(props: IProps) {
     if (path === "/playcore/dashboard" || path === "/playcore/missions") {
       if (!AuthGameStore.isLoggedInLMSS && !AuthGameStore.isLoggedInFaceit) {
         setOverviewSection(OverviewSection.CONNECT_GAME);
+        if (router.pathname !== "") {
+          sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
+          router.push("/");
+        }
         return;
       }
 
@@ -153,6 +172,9 @@ export default observer(function P2EWrapper(props: IProps) {
 
 
   const setGame = (game: Game) => {
+    if (currentGame === game) {
+      return;
+    }
     switch (game) {
       case Game.LOL:
         if (AuthGameStore.isLoggedInLMSS === false) {
@@ -167,6 +189,9 @@ export default observer(function P2EWrapper(props: IProps) {
     }
     localStorage.setItem("currentGame", game.toString());
     setCurrentGame(game);
+    if (router.pathname === "/playcore/dashboard" || router.pathname  === "/playcore/missions") {
+      return;
+    }
     router.push("/playcore/dashboard");
   }
 
@@ -208,7 +233,7 @@ export default observer(function P2EWrapper(props: IProps) {
                       className={s.addGame}
                       src="/assets/P2E/add-game.svg"
                       alt="add-game"
-                      onClick={() => router.push("/")} />
+                      onClick={() => {router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());}} />
                   </div>}
               </div>
             </div>

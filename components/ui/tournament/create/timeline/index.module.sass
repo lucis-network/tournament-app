@@ -1,0 +1,54 @@
+.modalTimeline
+  :global(.sc-ftvSup), :global(.sc-iBkjds)
+    &:before, &:after
+      border-color: #ffffff !important
+  :global(.ant-modal)
+    width: auto !important
+    max-width: calc(100vw - 30px)
+    padding: 0
+    @media screen and (min-width: 768px)
+      width: 752px !important
+  :global(.ant-modal-body)
+    padding: 10px
+    @media screen and (min-width: 576px)
+      padding: 10px 15px
+    @media screen and (min-width: 768px)
+      padding: 10px 25px
+  :global(.ant-modal-header)
+    background: rgba(83, 80, 80, 0.3)
+    backdrop-filter: blur(40px)
+    border-top-left-radius: 5px
+    border-top-right-radius: 5px
+    h3
+      font-size: 20px
+      font-weight: 500
+      color: #FFFFFF
+      margin-bottom: 0
+  :global(.ant-modal-close-x)
+    border: 1px solid #FFFFFF
+    background: none !important
+    svg
+      fill: #FFFFFF
+  :global(.ant-modal-content)
+    background: rgba(255, 255, 255, 0.4)
+    backdrop-filter: blur(40px)
+    border-radius: 5px
+  :global(.ant-modal-body, .ant-modal-footer)
+    background: none
+  :global(.ant-modal-footer)
+    border: none
+    padding: 10px 30px 20px
+.btnCancel, .btnConfirm
+  border-radius: 5px
+  color: #00FFFF !important
+  font-size: 20px
+  font-weight: 500
+  border: none
+  line-height: 1.2
+  height: auto
+  padding: 10px 20px
+.btnCancel
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.1) 0.33%, rgba(11, 235, 214, 0.1) 99.88%) !important
+.btnConfirm
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, 0.5) 0.33%, rgba(11, 235, 214, 0.5) 99.88%) !important
+  margin-left: 16px !important

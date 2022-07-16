@@ -14,6 +14,7 @@ import { Item } from "components/ui/tournament/detail/hooks/useTeamModal";
 import { getLocalAuthInfo } from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
 import { useGetUserProfile } from "../../../../../../hooks/myProfile/useMyProfile";
+import TournamentStore from "src/store/TournamentStore";
 export interface TeamType extends Record<any, any> {
 	user_id: number;
 	user_name: string;
@@ -272,13 +273,14 @@ const UseControlTeam = () => {
 					? ""
 					: "Your team must have at least 2 members",
 		});
-
+		TournamentStore.loadingCeateTeam = false;
 		if (
 			draftData?.team_avatar &&
 			draftData?.team_name &&
 			draftData?.team &&
 			draftData?.team?.length > 1
 		) {
+			TournamentStore.loadingCeateTeam = true;
 			const filterDataMember = draftData?.team
 				?.filter((team) => +team.user_id !== +user?.profile?.user_id!)
 				?.map((item) => ({
@@ -304,6 +306,8 @@ const UseControlTeam = () => {
 						},
 						onCompleted: () => {
 							searchTeam();
+							setOpenCreateTeam(false);
+							TournamentStore.loadingCeateTeam = false;
 						},
 				  })
 				: createTeam({
@@ -322,11 +326,14 @@ const UseControlTeam = () => {
 						},
 						onCompleted: () => {
 							searchTeam();
+							setOpenCreateTeam(false);
+							TournamentStore.loadingCeateTeam = false;
 						},
 				  });
 			setReset(true);
-			setOpenCreateTeam(false);
+			//setOpenCreateTeam(false);
 		}
+
 	};
 
 	const handleAddMember = (member: TeamType) => {

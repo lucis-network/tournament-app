@@ -9,6 +9,7 @@ type Props = {
   status: boolean;
   prize?: LuckyChestPrize;
   closePopupRollingChest: () => void;
+  rarity: string;
 };
 
 const PopupRewardChest = (props: Props) => {
@@ -32,15 +33,13 @@ const PopupRewardChest = (props: Props) => {
             <div className={s.reward_title}>
               {prize?.title}
             </div>
-            <div className={s.reward_img}>
-
+            <div className={`${s.reward_img} ${props?.rarity ?? ''}`}>
               <Img src={prize?.img as string} srcFallback="/assets/Raffles/imageReward.png" />
             </div>
             <div className={s.reward_des}>
               {prize?.desc}
             </div>
           </div>
-
         </div>
       </Modal>
     </div>

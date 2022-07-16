@@ -1,14 +1,11 @@
-import { Modal } from "antd";
+import { message, Modal } from "antd";
 import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
-import AuthStore, { AuthUser } from "../AuthStore";
 import AuthService from "../AuthService";
-import { useCallback, useEffect } from "react";
-import { getLocalAuthGameInfo, getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
-import AuthGameStore, { AuthGameUser } from "../AuthGameStore";
-import {AppEmitter} from "../../../services/emitter";
+import {  useEffect } from "react";
+
 
 type Props = {};
 
@@ -42,6 +39,7 @@ export default observer(function LoginModal(props: Props) {
         // Success
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
+
         setTimeout(() => {
           setIsModalVisible(false);
         }, 2000);
@@ -57,6 +55,28 @@ export default observer(function LoginModal(props: Props) {
     setIsModalVisible(false);
   };
 
+  const isFacebookApp = function (ua: any) {
+    return (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1);
+  }
+
+  const onLoginClicked = (cb: (() => void) | undefined) => {
+    return () => {
+      // @ts-ignore
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      if (isFacebookApp(ua)) {
+        console.log('window.location.href: ', window.location.href)
+        if (!window.location.href.match('redirect_fb')) {
+          // force open in browser ...
+          // location.href = location.href;
+        }
+        message.warn("Please open web in browser to use full function")
+        return;
+      }
+      console.log('not isFacebookApp')
+      cb && cb();
+    }
+  }
+
   return (
     <>
       <Modal
@@ -71,7 +91,8 @@ export default observer(function LoginModal(props: Props) {
           clientId={clientId}
           render={(renderProps) => (
             <button
-              onClick={renderProps.onClick}
+              // onClick={renderProps.onClick}
+              onClick={onLoginClicked(renderProps.onClick)}
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded`}
             >
               Login Google
@@ -95,7 +116,8 @@ export default observer(function LoginModal(props: Props) {
           }}
           render={(renderProps) => (
             <button
-              onClick={renderProps.onClick}
+              // onClick={renderProps.onClick}
+              onClick={onLoginClicked(renderProps.onClick)}
               className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded ml-20px`}
             >
               Login Facebook
@@ -106,6 +128,5 @@ export default observer(function LoginModal(props: Props) {
     </>
   );
 });
-function ApoloClient_setAuthToken(token: string) {
-  throw new Error("Function not implemented.");
-}
+
+

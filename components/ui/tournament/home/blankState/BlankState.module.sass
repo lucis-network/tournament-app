@@ -1,9 +1,8 @@
-@use 'styles/common'
+@import 'styles/common'
 
 .blankContainer 
-    @include common.box-glass
-    @include common.border-grad-3(linear-gradient(290.92deg,#0bebd6,#cd28e8))
     z-index: 10
+    position: relative
 
 .circleTopLeft 
     position: relative
@@ -199,3 +198,17 @@
         width: 100px
         top: 290px
         left: -420px
+
+.blankContainer:before
+    content: ""
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    z-index: -1
+    padding: 3px
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
+    -webkit-mask-composite: xor
+    mask-composite: exclude
+    background: linear-gradient(290.92deg,#0bebd6,#cd28e8)

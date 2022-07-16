@@ -1,6 +1,6 @@
-import { gql } from "@apollo/client";
+import {gql} from "@apollo/client";
 
-import AuthStore, { AuthUser } from "./AuthStore";
+import AuthStore, {AuthUser} from "./AuthStore";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
 } from "utils/apollo_client";
@@ -16,6 +16,7 @@ import { nonReactive as ConnectWalletStore_NonReactiveData } from "./ConnectWall
 import AuthGameStore, { AuthGameUser } from "./AuthGameStore";
 import { Platform } from "utils/Enum";
 import { PlatformAccount } from "src/generated/graphql_p2e";
+import {JoinTournamentType} from "../ui/common/types";
 
 export enum AuthError {
   Unknown = "Unknown",
@@ -123,7 +124,7 @@ export default class AuthService {
       // faceit_avatar: item?.avatar,
     }
 
-    platformAccounts.forEach((item: any) => {
+    platformAccounts?.forEach((item: any) => {
       switch (item.platform_id) {
         case Platform.FACEIT:
           gameAccount = {
@@ -174,6 +175,142 @@ export default class AuthService {
               google_id
               status
               facebook_id
+              is_exist_pass
+              favorite_game {
+                id
+                user_id
+                game_uid
+                enable_favorite
+                game {
+                  uid
+                  name
+                  logo
+                  desc
+                }
+                user {
+                  id
+                }
+              }
+              profile {
+                user_id
+                given_name
+                family_name
+                phone
+                avatar
+                cover
+                user_name
+                country_code
+                twitter
+                facebook
+                discord
+                telegram
+                twitch
+                user_name
+                display_name
+                biography
+                cover
+              }
+              platform_account {
+                uid
+                access_token
+                id_token
+                platform_id
+                nick_name
+                avatar
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        token,
+      },
+    });
+
+    const u = loginRes.data.loginGoogle.user;
+    const platformAccounts = loginRes.data?.loginGoogle?.user?.platform_account;
+    // console.log(platformAccounts)
+    const tokenID = loginRes.data.loginGoogle.token;
+    const user: AuthUser = {
+      id: u.id,
+      token: tokenID,
+      code: u.code,
+      email: u.email,
+      role: u.role,
+      name: u.name ?? u.profile.given_name + " " + u.profile.family_name,
+      ref_code: u.ref_code,
+      google_id: u.google_id ? u.google_id : "",
+      facebook_id: u.facebook_id ? u.facebook_id : "",
+      status: u.status,
+      profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
+    };
+
+    let gameAccount: AuthGameUser = {
+      // faceit_id: item?.uid,
+      // faceit_access_token: item?.access_token,
+      // faceit_id_token: item?.id_token,
+      // faceit_platform_id: item?.platform_id,
+      // faceit_nick_name: item?.nick_name,
+      // faceit_avatar: item?.avatar,
+    }
+
+    platformAccounts?.forEach((item: any) => {
+      switch (item.platform_id) {
+        case Platform.FACEIT:
+          gameAccount = {
+            ...gameAccount,
+            faceit_id: item?.uid,
+            faceit_access_token: item?.access_token,
+            faceit_id_token: item?.id_token,
+            faceit_platform_id: item?.platform_id,
+            faceit_nick_name: item?.nick_name,
+            faceit_avatar: item?.avatar,
+          }
+          break;
+
+          case Platform.GARENA:
+            gameAccount = {
+              ...gameAccount,
+              lmss_id: item?.uid,
+              lmss_access_token: "item?.access_token",
+              lmss_id_token: "item?.id_token",
+              lmss_platform_id: item?.platform_id,
+              lmss_nick_name: item?.nick_name,
+              lmss_avatar: item?.avatar,
+            }
+            break;
+
+        default:
+          break;
+      }
+    })
+
+    return {
+      user,
+      gameAccount: gameAccount
+    };
+  }
+
+  private async loginByUsername(
+    username: string,
+    password: string
+  ): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
+    const loginRes = await apoloClient.mutate({
+      mutation: gql`
+        mutation login($username: String!, $password: String!) {
+          login(username: $username, password: $password) {
+            token
+            user {
+              id
+              email
+              role
+              code
+              ref_code
+              google_id
+              status
+              facebook_id
+              is_exist_pass
               favorite_game {
                 id
                 user_id
@@ -222,14 +359,16 @@ export default class AuthService {
         }
       `,
       variables: {
-        token,
+        username,
+        password,
       },
+    }).catch(err => {
+      console.log("catch", err);
     });
 
-    const u = loginRes.data.loginGoogle.user;
-    const platformAccounts = loginRes.data?.loginGoogle?.user?.platform_account;
-    // console.log(platformAccounts)
-    const tokenID = loginRes.data.loginGoogle.token;
+    const u = loginRes?.data.login.user;
+    // console.log("u", loginRes?.data.login);
+    const tokenID = loginRes?.data.login.token;
     const user: AuthUser = {
       id: u.id,
       token: tokenID,
@@ -241,18 +380,14 @@ export default class AuthService {
       google_id: u.google_id,
       status: u.status,
       profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
     };
 
-    let gameAccount: AuthGameUser = {
-      // faceit_id: item?.uid,
-      // faceit_access_token: item?.access_token,
-      // faceit_id_token: item?.id_token,
-      // faceit_platform_id: item?.platform_id,
-      // faceit_nick_name: item?.nick_name,
-      // faceit_avatar: item?.avatar,
-    }
+    const platformAccounts = loginRes?.data.login?.user?.platform_account;
 
-    platformAccounts.forEach((item: any) => {
+    let gameAccount: AuthGameUser = {};
+
+    platformAccounts?.forEach((item: any) => {
       switch (item.platform_id) {
         case Platform.FACEIT:
           gameAccount = {
@@ -280,6 +415,7 @@ export default class AuthService {
         default:
           break;
       }
+
     })
 
     return {
@@ -303,6 +439,7 @@ export default class AuthService {
               google_id
               status
               facebook_id
+              is_exist_pass
               favorite_game {
                 id
                 user_id
@@ -337,7 +474,6 @@ export default class AuthService {
                 biography
                 cover
               }
-
               platform_account {
                 uid
                 access_token
@@ -369,6 +505,7 @@ export default class AuthService {
       facebook_id: u.facebook_id,
       status: u.status,
       profile: u.profile,
+      is_exist_pass: u.is_exist_pass,
     };
 
     let gameAccount: AuthGameUser = {
@@ -427,7 +564,9 @@ export default class AuthService {
   async login(
     tokenId: string,
     delay = 1000,
-    type?: string
+    type?: string,
+    username?: string,
+    password?: string
   ): Promise<LoginResponse> {
     let res: LoginResponse = {
       error: null,
@@ -466,6 +605,13 @@ export default class AuthService {
 
       if (type === "facebook") {
         data = await this.loginByFacebook(tokenId);
+      }
+      if (type === "username") {
+        data = await this.loginByUsername(
+          username ? username : "",
+          password ? password : ""
+        );
+        // todo add platformGameAccount
       }
 
       console.log("{AuthService.login} new-login user: ", data);

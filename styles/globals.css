@@ -14,6 +14,13 @@ img {
   height: initial;
 }
 
+*::selection {
+  -webkit-text-fill-color: white;
+  text-fill-color: white;
+  color: white;
+  background: #1c9aac !important;
+}
+
 @font-face {
   font-family: 'Revx Neue Demo';
   src: url("/fonts/RevxNeue/RevxNeueDemo-Regular.ttf");
@@ -263,7 +270,7 @@ body .ant-menu {
   }
 
   body .ant-menu-inline.ant-menu-root .ant-menu-item,
-  .ant-menu-inline.ant-menu-root>.ant-menu-submenu-title {
+  .ant-menu-inline.ant-menu-root > .ant-menu-submenu-title {
     padding-left: 24px !important;
     align-items: flex-start;
   }
@@ -560,11 +567,13 @@ body .backdrop-blur-sm {
   ); */
 }
 
-.ant-modal-root .ant-modal-content {
+.ant-modal-root .ant-modal {
   /*background: rgb(47 33 102);*/
-  background: linear-gradient(126.08deg,
-      rgba(255, 255, 255, 0.3) 13.84%,
-      rgba(255, 255, 255, 0.1) 74.14%);
+  background: linear-gradient(
+    126.08deg,
+    rgba(255, 255, 255, 0.3) 13.84%,
+    rgba(255, 255, 255, 0.1) 74.14%
+  );
   box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(40px);
   /* Note: backdrop-filter has minimal browser support */
@@ -574,6 +583,10 @@ body .backdrop-blur-sm {
   color: white;
 }
 
+.ant-modal-content {
+  background: none !important;
+  box-shadow: none !important;
+}
 .ant-modal-content .ant-modal-header {
   background: transparent;
   box-shadow: none;
@@ -636,8 +649,22 @@ body .ant-modal-footer {
 
 .ant-popover-content .ant-popover-arrow .ant-popover-arrow-content {}
 
+.ant-popover {
+  background: rgba(123, 123, 123, 0.2);
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(20px);
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 10px;
+  color: white;
+  padding-top: 0 !important;
+  margin-top: -20px;
+}
+.ant-popover-content .ant-popover-inner {
+  background: none
+}
+
 /*Same style as modal content */
-.ant-popover-content .ant-popover-inner:before {
+.ant-popover:before {
   content: "";
 
   position: absolute;
@@ -780,9 +807,11 @@ body .ant-col {
 } */
 
 body .ant-input {
-  background: linear-gradient(152.97deg,
-      rgba(255, 255, 255, 0.2) 0%,
-      rgba(255, 255, 255, 0) 100%) !important;
+  background: linear-gradient(
+    152.97deg,
+    rgba(255, 255, 255, 0.2) 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
   backdrop-filter: blur(42px);
   transition: 0.3s;
   border: 1px solid #d9d9d933;
@@ -819,16 +848,35 @@ body .ant-input-group-addon {
   border: 1px solid white;
 } */
 
+body .ant-select-dropdown{
+  background-color: transparent;
+  backdrop-filter: blur(42px);
+  background: linear-gradient(152.97deg,rgba(255, 255, 255, 0.2) 0%,rgba(255, 255, 255, 0) 100%);
+  color: #FFF;
+  padding: 4px 6px;
+}
+
 body .ant-select-item {
   padding: 0;
+  color: rgba(255, 255, 255, 0.56);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+body .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background: #e6f7ff99;
+  color: #ffffff;
 }
 
 body .ant-select-item:not(:last-child) {
   border-bottom: 1px solid #dcdcdc;
 }
-
-body .ant-select-item {
-  padding-left: 10px;
+body .ant-select-item-option-content{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+body .ant-select-item:last-child {
+  border-bottom: none;
 }
 
 body .ant-select-item-option-content img {
@@ -839,7 +887,6 @@ body .ant-select-item-option-content img {
 body .ant-select-item-option-active:not(.ant-select-item-option-disabled) {
   background: none;
 }
-
 /* body .ant-select-dropdown-hidden {
   display: block;
 } */
@@ -1009,6 +1056,37 @@ body .ant-carousel .slick-dots-bottom {
   .default_DigitRoll__Cell__S_uFL {
     margin: 0 5px !important;
   }
+}
+
+
+.ql-toolbar {
+  background: rgba(86, 84, 84, 0.5);
+}
+.ql-editor {
+  background: rgba(255, 255, 255, 0.2);
+}
+.ql-editor *:not(a) {
+  color: #ffffff
+}
+
+.ant-calendar-picker {
+  width: auto !important;
+}
+.ant-picker-dropdown {
+  max-width: 100%;
+  position: fixed;
+}
+.ant-picker-panel-container {
+  max-width: 100%;
+  overflow-x: auto !important;
+}
+
+.ant-empty-description{
+  color: #FFF
+}
+
+.ant-select-item-option-disabled.ant-select-item-option-selected{
+  background-color: transparent !important
 }
 
 

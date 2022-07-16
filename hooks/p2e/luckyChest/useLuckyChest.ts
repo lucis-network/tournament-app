@@ -121,7 +121,6 @@ const GET_CHEST_DETAIL = gql`
       ticket_cost
       ticket_cost_type
       created_at
-      updated_at
       sponsors {
         uid
         name
@@ -192,6 +191,8 @@ export const OPEN_CHEST = gql`
 
 const CLAIM_CHEST_PRIZE = gql`
   mutation($user_prize_history_uid: String!) {
-    claimChestPrize(user_prize_history_uid: $user_prize_history_uid)
+    claimChestPrize(user_prize_history_uid: $user_prize_history_uid) {
+      required_contact
+    }
   }
 `

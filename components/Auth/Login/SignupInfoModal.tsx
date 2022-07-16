@@ -84,6 +84,9 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
                   set: values.user_name
                 },
                 country_code: values.country_code,
+                password: {
+                  set: values.password
+                }
               }
             }
           });
@@ -124,7 +127,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     setUserNameExisted(false)
     debouncedInputTyping(event.currentTarget.value)
   };
-
+  
   useEffect(() => {
     fetchCountryList();
   }, []);
@@ -143,9 +146,9 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       <h3 style={{ color: '#ffffff' }}>Enter the information below to finish the sign in process</h3>
       <Form
         form={form}
-        labelCol={{ span: 5 }}
-        wrapperCol={{ span: 19 }}
-        initialValues={{ country_code: null }}
+        labelCol={{span: 8}}
+        wrapperCol={{span: 16}}
+        initialValues={{country_code: null}}
         autoComplete="off"
       >
         <Form.Item
@@ -154,7 +157,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           rules={[
             {
               required: true,
-              message: 'Please input your username!'
+              message: "Please input your username!"
             },
             {
               min: 3,
@@ -165,8 +168,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               message: "Username must be maximum 16 characters."
             },
             {
-              pattern: /^[a-zA-Z0-9]*$/g,
-              message: "Valid characters are A-Z a-z 0-9."
+              pattern: /^[a-zA-Z0-9_]*$/g,
+              message: "Valid characters are A-Z a-z 0-9 and _"
             },
             {
               async validator(rule, value) {
@@ -178,12 +181,12 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" onChange={handleUsernameInput} />
+          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg}/>
         </Form.Item>
         <Form.Item
           label="Country"
           name="country_code"
-          rules={[{ required: true, message: 'Please select your country!' }]}
+          rules={[{required: true, message: 'Please select your country!'}]}
         >
           <Select
             showSearch
@@ -191,16 +194,66 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               return option?.key.toLowerCase().indexOf(input.toLowerCase()) >= 0
             }}
             placeholder="Select country"
+            className={`${s.formFieldBg} ${s.formFieldSelect}`}
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>
-                <Image src={country.flag} preview={false} width="30px" height="auto" />
+                <Image src={country.flag} preview={false} width="30px" height="auto"/>
                 <span className="ml-3">
                   {country.name}
                 </span>
               </Option>
             ))}
           </Select>
+        </Form.Item>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[
+            {required: true, message: 'Please input your password!'},
+            {
+              min: 8,
+              message: "Password must be minimum 8 characters."
+            },
+            {
+              max: 32,
+              message: "Confirm Password must be maximum 32 characters."
+            },
+            {
+              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
+              message: "Valid characters are A-Z a-z 0-9"
+            },]}
+        >
+          <Input.Password placeholder="Enter password" className={s.formFieldBg}/>
+        </Form.Item>
+        <Form.Item
+          label="Confirm Password"
+          name="confirmPassword"
+          rules={[
+            {required: true, message: 'Please input your confirm password!'},
+            {
+              min: 8,
+              message: "Confirm Password must be minimum 8 characters."
+            },
+            {
+              max: 32,
+              message: "Confirm Password must be maximum 32 characters."
+            },
+            {
+              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
+              message: "Valid characters are A-Z a-z 0-9"
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
+                  return Promise.resolve();
+                }
+                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+              },
+            }),
+          ]}
+        >
+          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg}/>
         </Form.Item>
       </Form>
     </Modal>

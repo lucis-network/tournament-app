@@ -1,28 +1,31 @@
 import { Col, Row } from "antd";
 import AuthGameStore from "components/Auth/AuthGameStore";
+import MissionService from "components/service/p2e/MissionService";
 import { useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
+import { CsgoMatchStatistics } from "src/generated/graphql_p2e";
 import { MAP_CSGO } from "utils/Enum";
 import s from "../dashboard.module.sass";
 
 export const RecentMatchDetailCSGO = () => {
   const router = useRouter();
 
-  const [playerMatchId, setPlayerMatchId] = React.useState<number>(-1);
-  const [isLoadData, setIsLoadData] = React.useState<boolean>(false);
-  const { getStatisticMatchData } = useGetStatisticMatch(playerMatchId, !isLoadData);
-
+  const [statistic, setStatistic] = React.useState<CsgoMatchStatistics>();
   React.useEffect(() => {
     if (router.query?.id) {
-      setPlayerMatchId(Number(router.query.id));
-      setIsLoadData(true);
+      queryData(Number(router.query.id));
     }
+    console.log(router)
   }, [router.query]);
 
-
-  const data = getStatisticMatchData?.getCsgoMatchStatistic;
+  const queryData = async (player_match_id: number) => {
+    const res = await MissionService.getCSGOMatchStatistic(player_match_id);
+    setStatistic(res?.data?.getCsgoMatchStatistic);
+  }
+  
+  const data = statistic;
   const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
     kill: data ? Number(data?.match_earning?.kill) * Number(data?.player_statistic?.Kills) : null,
@@ -144,7 +147,7 @@ export const RecentMatchDetailCSGO = () => {
                 <div className={s.listCardCsgo}>
                   <Row gutter={[{ xs: 16, sm: 16, md: 16, xl: 53 }, 40]}>
                     {cardList.map((item, index) => (
-                      <Col xs={12} sm={8} md={6} xl={6} key={`${item.name}-${index}`}>
+                      <Col xs={12} sm={8} md={6} xl={6} key={`${item.name}-${index}`} className={s.achievementItem}>
                         <div
                           className={s.card}
                           style={{

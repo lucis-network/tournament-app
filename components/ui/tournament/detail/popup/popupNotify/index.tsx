@@ -1,5 +1,5 @@
 import { Modal } from "antd";
-import { fomatNumber } from "utils/Number";
+import { format } from "utils/Number";
 import s from "./index.module.sass";
 
 type Props = {
@@ -14,8 +14,6 @@ type Props = {
 const PopupNotify = (props: Props) => {
   const { status, closeModalNotify, values, currency, name, desc } = props;
 
-  const closeModal = () => {};
-
   return (
     <Modal
       visible={status}
@@ -27,13 +25,13 @@ const PopupNotify = (props: Props) => {
       style={{ textAlign: "center" }}
     >
       <div style={{ fontSize: 25 }}>
-        {fomatNumber(Number.parseFloat(values))} {currency?.symbol}
+        {format(Number.parseFloat(values), 2, {zero_trim: true})} {currency?.symbol}
       </div>
       <div style={{ fontSize: 16, marginBottom: "10px"}}>
         &quot;{desc}&quot;
       </div>
       <div>
-        We&apos;ve received {fomatNumber(Number.parseFloat(values))}{" "}
+        We&apos;ve received {format(Number.parseFloat(values), 2, {zero_trim: true})}{" "}
         {currency?.symbol} and will transfer it to &quot;{name}&quot; after the
         tournament finish
       </div>
