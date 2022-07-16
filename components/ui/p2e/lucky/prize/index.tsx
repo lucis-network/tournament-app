@@ -38,12 +38,13 @@ const ChestPrize = ({image, title, description, rarity}: ChestPrizeProps) => {
       title={title}
       overlayClassName={`${s.prizeDetail} ${rarity}`}
       placement="top"
+      arrowPointAtCenter
       // defaultVisible={true}
       // visible={true}
     >
       <div className={`${s.chestPrize} ${rarity ?? ''}`}>
         <div className={s.prizeImg}>
-          <img src={image ?? ''} alt="" />
+          <img src={image ?? '/assets/P2E/lucky-chest/defaultPrizeImage.png'} alt="" />
         </div>
         <div className={s.prizeTitle}>
           {title ?? ''}

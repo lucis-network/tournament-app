@@ -83,11 +83,14 @@
     text-transform: uppercase
 .prizeDetail
   border: none
-  border-radius: 0
+  border-radius: 4px 4px 0 0
   background: rgba(69, 80, 107, 0.5)
   backdrop-filter: blur(40px)
   width: 343px
   max-width: 100%
+  padding: 0
+  &:before
+    content: none
   &:global(.Common)
     :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
       color: $colorPrizeCommon
@@ -109,6 +112,11 @@
   :global(.ant-popover-content)
     :global(.ant-popover-arrow)
       display: none
+      :global(.ant-popover-arrow-content)
+        background: rgba(69, 80, 107, 0.7)
+        backdrop-filter: blur(40px)
+        &:before
+          content: none
     :global(.ant-popover-inner)
       box-shadow: none
       :global(.ant-popover-title)
