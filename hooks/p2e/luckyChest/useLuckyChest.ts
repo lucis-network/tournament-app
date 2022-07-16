@@ -116,6 +116,7 @@ const GET_CHEST_DETAIL = gql`
   query($type: LuckyChestType!, $tier: LuckyChestTier!) {
     getChestDetail(type: $type, tier: $tier) {
       id
+      title
       type
       desc
       ticket_cost

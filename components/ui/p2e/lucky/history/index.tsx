@@ -13,9 +13,13 @@ import {AppEmitter} from "../../../../../services/emitter";
 import PopupContactRaffles from "../../raffles/popup/popupContact";
 import PrizePopover from "../prize/popover";
 
+type HistoryTableProps = {
+  currentGame: LuckyChestType,
+}
+
 const historyLimit = 10
 
-export default function HistoryTable() {
+export default function HistoryTable({currentGame}: HistoryTableProps) {
   const [historyData, setHistoryData] = useState<any[]>([])
   const [claimingChestPrize, setClaimingChestPrize] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -28,7 +32,7 @@ export default function HistoryTable() {
     refetchGetLuckyChestUserInfo,
     dataLuckyChestUserInfo
   } = useGetLuckyChestUserInfo({
-    type: LuckyChestType.Csgo,
+    type: currentGame ? currentGame : LuckyChestType.Lol,
     tier: LuckyChestTier.Standard,
     page: currentPage,
     limit: historyLimit,
@@ -117,7 +121,7 @@ export default function HistoryTable() {
                 <PrizePopover
                   image={data.prize.img}
                   title={data.prize.title}
-                  description={data.prize.description}
+                  description={data.prize.desc}
                   rarity={data.prize.rarity}
                 >
                   <div className={s.prizeImg}>
@@ -192,7 +196,7 @@ export default function HistoryTable() {
           pagination={false}
           loading={getLuckyChestUserInfoLoading}
           locale={{
-            emptyText: `You haven't opened the chest yet.`
+            emptyText: `You haven't opened any chests yet.`
           }}
         />
         <div className={s.paginationWrap}>
@@ -204,8 +208,7 @@ export default function HistoryTable() {
         closePopupContact={handleCloseModalContact}
         status={isModalContactVisible}
         description={<div>
-          Congratulations on your lucky win from <br />
-          Your code prize is <b style={{ color: '#00F9FF', cursor: 'pointer' }} onClick={handlePrizeCodeClick}>{prizeCode}</b>. Please contact and send the code to Lucis Support to receive the prize.
+          Congratulations on your lucky win from Lucis.<br />Your code prize is <b style={{ color: '#00F9FF', cursor: 'pointer' }} onClick={handlePrizeCodeClick}>{prizeCode}</b>. Please contact and send the code to Lucis Support to receive the prize.
         </div>}
       />
     </>

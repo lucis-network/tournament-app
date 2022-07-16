@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
-import PopUpOpenBox from './popup'
 import {
   OPEN_CHEST,
   useClaimChestPrize,
@@ -30,12 +29,17 @@ import {useMutation, useQuery} from "@apollo/client";
 import PopupRollingChest from "./popup/popupRollingChest";
 import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
 
-export default function LuckyChest() {
+const games = [
+  LuckyChestType.Csgo,
+  LuckyChestType.Lol,
+]
+
+export default function LuckyChest(props: any) {
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
     const [chestResponse, setChestResponse] = useState<OpenChestResponse>({} as OpenChestResponse);
     const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
-        type: LuckyChestType.Csgo,
+        type: props.currentGame ? games[props.currentGame - 1] : LuckyChestType.Lol,
         tier: LuckyChestTier.Standard,
     })
     const [openLuckyChest] = useMutation(OPEN_CHEST, {
@@ -54,7 +58,6 @@ export default function LuckyChest() {
     const ticketCostType = chestDetail?.ticket_cost_type
     const luckyChestSponsor = chestDetail?.sponsors
     const chestPrizes = chestDetail?.prizes
-
     const preventDefault = (ev: any) => {
       if (ev.preventDefault) {
         ev.preventDefault();
@@ -222,7 +225,7 @@ export default function LuckyChest() {
           <div className={s.content_lucky_chest_top}>
             <div className={s.heading}>
               <div className={s.content_top}>
-                <h1>LUCKY CHEST</h1>
+                <h1>{chestDetail?.title}</h1>
                 <p>Try your luck to receive many attractive valuable gifts!</p>
               </div>
               <div>
@@ -289,8 +292,8 @@ export default function LuckyChest() {
                 </div>
             </div>
           )}
-          <HistoryTable/>
-          {luckyChestSponsor && (
+          <HistoryTable currentGame={games[props.currentGame]}/>
+          {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">
                 <h2>Sponsor</h2>
