@@ -231,7 +231,7 @@ const RafflesDetail = observer(() => {
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
         <section className={s.breadcrumbSection}>
-          <Link href="/p2e/raffles" passHref>
+          <Link href="/playcore/raffles" passHref>
             <button>
               <Image src="/assets/P2E/raffles/iconArrow.svg" preview={false} alt=""/>
             </button>
