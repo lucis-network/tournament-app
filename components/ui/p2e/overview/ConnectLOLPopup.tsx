@@ -2,6 +2,7 @@ import { Form, Input, message, Modal, Image, Spin, Button, Row, Col, Tooltip } f
 import { AuthLMSSGameUser } from "components/Auth/AuthGameStore";
 import ButtonWrapper from "components/common/button/Button";
 import KYCLmssService from "components/service/p2e/KYCLmssService";
+import Link from "next/link";
 import React from "react";
 import { handleGraphqlErrors } from "utils/apollo_client";
 import CountdownTimeBefore from "../raffles/timeBefore";
@@ -27,6 +28,7 @@ export const ConnectLOLPopup = (props: IProps) => {
   const [inputEmpty, setInputEmpty] = React.useState(false);
   const [hasSummonerName, setHasSummonerName] = React.useState(false);
   const [connectedUser, setConnectedUser] = React.useState<string | null>(null);
+  const [connectedUserDisPlayName, setConnectedUserDisPlayName] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const to = setTimeout(() => {
@@ -66,6 +68,7 @@ export const ConnectLOLPopup = (props: IProps) => {
       setLoadingSearch(false)
       setHasFind(true);
       setConnectedUser(res?.data?.searchBySummonerName?.connected_user_name);
+      setConnectedUserDisPlayName(res?.data?.searchBySummonerName?.connected_display_name);
     } catch (e: any) {
       setLoadingSearch(false)
       setHasFind(false);
@@ -204,7 +207,7 @@ export const ConnectLOLPopup = (props: IProps) => {
                       <div
                         className={s.platformUserName}
                         style={{ textAlign: 'center' }}>
-                        This LOL account has been connected to <span style={{ color: "#00F9FF" }}>{connectedUser}</span>. Please connect to another account
+                        This LOL account has been connected to <Link href={`/profile/${connectedUser}`}><span style={{ color: "#00F9FF", cursor: 'pointer'}}>{connectedUserDisPlayName}</span></Link>. Please connect to another account
                       </div>}
                   </>
                   : (loadingSearch ? <Spin /> : null)
