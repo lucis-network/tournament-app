@@ -98,7 +98,8 @@ export default observer(function P2EWrapper(props: IProps) {
 
   const whiteListTab = () => {
     const raffles = router.pathname.search("/playcore/raffles");
-    return raffles > -1 || router.pathname === "/";
+    const luckyChest = router.pathname.search("/playcore/lucky-chest");
+    return raffles > -1 || luckyChest > -1 ||  router.pathname === "/";
   }
   const handleTabClick = (path: string) => {
     if (!AuthStore.isLoggedIn &&
