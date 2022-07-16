@@ -50,9 +50,9 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
     setRecentMatchesFiltered(filteredList);
   }
 
+
   return (
     <>
-
       {
         Object.entries(recentMatchesFiltered).length === 0 ? (
           <>

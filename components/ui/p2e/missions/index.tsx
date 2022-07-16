@@ -37,7 +37,7 @@ const Mission = (props: IProps) => {
     if (loadingIconUpdate) {
       setLoading(true);
     }
-    await MissionService.getOrSerDailyMission();
+    await MissionService.updateDailyMission();
     await queryData();
     // await statisticQuery.refetch();
     setLoading(false);
@@ -85,7 +85,7 @@ const Mission = (props: IProps) => {
               {/* <h2>
                 Your NFTs card
               </h2> */}
-              <NFTList />
+              <NFTList currentGame={props.currentGame} />
             </div>
             <div className={s.dailyTitle}>
               <h2>

@@ -1,4 +1,4 @@
-import {Button, Form, Input, message, Modal} from "antd";
+import {Button, Form, Input, Modal} from "antd";
 import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
@@ -14,6 +14,7 @@ import s from "./Login.module.sass"
 import GAService from "../../../services/GA";
 import {useRouter} from "next/router";
 import {isClientDevMode} from "../../../utils/Env";
+import {AppEmitter} from "../../../services/emitter";
 
 type Props = {};
 
@@ -65,6 +66,7 @@ export default observer(function LoginModal(props: Props) {
         // Success
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
+        AppEmitter.emit("saveUtmAfterLoginSuccess", r);
         if (isEmpty(localUserInfo?.profile?.user_name)) {
           LoginBoxStore.signupInfoModalVisible = true;
         }

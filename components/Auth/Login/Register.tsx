@@ -66,7 +66,7 @@ export default observer(function LoginModal(props: Props) {
       if (isFacebookApp(ua)) {
         console.log('window.location.href: ', window.location.href)
         if (!window.location.href.match('redirect_fb')) {
-          // force open in browser ... 
+          // force open in browser ...
           // location.href = location.href;
         }
         message.warn("Please open web in browser to use full function")
@@ -128,3 +128,5 @@ export default observer(function LoginModal(props: Props) {
     </>
   );
 });
+
+

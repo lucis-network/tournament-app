@@ -25,6 +25,7 @@ export enum AuthError {
 
 type LoginResponse = {
   error: AuthError | null;
+  data : AuthUser | null;
 };
 
 function delay(time: number) {
@@ -569,6 +570,7 @@ export default class AuthService {
   ): Promise<LoginResponse> {
     let res: LoginResponse = {
       error: null,
+      data: null,
     };
 
     try {
@@ -625,7 +627,7 @@ export default class AuthService {
           AuthGameStore.setAuthGameUser(data.gameAccount)
         }, delay);
       }
-
+      res.data = data.user;
       return res;
     } catch (e) {
       console.error("{login} e: ", e);

@@ -15,6 +15,7 @@ import { RecentMatchListCSGO } from '../recentMatchComponent/RecentMatchListCSGO
 import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
 import { RecentMatchListLOL } from '../recentMatchComponent/RecentMatchListLOL';
+import MissionService from 'components/service/p2e/MissionService';
 
 interface IProps {
   currentGame?: Game;
@@ -26,57 +27,42 @@ const RecentMatchHistory = (props: IProps) => {
       endpoint: 'p2e'
     }
   });
-
   const [currentLimit, setCurrentLimit] = useState(20);
   const [loading, setLoading] = useState(false);
   const [totalItem, setTotalItem] = useState<number>(0);
   const [recentMatches, setRecentMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([]);
-  const lolRecentMatchQuery = useQuery(GET_LOL_RECENT_MATCHES, {
-    context: {
-      endpoint: 'p2e'
-    },
-    variables: {
-      offset: 1,
-      limit: 20,
-      platform_id: 4
-    },
-    skip: true
-  })
 
-  const csgoRecentMatchQuery = useQuery(GET_CSGO_RECENT_MATCHES, {
-    context: {
-      endpoint: 'p2e'
-    },
-    variables: {
-      offset: 1,
-      limit: 20,
-      platform_id: 1
-    },
-    skip: true
-  })
+  useEffect(() => {
+    switch (props.currentGame) {
+      case Game.CSGO:
+        MissionService.setVariable("03", 1);
+        break;
+      case Game.LOL:
+        MissionService.setVariable("06", 4);
+        break;
+
+      default:
+        break;
+    }
+    if (props.currentGame) {
+      queryData();
+    }
+  }, [props?.currentGame])
   const queryData = async () => {
     setLoading(true);
     switch (props.currentGame) {
       case Game.CSGO:
-        const csgo = await csgoRecentMatchQuery.refetch({
-          offset: 1,
-          limit: currentLimit,
-          platform_id: 1
-        })
+        const csgo = await MissionService.getCSGORecentMatch(1,currentLimit);
         setLoading(false);
         setCurrentLimit(currentLimit + 5);
-        setRecentMatches(csgo.data?.getRecentlyCsgoMatch?.matches);
+        setRecentMatches(csgo.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
         setTotalItem(csgo.data?.getRecentlyCsgoMatch?.total as number)
         break;
       case Game.LOL:
-        const lol = await lolRecentMatchQuery.refetch({
-          offset: 1,
-          limit: currentLimit,
-          platform_id: 4
-        })
+        const lol = await MissionService.getLOLRecentMatch(1,currentLimit);
         setLoading(false);
         setCurrentLimit(currentLimit + 5);
-        setRecentMatches(lol.data?.getRecentlyLolMatch?.matches);
+        setRecentMatches(lol.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
         setTotalItem(lol.data?.getRecentlyLolMatch?.total as number)
         break;
     }
@@ -94,24 +80,19 @@ const RecentMatchHistory = (props: IProps) => {
       case Game.CSGO:
         return <RecentMatchListCSGO
           recentMatches={recentMatches as CsgoPlayerMatch[]}
-          loading={csgoRecentMatchQuery.loading}
+          loading={loading}
           title="Recent matches history"
           hasButtonBack
         />;
       case Game.LOL:
         return <RecentMatchListLOL
           recentMatches={recentMatches as LolPlayerMatchGql[]}
-          loading={lolRecentMatchQuery.loading}
+          loading={loading}
           title="Recent matches history"
           hasButtonBack
         />;
       default:
-        return <RecentMatchListCSGO
-          recentMatches={recentMatches as CsgoPlayerMatch[]}
-          loading={csgoRecentMatchQuery.loading}
-          title="Recent matches history"
-          hasButtonBack
-        />;
+        return null;
     }
   }
 
