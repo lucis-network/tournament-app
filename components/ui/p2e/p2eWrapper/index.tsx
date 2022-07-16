@@ -61,17 +61,22 @@ export default observer(function P2EWrapper(props: IProps) {
       sessionStorage.removeItem("overviewSection");
     }
     const currentGameLocal = localStorage.getItem("currentGame");
+    let currentGameTmp = null;
     if (currentGameLocal) {
       if (Number(currentGameLocal) === Game.CSGO && AuthGameStore.isLoggedInFaceit) {
+        currentGameTmp = Number(currentGameLocal);
         setCurrentGame(Number(currentGameLocal));
         return;
       }
 
       if (Number(currentGameLocal) === Game.LOL && AuthGameStore.isLoggedInLMSS) {
+        currentGameTmp = Number(currentGameLocal);
         setCurrentGame(Number(currentGameLocal));
         return;
       }
-    } else {
+    }
+
+    if (!currentGameTmp) {
       setCurrentGame(Game.CSGO);
       localStorage.setItem("currentGame", Game.CSGO.toString());
     }
