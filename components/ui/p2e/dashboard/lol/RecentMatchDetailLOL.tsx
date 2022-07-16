@@ -1,12 +1,11 @@
 import { Col, Row } from "antd";
 import AuthGameStore from "components/Auth/AuthGameStore";
 import MissionService from "components/service/p2e/MissionService";
-import { useGetLOLStatisticMatch, useGetPlatformAccount, useGetStatisticMatch } from "hooks/p2e/useP2E";
 import moment from "moment";
 import { useRouter } from "next/router";
 import React from "react";
 import { LolMatchStatisticGql } from "src/generated/graphql_p2e";
-import { MAP_CSGO, MAP_LOL } from "utils/Enum";
+import { MAP_LOL } from "utils/Enum";
 import s from "../dashboard.module.sass";
 
 export const RecentMatchDetailLOL = () => {
@@ -200,7 +199,7 @@ export const RecentMatchDetailLOL = () => {
                 <div className={s.listCard}>
                   <Row gutter={[{ xs: 16, sm: 16, md: 16, lg: 47 }, 40]}>
                     {cardList.map((item, index) => (
-                      <Col xs={12} sm={8} md={6} xl={6} key={`${item.name}-${index}`}>
+                      <Col xs={12} sm={8} md={6} xl={6} key={`${item.name}-${index}`} className={s.achievementItem}>
                         <div className={s.wrapperCard}>
                           <img
                             className={s.card}
@@ -262,23 +261,23 @@ export const RecentMatchDetailLOL = () => {
                     </div>
                     <div className={s.parameterBody}>
                     <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/win-icon.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Win
                           </div>
                         </Col>
-                        <Col span={6}>
+                        <Col span={7}>
                           <div className={s.rewardItem}>
                             <span>{"-"}</span>
                             <img src="/assets/P2E/lucis-token.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={6}>
+                        <Col span={7}>
                           <div className={s.rewardItem}>
                             <span className={s.lucisPoint}>+ {lucisPointEarned.win ?? "-"}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
@@ -286,23 +285,23 @@ export const RecentMatchDetailLOL = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/kill.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Kill
                           </div>
                         </Col>
-                        <Col span={6}>
+                        <Col span={7}>
                           <div className={s.rewardItem}>
                             <span>{"-"}</span>
                             <img src="/assets/P2E/lucis-token.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={6}>
+                        <Col span={7}>
                           <div className={s.rewardItem}>
                             <span className={s.lucisPoint}>+ {lucisPointEarned.kill ?? "-"}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
@@ -310,22 +309,22 @@ export const RecentMatchDetailLOL = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/support.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Assists
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}>
+                        <Col span={7}>
                           <div className={s.rewardItem}>
                             <span className={s.lucisPoint}>+ {lucisPointEarned.assists ?? "-"}</span>
                             <img src="/assets/P2E/lucis-point.svg" alt="" />
@@ -333,66 +332,66 @@ export const RecentMatchDetailLOL = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/creep-icon.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Creep
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>+ {lucisPointEarned.creep ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/gold-icon.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Gold
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>+ {lucisPointEarned.gold ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/damage-icon.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Damage
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>+ {lucisPointEarned.damage ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
@@ -400,66 +399,66 @@ export const RecentMatchDetailLOL = () => {
                       </Row>
 
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/tank-icon.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Tank
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>+ {lucisPointEarned.tank ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/eyes-killer-icon.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Eyes killed
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>+ {lucisPointEarned.eyesKilled ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/eyes-placer-icon.svg" alt="" />
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Eyes placed
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>+ {lucisPointEarned.eyesPlaced ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
@@ -467,34 +466,34 @@ export const RecentMatchDetailLOL = () => {
                       </Row>
                       <div style={{ borderBottom: "1px solid #556281" }} />
                       <Row className={s.rowTotal}>
-                        <Col span={12}>
+                        <Col span={10}>
                           <div className={s.parameterItem}>
                             Total Stats
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>{`+${totalEarned}`}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>
                       </Row>
                       <Row className={s.rowTotal}>
-                        <Col span={12}>
+                        <Col span={10}>
                           <div className={s.parameterItem}>
                             Total Achievement
                           </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span>{"-"}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt="" />
                         </div>
                         </Col>
-                        <Col span={6}><div className={s.rewardItem}>
+                        <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>{`+${lucisPointBonus() ?? "-"}`}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
@@ -506,17 +505,17 @@ export const RecentMatchDetailLOL = () => {
                 </div>
                 <div className={s.grandTotal}>
                   <Row className={s.rowTotal}>
-                    <Col span={12}>
+                    <Col span={10}>
                       <div className={s.parameterItem} style={{ color: "#00F9FF", fontFamily: "Revx Neue Demo" }}>
                         Grand Total
                       </div>
                     </Col>
-                    <Col span={6}><div className={s.rewardItem}>
+                    <Col span={7}><div className={s.rewardItem}>
                       <span>{"-"}</span>
                       <img src="/assets/P2E/lucis-token.svg" alt="" />
                     </div>
                     </Col>
-                    <Col span={6}><div className={s.rewardItem}>
+                    <Col span={7}><div className={s.rewardItem}>
                       <span className={s.lucisPoint}>{`+${data?.point ?? "-"}`}</span>
                       <img src="/assets/P2E/lucis-point.svg" alt="" />
                     </div>
