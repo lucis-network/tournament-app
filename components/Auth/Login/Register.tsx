@@ -3,11 +3,9 @@ import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
-import AuthStore, { AuthUser } from "../AuthStore";
 import AuthService from "../AuthService";
-import { useCallback, useEffect } from "react";
-import { getLocalAuthGameInfo, getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
-import AuthGameStore, { AuthGameUser } from "../AuthGameStore";
+import {  useEffect } from "react";
+
 
 type Props = {};
 
@@ -130,6 +128,3 @@ export default observer(function LoginModal(props: Props) {
     </>
   );
 });
-function ApoloClient_setAuthToken(token: string) {
-  throw new Error("Function not implemented.");
-}

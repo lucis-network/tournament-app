@@ -2,9 +2,9 @@ import s from "./ButtonOpen.module.sass";
 import {useWindowSize} from "../../../../../../hooks/useWindowSize";
 
 type Props = {
-  children: string,
-  disabled: boolean,
-  onClick: () => void,
+  children?: string,
+  disabled?: boolean,
+  onClick?: () => void,
 }
 function ButtonOpenBox(props: Props) {
   const { children } = props;
