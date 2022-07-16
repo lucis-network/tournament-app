@@ -294,7 +294,7 @@ export default class AuthService {
   private async loginByUsername(
     username: string,
     password: string
-  ): Promise<AuthUser> {
+  ): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
     const loginRes = await apoloClient.mutate({
       mutation: gql`
         mutation login($username: String!, $password: String!) {
@@ -344,6 +344,15 @@ export default class AuthService {
                 biography
                 cover
               }
+
+              platform_account {
+                uid
+                access_token
+                id_token
+                platform_id
+                nick_name
+                avatar
+              }
             }
           }
         }
@@ -373,7 +382,45 @@ export default class AuthService {
       is_exist_pass: u.is_exist_pass,
     };
 
-    return user;
+    const platformAccounts = loginRes?.data.login?.user?.platform_account;
+
+    let gameAccount: AuthGameUser = {};
+
+    platformAccounts.forEach((item: any) => {
+      switch (item.platform_id) {
+        case Platform.FACEIT:
+          gameAccount = {
+            ...gameAccount,
+            faceit_id: item?.uid,
+            faceit_access_token: item?.access_token,
+            faceit_id_token: item?.id_token,
+            faceit_platform_id: item?.platform_id,
+            faceit_nick_name: item?.nick_name,
+            faceit_avatar: item?.avatar,
+          }
+          break;
+          case Platform.GARENA:
+            gameAccount = {
+              ...gameAccount,
+              lmss_id: item?.uid,
+              lmss_access_token: "item?.access_token",
+              lmss_id_token: "item?.id_token",
+              lmss_platform_id: item?.platform_id,
+              lmss_nick_name: item?.nick_name,
+              lmss_avatar: item?.avatar,
+            }
+            break;
+
+        default:
+          break;
+      }
+
+    })
+
+    return {
+      user,
+      gameAccount: gameAccount
+    };
   }
 
   private async loginByFacebook(accessToken: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
@@ -558,7 +605,7 @@ export default class AuthService {
         data = await this.loginByFacebook(tokenId);
       }
       if (type === "username") {
-        data.user = await this.loginByUsername(
+        data = await this.loginByUsername(
           username ? username : "",
           password ? password : ""
         );

@@ -242,7 +242,7 @@ export default observer(function LoginModal(props: Props) {
                 <Input.Password placeholder="Enter password" />
               </Form.Item>
             </div>
-            <div className={s.forgotPassword}>
+            <div className={s.forgotPassword} title="Coming soon" style={{cursor: 'pointer', textDecoration: 'underline'}}>
               Forgot password
             </div>
             <div className={`${s.message_error} ml-[10px]`}>
@@ -300,7 +300,7 @@ export default observer(function LoginModal(props: Props) {
             onClick={onLoginClicked(undefined)}
             className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded gg mt-20 ${s.loginBtn}`}
           >
-            test user agent
+            Test user agent
           </button>
         )}
         <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge
