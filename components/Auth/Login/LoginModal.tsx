@@ -12,6 +12,7 @@ import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
 import AuthGameStore, { AuthGameUser } from "../AuthGameStore";
+import {AppEmitter} from "../../../services/emitter";
 
 type Props = {};
 
@@ -46,6 +47,7 @@ export default observer(function LoginModal(props: Props) {
         // Success
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
+        AppEmitter.emit("saveUtmAfterLoginSuccess", r);
         if (isEmpty(localUserInfo?.profile?.user_name)) {
           LoginBoxStore.signupInfoModalVisible = true;
         }

@@ -8,6 +8,7 @@ import AuthService from "../AuthService";
 import { useCallback, useEffect } from "react";
 import { getLocalAuthGameInfo, getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 import AuthGameStore, { AuthGameUser } from "../AuthGameStore";
+import {AppEmitter} from "../../../services/emitter";
 
 type Props = {};
 
@@ -41,7 +42,6 @@ export default observer(function LoginModal(props: Props) {
         // Success
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
-
         setTimeout(() => {
           setIsModalVisible(false);
         }, 2000);

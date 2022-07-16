@@ -1,6 +1,7 @@
 import Overview from "components/ui/p2e/overview";
 import P2EWrapper from "components/ui/p2e/p2eWrapper";
-import React from "react"
+import React, { useEffect } from "react"
+import {useRouter} from "next/router";
 
 
 const P2eOverviewPage = () => {

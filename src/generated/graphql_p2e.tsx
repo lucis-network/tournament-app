@@ -155,6 +155,7 @@ export enum BuyRaffleTicketErrorCode {
   NotEnoughLucisPoint = 'NotEnoughLucisPoint',
   NotEnoughLucisToken = 'NotEnoughLucisToken',
   RaffleNotFound = 'RaffleNotFound',
+  ServerError = 'ServerError',
   TicketQuantityCannotBeZero = 'TicketQuantityCannotBeZero',
   TotalLimitExceeded = 'TotalLimitExceeded',
   UserLimitExceeded = 'UserLimitExceeded',
@@ -959,6 +960,7 @@ export type Mutation = {
   joinDiscord?: Maybe<Scalars['Boolean']>;
   openChest?: Maybe<OpenChestResponse>;
   rerollDailyMission?: Maybe<PlayerMission>;
+  setUtm?: Maybe<Scalars['Boolean']>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
   upgradeLucisMission?: Maybe<PlayerMission>;
@@ -1052,6 +1054,12 @@ export type MutationOpenChestArgs = {
 export type MutationRerollDailyMissionArgs = {
   platform_id: Scalars['Int'];
   player_mission_uid: Scalars['String'];
+};
+
+
+export type MutationSetUtmArgs = {
+  user_id?: InputMaybe<Scalars['Float']>;
+  utm: Scalars['String'];
 };
 
 
@@ -1373,7 +1381,6 @@ export type PoolWallet = {
 
 export enum PrizeRarity {
   Common = 'Common',
-  Divine = 'Divine',
   Epic = 'Epic',
   Legendary = 'Legendary',
   Mythic = 'Mythic',
@@ -1384,6 +1391,7 @@ export enum PrizeRarity {
 export enum PrizeType {
   BattlePass = 'BATTLE_PASS',
   CsgoKnife = 'CSGO_KNIFE',
+  CsgoKnifeOrGlove = 'CSGO_KNIFE_OR_GLOVE',
   CsgoKnifeOrGlovePiece_1 = 'CSGO_KNIFE_OR_GLOVE_PIECE_1',
   CsgoKnifeOrGlovePiece_2 = 'CSGO_KNIFE_OR_GLOVE_PIECE_2',
   CsgoKnifeOrGlovePiece_3 = 'CSGO_KNIFE_OR_GLOVE_PIECE_3',
@@ -1399,7 +1407,13 @@ export enum PrizeType {
   NftBoxPiece_1 = 'NFT_BOX_PIECE_1',
   NftBoxPiece_2 = 'NFT_BOX_PIECE_2',
   NftBoxPiece_3 = 'NFT_BOX_PIECE_3',
-  NftBoxPiece_4 = 'NFT_BOX_PIECE_4'
+  NftBoxPiece_4 = 'NFT_BOX_PIECE_4',
+  RiotCard_100 = 'RIOT_CARD_100',
+  RiotCard_150 = 'RIOT_CARD_150',
+  RiotCard_150Piece_1 = 'RIOT_CARD_150_PIECE_1',
+  RiotCard_150Piece_2 = 'RIOT_CARD_150_PIECE_2',
+  RiotCard_150Piece_3 = 'RIOT_CARD_150_PIECE_3',
+  RiotCard_150Piece_4 = 'RIOT_CARD_150_PIECE_4'
 }
 
 export type ProgressDailyMission = {
