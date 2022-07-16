@@ -17,6 +17,7 @@ export const RecentMatchDetailCSGO = () => {
     if (router.query?.id) {
       queryData(Number(router.query.id));
     }
+    console.log(router)
   }, [router.query]);
 
   const queryData = async (player_match_id: number) => {

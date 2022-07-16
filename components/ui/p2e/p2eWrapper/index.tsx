@@ -47,11 +47,7 @@ export default observer(function P2EWrapper(props: IProps) {
       return;
     }
 
-    if (AuthGameStore.isLoggedInFaceit === false) {
-      router.push("/");
-      return;
-    };
-  }, [AuthGameStore.isLoggedInFaceit, AuthGameStore.isLoggedInLMSS, AuthStore.isLoggedIn])
+  }, [AuthStore.isLoggedIn])
 
   useEffect(() => {
     // 
@@ -77,8 +73,15 @@ export default observer(function P2EWrapper(props: IProps) {
     }
 
     if (!currentGameTmp) {
-      setCurrentGame(Game.CSGO);
-      localStorage.setItem("currentGame", Game.CSGO.toString());
+      if (AuthGameStore.isLoggedInLMSS) {
+        setCurrentGame(Game.LOL);
+        localStorage.setItem("currentGame", Game.LOL.toString());
+      }
+
+      if (AuthGameStore.isLoggedInFaceit) {
+        setCurrentGame(Game.CSGO);
+        localStorage.setItem("currentGame", Game.CSGO.toString());
+      }
     }
   }, [])
 
