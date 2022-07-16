@@ -600,6 +600,7 @@ export type GamePlatform = {
 export type LolAccountDto = {
   __typename?: 'LolAccountDto';
   avatar?: Maybe<Scalars['String']>;
+  connected_display_name?: Maybe<Scalars['String']>;
   connected_user_name?: Maybe<Scalars['String']>;
   nick_name?: Maybe<Scalars['String']>;
 };
@@ -949,15 +950,13 @@ export type Mutation = {
   connect?: Maybe<PlatformAccountDto>;
   /** Connect Faceit */
   connectFaceit: PlatformAccountDto;
-  /** Connect LOL */
-  connectLmss: PlatformAccountDto;
-  createLOlMission?: Maybe<Scalars['Boolean']>;
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
   /** Disconnect LOL */
   disconnectLmss?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
   joinDiscord?: Maybe<Scalars['Boolean']>;
+  kycAccount?: Maybe<PlatformAccountDto>;
   openChest?: Maybe<OpenChestResponse>;
   rerollDailyMission?: Maybe<PlayerMission>;
   setUtm?: Maybe<Scalars['Boolean']>;
@@ -1020,20 +1019,6 @@ export type MutationConnectFaceitArgs = {
 };
 
 
-export type MutationConnectLmssArgs = {
-  summoner_name: Scalars['String'];
-};
-
-
-export type MutationCreateLOlMissionArgs = {
-  goal: Scalars['Int'];
-  level_id: Scalars['Int'];
-  regime: LolRegime;
-  title: Scalars['String'];
-  type: LolMissionType;
-};
-
-
 export type MutationEquipNftArgs = {
   data: EquipNftInput;
 };
@@ -1042,6 +1027,11 @@ export type MutationEquipNftArgs = {
 export type MutationGetOrSetDailyMissionArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
+};
+
+
+export type MutationKycAccountArgs = {
+  summoner_name: Scalars['String'];
 };
 
 
@@ -1453,7 +1443,6 @@ export type Query = {
   isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   isEnable?: Maybe<Scalars['Boolean']>;
-  kycAccount?: Maybe<Scalars['Boolean']>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   rafflesInCurrentMonth?: Maybe<Array<RaffleGql>>;
   searchBySummonerName?: Maybe<LolAccountDto>;
@@ -1572,11 +1561,6 @@ export type QueryIsConnectPlatformArgs = {
 
 export type QueryIsEnableArgs = {
   game_uid: Scalars['String'];
-};
-
-
-export type QueryKycAccountArgs = {
-  summoner_name: Scalars['String'];
 };
 
 

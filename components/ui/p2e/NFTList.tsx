@@ -3,9 +3,11 @@ import s from "./p2e.module.sass";
 import { Button, Col, Row } from "antd";
 import NFTCategories from './NFTCategories';
 import ButtonWrapper from 'components/common/button/Button';
+import { Game } from 'utils/Enum';
 
 
 interface IProps {
+  currentGame?: Game;
 }
 
 const NFTList = (props: IProps) => {
@@ -99,10 +101,11 @@ const NFTList = (props: IProps) => {
           </div>
         </div>
         <div className={s.comingSoon}>
-          <h2>Coming soon</h2>
+          {props.currentGame === Game.CSGO ? <h2>Coming soon</h2> : <h2 style={{ color: "#C95514" }}>feature unavailable for riot</h2>}
           <div className={s.comingSoonSubTitle}>your nfts card</div>
           <p>Equip your NFTs to earn Lucis token and more prizes for NFTs gamers <br />
             You will receive the corresponding bonus</p>
+          {props.currentGame === Game.LOL ? <img src="/assets/P2E/stop-icon.svg" alt="" /> : null}
         </div>
       </div>
     </>

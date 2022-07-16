@@ -63,16 +63,28 @@
     justify-content: center
     align-items: center
     flex-direction: column
+    z-index: 2
     h2
       font-weight: 600
       font-size: 40px
       line-height: 44px
       text-transform: uppercase
+      @media screen and ( max-width: 768px )
+        font-size: 34px
+      @media screen and ( max-width: 530px )
+        font-size: 30px
+      @media screen and ( max-width: 470px )
+        font-size: 22px
+        
     p
-      font-weight: 400
+      font-weight: 300
       font-size: 16px
       line-height: 24px
       text-align: center
+      @media screen and ( max-width: 530px )
+        font-size: 14px
+      @media screen and ( max-width: 470px )
+        font-size: 12px
 
       color: rgba(255, 255, 255, 0.8)
     .comingSoonSubTitle
@@ -82,6 +94,17 @@
       line-height: 26px
       text-transform: uppercase
       color: #DBE0E8
+      @media screen and ( max-width: 530px )
+        font-size: 18px
+      @media screen and ( max-width: 470px )
+        font-size: 16px
+    img
+      position: absolute
+      z-index: -1
+      opacity: 0.6
+      transform: translate(-50%, -50%)
+      top: 50%
+      left: 50%
 .rewardItem
   display: flex
   align-items: center
