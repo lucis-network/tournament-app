@@ -53,7 +53,6 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
 
   return (
     <>
-
       {
         Object.entries(recentMatchesFiltered).length === 0 ? (
           <>

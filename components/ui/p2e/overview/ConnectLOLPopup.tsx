@@ -113,13 +113,14 @@ export const ConnectLOLPopup = (props: IProps) => {
   const KYC = async () => {
     try {
       setKycLoading(true);
-      const kycResponse = await KYCLmssService.kycAccount(lmssUser.nickName.trim());
-      if (kycResponse.data.kycAccount) {
+      const res = await KYCLmssService.kycAccount(lmssUser.nickName.trim());
+      const kycData = res?.data?.kycAccount;
+      if (kycData) {
         const data: AuthLMSSGameUser = {
-          lmss_id: "this is lmss id",
-          lmss_access_token: "this is platform_id",
-          lmss_id_token: "this is platform_id",
-          lmss_platform_id: "this is platform_id",
+          lmss_id: kycData?.player_uid,
+          lmss_access_token: "this is lmss_access_token",
+          lmss_id_token: "this is lmss_id_token",
+          lmss_platform_id: kycData.platform_id as unknown as string,
           lmss_nick_name: lmssUser.nickName,
           lmss_avatar: lmssUser.avatar,
         }
@@ -137,6 +138,12 @@ export const ConnectLOLPopup = (props: IProps) => {
         switch (code) {
           case "TOKEN_EXPIRED":
             message.error("Room name expired!");
+            return;
+          case "NOT_FIND_ROOM":
+            message.error("We can not find the room. Please ensure that the room has been created.");
+            return;
+          case "SERVER_ERROR":
+            message.error("Server maintenance!");
             return;
           case "LMSS_ERROR":
             message.error("Connection failed. Please try again after 1 minute.");
@@ -165,7 +172,7 @@ export const ConnectLOLPopup = (props: IProps) => {
       >
         <div className={s.connectLmssModal}>
           <Row gutter={16}>
-            <Col span={8}>
+            <Col md={6} lg={8} xs={24}>
               <Form
                 layout="vertical"
               >
@@ -241,7 +248,7 @@ export const ConnectLOLPopup = (props: IProps) => {
                       </Form>
                     </Col>
                     <Col span={24}>
-                      <div style={{fontSize: 14}}>3. Verify your account</div>
+                      <div style={{ fontSize: 14 }}>3. Verify your account</div>
                       <button onClick={() => KYC()} className={s.actionButton} style={{ marginTop: 8 }}>
                         <span>I created the room!</span>
                       </button>
@@ -255,7 +262,7 @@ export const ConnectLOLPopup = (props: IProps) => {
                 </div>}
 
             </Col>
-            <Col span={16}>
+            <Col md={18} lg={16} xs={24}>
               <div className={s.tutorial}>
                 <h1>Connect LOL account step by step:</h1>
                 <div className={s.step1}>
@@ -263,9 +270,9 @@ export const ConnectLOLPopup = (props: IProps) => {
                 </div>
                 <div className={s.step2}>
                   {roomName ?
-                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the name <span style={{ color: "#00F9FF" }}>{roomName}</span><br />The room name will expire within 5 minutes</div>
+                    <div style={{ marginBottom: 8 }}>Step 2: Open your LOL game and create a custom room with the name <span style={{ color: "#00F9FF" }}>{roomName}</span><br />The room name will expire within 5 minutes</div>
                     :
-                    <div style={{marginBottom: 8}}>Step 2: Open your LOL game and create a custom room with the generated room name<br />The room name will expire within 5 minutes</div>
+                    <div style={{ marginBottom: 8 }}>Step 2: Open your LOL game and create a custom room with the generated room name<br />The room name will expire within 5 minutes</div>
                   }
                   <img src="/assets/P2E/overview/tutorial-step1.png" alt="" />
                   <img className={s.arrow} src="/assets/P2E/overview/arrow.svg" alt="" />

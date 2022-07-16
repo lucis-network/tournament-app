@@ -155,6 +155,7 @@ export enum BuyRaffleTicketErrorCode {
   NotEnoughLucisPoint = 'NotEnoughLucisPoint',
   NotEnoughLucisToken = 'NotEnoughLucisToken',
   RaffleNotFound = 'RaffleNotFound',
+  ServerError = 'ServerError',
   TicketQuantityCannotBeZero = 'TicketQuantityCannotBeZero',
   TotalLimitExceeded = 'TotalLimitExceeded',
   UserLimitExceeded = 'UserLimitExceeded',
@@ -599,6 +600,7 @@ export type GamePlatform = {
 export type LolAccountDto = {
   __typename?: 'LolAccountDto';
   avatar?: Maybe<Scalars['String']>;
+  connected_display_name?: Maybe<Scalars['String']>;
   connected_user_name?: Maybe<Scalars['String']>;
   nick_name?: Maybe<Scalars['String']>;
 };
@@ -948,17 +950,16 @@ export type Mutation = {
   connect?: Maybe<PlatformAccountDto>;
   /** Connect Faceit */
   connectFaceit: PlatformAccountDto;
-  /** Connect LOL */
-  connectLmss: PlatformAccountDto;
-  createLOlMission?: Maybe<Scalars['Boolean']>;
   disconnectConnectFaceit?: Maybe<Scalars['Boolean']>;
   /** Disconnect LOL */
   disconnectLmss?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
   joinDiscord?: Maybe<Scalars['Boolean']>;
+  kycAccount?: Maybe<PlatformAccountDto>;
   openChest?: Maybe<OpenChestResponse>;
   rerollDailyMission?: Maybe<PlayerMission>;
+  setUtm?: Maybe<Scalars['Boolean']>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
   upgradeLucisMission?: Maybe<PlayerMission>;
@@ -1018,20 +1019,6 @@ export type MutationConnectFaceitArgs = {
 };
 
 
-export type MutationConnectLmssArgs = {
-  summoner_name: Scalars['String'];
-};
-
-
-export type MutationCreateLOlMissionArgs = {
-  goal: Scalars['Int'];
-  level_id: Scalars['Int'];
-  regime: LolRegime;
-  title: Scalars['String'];
-  type: LolMissionType;
-};
-
-
 export type MutationEquipNftArgs = {
   data: EquipNftInput;
 };
@@ -1040,6 +1027,11 @@ export type MutationEquipNftArgs = {
 export type MutationGetOrSetDailyMissionArgs = {
   game_uid: Scalars['String'];
   platform_id: Scalars['Int'];
+};
+
+
+export type MutationKycAccountArgs = {
+  summoner_name: Scalars['String'];
 };
 
 
@@ -1052,6 +1044,12 @@ export type MutationOpenChestArgs = {
 export type MutationRerollDailyMissionArgs = {
   platform_id: Scalars['Int'];
   player_mission_uid: Scalars['String'];
+};
+
+
+export type MutationSetUtmArgs = {
+  user_id?: InputMaybe<Scalars['Float']>;
+  utm: Scalars['String'];
 };
 
 
@@ -1373,7 +1371,6 @@ export type PoolWallet = {
 
 export enum PrizeRarity {
   Common = 'Common',
-  Divine = 'Divine',
   Epic = 'Epic',
   Legendary = 'Legendary',
   Mythic = 'Mythic',
@@ -1384,6 +1381,7 @@ export enum PrizeRarity {
 export enum PrizeType {
   BattlePass = 'BATTLE_PASS',
   CsgoKnife = 'CSGO_KNIFE',
+  CsgoKnifeOrGlove = 'CSGO_KNIFE_OR_GLOVE',
   CsgoKnifeOrGlovePiece_1 = 'CSGO_KNIFE_OR_GLOVE_PIECE_1',
   CsgoKnifeOrGlovePiece_2 = 'CSGO_KNIFE_OR_GLOVE_PIECE_2',
   CsgoKnifeOrGlovePiece_3 = 'CSGO_KNIFE_OR_GLOVE_PIECE_3',
@@ -1399,7 +1397,13 @@ export enum PrizeType {
   NftBoxPiece_1 = 'NFT_BOX_PIECE_1',
   NftBoxPiece_2 = 'NFT_BOX_PIECE_2',
   NftBoxPiece_3 = 'NFT_BOX_PIECE_3',
-  NftBoxPiece_4 = 'NFT_BOX_PIECE_4'
+  NftBoxPiece_4 = 'NFT_BOX_PIECE_4',
+  RiotCard_100 = 'RIOT_CARD_100',
+  RiotCard_150 = 'RIOT_CARD_150',
+  RiotCard_150Piece_1 = 'RIOT_CARD_150_PIECE_1',
+  RiotCard_150Piece_2 = 'RIOT_CARD_150_PIECE_2',
+  RiotCard_150Piece_3 = 'RIOT_CARD_150_PIECE_3',
+  RiotCard_150Piece_4 = 'RIOT_CARD_150_PIECE_4'
 }
 
 export type ProgressDailyMission = {
@@ -1439,7 +1443,6 @@ export type Query = {
   isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   isEnable?: Maybe<Scalars['Boolean']>;
-  kycAccount?: Maybe<Scalars['Boolean']>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   rafflesInCurrentMonth?: Maybe<Array<RaffleGql>>;
   searchBySummonerName?: Maybe<LolAccountDto>;
@@ -1558,11 +1561,6 @@ export type QueryIsConnectPlatformArgs = {
 
 export type QueryIsEnableArgs = {
   game_uid: Scalars['String'];
-};
-
-
-export type QueryKycAccountArgs = {
-  summoner_name: Scalars['String'];
 };
 
 

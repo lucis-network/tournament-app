@@ -8,8 +8,15 @@ interface IProps {
   currentGame?: Game;
 }
 export const RecentMatchDetail = (props: IProps) => {
+  
+  const [currentGame, setCurrentGame] = React.useState<Game | undefined | null>(props.currentGame);
 
-  switch (props.currentGame) {
+
+  React.useEffect(() => {
+    setCurrentGame(props.currentGame)
+  }, [props.currentGame])
+
+  switch (currentGame) {
     case Game.CSGO:
       return <RecentMatchDetailCSGO />
     case Game.LOL:

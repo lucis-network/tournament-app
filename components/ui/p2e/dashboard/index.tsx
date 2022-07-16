@@ -96,17 +96,17 @@ const Dashboard = (props: IProps) => {
       case Game.CSGO:
         const promiseCsgo = await MissionService.getCSGORecentMatch(1,5);
         setRecentlyMatches(promiseCsgo.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
+        setLoadingRecentMatch(false);
         return;
       case Game.LOL:
         const promiseLol = await MissionService.getLOLRecentMatch(1,5);
         setRecentlyMatches(promiseLol.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
+        setLoadingRecentMatch(false);
         return;
 
       default:
         break;
     }
-    setLoadingRecentMatch(false);
-
   }
 
   const onClaimBox = async () => {
@@ -149,9 +149,7 @@ const Dashboard = (props: IProps) => {
           loading={loadingRecentMatch} />;
 
       default:
-        return <RecentMatchListCSGO
-          recentMatches={recentlyMatches as CsgoPlayerMatch[]}
-          loading={loadingRecentMatch} />;
+        return null;
     }
   }
 
@@ -188,7 +186,7 @@ const Dashboard = (props: IProps) => {
                 {/* <h2>
                 Your NFTs card
               </h2> */}
-                <NFTList />
+                <NFTList currentGame={props.currentGame} />
               </div>
               <div className={s.dailyTitle}>
                 <h2>

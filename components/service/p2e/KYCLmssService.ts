@@ -1,4 +1,5 @@
 import { ApolloClient, DefaultOptions, gql } from "@apollo/client";
+import { PlatformAccountDto } from "src/generated/graphql_p2e";
 import apoloClient, {
   setAuthToken as ApoloClient_setAuthToken,
 } from "utils/apollo_client";
@@ -13,6 +14,7 @@ class KYCLmssService {
             avatar
             nick_name
             connected_user_name
+            connected_display_name
           }
         }
       `,
@@ -45,12 +47,19 @@ class KYCLmssService {
   }
 
   public async kycAccount(summonerName: string) {
-    const response = await apoloClient.query({
-      query: gql`
-        query ($summoner_name: String!){
-          kycAccount(summoner_name: $summoner_name)
-        }
-      `,
+    const response = await apoloClient.mutate<{kycAccount: PlatformAccountDto}>({
+      mutation: gql`
+        mutation ($summoner_name: String!){
+            kycAccount(summoner_name: $summoner_name) {
+              player_uid
+              avatar
+              nick_name
+              country_code
+              platform_id
+              created_at
+            }
+          }
+        `,
       context: {
         endpoint: 'p2e'
       },
