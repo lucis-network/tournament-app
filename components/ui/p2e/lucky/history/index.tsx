@@ -80,14 +80,16 @@ export default function HistoryTable() {
 
   useEffect(() => {
     let isSubscribed = true
-    const a = Math.ceil(20 / 6)
-    if (isSubscribed && historyCount) setPageCount(a)
+    if (isSubscribed && historyCount) {
+      const totalPage = Math.ceil(historyCount / historyLimit)
+      setPageCount(totalPage)
+    }
 
     return () => {
       isSubscribed = false
     }
   }, [historyCount])
-
+  console.log('[HistoryTable] historyCount, historyLimit, currentPage: ', historyCount, historyLimit, currentPage);
   const columns = [
     {
       title: 'Code',
@@ -111,6 +113,9 @@ export default function HistoryTable() {
         return (
           <div className={s.prizeWrap}>
             <div className={`${s.prize} ${data.prize.rarity}`}>
+              <div className={s.prizeImg}>
+                <img src={data.prize.img ? (data.prize.img) : '/assets/P2E/lucky-chest/defaultPrizeImage.png'} alt=""/>
+              </div>
               {data.prize.title}
             </div>
             <ButtonClaim
