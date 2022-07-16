@@ -186,7 +186,7 @@ export default observer(function P2EWrapper(props: IProps) {
     }
     localStorage.setItem("currentGame", game.toString());
     setCurrentGame(game);
-    if (router.pathname === "/playcore/dashboard" || router.pathname  === "/playcore/missions") {
+    if (router.pathname === "/playcore/dashboard" || router.pathname  === "/playcore/missions" || router.pathname  === "/playcore/lucky-chest") {
       return;
     }
     router.push("/playcore/dashboard");
