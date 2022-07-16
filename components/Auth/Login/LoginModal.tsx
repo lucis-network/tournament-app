@@ -3,15 +3,14 @@ import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
-import { getLocalAuthGameInfo, getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
+import { getLocalAuthInfo } from "../AuthLocal";
 import { isEmpty } from "lodash"
 import AuthStore, {AuthUser} from "../AuthStore";
 import AuthService, { AuthError } from "../AuthService";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
-import AuthGameStore, { AuthGameUser } from "../AuthGameStore";
 import GAService from "../../../services/GA";
 import {useRouter} from "next/router";
 import {isClientDevMode} from "../../../utils/Env";
