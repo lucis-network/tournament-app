@@ -123,7 +123,7 @@ export default class AuthService {
       // faceit_avatar: item?.avatar,
     }
 
-    platformAccounts.forEach((item: any) => {
+    platformAccounts?.forEach((item: any) => {
       switch (item.platform_id) {
         case Platform.FACEIT:
           gameAccount = {
@@ -254,7 +254,7 @@ export default class AuthService {
       // faceit_avatar: item?.avatar,
     }
 
-    platformAccounts.forEach((item: any) => {
+    platformAccounts?.forEach((item: any) => {
       switch (item.platform_id) {
         case Platform.FACEIT:
           gameAccount = {
@@ -366,7 +366,7 @@ export default class AuthService {
     });
 
     const u = loginRes?.data.login.user;
-    console.log("u", loginRes?.data.login);
+    // console.log("u", loginRes?.data.login);
     const tokenID = loginRes?.data.login.token;
     const user: AuthUser = {
       id: u.id,
@@ -386,7 +386,7 @@ export default class AuthService {
 
     let gameAccount: AuthGameUser = {};
 
-    platformAccounts.forEach((item: any) => {
+    platformAccounts?.forEach((item: any) => {
       switch (item.platform_id) {
         case Platform.FACEIT:
           gameAccount = {
