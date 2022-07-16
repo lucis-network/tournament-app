@@ -222,7 +222,7 @@ export default function LuckyChest() {
           <div className={s.content_lucky_chest_top}>
             <div className={s.heading}>
               <div className={s.content_top}>
-                <h1>LUCKY CHEST</h1>
+                <h1>{chestDetail?.title}</h1>
                 <p>Try your luck to receive many attractive valuable gifts!</p>
               </div>
               <div>
