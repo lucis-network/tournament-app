@@ -666,7 +666,7 @@ export default class AuthService {
     LoginBoxStore.signupInfoModalVisible = false;
   }
 
-  async getUserData() {
+  getUserData() {
     const cachedUser: AuthUser | null = getLocalAuthInfo();
     const cachedGame: AuthGameUser | null = getLocalAuthGameInfo();
     const token = cachedUser?.token;
@@ -684,6 +684,9 @@ export default class AuthService {
 
       // AuthStore.setAuthUser(data.user);
       // AuthGameStore.setAuthGameUser(data.gameAccount)
+      return true;
     }
+
+    return false;
   }
 }
