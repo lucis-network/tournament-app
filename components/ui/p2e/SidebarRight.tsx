@@ -116,7 +116,7 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
                 <div className={s.shareDiscordText}>
                   <img src="/assets/P2E/friend.svg" alt="" width="36" height="36" />
                   <p style={{ display: "flex", alignItems: "center" }}>https://lucis.network</p>
-                  <img src="/assets/P2E/link.png" alt="" />
+                  <img src="/assets/P2E/link-icon.svg" alt="" />
                 </div>
                 <div className={s.shareBonus}>
                   <p>Join bonus:</p>

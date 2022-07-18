@@ -21,23 +21,6 @@ export default observer(function P2EWrapper(props: IProps) {
   const [overviewSection, setOverviewSection] = useState<OverviewSection>(OverviewSection.NONE);
 
   useEffect(() => {
-    // if (AuthGameStore.isLoggedInFaceit === true && AuthStore.isLoggedIn === true) {
-    //   if (!currentGame) {
-    //     setCurrentGame(Game.CSGO);
-    //     localStorage.setItem("currentGame", Game.CSGO.toString());
-        
-    //   }
-    //   return;
-    // }
-
-    // if (AuthGameStore.isLoggedInLMSS === true && AuthStore.isLoggedIn === true) {
-    //   if (!currentGame) {
-    //     setCurrentGame(Game.LOL);
-    //     localStorage.setItem("currentGame", Game.LOL.toString());
-    //   }
-    //   return;
-    // }
-
     if (whiteListTab()) {
       return;
     }
@@ -114,7 +97,8 @@ export default observer(function P2EWrapper(props: IProps) {
     if (path === "/playcore/dashboard" || path === "/playcore/missions") {
       if (!AuthGameStore.isLoggedInLMSS && !AuthGameStore.isLoggedInFaceit) {
         setOverviewSection(OverviewSection.CONNECT_GAME);
-        if (router.pathname !== "") {
+        message.warning("Please connect game first!");
+        if (router.pathname !== "/") {
           sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
           router.push("/");
         }
@@ -195,6 +179,13 @@ export default observer(function P2EWrapper(props: IProps) {
     router.push("/playcore/dashboard");
   }
 
+  const getNumberOfGameConnect = () => {
+    let numberOfGame = 0;
+    if (AuthGameStore.isLoggedInLMSS) { numberOfGame++};
+    if (AuthGameStore.isLoggedInFaceit) { numberOfGame++};
+
+    return numberOfGame;
+  }
   return (
     <>
       <DocHead />
@@ -220,7 +211,11 @@ export default observer(function P2EWrapper(props: IProps) {
                   })}
                 </div>
                 {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/playcore/raffles") &&
-                  <div className={s.chooseGame}>
+                  <div className={s.chooseGame}
+                    style={
+                      getNumberOfGameConnect() === 1 ? {minWidth: 70} : {minWidth: 170}
+                    }
+                  >
                     {AuthGameStore.isLoggedInLMSS && <img
                       className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
                       src="/assets/P2E/lol-game.svg" alt="lol-game"

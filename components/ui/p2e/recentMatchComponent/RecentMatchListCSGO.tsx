@@ -1,5 +1,6 @@
 import { Col, Row } from "antd";
 import moment from "moment";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { CsgoPlayerMatch } from "src/generated/graphql_p2e";
@@ -59,7 +60,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
             <Row className={s.recentMatchTitle}>
               <Col xs={24} sm={12}>
                 <h2>
-                  {props.hasButtonBack && <img style={{ marginRight: 16, cursor: "pointer" }} src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.back()} />}
+                  {props.hasButtonBack && <img style={{ marginRight: 16, cursor: "pointer" }} src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.push("/playcore/dashboard")} />}
                   {props.title ? props.title : "Recent matches"}
                 </h2>
               </Col>
@@ -92,7 +93,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
               <Row className={s.recentMatchTitle}>
                 {index === 0 && <Col xs={24} sm={12} >
                   <h2>
-                    {props.hasButtonBack && <img style={{ marginRight: 16, cursor: "pointer" }} src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.back()} />}
+                    {props.hasButtonBack && <img style={{ marginRight: 16, cursor: "pointer" }} src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.push("/playcore/dashboard")} />}
                     {props.title ? props.title : "Recent matches"}
                   </h2>
                 </Col>}
@@ -132,69 +133,73 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                                 : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`
                           }}
                         >
-                          <Row>
-                            <Col md={{ span: 4, order: 1 }} xs={4}>
-                              <div className={s.recentMatchResult}>
-                                {item?.is_win ?
-                                  <span style={{ color: "#00F9FF" }}>WIN</span>
-                                  : <span style={{ color: "#CC846E" }}>LOSE</span>}
-                                <div className={s.mapName}>{MAP_CSGO[mapName]}</div>
-                                <div className={s.endTime}>{dateToHoursFormat(new Date(item?.match?.end_at))}</div>
-                              </div>
-                            </Col>
-                            <Col md={{ span: 10, order: 2 }} xs={20}>
+                          <Link href={`/playcore/dashboard/history/${item?.id}`}>
+                            <a>
                               <Row>
-                                <Col span={8}>
-                                  <div className={s.scoreMatch}>
+                                <Col md={{ span: 4, order: 1 }} xs={4}>
+                                  <div className={s.recentMatchResult}>
                                     {item?.is_win ?
-                                      <span style={{ color: "#00F9FF" }}>{item?.match?.score?.replace("/", "-")}</span>
-                                      : <span style={{ color: "#CC846E" }}>{item?.match?.score?.replace("/", "-")}</span>}
+                                      <span style={{ color: "#00F9FF" }}>WIN</span>
+                                      : <span style={{ color: "#CC846E" }}>LOSE</span>}
+                                    <div className={s.mapName}>{MAP_CSGO[mapName]}</div>
+                                    <div className={s.endTime}>{dateToHoursFormat(new Date(item?.match?.end_at))}</div>
                                   </div>
                                 </Col>
-                                <Col span={4}>
-                                  <div className={s.recentMatchContentItem}>
-                                    <img src="/assets/P2E/csgo/kill.svg" alt="" />
-                                    <span className={s.textContentItem}>{item?.player_statistic?.Kills}</span>
+                                <Col md={{ span: 10, order: 2 }} xs={20}>
+                                  <Row>
+                                    <Col span={8}>
+                                      <div className={s.scoreMatch}>
+                                        {item?.is_win ?
+                                          <span style={{ color: "#00F9FF" }}>{item?.match?.score?.replace("/", "-")}</span>
+                                          : <span style={{ color: "#CC846E" }}>{item?.match?.score?.replace("/", "-")}</span>}
+                                      </div>
+                                    </Col>
+                                    <Col span={4}>
+                                      <div className={s.recentMatchContentItem}>
+                                        <img src="/assets/P2E/csgo/kill.svg" alt="" />
+                                        <span className={s.textContentItem}>{item?.player_statistic?.Kills}</span>
+                                      </div>
+                                    </Col>
+                                    <Col span={4}>
+                                      <div className={s.recentMatchContentItem}>
+                                        <img src="/assets/P2E/csgo/death.svg" alt="" />
+                                        <span className={s.textContentItem}>{item?.player_statistic?.Deaths}</span>
+                                      </div>
+                                    </Col>
+                                    <Col span={4}>
+                                      <div className={s.recentMatchContentItem}>
+                                        <img src="/assets/P2E/csgo/support.svg" alt="" />
+                                        <span className={s.textContentItem}>{item?.player_statistic?.Assists}</span>
+                                      </div>
+                                    </Col>
+                                    <Col span={4}>
+                                      <div className={s.recentMatchContentItem} style={{ border: 0 }}>
+                                        <img src="/assets/P2E/csgo/headshot.svg" alt="" />
+                                        <span className={s.textContentItem}>{item?.player_statistic?.["Headshots"]}</span>
+                                      </div>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col md={{ span: 4, order: 3 }} xs={{ span: 12, order: 4 }}>
+                                  <div className={s.recentMatchTime}>
+                                    {moment(item?.match?.end_at).fromNow()}
                                   </div>
                                 </Col>
-                                <Col span={4}>
-                                  <div className={s.recentMatchContentItem}>
-                                    <img src="/assets/P2E/csgo/death.svg" alt="" />
-                                    <span className={s.textContentItem}>{item?.player_statistic?.Deaths}</span>
-                                  </div>
-                                </Col>
-                                <Col span={4}>
-                                  <div className={s.recentMatchContentItem}>
-                                    <img src="/assets/P2E/csgo/support.svg" alt="" />
-                                    <span className={s.textContentItem}>{item?.player_statistic?.Assists}</span>
-                                  </div>
-                                </Col>
-                                <Col span={4}>
-                                  <div className={s.recentMatchContentItem} style={{ border: 0 }}>
-                                    <img src="/assets/P2E/csgo/headshot.svg" alt="" />
-                                    <span className={s.textContentItem}>{item?.player_statistic?.["Headshots"]}</span>
-                                  </div>
+                                <Col md={{ span: 6, order: 4 }} xs={{ span: 12, order: 3 }}>
+                                  <Row className={s.recentMatchReward}>
+                                    <Col span={12} className={s.rewardItem} style={{ paddingRight: 20 }}>
+                                      <span className={s.lucisPoint}>+{item?.lucis_point ?? "0"}</span>
+                                      <img src="/assets/P2E/lucis-point.svg" alt="" />
+                                    </Col>
+                                    <Col span={12} className={s.rewardItem}>
+                                      <span>{"-"}</span>
+                                      <img src="/assets/P2E/lucis-token.svg" alt="" />
+                                    </Col>
+                                  </Row>
                                 </Col>
                               </Row>
-                            </Col>
-                            <Col md={{ span: 4, order: 3 }} xs={{ span: 12, order: 4 }}>
-                              <div className={s.recentMatchTime}>
-                                {moment(item?.match?.end_at).fromNow()}
-                              </div>
-                            </Col>
-                            <Col md={{ span: 6, order: 4 }} xs={{ span: 12, order: 3 }}>
-                              <Row className={s.recentMatchReward}>
-                                <Col span={12} className={s.rewardItem} style={{ paddingRight: 20 }}>
-                                  <span className={s.lucisPoint}>+{item?.lucis_point ?? "0"}</span>
-                                  <img src="/assets/P2E/lucis-point.svg" alt="" />
-                                </Col>
-                                <Col span={12} className={s.rewardItem}>
-                                  <span>{"-"}</span>
-                                  <img src="/assets/P2E/lucis-token.svg" alt="" />
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
+                            </a>
+                          </Link>
                         </Col>
                       )
                     })
