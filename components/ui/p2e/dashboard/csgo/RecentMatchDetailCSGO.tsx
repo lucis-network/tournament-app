@@ -208,13 +208,13 @@ export const RecentMatchDetailCSGO = () => {
                     </div>
                     <div className={s.parameterBody}>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/csgo/kill.svg" alt="" />
                             <span>{data?.player_statistic?.Kills ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Kill
                           </div>
@@ -233,13 +233,13 @@ export const RecentMatchDetailCSGO = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/csgo/support.svg" alt="" />
                             <span>{data?.player_statistic?.Assists ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Assists
                           </div>
@@ -257,13 +257,13 @@ export const RecentMatchDetailCSGO = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/csgo/headshot.svg" alt="" />
                             <span>{data?.player_statistic?.Headshots ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Headshot
                           </div>
@@ -280,13 +280,13 @@ export const RecentMatchDetailCSGO = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/csgo/star.svg" alt="" />
                             <span>{data?.player_statistic?.MVPs ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             MVPs
                           </div>
@@ -303,13 +303,13 @@ export const RecentMatchDetailCSGO = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/csgo/triple-kill.svg" alt="" />
                             <span>{data?.player_statistic?.["Triple Kills"] ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Triple kills
                           </div>
@@ -327,13 +327,13 @@ export const RecentMatchDetailCSGO = () => {
                       </Row>
 
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/csgo/quadra-kill.svg" alt="" />
                             <span>{data?.player_statistic?.["Quadro Kills"] ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Quadra kills
                           </div>
@@ -351,13 +351,13 @@ export const RecentMatchDetailCSGO = () => {
                       </Row>
 
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/csgo/pental-kill.svg" alt="" />
                             <span>{data?.player_statistic?.["Penta Kills"] ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Aces
                           </div>
@@ -374,13 +374,13 @@ export const RecentMatchDetailCSGO = () => {
                         </Col>
                       </Row>
                       <Row className={s.row}>
-                        <Col span={4}>
+                        <Col span={5}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/win-icon.svg" alt="" />
                             <span>{data?.current_win_streak ?? "-"}</span>
                           </div>
                         </Col>
-                        <Col span={8}>
+                        <Col span={7}>
                           <div className={s.parameterItemText}>
                             Win streaks
                           </div>
