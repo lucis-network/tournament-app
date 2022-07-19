@@ -28,6 +28,8 @@ import {useMutation, useQuery} from "@apollo/client";
 import PopupRollingChest from "./popup/popupRollingChest";
 import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
 import AuthStore from "../../../Auth/AuthStore";
+import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
+import AuthGameStore from "../../../Auth/AuthGameStore";
 
 export enum GAMES {
   FACEITCSGO = 1,
@@ -150,6 +152,26 @@ export default function LuckyChest(props: any) {
 
   const handleOpenBox = async () => {
     if (isClient) {
+      if (!AuthStore.isLoggedIn) {
+        LoginBoxStore.connectModalVisible = true
+        return
+      }
+      switch (gameType) {
+        case GAMES.FACEITCSGO:
+          if (!AuthGameStore.isLoggedInFaceit) {
+            message.error("Please connect game first.");
+            return
+          }
+          break
+        case GAMES.GARENALOL:
+          if (!AuthGameStore.isLoggedInLMSS) {
+            message.error("Please connect game first.")
+            return
+          }
+          break
+        default:
+          break
+      }
       setChestUnlocking(true)
       try {
         let canOpen = true
@@ -222,8 +244,8 @@ export default function LuckyChest(props: any) {
           <div className="lucis-container-2">
             <div className={s.luckyChestTabs}>
               <div className={`${s.luckyChestTabsItem} active`}>Standard</div>
-              <div className={s.luckyChestTabsItem}>Premium</div>
-              <div className={s.luckyChestTabsItem}>NFTs</div>
+              <div className={`${s.luckyChestTabsItem} disabled`}>Premium</div>
+              <div className={`${s.luckyChestTabsItem} disabled`}>NFTs</div>
             </div>
           </div>
         </div>
