@@ -27,6 +27,7 @@ import {b64DecodeUnicode} from "../../../../utils/String";
 import {useMutation, useQuery} from "@apollo/client";
 import PopupRollingChest from "./popup/popupRollingChest";
 import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
+import AuthStore from "../../../Auth/AuthStore";
 
 export enum GAMES {
   FACEITCSGO = 1,
@@ -296,7 +297,7 @@ export default function LuckyChest(props: any) {
                 </div>
             </div>
           )}
-          <HistoryTable currentGame={gameType}/>
+          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType}/>}
           {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">
