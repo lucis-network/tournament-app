@@ -296,7 +296,7 @@ export default function LuckyChest(props: any) {
                 </div>
             </div>
           )}
-          <HistoryTable currentGame={games[props.currentGame]}/>
+          <HistoryTable currentGame={gameType}/>
           {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">

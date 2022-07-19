@@ -70,6 +70,7 @@ export const useGetLuckyChestUserInfo = ({game_platform_id, tier, page, limit}: 
       page: page,
       limit: limit,
     },
+    skip: !game_platform_id || !tier,
     context: {
       endpoint: 'p2e'
     },
