@@ -108,7 +108,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       dataIndex: 'created_at',
       key: 'updated_at',
       className: s.columnTime,
-      render: (text: string) => moment(text).format('YYYY/MM/DD - hh:mm:ss')
+      render: (text: string) => moment(text).format('YYYY/MM/DD - HH:mm:ss')
     },
     {
       title: 'Reward',
