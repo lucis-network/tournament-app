@@ -22,7 +22,7 @@ export const RecentMatchDetailLOL = () => {
     const res = await MissionService.getLOLMatchStatistic(player_match_id);
     setStatistic(res?.data?.getLolMatchStatistic);
   }
-  
+
   const data = statistic;
   const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
@@ -237,7 +237,7 @@ export const RecentMatchDetailLOL = () => {
               <div className={s.informationDetail}>
                 <div className={s.mapBackground}
                   style={{
-                    background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.match?.type === "NormalDraft" ? mapSummonerRift : mapAram}")`
+                    background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.match?.type === "Aram" ? mapAram : mapSummonerRift}")`
                   }}
                 >
                   <h3 className={s.mapName}>{MAP_LOL[data?.match?.type as string] ?? data?.match?.type ?? "-----"}</h3>
@@ -260,7 +260,7 @@ export const RecentMatchDetailLOL = () => {
                       <div className={s.headerRight}>Lucis bonus: --%</div>
                     </div>
                     <div className={s.parameterBody}>
-                    <Row className={s.row}>
+                      <Row className={s.row}>
                         <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/win-icon.svg" alt="" />
