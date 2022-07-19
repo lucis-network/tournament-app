@@ -31,6 +31,7 @@ const RecentMatchHistory = (props: IProps) => {
   const [loading, setLoading] = useState(false);
   const [totalItem, setTotalItem] = useState<number>(0);
   const [recentMatches, setRecentMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([]);
+  const [dailyPointRecentMatch, setDailyPointRecentMatch] = useState<{day: number, month: number, year: number, point: number}[]>();
 
   useEffect(() => {
     switch (props.currentGame) {
@@ -56,7 +57,9 @@ const RecentMatchHistory = (props: IProps) => {
         setLoading(false);
         setCurrentLimit(currentLimit + 5);
         setRecentMatches(csgo.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
-        setTotalItem(csgo.data?.getRecentlyCsgoMatch?.total as number)
+        setTotalItem(csgo.data?.getRecentlyCsgoMatch?.total as number);
+        setDailyPointRecentMatch(csgo?.data?.getRecentlyCsgoMatch?.daily_point as any);
+
         break;
       case Game.LOL:
         const lol = await MissionService.getLOLRecentMatch(1,currentLimit);
@@ -64,6 +67,8 @@ const RecentMatchHistory = (props: IProps) => {
         setCurrentLimit(currentLimit + 5);
         setRecentMatches(lol.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
         setTotalItem(lol.data?.getRecentlyLolMatch?.total as number)
+        setDailyPointRecentMatch(lol?.data?.getRecentlyLolMatch?.daily_point as any);
+
         break;
     }
 
@@ -83,12 +88,15 @@ const RecentMatchHistory = (props: IProps) => {
           loading={loading}
           title="Recent matches history"
           hasButtonBack
+          dailyPoint={dailyPointRecentMatch}
+
         />;
       case Game.LOL:
         return <RecentMatchListLOL
           recentMatches={recentMatches as LolPlayerMatchGql[]}
           loading={loading}
           title="Recent matches history"
+          dailyPoint={dailyPointRecentMatch}
           hasButtonBack
         />;
       default:
@@ -108,9 +116,9 @@ const RecentMatchHistory = (props: IProps) => {
             {RecentMatchListRender()}
             {currentLimit < (totalItem as number) &&
               <div className={s.viewAllHistory}>
-                <span onClick={() => queryData()}>
+                <a onClick={() => queryData()}>
                   {loading ? <Spin /> :
-                    "View more"}</span>
+                    "View more"}</a>
               </div>}
           </Col>
           <Col lg={8} md={24}>
