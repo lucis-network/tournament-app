@@ -57,6 +57,7 @@ export default function LuckyChest(props: any) {
       context: {
         endpoint: 'p2e'
       },
+      skip: !AuthStore.isLoggedIn
     })
 
     const chestDetail = getChestDetailData?.getChestDetail

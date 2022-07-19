@@ -58,9 +58,11 @@ export enum BalanceHistoryType {
   Lucismission = 'LUCISMISSION',
   Match = 'MATCH',
   Openluckychest = 'OPENLUCKYCHEST',
+  Rafflereimburse = 'RAFFLEREIMBURSE',
   Referfriend = 'REFERFRIEND',
   Reroll = 'REROLL',
-  Staked = 'STAKED'
+  Staked = 'STAKED',
+  Wasinvited = 'WASINVITED'
 }
 
 export type Bracket = {
@@ -984,7 +986,6 @@ export type Mutation = {
   disconnectLmss?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
-  joinDiscord?: Maybe<Scalars['Boolean']>;
   kycAccount?: Maybe<PlatformAccountDto>;
   openChest?: Maybe<OpenChestResponse>;
   rerollDailyMission?: Maybe<PlayerMission>;
@@ -1423,10 +1424,12 @@ export enum PrizeType {
   LolCostumePiece_4 = 'LOL_COSTUME_PIECE_4',
   LucisPoint = 'LUCIS_POINT',
   LucisToken = 'LUCIS_TOKEN',
+  NftBox = 'NFT_BOX',
   NftBoxPiece_1 = 'NFT_BOX_PIECE_1',
   NftBoxPiece_2 = 'NFT_BOX_PIECE_2',
   NftBoxPiece_3 = 'NFT_BOX_PIECE_3',
   NftBoxPiece_4 = 'NFT_BOX_PIECE_4',
+  RaffleSponsoredPrize = 'RAFFLE_SPONSORED_PRIZE',
   RiotCard_100 = 'RIOT_CARD_100',
   RiotCard_150 = 'RIOT_CARD_150',
   RiotCard_150Piece_1 = 'RIOT_CARD_150_PIECE_1',
@@ -1468,9 +1471,7 @@ export type Query = {
   getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
   getWonTickets?: Maybe<Array<Scalars['String']>>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
-  isClaimJoinDiscord?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
-  isEnable?: Maybe<Scalars['Boolean']>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   searchBySummonerName?: Maybe<LolAccountDto>;
   searchRaffle?: Maybe<Array<RaffleGql>>;
@@ -1581,11 +1582,6 @@ export type QueryIsConnectPlatformArgs = {
 };
 
 
-export type QueryIsEnableArgs = {
-  game_uid: Scalars['String'];
-};
-
-
 export type QueryMyWonTicketsArgs = {
   raffle_uid: Scalars['String'];
 };
@@ -1608,7 +1604,7 @@ export type Raffle = {
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   prize_amount?: Maybe<Scalars['Decimal']>;
-  prize_type?: Maybe<RafflePrizeType>;
+  prize_type?: Maybe<PrizeType>;
   raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
   status?: Maybe<RaffleStatus>;
@@ -1629,7 +1625,7 @@ export type RaffleDetail = {
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   prize_amount?: Maybe<Scalars['Decimal']>;
-  prize_type?: Maybe<RafflePrizeType>;
+  prize_type?: Maybe<PrizeType>;
   raffle_sponsors?: Maybe<Array<P2eSponsor>>;
   regions?: Maybe<Array<Scalars['String']>>;
   status?: Maybe<RaffleStatus>;
@@ -1657,7 +1653,7 @@ export type RaffleGql = {
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   prize_amount?: Maybe<Scalars['Decimal']>;
-  prize_type?: Maybe<RafflePrizeType>;
+  prize_type?: Maybe<PrizeType>;
   raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Array<Scalars['String']>>;
   status?: Maybe<RaffleStatus>;
@@ -1668,14 +1664,6 @@ export type RaffleGql = {
   valued_at?: Maybe<Scalars['String']>;
   winner_total?: Maybe<Scalars['Int']>;
 };
-
-export enum RafflePrizeType {
-  CsgoKnife = 'CsgoKnife',
-  LucisPoint = 'LucisPoint',
-  LucisToken = 'LucisToken',
-  NftBox = 'NftBox',
-  Sponsored = 'Sponsored'
-}
 
 export enum RaffleStatus {
   Closed = 'CLOSED',
@@ -2071,20 +2059,8 @@ export type User = {
   tournament?: Maybe<Array<Tournament>>;
   tournamentSubscriber?: Maybe<Array<TournamentSubscriber>>;
   updated_at: Scalars['DateTime'];
-  user_bonus?: Maybe<UserBonus>;
   user_ticket?: Maybe<Array<UserTicket>>;
   withdraws?: Maybe<Array<WithdrawTransaction>>;
-};
-
-export type UserBonus = {
-  __typename?: 'UserBonus';
-  created_at: Scalars['DateTime'];
-  id: Scalars['ID'];
-  is_join_discord: Scalars['Boolean'];
-  is_refer_friend: Scalars['Boolean'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
 };
 
 export type UserCount = {
