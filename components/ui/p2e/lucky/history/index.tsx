@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {message, message as antMessage, Modal, Pagination, Table} from 'antd';
 import ButtonClaim from '../button/ButtonClaim';
 import s from './history.module.sass'
-import {ClaimChestPrizeErrorCode, LuckyChestTier, LuckyChestType} from "../../../../../src/generated/graphql_p2e";
+import {ClaimChestPrizeErrorCode, LuckyChestTier} from "../../../../../src/generated/graphql_p2e";
 import {
   useClaimChestPrize,
   useGetLuckyChestUserInfo
@@ -12,9 +12,10 @@ import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 import {AppEmitter} from "../../../../../services/emitter";
 import PopupContactRaffles from "../../raffles/popup/popupContact";
 import PrizePopover from "../prize/popover";
+import {GAMES} from "../index";
 
 type HistoryTableProps = {
-  currentGame: LuckyChestType,
+  currentGame: number,
 }
 
 const historyLimit = 10
@@ -32,7 +33,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     refetchGetLuckyChestUserInfo,
     dataLuckyChestUserInfo
   } = useGetLuckyChestUserInfo({
-    type: currentGame ? currentGame : LuckyChestType.Lol,
+    game_platform_id: currentGame ? currentGame : GAMES.GARENALOL,
     tier: LuckyChestTier.Standard,
     page: currentPage,
     limit: historyLimit,

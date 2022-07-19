@@ -146,11 +146,11 @@ const Raffles = () => {
           ))}
         </div>
       </section>
-      <section className={s.sectionRafflesSponsor}>
-        <div className="lucis-container-2">
-          <h2 className={s.sectionTitle}>Sponsor</h2>
-          {(getSponsorRaffleError || getSponsorRaffleData?.getSponsorRaffles.length <= 0) ? <Empty /> : (
-            getSponsorRaffleLoading ? (
+      {(!getSponsorRaffleError && (getSponsorRaffleData?.getSponsorRaffles && getSponsorRaffleData?.getSponsorRaffles.length > 0)) && (
+        <section className={s.sectionRafflesSponsor}>
+          <div className="lucis-container-2">
+            <h2 className={s.sectionTitle}>Sponsor</h2>
+            {getSponsorRaffleLoading ? (
               <SpinLoading />
             ) : (getSponsorRaffleData?.getSponsorRaffles && (
               <div className={s.rafflesSponsorList}>
@@ -160,10 +160,10 @@ const Raffles = () => {
                   </div>
                 ))}
               </div>
-            ))
-          )}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
       <section className={s.sectionRaffles}>
         <div className="lucis-container-2">
           <div className={s.raffleTitleWrap}>

@@ -79,7 +79,7 @@ export default observer(function P2EOverview(props: IProps) {
         const initParams = {
           client_id: isDevMode
             ? process.env.NEXT_PUBLIC_FACEIT_CLIENT_ID_DEV
-            : process.env.NEXT_PUBLIC_FACEIT_CLIENT_ID_TEST,
+            : process.env.NEXT_PUBLIC_FACEIT_CLIENT_ID_BUILD,
           response_type: "token",
         };
         FACEIT.init(initParams, callback);
