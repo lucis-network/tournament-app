@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { LolPlayerMatchGql } from "src/generated/graphql_p2e";
-import { MAP_CSGO } from "utils/Enum";
+import { MAP_CSGO, MODE_LOL } from "utils/Enum";
 import { dateToHoursFormat } from "utils/Time";
 import SpinLoading from "../../common/Spin";
 import s from './recentMatch.module.sass'
@@ -17,6 +17,7 @@ interface IProps {
   isHistory?: boolean;
   title?: string;
   hasButtonBack?: boolean;
+  dailyPoint?: { day: number, month: number, year: number, point: number }[];
 }
 export const RecentMatchListLOL = React.memo((props: IProps) => {
   const router = useRouter();
@@ -27,12 +28,9 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
   }, [props.recentMatches])
 
 
-  const lucisPointRewardToday = (matches: LolPlayerMatchGql[]): number => {
-    let total = 0;
-    matches?.forEach((match) => {
-      total += match?.point as number;
-    })
-    return total
+  const lucisPointReward = (date: string) => {
+    const current = props.dailyPoint?.find((p) => moment(`${p.year}/${p.month}/${p.day}`, "YYYY/MM/DD").format("YYYY/MM/DD") === date);
+    return current?.point ?? "--";
   }
 
 
@@ -102,7 +100,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                     {item[0]} :
                   </div>
                   <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                    <span className={s.lucisPoint}>{lucisPointRewardToday(item[1])} / ∞</span>
+                    <span className={s.lucisPoint}>{lucisPointReward(item[0])} / ∞</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                   <div className={s.rewardItem}>
@@ -115,13 +113,12 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                 <Row gutter={[{ xs: 8, md: 0 }, { xs: 8, md: 0 }]}>
                   {
                     item[1]?.map((item, index, array) => {
-                      const mapName = item?.match?.map as any as string;
+                      const type = item?.match?.type as any as string;
                       return (
                         <Col
                           xs={24}
                           className={s.recentMatchItem}
                           key={`${item?.match_uid}-${index}`}
-                          onClick={() => router.push(`/playcore/dashboard/history/${item?.uid}`)}
                           style={{
                             borderTopLeftRadius: index === 0 ? "4px" : "0px",
                             borderTopRightRadius: index === 0 ? "4px" : "0px",
@@ -130,7 +127,8 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                             background:
                               index % 2 === 0
                                 ? `linear-gradient(90deg, rgba(47, 54, 75, 0) 0%, #2F364B 21.88%), url("${item?.map_img}")`
-                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`
+                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`,
+                            backgroundPosition: "center",
                           }}
                         >
                           <Link href={`/playcore/dashboard/history/${item?.uid}`}>
@@ -141,7 +139,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                                     {item?.is_win ?
                                       <span style={{ color: "#00F9FF" }}>VICTORY</span>
                                       : <span style={{ color: "#CC846E" }}>DEFEAT</span>}
-                                    <div className={s.mapName}>{MAP_CSGO[mapName]}</div>
+                                    <div className={s.mapName}>{MODE_LOL[type]}</div>
                                     <div className={s.endTime}>{dateToHoursFormat(new Date(item?.match?.end_at))}</div>
                                   </div>
                                 </Col>

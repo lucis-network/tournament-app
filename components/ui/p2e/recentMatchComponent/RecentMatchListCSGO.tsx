@@ -3,7 +3,7 @@ import moment from "moment";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
-import { CsgoPlayerMatch } from "src/generated/graphql_p2e";
+import { CsgoPlayerMatch, LolMatchGql } from "src/generated/graphql_p2e";
 import { Game, MAP_CSGO } from "utils/Enum";
 import { dateToHoursFormat } from "utils/Time";
 import SpinLoading from "../../common/Spin";
@@ -16,6 +16,7 @@ interface IProps {
   isHistory?: boolean;
   title?: string;
   hasButtonBack?: boolean;
+  dailyPoint?: {day: number, month: number, year: number, point: number}[];
 }
 export const RecentMatchListCSGO = React.memo((props: IProps) => {
   const router = useRouter();
@@ -27,12 +28,9 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
 
 
 
-  const lucisPointRewardToday = (matches: CsgoPlayerMatch[]): number => {
-    let total = 0;
-    matches?.forEach((match) => {
-      total += match.lucis_point;
-    })
-    return total
+  const lucisPointReward = (date: string) => {
+    const current = props.dailyPoint?.find((p) => moment(`${p.year}/${p.month}/${p.day}`, "YYYY/MM/DD").format("YYYY/MM/DD") === date);
+    return current?.point ?? "--";
   }
 
 
@@ -102,7 +100,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                     {item[0]} :
                   </div>
                   <div className={s.rewardItem} style={{ marginRight: 8 }}>
-                    <span className={s.lucisPoint}>{lucisPointRewardToday(item[1])} / ∞</span>
+                    <span className={s.lucisPoint}>{lucisPointReward(item[0])} / ∞</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                   <div className={s.rewardItem}>
@@ -121,7 +119,6 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                           xs={24}
                           className={s.recentMatchItem}
                           key={`${item?.match_uid}-${index}`}
-                          onClick={() => router.push(`/playcore/dashboard/history/${item?.id}`)}
                           style={{
                             borderTopLeftRadius: index === 0 ? "4px" : "0px",
                             borderTopRightRadius: index === 0 ? "4px" : "0px",

@@ -82,6 +82,12 @@ class MissionService {
               }
             }
             total
+            daily_point {
+              day
+              month
+              year
+              point
+            }
           }
         }
       `,
@@ -125,6 +131,12 @@ class MissionService {
               }
             }
             total
+            daily_point {
+              day
+              month
+              year
+              point
+            }
           }
         }
       `,

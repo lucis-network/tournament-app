@@ -33,6 +33,7 @@ const Dashboard = (props: IProps) => {
   const [loadingRecentMatch, setLoadingRecentMatch] = useState(false);
 
   const [recentlyMatches, setRecentlyMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([])
+  const [dailyPointRecentMatch, setDailyPointRecentMatch] = useState<{day: number, month: number, year: number, point: number}[]>();
   const [showGiftBox, setShowGiftBox] = React.useState<boolean>(false);
   const [isClaimBox, setIsClaimBox] = React.useState(false);
   const statisticQuery = useQuery(GET_STATISTICS, {
@@ -97,11 +98,13 @@ const Dashboard = (props: IProps) => {
       case Game.CSGO:
         const promiseCsgo = await MissionService.getCSGORecentMatch(1, 5);
         setRecentlyMatches(promiseCsgo.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
+        setDailyPointRecentMatch(promiseCsgo?.data?.getRecentlyCsgoMatch?.daily_point as any);
         setLoadingRecentMatch(false);
         return;
       case Game.LOL:
         const promiseLol = await MissionService.getLOLRecentMatch(1, 5);
         setRecentlyMatches(promiseLol.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
+        setDailyPointRecentMatch(promiseLol?.data?.getRecentlyLolMatch?.daily_point as any);
         setLoadingRecentMatch(false);
         return;
 
@@ -143,10 +146,12 @@ const Dashboard = (props: IProps) => {
       case Game.CSGO:
         return <RecentMatchListCSGO
           recentMatches={recentlyMatches as CsgoPlayerMatch[]}
+          dailyPoint={dailyPointRecentMatch}
           loading={loadingRecentMatch} />;
       case Game.LOL:
         return <RecentMatchListLOL
           recentMatches={recentlyMatches as LolPlayerMatchGql[]}
+          dailyPoint={dailyPointRecentMatch}
           loading={loadingRecentMatch} />;
 
       default:
