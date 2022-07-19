@@ -3,12 +3,12 @@ import {ChestDetail, LuckyChestUserInfo} from "../../../src/generated/graphql_p2
 import {isEmpty} from "lodash";
 
 type GetChestDetailProps = {
-  type?: string,
-  tier?: string,
+  game_platform_id: number,
+  tier: string,
 }
 
 type GetUserHistoryProps = {
-  type?: string,
+  game_platform_id?: number,
   tier?: string,
   page?: number,
   limit?: number,
@@ -20,7 +20,7 @@ export type ClaimChestPrizeProps = {
   onCompleted?: (data: any) => void,
 }
 
-export const useGetChestDetail = ({type, tier}: GetChestDetailProps): {
+export const useGetChestDetail = ({game_platform_id, tier}: GetChestDetailProps): {
   getChestDetailLoading: boolean,
   getChestDetailError: ApolloError | undefined,
   refetchChestDetail: () => Promise<ApolloQueryResult<any>>,
@@ -35,10 +35,9 @@ export const useGetChestDetail = ({type, tier}: GetChestDetailProps): {
     data: getChestDetailData,
   } = useQuery(GET_CHEST_DETAIL, {
     variables: {
-      type: type,
+      game_platform_id: game_platform_id,
       tier: tier,
     },
-    skip: isEmpty(type) || isEmpty(tier),
     context: {
       endpoint: 'p2e'
     },
@@ -53,7 +52,7 @@ export const useGetChestDetail = ({type, tier}: GetChestDetailProps): {
   }
 }
 
-export const useGetLuckyChestUserInfo = ({type, tier, page, limit}: GetUserHistoryProps): {
+export const useGetLuckyChestUserInfo = ({game_platform_id, tier, page, limit}: GetUserHistoryProps): {
   getLuckyChestUserInfoLoading: boolean,
   getLuckyChestUserInfoError: ApolloError | undefined,
   refetchGetLuckyChestUserInfo: () => Promise<ApolloQueryResult<any>>,
@@ -66,12 +65,11 @@ export const useGetLuckyChestUserInfo = ({type, tier, page, limit}: GetUserHisto
     data,
   } = useQuery(GET_LUCKY_CHEST_USER_INFO, {
     variables: {
-      type: type,
+      game_platform_id: game_platform_id,
       tier: tier,
       page: page,
       limit: limit,
     },
-    skip: isEmpty(type) || isEmpty(tier),
     context: {
       endpoint: 'p2e'
     },
@@ -113,11 +111,10 @@ export const useClaimChestPrize = (): {
 }
 
 const GET_CHEST_DETAIL = gql`
-  query($type: LuckyChestType!, $tier: LuckyChestTier!) {
-    getChestDetail(type: $type, tier: $tier) {
+  query($game_platform_id: Int!, $tier: LuckyChestTier!) {
+    getChestDetail(game_platform_id: $game_platform_id, tier: $tier) {
       id
       title
-      type
       desc
       ticket_cost
       ticket_cost_type
@@ -140,7 +137,6 @@ const GET_CHEST_DETAIL = gql`
         rarity
         user_prize_history {
           uid
-          type
           prize_id
           prize {
             id
@@ -155,13 +151,12 @@ const GET_CHEST_DETAIL = gql`
 `
 
 const GET_LUCKY_CHEST_USER_INFO = gql`
-  query($type: LuckyChestType!, $tier: LuckyChestTier!, $page: Int, $limit: Int) {
-    getLuckyChestUserInfo(type: $type, tier: $tier, page: $page ,limit: $limit) {
+  query($game_platform_id: Int!, $tier: LuckyChestTier!, $page: Int, $limit: Int) {
+    getLuckyChestUserInfo(game_platform_id: $game_platform_id, tier: $tier, page: $page ,limit: $limit) {
       history_count
       history {
         uid
         code
-        type
         tier
         prize_id
         prize {
@@ -182,8 +177,8 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
 `
 
 export const OPEN_CHEST = gql`
-  mutation ($type: LuckyChestType!, $tier: LuckyChestTier!) {
-    openChest (type: $type, tier: $tier) {
+  mutation ($game_platform_id: Int!, $tier: LuckyChestTier!) {
+    openChest (game_platform_id: $game_platform_id, tier: $tier) {
       prize
       user_prize_history_uid
     }

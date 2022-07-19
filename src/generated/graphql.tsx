@@ -1707,13 +1707,20 @@ export type GameCreateWithoutTournamentsInput = {
 
 export type GamePlatform = {
   __typename?: 'GamePlatform';
+  _count: GamePlatformCount;
   created_at: Scalars['DateTime'];
   game: Game;
   game_uid: Scalars['String'];
   id: Scalars['ID'];
+  lucky_chest?: Maybe<Array<LuckyChest>>;
   platform: Platform;
   platform_id: Scalars['Int'];
   updated_at: Scalars['DateTime'];
+};
+
+export type GamePlatformCount = {
+  __typename?: 'GamePlatformCount';
+  lucky_chest: Scalars['Int'];
 };
 
 export type GamePlatformCreateManyGameInput = {
@@ -1766,6 +1773,7 @@ export type GamePlatformCreateOrConnectWithoutPlatformInput = {
 
 export type GamePlatformCreateWithoutGameInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
+  lucky_chest?: InputMaybe<LuckyChestCreateNestedManyWithoutGame_PlatformInput>;
   platform: PlatformCreateNestedOneWithoutGameInput;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -1773,6 +1781,7 @@ export type GamePlatformCreateWithoutGameInput = {
 export type GamePlatformCreateWithoutPlatformInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   game: GameCreateNestedOneWithoutPlatformInput;
+  lucky_chest?: InputMaybe<LuckyChestCreateNestedManyWithoutGame_PlatformInput>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -2053,6 +2062,64 @@ export type LucisMissionWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
+export type LuckyChest = {
+  __typename?: 'LuckyChest';
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  game_platform?: Maybe<GamePlatform>;
+  game_platform_id?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  prize_alloc: Scalars['JSON'];
+  sponsors?: Maybe<Scalars['String']>;
+  ticket_cost?: Maybe<Scalars['Decimal']>;
+  ticket_cost_type?: Maybe<CostType>;
+  tier: LuckyChestTier;
+  title?: Maybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+};
+
+export type LuckyChestCreateManyGame_PlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  desc?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  prize_alloc: Scalars['JSON'];
+  sponsors?: InputMaybe<Scalars['String']>;
+  ticket_cost?: InputMaybe<Scalars['Decimal']>;
+  ticket_cost_type?: InputMaybe<CostType>;
+  tier: LuckyChestTier;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type LuckyChestCreateManyGame_PlatformInputEnvelope = {
+  data: Array<LuckyChestCreateManyGame_PlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type LuckyChestCreateNestedManyWithoutGame_PlatformInput = {
+  connect?: InputMaybe<Array<LuckyChestWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<LuckyChestCreateOrConnectWithoutGame_PlatformInput>>;
+  create?: InputMaybe<Array<LuckyChestCreateWithoutGame_PlatformInput>>;
+  createMany?: InputMaybe<LuckyChestCreateManyGame_PlatformInputEnvelope>;
+};
+
+export type LuckyChestCreateOrConnectWithoutGame_PlatformInput = {
+  create: LuckyChestCreateWithoutGame_PlatformInput;
+  where: LuckyChestWhereUniqueInput;
+};
+
+export type LuckyChestCreateWithoutGame_PlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  desc?: InputMaybe<Scalars['String']>;
+  prize_alloc: Scalars['JSON'];
+  sponsors?: InputMaybe<Scalars['String']>;
+  ticket_cost?: InputMaybe<Scalars['Decimal']>;
+  ticket_cost_type?: InputMaybe<CostType>;
+  tier: LuckyChestTier;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
 export type LuckyChestPrize = {
   __typename?: 'LuckyChestPrize';
   _count: LuckyChestPrizeCount;
@@ -2109,10 +2176,9 @@ export enum LuckyChestTier {
   Standard = 'STANDARD'
 }
 
-export enum LuckyChestType {
-  Csgo = 'CSGO',
-  Lol = 'LOL'
-}
+export type LuckyChestWhereUniqueInput = {
+  id?: InputMaybe<Scalars['Int']>;
+};
 
 export type Member = {
   __typename?: 'Member';
@@ -7567,11 +7633,11 @@ export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
+  game_platform_id?: Maybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
-  type: LuckyChestType;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   user: User;
@@ -7581,10 +7647,10 @@ export type UserLuckyChestHistory = {
 export type UserLuckyChestHistoryCreateManyUserInput = {
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  game_platform_id?: InputMaybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
-  type: LuckyChestType;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -7609,10 +7675,10 @@ export type UserLuckyChestHistoryCreateOrConnectWithoutUserInput = {
 export type UserLuckyChestHistoryCreateWithoutUserInput = {
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  game_platform_id?: InputMaybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrizeCreateNestedOneWithoutUser_Prize_HistoryInput;
   tier: LuckyChestTier;
-  type: LuckyChestType;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };

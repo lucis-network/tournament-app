@@ -239,6 +239,8 @@ export type ChestDetail = {
   __typename?: 'ChestDetail';
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
+  game_platform?: Maybe<GamePlatform>;
+  game_platform_id?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
   prizes: Array<LuckyChestPrize>;
   sponsors?: Maybe<Array<P2eSponsor>>;
@@ -246,7 +248,6 @@ export type ChestDetail = {
   ticket_cost_type?: Maybe<CostType>;
   tier: LuckyChestTier;
   title?: Maybe<Scalars['String']>;
-  type: LuckyChestType;
   updated_at: Scalars['DateTime'];
 };
 
@@ -514,6 +515,14 @@ export type CurrencyCount = {
   withdrawTransactions: Scalars['Int'];
 };
 
+export type DailyPoint = {
+  __typename?: 'DailyPoint';
+  day?: Maybe<Scalars['Int']>;
+  month?: Maybe<Scalars['Int']>;
+  point?: Maybe<Scalars['Int']>;
+  year?: Maybe<Scalars['Int']>;
+};
+
 export type DonateTransaction = {
   __typename?: 'DonateTransaction';
   amount: Scalars['Decimal'];
@@ -558,6 +567,7 @@ export type GBalance = {
 
 export type GCsgoMatch = {
   __typename?: 'GCsgoMatch';
+  daily_point?: Maybe<Array<DailyPoint>>;
   matches?: Maybe<Array<CsgoPlayerMatch>>;
   total?: Maybe<Scalars['Int']>;
 };
@@ -588,13 +598,20 @@ export type GameCount = {
 
 export type GamePlatform = {
   __typename?: 'GamePlatform';
+  _count: GamePlatformCount;
   created_at: Scalars['DateTime'];
   game: Game;
   game_uid: Scalars['String'];
   id: Scalars['ID'];
+  lucky_chest?: Maybe<Array<LuckyChest>>;
   platform: Platform;
   platform_id: Scalars['Int'];
   updated_at: Scalars['DateTime'];
+};
+
+export type GamePlatformCount = {
+  __typename?: 'GamePlatformCount';
+  lucky_chest: Scalars['Int'];
 };
 
 export type LolAccountDto = {
@@ -646,6 +663,7 @@ export type LolMatchCount = {
 
 export type LolMatchGql = {
   __typename?: 'LolMatchGql';
+  daily_point?: Maybe<Array<DailyPoint>>;
   matches?: Maybe<Array<LolPlayerMatchGql>>;
   total?: Maybe<Scalars['Int']>;
 };
@@ -791,6 +809,22 @@ export type LucisMission = {
   user_id: Scalars['Int'];
 };
 
+export type LuckyChest = {
+  __typename?: 'LuckyChest';
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  game_platform?: Maybe<GamePlatform>;
+  game_platform_id?: Maybe<Scalars['Int']>;
+  id: Scalars['ID'];
+  prize_alloc: Scalars['JSON'];
+  sponsors?: Maybe<Scalars['String']>;
+  ticket_cost?: Maybe<Scalars['Decimal']>;
+  ticket_cost_type?: Maybe<CostType>;
+  tier: LuckyChestTier;
+  title?: Maybe<Scalars['String']>;
+  updated_at: Scalars['DateTime'];
+};
+
 export type LuckyChestPrize = {
   __typename?: 'LuckyChestPrize';
   _count: LuckyChestPrizeCount;
@@ -817,11 +851,6 @@ export enum LuckyChestTier {
   Nft = 'NFT',
   Premium = 'PREMIUM',
   Standard = 'STANDARD'
-}
-
-export enum LuckyChestType {
-  Csgo = 'CSGO',
-  Lol = 'LOL'
 }
 
 export type LuckyChestUserInfo = {
@@ -1036,8 +1065,8 @@ export type MutationKycAccountArgs = {
 
 
 export type MutationOpenChestArgs = {
+  game_platform_id: Scalars['Int'];
   tier: LuckyChestTier;
-  type: LuckyChestType;
 };
 
 
@@ -1423,7 +1452,6 @@ export type Query = {
   getBalance?: Maybe<GBalance>;
   getChestDetail?: Maybe<ChestDetail>;
   getCsgoMatchStatistic?: Maybe<CsgoMatchStatistics>;
-  getDailyPoint?: Maybe<Scalars['Int']>;
   getLolMatchStatistic?: Maybe<LolMatchStatisticGql>;
   getLucisMission: Array<PlayerMission>;
   getLuckyChestUserInfo?: Maybe<LuckyChestUserInfo>;
@@ -1444,9 +1472,9 @@ export type Query = {
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   isEnable?: Maybe<Scalars['Boolean']>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
-  rafflesInCurrentMonth?: Maybe<Array<RaffleGql>>;
   searchBySummonerName?: Maybe<LolAccountDto>;
   searchRaffle?: Maybe<Array<RaffleGql>>;
+  spotlightRaffle?: Maybe<RaffleGql>;
 };
 
 
@@ -1457,8 +1485,8 @@ export type QueryGetAllPlayerNftArgs = {
 
 export type QueryGetAllTicketsArgs = {
   display_name?: InputMaybe<Scalars['String']>;
-  limit: Scalars['Int'];
-  page: Scalars['Int'];
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
   raffle_uid: Scalars['String'];
 };
 
@@ -1471,19 +1499,13 @@ export type QueryGetAppErrorCodeArgs = {
 
 
 export type QueryGetChestDetailArgs = {
+  game_platform_id: Scalars['Int'];
   tier: LuckyChestTier;
-  type: LuckyChestType;
 };
 
 
 export type QueryGetCsgoMatchStatisticArgs = {
   player_match_id: Scalars['Int'];
-};
-
-
-export type QueryGetDailyPointArgs = {
-  game_uid: Scalars['String'];
-  platform_id: Scalars['Int'];
 };
 
 
@@ -1499,16 +1521,16 @@ export type QueryGetLucisMissionArgs = {
 
 
 export type QueryGetLuckyChestUserInfoArgs = {
+  game_platform_id: Scalars['Int'];
   limit?: InputMaybe<Scalars['Int']>;
   page?: InputMaybe<Scalars['Int']>;
   tier: LuckyChestTier;
-  type: LuckyChestType;
 };
 
 
 export type QueryGetMyTicketsArgs = {
-  limit: Scalars['Int'];
-  page: Scalars['Int'];
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
   raffle_uid: Scalars['String'];
 };
 
@@ -1620,7 +1642,9 @@ export type RaffleDetail = {
 };
 
 export type RaffleFilter = {
+  limit?: InputMaybe<Scalars['Int']>;
   name?: InputMaybe<Scalars['String']>;
+  page?: InputMaybe<Scalars['Int']>;
   skip_raffle_uid?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatusType>;
 };
@@ -2117,11 +2141,11 @@ export type UserHistory = {
   __typename?: 'UserHistory';
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
+  game_platform_id?: Maybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
-  type: LuckyChestType;
   uid: Scalars['ID'];
   user_id: Scalars['Int'];
 };
@@ -2130,11 +2154,11 @@ export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
+  game_platform_id?: Maybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
-  type: LuckyChestType;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   user: User;

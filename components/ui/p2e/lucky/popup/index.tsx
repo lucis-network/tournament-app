@@ -6,7 +6,7 @@ import SliderBox from "../slider";
 import PopupRollingChest from "./popupRollingChest";
 import ButtonOpenBox from "../button/buttonOpen";
 import PopupRewardChest from "./popupRewardChest";
-import {ChestDetail, LuckyChestPrize, LuckyChestTier, LuckyChestType, OpenChestResponse} from "../../../../../src/generated/graphql_p2e";
+import {ChestDetail, LuckyChestPrize, LuckyChestTier, OpenChestResponse} from "../../../../../src/generated/graphql_p2e";
 import {OPEN_CHEST, useGetLuckyChestUserInfo} from "../../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
 import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
@@ -24,7 +24,7 @@ export default function PopUpOpenBox(props: Props) {
   const [width] = useWindowSize();
 
   const {dataLuckyChestUserInfo} = useGetLuckyChestUserInfo({
-    type: LuckyChestType.Csgo,
+    game_platform_id: 1,
     tier: LuckyChestTier.Standard,
   })
 
@@ -38,7 +38,7 @@ export default function PopUpOpenBox(props: Props) {
     try {
       await openLuckyChest({
         variables: {
-          type: LuckyChestType.Csgo,
+          game_platform_id: 1,
           tier: LuckyChestTier.Standard,
         },
         onCompleted: (data) => {
