@@ -17,7 +17,7 @@ interface IProps {
   isHistory?: boolean;
   title?: string;
   hasButtonBack?: boolean;
-  dailyPoint?: {day: number, month: number, year: number, point: number}[];
+  dailyPoint?: { day: number, month: number, year: number, point: number }[];
 }
 export const RecentMatchListLOL = React.memo((props: IProps) => {
   const router = useRouter();
@@ -119,7 +119,6 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                           xs={24}
                           className={s.recentMatchItem}
                           key={`${item?.match_uid}-${index}`}
-                          onClick={() => router.push(`/playcore/dashboard/history/${item?.uid}`)}
                           style={{
                             borderTopLeftRadius: index === 0 ? "4px" : "0px",
                             borderTopRightRadius: index === 0 ? "4px" : "0px",
@@ -128,7 +127,8 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                             background:
                               index % 2 === 0
                                 ? `linear-gradient(90deg, rgba(47, 54, 75, 0) 0%, #2F364B 21.88%), url("${item?.map_img}")`
-                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`
+                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`,
+                            backgroundPosition: "center",
                           }}
                         >
                           <Link href={`/playcore/dashboard/history/${item?.uid}`}>
