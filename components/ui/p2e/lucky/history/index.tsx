@@ -118,8 +118,9 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
                 {data.prize.title}
               </div>
               <ButtonClaim
-                isClaimed={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
+                isClaimed={data.is_claimed}
                 onClick={() => handleClaimChestPrize(data.user_prize_history_uid.toString(), data.code)}
+                disabled={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
               />
             </div>
         )
