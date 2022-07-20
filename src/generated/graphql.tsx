@@ -4044,6 +4044,8 @@ export type Query = {
   getNotification?: Maybe<Array<Notification>>;
   getOnGoingTournament?: Maybe<Array<TournamentGql>>;
   getOwnedTournament?: Maybe<Array<TTournament>>;
+  getRankOfUserByEarning?: Maybe<UserRanking>;
+  getRankingByEarning?: Maybe<Array<UserRanking>>;
   getReferee?: Maybe<GUser>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
   getSpotlightAnnouncement?: Maybe<Array<SpotlightAnnouncementType>>;
@@ -4137,6 +4139,17 @@ export type QueryGetOnGoingTournamentArgs = {
 
 export type QueryGetOwnedTournamentArgs = {
   user_id: Scalars['String'];
+};
+
+
+export type QueryGetRankOfUserByEarningArgs = {
+  user_id: Scalars['Int'];
+};
+
+
+export type QueryGetRankingByEarningArgs = {
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
 };
 
 
@@ -7697,6 +7710,16 @@ export type UserProfileInput = {
 export type UserProfileWhereUniqueInput = {
   user_id?: InputMaybe<Scalars['Int']>;
   user_name?: InputMaybe<Scalars['String']>;
+};
+
+export type UserRanking = {
+  __typename?: 'UserRanking';
+  code?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  rank?: Maybe<Scalars['Int']>;
+  status: UserStatus;
+  total_earning?: Maybe<Scalars['String']>;
 };
 
 export enum UserRole {

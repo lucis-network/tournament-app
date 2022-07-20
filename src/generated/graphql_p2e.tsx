@@ -1078,8 +1078,8 @@ export type MutationRerollDailyMissionArgs = {
 
 
 export type MutationSetUtmArgs = {
+  raw_uri: Scalars['String'];
   user_id?: InputMaybe<Scalars['Float']>;
-  utm: Scalars['String'];
 };
 
 
@@ -1464,6 +1464,8 @@ export type Query = {
   getProgressDailyMission?: Maybe<ProgressDailyMission>;
   getRaffleDetail?: Maybe<RaffleDetail>;
   getRaffles?: Maybe<Array<RaffleGql>>;
+  getRankOfUserByLucisPoint?: Maybe<UserRanking>;
+  getRankingByLucisPoint?: Maybe<Array<UserRanking>>;
   getRecentWinners?: Maybe<Array<RecentWinner>>;
   getRecentlyCsgoMatch?: Maybe<GCsgoMatch>;
   getRecentlyLolMatch?: Maybe<LolMatchGql>;
@@ -1549,6 +1551,17 @@ export type QueryGetRaffleDetailArgs = {
 
 export type QueryGetRafflesArgs = {
   filter?: InputMaybe<RaffleFilter>;
+};
+
+
+export type QueryGetRankOfUserByLucisPointArgs = {
+  user_id: Scalars['Int'];
+};
+
+
+export type QueryGetRankingByLucisPointArgs = {
+  skip: Scalars['Int'];
+  take: Scalars['Int'];
 };
 
 
@@ -2162,6 +2175,17 @@ export type UserProfile = {
   user_id: Scalars['ID'];
   user_name?: Maybe<Scalars['String']>;
   youtube?: Maybe<Scalars['String']>;
+};
+
+export type UserRanking = {
+  __typename?: 'UserRanking';
+  balance?: Maybe<Balance>;
+  code?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  platform_account?: Maybe<Array<PlatformAccount>>;
+  rank?: Maybe<Scalars['Int']>;
+  status: UserStatus;
 };
 
 export enum UserRole {
