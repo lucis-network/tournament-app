@@ -18,7 +18,7 @@
     width: 100%
     left: -50%
     top: 0
-    transform: skew(-25deg)
+    transform: skew(-24deg)
     mix-blend-mode: soft-light
     z-index: -1
     background: linear-gradient(25.36deg, #242424 68.01%, #AFAFAF 90.25%)
@@ -30,7 +30,7 @@
     width: 100%
     left: 50%
     top: 0
-    transform: skew(-25deg)
+    transform: skew(-24deg)
     mix-blend-mode: soft-light
     z-index: -1
     background: linear-gradient(35.2deg, rgba(0, 0, 10, 0) 23.09%, rgba(0, 0, 10, 0.58) 58.32%, rgba(0, 0, 10, 0.37) 61.71%, rgba(0, 0, 10, 0) 98.79%)
@@ -212,25 +212,28 @@
       font-size: 20px
     .step2
       margin: 16px 0
-      @media screen and ( max-width: 680px )
+      .step2Image
+        @media screen and ( max-width: 680px )
           display: flex
           flex-direction: column
-          
-      img
-        height: 230px
-        min-height: 230px
-        max-height: 230px
-        @media screen and ( max-width: 680px )
-          align-self: center
-      .arrow
-        width: 50px
-        height: 50px
-        margin: 0 16px
-        min-width: 50px
-        @media screen and ( max-width: 680px )
-          transform: rotate(90deg)
-          align-self: center
-          
+        img
+          height: 230px
+          min-height: 230px
+          max-height: 230px
+          @media screen and ( max-width: 680px )
+            align-self: center
+        .arrow
+          width: 50px
+          height: 50px
+          margin: 0 16px
+          min-width: 50px
+          @media screen and ( max-width: 680px )
+            transform: rotate(90deg)
+            width: auto
+            min-height: 90px
+            padding: 30px
+            max-height: 20px
+
   .actionButton
     border: 1px solid rgba(0, 249, 255, 1)
     padding: 8px 16px
@@ -267,7 +270,7 @@
       color: #fff
       justify-content: space-between
       align-items: center
-      margin-top:8px
+      margin-top: 8px
       .refresh
         color: #00F9FF
         text-decoration: underline

@@ -11,6 +11,8 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Raffle, RaffleStatusType} from "../../../../src/generated/graphql_p2e";
 import {debounce, isEmpty} from "lodash";
 import SpinLoading from "../../common/Spin";
+import CountdownTimer from "../../common/CountDown";
+import moment from "moment";
 
 const Raffles = () => {
   const [rafflesData, setRafflesData] = useState<Raffle[]>([])
@@ -37,6 +39,9 @@ const Raffles = () => {
     }
 
     if (searchRafflesData?.searchRaffle) {
+      if(!isCheckFirstTimeRender) {
+        setIsCheckFirstTimeRender(true);
+      }
       setRafflesData(searchRafflesData?.searchRaffle)
     }
   }, [searchRafflesData?.searchRaffle])
@@ -52,13 +57,11 @@ const Raffles = () => {
     debouncedInputTyping(event.currentTarget.value)
   }
 
-  useEffect(() => {
-    console.log("rafflesData", rafflesData);
-  }, [rafflesData])
-
   const onChangeSearchOption = (event: any) => {
       setSearchOption(event.target.value);
   }
+
+  const targetDate = moment(getFeaturedRaffleData?.spotlightRaffle?.end_at).valueOf()
 
   return (
     <div className={s.rafflesWrapper}>
@@ -71,19 +74,29 @@ const Raffles = () => {
             <div className={s.recentWinnersList}>
           {getRecentWinnersData?.getRecentWinners && getRecentWinnersData?.getRecentWinners.length > 0 && (
             getRecentWinnersData?.getRecentWinners.map((item, index) => (
-              <div className={s.recentWinnersItem} key={item?.raffle?.uid}>
+              <div className={s.recentWinnersItem} key={`${item?.raffle?.uid}${index}`}>
                 <div className={s.recentWinnerThumbnail}>
-                  <Image src={item?.raffle?.img ? item?.raffle?.img : '/assets/P2E/raffles/defaultImage.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultImage.jpg" />
+                  <Link href={`/playcore/raffles/${item?.raffle?.uid}`} passHref>
+                    <Image src={item?.raffle?.img ? item?.raffle?.img : '/assets/P2E/raffles/defaultImage.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultImage.jpg" />
+                  </Link>
                 </div>
                 <div className={s.recentWinnerInfo}>
                   <div className={s.winner}>
                     <div className={s.winnerAvatar}>
                       <Image src={item?.user?.profile?.avatar ? item?.user?.profile?.avatar : '/assets/P2E/raffles/defaultAvatar.jpg'} preview={false} alt="" fallback="/assets/P2E/raffles/defaultAvatar.jpg" />
                     </div>
-                    <div className={s.winnerUsername}>{item?.user?.profile?.display_name}</div>
+                    <div className={s.winnerUsername} >
+                      <a
+                        href={`/profile/${item?.user?.profile?.user_name}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {item?.user?.profile?.display_name}
+                      </a>
+                    </div>
                   </div>
                   {item?.raffle?.valued_at && (
-                    <div className={s.winnerValued}>Valued at €{item?.raffle?.valued_at}</div>
+                    <div className={s.winnerValued}>Valued at {item?.raffle?.valued_at}</div>
                   )}
                 </div>
               </div>
@@ -99,7 +112,7 @@ const Raffles = () => {
       <section className={s.sectionFeaturedRaffle}>
         <div className="lucis-container-2">
           <div className={s.titleFlex}>
-            <h2 className={s.sectionTitle}>Raffles in {month[(new Date()).getMonth()]} </h2>
+            {/*<h2 className={s.sectionTitle}>Raffles in {month[(new Date()).getMonth()]} </h2>*/}
             <div className={s.raffleCountdown}>
               <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt="" fallback="" />
               <span className={s.raffleCountdownText}>End in 7 days</span>
@@ -107,35 +120,55 @@ const Raffles = () => {
           </div>
           {getFeaturedRaffleLoading ? (
             <SpinLoading />
-          ) : ((getFeaturedRaffleError || getFeaturedRaffleData?.rafflesInCurrentMonth.length <= 0) ? <Empty /> : (
+          ) : ((getFeaturedRaffleError || !getFeaturedRaffleData?.spotlightRaffle) ? <Empty /> : (
             <div className={s.featuredRaffle}>
               <div className={s.featuredRaffleThumbnail}>
-                <Image src={getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.img as string} preview={false} alt="" />
+                <Image src={getFeaturedRaffleData?.spotlightRaffle?.img as string} preview={false} alt="" />
               </div>
               <div className={s.featuredRaffleInfo}>
-                <Link href={`/playcore/raffles/${getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.uid}`} passHref>
+                <Link href={`/playcore/raffles/${getFeaturedRaffleData?.spotlightRaffle?.uid}`} passHref>
                   <a className={s.btnViewRaffle}>
                     <span>View Raffle</span>
                   </a>
                 </Link>
                 <div className={s.featuredRaffleTitleWrap}>
-                  <h3>{getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.name}</h3>
-                  <p>Valued at {getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.valued_at}</p>
+                  <h3>{getFeaturedRaffleData?.spotlightRaffle?.name}</h3>
+                  <p>Valued at {getFeaturedRaffleData?.spotlightRaffle?.valued_at}</p>
                 </div>
                 <div className={s.featuredRafflePriceWrap}>
                   <div className={s.rafflePrice}>
-                    <div className={s.rafflePriceText}>{getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.prize_amount}</div>
-                    <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt="" />
+                    <div className={s.rafflePriceText}>{getFeaturedRaffleData?.spotlightRaffle?.prize_amount}</div>
+                    {
+                      getFeaturedRaffleData?.spotlightRaffle?.prize_type === "LUCIS_POINT" &&
+                        <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
+                    }
+                    {
+                      getFeaturedRaffleData?.spotlightRaffle?.prize_type === "LUCIS_TOKEN" &&
+                        <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                    }
                   </div>
-                  <div className={s.raffleCountdown}>
-                    <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt="" />
-                    <span className={s.raffleCountdownText}>End in 7 days</span>
-                  </div>
-                  {getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.type && getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.type.length > 0 && (
+                  { getFeaturedRaffleData?.spotlightRaffle?.status === "ENABLED" &&
+                      <div className={s.raffleCountdown}>
+                          <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt=""/>
+                          <span className={s.raffleCountdownText}>End in
+                    </span>
+                          <span className={s.raffleCountdownTime}>
+                      <CountdownTimer targetDate={targetDate}></CountdownTimer>
+                    </span>
+                      </div>
+                  }
+                  { getFeaturedRaffleData?.spotlightRaffle?.status === "CLOSED" &&
+                      <div className={s.raffleClose}>
+                          <Image src="/assets/P2E/raffles/iconCalendarClosed.svg" preview={false} alt=""/>
+                          <div className={`${s.raffleCloseDesc}`}>Closed</div>
+                      </div>
+
+                  }
+                  {getFeaturedRaffleData?.spotlightRaffle?.type && getFeaturedRaffleData?.spotlightRaffle?.type.length > 0 && (
                     <div className={s.featuredRaffleTagWrap}>
                       {
                         // @ts-ignore
-                        getFeaturedRaffleData?.rafflesInCurrentMonth[0]?.type.map((type: string, index: number) => (
+                        getFeaturedRaffleData?.spotlightRaffle?.type.map((type: string, index: number) => (
                         <div className={`${s.raffleTag}`} key={type}>{type}</div>
                       ))}
                     </div>
@@ -146,32 +179,31 @@ const Raffles = () => {
           ))}
         </div>
       </section>
-      <section className={s.sectionRafflesSponsor}>
-        <div className="lucis-container-2">
-          <h2 className={s.sectionTitle}>Sponsor</h2>
-          {(getSponsorRaffleError || getSponsorRaffleData?.getSponsorRaffles.length <= 0) ? <Empty /> : (
-            getSponsorRaffleLoading ? (
-              <SpinLoading />
-            ) : (getSponsorRaffleData?.getSponsorRaffles && (
+      {(getSponsorRaffleError || getSponsorRaffleData?.getSponsorRaffles.length <= 0) ? null : (
+        getSponsorRaffleLoading ? (
+          <SpinLoading/>
+        ) : (getSponsorRaffleData?.getSponsorRaffles && (
+          <section className={s.sectionRafflesSponsor}>
+            <div className="lucis-container-2">
+              <h2 className={s.sectionTitle}>Sponsor</h2>
               <div className={s.rafflesSponsorList}>
                 {getSponsorRaffleData?.getSponsorRaffles.map((sponsor, index) => (
                   <div className={s.raffleSponsorItem} key={sponsor?.uid}>
-                    <Image src={sponsor?.img as string} preview={false} alt="" />
+                    <Image src={sponsor?.img as string} preview={false} alt=""/>
                   </div>
                 ))}
               </div>
-            ))
-          )}
-        </div>
-      </section>
+            </div>
+          </section>
+        ))
+      )}
       <section className={s.sectionRaffles}>
         <div className="lucis-container-2">
           <div className={s.raffleTitleWrap}>
             <h2 className={s.sectionTitle}>Raffles</h2>
             <div className={s.raffleSearchBar}>
               <div className={s.raffleSearchOption}>
-                {/*<Checkbox.Group options={SearchOptions} defaultValue={['Apple']}/>*/}
-                <Radio.Group  defaultValue={searchOption} onChange={onChangeSearchOption}>
+                <Radio.Group value={searchOption} onChange={onChangeSearchOption}>
                   <Radio value={'ENABLED'}>Ongoing</Radio>
                   <Radio value={'CLOSED'}>Closed</Radio>
                 </Radio.Group>
@@ -207,7 +239,14 @@ const Raffles = () => {
                         <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
                         <div className={s.rafflePrice}>
                           <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
-                          <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt="" />
+                          {
+                            raffle?.prize_type === "LUCIS_POINT" &&
+                              <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
+                          }
+                          {
+                            raffle?.prize_type === "LUCIS_TOKEN" &&
+                              <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                          }
                         </div>
                       </div>
                     </div>

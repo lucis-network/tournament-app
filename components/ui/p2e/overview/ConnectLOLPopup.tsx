@@ -207,7 +207,7 @@ export const ConnectLOLPopup = (props: IProps) => {
                       <div
                         className={s.platformUserName}
                         style={{ textAlign: 'center' }}>
-                        This LOL account has been connected to <Link href={`/profile/${connectedUser}`}><span style={{ color: "#00F9FF", cursor: 'pointer'}}>{connectedUserDisPlayName}</span></Link>. Please connect to another account
+                        This LOL account has been connected to <Link href={`/profile/${connectedUser}`}><span style={{ color: "#00F9FF", cursor: 'pointer' }}>{connectedUserDisPlayName}</span></Link>. Please connect to another account
                       </div>}
                   </>
                   : (loadingSearch ? <Spin /> : null)
@@ -277,9 +277,12 @@ export const ConnectLOLPopup = (props: IProps) => {
                     :
                     <div style={{ marginBottom: 8 }}>Step 2: Open your LOL game and create a custom room with the generated room name<br />The room name will expire within 5 minutes</div>
                   }
-                  <img src="/assets/P2E/overview/tutorial-step1.png" alt="" />
-                  <img className={s.arrow} src="/assets/P2E/overview/arrow.svg" alt="" />
-                  <img src="/assets/P2E/overview/tutorial-step2.png" alt="" />
+                  <div className={s.step2Image}>
+                    <img src="/assets/P2E/overview/tutorial-step1.png" alt="" />
+                    <img className={s.arrow} src="/assets/P2E/overview/arrow.svg" alt="" />
+                    <img src="/assets/P2E/overview/tutorial-step2.png" alt="" />
+                  </div>
+
                 </div>
                 <div className={s.step3}>
                   Step 3: After creating room, click on [I created the room!] button on this popup to verify your account

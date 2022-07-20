@@ -149,7 +149,7 @@ const MissionItem = (props: MissionItemProp) => {
               <Progress
                 type="circle"
                 strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
-                width={60}
+                width={64}
                 percent={currentPercent} format={() => {
                   if (currentMission?.mission?.csgo_mission?.type === CsgoMissionType.Kr || currentMission?.mission?.csgo_mission?.type === CsgoMissionType.Kda) {
                     return `${achieved}`

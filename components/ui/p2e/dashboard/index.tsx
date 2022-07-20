@@ -19,6 +19,7 @@ import ButtonWrapper from 'components/common/button/Button';
 import { Game } from 'utils/Enum';
 import { RecentMatchListLOL } from '../recentMatchComponent/RecentMatchListLOL';
 import MissionService from 'components/service/p2e/MissionService';
+import Link from 'next/link';
 
 
 interface IProps {
@@ -32,6 +33,7 @@ const Dashboard = (props: IProps) => {
   const [loadingRecentMatch, setLoadingRecentMatch] = useState(false);
 
   const [recentlyMatches, setRecentlyMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([])
+  const [dailyPointRecentMatch, setDailyPointRecentMatch] = useState<{day: number, month: number, year: number, point: number}[]>();
   const [showGiftBox, setShowGiftBox] = React.useState<boolean>(false);
   const [isClaimBox, setIsClaimBox] = React.useState(false);
   const statisticQuery = useQuery(GET_STATISTICS, {
@@ -94,13 +96,15 @@ const Dashboard = (props: IProps) => {
     setLoadingRecentMatch(true);
     switch (game) {
       case Game.CSGO:
-        const promiseCsgo = await MissionService.getCSGORecentMatch(1,5);
+        const promiseCsgo = await MissionService.getCSGORecentMatch(1, 5);
         setRecentlyMatches(promiseCsgo.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
+        setDailyPointRecentMatch(promiseCsgo?.data?.getRecentlyCsgoMatch?.daily_point as any);
         setLoadingRecentMatch(false);
         return;
       case Game.LOL:
-        const promiseLol = await MissionService.getLOLRecentMatch(1,5);
+        const promiseLol = await MissionService.getLOLRecentMatch(1, 5);
         setRecentlyMatches(promiseLol.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
+        setDailyPointRecentMatch(promiseLol?.data?.getRecentlyLolMatch?.daily_point as any);
         setLoadingRecentMatch(false);
         return;
 
@@ -142,10 +146,12 @@ const Dashboard = (props: IProps) => {
       case Game.CSGO:
         return <RecentMatchListCSGO
           recentMatches={recentlyMatches as CsgoPlayerMatch[]}
+          dailyPoint={dailyPointRecentMatch}
           loading={loadingRecentMatch} />;
       case Game.LOL:
         return <RecentMatchListLOL
           recentMatches={recentlyMatches as LolPlayerMatchGql[]}
+          dailyPoint={dailyPointRecentMatch}
           loading={loadingRecentMatch} />;
 
       default:
@@ -207,7 +213,9 @@ const Dashboard = (props: IProps) => {
               />
               {RecentMatchListRender()}
               {recentlyMatches?.length !== 0 && <div className={s.viewAllHistory}>
-                <span onClick={() => router.push("/playcore/dashboard/history")}>View all history</span>
+                <Link passHref href="/playcore/dashboard/history">
+                  <a onClick={() => router.push("/playcore/dashboard/history")}>View all history</a>
+                </Link>
               </div>}
             </Col>
             <Col lg={8} md={24}>

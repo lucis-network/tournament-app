@@ -41,7 +41,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const checkAndSaveUtmUrl = (userUid?: number) => {
     console.log("route?.query", route?.query);
     for (const [key, value] of Object.entries(route?.query)) {
-      if(key.includes("utm_")) {
+      if(key.includes("utm_") || key.includes("fbclid") || key.includes("gclid")) {
         const res = UtmService.setUtm(Number(userUid), route.asPath).then((response) => {
           if (!response?.data) {
             console.warn("Save utm fail!")

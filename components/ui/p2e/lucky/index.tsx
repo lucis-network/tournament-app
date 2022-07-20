@@ -11,7 +11,6 @@ import {
 import {
   CostType,
   LuckyChestTier,
-  LuckyChestType,
   OpenChestErrorCode,
   OpenChestResponse
 } from "../../../../src/generated/graphql_p2e";
@@ -28,18 +27,29 @@ import {b64DecodeUnicode} from "../../../../utils/String";
 import {useMutation, useQuery} from "@apollo/client";
 import PopupRollingChest from "./popup/popupRollingChest";
 import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
+import AuthStore from "../../../Auth/AuthStore";
+import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
+import AuthGameStore from "../../../Auth/AuthGameStore";
+import {useRouter} from "next/router";
+import {OverviewSection} from "../../../../utils/Enum";
 
-const games = [
-  LuckyChestType.Csgo,
-  LuckyChestType.Lol,
+export enum GAMES {
+  FACEITCSGO = 1,
+  GARENALOL = 2,
+}
+
+const games: number[] = [
+  GAMES.FACEITCSGO,
+  GAMES.GARENALOL,
 ]
 
 export default function LuckyChest(props: any) {
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
     const [chestResponse, setChestResponse] = useState<OpenChestResponse>({} as OpenChestResponse);
+    const gameType = props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL
     const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
-        type: props.currentGame ? games[props.currentGame - 1] : LuckyChestType.Lol,
+        game_platform_id: gameType,
         tier: LuckyChestTier.Standard,
     })
     const [openLuckyChest] = useMutation(OPEN_CHEST, {
@@ -51,8 +61,9 @@ export default function LuckyChest(props: any) {
       context: {
         endpoint: 'p2e'
       },
+      skip: !AuthStore.isLoggedIn
     })
-
+    const router = useRouter()
     const chestDetail = getChestDetailData?.getChestDetail
     const ticketCost = chestDetail?.ticket_cost
     const ticketCostType = chestDetail?.ticket_cost_type
@@ -95,7 +106,7 @@ export default function LuckyChest(props: any) {
     try {
       await openLuckyChest({
         variables: {
-          type: LuckyChestType.Csgo,
+          game_platform_id: gameType,
           tier: LuckyChestTier.Standard,
         },
         onCompleted: (data) => {
@@ -109,41 +120,60 @@ export default function LuckyChest(props: any) {
       })
     } catch (error: any) {
       handleGraphqlErrors(error, (code) => {
-        console.log(code);
         switch (code) {
           case OpenChestErrorCode.ChestNotFound:
-            message.error('Invalid chest. Please try again later.');
-            return;
+            message.error("Invalid chest. Please try again later.");
+            break
           case OpenChestErrorCode.ServerError:
-            message.error('Connection failed. Please try again later.');
-            return;
+            message.error("Connection failed. Please try again later.");
+            break
           case OpenChestErrorCode.BalanceNotInitiated:
             message.error("You don't have enough balance to open.");
-            return;
+            break
           case OpenChestErrorCode.NotEnoughLucisPoint:
             message.error("You don't have enough Lucis point to open.");
-            return;
+            break
           case OpenChestErrorCode.NotEnoughLucisToken:
             message.error("You don't have enough LUCIS token to open.");
-            return;
+            break
           case OpenChestErrorCode.PrizeNotFound:
-            message.error('Invalid prize. Please try again later.');
-            return;
+            message.error("Invalid prize. Please try again later.");
+            break
           case OpenChestErrorCode.GameNotConnected:
             message.error("Please connect game first.");
-            return;
+            break
           default:
-            message.error('An unknown error has occurred. Please try again later.');
-            return;
+            message.error("An unknown error has occurred. Please try again later.");
+            break
         }
       })
-    } finally {
-      setChestUnlocking(false)
     }
   }
 
   const handleOpenBox = async () => {
     if (isClient) {
+      if (!AuthStore.isLoggedIn) {
+        LoginBoxStore.connectModalVisible = true
+        return
+      }
+      switch (gameType) {
+        case GAMES.FACEITCSGO:
+          if (!AuthGameStore.isLoggedInFaceit) {
+            message.warning("Please connect game first.");
+            router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
+            return
+          }
+          break
+        case GAMES.GARENALOL:
+          if (!AuthGameStore.isLoggedInLMSS) {
+            message.warning("Please connect game first.")
+            router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
+            return
+          }
+          break
+        default:
+          break
+      }
       setChestUnlocking(true)
       try {
         let canOpen = true
@@ -176,6 +206,7 @@ export default function LuckyChest(props: any) {
                 }
               }
             }
+            setChestUnlocking(false)
           }
 
           if (box) {
@@ -186,10 +217,13 @@ export default function LuckyChest(props: any) {
           setTimeout(() => {
             openRollingLuckyChest()
           }, 700)
+        } else {
+          setChestUnlocking(false)
         }
       } catch (e) {
         message.error('An unknown error has occurred. Please try again later.')
         console.log('[handleOpenBox] error: ', e);
+        setChestUnlocking(false)
       }
     }
   }
@@ -216,8 +250,8 @@ export default function LuckyChest(props: any) {
           <div className="lucis-container-2">
             <div className={s.luckyChestTabs}>
               <div className={`${s.luckyChestTabsItem} active`}>Standard</div>
-              <div className={s.luckyChestTabsItem}>Premium</div>
-              <div className={s.luckyChestTabsItem}>NFTs</div>
+              <div className={`${s.luckyChestTabsItem} disabled`}>Premium</div>
+              <div className={`${s.luckyChestTabsItem} disabled`}>NFTs</div>
             </div>
           </div>
         </div>
@@ -239,7 +273,7 @@ export default function LuckyChest(props: any) {
                   </div>
                 </div>
                 {chestDetail?.desc && (
-                  <p>{chestDetail?.desc}</p>
+                  <p dangerouslySetInnerHTML={{__html: chestDetail?.desc}} />
                 )}
               </div>
             </div>
@@ -289,10 +323,10 @@ export default function LuckyChest(props: any) {
                     </>
                   ))}
                 </ScrollMenu>
-                </div>
+              </div>
             </div>
           )}
-          <HistoryTable currentGame={games[props.currentGame]}/>
+          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType} />}
           {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">

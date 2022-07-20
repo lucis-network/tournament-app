@@ -72,8 +72,12 @@
     font-size: 14px
     line-height: 21px
     color: #00FFFF
+    margin-right: 5px
     .countdownTextColored
       color: #DF9B16
+  .raffleCountdownTime
+    color: #00FFFF
+    font-size: 16px
 .rafflePrice
   font-family: 'Lexend'
   font-weight: 600
@@ -91,6 +95,11 @@
       min-width: 14px
       max-width: 14px
       height: 14px
+      text-shadow: 0 1.07179px 1.07179px rgba(0, 0, 0, 0.25), -0.535897px 0.535897px 0px #1C5576
+      box-shadow: 0 0 10.6312px rgb(11 235 214 / 50%)
+      backdrop-filter: blur(40px)
+      border-radius: 50%
+
 .raffleTag
   display: inline-block
   width: 59px
@@ -192,6 +201,7 @@
         max-width: 335px
       .recentWinnerThumbnail
         width: 100%
+        cursor: pointer
         :global(.ant-image)
           width: 100%
           height: 100%
@@ -227,17 +237,18 @@
                 object-fit: cover
                 border-radius: 4px
           .winnerUsername
-            color: #FFFFFF
-            font-family: 'Lexend'
-            font-size: 12px
-            line-height: 21px
-            display: -webkit-box
-            -webkit-line-clamp: 1
-            -webkit-box-orient: vertical
-            overflow: hidden
-            @media screen and (min-width: 1400px)
-              font-size: 14px
-              line-height: 18px
+            a
+              color: #FFFFFF
+              font-family: 'Lexend'
+              font-size: 12px
+              line-height: 21px
+              display: -webkit-box
+              -webkit-line-clamp: 1
+              -webkit-box-orient: vertical
+              overflow: hidden
+              @media screen and (min-width: 1400px)
+                font-size: 14px
+                line-height: 18px
         .winnerValued
           font-family: 'Lexend'
           font-size: 12px
@@ -366,10 +377,11 @@
         p
           font-family: 'Lexend'
           font-weight: 400
-          font-size: 14px
+          font-size: 18px
           line-height: 21px
           color: rgba(255, 255, 255, 0.7)
           margin-bottom: 0
+          color: #FFD058
       .featuredRafflePriceWrap
         display: flex
         flex-direction: column
@@ -400,6 +412,15 @@
             margin-right: 40px
             &:last-of-type
               margin-right: 0
+      .raffleClose
+        display: flex
+        img
+          margin-right: 16px
+          width: 20px
+        .raffleCloseDesc
+          font-size: 18px
+          color: rgba(226, 76, 76, 0.5)
+          margin-right: 16px
 .sectionRafflesSponsor
   margin-bottom: 32px
   @media screen and (min-width: 768px)

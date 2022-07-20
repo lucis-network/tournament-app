@@ -23,7 +23,7 @@ const PrizeDetail = ({image, title, description, rarity}: ChestPrizeProps) => {
         <div className={s.detailPrizeTitle}>{title ?? ''}</div>
       </div>
       <div className={s.detailPrizeInfo}>
-        <h3 className={s.detailPrizeRarity}>Quality: {rarity ?? ''}</h3>
+        <h3 className={s.detailPrizeRarity}>Rarity: {rarity ?? ''}</h3>
         {description && (
           <p className={s.detailPrizeDesc}>{description}</p>
         )}

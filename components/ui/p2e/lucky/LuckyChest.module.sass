@@ -259,6 +259,9 @@
             @media screen and (min-width: 768px)
                 font-size: 16px
                 line-height: 18px
+            &:global(.disabled)
+                cursor: no-drop
+                user-select: none
             &:global(.active)
                 color: #00F9FF
                 font-weight: 600
@@ -344,7 +347,7 @@
            line-height: 26px
 .chestPrizesList
     position: relative
-    width: calc(100% - 50px)
+    //width: calc(100% - 50px)
     margin: auto
     border-top: 2px solid rgba(78, 134, 147, 0.32)
     padding-top: 16px
@@ -352,7 +355,7 @@
         width: 100%
         margin: 0
     &:before, &:after
-        content: ''
+        //content: ''
         position: absolute
         display: block
         top: 50%

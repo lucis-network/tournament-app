@@ -22,19 +22,19 @@ export const RecentMatchDetailLOL = () => {
     const res = await MissionService.getLOLMatchStatistic(player_match_id);
     setStatistic(res?.data?.getLolMatchStatistic);
   }
-  
+
   const data = statistic;
   const faceitAccount = AuthGameStore;
   const lucisPointEarned = {
-    win: data ? (data.is_win ? data?.player_statistic?.win : 0) : null,
-    kill: data?.player_statistic?.kill ?? null,
-    assists: data?.player_statistic?.assist ?? null,
-    creep: data?.player_statistic?.["minion_kill"] ?? null,
-    gold: data?.player_statistic?.["gold_earned"] ?? null,
-    damage: data?.player_statistic?.damage_dealt ?? null,
-    tank: data?.player_statistic?.damage_taken ?? null,
-    eyesKilled: data?.player_statistic?.wards_killed ?? null,
-    eyesPlaced: data?.player_statistic?.wards_placed ?? null,
+    win: data ? (data.is_win ? data?.player_statistic?.win : 0) : 0,
+    kill: data?.player_statistic?.kill ?? 0,
+    assists: data?.player_statistic?.assist ?? 0,
+    creep: data?.player_statistic?.["minion_kill"] ?? 0,
+    gold: data?.player_statistic?.["gold_earned"] ?? 0,
+    damage: data?.player_statistic?.damage_dealt ?? 0,
+    tank: data?.player_statistic?.damage_taken ?? 0,
+    eyesKilled: data?.player_statistic?.wards_killed ?? 0,
+    eyesPlaced: data?.player_statistic?.wards_placed ?? 0,
   };
 
 
@@ -237,7 +237,7 @@ export const RecentMatchDetailLOL = () => {
               <div className={s.informationDetail}>
                 <div className={s.mapBackground}
                   style={{
-                    background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.match?.type === "NormalDraft" ? mapSummonerRift : mapAram}")`
+                    background: `linear-gradient(0deg, rgba(45, 52, 70, 0.8), rgba(45, 52, 70, 0.8)), url("${data?.match?.type === "Aram" ? mapAram : mapSummonerRift}")`
                   }}
                 >
                   <h3 className={s.mapName}>{MAP_LOL[data?.match?.type as string] ?? data?.match?.type ?? "-----"}</h3>
@@ -260,7 +260,7 @@ export const RecentMatchDetailLOL = () => {
                       <div className={s.headerRight}>Lucis bonus: --%</div>
                     </div>
                     <div className={s.parameterBody}>
-                    <Row className={s.row}>
+                      <Row className={s.row}>
                         <Col span={3}>
                           <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/win-icon.svg" alt="" />

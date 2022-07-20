@@ -76,8 +76,19 @@ export const MAP_CSGO: { [s: string]: string } = {
 
 export const MAP_LOL: { [type: string]: string } = {
   "NormalDraft": "SUMMONER'S RIFT",
-  "Aram": "ARAM"
+  "Aram": "ARAM",
+  "None": "SUMMONER'S RIFT",
+  "RankSingleDouble": "SUMMONER'S RIFT",
+  "RankFlexible": "SUMMONER'S RIFT"
 
+}
+
+export const MODE_LOL: { [type: string]: string } = {
+  "NormalDraft": "Normal",
+  "Aram": "Normal",
+  "RankSingleDouble": "Rank",
+  "RankFlexible": "Rank",
+  "None": "Other"
 }
 
 export enum Game {

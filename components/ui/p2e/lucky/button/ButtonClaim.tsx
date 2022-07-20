@@ -2,14 +2,15 @@ import s from './ButtonClaim.module.sass'
 
 type ButtonClaimProps = {
     isClaimed?: boolean,
-    onClick?: () => void
+    onClick?: () => void,
+    disabled: boolean,
 }
 
-export default function ButtonClaim({isClaimed, onClick}: ButtonClaimProps) {
+export default function ButtonClaim({isClaimed, onClick, disabled}: ButtonClaimProps) {
     return (
         <div className={s.wrapper}>
-            <button className={s.btn} disabled={isClaimed} onClick={onClick}>
-                <span>Claim</span>
+            <button className={s.btn} disabled={disabled} onClick={onClick}>
+                <span>{isClaimed ? 'Claimed' : 'Claim'}</span>
             </button>
         </div>
     )

@@ -4,11 +4,11 @@ import apoloClient, {
 } from "utils/apollo_client";
 class UtmService {
 
-  public async setUtm(user_id?: number, utm?: string) {
+  public async setUtm(user_id?: number, raw_uri?: string) {
     const response = await apoloClient.mutate({
       mutation: gql`
-        mutation ($user_id: Float, $utm: String!){
-          setUtm(user_id: $user_id, utm: $utm)
+        mutation ($user_id: Float, $raw_uri: String!){
+          setUtm(user_id: $user_id, raw_uri: $raw_uri)
         }
       `,
       context: {
@@ -16,7 +16,7 @@ class UtmService {
       },
       variables: {
         user_id: user_id,
-        utm: utm
+        raw_uri: raw_uri
       }
     });
 

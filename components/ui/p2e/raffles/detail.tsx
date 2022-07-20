@@ -1,5 +1,5 @@
 import s from './Raffles.module.sass'
-import {Empty, Image, Input, InputNumber, message as antMessage} from "antd";
+import {Empty, Image, Input, InputNumber, message as antMessage, message} from "antd";
 import Link from "next/link";
 import {observer} from "mobx-react-lite";
 import {useSearchRaffles,} from "../../../../hooks/p2e/raffles/useRafflesList";
@@ -34,10 +34,15 @@ const RafflesDetail = observer(() => {
   const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
   const [isCheckRefetchDataWonTickets, setIsCheckRefetchDataWonTickets] = useState(false);
 
-  const {dataWonTickets, refetchDataWonTickets} = useGetWonTickets({
+  const {dataWonTickets, refetchDataWonTickets, errorGetWonTickets} = useGetWonTickets({
     raffle_uid: raffleUID,
-    skip: isEmpty(raffleUID)
-  },);
+    skip: !isCheckRefetchDataWonTickets
+  },
+  );
+
+  if(errorGetWonTickets) {
+    console.log("errorGetWonTickets", errorGetWonTickets);
+  }
 
   const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles({
     name: '',
@@ -59,9 +64,9 @@ const RafflesDetail = observer(() => {
   const {buyRaffleTicket} = useBuyRaffleTicket()
   const {dataWinTicket} = RafflesStore
 
-
   useEffect(() => {
-    if (getAllTicketsData?.getAllTickets?.user_tickets) {
+    if (getAllTicketsData?.getAllTickets?.user_tickets && getAllTicketsData?.getAllTickets?.user_tickets.length > 0) {
+      console.log(1243213213213)
       setAllTickets(getAllTicketsData?.getAllTickets?.user_tickets)
     }
   }, [getAllTicketsData?.getAllTickets?.user_tickets])
@@ -101,14 +106,15 @@ const RafflesDetail = observer(() => {
 
 
   useEffect(() => {
-    let k = false;
     const checkDateInterval =  setInterval(() => {
       const dateNow = moment(new Date()).valueOf();
       const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
         .valueOf();
       const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
-      if(timeBefore <= 5) {
+      console.log("timeBefore", timeBefore);
+      if(timeBefore <= 5 && !checkDisplayEndAt) {
         setCheckDisplayEndAt(true);
+        refetchRaffleDetail();
       }
       if(timeBefore <= 0.5) {
         if (!isCheckRefetchDataWonTickets) {
@@ -124,7 +130,7 @@ const RafflesDetail = observer(() => {
   }, [getRaffleDetailData?.getRaffleDetail, checkDisplayEndAt, isCheckRefetchDataWonTickets])
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
-  const raffleEndAt = moment(raffleDetailData?.end_at).format('hh:mm MMM Do')
+  const raffleEndAt = moment(raffleDetailData?.end_at).format('HH:mm MMM Do')
   const allTicketsCount = getAllTicketsData?.getAllTickets?.count ? getAllTicketsData?.getAllTickets?.count : 0
   const myTicketsCount = getMyTicketsData?.getMyTickets?.count ? getMyTicketsData?.getMyTickets?.count : 0
   const ticketLimitationPerUser = getRaffleDetailData?.getRaffleDetail?.ticket?.user_limit
@@ -193,6 +199,9 @@ const RafflesDetail = observer(() => {
             case 'UNAUTHENTICATED':
               antMessage.error('Please sign in first.')
               break
+            case 'UserRegionInvalid':
+              antMessage.error('This raffle is not available in your country.')
+              break
             default:
               antMessage.error('An unknown error has occurred. Please try again later.')
               break
@@ -226,7 +235,6 @@ const RafflesDetail = observer(() => {
       <DefaultErrorPage statusCode={404}/>
     </>
   )
-
   return (
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
@@ -326,7 +334,7 @@ const RafflesDetail = observer(() => {
               <div className={s.buyTicketDesc}>
                 <h2>How you get tickets</h2>
                 <p>You can get a lot of Lucis points after completing the Lucis mission. {`Let's`} get it!</p>
-                <Link href="/p2e/missions" passHref>
+                <Link href="/playcore/missions" passHref>
                   <a className={s.sidebarBtn}>
                     <span>Earn more</span>
                   </a>

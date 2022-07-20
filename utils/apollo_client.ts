@@ -21,6 +21,7 @@ import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import AuthStore from "../components/Auth/AuthStore";
+import AuthGameStore from "components/Auth/AuthGameStore";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -131,6 +132,9 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         if (_getAuthToken() != null) {
           clearLocalAuthInfo();
           AuthStore.resetStates();
+          AuthGameStore.resetStates(); // reset game store
+
+          antd_message.error("Session has expired. Please sign in again!", 5);
         }
       }
     });
