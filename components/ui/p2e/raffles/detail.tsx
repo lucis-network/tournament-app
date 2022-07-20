@@ -200,6 +200,9 @@ const RafflesDetail = observer(() => {
             case 'UNAUTHENTICATED':
               antMessage.error('Please sign in first.')
               break
+            case 'UserRegionInvalid':
+              antMessage.error('This raffle is not available in your country.')
+              break
             default:
               antMessage.error('An unknown error has occurred. Please try again later.')
               break
@@ -233,8 +236,6 @@ const RafflesDetail = observer(() => {
       <DefaultErrorPage statusCode={404}/>
     </>
   )
-
-  console.log("allTickets", allTickets);
   return (
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
