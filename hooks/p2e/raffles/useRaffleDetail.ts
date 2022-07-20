@@ -42,7 +42,8 @@ export const useGetRaffleDetail = (raffle_uid?: string): {
     skip: isEmpty(raffle_uid),
     context: {
       endpoint: 'p2e'
-    }
+    },
+    fetchPolicy: "no-cache",
   })
 
   return {
@@ -75,7 +76,8 @@ export const useGetMyTicket = ({raffle_uid, limit, page}: GetMyTicketsProps): {
     skip: isEmpty(raffle_uid),
     context: {
       endpoint: 'p2e'
-    }
+    },
+    fetchPolicy: "no-cache",
   })
 
   return {

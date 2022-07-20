@@ -155,6 +155,7 @@ const GET_RAFFLE_IN_CURRENT_MONTH = gql`
       img
       type
       end_at
+      status
     }
   }
 `

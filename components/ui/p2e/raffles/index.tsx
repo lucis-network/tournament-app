@@ -11,6 +11,8 @@ import React, {useCallback, useEffect, useState} from "react";
 import {Raffle, RaffleStatusType} from "../../../../src/generated/graphql_p2e";
 import {debounce, isEmpty} from "lodash";
 import SpinLoading from "../../common/Spin";
+import CountdownTimer from "../../common/CountDown";
+import moment from "moment";
 
 const Raffles = () => {
   const [rafflesData, setRafflesData] = useState<Raffle[]>([])
@@ -37,6 +39,9 @@ const Raffles = () => {
     }
 
     if (searchRafflesData?.searchRaffle) {
+      if(!isCheckFirstTimeRender) {
+        setIsCheckFirstTimeRender(true);
+      }
       setRafflesData(searchRafflesData?.searchRaffle)
     }
   }, [searchRafflesData?.searchRaffle])
@@ -52,13 +57,11 @@ const Raffles = () => {
     debouncedInputTyping(event.currentTarget.value)
   }
 
-  useEffect(() => {
-    console.log("rafflesData", rafflesData);
-  }, [rafflesData])
-
   const onChangeSearchOption = (event: any) => {
       setSearchOption(event.target.value);
   }
+
+  const targetDate = moment(getFeaturedRaffleData?.spotlightRaffle?.end_at).valueOf()
 
   return (
     <div className={s.rafflesWrapper}>
@@ -109,7 +112,7 @@ const Raffles = () => {
       <section className={s.sectionFeaturedRaffle}>
         <div className="lucis-container-2">
           <div className={s.titleFlex}>
-            <h2 className={s.sectionTitle}>Raffles in {month[(new Date()).getMonth()]} </h2>
+            {/*<h2 className={s.sectionTitle}>Raffles in {month[(new Date()).getMonth()]} </h2>*/}
             <div className={s.raffleCountdown}>
               <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt="" fallback="" />
               <span className={s.raffleCountdownText}>End in 7 days</span>
@@ -144,10 +147,19 @@ const Raffles = () => {
                         <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
                     }
                   </div>
-                  <div className={s.raffleCountdown}>
-                    <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt="" />
-                    <span className={s.raffleCountdownText}>End in 7 days</span>
-                  </div>
+                  { getFeaturedRaffleData?.spotlightRaffle?.status === "ENABLED" &&
+                      <div className={s.raffleCountdown}>
+                          <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt=""/>
+                          <span className={s.raffleCountdownText}>End in
+                    </span>
+                          <span className={s.raffleCountdownTime}>
+                      <CountdownTimer targetDate={targetDate}></CountdownTimer>
+                    </span>
+                      </div>
+                  }
+                  { getFeaturedRaffleData?.spotlightRaffle?.status === "CLOSED" &&
+                      <div className={`${s.raffleTag}`}>CLOSED</div>
+                  }
                   {getFeaturedRaffleData?.spotlightRaffle?.type && getFeaturedRaffleData?.spotlightRaffle?.type.length > 0 && (
                     <div className={s.featuredRaffleTagWrap}>
                       {
@@ -155,6 +167,7 @@ const Raffles = () => {
                         getFeaturedRaffleData?.spotlightRaffle?.type.map((type: string, index: number) => (
                         <div className={`${s.raffleTag}`} key={type}>{type}</div>
                       ))}
+                      <div>ac</div>
                     </div>
                   )}
                 </div>
