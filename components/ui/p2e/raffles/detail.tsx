@@ -1,5 +1,5 @@
 import s from './Raffles.module.sass'
-import {Empty, Image, Input, InputNumber, message as antMessage} from "antd";
+import {Empty, Image, Input, InputNumber, message as antMessage, message} from "antd";
 import Link from "next/link";
 import {observer} from "mobx-react-lite";
 import {useSearchRaffles,} from "../../../../hooks/p2e/raffles/useRafflesList";
@@ -59,9 +59,9 @@ const RafflesDetail = observer(() => {
   const {buyRaffleTicket} = useBuyRaffleTicket()
   const {dataWinTicket} = RafflesStore
 
-
   useEffect(() => {
-    if (getAllTicketsData?.getAllTickets?.user_tickets) {
+    if (getAllTicketsData?.getAllTickets?.user_tickets && getAllTicketsData?.getAllTickets?.user_tickets.length > 0) {
+      console.log(1243213213213)
       setAllTickets(getAllTicketsData?.getAllTickets?.user_tickets)
     }
   }, [getAllTicketsData?.getAllTickets?.user_tickets])
@@ -109,6 +109,7 @@ const RafflesDetail = observer(() => {
       const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
       if(timeBefore <= 5) {
         setCheckDisplayEndAt(true);
+        refetchRaffleDetail();
       }
       if(timeBefore <= 0.5) {
         if (!isCheckRefetchDataWonTickets) {
@@ -122,6 +123,12 @@ const RafflesDetail = observer(() => {
       clearInterval(checkDateInterval)
     }
   }, [getRaffleDetailData?.getRaffleDetail, checkDisplayEndAt, isCheckRefetchDataWonTickets])
+
+  useEffect(() => {
+    if(getRaffleDetailData?.getRaffleDetail?.status === "DISABLED") {
+      message.warn("The raffle was canceled due to the number of prizes being greater than the number of sold tickets. We're sorry for the inconvenience. Buyer's balance has been refunded. Please choose another raffle to find your luck. Good luck to you!", 10);
+    }
+  }, [getRaffleDetailData?.getRaffleDetail])
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
   const raffleEndAt = moment(raffleDetailData?.end_at).format('hh:mm MMM Do')
@@ -227,6 +234,7 @@ const RafflesDetail = observer(() => {
     </>
   )
 
+  console.log("allTickets", allTickets);
   return (
     <div className={s.rafflesDetailWrapper}>
       <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>

@@ -34,7 +34,7 @@ export const useGetFeaturedRaffle = (): {
   getFeaturedRaffleError: ApolloError | undefined,
   refetchFeaturedRaffle: () => Promise<ApolloQueryResult<any>>,
   getFeaturedRaffleData: {
-    rafflesInCurrentMonth: Raffle[]
+    spotlightRaffle: Raffle
   },
 } => {
   const {
@@ -146,7 +146,7 @@ const GET_RECENT_WINNERS = gql`
 
 const GET_RAFFLE_IN_CURRENT_MONTH = gql`
   query {
-    rafflesInCurrentMonth {
+    spotlightRaffle {
       uid
       name
       valued_at
