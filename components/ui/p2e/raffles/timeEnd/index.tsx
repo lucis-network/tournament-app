@@ -15,8 +15,14 @@ const CountdownTimeEnd: React.FC<CountdownTimerProps> = (props) => {
 
 	console.log(days, hours, minutes, seconds)
 	if (days + hours + minutes + seconds < 0) {
-		refetchRaffleDetail().then(r => {});
-		refetchMyWonTickets().then(r => {});
+
+		const myTimeout = setTimeout(() => {
+			refetchRaffleDetail().then(r => {});
+			refetchMyWonTickets().then(r => {});
+		}, 3000);
+
+		clearTimeout(myTimeout);
+
 		return <ShowCounterTimeEnd days={0} hours={0} minutes={0} seconds={0} />;
 	} else {
 		return (
