@@ -158,7 +158,11 @@ const Raffles = () => {
                       </div>
                   }
                   { getFeaturedRaffleData?.spotlightRaffle?.status === "CLOSED" &&
-                      <div className={`${s.raffleTag}`}>CLOSED</div>
+                      <div className={s.raffleClose}>
+                          <Image src="/assets/P2E/raffles/iconCalendarClosed.svg" preview={false} alt=""/>
+                          <div className={`${s.raffleCloseDesc}`}>Closed</div>
+                      </div>
+
                   }
                   {getFeaturedRaffleData?.spotlightRaffle?.type && getFeaturedRaffleData?.spotlightRaffle?.type.length > 0 && (
                     <div className={s.featuredRaffleTagWrap}>
@@ -167,7 +171,6 @@ const Raffles = () => {
                         getFeaturedRaffleData?.spotlightRaffle?.type.map((type: string, index: number) => (
                         <div className={`${s.raffleTag}`} key={type}>{type}</div>
                       ))}
-                      <div>ac</div>
                     </div>
                   )}
                 </div>
@@ -236,7 +239,14 @@ const Raffles = () => {
                         <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
                         <div className={s.rafflePrice}>
                           <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
-                          <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt="" />
+                          {
+                            raffle?.prize_type === "LUCIS_POINT" &&
+                              <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
+                          }
+                          {
+                            raffle?.prize_type === "LUCIS_TOKEN" &&
+                              <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                          }
                         </div>
                       </div>
                     </div>

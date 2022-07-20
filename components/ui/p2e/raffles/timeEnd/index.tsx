@@ -13,12 +13,10 @@ const CountdownTimeEnd: React.FC<CountdownTimerProps> = (props) => {
 	const {targetDate, refetchRaffleDetail, refetchMyWonTickets} = props;
 	const [days, hours, minutes, seconds] = useCountdownTimeEnd(targetDate);
 
-	if (days + hours + minutes + seconds <= 0) {
-		const interval = setInterval(() => {
-			refetchRaffleDetail().then(r => {});
-			refetchMyWonTickets().then(r => {});
-		}, 3000);
-		clearInterval(interval);
+	console.log(days, hours, minutes, seconds)
+	if (days + hours + minutes + seconds < 0) {
+		refetchRaffleDetail().then(r => {});
+		refetchMyWonTickets().then(r => {});
 		return <ShowCounterTimeEnd days={0} hours={0} minutes={0} seconds={0} />;
 	} else {
 		return (

@@ -34,10 +34,15 @@ const RafflesDetail = observer(() => {
   const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
   const [isCheckRefetchDataWonTickets, setIsCheckRefetchDataWonTickets] = useState(false);
 
-  const {dataWonTickets, refetchDataWonTickets} = useGetWonTickets({
+  const {dataWonTickets, refetchDataWonTickets, errorGetWonTickets} = useGetWonTickets({
     raffle_uid: raffleUID,
-    skip: isEmpty(raffleUID)
-  },);
+    skip: !isCheckRefetchDataWonTickets
+  },
+  );
+
+  if(errorGetWonTickets) {
+    console.log("errorGetWonTickets", errorGetWonTickets);
+  }
 
   const {searchRafflesLoading, searchRafflesError, searchRafflesData} = useSearchRaffles({
     name: '',
@@ -101,13 +106,13 @@ const RafflesDetail = observer(() => {
 
 
   useEffect(() => {
-    let k = false;
     const checkDateInterval =  setInterval(() => {
       const dateNow = moment(new Date()).valueOf();
       const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
         .valueOf();
       const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
-      if(timeBefore <= 5) {
+      console.log("timeBefore", timeBefore);
+      if(timeBefore <= 5 && !checkDisplayEndAt) {
         setCheckDisplayEndAt(true);
         refetchRaffleDetail();
       }
@@ -124,14 +129,8 @@ const RafflesDetail = observer(() => {
     }
   }, [getRaffleDetailData?.getRaffleDetail, checkDisplayEndAt, isCheckRefetchDataWonTickets])
 
-  useEffect(() => {
-    if(getRaffleDetailData?.getRaffleDetail?.status === "DISABLED") {
-      message.warn("The raffle was canceled due to the number of prizes being greater than the number of sold tickets. We're sorry for the inconvenience. Buyer's balance has been refunded. Please choose another raffle to find your luck. Good luck to you!", 10);
-    }
-  }, [getRaffleDetailData?.getRaffleDetail])
-
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
-  const raffleEndAt = moment(raffleDetailData?.end_at).format('hh:mm MMM Do')
+  const raffleEndAt = moment(raffleDetailData?.end_at).format('HH:mm MMM Do')
   const allTicketsCount = getAllTicketsData?.getAllTickets?.count ? getAllTicketsData?.getAllTickets?.count : 0
   const myTicketsCount = getMyTicketsData?.getMyTickets?.count ? getMyTicketsData?.getMyTickets?.count : 0
   const ticketLimitationPerUser = getRaffleDetailData?.getRaffleDetail?.ticket?.user_limit

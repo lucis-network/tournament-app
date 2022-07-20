@@ -8,7 +8,7 @@ type Props = {
 
 export function useGetWonTickets(props: Props): {
   loading: boolean,
-  error: ApolloError | undefined,
+  errorGetWonTickets: ApolloError | undefined,
   refetchDataWonTickets: () => Promise<ApolloQueryResult<any>>;
   dataWonTickets: string[] | undefined
 } {
@@ -23,7 +23,7 @@ export function useGetWonTickets(props: Props): {
 
   return {
     loading,
-    error,
+    errorGetWonTickets: error,
     refetchDataWonTickets: refetch,
     dataWonTickets: data?.getWonTickets,
   };
@@ -42,6 +42,10 @@ export function useMyWonTickets(props: Props): {
     },
     skip: props?.skip,
     fetchPolicy: "network-only",
+    errorPolicy: "all",
+    onError: (error) => {
+      console.log("error useGetOwnedTournament: ", error);
+    },
   });
 
   return {
