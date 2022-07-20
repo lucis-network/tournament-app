@@ -109,7 +109,8 @@ export const useGetAllTicket = ({raffle_uid, page, limit, display_name}: GetAllT
     skip: isEmpty(raffle_uid),
     context: {
       endpoint: 'p2e'
-    }
+    },
+    fetchPolicy: "no-cache",
   })
 
   return {

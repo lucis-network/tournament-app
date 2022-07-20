@@ -326,7 +326,7 @@ const RollingRaffles = (props: Props) => {
                             />
                         </div>
                         <div className={s.rollingEnd}>
-                            <span>End rolling at</span>
+                            <span>End rolling in</span>
                         </div>
                         <div className={s.rollingTime}>
                             <CountdownTimeEnd targetDate={timeEnd} refetchRaffleDetail={refetchRaffleDetail} refetchMyWonTickets={refetchMyWonTickets}/>
