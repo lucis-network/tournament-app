@@ -120,33 +120,31 @@ export default function LuckyChest(props: any) {
       handleGraphqlErrors(error, (code) => {
         switch (code) {
           case OpenChestErrorCode.ChestNotFound:
-            message.error('Invalid chest. Please try again later.');
-            return;
+            message.error("Invalid chest. Please try again later.");
+            break
           case OpenChestErrorCode.ServerError:
-            message.error('Connection failed. Please try again later.');
-            return;
+            message.error("Connection failed. Please try again later.");
+            break
           case OpenChestErrorCode.BalanceNotInitiated:
             message.error("You don't have enough balance to open.");
-            return;
+            break
           case OpenChestErrorCode.NotEnoughLucisPoint:
             message.error("You don't have enough Lucis point to open.");
-            return;
+            break
           case OpenChestErrorCode.NotEnoughLucisToken:
             message.error("You don't have enough LUCIS token to open.");
-            return;
+            break
           case OpenChestErrorCode.PrizeNotFound:
-            message.error('Invalid prize. Please try again later.');
-            return;
+            message.error("Invalid prize. Please try again later.");
+            break
           case OpenChestErrorCode.GameNotConnected:
             message.error("Please connect game first.");
-            return;
+            break
           default:
-            message.error('An unknown error has occurred. Please try again later.');
-            return;
+            message.error("An unknown error has occurred. Please try again later.");
+            break
         }
       })
-    } finally {
-      setChestUnlocking(false)
     }
   }
 
@@ -204,6 +202,7 @@ export default function LuckyChest(props: any) {
                 }
               }
             }
+            setChestUnlocking(false)
           }
 
           if (box) {
@@ -214,10 +213,13 @@ export default function LuckyChest(props: any) {
           setTimeout(() => {
             openRollingLuckyChest()
           }, 700)
+        } else {
+          setChestUnlocking(false)
         }
       } catch (e) {
         message.error('An unknown error has occurred. Please try again later.')
         console.log('[handleOpenBox] error: ', e);
+        setChestUnlocking(false)
       }
     }
   }
@@ -267,7 +269,7 @@ export default function LuckyChest(props: any) {
                   </div>
                 </div>
                 {chestDetail?.desc && (
-                  <p>{chestDetail?.desc}</p>
+                  <p dangerouslySetInnerHTML={{__html: chestDetail?.desc}} />
                 )}
               </div>
             </div>
