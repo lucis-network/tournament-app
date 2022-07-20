@@ -319,10 +319,10 @@ export default function LuckyChest(props: any) {
                     </>
                   ))}
                 </ScrollMenu>
-                </div>
+              </div>
             </div>
           )}
-          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType}/>}
+          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType} />}
           {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">
