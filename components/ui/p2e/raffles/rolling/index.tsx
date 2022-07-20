@@ -261,7 +261,6 @@ const RollingRaffles = (props: Props) => {
       const endAtBefore = moment(dataRaffleDetail?.end_at).add(4, "minutes")
         .valueOf();
       const timeBefore = (endAtBefore - dateNow)/(1000 * 60 * 60);
-      console.log("timeBefore", timeBefore);
       if(timeBefore <= 1) {
         setIsCheckStatusClosed(true);
         refetchRaffleDetail().then(r => {});
