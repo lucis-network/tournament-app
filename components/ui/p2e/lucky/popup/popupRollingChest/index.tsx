@@ -5,7 +5,6 @@ import s from "./index.module.sass";
 import {
   ChestDetail,
   LuckyChestTier,
-  LuckyChestType,
   OpenChestResponse
 } from "../../../../../../src/generated/graphql_p2e";
 import Img from "../../../../common/Img";
@@ -13,6 +12,7 @@ import PopupRewardChest from "../popupRewardChest";
 import {ApolloQueryResult} from "@apollo/client";
 import {useGetLuckyChestUserInfo} from "../../../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {AppEmitter} from "../../../../../../services/emitter";
+import {shuffle} from "lodash";
 
 type Props = {
   closePopupRollingChest: () => void;
@@ -73,8 +73,7 @@ const PopupRollingChest = (props: Props) => {
 
   const itemGap = 8; // 8px on CSS
   const itemWidth = getItemWidth(viewportWidth);
-  const prizeShuffled = chestDetail.prizes; // TODO: shuffle this arr
-
+  const prizeShuffled = shuffle(chestDetail.prizes);
   let prizeIdx = prizeShuffled.findIndex((i) => i.id == prize.id);
   if (prizeIdx < 0) {
     prizeIdx = 0

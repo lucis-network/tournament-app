@@ -11,7 +11,6 @@ import {
 import {
   CostType,
   LuckyChestTier,
-  LuckyChestType,
   OpenChestErrorCode,
   OpenChestResponse
 } from "../../../../src/generated/graphql_p2e";
@@ -28,18 +27,25 @@ import {b64DecodeUnicode} from "../../../../utils/String";
 import {useMutation, useQuery} from "@apollo/client";
 import PopupRollingChest from "./popup/popupRollingChest";
 import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
+import AuthStore from "../../../Auth/AuthStore";
 
-const games = [
-  LuckyChestType.Csgo,
-  LuckyChestType.Lol,
+export enum GAMES {
+  FACEITCSGO = 1,
+  GARENALOL = 2,
+}
+
+const games: number[] = [
+  GAMES.FACEITCSGO,
+  GAMES.GARENALOL,
 ]
 
 export default function LuckyChest(props: any) {
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
     const [chestResponse, setChestResponse] = useState<OpenChestResponse>({} as OpenChestResponse);
+    const gameType = props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL
     const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
-        type: props.currentGame ? games[props.currentGame - 1] : LuckyChestType.Lol,
+        game_platform_id: gameType,
         tier: LuckyChestTier.Standard,
     })
     const [openLuckyChest] = useMutation(OPEN_CHEST, {
@@ -51,6 +57,7 @@ export default function LuckyChest(props: any) {
       context: {
         endpoint: 'p2e'
       },
+      skip: !AuthStore.isLoggedIn
     })
 
     const chestDetail = getChestDetailData?.getChestDetail
@@ -95,7 +102,7 @@ export default function LuckyChest(props: any) {
     try {
       await openLuckyChest({
         variables: {
-          type: LuckyChestType.Csgo,
+          game_platform_id: gameType,
           tier: LuckyChestTier.Standard,
         },
         onCompleted: (data) => {
@@ -109,7 +116,6 @@ export default function LuckyChest(props: any) {
       })
     } catch (error: any) {
       handleGraphqlErrors(error, (code) => {
-        console.log(code);
         switch (code) {
           case OpenChestErrorCode.ChestNotFound:
             message.error('Invalid chest. Please try again later.');
@@ -292,7 +298,7 @@ export default function LuckyChest(props: any) {
                 </div>
             </div>
           )}
-          <HistoryTable currentGame={games[props.currentGame]}/>
+          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType}/>}
           {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">

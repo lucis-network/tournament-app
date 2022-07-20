@@ -35,10 +35,8 @@ const Raffles = () => {
         setIsCheckFirstTimeRender(true);
       }
     }
+
     if (searchRafflesData?.searchRaffle) {
-      if(!isCheckFirstTimeRender) {
-        setIsCheckFirstTimeRender(true);
-      }
       setRafflesData(searchRafflesData?.searchRaffle)
     }
   }, [searchRafflesData?.searchRaffle])

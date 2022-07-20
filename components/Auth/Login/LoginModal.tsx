@@ -75,7 +75,7 @@ export default observer(function LoginModal(props: Props) {
         // }, 2000);
         setIsModalVisible(false);
         setMessageInvalLogin("");
-        if (route.pathname === "/tournament/[id]/[...slug]") {
+        if (route.pathname === "/tournament/[id]/[...slug]" || route.pathname === "/playcore/lucky-chest") {
           route.reload();
         }
         break;

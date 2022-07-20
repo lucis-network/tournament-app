@@ -17,7 +17,7 @@ interface IProps {
   isHistory?: boolean;
   title?: string;
   hasButtonBack?: boolean;
-  dailyPoint?: {day: number, month: number, year: number, point: number}[];
+  dailyPoint?: { day: number, month: number, year: number, point: number }[];
 }
 export const RecentMatchListLOL = React.memo((props: IProps) => {
   const router = useRouter();
@@ -56,17 +56,17 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
         Object.entries(recentMatchesFiltered).length === 0 ? (
           <>
             <Row className={s.recentMatchTitle}>
-              <Col xs={24} sm={12}>
+              <Col xs={24} md={12}>
                 <h2>
                   {props.hasButtonBack && <img style={{ marginRight: 16, cursor: "pointer" }} src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.push("/playcore/dashboard")} />}
                   {props.title ? props.title : "Recent matches"}
                 </h2>
               </Col>
-              <Col xs={24} sm={12} className={s.recentMatchRewardGeneral}>
+              <Col xs={24} md={12} className={s.recentMatchRewardGeneral}>
                 <div style={{ marginRight: 16 }}>
                   Today :
                 </div>
-                <div className={s.rewardItem} style={{ marginRight: 8 }}>
+                <div className={s.rewardItem} style={{ marginRight: 16 }}>
                   <span className={s.lucisPoint}>{0} / ∞</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
@@ -89,17 +89,17 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
           return (
             <div key={item[0]}>
               <Row className={s.recentMatchTitle}>
-                {index === 0 && <Col xs={24} sm={12} >
+                {index === 0 && <Col xs={24} md={12} >
                   <h2>
                     {props.hasButtonBack && <img style={{ marginRight: 16, cursor: "pointer" }} src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.push("/playcore/dashboard")} />}
                     {props.title ? props.title : "Recent matches"}
                   </h2>
                 </Col>}
-                <Col xs={24} sm={index === 0 ? 12 : 24} className={s.recentMatchRewardGeneral}>
+                <Col xs={24} md={index === 0 ? 12 : 24} className={s.recentMatchRewardGeneral}>
                   <div style={{ marginRight: 16 }}>
                     {item[0]} :
                   </div>
-                  <div className={s.rewardItem} style={{ marginRight: 8 }}>
+                  <div className={s.rewardItem} style={{ marginRight: 16 }}>
                     <span className={s.lucisPoint}>{lucisPointReward(item[0])} / ∞</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
@@ -119,7 +119,6 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                           xs={24}
                           className={s.recentMatchItem}
                           key={`${item?.match_uid}-${index}`}
-                          onClick={() => router.push(`/playcore/dashboard/history/${item?.uid}`)}
                           style={{
                             borderTopLeftRadius: index === 0 ? "4px" : "0px",
                             borderTopRightRadius: index === 0 ? "4px" : "0px",
@@ -128,7 +127,8 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                             background:
                               index % 2 === 0
                                 ? `linear-gradient(90deg, rgba(47, 54, 75, 0) 0%, #2F364B 21.88%), url("${item?.map_img}")`
-                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`
+                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`,
+                            backgroundPosition: "center",
                           }}
                         >
                           <Link href={`/playcore/dashboard/history/${item?.uid}`}>
