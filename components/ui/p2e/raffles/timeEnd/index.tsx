@@ -13,7 +13,6 @@ const CountdownTimeEnd: React.FC<CountdownTimerProps> = (props) => {
 	const {targetDate, refetchRaffleDetail, refetchMyWonTickets} = props;
 	const [days, hours, minutes, seconds] = useCountdownTimeEnd(targetDate);
 
-	console.log(days, hours, minutes, seconds)
 	if (days + hours + minutes + seconds < 0) {
 		refetchRaffleDetail().then(r => {});
 		refetchMyWonTickets().then(r => {});
