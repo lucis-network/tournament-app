@@ -30,6 +30,8 @@ import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
 import AuthStore from "../../../Auth/AuthStore";
 import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
 import AuthGameStore from "../../../Auth/AuthGameStore";
+import {useRouter} from "next/router";
+import {OverviewSection} from "../../../../utils/Enum";
 
 export enum GAMES {
   FACEITCSGO = 1,
@@ -61,7 +63,7 @@ export default function LuckyChest(props: any) {
       },
       skip: !AuthStore.isLoggedIn
     })
-
+    const router = useRouter()
     const chestDetail = getChestDetailData?.getChestDetail
     const ticketCost = chestDetail?.ticket_cost
     const ticketCostType = chestDetail?.ticket_cost_type
@@ -157,13 +159,15 @@ export default function LuckyChest(props: any) {
       switch (gameType) {
         case GAMES.FACEITCSGO:
           if (!AuthGameStore.isLoggedInFaceit) {
-            message.error("Please connect game first.");
+            message.warning("Please connect game first.");
+            router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
             return
           }
           break
         case GAMES.GARENALOL:
           if (!AuthGameStore.isLoggedInLMSS) {
-            message.error("Please connect game first.")
+            message.warning("Please connect game first.")
+            router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
             return
           }
           break
