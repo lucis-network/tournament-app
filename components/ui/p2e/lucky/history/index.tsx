@@ -202,7 +202,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
         closePopupContact={handleCloseModalContact}
         status={isModalContactVisible}
         description={<div>
-          Congratulations on your lucky win from Lucis.<br />Your code prize is <b style={{ color: '#00F9FF', cursor: 'pointer' }} onClick={handlePrizeCodeClick}>{prizeCode}</b>. Please contact and send the code to Lucis Support to receive the prize.
+          Congratulations on your lucky win from Lucis.<br />Your prize code is <b style={{ color: '#00F9FF', cursor: 'pointer' }} onClick={handlePrizeCodeClick}>{prizeCode}</b>. Please contact and send the code to Lucis Supporter to receive the prize.
         </div>}
       />
     </>
