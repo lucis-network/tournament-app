@@ -44,10 +44,6 @@ const antIcon = <LoadingOutlined style={{fontSize: 20, color: "#00F9FF"}} spin/>
 
 const RollingRaffles = (props: Props) => {
   const {raffleUid, dataRaffleDetail, dataWonTickets, refetchRaffleDetail} = props;
-  // const {dataWonTickets, refetch} = useGetWonTickets({
-  //   raffle_uid: raffleUid,
-  //   skip: isEmpty(raffleUid)
-  // },);
 
   const {dataMyWonTickets, refetchMyWonTickets} = useMyWonTickets({
     raffle_uid: raffleUid,
@@ -65,6 +61,7 @@ const RollingRaffles = (props: Props) => {
   const [checkDisplayTimeEnd, setCheckDisplayTimeEnd] = useState(false);
   const [isCheckFirstTime, setIsCheckFistTime] = useState(false);
   const [isPopupClaim, setIsPopupClaim] = useState(false);
+  const [isCheckStatusClosed, setIsCheckStatusClosed] = useState(false);
 
   const endAtBefore = moment(dataRaffleDetail?.end_at).valueOf();
   const timeEnd = moment(dataRaffleDetail?.end_at)
@@ -185,7 +182,6 @@ const RollingRaffles = (props: Props) => {
   }
 
   const setDataRealTime = (index: number, dataIdx: number) => {
-    console.log("index", index);
     let data: (UserTicketGql | undefined)[] = [];
     for (let i = 0; i < dataIdx; i++) {
       data.push(dataTickets[i]);
@@ -258,6 +254,25 @@ const RollingRaffles = (props: Props) => {
   const closePopupClaimTicket = () => {
     setIsPopupClaim(false);
   }
+
+  useEffect(() => {
+    const checkDateInterval =  setInterval(() => {
+      const dateNow = moment(new Date()).valueOf();
+      const endAtBefore = moment(dataRaffleDetail?.end_at).add(4, "minutes")
+        .valueOf();
+      const timeBefore = (endAtBefore - dateNow)/(1000 * 60 * 60);
+      console.log("timeBefore", timeBefore);
+      if(timeBefore <= 1) {
+        setIsCheckStatusClosed(true);
+        refetchRaffleDetail().then(r => {});
+        refetchMyWonTickets().then(r => {});
+      }
+    }, 1000)
+    if(isCheckStatusClosed)  clearInterval(checkDateInterval);
+    return () => {
+      clearInterval(checkDateInterval)
+    }
+  }, [dataRaffleDetail?.end_at, isCheckStatusClosed])
 
   return (
     <div className={s.rafflesWrapper}>
