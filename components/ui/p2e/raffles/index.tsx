@@ -179,7 +179,7 @@ const Raffles = () => {
           ))}
         </div>
       </section>
-      {(getSponsorRaffleError || getSponsorRaffleData?.getSponsorRaffles.length <= 0) ? <Empty/> : (
+      {(getSponsorRaffleError || getSponsorRaffleData?.getSponsorRaffles.length <= 0) ? null : (
         getSponsorRaffleLoading ? (
           <SpinLoading/>
         ) : (getSponsorRaffleData?.getSponsorRaffles && (
