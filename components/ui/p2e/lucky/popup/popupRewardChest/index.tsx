@@ -10,10 +10,11 @@ type Props = {
   prize?: LuckyChestPrize;
   closePopupRollingChest: () => void;
   rarity: string;
+  resetAutoRolling: () => void
 };
 
 const PopupRewardChest = (props: Props) => {
-  const { status, closePopupRewardChest, closePopupRollingChest, prize} = props;
+  const { status, closePopupRewardChest, closePopupRollingChest, prize, resetAutoRolling} = props;
 
   return (
     <div className={s.wrapper_popup_reward_chest}>
@@ -25,6 +26,7 @@ const PopupRewardChest = (props: Props) => {
         onCancel={() => {
           closePopupRollingChest();
           closePopupRewardChest();
+          resetAutoRolling();
         }}
         width={"100%"}
       >

@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {message, message as antMessage, Modal, Pagination, Table} from 'antd';
+import {message, message as antMessage, Pagination, Table} from 'antd';
 import ButtonClaim from '../button/ButtonClaim';
 import s from './history.module.sass'
 import {ClaimChestPrizeErrorCode, LuckyChestTier} from "../../../../../src/generated/graphql_p2e";
@@ -24,7 +24,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
   const [historyData, setHistoryData] = useState<any[]>([])
   const [claimingChestPrize, setClaimingChestPrize] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
-  const [pageCount, setPageCount] = useState<number>(0)
+  const [totalHistory, setTotalHistory] = useState<number>(0)
   const [prizeCode, setPrizeCode] = useState<string>('')
   const [isModalContactVisible, setModalContactVisible] = useState<boolean>(false)
   const {
@@ -42,19 +42,6 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
 
   const userHistory = dataLuckyChestUserInfo?.history
   const historyCount = dataLuckyChestUserInfo?.history_count
-  // const mockData = Array(5).fill({
-  //   uid: 1,
-  //   type: 'CSGO',
-  //   tier: 'STANDARD',
-  //   prize_id: '1',
-  //   id: 1,
-  //   prize: {
-  //     title: 'prize 1',
-  //     rarity: 'Common',
-  //   },
-  //   is_claimed: false,
-  //   updated_at: 'asdfasdf',
-  // }) as unknown as UserLuckyChestHistory[]
 
   useEffect(() => {
     const l = AppEmitter.addListener('refresh_history', refetchGetLuckyChestUserInfo)
@@ -87,15 +74,14 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
   useEffect(() => {
     let isSubscribed = true
     if (isSubscribed && historyCount) {
-      const totalPage = Math.ceil(historyCount / historyLimit)
-      setPageCount(totalPage)
+      setTotalHistory(historyCount)
     }
 
     return () => {
       isSubscribed = false
     }
   }, [historyCount])
-  console.log('[HistoryTable] historyCount, historyLimit, currentPage, pageCount: ', historyCount, historyLimit, currentPage, pageCount);
+
   const columns = [
     {
       title: 'Code',
@@ -108,7 +94,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       dataIndex: 'created_at',
       key: 'updated_at',
       className: s.columnTime,
-      render: (text: string) => moment(text).format('YYYY/MM/DD - hh:mm:ss')
+      render: (text: string) => moment(text).format('YYYY/MM/DD - HH:mm:ss')
     },
     {
       title: 'Reward',
@@ -132,8 +118,9 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
                 {data.prize.title}
               </div>
               <ButtonClaim
-                isClaimed={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
+                isClaimed={data.is_claimed}
                 onClick={() => handleClaimChestPrize(data.user_prize_history_uid.toString(), data.code)}
+                disabled={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
               />
             </div>
         )
@@ -150,12 +137,11 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       onError: (error) => handleGraphqlErrors(error, (code, message) => {
         if (code !== 'UnAuth') {
           switch (code) {
-            // chaupa todo claimChestPrize error messages
             case ClaimChestPrizeErrorCode.UserHistoryNotFound:
-              antMessage.error('An unknown error has occurred. Please try again later.')
+              antMessage.error('Invalid prize code. Please contact Lucis Support for more details.')
               break
             case ClaimChestPrizeErrorCode.UserHasClaimed:
-              antMessage.error('An unknown error has occurred. Please try again later.')
+              antMessage.error('You have claimed this prize.')
               break
             default:
               antMessage.error('An unknown error has occurred. Please try again later.')
@@ -201,7 +187,14 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
           }}
         />
         <div className={s.paginationWrap}>
-          <Pagination className={s.historyPagination} size="small" total={pageCount} current={currentPage} pageSize={historyLimit} onChange={(page) => setCurrentPage(page)} />
+          <Pagination
+            className={s.historyPagination}
+            size="small"
+            total={totalHistory}
+            current={currentPage}
+            pageSize={historyLimit}
+            onChange={(page) => setCurrentPage(page)}
+          />
         </div>
       </div>
       <PopupContactRaffles

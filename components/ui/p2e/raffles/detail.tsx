@@ -334,7 +334,7 @@ const RafflesDetail = observer(() => {
               <div className={s.buyTicketDesc}>
                 <h2>How you get tickets</h2>
                 <p>You can get a lot of Lucis points after completing the Lucis mission. {`Let's`} get it!</p>
-                <Link href="/p2e/missions" passHref>
+                <Link href="/playcore/missions" passHref>
                   <a className={s.sidebarBtn}>
                     <span>Earn more</span>
                   </a>
