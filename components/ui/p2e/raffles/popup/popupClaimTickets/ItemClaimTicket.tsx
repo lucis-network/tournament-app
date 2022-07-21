@@ -34,7 +34,7 @@ const ItemClaimTicket = (props: Props) => {
           setIsLoading(false);
           setIsDisable(true);
 
-          if(data?.required_contact) {
+          if(data?.claimRaffle?.required_contact) {
             openPopupContactRaffes();
           }
           else {
@@ -59,13 +59,6 @@ const ItemClaimTicket = (props: Props) => {
 
   return (
     <div className={s.item}>
-      {/*<span className={s.itemTickets}>#{item?.ticket_number}</span>*/}
-      {/*{isDisable || item?.is_claimed as boolean ?*/}
-      {/*  <img src="/assets/Raffles/checked.svg"/> :*/}
-      {/*  <Button loading={isLoading} disabled={isDisable || item?.is_claimed as boolean} className={s.itemBtn}*/}
-      {/*          onClick={() => handleClaim()}>Claim</Button>*/}
-      {/*}*/}
-      {/*<span className={s.itemTickets}>#{item?.ticket_number}</span>*/}
       {isDisable || item?.is_claimed as boolean ?
         <>
           <span className={`${s.itemTickets} ${s.itemTicketsClaimed}`}>#{item?.ticket_number}</span>
@@ -79,7 +72,6 @@ const ItemClaimTicket = (props: Props) => {
           <Button loading={isLoading} disabled={isDisable || item?.is_claimed as boolean} className={s.itemBtn}
                   onClick={() => handleClaim()}>Claim</Button>
         </>
-
       }
     </div>
   );
