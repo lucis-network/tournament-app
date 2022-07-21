@@ -7,7 +7,7 @@ import { getLocalAuthInfo } from "../AuthLocal";
 import { isEmpty } from "lodash"
 import AuthStore, {AuthUser} from "../AuthStore";
 import AuthService, { AuthError } from "../AuthService";
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
@@ -28,8 +28,16 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
 export default observer(function LoginModal(props: Props) {
   const route = useRouter();
   const [form] = Form.useForm();
+
   const [messageInvalLogin, setMessageInvalLogin] = useState("");
-  const ref = useRef();
+  const [code, setCode] = useState<string>();
+
+  useEffect(() => {
+    if(route?.query && route?.query?.ref) {
+      // @ts-ignore
+      setCode(route?.query?.ref)
+    }
+  }, [route?.query])
 
   const trackUserChangeToAnalytic = (user: AuthUser) => {
     if (user.id) {
@@ -53,7 +61,7 @@ export default observer(function LoginModal(props: Props) {
 
     if (type === "google") tokenid = res?.tokenId;
     if (type === "facebook") tokenid = res?.accessToken;
-    const r = await authService.login(tokenid, 100, type, username, password);
+    const r = await authService.login(tokenid,code, 100, type, username, password);
     console.log(AuthStore);
     const localUserInfo = getLocalAuthInfo();
 

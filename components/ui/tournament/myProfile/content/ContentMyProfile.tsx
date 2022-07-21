@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { Router, useRouter } from "next/router";
 import TournamentStore from "src/store/TournamentStore";
 import {AuthUser} from "../../../../Auth/AuthStore";
+import ReferHistory from "../tabsitem/referHistory";
 
 type ContentMyProfileProps = {
   isOwner?: boolean;
@@ -85,6 +86,9 @@ export default observer(function ContentMyProfile({
       </TabPane>
       <TabPane tab="My Staking" key="6" disabled>
         {/* <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} /> */}
+      </TabPane>
+      <TabPane tab="Refer History" key="refer">
+        <ReferHistory></ReferHistory>
       </TabPane>
     </Tabs>
   );

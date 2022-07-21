@@ -3,7 +3,7 @@ import s from './dashboard.module.sass'
 import { Col, message, Modal, Row } from "antd"
 import {
   CLAIM_BOX,
-  GET_STATISTICS,
+  GET_STATISTICS, HAS_JOINED_DISCORD,
   IS_CLAIM_BOX,
 } from "../../../../hooks/p2e/useP2E";
 
@@ -41,8 +41,6 @@ const Dashboard = (props: IProps) => {
       endpoint: 'p2e'
     }
   })
-
-
 
   const handleUpdateMissions = async (showMessage = true, loadingUpdateIcon = true) => {
     if (loadingUpdateIcon) {

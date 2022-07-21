@@ -1455,6 +1455,7 @@ export type Query = {
   getBalance?: Maybe<GBalance>;
   getChestDetail?: Maybe<ChestDetail>;
   getCsgoMatchStatistic?: Maybe<CsgoMatchStatistics>;
+  getInvitedFriend?: Maybe<Array<ReferFriendGql>>;
   getLolMatchStatistic?: Maybe<LolMatchStatisticGql>;
   getLucisMission: Array<PlayerMission>;
   getLuckyChestUserInfo?: Maybe<LuckyChestUserInfo>;
@@ -1472,6 +1473,7 @@ export type Query = {
   getSponsorRaffles?: Maybe<Array<P2eSponsor>>;
   getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
   getWonTickets?: Maybe<Array<Scalars['String']>>;
+  hasJoinedDiscord?: Maybe<Scalars['Boolean']>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
@@ -1713,6 +1715,21 @@ export type RecentWinner = {
   raffle?: Maybe<Raffle>;
   user?: Maybe<User>;
 };
+
+export type ReferFriendGql = {
+  __typename?: 'ReferFriendGql';
+  id: Scalars['ID'];
+  invited_user_id: Scalars['Int'];
+  status: ReferFriendStatus;
+  user?: Maybe<User>;
+};
+
+export enum ReferFriendStatus {
+  ConnectGame = 'ConnectGame',
+  EarningPoint = 'EarningPoint',
+  JoinSystem = 'JoinSystem',
+  None = 'None'
+}
 
 export type SponsorSlot = {
   __typename?: 'SponsorSlot';

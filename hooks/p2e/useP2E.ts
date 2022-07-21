@@ -540,6 +540,12 @@ export const GET_STATISTICS = gql`
   }
 `
 
+export const HAS_JOINED_DISCORD = gql`
+  query {
+    hasJoinedDiscord
+  }
+`
+
 
 export const GET_DAILY_POINT = gql`
 query ($game_uid: String!, $platform_id: Int!) {
