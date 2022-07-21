@@ -79,7 +79,7 @@ const MissionList = ({
           </Col>
           <Col xl={16} sm={24} xs={24} className={s.headerRight}>
             <div className={s.rewardBox}>
-              Complete 4 quests to unlock reward!
+              Complete 4 quests to open this box!
               <img src={
                 isClaimBox ?
                   "/assets/P2E/box-open.png"

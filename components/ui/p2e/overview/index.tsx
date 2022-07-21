@@ -284,7 +284,7 @@ export default observer(function P2EOverview(props: IProps) {
                   <Col className={s.content}>
                     <img className={s.logoPublisher} src="/assets/P2E/overview/garena-icon.svg" alt="" />
                     <h1>LEAGUE OF LEGENDS</h1>
-                    <p>Normal, Ranked and Clash available</p>
+                    <p>Normal, Ranked and ARAM games are available </p>
                     <div className={s.like}>
                       <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> {connectedUserLOL ?? "-"}
                     </div>
@@ -316,7 +316,7 @@ export default observer(function P2EOverview(props: IProps) {
                   <Col className={s.content}>
                     <img className={s.logoPublisher} src="/assets/P2E/overview/valve-icon.svg" alt="" />
                     <h1>CS:GO</h1>
-                    <p>Normal, Ranked and Clash available</p>
+                    <p>FACEIT 5v5 Ranked games are available</p>
                     <div className={s.like}>
                       <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> {connectedUserCSGO ?? "-"}
                     </div>
