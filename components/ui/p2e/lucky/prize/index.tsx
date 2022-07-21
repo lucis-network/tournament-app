@@ -1,5 +1,4 @@
 import s from "./ChestPrize.module.sass"
-import {Popover} from "antd";
 import {Maybe} from "@graphql-tools/utils";
 import PrizePopover from "./popover";
 
@@ -11,7 +10,6 @@ export type ChestPrizeProps = {
 }
 
 const ChestPrize = ({image, title, description, rarity}: ChestPrizeProps) => {
-  console.log('[ChestPrize] rarity: ', rarity);
   return (
     <PrizePopover
       image={image}
