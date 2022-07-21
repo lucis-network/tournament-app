@@ -27,7 +27,9 @@ import { AppEmitter } from "../../../services/emitter";
 import { useWindowSize } from "hooks/useWindowSize";
 import ConnectWalletModal from "./ConnectWalletModal";
 
-type Props = {};
+type Props = {
+  children?: any;
+};
 
 export default observer(function User(props: Props) {
   const router = useRouter();
@@ -83,6 +85,9 @@ export default observer(function User(props: Props) {
   const handleVisibleChange = (visible: any) => {
     setIsVisible(visible);
   };
+  const showModal = () => {
+    AuthBoxStore.connectModalVisible = true;
+  };
 
   const profileModal = (
     <Row
@@ -133,6 +138,9 @@ export default observer(function User(props: Props) {
           className={s.btns}
           style={address ? { marginTop: 30 } : { marginTop: 60 }}
         >
+          {!address && <Button type="link" onClick={showModal}>
+            Connect wallet
+          </Button>}
           <Button type="link" onClick={onClickProfile}>
             My Profile
           </Button>
@@ -149,35 +157,17 @@ export default observer(function User(props: Props) {
     </Row>
   );
 
-  const showModal = () => {
-    AuthBoxStore.connectModalVisible = true;
-  };
-
   return (
-    <div className={s.container}>
-      {
-        <Button onClick={showModal} className={s.chainBtn}>
-          {chainNetIcoUrl ? "" : <>Connect Wallet</>}
-        </Button>
-      }
-
+    <div>
       <Popover
         placement="bottomRight"
         content={profileModal}
         // trigger="hover"
-        trigger={width < 1024 ? "click" : "hover"}
+        trigger={"click"}
         visible={isVisible}
         onVisibleChange={handleVisibleChange}
       >
-        {width > 992 && (
-          <div className={s.avatar}>
-            <img
-              src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
-              alt=""
-            />
-            {/* <span>{name}</span> */}
-          </div>
-        )}
+        {props.children}
       </Popover>
       <ConnectWalletModal />
     </div>

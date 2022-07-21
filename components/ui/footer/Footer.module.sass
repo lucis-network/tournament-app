@@ -1,87 +1,57 @@
 .container_footer
-  // background: #070a45
-  // background: linear-gradient(177.34deg, rgba(0, 0, 0, 0.2) 2.22%, rgba(255, 255, 255, 0) 97.78%)
+  background: #000625
   backdrop-filter: blur(42px)
-  .content
-    padding: 20px 0px
+  height: 136px
+  display: flex
+  align-items: center
+  @media (max-width: 992px)
+    height: 70px
+  @media (max-width: 768px)
+    height: 48px
+  .logo
+    display: flex
+    align-items: center
+  .group_ic
+    display: flex
+    align-items: center
+    justify-content: center
+    width: 100%
+    .ic_item
+      max-width: 40px
+      margin-right: 10px
+  .block_item_menu
     height: 100%
-    backdrop-filter: blur(42px)
-    position: relative
-    background: linear-gradient(302deg, rgba(0, 0, 0, 0.2) 2.22%, rgba(255, 255, 255, 0) 97.78%)
-    .r
+    display: flex
+    align-items: center
+    margin: 0
+    li
+      margin-right: 36px
       display: flex
+      justify-content: center
       align-items: center
-      // justify-content: space-between
-      .logo
-        @media (min-width: 0px)
-          display: none
-        @media (min-width: 640px)
-          display: block
-      .group_ic
+      a
+        font-family: 'Revx Neue Demo'
+        font-style: normal
+        font-weight: 400
+        font-size: 16px
+        line-height: 18px
         display: flex
         align-items: center
-        justify-content: center
-        width: 100%
-        margin-right: 20px
+        letter-spacing: 0.08em
+        color: #FFFFFF
+        @media (max-width: 1400px)
+          font-size: 14px
+      a:hover
+        color: #00FFEC
+  .btn_help
+    display: flex
+    justify-content: center
+    align-items: center
+    span
+      font-family: 'Revx Neue Demo'
+      font-style: normal
+      font-weight: 400
+      font-size: 16px
+      text-transform: uppercase
 
-        @media ( max-width: 639px )
-          padding: 20px 0px
-          justify-content: flex-start
-        .ic_item
-          max-width: 40px
-          margin: 0px 15px
-          
-          @media ( max-width: 539px )
-            margin: 0 8px
-      .btn_help
-        position: relative
-        display: flex
-        align-items: center
-        justify-content: center
-        .link
-          border: none
-          color: #0BEBD6
-          font-weight: 700
-          line-height: 115%
-          height: auto
-          transition: 0.2s
-          width: 100%
-          text-align: center
-          @media ( min-width: 0px )
-            width: 160px
-            font-size: 16px
-            padding: 10px 12px
-          @media ( min-width: 640px )
-            width: 180px
-            font-size: 20px
-            padding: 10px 30px
-      .btn_help::before
-        content: ''
-        position: absolute
-        top:0
-        left:0
-        right:0
-        bottom:0
-        border-radius: 4px
-        padding: 1px
-        background: linear-gradient(111.03deg, rgba(239, 238, 238, 0.32) 2.82%, rgba(239, 238, 238, 0.06) 90.94%)
-        -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-        -webkit-mask-composite: xor
-        mask-composite: exclude
-        z-index: -1
-      .btn_help:hover button
-        opacity: 0.7
-  .content::before
-    content: ''
-    position: absolute
-    top:0
-    left:0
-    right:0
-    bottom:0
-    border-radius: 16px 16px 0px 0px
-    padding: 2px
-    background: linear-gradient(111.03deg, rgba(239, 238, 238, 0.32) 2.82%, rgba(239, 238, 238, 0.06) 90.94%)
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-    -webkit-mask-composite: xor
-    mask-composite: exclude
-    z-index: -1
+

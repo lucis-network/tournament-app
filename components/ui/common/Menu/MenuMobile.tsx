@@ -8,9 +8,7 @@ import { Navigation } from "./Navigation";
 import { AppEmitter } from "services/emitter";
 import Link from "next/link";
 
-import Login from "components/Auth/Login/Login";
-import AuthStore from "components/Auth/AuthStore";
-import User from "components/Auth/components/User";
+import AuthService from "../../../Auth/AuthService";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -53,7 +51,10 @@ export const MenuMobile = (props: any) => {
   const [isOpen, toggleOpen] = useCycle(false, true);
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
-
+  useEffect(() => {
+    const authService = new AuthService();
+    authService.getUserData();
+  }, []);
   useEffect(() => {
     if (isOpen) {
       document.body.classList.add("nav-open");
@@ -103,7 +104,7 @@ export const MenuMobile = (props: any) => {
         variants={nav}
         className="mobile-nav z-[101]"
       >
-        <motion.div className="background" variants={sidebar} />
+        <motion.div variants={sidebar} />
 
         <Navigation />
 

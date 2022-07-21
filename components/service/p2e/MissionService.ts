@@ -474,6 +474,26 @@ class MissionService {
     return response;
   }
 
+
+  public async getStatisticBalance() {
+      const response = await apoloClient.query<{getBalance: {lucis_point: number, lucis_token: number}}>({
+          query: gql`
+              query {
+                  getBalance {
+                      lucis_point
+                      lucis_token
+                  }
+              }
+          `,
+        context: {
+          endpoint: 'p2e'
+        }
+
+      });
+
+    return response;
+  }
+
 }
 
 export default new MissionService();

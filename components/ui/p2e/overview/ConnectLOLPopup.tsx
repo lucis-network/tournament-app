@@ -140,7 +140,7 @@ export const ConnectLOLPopup = (props: IProps) => {
       handleGraphqlErrors(e, (code) => {
         switch (code) {
           case "TOKEN_EXPIRED":
-            message.error("Room name expired!");
+            message.error("Room name has expired!");
             return;
           case "NOT_FIND_ROOM":
             message.error("We can not find the room. Please ensure that the room has been created.");
@@ -153,6 +153,9 @@ export const ConnectLOLPopup = (props: IProps) => {
             return;
           case "BAD_REQUEST":
             message.error("Room name is not generated.");
+            return;
+          case "HAS_CONNECTED":
+            message.error("You have connected!");
             return;
           default:
             message.error("Something was wrong. Please contact to Lucis Network!")
