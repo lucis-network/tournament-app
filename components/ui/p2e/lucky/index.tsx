@@ -1,25 +1,23 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
 import {
   OPEN_CHEST,
-  useClaimChestPrize,
   useGetChestDetail,
-  useGetLuckyChestUserInfo
 } from "../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {
   CostType,
+  LuckyChestPrize,
   LuckyChestTier,
   OpenChestErrorCode,
-  OpenChestResponse
 } from "../../../../src/generated/graphql_p2e";
 import SpinLoading from "../../common/Spin";
 import {isEmpty} from "lodash";
 import Head from "next/head";
 import DefaultErrorPage from "next/error";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
-import {Empty, Image, message, message as antMessage} from "antd";
+import {Image, message} from "antd";
 import ChestPrize from "./prize";
 import {ScrollMenu} from "react-horizontal-scrolling-menu";
 import {isClient} from "../../../../utils/Env";
@@ -46,7 +44,7 @@ const games: number[] = [
 export default function LuckyChest(props: any) {
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
-    const [chestResponse, setChestResponse] = useState<OpenChestResponse>({} as OpenChestResponse);
+    const [chestPrize, setChestPrize] = useState<LuckyChestPrize>({} as LuckyChestPrize);
     const gameType = props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL
     const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
         game_platform_id: gameType,
@@ -110,11 +108,8 @@ export default function LuckyChest(props: any) {
           tier: LuckyChestTier.Standard,
         },
         onCompleted: (data) => {
-          const decodedData = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
-          const newOpenChestResponse = {
-            prize: decodedData
-          }
-          setChestResponse(newOpenChestResponse);
+          const decodedData: LuckyChestPrize = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
+          setChestPrize(decodedData);
           setRollingChestPopupVisible(true);
         }
       })
@@ -345,7 +340,7 @@ export default function LuckyChest(props: any) {
               visible={rollingChestPopupVisible}
               closePopupRollingChest={() => setRollingChestPopupVisible(false)}
               chestDetail={chestDetail}
-              chestResponse={chestResponse}
+              chestPrize={chestPrize}
           />}
         </div>
       </>

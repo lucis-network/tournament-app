@@ -1,39 +1,15 @@
 import { Modal } from "antd";
-import { useWindowSize } from "hooks/useWindowSize";
 import React, {useCallback, useEffect, useMemo, useState} from "react";
 import s from "./index.module.sass";
 import {
   ChestDetail,
-  LuckyChestTier,
-  OpenChestResponse
+  LuckyChestPrize,
 } from "../../../../../../src/generated/graphql_p2e";
 import Img from "../../../../common/Img";
 import PopupRewardChest from "../popupRewardChest";
-import {ApolloQueryResult} from "@apollo/client";
-import {useGetLuckyChestUserInfo} from "../../../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {AppEmitter} from "../../../../../../services/emitter";
 import {shuffle} from "lodash";
-
-// Follow CSS
-function getItemWidth(screenWidth: number) {
-  if (screenWidth >= 1280) {
-    return 214
-  } else if (screenWidth >= 768) {
-    return 160
-  } else {
-    return 100
-  }
-}
-
-function getSliderPadding(screenWidth: number) {
-  if (screenWidth >= 1280) {
-    return 110
-  } else if (screenWidth >= 768) {
-    return 50
-  } else {
-    return 25
-  }
-}
+import {isClient} from "../../../../../../utils/Env";
 
 function randOffset(itemWidth: number) {
   let percent = Math.floor(Math.random() * 100);
@@ -51,35 +27,37 @@ type Props = {
   closePopupRollingChest: () => void;
   visible: boolean;
   chestDetail: ChestDetail;
-  chestResponse?: any;
+  chestPrize?: LuckyChestPrize;
 };
 
 const PopupRollingChest = (props: Props) => {
-  const { visible, closePopupRollingChest, chestDetail, chestResponse } = props;
-  const [viewportWidth] = useWindowSize();
+  const { visible, closePopupRollingChest, chestDetail, chestPrize: prize } = props;
   const [autoRolling, setAutoRolling] = useState(false)
   const [isPopupRewardChest, setIsPopupRewardChest] = useState(false);
-
-  const prize = chestResponse?.prize!;
-
-  const sliderContainerPadding = getSliderPadding(viewportWidth);
-  const sliderMaxWidth = viewportWidth - sliderContainerPadding * 2;
-
-  //TODO: useMemo
-  const styleWidth = {
-    maxWidth: sliderMaxWidth,
-    overflow: "hidden",
-    margin: "0 auto",
-  };
 
   const prizeShuffled = useMemo(() => {
     return shuffle(chestDetail.prizes)
   }, [chestDetail.prizes]);
 
   const styles = useMemo(() => {
+    if (!isClient) {
+      return {
+        transform: 'translateX(0)'
+      }
+    }
+
+    const sliderContainer = document.querySelector('.rollingContainer')
+    if (!sliderContainer) {
+      return {
+        transform: 'translateX(0)'
+      }
+    }
+
+    const sliderMaxWidth = sliderContainer!.getBoundingClientRect().width
     const itemGap = 8; // 8px on CSS
-    const itemWidth = getItemWidth(viewportWidth);
-    let prizeIdx = prizeShuffled.findIndex((i) => i.id == prize.id);
+    const itemElement: Element | null = sliderContainer!.querySelector('.rollingItem')
+    const itemWidth = itemElement ? itemElement!.getBoundingClientRect().width : 0
+    let prizeIdx = prizeShuffled.findIndex((i) => i.id == prize?.id);
     if (prizeIdx < 0) {
       prizeIdx = 0
     }
@@ -100,22 +78,24 @@ const PopupRollingChest = (props: Props) => {
     return {
       transform: autoRolling ? `translateX(-${tx}px)` : 'translateX(0px)'
     }
-  }, [viewportWidth, sliderMaxWidth, autoRolling, prize.id, prizeShuffled])
+  }, [autoRolling, prize?.id, prizeShuffled])
 
   useEffect(() => {
+    let setAutoRollingTimeout: any
     if (visible) {
-      if (autoRolling) {
-        setAutoRolling(false)
-      }
+      setAutoRolling(false)
       // Start new rolling, need to wait 500ms for browser painting
-      setTimeout(() => {
+      setAutoRollingTimeout = setTimeout(() => {
         setAutoRolling(true)
       }, 1000);
+    }
+    return () => {
+      clearTimeout(setAutoRollingTimeout)
     }
   }, [visible])
 
   useEffect(() => {
-    if(visible) {
+    if (visible) {
       const transition = document.querySelector('.rollingEvent');
       //@ts-ignore
       transition.addEventListener('transitionend', () => {
@@ -144,41 +124,44 @@ const PopupRollingChest = (props: Props) => {
       >
         <div className={s.container}>
           <div className={s.bg_rolling}>
-            <img src="/assets/P2E/lucky-chest/bg_rolling.png" alt="" />
-          </div>
-          <div
-            style={styleWidth}
-          >
+            <img src="/assets/P2E/lucky-chest/bg_rolling.png" alt="" className={s.bg_rolling_pc} />
+            <img src="/assets/P2E/lucky-chest/bg_rolling_mobile.png" alt="" className={s.bg_rolling_mobile} />
             <div
-              className={`${s.rolling} rollingEvent`}
-              style={styles}
+              className="rollingContainer"
             >
-              {
-                duplications.map((i, idx) => {
-                  return prizeShuffled.map((prize) => (
-                    <div className={`${s.box_item} ${prize?.rarity ?? ''}`} key={'k' + idx + prize?.id}>
-                      <div className={s.prizeImg}>
-                        <Img src={prize?.img as string} srcFallback="/assets/P2E/lucky-chest/im_box.png" />
+              <div
+                className={`${s.rolling} rollingEvent`}
+                style={styles}
+              >
+                {
+                  duplications.map((i, idx) => {
+                    return prizeShuffled.map((prize) => (
+                      <div className={`${s.box_item} ${prize?.rarity ?? ''} rollingItem`} key={'k' + idx + prize?.id}>
+                        <div className={s.prizeImg}>
+                          <Img src={prize?.img as string} srcFallback="/assets/P2E/lucky-chest/im_box.png" />
+                        </div>
+                        <div className={s.title}>
+                          <p>{prize?.title}</p>
+                        </div>
                       </div>
-                      <div className={s.title}>
-                        <p>{prize?.title}</p>
-                      </div>
-                    </div>
-                  ))
-                })
-              }
+                    ))
+                  })
+                }
+              </div>
             </div>
           </div>
         </div>
         {
-          isPopupRewardChest && <PopupRewardChest
-                status={isPopupRewardChest}
-                closePopupRewardChest={() => setIsPopupRewardChest(false)}
-                prize={prize}
-                closePopupRollingChest={closePopupRollingChest}
-                rarity={prize.rarity}
-                resetAutoRolling={resetAutoRolling}
+          isPopupRewardChest && (
+            <PopupRewardChest
+              status={isPopupRewardChest}
+              closePopupRewardChest={() => setIsPopupRewardChest(false)}
+              prize={prize}
+              closePopupRollingChest={closePopupRollingChest}
+              rarity={prize?.rarity ?? ''}
+              resetAutoRolling={resetAutoRolling}
             />
+          )
         }
       </Modal>
     </div>
