@@ -2,6 +2,8 @@ import GradientButton from "components/ui/common/button/GradientButton";
 import LoginBoxStore from "./LoginBoxStore";
 import LoginModal from "./LoginModal";
 import s from "./Login.module.sass"
+import {Spin} from "antd";
+import React from "react";
 
 export default function Login(props: any) {
   const showModal = () => {
@@ -10,15 +12,22 @@ export default function Login(props: any) {
 
   return (
     <>
-      <GradientButton
-        onClick={showModal}
-        type={1}
-        small={!!props.small}
-        className={`${s.btn} `}
-        style={{ whiteSpace: "nowrap", fontWeight: "600", color: '#FFF' }}
+
+      <div
+        className={s.overviewBtn}
+        onClick={() => showModal()}
       >
-        Sign in
-      </GradientButton>
+        <div>Sign in</div>
+      </div>
+      {/*<GradientButton*/}
+      {/*  onClick={showModal}*/}
+      {/*  type={1}*/}
+      {/*  small={!!props.small}*/}
+      {/*  className={`${s.btn} `}*/}
+      {/*  style={{ whiteSpace: "nowrap", fontWeight: "600", color: '#FFF' }}*/}
+      {/*>*/}
+      {/*  Sign in*/}
+      {/*</GradientButton>*/}
 
       <LoginModal />
     </>
