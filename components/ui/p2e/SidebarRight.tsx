@@ -26,6 +26,7 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
     context: {
       endpoint: 'p2e'
     },
+    fetchPolicy: 'network-only',
     onCompleted: (data) => {
       if(data?.hasJoinedDiscord) setIsCheckJoinDiscord(true);
     }
