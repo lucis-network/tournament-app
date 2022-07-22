@@ -18,13 +18,13 @@ export default function Footer(props: Props) {
           </Col>
           <Col xs={0} xl={16}>
             <ul className={s.block_item_menu}>
-              <li><Link href="/">Home</Link></li>
+              <li><Link href="https://lucis.network">Home</Link></li>
               <li><Link href="/">Playcore</Link></li>
               <li><Link href="/arena">Arena</Link></li>
-              <li><a>Ranking</a></li>
               <li><Link href="/playcore/raffles"><a>Raffles</a></Link></li>
+              <li><Link href="/" passHref><a style={{opacity: 0.6, cursor: "not-allowed"}}>Ranking</a></Link></li>
               <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>Scholarship</a></li>
-              <li><a style={{opacity: 0.6,cursor: "not-allowed"}}>SocialFi</a></li>
+              <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>SocialFi</a></li>
               <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>Marketplace</a></li>
             </ul>
           </Col>
@@ -79,9 +79,11 @@ export default function Footer(props: Props) {
                 </div>
               </div>
               <div className={s.btn_help}>
-                <Link href={`https://discord.gg/BMgT6mckTg`}>
+                <a href={`https://discord.com/invite/kdDUjJcSF5`}
+                   target="_blank"
+                   rel="noopener noreferrer">
                   <ButtonWrapper width={200}>Need Help ?</ButtonWrapper>
-                </Link>
+                </a>
               </div>
             </div>
           </Col>
