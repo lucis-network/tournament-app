@@ -52,10 +52,6 @@ export const MenuMobile = (props: any) => {
   const containerRef = useRef(null);
   const { height } = useDimensions(containerRef);
   useEffect(() => {
-    const authService = new AuthService();
-    authService.getUserData();
-  }, []);
-  useEffect(() => {
     if (isOpen) {
       document.body.classList.add("nav-open");
     } else {

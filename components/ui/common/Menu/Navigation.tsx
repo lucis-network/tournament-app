@@ -165,7 +165,7 @@ export const Navigation = () => {
         <div>
           {AuthStore.isLoggedIn ? (
             <div className={s.headerButton}>
-              <span onClick={disconnectWallet}>Log out</span>
+              <span onClick={disconnectWallet}>Sign out</span>
             </div>
           ) : (
             <div className={s.headerButton}>
