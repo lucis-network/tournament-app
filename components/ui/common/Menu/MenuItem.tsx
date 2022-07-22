@@ -1,25 +1,25 @@
 import * as React from "react";
-import { ReactElement, useCallback } from "react";
+import {ReactElement, useCallback} from "react";
 import s from "./MenuMobile.module.sass";
 
-import { motion } from "framer-motion";
-import { AppEmitter } from "services/emitter";
+import {motion} from "framer-motion";
+import {AppEmitter} from "services/emitter";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
 const variants = {
   open: {
     y: 0,
     opacity: 1,
     transition: {
-      y: { stiffness: 1000, velocity: -100 },
+      y: {stiffness: 1000, velocity: -100},
     },
   },
   closed: {
     y: 50,
     opacity: 0,
     transition: {
-      y: { stiffness: 1000 },
+      y: {stiffness: 1000},
     },
   },
 };
@@ -35,6 +35,7 @@ export type MenuItemType = {
   class?: object;
   isBlank?: boolean;
   to?: string;
+  active?: boolean;
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
@@ -51,7 +52,11 @@ export const MenuItem = (props: { item: MenuItemType }) => {
   let Comp;
 
   if (props.item.to) {
-    Comp = <Link href={props.item.to}>{props.item.text}</Link>;
+    Comp = <Link href={props.item.to} passHref>
+      <a>
+        {props.item.text}
+      </a>
+    </Link>;
   } else if (props.item.src) {
     Comp = (
       <a href={props.item.src} target="_blank" rel="noopener noreferrer">
@@ -64,11 +69,11 @@ export const MenuItem = (props: { item: MenuItemType }) => {
   return (
     <motion.li
       variants={variants}
-      whileHover={{ scale: 1.05 }}
+      whileHover={{scale: 1.05}}
       // whileTap={{ scale: 0.95 }}
       onClick={click}
       style={props.item.class}
-      className={`text-placeholder font-saira text-white px-3 py-3`}
+      className={`text-placeholder ${props.item.active ? "tabActive" : ""}`}
     >
       {Comp}
     </motion.li>

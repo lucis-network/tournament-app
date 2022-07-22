@@ -160,11 +160,11 @@ export default class AuthService {
     };
   }
 
-  private async loginByGoogle(token: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
+  private async loginByGoogle(token: string, code?: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
     const loginRes = await apoloClient.mutate({
       mutation: gql`
-        mutation loginGoogle($token: String!) {
-          loginGoogle(token: $token) {
+        mutation loginGoogle($token: String!, $code: String) {
+          loginGoogle(token: $token, code: $code) {
             token
             user {
               id
@@ -223,7 +223,8 @@ export default class AuthService {
         }
       `,
       variables: {
-        token,
+        token: token,
+        code: code
       },
     });
 
@@ -424,11 +425,11 @@ export default class AuthService {
     };
   }
 
-  private async loginByFacebook(accessToken: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
+  private async loginByFacebook(accessToken: string, code?: string): Promise<{ user: AuthUser, gameAccount: AuthGameUser }> {
     const loginRes = await apoloClient.mutate({
       mutation: gql`
-        mutation loginFacebook($accessToken: String!) {
-          loginFacebook(accessToken: $accessToken) {
+        mutation loginFacebook($accessToken: String!, $code: String) {
+          loginFacebook(accessToken: $accessToken, code: $code) {
             token
             user {
               id
@@ -487,7 +488,8 @@ export default class AuthService {
         }
       `,
       variables: {
-        accessToken,
+        accessToken: accessToken,
+        code: code
       },
     });
 
@@ -563,6 +565,7 @@ export default class AuthService {
 
   async login(
     tokenId: string,
+    code?: string,
     delay = 1000,
     type?: string,
     username?: string,
@@ -600,11 +603,11 @@ export default class AuthService {
         }
       };
       if (type === "google") {
-        data = await this.loginByGoogle(tokenId);
+        data = await this.loginByGoogle(tokenId, code);
       }
 
       if (type === "facebook") {
-        data = await this.loginByFacebook(tokenId);
+        data = await this.loginByFacebook(tokenId, code);
       }
       if (type === "username") {
         data = await this.loginByUsername(

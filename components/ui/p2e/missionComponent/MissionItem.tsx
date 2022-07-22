@@ -62,7 +62,7 @@ const MissionItem = (props: MissionItemProp) => {
       handleGraphqlErrors(error, (code) => {
         switch (code) {
           case "INVALID_PLAYER_MISSION_UID":
-            message.error("Your in invalid.")
+            message.error("Invalid mission.")
             return;
           case "NOT_ACHIEVED":
             message.error("You must complete mission.");

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import s from './P2EOverview.module.sass'
-import { Button, Col, Image, message, Row, Spin } from "antd";
+import {Button, Col, Image, message, Modal, Row, Spin} from "antd";
 import { isEmpty } from "lodash";
 import { isDevMode } from "../../../../utils/Env";
 import { PlatformAccount } from "../../../../src/generated/graphql_p2e";
@@ -16,6 +16,7 @@ import { setLocalAuthGameInfo } from 'components/Auth/AuthLocal';
 import { ConnectLOLPopup } from './ConnectLOLPopup';
 import BannerOverview from './component/banner/BannerOverview';
 import { Game, OverviewSection, Platform } from 'utils/Enum';
+import moment from "moment";
 
 interface IProps {
   overviewSection?: OverviewSection;
@@ -27,7 +28,7 @@ export default observer(function P2EOverview(props: IProps) {
     login: () => { }
   })
   const [isAuth, setIsAuth] = React.useState<boolean>(false);
-
+  const [campaignModalVisible, setCampaignModalVisible] = useState(false)
   const [loadingFaceit, setLoadingFaceit] = useState<boolean>(false);
   const [loadingLMSS, setLoadingLMSS] = useState<boolean>(false);
   const [openConnectLOLPopup, setOpenConnectLOLPopup] = useState<boolean>(false);
@@ -263,6 +264,33 @@ export default observer(function P2EOverview(props: IProps) {
   }
 
   const prefixAvatar = "https://lmssplus.com/static_image/img/profileicon/";
+
+  // marketing banner
+  const handleCampaignModalCancel = () => {
+    setCampaignModalVisible(false)
+  }
+  const handleCampaignModalDontShowAgain = () => {
+    localStorage.setItem('dontShowAgain', 'true')
+    setCampaignModalVisible(false)
+  }
+  const handleCampaignModalSignup = () => {
+    LoginBoxStore.connectModalVisible = true
+  }
+  useEffect(() => {
+    if (!AuthStore.isLoggedIn) {
+      const isCampaignStart = () => {
+        const now = moment.utc().unix()
+        const startDate = moment('2022-07-22T00:00:00Z').utc().unix()
+        const endDate = moment('2022-07-29T00:00:00Z').utc().unix()
+        return moment(now).isBetween(startDate, endDate)
+      }
+      if (isCampaignStart() && (localStorage.getItem('dontShowAgain') !== 'true')) {
+        setCampaignModalVisible(true)
+      }
+    }
+  }, [])
+  // end marketing banner
+
   return (
     <div className={s.background}>
       <div className="lucis-container-2">
@@ -284,7 +312,7 @@ export default observer(function P2EOverview(props: IProps) {
                   <Col className={s.content}>
                     <img className={s.logoPublisher} src="/assets/P2E/overview/garena-icon.svg" alt="" />
                     <h1>LEAGUE OF LEGENDS</h1>
-                    <p>Normal, Ranked and Clash available</p>
+                    <p>Normal, Ranked and ARAM games are available </p>
                     <div className={s.like}>
                       <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> {connectedUserLOL ?? "-"}
                     </div>
@@ -316,7 +344,7 @@ export default observer(function P2EOverview(props: IProps) {
                   <Col className={s.content}>
                     <img className={s.logoPublisher} src="/assets/P2E/overview/valve-icon.svg" alt="" />
                     <h1>CS:GO</h1>
-                    <p>Normal, Ranked and Clash available</p>
+                    <p>FACEIT 5v5 Ranked games are available</p>
                     <div className={s.like}>
                       <img src="/assets/P2E/overview/user-check-icon.svg" alt="" /> {connectedUserCSGO ?? "-"}
                     </div>
@@ -348,6 +376,30 @@ export default observer(function P2EOverview(props: IProps) {
           </div>
         </div>
       </div>
+      <Modal
+        visible={campaignModalVisible}
+        onCancel={handleCampaignModalCancel}
+        wrapClassName={s.campaignModal}
+        footer={[
+          <Button
+            key="1"
+            type="link"
+            onClick={handleCampaignModalDontShowAgain}
+            className={s.campaignDontShowBtn}
+          >
+            Dont show again
+          </Button>,
+          <Button
+            key="2"
+            onClick={handleCampaignModalSignup}
+            className={s.campaignSignupBtn}
+          >
+            <div>Sign up</div>
+          </Button>
+        ]}
+      >
+        <img src="/assets/P2E/Lucis_1000_point.png" alt="" className={s.campaignImg} />
+      </Modal>
     </div>
   )
 }

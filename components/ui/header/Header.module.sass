@@ -6,29 +6,47 @@
   width: 100%
   background: #000625
   z-index: 10
-  position: relative
-    
+  // position: relative
+  @media screen and (max-width: 1024px)
+    display: none
 .menu_container
   color: inherit
   background: #000625
-  @media (min-width: 1024px)
-    backdrop-filter: blur(4px)
-    border-bottom: 1px solid #cfcfcf73
-    padding-top: 12px
-    padding-bottom: 12px
-
-.logo
-  height: 75px
-  width: 268px
+  height: 88px
   display: flex
-  flex-flow: row wrap
-  align-items: center
-  justify-content: flex-start
-  cursor: pointer
-  p
-    margin: 0
-    font-size: 12px
-    color: white
+  :global(.lucis-container-2)
+    @media screen and (min-width: 1600px)
+      width: 1400px
+
+
+.logoSection
+  display: none
+  @media screen and (min-width: 1800px)
+    display: block
+    position: absolute
+    left: 62px
+    top: 50%
+    transform: translate(0, -50%)
+  .logo
+    cursor: pointer
+    height: 40px
+    p
+      margin: 0
+      font-size: 12px
+      color: white
+.logoTab
+  display: none
+  @media screen and (max-width: 1800px)
+    display: block
+    .logo
+      cursor: pointer
+      height: 40px
+      margin-right: 64px
+      margin-bottom: 20px
+  @media screen and ( min-width: 1024px )
+    .logo
+      margin-right: 30px
+
 .block_item_menu
   display: flex
   align-items: center
@@ -37,33 +55,129 @@
   color: #FFF
   li
     a
-      color: #FFF
-      cursor: pointer
+      white-space: nowrap
+      font-family: 'Revx Neue Demo'
+      font-style: normal
       font-weight: 400
+      font-size: 20px
+      letter-spacing: 0.04em
+      color: #fff
       transition: 0.3s
       @media ( min-width: 1024px )
-        margin-right: 30px
-        font-size: 20px
-      @media ( min-width: 1280px )
+        margin-right: 20px
+        font-size: 14px
+      @media ( min-width: 1200px )
         margin-right: 40px
         font-size: 18px
-      @media ( min-width: 1440px )
-        margin-right: 60px
+      @media ( min-width: 1800px )
+        margin-right: 64px
         font-size: 20px
-  .default
-    opacity: 0.4
-    pointer-events: none
-    display: flex
-    flex-direction: column
-    margin-top: 10px
-    span
-      font-weight: 400
-      font-size: 10px
-      line-height: 115%
+
+  .active
+    a
       color: #0BEBD6
-      margin-left: 12px
+  .default
+    cursor: not-allowed
+    a
+      pointer-events: none
+      display: flex
+      flex-direction: column
+      position: relative
+      span
+        font-weight: 300
+        font-family: 'Lexend', serif
+        font-size: 8px
+        line-height: 115%
+        color: #0BEBD6
+        position: absolute
+        bottom: -5px
+        right: -20px
+        white-space: nowrap
+        text-transform: uppercase
+        @media ( max-width: 1200px )
+          font-size: 6px
 .block_item_menu li a:hover
   color: #0BEBD6
 
 .loginCol
   display: flex !important
+.profileUser
+  display: flex
+  justify-content: flex-end
+  .address
+    color: #0BEBD6
+    display: flex
+    align-items: flex-end
+    div
+      overflow: hidden
+      font-family: 'Lexend'
+      font-style: normal
+      font-weight: 400
+      font-size: 13px
+      margin-right: 10px
+  .avatar
+    margin-left: 8px
+    cursor: pointer
+    display: flex
+    align-items: flex-end
+    height: 100%
+
+    img
+      width: 40px
+      height: 40px
+      border-radius: 50%
+  .profileName
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 300
+    font-size: 16px
+    text-align: right
+    color: #fff
+    width: 100%
+    display: flex
+    justify-content: flex-end
+    div
+      white-space: nowrap
+      width: 230px
+      overflow: hidden
+      text-overflow: ellipsis
+  .profileInfo
+    .profileBalance
+      background: rgba(255, 255, 255, 0.1)
+      padding: 2px 8px
+      border-radius: 4px
+      display: flex
+      justify-content: flex-end
+      .rewardItem
+        display: flex
+        justify-content: center
+        align-items: center
+        font-family: 'Lexend'
+        font-size: 14px
+        .lucisPoint
+          color: #DF9B16
+        img
+          width: 14px
+          height: 14px
+          margin-left: 4px
+.overviewBtn
+  width: 107px
+  height: 20px
+  border: 1px solid #FFFFFF
+  background: transparent
+  padding: 0.5px
+  cursor: pointer
+  div
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    font-size: 12px !important
+    width: 100%
+    height: 100%
+    background: #fff
+    color: #333333
+    align-items: center
+    justify-content: center
+    display: flex
+    &:hover
+      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+      color: #fff

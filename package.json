@@ -63,6 +63,7 @@
     "react-share": "^4.4.0",
     "react-slick": "^0.29.0",
     "steamapi": "^2.2.0",
+    "swiper": "^8.3.1",
     "tournament-generator": "^1.2.0",
     "web3modal": "^1.9.5"
   },

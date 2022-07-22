@@ -111,7 +111,6 @@ const RafflesDetail = observer(() => {
       const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
         .valueOf();
       const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
-      console.log("timeBefore", timeBefore);
       if(timeBefore <= 5 && !checkDisplayEndAt) {
         setCheckDisplayEndAt(true);
         refetchRaffleDetail();

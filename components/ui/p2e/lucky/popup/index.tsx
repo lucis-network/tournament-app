@@ -20,7 +20,7 @@ type Props = {
 export default function PopUpOpenBox(props: Props) {
   const { status, closePopupOpenBox, chestDetail } = props;
   const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
-  const [chestResponse, setChestResponse] = useState<OpenChestResponse>({} as OpenChestResponse);
+  const [chestResponse, setChestResponse] = useState<LuckyChestPrize>({} as LuckyChestPrize);
   const [width] = useWindowSize();
 
   const {dataLuckyChestUserInfo} = useGetLuckyChestUserInfo({
@@ -42,12 +42,8 @@ export default function PopUpOpenBox(props: Props) {
           tier: LuckyChestTier.Standard,
         },
         onCompleted: (data) => {
-          const decodedData = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
-          const newOpenChestResponse = {
-            prize: decodedData
-          }
-
-          setChestResponse(newOpenChestResponse);
+          const decodedData: LuckyChestPrize = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
+          setChestResponse(decodedData);
           setRollingChestPopupVisible(true);
         }
       })
@@ -127,7 +123,7 @@ export default function PopUpOpenBox(props: Props) {
                 visible={rollingChestPopupVisible}
                 closePopupRollingChest={() => setRollingChestPopupVisible(false)}
                 chestDetail={chestDetail}
-                chestResponse={chestResponse}
+                chestPrize={chestResponse}
             />}
           </div>
         </div>

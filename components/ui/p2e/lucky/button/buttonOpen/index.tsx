@@ -8,14 +8,12 @@ type Props = {
 }
 function ButtonOpenBox(props: Props) {
   const { children } = props;
-  const [width] = useWindowSize();
   return (
     <>
       <div className={`${s.wrapper} ${props?.disabled ? 'disabled' : ''}`} onClick={props.onClick}>
         <div className={s.bt_btn}>
-          {
-            width < 575 ? <img src="/assets/P2E/lucky-chest/btn_open_sm.svg" alt=""/> : <img src="/assets/P2E/lucky-chest/btn_open.svg" alt=""/>
-          }
+          <img src="/assets/P2E/lucky-chest/btn_open_sm.svg" alt="" className={s.btnImgSm} />
+          <img src="/assets/P2E/lucky-chest/btn_open.svg" alt="" className={s.btnImg} />
         </div>
         <span>{children}</span>
       </div>

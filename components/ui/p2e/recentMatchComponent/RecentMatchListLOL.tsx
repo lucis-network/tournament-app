@@ -88,7 +88,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
         ) : Object.entries(recentMatchesFiltered).map((item, index) => {
           return (
             <div key={item[0]}>
-              <Row className={s.recentMatchTitle}>
+              <Row className={s.recentMatchTitle} style={props.isHistory ? {marginTop: 0}: {}}>
                 {index === 0 && <Col xs={24} md={12} >
                   <h2>
                     {props.hasButtonBack && <img style={{ marginRight: 16, cursor: "pointer" }} src="/assets/P2E/back-icon.svg" alt="" onClick={() => router.push("/playcore/dashboard")} />}
@@ -109,7 +109,7 @@ export const RecentMatchListLOL = React.memo((props: IProps) => {
                   </div>
                 </Col>
               </Row>
-              <div className={s.recentMatchList}>
+              <div className={s.recentMatchList} style={props.isHistory ? {marginTop: 0}: {}}>
                 <Row gutter={[{ xs: 8, md: 0 }, { xs: 8, md: 0 }]}>
                   {
                     item[1]?.map((item, index, array) => {

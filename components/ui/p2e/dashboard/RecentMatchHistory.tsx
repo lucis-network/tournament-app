@@ -88,6 +88,7 @@ const RecentMatchHistory = (props: IProps) => {
           loading={loading}
           title="Recent matches history"
           hasButtonBack
+          isHistory
           dailyPoint={dailyPointRecentMatch}
 
         />;
@@ -98,6 +99,7 @@ const RecentMatchHistory = (props: IProps) => {
           title="Recent matches history"
           dailyPoint={dailyPointRecentMatch}
           hasButtonBack
+          isHistory
         />;
       default:
         return null;
