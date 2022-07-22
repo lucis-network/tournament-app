@@ -1,21 +1,42 @@
 .container_footer
+  :global(.lucis-container-2)
+    @media screen and (min-width: 1600px)
+      width: 1400px
   background: #000625
   backdrop-filter: blur(42px)
   height: 136px
-  display: flex
-  align-items: center
+  line-height: 136px
   @media (max-width: 992px)
     height: 70px
+    line-height: 70px
   @media (max-width: 768px)
     height: 48px
+    line-height: 48px
   .logo
+    display: none
+    @media screen and (min-width: 1800px)
+      display: flex
+      align-items: center
+      position: absolute
+      left: 62px
+      top: 50%
+      transform: translate(0, -50%)
+    img
+      height: 40px
+      min-height: 40px
+      max-height: 40px
+      margin-bottom: 18px
+  .logoTab
+    img
+      height: 40px
+      min-height: 40px
+      max-height: 40px
+      margin-bottom: 18px
+  .wrapper
     display: flex
-    align-items: center
+    justify-content: flex-end
   .group_ic
     display: flex
-    align-items: center
-    justify-content: center
-    width: 100%
     .ic_item
       max-width: 40px
       margin-right: 10px
@@ -45,13 +66,15 @@
         color: #00FFEC
   .btn_help
     display: flex
-    justify-content: center
     align-items: center
+    @media (max-width: 768px)
+      display: none
     span
       font-family: 'Revx Neue Demo'
       font-style: normal
       font-weight: 400
       font-size: 16px
       text-transform: uppercase
+      letter-spacing: 4px
 
 

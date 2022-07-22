@@ -26,6 +26,7 @@ import s from "./User.module.sass";
 import { AppEmitter } from "../../../services/emitter";
 import { useWindowSize } from "hooks/useWindowSize";
 import ConnectWalletModal from "./ConnectWalletModal";
+import {connectWalletHelper} from "../ConnectWalletHelper";
 
 type Props = {
   children?: any;
@@ -89,6 +90,10 @@ export default observer(function User(props: Props) {
     AuthBoxStore.connectModalVisible = true;
   };
 
+  const onDisconnectWallet =  () => {
+    AppEmitter.emit("onWalletDisconnect");
+  }
+
   const profileModal = (
     <Row
       className={s.profileModal}
@@ -138,8 +143,8 @@ export default observer(function User(props: Props) {
           className={s.btns}
           style={address ? { marginTop: 30 } : { marginTop: 60 }}
         >
-          {!address && <Button type="link" onClick={showModal}>
-            Connect wallet
+          {address && <Button type="link" onClick={onDisconnectWallet}>
+            Disconnect wallet
           </Button>}
           <Button type="link" onClick={onClickProfile}>
             My Profile
