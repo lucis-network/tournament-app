@@ -150,7 +150,7 @@ export default observer(function User(props: Props) {
             My Profile
           </Button>
           <Button type="link" onClick={disconnectWallet}>
-            Log out
+            Sign out
           </Button>
           {/* <GoogleLogout
             clientId={clientId}
