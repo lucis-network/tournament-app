@@ -20,7 +20,7 @@ import {useQuery} from "@apollo/client";
 import {GET_STATISTICS} from "../../../hooks/p2e/useP2E";
 import ConnectWalletStore from "../../Auth/ConnectWalletStore";
 import MissionService from "../../service/p2e/MissionService";
-import {currency, fomatNumber} from "../../../utils/Number";
+import {currency, fomatNumber, format} from "../../../utils/Number";
 import AuthBoxStore from "../../Auth/components/AuthBoxStore";
 
 type Props = {
@@ -97,10 +97,10 @@ export default observer(function Header(props: Props) {
                   </a>
                 </Link></li>
                 <li><Link href="/arena">ARENA</Link></li>
-                <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
-                       rel="noopener noreferrer">RANKING</a></li>
+
                 <li><a href="https://insight.lucis.network/" target="_blank"
                        rel="noopener noreferrer">INSIGHT</a></li>
+                <li className={s.default}><a>RANKING <span>Coming Soon</span></a></li>
                 <li className={s.default}><a>SCHORLARSHIP <span>Coming Soon</span></a></li>
                 <li className={s.default}><a>SOCIAL <span>Coming Soon</span></a></li>
               </ul>
@@ -111,7 +111,9 @@ export default observer(function Header(props: Props) {
                   <div className={s.profileUser}>
                     <div className={s.profileInfo}>
                       <div className={s.profileName}>
-                        {profile?.display_name}
+                        <div title={profile?.display_name ?? ""}>
+                          {profile?.display_name ?? ""}
+                        </div>
                       </div>
                       <div className={s.profileBalance}>
                         <div className={s.address}>
@@ -130,12 +132,12 @@ export default observer(function Header(props: Props) {
                           }
                         </div>
                         <div className={s.rewardItem} style={{marginRight: 8}}>
-                          <span className={s.lucisPoint}>{currency(balance?.lucis_point, 0) ?? 0}</span>
+                          <span className={s.lucisPoint}>{format(balance?.lucis_point, 0) ?? 0}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt=""/>
                         </div>
                         <div className={s.rewardItem}>
 
-                          <span style={{color: "#16DADF"}}>{currency(balance?.lucis_token, 2) ?? 0}</span>
+                          <span style={{color: "#16DADF"}}>{format(balance?.lucis_token, 2) ?? 0}</span>
                           <img src="/assets/P2E/lucis-token.svg" alt=""/>
                         </div>
                       </div>
