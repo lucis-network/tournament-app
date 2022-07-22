@@ -11,13 +11,12 @@ export default function Login(props: any) {
   };
 
   return (
-    <>
-
+    <div className={s.loginSection}>
       <div
         className={s.overviewBtn}
         onClick={() => showModal()}
       >
-        <div>Sign in</div>
+        <div>SIGN IN</div>
       </div>
       {/*<GradientButton*/}
       {/*  onClick={showModal}*/}
@@ -28,8 +27,7 @@ export default function Login(props: any) {
       {/*>*/}
       {/*  Sign in*/}
       {/*</GradientButton>*/}
-
       <LoginModal />
-    </>
+    </div>
   );
 }

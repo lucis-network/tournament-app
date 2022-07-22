@@ -186,6 +186,19 @@ export default observer(function P2EWrapper(props: IProps) {
 
     return numberOfGame;
   }
+
+  const styleChooseGame = () => {
+    switch (getNumberOfGameConnect()) {
+      case 0:
+        return {minWidth: 30}
+      case 1:
+        return {minWidth: 70};
+      case 2:
+        return {minWidth: 120};
+      default:
+        return {minWidth: 170}
+    }
+  }
   return (
     <>
       <DocHead />
@@ -213,7 +226,7 @@ export default observer(function P2EWrapper(props: IProps) {
                 {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/playcore/raffles") &&
                   <div className={s.chooseGame}
                     style={
-                      getNumberOfGameConnect() === 1 ? {minWidth: 70} : {minWidth: 170}
+                      styleChooseGame()
                     }
                   >
                     {AuthGameStore.isLoggedInLMSS && <img

@@ -62,17 +62,17 @@
   .tabsWrap
     height: 60px
     background: rgba(255, 255, 255, 0.1)
-    // position: sticky
+    position: fixed
     backdrop-filter: blur(40px)
-    position: relative
-    z-index: 1
-    top: 0
+    z-index: 3
+    top: 88px
+    width: 100%
     @media screen and ( max-width: 1024px )
       position: fixed
       width: 100%
       top: 70px
       //z-index: 24
-      z-index: 9
+      z-index: 10
     @media screen and ( max-width: 550px )
       height: 39px
   .tabs
@@ -139,6 +139,7 @@
       filter: drop-shadow(0px 0px 14px #12B0B4) !important
       cursor: pointer !important
   .p2eContent
+    margin-top: 148px
     @media screen and ( max-width: 1024px )
       margin-top: 130px
     @media screen and ( max-width: 550px )
