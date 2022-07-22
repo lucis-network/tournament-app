@@ -22,10 +22,10 @@ export default function Footer(props: Props) {
               <li><Link href="/">Playcore</Link></li>
               <li><Link href="/arena">Arena</Link></li>
               <li><a>Ranking</a></li>
-              <li><a>Raffles</a></li>
-              <li><a>Scholarship</a></li>
-              <li><a>SocialFi</a></li>
-              <li><a>Marketplace</a></li>
+              <li><Link href="/playcore/raffles"><a>Raffles</a></Link></li>
+              <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>Scholarship</a></li>
+              <li><a style={{opacity: 0.6,cursor: "not-allowed"}}>SocialFi</a></li>
+              <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>Marketplace</a></li>
             </ul>
           </Col>
 
