@@ -280,7 +280,7 @@ export default observer(function P2EOverview(props: IProps) {
     if (!AuthStore.isLoggedIn) {
       const isCampaignStart = () => {
         const now = moment.utc().unix()
-        const startDate = moment('2022-07-24T00:00:00Z').utc().unix()
+        const startDate = moment('2022-07-22T00:00:00Z').utc().unix()
         const endDate = moment('2022-07-29T00:00:00Z').utc().unix()
         return moment(now).isBetween(startDate, endDate)
       }
@@ -398,7 +398,7 @@ export default observer(function P2EOverview(props: IProps) {
           </Button>
         ]}
       >
-        <img src="/assets/P2E/Lucis_1000_point.png" alt=""/>
+        <img src="/assets/P2E/Lucis_1000_point.png" alt="" className={s.campaignImg} />
       </Modal>
     </div>
   )
