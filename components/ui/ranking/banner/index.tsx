@@ -7,7 +7,6 @@ const BannerRanking = () => {
     <section className={s.sectionBanner}>
       <div className="lucis-container-2">
         <Swiper
-          spaceBetween={5}
           onSlideChange={() => console.log('slide change')}
           onSwiper={(swiper) => console.log(swiper)}
           centeredSlides
@@ -15,10 +14,12 @@ const BannerRanking = () => {
           breakpoints={{
             320: {
               slidesPerView: 'auto',
+              spaceBetween: 5
             },
             992: {
               slidesPerView: 5,
               allowTouchMove: false,
+              spaceBetween: 0
             }
           }}
         >
@@ -45,7 +46,7 @@ const BannerRanking = () => {
                 <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
               </div>
               <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total rewards</div>
+                <div className={s.rankingTitle}>Total earnings</div>
                 <div className={s.rankingUserDisplayName}>Mèo đi here</div>
                 <div className={s.rankingUsername}>chaupa</div>
                 <div className={s.rankingMedal}>
@@ -61,7 +62,7 @@ const BannerRanking = () => {
                 <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
               </div>
               <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total rewards</div>
+                <div className={s.rankingTitle}>Total nfts</div>
                 <div className={s.rankingUserDisplayName}>Mèo đi here</div>
                 <div className={s.rankingUsername}>chaupa</div>
                 <div className={s.rankingMedal}>
@@ -77,7 +78,7 @@ const BannerRanking = () => {
                 <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
               </div>
               <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total rewards</div>
+                <div className={s.rankingTitle}>Missions</div>
                 <div className={s.rankingUserDisplayName}>Mèo đi here</div>
                 <div className={s.rankingUsername}>chaupa</div>
                 <div className={s.rankingMedal}>
@@ -93,7 +94,7 @@ const BannerRanking = () => {
                 <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
               </div>
               <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total rewards</div>
+                <div className={s.rankingTitle}>Total earnings</div>
                 <div className={s.rankingUserDisplayName}>Mèo đi here</div>
                 <div className={s.rankingUsername}>chaupa</div>
                 <div className={s.rankingMedal}>
