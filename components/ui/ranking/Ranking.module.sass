@@ -1,0 +1,141 @@
+@import "/styles/common"
+
+.rankingWrapper
+  background: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/Ranking/bgRanking.jpg") no-repeat top center
+  background-size: cover
+  padding-top: 71px
+  @media screen and (min-width: 1025px)
+    padding-top: 88px
+.sectionBanner
+  :global(.lucis-container-2)
+    @media screen and (max-width: 991px)
+      width: 100%
+      padding: 0
+    @media screen and (min-width: 1600px)
+      width: 1400px
+  :global(.swiper-wrapper)
+    @media screen and (min-width: 992px)
+      display: flex
+      justify-content: space-between
+  :global(.swiper-slide)
+    @media screen and (max-width: 991px)
+      width: 200px !important
+      opacity: 0.4
+      transform: scale(0.9) !important
+      transform-origin: top
+      transition: .3s
+    @media screen and (min-width: 992px)
+      width: 180px !important
+    @media screen and (min-width: 1200px)
+      width: 210px !important
+    @media screen and (min-width: 1400px)
+      width: 250px !important
+    @media screen and (min-width: 1600px)
+      width: 260px !important
+  :global(.swiper-slide-active)
+    @media screen and (max-width: 991px)
+      opacity: 1
+      transform: scale(1) !important
+.rankingFlag
+  width: 100%
+  position: relative
+  @media screen and (min-width: 992px)
+
+.rankingAvatar
+  display: flex
+  align-items: center
+  justify-content: center
+  position: absolute
+  top: 164px
+  left: 50%
+  transform: translateX(-50%)
+  @media screen and (min-width: 1400px)
+    top: 205px
+  @media screen and (min-width: 1600px)
+    top: 216px
+  &:after
+    content: ''
+    background: url("/assets/Ranking/avatarDecoration.png") no-repeat center
+    background-size: cover
+    width: 156.3px
+    height: 180px
+    position: absolute
+    top: -48px
+    left: 50%
+    transform: translateX(-50%)
+    @media screen and (min-width: 1600px)
+      width: 217px
+      height: 250px
+      top: -70px
+  img
+    width: 94px
+    height: 94px
+    border-radius: 50px
+    object-fit: cover
+    @media screen and (min-width: 1600px)
+      width: 128px
+      height: 128px
+.rankingInfo
+  text-align: center
+  position: absolute
+  top: 320px
+  left: 50%
+  transform: translateX(-50%)
+  width: 100px
+  @media screen and (min-width: 992px)
+    top: 300px
+  @media screen and (min-width: 1200px)
+    top: 330px
+    width: 110px
+  @media screen and (min-width: 1400px)
+    top: 400px
+.rankingTitle
+  font-family: 'Revx Neue Demo'
+  font-weight: 600
+  font-size: 12px
+  line-height: 14px
+  text-transform: uppercase
+  background: linear-gradient(90deg, #BB7239 0%, #FCEEAE 22.75%, #E09E5B 52.16%, #FCE9A4 75.29%, #F1D693 82.75%, #E1BD7C 92.16%, #D08A4A 100%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  text-fill-color: transparent
+  margin-bottom: 10px
+  @include line-camp(2)
+  @media screen and (min-width: 1200px)
+    font-size: 14px
+.rankingUserDisplayName
+  font-family: 'Lexend'
+  font-weight: 500
+  font-size: 10px
+  line-height: 12px
+  background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  text-fill-color: transparent
+  margin-bottom: 2px
+  @include line-camp(1)
+  @media screen and (min-width: 1200px)
+    font-size: 12px
+    margin-bottom: 5px
+  @media screen and (min-width: 1600px)
+    font-size: 14px
+.rankingUsername
+  font-family: 'Lexend'
+  font-weight: 300
+  font-size: 8px
+  line-height: 10px
+  color: #DBE0E8
+  @include line-camp(1)
+  @media screen and (min-width: 1200px)
+    font-size: 10px
+  @media screen and (min-width: 1600px)
+    font-size: 12px
+.rankingMedal
+  width: 48px
+  margin: 14px auto 0
+  @media screen and (min-width: 1200px)
+    width: 80px
+    margin: 28px auto 0
+
+  img
+    width: 100%
