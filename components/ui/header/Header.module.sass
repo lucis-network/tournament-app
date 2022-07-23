@@ -91,7 +91,7 @@
         color: #0BEBD6
         position: absolute
         bottom: -5px
-        right: -20px
+        right: 0
         white-space: nowrap
         text-transform: uppercase
         @media ( max-width: 1200px )
@@ -136,19 +136,20 @@
     width: 100%
     display: flex
     justify-content: flex-end
-    div
+    .displayName
       white-space: nowrap
       width: 230px
       overflow: hidden
       text-overflow: ellipsis
   .profileInfo
     .profileBalance
-      background: rgba(255, 255, 255, 0.1)
-      padding: 2px 8px
-      border-radius: 4px
       display: flex
       justify-content: flex-end
-      min-width: 240px
+      .wrapperReward
+        background: rgba(255, 255, 255, 0.1)
+        padding: 2px 8px
+        border-radius: 4px
+        display: flex
       .rewardItem
         display: flex
         justify-content: center

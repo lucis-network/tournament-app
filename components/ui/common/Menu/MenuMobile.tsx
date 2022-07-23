@@ -102,7 +102,7 @@ export const MenuMobile = (props: any) => {
       >
         <motion.div variants={sidebar} />
 
-        <Navigation />
+        <Navigation balance={props.balance} />
 
         <MenuToggle toggle={() => toggleOpen()} className={s.mHumber} />
       </motion.nav>

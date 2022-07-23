@@ -24,7 +24,7 @@ const variants = {
   },
 };
 
-export const Navigation = () => {
+export const Navigation = ({balance}: any) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
@@ -92,7 +92,7 @@ export const Navigation = () => {
         <div>
           {AuthStore.isLoggedIn ? (
             <>
-              <ProfileMobile/>
+              <ProfileMobile balance={balance}/>
             </>
           ) : (
             ""
