@@ -47,7 +47,7 @@ export default class AnimatedNumber extends Component {
         this.prepareTween(this.props);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps (nextProps) {
 
         if (this.state.currentValue === nextProps.value) {
             return;

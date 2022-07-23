@@ -85,18 +85,22 @@ export default observer(function Header(props: Props) {
 
 
   const animatedNumber = (value: any, decimal: number = 0) => {
-    return (
-      <AnimatedNumber component="text" value={value}
-                      style={{
-                        transition: '0.8s ease-out',
-                        transitionProperty:
-                          'background-color, color, opacity'
-                      }}
-                      stepPrecision={0}
-                      duration={300}
-                      formatValue={(n: number) => format(n, decimal)}
-      />
-    )
+    if (value) {
+      return format(value, decimal);
+    }
+    // return (
+    //   <AnimatedNumber
+    //     component="text" value={value}
+    //     style={{
+    //       transition: '0.8s ease-out',
+    //       transitionProperty:
+    //         'background-color, color, opacity'
+    //     }}
+    //     stepPrecision={0}
+    //     duration={300}
+    //     formatValue={(n: number) => format(n, decimal)}
+    //   />
+    // )
   }
 
   return (
