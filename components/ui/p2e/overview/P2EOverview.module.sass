@@ -279,11 +279,15 @@
 // marketing banner
 .campaignModal
   backdrop-filter: blur(7px)
+  display: flex
+  align-items: center
+  justify-content: center
   :global(.ant-modal)
     width: 1000px !important
     max-width: calc(100% - 30px)
     padding: 0
     border-radius: 0
+    top: unset
   :global(.ant-modal-body)
     padding: 0
   :global(.ant-modal-footer)
