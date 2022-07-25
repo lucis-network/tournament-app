@@ -24,6 +24,7 @@ import {currency, fomatNumber, format} from "../../../utils/Number";
 import AuthBoxStore from "../../Auth/components/AuthBoxStore";
 import {AppEmitter} from "../../../services/emitter";
 import AnimatedNumber from "../common/AnimatedNumber/index";
+import LoginModal from "../../Auth/Login/LoginModal";
 
 type Props = {
   handleMenuOpen: Function;
@@ -208,6 +209,7 @@ export default observer(function Header(props: Props) {
       <MenuMobile balance={balance}/>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal/>}
       {LoginBoxStore.alertInAppModalVisible && <AlertInAppModal/>}
+      <LoginModal />
     </>
   );
 });

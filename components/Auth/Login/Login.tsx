@@ -27,7 +27,7 @@ export default function Login(props: any) {
       {/*>*/}
       {/*  Sign in*/}
       {/*</GradientButton>*/}
-      <LoginModal />
+      {/*<LoginModal />*/}
     </div>
   );
 }

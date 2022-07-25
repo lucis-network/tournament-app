@@ -13,6 +13,8 @@ import { AppEmitter } from "services/emitter";
 import s from "./MenuMobile.module.sass";
 import ProfileMobile from "./ProfileMobile";
 import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
+import {observer} from "mobx-react-lite";
+import LoginModal from "../../../Auth/Login/LoginModal";
 
 
 const variants = {
@@ -24,7 +26,7 @@ const variants = {
   },
 };
 
-export const Navigation = ({balance}: any) => {
+export default observer(function Navigation ({balance}: any) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
@@ -44,6 +46,7 @@ export const Navigation = ({balance}: any) => {
   }, []);
 
   const openPopupSignIn = () => {
+    console.log(1234)
     LoginBoxStore.connectModalVisible = true;
   }
 
@@ -168,8 +171,8 @@ export const Navigation = ({balance}: any) => {
               <span onClick={disconnectWallet}>Sign out</span>
             </div>
           ) : (
-            <div className={s.headerButton}>
-              <span onClick={openPopupSignIn}>Sign in</span>
+            <div className={s.headerButton} onClick={openPopupSignIn}>
+              <span>Sign in</span>
             </div>
           )}
         </div>
@@ -199,4 +202,4 @@ export const Navigation = ({balance}: any) => {
       </motion.ul>
     </div>
   );
-};
+});

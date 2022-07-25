@@ -62,7 +62,7 @@ export default observer(function LoginModal(props: Props) {
     if (type === "google") tokenid = res?.tokenId;
     if (type === "facebook") tokenid = res?.accessToken;
     const r = await authService.login(tokenid,code, 100, type, username, password);
-    console.log(AuthStore);
+    // console.log(AuthStore);
     const localUserInfo = getLocalAuthInfo();
 
     if (localUserInfo?.token) {
