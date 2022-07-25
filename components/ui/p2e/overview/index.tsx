@@ -398,7 +398,7 @@ export default observer(function P2EOverview(props: IProps) {
           </Button>
         ]}
       >
-        <img src="/assets/P2E/Lucis_1000_point.png" alt="" className={s.campaignImg} />
+        <img src="/assets/P2E/Lucis_1000_point.jpg" alt="" className={s.campaignImg} />
       </Modal>
     </div>
   )
