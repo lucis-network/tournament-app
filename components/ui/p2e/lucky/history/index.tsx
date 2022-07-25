@@ -157,6 +157,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
           } else {
             antMessage.success('Success!')
             refetchGetLuckyChestUserInfo()
+            AppEmitter.emit("updateBalance");
           }
         }
       }

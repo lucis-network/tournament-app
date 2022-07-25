@@ -194,7 +194,7 @@ export default observer(function P2EWrapper(props: IProps) {
       case 1:
         return {minWidth: 70};
       case 2:
-        return {minWidth: 120};
+        return {minWidth: 125};
       default:
         return {minWidth: 170}
     }

@@ -1,5 +1,5 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, LolMatchStatisticGql, PlatformAccount } from "../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, LolMatchStatisticGql, PlatformAccount, ReferFriendGql } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
   offset: number
@@ -163,7 +163,27 @@ export const useGetLOLStatisticMatch = (player_match_id: string, skip: boolean =
   }
 }
 
+export function useGetReferHistory(): {
+  loading: boolean,
+  errorDataReferHistory: ApolloError | undefined,
+  refetchDataReferHistory: () => Promise<ApolloQueryResult<any>>;
+  dataReferHistory: ReferFriendGql[] | undefined
+} {
+  const { loading, error, data, refetch } = useQuery(GET_INVITED_FRIENTD, {
+    variables: {},
+    context: {
+      endpoint: 'p2e'
+    },
+    fetchPolicy: "network-only",
+  });
 
+  return {
+    loading,
+    errorDataReferHistory: error,
+    refetchDataReferHistory: refetch,
+    dataReferHistory: data?.getInvitedFriend,
+  };
+}
 
 export const CONNECT_FACEIT = gql`
   mutation ($accessToken: String!, $idToken: String!) {
@@ -565,6 +585,22 @@ query {
     game,
     platform,
     number_user
+  }
+}
+`
+
+export const GET_INVITED_FRIENTD = gql`
+query {
+  getInvitedFriend {
+    invited_user_id,
+    status,
+    user {
+      code
+      email
+      profile {
+        display_name
+      }
+    }
   }
 }
 `

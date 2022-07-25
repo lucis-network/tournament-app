@@ -1,30 +1,32 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import s from './dashboard.module.sass'
-import { Col, message, Modal, Row } from "antd"
+import {Col, message, Modal, Row} from "antd"
 import {
   CLAIM_BOX,
   GET_STATISTICS, HAS_JOINED_DISCORD,
   IS_CLAIM_BOX,
 } from "../../../../hooks/p2e/useP2E";
 
-import { useMutation, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoPlayerMatch, LolPlayerMatchGql, PlayerMission } from "../../../../src/generated/graphql_p2e";
-import { RecentMatchListCSGO } from '../recentMatchComponent/RecentMatchListCSGO';
+import {useMutation, useQuery} from "@apollo/client";
+import {CsgoMatch, CsgoPlayerMatch, LolPlayerMatchGql, PlayerMission} from "../../../../src/generated/graphql_p2e";
+import {RecentMatchListCSGO} from '../recentMatchComponent/RecentMatchListCSGO';
 import NFTList from '../NFTList';
-import { handleGraphqlErrors } from 'utils/apollo_client';
+import {handleGraphqlErrors} from 'utils/apollo_client';
 import MissionList from '../missionComponent/MissionList';
 import SidebarRight from '../SidebarRight';
-import { useRouter } from 'next/router';
+import {useRouter} from 'next/router';
 import ButtonWrapper from 'components/common/button/Button';
-import { Game } from 'utils/Enum';
-import { RecentMatchListLOL } from '../recentMatchComponent/RecentMatchListLOL';
+import {Game} from 'utils/Enum';
+import {RecentMatchListLOL} from '../recentMatchComponent/RecentMatchListLOL';
 import MissionService from 'components/service/p2e/MissionService';
 import Link from 'next/link';
+import {AppEmitter} from "../../../../services/emitter";
 
 
 interface IProps {
   currentGame?: Game;
 }
+
 const Dashboard = (props: IProps) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -33,7 +35,8 @@ const Dashboard = (props: IProps) => {
   const [loadingRecentMatch, setLoadingRecentMatch] = useState(false);
 
   const [recentlyMatches, setRecentlyMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([])
-  const [dailyPointRecentMatch, setDailyPointRecentMatch] = useState<{day: number, month: number, year: number, point: number}[]>();
+  const [dailyPointRecentMatch, setDailyPointRecentMatch] = useState<{ day: number, month: number, year: number, point: number }[]>();
+  const [maxPointRecentMatch, setMaxPointRecentMatch] = React.useState("");
   const [showGiftBox, setShowGiftBox] = React.useState<boolean>(false);
   const [isClaimBox, setIsClaimBox] = React.useState(false);
   const statisticQuery = useQuery(GET_STATISTICS, {
@@ -49,7 +52,16 @@ const Dashboard = (props: IProps) => {
     const missionUpdate = await MissionService.updateDailyMission();
 
     queryDataRecentMatches(props.currentGame as Game);
-    statisticQuery.refetch();
+    statisticQuery.refetch().then((res) => {
+        AppEmitter.emit("updateBalance",
+          {
+            balance: {
+              lucis_point: res.data?.getBalance?.lucis_point,
+              lucis_token: res.data?.getBalance?.lucis_token
+            }
+          })
+      }
+    );
     setDailyMission(missionUpdate?.data?.updateDailyMission);
 
     setLoading(false);
@@ -97,12 +109,14 @@ const Dashboard = (props: IProps) => {
         const promiseCsgo = await MissionService.getCSGORecentMatch(1, 5);
         setRecentlyMatches(promiseCsgo.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
         setDailyPointRecentMatch(promiseCsgo?.data?.getRecentlyCsgoMatch?.daily_point as any);
+        setMaxPointRecentMatch(promiseCsgo?.data?.getRecentlyCsgoMatch?.max_point as any);
         setLoadingRecentMatch(false);
         return;
       case Game.LOL:
         const promiseLol = await MissionService.getLOLRecentMatch(1, 5);
         setRecentlyMatches(promiseLol.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
         setDailyPointRecentMatch(promiseLol?.data?.getRecentlyLolMatch?.daily_point as any);
+        setMaxPointRecentMatch(promiseLol?.data?.getRecentlyLolMatch?.max_point as any);
         setLoadingRecentMatch(false);
         return;
 
@@ -115,7 +129,16 @@ const Dashboard = (props: IProps) => {
     try {
       await MissionService.claimBox();
       const isClaimBoxRes = await MissionService.isClaimBox();
-      statisticQuery.refetch();
+      statisticQuery.refetch().then((res) => {
+          AppEmitter.emit("updateBalance",
+            {
+              balance: {
+                lucis_point: res.data?.getBalance?.lucis_point,
+                lucis_token: res.data?.getBalance?.lucis_token
+              }
+            })
+        }
+      );
       setIsClaimBox(isClaimBoxRes?.data?.isClaimBox);
 
       setShowGiftBox(true);
@@ -145,12 +168,14 @@ const Dashboard = (props: IProps) => {
         return <RecentMatchListCSGO
           recentMatches={recentlyMatches as CsgoPlayerMatch[]}
           dailyPoint={dailyPointRecentMatch}
-          loading={loadingRecentMatch} />;
+          maxPoint={maxPointRecentMatch}
+          loading={loadingRecentMatch}/>;
       case Game.LOL:
         return <RecentMatchListLOL
           recentMatches={recentlyMatches as LolPlayerMatchGql[]}
           dailyPoint={dailyPointRecentMatch}
-          loading={loadingRecentMatch} />;
+          maxPoint={maxPointRecentMatch}
+          loading={loadingRecentMatch}/>;
 
       default:
         return null;
@@ -164,17 +189,14 @@ const Dashboard = (props: IProps) => {
         closable={false}
         visible={showGiftBox}
         onCancel={() => setShowGiftBox(false)}
-        footer={[
-
-
-        ]}
+        footer={[]}
       >
-        <div style={{ textAlign: "center" }}>
-          <p style={{ textAlign: "center", fontSize: 30, margin: 0 }}>Congratulations</p>
-          <img src="/assets/P2E/csgo/box-open.png" alt="" width="300" />
-          <p style={{ textAlign: "center" }}>You have successfully claimed 30 Lucis points!</p>
-          <div style={{ textAlign: 'center' }} key="open-box-ok">
-            <ButtonWrapper style={{ textAlign: "center" }} onClick={() => setShowGiftBox(false)}>OK</ButtonWrapper>
+        <div style={{textAlign: "center"}}>
+          <p style={{textAlign: "center", fontSize: 30, margin: 0}}>Congratulations</p>
+          <img src="/assets/P2E/csgo/box-open.png" alt="" width="300"/>
+          <p style={{textAlign: "center"}}>You have successfully claimed 30 Lucis points!</p>
+          <div style={{textAlign: 'center'}} key="open-box-ok">
+            <ButtonWrapper style={{textAlign: "center"}} onClick={() => setShowGiftBox(false)}>OK</ButtonWrapper>
           </div>
         </div>
       </Modal>
@@ -183,14 +205,14 @@ const Dashboard = (props: IProps) => {
           <SidebarRight
             onlyWallet
             lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
-            lucisToken={statisticQuery?.data?.getBalance?.lucis_point} />
+            lucisToken={statisticQuery?.data?.getBalance?.lucis_point}/>
           <Row gutter={51}>
             <Col lg={16} md={24}>
               <div>
                 {/* <h2>
                 Your NFTs card
               </h2> */}
-                <NFTList currentGame={props.currentGame} />
+                <NFTList currentGame={props.currentGame}/>
               </div>
               <div className={s.dailyTitle}>
                 <h2>
@@ -201,7 +223,16 @@ const Dashboard = (props: IProps) => {
                 title="Daily missions"
                 missions={dailyMission}
                 handleUpdateMissions={(showMessage, loadingIcon) => handleUpdateMissions(showMessage, loadingIcon)}
-                handleUpdateStatistic={() => statisticQuery.refetch()}
+                handleUpdateStatistic={() => statisticQuery.refetch().then((res) => {
+                    AppEmitter.emit("updateBalance",
+                      {
+                        balance: {
+                          lucis_point: res.data?.getBalance?.lucis_point,
+                          lucis_token: res.data?.getBalance?.lucis_token
+                        }
+                      })
+                  }
+                )}
                 onClaimBox={onClaimBox}
                 loading={loadingDailyMission}
                 isClaimBox={isClaimBox ?? false}
@@ -211,9 +242,9 @@ const Dashboard = (props: IProps) => {
               />
               {RecentMatchListRender()}
               {recentlyMatches?.length !== 0 && <div className={s.viewAllHistory}>
-                <Link passHref href="/playcore/dashboard/history">
-                  <a onClick={() => router.push("/playcore/dashboard/history")}>View all history</a>
-                </Link>
+                  <Link passHref href="/playcore/dashboard/history">
+                      <a onClick={() => router.push("/playcore/dashboard/history")}>View all history</a>
+                  </Link>
               </div>}
             </Col>
             <Col lg={8} md={24}>

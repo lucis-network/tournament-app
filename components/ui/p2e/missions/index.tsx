@@ -14,6 +14,7 @@ import NFTList from '../NFTList';
 import SidebarRight from '../SidebarRight';
 import { Game } from 'utils/Enum';
 import MissionService from 'components/service/p2e/MissionService';
+import {AppEmitter} from "../../../../services/emitter";
 
 interface IProps {
   currentGame?: Game;
@@ -96,7 +97,16 @@ const Mission = (props: IProps) => {
               title="Completed  the Lucis missions to receive"
               missions={mission}
               handleUpdateMissions={(showMessage, loadingIconUpdate) => handleUpdateMissions(showMessage, loadingIconUpdate)}
-              handleUpdateStatistic={() => statisticQuery.refetch()}
+              handleUpdateStatistic={() => statisticQuery.refetch().then((res) => {
+                  AppEmitter.emit("updateBalance",
+                    {
+                      balance: {
+                        lucis_point: res.data?.getBalance?.lucis_point,
+                        lucis_token: res.data?.getBalance?.lucis_token
+                      }
+                    })
+                }
+              )}
               loading={loadingLucisMission}
               currentGame={props.currentGame}
               loadingUpdate={loading} />
