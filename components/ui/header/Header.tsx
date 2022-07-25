@@ -20,6 +20,11 @@ import {useQuery} from "@apollo/client";
 import {GET_STATISTICS} from "../../../hooks/p2e/useP2E";
 import ConnectWalletStore from "../../Auth/ConnectWalletStore";
 import MissionService from "../../service/p2e/MissionService";
+import {currency, fomatNumber, format} from "../../../utils/Number";
+import AuthBoxStore from "../../Auth/components/AuthBoxStore";
+import {AppEmitter} from "../../../services/emitter";
+import AnimatedNumber from "../common/AnimatedNumber/index";
+import LoginModal from "../../Auth/Login/LoginModal";
 
 type Props = {
   handleMenuOpen: Function;
@@ -27,10 +32,12 @@ type Props = {
 
 export default observer(function Header(props: Props) {
   const router = useRouter();
-  const [width] = useWindowSize();
   const {profile} = AuthStore;
   const {address} = ConnectWalletStore;
-  const [balance, setBalance] = React.useState<{lucis_point: number, lucis_token: number}>({lucis_point: 0, lucis_token: 0});
+  const [balance, setBalance] = React.useState<{ lucis_point: number, lucis_token: number }>({
+    lucis_point: 0,
+    lucis_token: 0
+  });
   const usernameCheck = async () => {
     const localUserInfo = getLocalAuthInfo();
     const isUsernameEmpty = (): boolean | null => (localUserInfo && isEmpty(localUserInfo?.profile?.user_name))
@@ -40,6 +47,10 @@ export default observer(function Header(props: Props) {
       LoginBoxStore.signupInfoModalVisible = true;
     }
   }
+
+  const showModal = () => {
+    AuthBoxStore.connectModalVisible = true;
+  };
 
   React.useEffect(() => {
     if (AuthStore.isLoggedIn) {
@@ -57,97 +68,148 @@ export default observer(function Header(props: Props) {
     };
   }, []);
 
+
+  useEffect(() => {
+    const listener = AppEmitter.addListener("updateBalance", (res: any) => {
+      if (res?.data && res?.data?.balance) {
+        setBalance(res?.data?.balance);
+      } else {
+        MissionService.getStatisticBalance().then(b => {
+          setBalance(b.data?.getBalance);
+        });
+      }
+    });
+    return () => {
+      listener.remove();
+    };
+  }, [])
+
+
+  const animatedNumber = (value: any, decimal: number = 0) => {
+    if (value) {
+      return format(value, decimal);
+    }
+    // return (
+    //   <AnimatedNumber
+    //     component="text" value={value}
+    //     style={{
+    //       transition: '0.8s ease-out',
+    //       transitionProperty:
+    //         'background-color, color, opacity'
+    //     }}
+    //     stepPrecision={0}
+    //     duration={300}
+    //     formatValue={(n: number) => format(n, decimal)}
+    //   />
+    // )
+  }
+
   return (
     <>
       <div className={`${s.pcMenu} bg-nav`}>
-        {width >= 1200 ? (
-          <div className={`${s.menu_container}`}>
-            <div className={s.logoSection}>
-              <Link href="/" passHref>
-                <a>
-                  <img src="/assets/home/logo.png" className={s.logo} alt="logo"/>
-                </a>
-              </Link>
-              {
-                // @ts-ignore
-                ("IS_TESTNET" == "true") && <p>Testnet</p>
-              }
-            </div>
-            <Row
-              justify="space-between"
-              className="lucis-container-2 items-center px-0 relative z-10"
-            >
-              <Col span={18}>
-                <ul className={s.block_item_menu}>
-                  <li className={s.logoTab}>
-                    <Link href="/">
-                      <img src="/assets/home/logo.png" className={s.logo} alt="logo"/>
-                    </Link>
-                  </li>
-                  <li><Link href="/">PLAYCORE</Link></li>
-                  <li><Link href="/arena">ARENA</Link></li>
-                  <li><a href="https://tournament-lucis.gitbook.io/lucis-tournament/" target="_blank"
-                         rel="noopener noreferrer">RANKING</a></li>
-                  <li><a href="https://insight.lucis.network/" target="_blank"
-                         rel="noopener noreferrer">INSIGHT</a></li>
-                  <li className={s.default}><a>SCHORLARSHIP</a><span>Coming Soon</span></li>
-                  <li className={s.default}>SOCIAL <span>Coming Soon</span></li>
-                </ul>
-              </Col>
-              <Col span={6}>
-                <ul className="flex gap-4 justify-end items-center m-0">
-                  <li>
-                    {AuthStore.isLoggedIn ? (
-                      <>
-                        <div className={s.profileUser}>
-                          <div className={s.address}>
-                              <div title={address}>
-                              {address}
-                            </div>
-                          </div>
-                          <div className={s.profileInfo}>
-                            <div className={s.profileName}>
-                              {profile?.display_name}
-                            </div>
-                            <div className={s.profileBalance}>
-                              <div className={s.rewardItem}>
-                                <img src="/assets/P2E/lucis-point.svg" alt=""/>
-                                <span
-                                  className={s.lucisPoint}>{balance?.lucis_point ?? 0}</span>
-                              </div>
-                              <div className={s.rewardItem}>
-                                <img src="/assets/P2E/lucis-token.svg" alt=""/>
-                                <span
-                                  style={{color: "#16DADF"}}>{balance?.lucis_token ?? 0}</span>
-                              </div>
-                            </div>
-                          </div>
-                          <User>
-                            <div className={s.avatar}>
-                              <img
-                                src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
-                                alt=""
-                              />
-                            </div>
-                          </User>
-
-                        </div>
-                      </>
-                    ) : (
-                      <Login/>
-                    )}
-                  </li>
-                </ul>
-              </Col>
-            </Row>
-            {/* <InfiniteList /> */}
+        <div className={`${s.menu_container}`}>
+          <div className={s.logoSection}>
+            <Link href="/" passHref>
+              <a>
+                <img src="/assets/home/logo.png" className={s.logo} alt="logo"/>
+              </a>
+            </Link>
+            {
+              // @ts-ignore
+              ("IS_TESTNET" == "true") && <p>Testnet</p>
+            }
           </div>
-        ) : (
-          <MenuMobile/>
-        )}
+          <Row
+            justify="space-between"
+            className="lucis-container-2 items-center px-0 relative z-10"
+          >
+            <Col xs={14} xl={16}>
+              <ul className={s.block_item_menu}>
+                <li className={s.logoTab}>
+                  <Link href="/">
+                    <img src="/assets/home/logo.png" className={s.logo} alt="logo"/>
+                  </Link>
+                </li>
+                <li className={`${router.pathname === "/" || router.pathname.includes("playcore") ? s.active : ""}`}>
+                  <Link href="/" passHref>
+                    <a>
+                      PLAYCORE
+                    </a>
+                  </Link></li>
+                <li className={`${router.pathname === "/arena" ? s.active : ""}`}><Link href="/arena">ARENA</Link></li>
+
+                <li><a href="https://insight.lucis.network/" target="_blank"
+                       rel="noopener noreferrer">INSIGHT</a></li>
+                <li className={s.default}><a>RANKING <span>Coming Soon</span></a></li>
+                {/*<li className={s.default}><a>SCHORLARSHIP <span>Coming Soon</span></a></li>*/}
+                {/*<li className={s.default}><a>SOCIAL <span>Coming Soon</span></a></li>*/}
+              </ul>
+            </Col>
+            <Col xs={10} xl={8}>
+              {AuthStore.isLoggedIn ? (
+                <>
+                  <div className={s.profileUser}>
+                    <div className={s.profileInfo}>
+                      <div className={s.profileName}>
+                        <div className={s.displayName} title={profile?.display_name ?? ""}>
+                          {profile?.display_name ?? ""}
+                        </div>
+                      </div>
+                      <div className={s.profileBalance}>
+                        {
+                          !address ?
+                            <div style={{display: "flex", alignItems: "center", marginRight: 8}}>
+                              <div
+                                className={s.overviewBtn}
+                                onClick={() => showModal()}
+                              >
+                                <div>Connect wallet</div>
+                              </div>
+                            </div>
+                            : null}
+                        <div className={s.wrapperReward}>
+                          {address ?
+                            <div className={s.address}>
+                              <div title={address}>
+                                {address?.slice(0, 6) + "..." + address?.slice(address?.length - 6)}
+                              </div>
+                            </div>
+                            : null}
+                          <div className={s.rewardItem} style={{marginRight: 8}}>
+                            <span className={s.lucisPoint}>{animatedNumber(balance?.lucis_point) ?? 0}</span>
+                            <img src="/assets/P2E/lucis-point.svg" alt=""/>
+                          </div>
+                          <div className={s.rewardItem}>
+
+                            <span style={{color: "#16DADF"}}>{animatedNumber(balance?.lucis_token, 2) ?? 0}</span>
+                            <img src="/assets/P2E/lucis-token.svg" alt=""/>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <User>
+                      <div className={s.avatar}>
+                        <img
+                          src={profile?.avatar ? profile?.avatar : "/assets/avatar.jpg"}
+                          alt=""
+                        />
+                      </div>
+                    </User>
+
+                  </div>
+                </>
+              ) : (
+                <Login/>
+              )}
+            </Col>
+          </Row>
+          {/* <InfiniteList /> */}
+        </div>
       </div>
+      <MenuMobile balance={balance}/>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal/>}
       {LoginBoxStore.alertInAppModalVisible && <AlertInAppModal/>}
+      <LoginModal />
     </>
   );
 });

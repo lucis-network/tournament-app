@@ -22,6 +22,7 @@ import RafflesStore from "../../../../src/store/RafflesStore";
 import moment from "moment";
 import {mapToDict} from "../../../../utils/Array";
 import {useGetWonTickets} from "../../../../hooks/p2e/useRaffleDetail";
+import {AppEmitter} from "../../../../services/emitter";
 
 const RafflesDetail = observer(() => {
   const router = useRouter()
@@ -212,6 +213,7 @@ const RafflesDetail = observer(() => {
           refetchMyTickets()
           refetchAllTickets()
           antMessage.success('Success!')
+          AppEmitter.emit("updateBalance");
         }
       }
     }).finally(() => setTicketBuying(false))

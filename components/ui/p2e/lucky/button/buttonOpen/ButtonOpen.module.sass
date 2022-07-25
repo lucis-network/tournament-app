@@ -5,7 +5,6 @@
   align-items: center
   justify-content: center
   @media (min-width: 1024px)
-    width: 130px
     cursor: pointer
   &:global(.disabled)
     cursor: no-drop
@@ -13,6 +12,15 @@
   .bt_btn
     position: absolute
     z-index: -1
+    .btnImgSm
+      display: none
+      @media (max-width: 574px)
+        width: 100px
+        display: block
+    .btnImg
+      display: none
+      @media (min-width: 575px)
+        display: block
   span
     font-weight: 400
     line-height: 30px
