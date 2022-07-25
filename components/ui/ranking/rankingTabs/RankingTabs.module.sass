@@ -1,0 +1,137 @@
+.sectionRanking
+  :global(.lucis-container-2)
+    @media screen and (min-width: 1600px)
+      width: 1400px
+.rankingTabsNav
+  display: flex
+  align-items: center
+  justify-content: space-between
+  overflow-x: auto
+  background: rgba(255, 255, 255, 0.1)
+  backdrop-filter: blur(40px)
+  margin-bottom: 24px
+  .rankingTabsItem
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    font-size: 14px
+    line-height: 15px
+    color: #DBE0E8
+    padding: 12px
+    text-transform: uppercase
+    text-align: center
+    flex: 1
+    @media screen and (min-width: 768px)
+      min-width: 20%
+    &:global(.active)
+      background: rgba(18, 176, 180, 0.1)
+      color: #00F9FF
+.rankingTabsFilter
+  .filterItems
+    display: flex
+    align-items: center
+    button
+      font-family: 'Revx Neue Demo'
+      font-weight: 400
+      font-size: 12px
+      line-height: 13px
+      color: rgba(255, 255, 255, 0.3)
+      padding: 4px 8px
+      display: block
+      &:global(.active)
+        font-weight: 600
+        color: #00F9FF
+  .filterDateTime
+    text-transform: uppercase
+    font-size: 16px
+    .seasonCountdown
+      .endText
+        font-family: 'Poppins'
+        font-weight: 400
+        line-height: 24px
+        background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
+        -webkit-background-clip: text
+        -webkit-text-fill-color: transparent
+        text-fill-color: transparent
+      .countdownText
+        font-family: 'Lexend'
+        font-weight: 500
+        line-height: 20px
+        color: #DF9B16
+    .season
+      font-family: 'Lexend'
+      font-weight: 400
+      line-height: 20px
+      color: #E4E4E4
+.rankingTableWrapper
+  :global(.swiper)
+    @media screen and (min-width: 576px)
+      width: 540px
+      padding: 0
+    @media screen and (min-width: 768px)
+      width: 720px
+    @media screen and (min-width: 992px)
+      width: 100%
+  :global(.swiper-slide)
+    padding: 0 16px
+    @media screen and (min-width: 576px)
+      padding: 0
+    @media screen and (min-width: 992px)
+      width: 900px !important
+    @media screen and (min-width: 1200px)
+      width: 960px !important
+    @media screen and (min-width: 1600px)
+      width: 1400px !important
+  :global(.ant-table)
+    background: none
+  :global(.ant-table-body)
+    tr
+      backdrop-filter: blur(40px)
+      &:nth-of-type(even)
+        background: rgba(69, 80, 107, 0.5)
+      &:nth-of-type(odd)
+        background: rgba(45, 52, 70, 0.5)
+      td
+        border: none
+  :global(.ant-table-thead)
+    background: rgba(45, 52, 70, 0.5)
+    backdrop-filter: blur(40px)
+    tr
+      th
+        background: none
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 20px
+        line-height: 120%
+        letter-spacing: 0.04em
+        color: #DBE0E8
+        padding: 10px
+        text-align: center
+        border: none
+.columnNo
+  width: 40px
+.columnName
+  font-family: 'Lexend'
+  font-weight: 400
+  font-size: 18px
+  line-height: 120%
+  letter-spacing: 0.04em
+  text-transform: capitalize
+  color: #DBE0E8
+  .totalNFTs
+    font-weight: 300
+  .top
+    font-size: 22px
+    line-height: 100%
+    &.top1
+      color: #FFF500
+      text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.25)
+    &.top2
+      color: #FFFFFF
+      text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.25)
+    &.top3
+      color: rgba(255, 212, 157, 0.9069)
+      text-shadow: 0px 0px 4px rgba(255, 255, 255, 0.25)
+
+
+
+

@@ -1,12 +1,15 @@
 @import "/styles/common"
 
 .rankingWrapper
-  background: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/Ranking/bgRanking.jpg") no-repeat top center
+  background: linear-gradient(0deg, rgba(23, 29, 46, 0.8), rgba(23, 29, 46, 0.8)), url("/assets/Ranking/bgRanking.jpg") no-repeat fixed top center
   background-size: cover
   padding-top: 71px
   @media screen and (min-width: 1025px)
     padding-top: 88px
 .sectionBanner
+  margin-bottom: 24px
+  @media screen and (min-width: 992px)
+    margin-bottom: 64px
   :global(.lucis-container-2)
     @media screen and (max-width: 991px)
       width: 100%
