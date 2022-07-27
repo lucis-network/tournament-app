@@ -165,21 +165,30 @@
 .overviewBtn
   width: 107px
   height: 20px
-  border: 1px solid #FFFFFF
-  background: transparent
-  padding: 0.5px
+  background: #ffffff
+  position: relative
   cursor: pointer
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    top: 1px
+    right: 1px
+    bottom: 1px
+    left: 1px
+    border: 1px solid #000000
+  &:hover
+    background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+    div
+      color: #fff
   div
     font-family: 'Revx Neue Demo'
     font-weight: 400
     font-size: 12px !important
-    width: 100%
+    line-height: 1
     height: 100%
-    background: #fff
     color: #333333
     align-items: center
     justify-content: center
     display: flex
-    &:hover
-      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
-      color: #fff
+    padding-top: 2px
