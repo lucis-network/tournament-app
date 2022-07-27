@@ -70,7 +70,7 @@ export default function Footer(props: Props) {
                 </div>
                 <div className={s.ic_item}>
                   <a
-                    href="https://discord.com/invite/kdDUjJcSF5"
+                    href="https://discord.gg/Y3E4x4U38k"
                     target="_blank"
                     rel="noopener noreferrer"
                   >

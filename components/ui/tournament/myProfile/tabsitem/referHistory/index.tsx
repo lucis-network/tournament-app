@@ -155,7 +155,7 @@ const ReferHistory = (props: Props) => {
         columns={columns}
         pagination={false}
         locale={{
-          emptyText: `You haven't any refer yet.`
+          emptyText: `You haven't invited anyone yet`
         }}
       />
     </div>

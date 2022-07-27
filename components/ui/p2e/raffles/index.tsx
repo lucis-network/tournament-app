@@ -96,7 +96,7 @@ const Raffles = () => {
                     </div>
                   </div>
                   {item?.raffle?.valued_at && (
-                    <div className={s.winnerValued}>Valued at {item?.raffle?.valued_at}</div>
+                    <div className={s.winnerValued}>Valued at ${item?.raffle?.valued_at}</div>
                   )}
                 </div>
               </div>
@@ -133,7 +133,7 @@ const Raffles = () => {
                 </Link>
                 <div className={s.featuredRaffleTitleWrap}>
                   <h3>{getFeaturedRaffleData?.spotlightRaffle?.name}</h3>
-                  <p>Valued at {getFeaturedRaffleData?.spotlightRaffle?.valued_at}</p>
+                  <p>{getFeaturedRaffleData?.spotlightRaffle?.valued_at ? `Valued at $${getFeaturedRaffleData?.spotlightRaffle?.valued_at}` : ''}</p>
                 </div>
                 <div className={s.featuredRafflePriceWrap}>
                   <div className={s.rafflePrice}>
@@ -236,7 +236,7 @@ const Raffles = () => {
                       )}
                       <h3 className={s.raffleTitle}>{raffle?.name}</h3>
                       <div className={s.rafflePriceWrap}>
-                        <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
+                        <div className={s.raffleValued}>{raffle?.valued_at ? `Valued at $${raffle?.valued_at}` : ''}</div>
                         <div className={s.rafflePrice}>
                           <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
                           {

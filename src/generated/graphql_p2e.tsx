@@ -618,6 +618,12 @@ export type GamePlatformCount = {
   lucky_chest: Scalars['Int'];
 };
 
+export type InventoryGql = {
+  __typename?: 'InventoryGql';
+  assembled_avail?: Maybe<Array<PrizeType>>;
+  user_inventory?: Maybe<Array<UserInventory>>;
+};
+
 export type LolAccountDto = {
   __typename?: 'LolAccountDto';
   avatar?: Maybe<Scalars['String']>;
@@ -999,6 +1005,7 @@ export type Mutation = {
   /** Disconnect LOL */
   disconnectLmss?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
+  getAssembled?: Maybe<UserInventory>;
   getOrSetDailyMission: Array<PlayerMission>;
   kycAccount?: Maybe<PlatformAccountDto>;
   openChest?: Maybe<OpenChestResponse>;
@@ -1065,6 +1072,11 @@ export type MutationConnectFaceitArgs = {
 
 export type MutationEquipNftArgs = {
   data: EquipNftInput;
+};
+
+
+export type MutationGetAssembledArgs = {
+  type: PrizeType;
 };
 
 
@@ -1496,6 +1508,7 @@ export type Query = {
   hasJoinedDiscord?: Maybe<Scalars['Boolean']>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
+  myInventory?: Maybe<InventoryGql>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   searchBySummonerName?: Maybe<LolAccountDto>;
   searchRaffle?: Maybe<Array<RaffleGql>>;
@@ -2214,6 +2227,19 @@ export type UserHistory = {
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
   uid: Scalars['ID'];
+  user_id: Scalars['Int'];
+};
+
+export type UserInventory = {
+  __typename?: 'UserInventory';
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  img?: Maybe<Scalars['String']>;
+  quantity?: Maybe<Scalars['Int']>;
+  title: Scalars['String'];
+  type: PrizeType;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
   user_id: Scalars['Int'];
 };
 

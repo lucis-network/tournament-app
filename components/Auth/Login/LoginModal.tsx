@@ -75,7 +75,7 @@ export default observer(function LoginModal(props: Props) {
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
         AppEmitter.emit("saveUtmAfterLoginSuccess", r);
-        if (isEmpty(localUserInfo?.profile?.user_name)) {
+        if (isEmpty(localUserInfo?.profile?.user_name) || localUserInfo?.is_exist_pass === false) {
           LoginBoxStore.signupInfoModalVisible = true;
         }
         // setTimeout(() => {

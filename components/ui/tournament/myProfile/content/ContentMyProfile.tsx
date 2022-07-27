@@ -13,6 +13,7 @@ import { Router, useRouter } from "next/router";
 import TournamentStore from "src/store/TournamentStore";
 import {AuthUser} from "../../../../Auth/AuthStore";
 import ReferHistory from "../tabsitem/referHistory";
+import Inventory from "../tabsitem/inventory";
 
 type ContentMyProfileProps = {
   isOwner?: boolean;
@@ -89,6 +90,9 @@ export default observer(function ContentMyProfile({
       </TabPane>
       <TabPane tab="Refer History" key="refer">
         <ReferHistory></ReferHistory>
+      </TabPane>
+      <TabPane tab="Inventory" key="inventory">
+        <Inventory></Inventory>
       </TabPane>
     </Tabs>
   );
