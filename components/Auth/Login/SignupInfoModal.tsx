@@ -2,7 +2,7 @@ import { Button, Form, FormInstance, Image, Input, Modal, Select } from "antd";
 import LoginBoxStore from "./LoginBoxStore";
 import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import s from "./Login.module.sass"
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { debounce, isEmpty } from "lodash";
@@ -36,11 +36,13 @@ const CHECK_USERNAME = gql`
 `;
 
 export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
+  const localUserInfo = getLocalAuthInfo();
   const [countryList, setCountryList] = useState<Country[]>([]);
   const [updateProfileMutation] = useMutation(UPDATE_PROFILE);
-  const [username, setUsername] = useState<string>('');
+  const [username, setUsername] = useState<string>(localUserInfo?.profile?.user_name ?? '');
   const [userNameExisted, setUserNameExisted] = useState(false)
   const [form] = Form.useForm();
+  const userNameRef = useRef(null)
   const {
     loading: checkUsernameLoading,
     error: checkUsernameError,
@@ -55,7 +57,6 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     }
   })
 
-  const localUserInfo = getLocalAuthInfo();
 
   useEffect(() => {
     if (!isEmpty(username) && userNameExisted) {
@@ -96,11 +97,15 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           });
           const { user_name, country_code } = response.data.updateProfile;
           const user = getLocalAuthInfo()!;
-
-          if (user && user.profile) {
-            user.profile.user_name = user_name;
-            user.profile.country_code = country_code;
-            setLocalAuthInfo(user);
+          await new Promise(resolve => setTimeout(resolve, 500))
+          const newUserData = {...user}
+          if (newUserData && newUserData.profile) {
+            newUserData.profile.user_name = user_name;
+            newUserData.profile.country_code = country_code;
+            if (!isEmpty(values.password)) {
+              newUserData.is_exist_pass = true
+            }
+            setLocalAuthInfo(newUserData);
           }
         } catch (error) {
           console.error('error updateProfileMutation: ', error);
@@ -137,6 +142,13 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     fetchCountryList();
   }, []);
 
+  useEffect(() => {
+    const authUsername = AuthStore.profile?.user_name
+    if (authUsername) {
+      setUsername(authUsername)
+    }
+
+}, []);
   // @ts-ignore
   return (
     <Modal
@@ -187,7 +199,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg}/>
+          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg} autoComplete="false" />
         </Form.Item>
         <Form.Item
           label="Country"
@@ -201,7 +213,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             }}
             placeholder="Select country"
             className={`${s.formFieldBg} ${s.formFieldSelect}`}
-            defaultValue="vn"
+            defaultValue={localUserInfo?.profile?.country_code}
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>
@@ -231,7 +243,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               message: "Valid characters are A-Z a-z 0-9"
             },]}
         >
-          <Input.Password placeholder="Enter password" className={s.formFieldBg}/>
+          <Input.Password placeholder="Enter password" className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
         <Form.Item
           label="Confirm Password"
@@ -260,7 +272,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             }),
           ]}
         >
-          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg}/>
+          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
       </Form>
     </Modal>

@@ -32,6 +32,8 @@
       background: #2c88d9
       border-color: #2c88d9
 .signupInfoModal
+  :global(.ant-input-password-icon.anticon)
+    color: #ffffff
   :global(.ant-select-selection-search)
     padding-left: 40px
   :global(.ant-form-item-label)
@@ -55,6 +57,11 @@
     width: 100%
     border-radius: 4px
     height: 40px
+    &:global(.ant-input-password)
+      input
+        background: none
+        box-shadow: none
+        backdrop-filter: none
     &.formFieldSelect
       padding: 0
       :global(.ant-select-selector)
