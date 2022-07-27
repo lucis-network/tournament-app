@@ -43,7 +43,7 @@ export default observer(function Header(props: Props) {
     const isUsernameEmpty = (): boolean | null => (localUserInfo && isEmpty(localUserInfo?.profile?.user_name))
     LoginBoxStore.signupInfoModalVisible = false;
     await new Promise((resolve) => setTimeout(resolve, 500));
-    if (isUsernameEmpty() || localUserInfo?.is_exist_pass == false) {
+    if (isUsernameEmpty()) {
       LoginBoxStore.signupInfoModalVisible = true;
     }
   }

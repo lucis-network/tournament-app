@@ -9,7 +9,6 @@ type Props = {
 
 const TabItemsInventory = (props: Props) => {
   const {dataMyInventory} = props;
-  console.log("dataMyInventory", dataMyInventory);
   return (
       <div className={s.listItemsInventory}>
         {

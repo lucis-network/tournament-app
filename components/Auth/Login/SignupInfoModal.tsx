@@ -30,8 +30,8 @@ const UPDATE_PROFILE = gql`
 `;
 
 const CHECK_USERNAME = gql`
-  query ($value: String!, $user_id: Int) {
-    checkUserName(value: $value, user_id: $user_id)
+  query ($value: String!) {
+    checkUserName(value: $value)
   }
 `;
 
@@ -47,8 +47,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     data: checkUsernameData
   } = useQuery(CHECK_USERNAME, {
     variables: {
-      value: username,
-      user_id: Number(AuthStore?.id)
+      value: username
     },
     skip: isEmpty(username),
     onCompleted: (data) => {
@@ -86,7 +85,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             variables: {
               data: {
                 user_name: {
-                  set: values.user_name
+                  set: username
                 },
                 country_code: values.country_code,
                 password: {
@@ -128,6 +127,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     []
   );
 
+
   const handleUsernameInput = (event: React.FormEvent<HTMLInputElement>) => {
     setUserNameExisted(false)
     debouncedInputTyping(event.currentTarget.value)
@@ -137,7 +137,6 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     fetchCountryList();
   }, []);
 
-  console.log("country", countryList);
   // @ts-ignore
   return (
     <Modal
@@ -155,7 +154,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
         form={form}
         labelCol={{span: 8}}
         wrapperCol={{span: 16}}
-        initialValues={{country_code: null}}
+        initialValues={{country_code: localUserInfo?.profile?.country_code, user_name: localUserInfo?.profile?.user_name}}
         autoComplete="off"
       >
         <Form.Item
@@ -188,7 +187,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" value={localUserInfo?.profile?.user_name ?? ""} defaultValue={localUserInfo?.profile?.user_name ?? ""} onChange={handleUsernameInput} className={s.formFieldBg}/>
+          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg}/>
         </Form.Item>
         <Form.Item
           label="Country"
