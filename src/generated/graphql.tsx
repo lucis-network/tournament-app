@@ -4099,6 +4099,7 @@ export type QueryIsSubscribeToTournamentArgs = {
 
 
 export type QueryCheckUserNameArgs = {
+  user_id?: InputMaybe<Scalars['Int']>;
   value: Scalars['String'];
 };
 

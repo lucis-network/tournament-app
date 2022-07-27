@@ -992,6 +992,7 @@ export enum MissionStatus {
 export type Mutation = {
   __typename?: 'Mutation';
   addStakedNft?: Maybe<Scalars['Boolean']>;
+  assemble?: Maybe<UserInventory>;
   buyRaffleTicket?: Maybe<Scalars['Boolean']>;
   claimBox?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<ClaimResponse>;
@@ -1005,7 +1006,6 @@ export type Mutation = {
   /** Disconnect LOL */
   disconnectLmss?: Maybe<Scalars['Boolean']>;
   equipNft?: Maybe<Scalars['Boolean']>;
-  getAssembled?: Maybe<UserInventory>;
   getOrSetDailyMission: Array<PlayerMission>;
   kycAccount?: Maybe<PlatformAccountDto>;
   openChest?: Maybe<OpenChestResponse>;
@@ -1020,6 +1020,11 @@ export type Mutation = {
 
 export type MutationAddStakedNftArgs = {
   data: StakedNft;
+};
+
+
+export type MutationAssembleArgs = {
+  type: PrizeType;
 };
 
 
@@ -1072,11 +1077,6 @@ export type MutationConnectFaceitArgs = {
 
 export type MutationEquipNftArgs = {
   data: EquipNftInput;
-};
-
-
-export type MutationGetAssembledArgs = {
-  type: PrizeType;
 };
 
 

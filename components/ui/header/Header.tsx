@@ -136,7 +136,7 @@ export default observer(function Header(props: Props) {
                       PLAYCORE
                     </a>
                   </Link></li>
-                <li className={`${router.pathname === "/arena" ? s.active : ""}`}><Link href="/arena">ARENA</Link></li>
+                <li className={`${router.pathname.includes("/arena") ? s.active : ""}`}><Link href="/arena">ARENA</Link></li>
 
                 <li><a href="https://insight.lucis.network/" target="_blank"
                        rel="noopener noreferrer">INSIGHT</a></li>
