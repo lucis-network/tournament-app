@@ -1,5 +1,5 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, LolMatchStatisticGql, PlatformAccount, ReferFriendGql } from "../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, InventoryGql, LolMatchStatisticGql, PlatformAccount, ReferFriendGql } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
   offset: number
@@ -182,6 +182,28 @@ export function useGetReferHistory(): {
     errorDataReferHistory: error,
     refetchDataReferHistory: refetch,
     dataReferHistory: data?.getInvitedFriend,
+  };
+}
+
+export function useGetMyInventory(): {
+  loading: boolean,
+  errorMyInventory: ApolloError | undefined,
+  refetchMyInventory: () => Promise<ApolloQueryResult<any>>;
+  dataMyInventory: InventoryGql | undefined
+} {
+  const { loading, error, data, refetch } = useQuery(GET_MY_INVENTORY, {
+    variables: {},
+    context: {
+      endpoint: 'p2e'
+    },
+    fetchPolicy: "network-only",
+  });
+
+  return {
+    loading,
+    errorMyInventory: error,
+    refetchMyInventory: refetch,
+    dataMyInventory: data?.myInventory,
   };
 }
 
@@ -601,6 +623,23 @@ query {
         display_name
       }
     }
+  }
+}
+`
+
+export const GET_MY_INVENTORY = gql`
+query {
+  myInventory {
+    user_inventory { 
+        uid 
+        user_id
+        title
+        desc
+        img
+        type
+        quantity
+     }
+    assembled_avail
   }
 }
 `

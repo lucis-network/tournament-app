@@ -8,6 +8,7 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import { debounce, isEmpty } from "lodash";
 import AuthService from "../AuthService";
 import Country from "country.json"
+import AuthStore from "../AuthStore";
 
 type SignupInfoModalProps = {};
 
@@ -29,8 +30,8 @@ const UPDATE_PROFILE = gql`
 `;
 
 const CHECK_USERNAME = gql`
-  query ($value: String!) {
-    checkUserName(value: $value)
+  query ($value: String!, $user_id: Int) {
+    checkUserName(value: $value, user_id: $user_id)
   }
 `;
 
@@ -46,7 +47,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     data: checkUsernameData
   } = useQuery(CHECK_USERNAME, {
     variables: {
-      value: username
+      value: username,
+      user_id: Number(AuthStore?.id)
     },
     skip: isEmpty(username),
     onCompleted: (data) => {
@@ -54,6 +56,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     }
   })
   useEffect(() => {
+    const localUserInfo = getLocalAuthInfo();
     if (!isEmpty(username) && userNameExisted) {
       form.setFields([
         {

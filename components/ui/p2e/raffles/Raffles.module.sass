@@ -291,8 +291,8 @@
       :global(.ant-image)
         width: 100%
         img
-          aspect-ratio: 343 / 194
-          object-fit: cover
+          //aspect-ratio: 343 / 194
+          //object-fit: cover
           width: 100%
     .featuredRaffleInfo
       background: rgba(69, 80, 107, 0.5)
@@ -303,7 +303,7 @@
       position: relative
       @media screen and (min-width: 768px)
         justify-content: unset
-        position: absolute
+        //position: absolute
         bottom: 0
         left: 0
         right: 0
@@ -371,17 +371,23 @@
             -webkit-box-orient: vertical
             overflow: hidden
           @media screen and (min-width: 1200px)
+            font-size: 24px
+            line-height: 35px
+            max-width: 75%
+          @media screen and (min-width: 1440px)
             font-size: 32px
             line-height: 35px
             max-width: 75%
         p
           font-family: 'Lexend'
           font-weight: 400
-          font-size: 18px
+          font-size: 16px
           line-height: 21px
           color: rgba(255, 255, 255, 0.7)
           margin-bottom: 0
-          color: #FFD058
+          //color: #FFF
+          @media (min-width: 1200px)
+            font-size: 18px
       .featuredRafflePriceWrap
         display: flex
         flex-direction: column
@@ -406,6 +412,9 @@
             margin-left: 15px
           @media screen and (min-width: 1200px)
             margin-right: 48px
+      .featuredRaffleTitleWrapDetail
+        p
+          color: #FFD058
       .featuredRaffleTagWrap
         .raffleTag
           @media screen and (min-width: 1200px)
@@ -539,6 +548,12 @@
       margin-bottom: 10px
       @media screen and (min-width: 768px)
         margin-bottom: 16px
+    .rafflesItemEmpty
+      width: 200px
+      height: 250px
+      @media (min-width: 1200px)
+        width: 270px
+        height: 300px
     .raffleTag
       width: auto
       font-size: 6px
@@ -562,7 +577,7 @@
         width: 100%
         img
           width: 100%
-          aspect-ratio: 436 / 296
+          //aspect-ratio: 436 / 296
     .raffleInfo
       padding: 5px
       @media screen and (min-width: 768px)
@@ -654,6 +669,10 @@
             margin-right: auto
             width: 70%
             max-width: 70%
+          @media screen and (min-width: 992px)
+            margin-right: auto
+            width: 80%
+            max-width: 80%
           h3
             @media screen and (min-width: 768px)
         .featuredRafflePriceWrap
@@ -802,6 +821,11 @@
     margin-bottom: 32px
     @media screen and (min-width: 1400px)
       margin-bottom: 80px
+    .myTicketsEmpty
+      color: #FFFFFF
+      text-align: center
+      font-size: 16px
+
     .myTicketsList
       display: flex
       column-gap: 28px
@@ -870,7 +894,7 @@
               @media screen and (min-width: 1400px)
                 padding-right: 40px
           .ownerReward
-            font-family: 'Revx Neue Demo'
+            font-family: 'Lexend'
             font-weight: 600
             font-size: 12px
             line-height: 120%
@@ -899,7 +923,7 @@
                   border-radius: 5px
                   margin-right: 40px
               .ownerName
-                font-family: 'Revx Neue Demo'
+                font-family: 'Lexend'
                 font-weight: 600
                 font-size: 14px
                 line-height: 120%
