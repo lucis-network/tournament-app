@@ -11,16 +11,21 @@
     line-height: 22px
     color: #00F9FF
     margin-bottom: 16px
-  .listPiecesInventory
-    margin-top: 50px
+  .groupInventory
     display: flex
-    gap: 0 20px
-    //grid-template-columns: 100px 100px 100px 100px 100px
-    //grid-template-rows: 50px 50px
-    flex-wrap: wrap
-    .item
+    align-items: center
+    .listPiecesInventory
+      margin-top: 50px
       display: flex
-      flex-direction: column
+      justify-content: space-around
+      flex-wrap: wrap
       align-items: center
-      img
-        width: 220px
+      flex-grow: 3
+      .item
+        display: flex
+        flex-direction: column
+        img
+          width: 200px
+    .btnCombine
+      flex-grow: 1
+      text-align: center

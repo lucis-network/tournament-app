@@ -2,7 +2,7 @@ import { Button, Col, Row } from "antd";
 import { memo, useEffect, useState } from "react";
 import Link from "next/link";
 
-import { currency } from "utils/Number";
+import {currency, format} from "utils/Number";
 import { TournamentGql } from "src/generated/graphql";
 import s from "./CardHome.module.sass";
 import { slugify } from "../../../../../utils/String";
@@ -155,8 +155,7 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                         </div>
                         <span>
                           {
-                            //@ts-ignore
-                            currency(item?.totalPrizePool)
+                            format(Number(item?.totalPrizePool), 2, {zero_trim: true})
                           }{" "}
                           {item.currency.symbol}
                         </span>
