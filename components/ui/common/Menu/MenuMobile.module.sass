@@ -1,3 +1,5 @@
+@import "/styles/common"
+
 .pcMenu
   border-bottom: 1px solid #010242
 
@@ -74,20 +76,26 @@
   .avatar
     margin-right: 12px
     img
-      width: 40px
-      height: 40px
+      min-width: 40px
+      min-height: 40px
+      max-width: 40px
+      max-height: 40px
       border-radius: 50%
   .profileMobileName
     font-family: 'Lexend'
     font-style: normal
-    font-weight: 400
+    font-weight: 300
     font-size: 16px
     line-height: 18px
     color: #00F9FF
     width: 152px
+    margin-bottom: 4px
   .profileMobileInfo
+    min-width: 0
     .profileMobileBalance
       display: flex
+      width: 100%
+      flex-wrap: wrap
       .rewardItem
         display: flex
         justify-content: center
@@ -98,9 +106,15 @@
           margin-right: 8px
           color: #DF9B16
         img
-          width: 14px
-          height: 14px
+          min-width: 14px
+          min-height: 14px
+          max-width: 14px
+          max-height: 14px
           margin-right: 4px
+          box-shadow: 0 0 6.3px rgba(11, 235, 214, 0.5)
+          border-radius: 50%
+        span
+          word-break: break-all
 .profileMobileWallet
   margin-top: 24px
   .address
@@ -110,10 +124,28 @@
     border-radius: 50px
     background: #2E384D
     text-overflow: ellipsis
-    padding: 8px 34px
+    padding: 8px 28px
     margin-bottom: 8px
     font-family: 'Lexend'
     font-style: normal
     font-weight: 500
     font-size: 12px
+    text-align: center
 
+.menuMobileItem
+  :global(.comingSoon)
+    position: relative
+    span
+      font-weight: 300
+      font-family: "Lexend", serif
+      font-size: 8px
+      line-height: 115%
+      color: #0BEBD6
+      position: absolute
+      bottom: -5px
+      left: 10px
+      white-space: nowrap
+      text-transform: uppercase
+.menuMobileItemMarginTop
+  margin-top: auto
+  padding-top: 24px
