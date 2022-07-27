@@ -187,7 +187,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg}/>
+          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
         <Form.Item
           label="Country"
@@ -231,7 +231,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               message: "Valid characters are A-Z a-z 0-9"
             },]}
         >
-          <Input.Password placeholder="Enter password" className={s.formFieldBg}/>
+          <Input.Password placeholder="Enter password" className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
         <Form.Item
           label="Confirm Password"
@@ -260,7 +260,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             }),
           ]}
         >
-          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg}/>
+          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
       </Form>
     </Modal>
