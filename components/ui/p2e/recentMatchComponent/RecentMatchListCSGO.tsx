@@ -127,7 +127,8 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                             background:
                               index % 2 === 0
                                 ? `linear-gradient(90deg, rgba(47, 54, 75, 0) 0%, #2F364B 21.88%), url("${item?.map_img}")`
-                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`
+                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`,
+                            backgroundSize: "contain",
                           }}
                         >
                           <Link href={`/playcore/dashboard/history/${item?.id}`}>

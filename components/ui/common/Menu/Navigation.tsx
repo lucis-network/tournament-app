@@ -75,24 +75,24 @@ export default observer(function Navigation ({balance}: any) {
       text: "RANKING",
       disable: true,
       class: { cursor: "context-menu" },
+      isComingSoon: true
     },
-
-    {
-      color: "#FF008C",
-      text: "SCHORLARSHIP",
-      disable: true,
-      class: { cursor: "context-menu" },
-    },
-    {
-      color: "#FF008C",
-      text: "SOCIAL",
-      disable: true,
-      class: { cursor: "context-menu", paddingBottom: 24 },
-    },
+    // {
+    //   color: "#FF008C",
+    //   text: "SCHORLARSHIP",
+    //   disable: true,
+    //   class: { cursor: "context-menu" },
+    // },
+    // {
+    //   color: "#FF008C",
+    //   text: "SOCIAL",
+    //   disable: true,
+    //   class: { cursor: "context-menu", paddingBottom: 24 },
+    // },
     {
       color: "#FF008C",
       text: (
-        <div>
+        <div style={AuthStore.isLoggedIn ? {borderBottom: "1px solid #3D475C", paddingBottom: "24px"} : undefined}>
           {AuthStore.isLoggedIn ? (
             <>
               <ProfileMobile balance={balance}/>
@@ -104,22 +104,22 @@ export default observer(function Navigation ({balance}: any) {
       ),
       class: { paddingBottom: "24px" },
       isBlank: false,
+      isMarginTop: true,
     },
-
-    {
-      color: "#FF008C",
-      text: (
-        <div>
-          {AuthStore.isLoggedIn ? (
-              <div style={{borderBottom: "1px solid #3D475C"}}></div>
-          ) : (
-            ""
-          )}
-        </div>
-      ),
-      class: { paddingBottom: "24px" },
-      isBlank: false,
-    },
+    // {
+    //   color: "#FF008C",
+    //   text: (
+    //     AuthStore.isLoggedIn ? (
+    //       <div>
+    //         <div style={{borderBottom: "1px solid #3D475C"}}></div>
+    //       </div>
+    //     ) : (
+    //       ""
+    //     )
+    //   ),
+    //   class: { paddingBottom: "24px" },
+    //   isBlank: false,
+    // },
     {
       color: "#FF008C",
       text: (
@@ -146,6 +146,7 @@ export default observer(function Navigation ({balance}: any) {
         </div>
       ),
       isBlank: false,
+      disable: true,
     },
 
     {
@@ -161,6 +162,7 @@ export default observer(function Navigation ({balance}: any) {
       ),
       class: { paddingBottom: 24 },
       isBlank: false,
+      disable: true,
     },
     {
       color: "#FF008C",

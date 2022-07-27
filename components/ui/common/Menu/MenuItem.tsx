@@ -36,6 +36,8 @@ export type MenuItemType = {
   isBlank?: boolean;
   to?: string;
   active?: boolean;
+  isComingSoon?: boolean;
+  isMarginTop?: boolean;
 };
 
 export const MenuItem = (props: { item: MenuItemType }) => {
@@ -53,18 +55,29 @@ export const MenuItem = (props: { item: MenuItemType }) => {
 
   if (props.item.to) {
     Comp = <Link href={props.item.to} passHref>
-      <a>
+      <a className={`${props.item?.isComingSoon ? 'comingSoon' : ''}`}>
         {props.item.text}
+        {props.item?.isComingSoon && (
+          <span>Coming Soon</span>
+        )}
       </a>
     </Link>;
   } else if (props.item.src) {
     Comp = (
-      <a href={props.item.src} target="_blank" rel="noopener noreferrer">
+      <a href={props.item.src} target="_blank" rel="noopener noreferrer" className={`${props.item?.isComingSoon ? 'comingSoon' : ''}`}>
         {props.item.text}
+        {props.item?.isComingSoon && (
+          <span>Coming Soon</span>
+        )}
       </a>
     );
   } else {
-    Comp = <div className={`${disable}`}>{props.item.text}</div>;
+    Comp = <div className={`${disable} ${props.item?.isComingSoon ? 'comingSoon' : ''}`}>
+      {props.item.text}
+      {props.item?.isComingSoon && (
+        <span>Coming Soon</span>
+      )}
+    </div>;
   }
   return (
     <motion.li
@@ -73,7 +86,7 @@ export const MenuItem = (props: { item: MenuItemType }) => {
       // whileTap={{ scale: 0.95 }}
       onClick={click}
       style={props.item.class}
-      className={`text-placeholder ${props.item.active ? "tabActive" : ""}`}
+      className={`text-placeholder ${s.menuMobileItem} ${props.item.active ? "tabActive" : ""} ${props.item?.isMarginTop ? s.menuMobileItemMarginTop : ''}`}
     >
       {Comp}
     </motion.li>
