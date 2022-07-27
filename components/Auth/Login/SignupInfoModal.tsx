@@ -55,8 +55,10 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       setUserNameExisted(data.checkUserName)
     }
   })
+
+  const localUserInfo = getLocalAuthInfo();
+
   useEffect(() => {
-    const localUserInfo = getLocalAuthInfo();
     if (!isEmpty(username) && userNameExisted) {
       form.setFields([
         {
@@ -135,6 +137,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     fetchCountryList();
   }, []);
 
+  console.log("country", countryList);
+  // @ts-ignore
   return (
     <Modal
       title={<span className="font-[600]">Sign in info</span>}
@@ -184,7 +188,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg}/>
+          <Input placeholder="Enter username" value={localUserInfo?.profile?.user_name ?? ""} defaultValue={localUserInfo?.profile?.user_name ?? ""} onChange={handleUsernameInput} className={s.formFieldBg}/>
         </Form.Item>
         <Form.Item
           label="Country"
@@ -198,6 +202,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             }}
             placeholder="Select country"
             className={`${s.formFieldBg} ${s.formFieldSelect}`}
+            defaultValue="vn"
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>
