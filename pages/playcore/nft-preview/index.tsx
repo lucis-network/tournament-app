@@ -156,7 +156,7 @@ const NftPreviewPage = () => {
         <Space className={s.nftForm} align={"center"}>
           <div>
             <p>Character</p>
-            <Select defaultValue="mouse" style={{ width: 120 }} onChange={setCharacter} value={character}>
+            <Select defaultValue="mouse" style={{ width: 100 }} onChange={setCharacter} value={character}>
               {characters.map(i => (
                 <Option key={i} value={i}>{characters_config[i]}</Option>
               ))}
@@ -210,7 +210,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Halo Level</p>
-            <Select style={{ width: 80 }} onChange={setHaloLv} value={haloLv}>
+            <Select style={{ width: 100 }} onChange={setHaloLv} value={haloLv}>
               {[1,2,3,4,5,6].map(i => (
                 <Option key={i} value={i}>{i}</Option>
               ))}
@@ -237,19 +237,12 @@ const NftPreviewPage = () => {
 
         </Space>
 
-        <div style={{
-          padding: 50,
-          display: "flex",
-          justifyContent: "center",
-        }}>
-          <div style={{
-            border: '1px solid #000',
-            background: bg,
-            width: '60%',
-          }}>
+        <div className={s.previewWrapper}>
+          <div className={s.previewImgC} style={{background: bg,}}>
             <Img src={nftImg} srcFallback={'/assets/Raffles/imageReward.png'} />
           </div>
         </div>
+
       </div>
     </P2EWrapper>
   );
