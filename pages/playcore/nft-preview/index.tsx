@@ -6,6 +6,7 @@ import P2EWrapper from "components/ui/p2e/p2eWrapper";
 import Img from "components/ui/common/Img";
 import {randomPick} from "../../../utils/Array";
 import s from './nft-preview.module.sass'
+import { isClient } from "../../../utils/Env";
 
 const { Option } = Select;
 
@@ -54,16 +55,33 @@ const characters = Object.keys(characters_config)
 const halos = Object.keys(halo_items)
 
 const NftPreviewPage = () => {
-  const [character, setCharacter] = useState('mouse');
-  const [cloth, setCloth] = useState('mouse');
-  const [hat, setHat] = useState('mouse');
-  const [glasses, setGlasses] = useState('mouse');
-  const [weapon, setWeapon] = useState('mouse');
-  const [halo, setHalo] = useState('water');
-  const [haloLv, setHaloLv] = useState(1);
+  const queryString = isClient ? window.location.search : '';
+  const queryParams = qs.parse(queryString.substring(1, queryString.length))
+  console.log('{NftPreviewPage} queryParams: ', queryParams);
+
+  const {
+    character: _character,
+    cloth: _cloth,
+    hat: _hat,
+    glasses: _glasses,
+    weapon: _weapon,
+    halo: _halo,
+    haloLv: _haloLv,
+  } = queryParams;
+
+
+  const [character, setCharacter] = useState(_character ?? 'mouse');
+  const [cloth, setCloth] = useState(_cloth ?? 'mouse');
+  const [hat, setHat] = useState(_hat ?? 'mouse');
+  const [glasses, setGlasses] = useState(_glasses ?? 'mouse');
+  const [weapon, setWeapon] = useState(_weapon ?? 'mouse');
+  const [halo, setHalo] = useState(_halo ?? 'water');
+  const [haloLv, setHaloLv] = useState(_haloLv ?? 1);
+
   const [bg, setBg] = useState('black');
   const [nftImg, setNftImg] = useState('');
   const [generating, setGenerating] = useState(false);
+  const [cpBtnText, setCpBtnText] = useState("Copy Link");
 
   useEffect(() => {
     // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
@@ -111,6 +129,21 @@ const NftPreviewPage = () => {
     setWeapon,
   ])
 
+  const copyLink = useCallback(() => {
+    const baseLink = 'https://play-beta.lucis.network/playcore/nft-preview';
+    const nftParams = qs.stringify({
+      character, cloth, hat, glasses, weapon, halo, haloLv
+    });
+    const nftPreviewLink = baseLink + '?' +  nftParams;
+
+    navigator.clipboard.writeText(nftPreviewLink);
+
+    setCpBtnText('Copied');
+    setTimeout(() => {
+      setCpBtnText('Copy Link');
+    }, 3000)
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv, setCpBtnText])
+
   return (
     <P2EWrapper>
       <div className="lucis-container-2" style={{
@@ -132,7 +165,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Cloth</p>
-            <Select defaultValue="mouse" style={{ width: 120 }} onChange={setCloth} value={cloth}>
+            <Select defaultValue="mouse" style={{ width: 100 }} onChange={setCloth} value={cloth}>
               {characters.map(i => (
                 <Option key={i} value={i}>{characters_config[i]}</Option>
               ))}
@@ -141,7 +174,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Hat</p>
-            <Select defaultValue="mouse" style={{ width: 120 }} onChange={setHat} value={hat}>
+            <Select defaultValue="mouse" style={{ width: 100 }} onChange={setHat} value={hat}>
               {characters.map(i => (
                 <Option key={i} value={i}>{characters_config[i]}</Option>
               ))}
@@ -150,7 +183,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Glasses</p>
-            <Select defaultValue="mouse" style={{ width: 120 }} onChange={setGlasses} value={glasses}>
+            <Select defaultValue="mouse" style={{ width: 100 }} onChange={setGlasses} value={glasses}>
               {characters.map(i => (
                 <Option key={i} value={i}>{characters_config[i]}</Option>
               ))}
@@ -159,7 +192,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Weapon</p>
-            <Select defaultValue="mouse" style={{ width: 120 }} onChange={setWeapon} value={weapon}>
+            <Select defaultValue="mouse" style={{ width: 100 }} onChange={setWeapon} value={weapon}>
               {characters.map(i => (
                 <Option key={i} value={i}>{characters_config[i]}</Option>
               ))}
@@ -168,7 +201,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Halo</p>
-            <Select style={{ width: 120 }} onChange={setHalo} value={halo}>
+            <Select style={{ width: 100 }} onChange={setHalo} value={halo}>
               {halos.map(i => (
                 <Option key={i} value={i}>{halo_items[i]}</Option>
               ))}
@@ -177,7 +210,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Halo Level</p>
-            <Select style={{ width: 120 }} onChange={setHaloLv} value={haloLv}>
+            <Select style={{ width: 80 }} onChange={setHaloLv} value={haloLv}>
               {[1,2,3,4,5,6].map(i => (
                 <Option key={i} value={i}>{i}</Option>
               ))}
@@ -186,7 +219,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Background</p>
-            <Select style={{ width: 120 }} onChange={setBg} value={bg}>
+            <Select style={{ width: 100 }} onChange={setBg} value={bg}>
               {['black', 'white', 'green'].map(i => (
                 <Option key={i} value={i}>{i}</Option>
               ))}
@@ -196,6 +229,10 @@ const NftPreviewPage = () => {
           <div>
             <p>&nbsp;</p>
             <Button type="primary" onClick={randomNft} loading={generating}>Randomize</Button>
+          </div>
+          <div>
+            <p>&nbsp;</p>
+            <Button type="ghost" onClick={copyLink}>{cpBtnText}</Button>
           </div>
 
         </Space>
