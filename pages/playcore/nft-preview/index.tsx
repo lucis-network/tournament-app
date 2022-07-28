@@ -70,7 +70,8 @@ const NftPreviewPage = () => {
         }
 
         const img = res.data.medium;
-        setNftImg(img)
+        const baseImgUri = 'http://149.28.157.158:8080'
+        setNftImg(baseImgUri + img)
       });
   }, [character, cloth, hat, glasses, weapon])
 
@@ -92,9 +93,12 @@ const NftPreviewPage = () => {
     <P2EWrapper>
       <div className="lucis-container-2" style={{
         padding: '12px 24px',
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'column',
       }}>
-        <p style={{color: "white"}}>Select a your NFT parts</p>
-        <Space className={s.nftForm}>
+        <h3 style={{color: "white"}}>Select your NFT specs:</h3>
+        <Space className={s.nftForm} align={"center"}>
           <div>
             <p>Character</p>
             <Select defaultValue="mouse" style={{ width: 120 }} onChange={setCharacter} value={character}>
@@ -148,9 +152,15 @@ const NftPreviewPage = () => {
         </Space>
 
         <div style={{
-          paddingTop: 50,
+          padding: 50,
+          display: "flex",
+          justifyContent: "center",
         }}>
-          <Img src={nftImg} srcFallback={'/assets/Raffles/imageReward.png'}/>
+          <div style={{
+            border: '1px solid #000',
+          }}>
+            <Img src={nftImg} srcFallback={'/assets/Raffles/imageReward.png'} />
+          </div>
         </div>
       </div>
     </P2EWrapper>
