@@ -159,6 +159,7 @@ const NftPreviewPage = () => {
           <div style={{
             border: '1px solid #000',
             background: '#e6e6e6',
+            width: '60%',
           }}>
             <Img src={nftImg} srcFallback={'/assets/Raffles/imageReward.png'} />
           </div>
