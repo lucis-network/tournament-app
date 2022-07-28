@@ -70,7 +70,7 @@ const NftPreviewPage = () => {
         }
 
         const img = res.data.medium;
-        const baseImgUri = 'http://149.28.157.158:8080'
+        const baseImgUri = 'https://nft-img-mixer.lucis.network'
         setNftImg(baseImgUri + img)
       });
   }, [character, cloth, hat, glasses, weapon])
