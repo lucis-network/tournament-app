@@ -33,7 +33,7 @@ export default observer(function P2EWrapper(props: IProps) {
   }, [AuthStore.isLoggedIn])
 
   useEffect(() => {
-    // 
+    //
     const overviewSection = sessionStorage.getItem("overviewSection");
     if (overviewSection) {
       setOverviewSection(Number(overviewSection));
@@ -133,6 +133,7 @@ export default observer(function P2EWrapper(props: IProps) {
     return "";
   }
 
+  // luatnd: Why clone?
   const wrapperChildren = () => {
     return React.Children.map(props.children, child => {
       return React.cloneElement(child as any, {
