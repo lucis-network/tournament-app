@@ -40,7 +40,18 @@ const characters_config: Record<string, string> = {
   "dog": "Dog",
   "pig": "Pig",
 }
+
+const halo_items: Record<string, string> = {
+  'galaxy': 'Galaxy',
+  'fire': 'Fire',
+  'metal': 'Metal',
+  'wood': 'Wood',
+  'soil': 'Soil',
+  'water': 'Water',
+}
+
 const characters = Object.keys(characters_config)
+const halos = Object.keys(halo_items)
 
 const NftPreviewPage = () => {
   const [character, setCharacter] = useState('mouse');
@@ -48,6 +59,9 @@ const NftPreviewPage = () => {
   const [hat, setHat] = useState('mouse');
   const [glasses, setGlasses] = useState('mouse');
   const [weapon, setWeapon] = useState('mouse');
+  const [halo, setHalo] = useState('water');
+  const [haloLv, setHaloLv] = useState(1);
+  const [bg, setBg] = useState('black');
   const [nftImg, setNftImg] = useState('');
   const [generating, setGenerating] = useState(false);
 
@@ -56,9 +70,11 @@ const NftPreviewPage = () => {
     const queryString = qs.stringify({
       face: character,
       clother: cloth,
-      hat: hat,
+      hat,
       glass: glasses,
-      weapon: weapon,
+      weapon,
+      halo,
+      halo_level: haloLv,
     })
     const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + queryString;
     console.log('{genNft} genNftUrl: ', genNftUrl);
@@ -77,7 +93,7 @@ const NftPreviewPage = () => {
         const baseImgUri = 'https://nft-img-mixer.lucis.network'
         setNftImg(baseImgUri + img)
       });
-  }, [character, cloth, hat, glasses, weapon])
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv])
 
   const randomNft = useCallback(() => {
     setCharacter(randomPick(characters));
@@ -85,6 +101,8 @@ const NftPreviewPage = () => {
     setHat(randomPick(characters));
     setGlasses(randomPick(characters));
     setWeapon(randomPick(characters));
+    setHalo(randomPick(halos));
+    setHaloLv(randomPick([1,2,3,4,5,6]));
   }, [
     setCharacter,
     setCloth,
@@ -149,6 +167,33 @@ const NftPreviewPage = () => {
           </div>
 
           <div>
+            <p>Halo</p>
+            <Select style={{ width: 120 }} onChange={setHalo} value={halo}>
+              {halos.map(i => (
+                <Option key={i} value={i}>{halo_items[i]}</Option>
+              ))}
+            </Select>
+          </div>
+
+          <div>
+            <p>Halo Level</p>
+            <Select style={{ width: 120 }} onChange={setHaloLv} value={haloLv}>
+              {[1,2,3,4,5,6].map(i => (
+                <Option key={i} value={i}>{i}</Option>
+              ))}
+            </Select>
+          </div>
+
+          <div>
+            <p>Background</p>
+            <Select style={{ width: 120 }} onChange={setBg} value={bg}>
+              {['black', 'white', 'green'].map(i => (
+                <Option key={i} value={i}>{i}</Option>
+              ))}
+            </Select>
+          </div>
+
+          <div>
             <p>&nbsp;</p>
             <Button type="primary" onClick={randomNft} loading={generating}>Randomize</Button>
           </div>
@@ -162,7 +207,7 @@ const NftPreviewPage = () => {
         }}>
           <div style={{
             border: '1px solid #000',
-            background: '#e6e6e6',
+            background: bg,
             width: '60%',
           }}>
             <Img src={nftImg} srcFallback={'/assets/Raffles/imageReward.png'} />
