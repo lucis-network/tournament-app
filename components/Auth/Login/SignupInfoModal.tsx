@@ -129,7 +129,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
         }
       })
       .catch(info => {
-        console.log('Validate Failed:', info);
+        console.log('Validate Failed');
       });
   };
 
