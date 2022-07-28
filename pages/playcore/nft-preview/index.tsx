@@ -49,6 +49,7 @@ const NftPreviewPage = () => {
   const [glasses, setGlasses] = useState('mouse');
   const [weapon, setWeapon] = useState('mouse');
   const [nftImg, setNftImg] = useState('');
+  const [generating, setGenerating] = useState(false);
 
   useEffect(() => {
     // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
@@ -62,9 +63,12 @@ const NftPreviewPage = () => {
     const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + queryString;
     console.log('{genNft} genNftUrl: ', genNftUrl);
 
+    setGenerating(true);
     postData(genNftUrl)
       .then((res) => {
         console.log('{genNft} res: ', res);
+        setGenerating(false);
+
         if (res.status !== 200) {
           return;
         }
@@ -146,7 +150,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>&nbsp;</p>
-            <Button type="primary" onClick={randomNft}>Randomize</Button>
+            <Button type="primary" onClick={randomNft} loading={generating}>Randomize</Button>
           </div>
 
         </Space>
