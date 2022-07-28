@@ -59,7 +59,7 @@ const NftPreviewPage = () => {
       glass: glasses,
       weapon: weapon,
     })
-    const genNftUrl = 'http://149.28.157.158:8080/v1/image/mixin?' + queryString;
+    const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + queryString;
     console.log('{genNft} genNftUrl: ', genNftUrl);
 
     postData(genNftUrl)
@@ -158,6 +158,7 @@ const NftPreviewPage = () => {
         }}>
           <div style={{
             border: '1px solid #000',
+            background: '#e6e6e6',
           }}>
             <Img src={nftImg} srcFallback={'/assets/Raffles/imageReward.png'} />
           </div>
