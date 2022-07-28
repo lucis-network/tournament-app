@@ -53,7 +53,6 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
         }
       }),
       onCompleted: (data) => {
-        console.log('[onCompleted] data: ', data)
         if (data?.data?.verifyEmail && data?.data?.verifyEmail !== null)
           antMessage.success('An email has been sent. Please check your inbox.')
       }
@@ -63,7 +62,6 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
   const {updateProfile, profileUpdating} = useUpdateProfile({
     data: newProfileData,
     onError: (error) => handleGraphqlErrors(error, (code, message) => {
-      console.log('[updateProfile onError] code, message: ', code, message);
       switch (code) {
         case 'BAD_USER_INPUT':
           antMessage.error('The information you entered is not correct. Please try again.')
@@ -74,15 +72,12 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
       }
     }),
     onCompleted: response => {
-      console.log('[useUpdateProfile onCompleted] response: ', response.updateProfile);
-      AuthStore.profile = response.updateProfile
+      AuthStore.profile = response.updateProfile.updated_profile
       let localUserInfo = getLocalAuthInfo()
       if (localUserInfo) {
-        localUserInfo.profile = response.updateProfile
+        localUserInfo.profile = response.updateProfile.updated_profile
         setLocalAuthInfo(localUserInfo)
       }
-      console.log('[useUpdateProfile onCompleted] localUserInfo: ', localUserInfo);
-      // setLocalAuthInfo()
       antMessage.success("Profile updated.")
         .then(() => {
           onEditedProfile()
@@ -160,10 +155,8 @@ export default observer(function EditProfile({ userInfo, onEditedProfile }: Edit
 
         if (!isEmpty(phone)) {
           const _phone = (!phone.includes('+')) ? ('+' + phone) : phone
-          console.log('_phone: ', _phone);
           if(!isPhoneNumber(_phone)) {
             // message.error("")
-            console.log('invalid phone')
             setPhoneError("Invalid phone number")
             return
           }
