@@ -17,7 +17,7 @@ async function postData(url = '', data = {}) {
     cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
     // credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'Content-Type': 'application/json'
+      // 'Content-Type': 'application/json'
     },
     redirect: 'follow', // manual, *follow, error
     // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
@@ -53,7 +53,7 @@ const NftPreviewPage = () => {
   useEffect(() => {
     // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
     const queryString = qs.stringify({
-      character: character,
+      face: character,
       clother: cloth,
       hat: hat,
       glass: glasses,
@@ -63,9 +63,13 @@ const NftPreviewPage = () => {
     console.log('{genNft} genNftUrl: ', genNftUrl);
 
     postData(genNftUrl)
-      .then((data) => {
-        console.log('{genNft} data: ', data);
-        const img = '';
+      .then((res) => {
+        console.log('{genNft} res: ', res);
+        if (res.status !== 200) {
+          return;
+        }
+
+        const img = res.data.medium;
         setNftImg(img)
       });
   }, [character, cloth, hat, glasses, weapon])
@@ -90,7 +94,7 @@ const NftPreviewPage = () => {
         padding: '12px 24px',
       }}>
         <p style={{color: "white"}}>Select a your NFT parts</p>
-        <Space className={s.fntForm}>
+        <Space className={s.nftForm}>
           <div>
             <p>Character</p>
             <Select defaultValue="mouse" style={{ width: 120 }} onChange={setCharacter} value={character}>
