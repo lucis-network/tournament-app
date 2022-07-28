@@ -454,20 +454,22 @@ export const GET_USER_PROFILE = gql`
 export const UPDATE_PROFILE = gql`
   mutation ($data: ProfileUpdateInput!) {
     updateProfile(data: $data) {
-      user_id
-      user_name
-      display_name
-      twitter
-      facebook
-      telegram
-      twitch
-      discord
-      youtube
-      phone
-      avatar
-      cover
-      biography
-      country_code
+      updated_profile {
+        user_id
+        user_name
+        display_name
+        twitter
+        facebook
+        telegram
+        twitch
+        discord
+        youtube
+        phone
+        avatar
+        cover
+        biography
+        country_code
+      }
     }
   }
 `
