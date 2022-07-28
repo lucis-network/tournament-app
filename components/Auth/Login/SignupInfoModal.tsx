@@ -42,6 +42,17 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
   const [username, setUsername] = useState<string>(localUserInfo?.profile?.user_name ?? '');
   const [userNameExisted, setUserNameExisted] = useState(false)
   const [form] = Form.useForm();
+  const ref = useRef();
+
+  const handleKeyUp = (event: any) => {
+    // Enter
+    if (event.keyCode === 13) {
+      // @ts-ignore
+      //ref.current.submit();
+      handleComplete();
+    }
+  }
+
   const userNameRef = useRef(null)
   const {
     loading: checkUsernameLoading,
@@ -149,7 +160,6 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     }
 
 }, []);
-  // @ts-ignore
   return (
     <Modal
       title={<span className="font-[600]">Sign in info</span>}
@@ -168,6 +178,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
         wrapperCol={{span: 16}}
         initialValues={{country_code: localUserInfo?.profile?.country_code, user_name: localUserInfo?.profile?.user_name}}
         autoComplete="off"
+        onKeyUp={handleKeyUp}
       >
         <Form.Item
           label="Username"
@@ -231,17 +242,19 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           rules={[
             {required: true, message: 'Please input your password!'},
             {
-              min: 8,
-              message: "Password must be minimum 8 characters."
+              pattern: /^(?=.{8,32}$)(?=.*?[A-Za-z])(?=.*?[0-9])/g,
+              message: "Use 8 to 32 characters with a mix of letters & numbers"
             },
-            {
-              max: 32,
-              message: "Confirm Password must be maximum 32 characters."
-            },
-            {
-              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
-              message: "Valid characters are A-Z a-z 0-9"
-            },]}
+            // ({ getFieldValue }) => ({
+            //   validator(_, value) {
+            //     if (!value || getFieldValue('confirmPassword') === value) {
+            //       return Promise.resolve();
+            //     }
+            //     return Promise.reject(new Error('The two passwords that you entered do not match!'));
+            //   },
+            // }),
+          ]}
+
         >
           <Input.Password placeholder="Enter password" className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
@@ -251,16 +264,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           rules={[
             {required: true, message: 'Please input your confirm password!'},
             {
-              min: 8,
-              message: "Confirm Password must be minimum 8 characters."
-            },
-            {
-              max: 32,
-              message: "Confirm Password must be maximum 32 characters."
-            },
-            {
-              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
-              message: "Valid characters are A-Z a-z 0-9"
+              pattern: /^(?=.{8,32}$)(?=.*?[a-zA-Z])(?=.*?[0-9])/g,
+              message: "Use 8 to 32 characters with a mix of letters & numbers"
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
@@ -269,6 +274,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
                 }
                 return Promise.reject(new Error('The two passwords that you entered do not match!'));
               },
+              validateTrigger: "onSubmit"
             }),
           ]}
         >
