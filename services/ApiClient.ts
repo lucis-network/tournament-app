@@ -3,6 +3,8 @@
  * NOTE: Currently we use GraphQL instead
  */
 
+// @ts-nocheck
+
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
 
 type ApiClientOptions = {
