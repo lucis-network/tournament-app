@@ -7,8 +7,6 @@ const BannerRanking = () => {
     <section className={s.sectionBanner}>
       <div className="lucis-container-2">
         <Swiper
-          onSlideChange={() => console.log('slide change')}
-          onSwiper={(swiper) => console.log(swiper)}
           centeredSlides
           initialSlide={2}
           breakpoints={{

@@ -13,6 +13,8 @@ import { AppEmitter } from "services/emitter";
 import s from "./MenuMobile.module.sass";
 import ProfileMobile from "./ProfileMobile";
 import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
+import {observer} from "mobx-react-lite";
+import LoginModal from "../../../Auth/Login/LoginModal";
 
 
 const variants = {
@@ -24,7 +26,7 @@ const variants = {
   },
 };
 
-export const Navigation = () => {
+export default observer(function Navigation ({balance}: any) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
@@ -44,6 +46,7 @@ export const Navigation = () => {
   }, []);
 
   const openPopupSignIn = () => {
+    console.log(1234)
     LoginBoxStore.connectModalVisible = true;
   }
 
@@ -72,27 +75,27 @@ export const Navigation = () => {
       text: "RANKING",
       disable: true,
       class: { cursor: "context-menu" },
+      isComingSoon: true
     },
-
-    {
-      color: "#FF008C",
-      text: "SCHORLARSHIP",
-      disable: true,
-      class: { cursor: "context-menu" },
-    },
-    {
-      color: "#FF008C",
-      text: "SOCIAL",
-      disable: true,
-      class: { cursor: "context-menu", paddingBottom: 24 },
-    },
+    // {
+    //   color: "#FF008C",
+    //   text: "SCHORLARSHIP",
+    //   disable: true,
+    //   class: { cursor: "context-menu" },
+    // },
+    // {
+    //   color: "#FF008C",
+    //   text: "SOCIAL",
+    //   disable: true,
+    //   class: { cursor: "context-menu", paddingBottom: 24 },
+    // },
     {
       color: "#FF008C",
       text: (
-        <div>
+        <div style={AuthStore.isLoggedIn ? {borderBottom: "1px solid #3D475C", paddingBottom: "24px"} : undefined}>
           {AuthStore.isLoggedIn ? (
             <>
-              <ProfileMobile/>
+              <ProfileMobile balance={balance}/>
             </>
           ) : (
             ""
@@ -101,22 +104,22 @@ export const Navigation = () => {
       ),
       class: { paddingBottom: "24px" },
       isBlank: false,
+      isMarginTop: true,
     },
-
-    {
-      color: "#FF008C",
-      text: (
-        <div>
-          {AuthStore.isLoggedIn ? (
-              <div style={{borderBottom: "1px solid #3D475C"}}></div>
-          ) : (
-            ""
-          )}
-        </div>
-      ),
-      class: { paddingBottom: "24px" },
-      isBlank: false,
-    },
+    // {
+    //   color: "#FF008C",
+    //   text: (
+    //     AuthStore.isLoggedIn ? (
+    //       <div>
+    //         <div style={{borderBottom: "1px solid #3D475C"}}></div>
+    //       </div>
+    //     ) : (
+    //       ""
+    //     )
+    //   ),
+    //   class: { paddingBottom: "24px" },
+    //   isBlank: false,
+    // },
     {
       color: "#FF008C",
       text: (
@@ -143,6 +146,7 @@ export const Navigation = () => {
         </div>
       ),
       isBlank: false,
+      disable: true,
     },
 
     {
@@ -158,6 +162,7 @@ export const Navigation = () => {
       ),
       class: { paddingBottom: 24 },
       isBlank: false,
+      disable: true,
     },
     {
       color: "#FF008C",
@@ -168,8 +173,8 @@ export const Navigation = () => {
               <span onClick={disconnectWallet}>Sign out</span>
             </div>
           ) : (
-            <div className={s.headerButton}>
-              <span onClick={openPopupSignIn}>Sign in</span>
+            <div className={s.headerButton} onClick={openPopupSignIn}>
+              <span>Sign in</span>
             </div>
           )}
         </div>
@@ -199,4 +204,4 @@ export const Navigation = () => {
       </motion.ul>
     </div>
   );
-};
+});

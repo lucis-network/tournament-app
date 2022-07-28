@@ -12,7 +12,7 @@ import SpinLoading from "components/ui/common/Spin";
 import AuthStore from "components/Auth/AuthStore";
 import router from "next/router";
 
-export default function TabHome() {
+export default function  TabHome() {
   const {
     filter,
     listTabs,

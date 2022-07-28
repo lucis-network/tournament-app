@@ -76,7 +76,7 @@ const PopupShareRefer = (props: Props) => {
       </div>
       <div className={`${s.info} sm:mt-2 lg:mt-5 `}>
         <div
-          className={`${s.name} flex font-[400] text-[14px] sm:text-[18px] md:text-[24px]`}
+          className={`${s.name} flex font-[400] text-[14px] sm:text-[16px] md:text-[18px]`}
         >
           <input
             readOnly
@@ -84,7 +84,7 @@ const PopupShareRefer = (props: Props) => {
             className={s.inputUrl}
           ></input>
           <button style={{marginLeft: "16px"}} disabled={isCopy} onClick={handleCopy}>
-            <img width={26} src={"/assets/P2E/overview/copy-icon.svg"} alt="" />
+            <img width={26} src={"/assets/P2E/overview/content-copy.svg"} alt="" />
           </button>
         </div>
       </div>

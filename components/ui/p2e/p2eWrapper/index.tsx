@@ -194,7 +194,7 @@ export default observer(function P2EWrapper(props: IProps) {
       case 1:
         return {minWidth: 70};
       case 2:
-        return {minWidth: 120};
+        return {minWidth: 125};
       default:
         return {minWidth: 170}
     }
@@ -224,19 +224,23 @@ export default observer(function P2EWrapper(props: IProps) {
                   })}
                 </div>
                 {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/playcore/raffles") &&
-                  <div className={s.chooseGame}
-                    style={
-                      styleChooseGame()
-                    }
-                  >
-                    {AuthGameStore.isLoggedInLMSS && <img
-                      className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
-                      src="/assets/P2E/lol-game.svg" alt="lol-game"
-                      onClick={() => setGame(Game.LOL)} />}
-                    {AuthGameStore.isLoggedInFaceit && <img
-                      className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
-                      onClick={() => setGame(Game.CSGO)}
-                      src="/assets/P2E/csgo-game.svg" alt="csgo-game" />}
+                  <div className={s.chooseGame}>
+                    {AuthGameStore.isLoggedInLMSS && (
+                      <div className={`${s.gameWrap} ${currentGame === Game.LOL ? s.gameActive : ""}`}>
+                        <img
+                          src="/assets/P2E/lol-game.svg" alt="lol-game"
+                          onClick={() => setGame(Game.LOL)}
+                        />
+                      </div>
+                    )}
+                    {AuthGameStore.isLoggedInFaceit && (
+                      <div className={`${s.gameWrap} ${currentGame === Game.CSGO ? s.gameActive : ""}`}>
+                        <img
+                          onClick={() => setGame(Game.CSGO)}
+                          src="/assets/P2E/csgo-game.svg" alt="csgo-game"
+                        />
+                      </div>
+                    )}
                     <img
                       className={s.addGame}
                       src="/assets/P2E/add-game.svg"

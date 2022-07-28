@@ -17,6 +17,7 @@ interface IProps {
   title?: string;
   hasButtonBack?: boolean;
   dailyPoint?: {day: number, month: number, year: number, point: number}[];
+  maxPoint: string;
 }
 export const RecentMatchListCSGO = React.memo((props: IProps) => {
   const router = useRouter();
@@ -66,11 +67,11 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                   Today :
                 </div>
                 <div className={s.rewardItem} style={{ marginRight: 16 }}>
-                  <span className={s.lucisPoint}>{0} / ∞</span>
+                  <span className={s.lucisPoint}>{0} / {props.maxPoint === "UNLIMIT" ? "∞" : props.maxPoint}</span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>
-                  <span>-- / 300</span>
+                  <span>-- / {props.maxPoint === "UNLIMIT" ? "∞" : props.maxPoint}</span>
                   <img src="/assets/P2E/lucis-token.svg" alt="" />
                 </div>
               </Col>
@@ -99,11 +100,11 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                     {item[0]} :
                   </div>
                   <div className={s.rewardItem} style={{ marginRight: 16 }}>
-                    <span className={s.lucisPoint}>{lucisPointReward(item[0])} / ∞</span>
+                    <span className={s.lucisPoint}>{lucisPointReward(item[0])} / {props.maxPoint === "UNLIMIT" ? "∞" : props.maxPoint}</span>
                     <img src="/assets/P2E/lucis-point.svg" alt="" />
                   </div>
                   <div className={s.rewardItem}>
-                    <span>-- / 300</span>
+                    <span>-- / {props.maxPoint === "UNLIMIT" ? "∞" : props.maxPoint}</span>
                     <img src="/assets/P2E/lucis-token.svg" alt="" />
                   </div>
                 </Col>
@@ -126,7 +127,8 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                             background:
                               index % 2 === 0
                                 ? `linear-gradient(90deg, rgba(47, 54, 75, 0) 0%, #2F364B 21.88%), url("${item?.map_img}")`
-                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`
+                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`,
+                            backgroundSize: "contain",
                           }}
                         >
                           <Link href={`/playcore/dashboard/history/${item?.id}`}>

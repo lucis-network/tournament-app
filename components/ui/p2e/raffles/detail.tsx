@@ -22,6 +22,7 @@ import RafflesStore from "../../../../src/store/RafflesStore";
 import moment from "moment";
 import {mapToDict} from "../../../../utils/Array";
 import {useGetWonTickets} from "../../../../hooks/p2e/useRaffleDetail";
+import {AppEmitter} from "../../../../services/emitter";
 
 const RafflesDetail = observer(() => {
   const router = useRouter()
@@ -103,7 +104,9 @@ const RafflesDetail = observer(() => {
     }
   }, [RafflesStore.dataWinTicketLastUpdated])
 
-
+  const endAtBefore1 = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
+    .valueOf();
+  console.log("endAtBefore", endAtBefore1);
 
   useEffect(() => {
     const checkDateInterval =  setInterval(() => {
@@ -212,6 +215,7 @@ const RafflesDetail = observer(() => {
           refetchMyTickets()
           refetchAllTickets()
           antMessage.success('Success!')
+          AppEmitter.emit("updateBalance");
         }
       }
     }).finally(() => setTicketBuying(false))
@@ -252,10 +256,10 @@ const RafflesDetail = observer(() => {
                      fallback="/assets/P2E/raffles/defaultImage.jpg"/>
             </div>
             <div className={s.featuredRaffleInfo}>
-              <div className={s.featuredRaffleTitleWrap}>
+              <div className={`${s.featuredRaffleTitleWrap} ${s.featuredRaffleTitleWrapDetail}`}>
                 <h3>{raffleDetailData?.name}</h3>
                 {raffleDetailData?.valued_at && (
-                  <p>Valued at {raffleDetailData?.valued_at}</p>
+                  <p>{raffleDetailData?.valued_at ? `Valued at $${raffleDetailData?.valued_at}` : ''}</p>
                 )}
               </div>
               {raffleDetailData?.type && (
@@ -351,7 +355,7 @@ const RafflesDetail = observer(() => {
         <section className={s.myTicketsSection}>
           <h2 className={s.sectionTitle}>My tickets [{myTicketsCount}]</h2>
           {(getMyTicketsError || (getMyTicketsData?.getMyTickets?.user_tickets && (getMyTicketsData?.getMyTickets?.user_tickets.length <= 0))) ?
-            <Empty/> :
+            <p className={s.myTicketsEmpty}>You haven&apos;t bought any tickets yet. Please buy some tickets to try your luck!</p> :
             (getMyTicketsLoading ? (
               <SpinLoading/>
             ) : (
@@ -432,7 +436,14 @@ const RafflesDetail = observer(() => {
           </div>
           {searchRafflesLoading ? (
             <SpinLoading/>
-          ) : (((searchRafflesData?.searchRaffle.length <= 0) || searchRafflesError) ? <Empty/> : (
+          ) : (((searchRafflesData?.searchRaffle.length <= 0) || searchRafflesError) ?
+            <>
+              <div className={s.rafflesList}>
+                <div className={`${s.rafflesItem} comingSoon ${s.rafflesItemEmpty}`}>
+                  NEW RAFFLES<br/>COMING SOON
+                </div>
+              </div>
+            </> : (
             <div className={s.rafflesList}>
               {searchRafflesData?.searchRaffle.length > 0 && searchRafflesData?.searchRaffle.map((raffle, index) => (
                 <Link href={`/playcore/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
@@ -452,10 +463,17 @@ const RafflesDetail = observer(() => {
                       )}
                       <h3 className={s.raffleTitle}>{raffle?.name}</h3>
                       <div className={s.rafflePriceWrap}>
-                        <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
+                        <div className={s.raffleValued}>{raffle?.valued_at ? `Valued at $${raffle?.valued_at}` : ''}</div>
                         <div className={s.rafflePrice}>
                           <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
-                          <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt=""/>
+                          {
+                            raffle?.prize_type === "LUCIS_POINT" &&
+                              <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
+                          }
+                          {
+                            raffle?.prize_type === "LUCIS_TOKEN" &&
+                              <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                          }
                         </div>
                       </div>
                     </div>

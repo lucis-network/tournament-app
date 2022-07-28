@@ -312,7 +312,7 @@ const UseTeamModal = (tournamentData: any) => {
         break;
       case "success":
         setStep("step-1");
-        handleRoutes(`/tournament/${tournamentId}/${name}`);
+        handleRoutes(`/arena/${tournamentId}/${name}`);
         setShow(false);
         break;
       default:
@@ -500,7 +500,7 @@ const UseTeamModal = (tournamentData: any) => {
             <button
               className={`${s.button} mr-4 !w-max`}
               onClick={() =>
-                handleRoutes(`/tournament/${tournamentId}/${name}`)
+                handleRoutes(`/arena/${tournamentId}/${name}`)
               }
             >
               Back to tournament

@@ -82,6 +82,7 @@ class MissionService {
               }
             }
             total
+            max_point
             daily_point {
               day
               month
@@ -131,6 +132,7 @@ class MissionService {
               }
             }
             total
+            max_point
             daily_point {
               day
               month

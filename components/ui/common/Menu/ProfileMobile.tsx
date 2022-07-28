@@ -32,14 +32,13 @@ import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
 import MissionService from "../../../service/p2e/MissionService";
 import {format} from "../../../../utils/Number";
 
-type Props = {};
+type Props = {
+  balance: {lucis_point: number, lucis_token: number}
+};
 
 export default observer(function User(props: Props) {
   const router = useRouter();
-  const [width] = useWindowSize();
   const [isVisible, setIsVisible] = useState(false);
-
-  const [balance, setBalance] = React.useState<{lucis_point: number, lucis_token: number}>({lucis_point: 0, lucis_token: 0});
 
   const {address, network: connected_network} = ConnectWalletStore;
   const {name, facebook_id, google_id, profile} = AuthStore;
@@ -50,13 +49,6 @@ export default observer(function User(props: Props) {
     AuthBoxStore.connectModalVisible = true;
 
   };
-  React.useEffect(() => {
-    if (AuthStore.isLoggedIn) {
-      MissionService.getStatisticBalance().then(res => {
-        setBalance(res.data?.getBalance);
-      });
-    }
-  }, [AuthStore.isLoggedIn])
 
   // const onLogOut = useCallback(async () => {
   //   const authService = new AuthService();
@@ -143,18 +135,18 @@ export default observer(function User(props: Props) {
           <div className={s.profileMobileBalance}>
             <div className={s.rewardItem}>
               <img src="/assets/P2E/lucis-point.svg" alt=""/>
-              <span className={s.lucisPoint}>{format(balance?.lucis_point) ?? 0}</span>
+              <span className={s.lucisPoint}>{format(props.balance?.lucis_point) ?? 0}</span>
             </div>
             <div className={s.rewardItem}>
               <img src="/assets/P2E/lucis-token.svg" alt=""/>
-              <span style={{color: "#16DADF"}}>{format(balance?.lucis_token, 2) ?? 0}</span>
+              <span style={{color: "#16DADF"}}>{format(props.balance?.lucis_token, 2) ?? 0}</span>
             </div>
           </div>
         </div>
       </div>
       {address ?
         <div className={s.profileMobileWallet}>
-          <div className={s.address}>{address}</div>
+          <div className={s.address}>{address?.slice(0, 10) + "..." + address?.slice(address?.length - 10)}</div>
           <div className={s.headerButton}>
             <span onClick={onDisconnectWallet}>Disconnect</span>
           </div>

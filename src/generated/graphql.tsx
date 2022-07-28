@@ -170,6 +170,7 @@ export enum BalanceHistoryType {
   Joindiscord = 'JOINDISCORD',
   Lucismission = 'LUCISMISSION',
   Match = 'MATCH',
+  Newuser = 'NEWUSER',
   Openluckychest = 'OPENLUCKYCHEST',
   Rafflereimburse = 'RAFFLEREIMBURSE',
   Referfriend = 'REFERFRIEND',
@@ -2146,7 +2147,7 @@ export type LuckyChestPrize = {
   title: Scalars['String'];
   updated_at: Scalars['DateTime'];
   user_prize_history?: Maybe<Array<UserLuckyChestHistory>>;
-  valued_at?: Maybe<Scalars['String']>;
+  valued_at?: Maybe<Scalars['Decimal']>;
 };
 
 export type LuckyChestPrizeCount = {
@@ -2175,7 +2176,7 @@ export type LuckyChestPrizeCreateWithoutUser_Prize_HistoryInput = {
   rarity?: InputMaybe<PrizeRarity>;
   title: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  valued_at?: InputMaybe<Scalars['String']>;
+  valued_at?: InputMaybe<Scalars['Decimal']>;
 };
 
 export type LuckyChestPrizeWhereUniqueInput = {
@@ -3811,7 +3812,13 @@ export type PlayerMissionCreateWithoutPlayer_GameInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type PlayerMissionPlayer_Game_MissionsCompoundUniqueInput = {
+  mission_uid: Scalars['String'];
+  player_game_uid: Scalars['String'];
+};
+
 export type PlayerMissionWhereUniqueInput = {
+  player_game_missions?: InputMaybe<PlayerMissionPlayer_Game_MissionsCompoundUniqueInput>;
   uid?: InputMaybe<Scalars['String']>;
 };
 
@@ -4055,8 +4062,6 @@ export type Query = {
   getNotification?: Maybe<Array<Notification>>;
   getOnGoingTournament?: Maybe<Array<TournamentGql>>;
   getOwnedTournament?: Maybe<Array<TTournament>>;
-  getRankOfUserByEarning?: Maybe<UserRanking>;
-  getRankingByEarning?: Maybe<Array<UserRanking>>;
   getReferee?: Maybe<GUser>;
   getSponsorSlot?: Maybe<Array<SponsorSlot>>;
   getSpotlightAnnouncement?: Maybe<Array<SpotlightAnnouncementType>>;
@@ -4150,17 +4155,6 @@ export type QueryGetOnGoingTournamentArgs = {
 
 export type QueryGetOwnedTournamentArgs = {
   user_id: Scalars['String'];
-};
-
-
-export type QueryGetRankOfUserByEarningArgs = {
-  user_id: Scalars['Int'];
-};
-
-
-export type QueryGetRankingByEarningArgs = {
-  skip: Scalars['Int'];
-  take: Scalars['Int'];
 };
 
 
@@ -4305,7 +4299,7 @@ export type Raffle = {
   type?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
-  valued_at?: Maybe<Scalars['String']>;
+  valued_at?: Maybe<Scalars['Decimal']>;
   winner_total?: Maybe<Scalars['Int']>;
   won_tickets?: Maybe<Scalars['String']>;
 };
@@ -4335,7 +4329,7 @@ export type RaffleCreateWithoutTicketInput = {
   type?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
-  valued_at?: InputMaybe<Scalars['String']>;
+  valued_at?: InputMaybe<Scalars['Decimal']>;
   winner_total?: InputMaybe<Scalars['Int']>;
   won_tickets?: InputMaybe<Scalars['String']>;
 };
@@ -7721,16 +7715,6 @@ export type UserProfileInput = {
 export type UserProfileWhereUniqueInput = {
   user_id?: InputMaybe<Scalars['Int']>;
   user_name?: InputMaybe<Scalars['String']>;
-};
-
-export type UserRanking = {
-  __typename?: 'UserRanking';
-  code?: Maybe<Scalars['String']>;
-  email?: Maybe<Scalars['String']>;
-  id: Scalars['ID'];
-  rank?: Maybe<Scalars['Int']>;
-  status: UserStatus;
-  total_earning?: Maybe<Scalars['String']>;
 };
 
 export enum UserRole {

@@ -30,6 +30,7 @@ import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
 import AuthGameStore from "../../../Auth/AuthGameStore";
 import {useRouter} from "next/router";
 import {OverviewSection} from "../../../../utils/Enum";
+import {AppEmitter} from "../../../../services/emitter";
 
 export enum GAMES {
   FACEITCSGO = 1,
@@ -111,6 +112,7 @@ export default function LuckyChest(props: any) {
           const decodedData: LuckyChestPrize = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
           setChestPrize(decodedData);
           setRollingChestPopupVisible(true);
+          AppEmitter.emit("updateBalance");
         }
       })
     } catch (error: any) {

@@ -32,6 +32,7 @@ const RecentMatchHistory = (props: IProps) => {
   const [totalItem, setTotalItem] = useState<number>(0);
   const [recentMatches, setRecentMatches] = useState<CsgoPlayerMatch[] | LolPlayerMatchGql[]>([]);
   const [dailyPointRecentMatch, setDailyPointRecentMatch] = useState<{day: number, month: number, year: number, point: number}[]>();
+  const [maxPointRecentMatch, setMaxPointRecentMatch] = React.useState("");
 
   useEffect(() => {
     switch (props.currentGame) {
@@ -59,6 +60,7 @@ const RecentMatchHistory = (props: IProps) => {
         setRecentMatches(csgo.data?.getRecentlyCsgoMatch?.matches as CsgoPlayerMatch[]);
         setTotalItem(csgo.data?.getRecentlyCsgoMatch?.total as number);
         setDailyPointRecentMatch(csgo?.data?.getRecentlyCsgoMatch?.daily_point as any);
+        setMaxPointRecentMatch(csgo?.data?.getRecentlyCsgoMatch?.max_point as any);
 
         break;
       case Game.LOL:
@@ -68,6 +70,7 @@ const RecentMatchHistory = (props: IProps) => {
         setRecentMatches(lol.data?.getRecentlyLolMatch?.matches as LolPlayerMatchGql[]);
         setTotalItem(lol.data?.getRecentlyLolMatch?.total as number)
         setDailyPointRecentMatch(lol?.data?.getRecentlyLolMatch?.daily_point as any);
+        setMaxPointRecentMatch(lol?.data?.getRecentlyLolMatch?.max_point as any);
 
         break;
     }
@@ -89,6 +92,7 @@ const RecentMatchHistory = (props: IProps) => {
           title="Recent matches history"
           hasButtonBack
           isHistory
+          maxPoint={maxPointRecentMatch}
           dailyPoint={dailyPointRecentMatch}
 
         />;
@@ -100,6 +104,7 @@ const RecentMatchHistory = (props: IProps) => {
           dailyPoint={dailyPointRecentMatch}
           hasButtonBack
           isHistory
+          maxPoint={maxPointRecentMatch}
         />;
       default:
         return null;
