@@ -22,9 +22,12 @@ type Country = {
 const UPDATE_PROFILE = gql`
   mutation UpdateProfile($data: ProfileUpdateInput!) {
     updateProfile(data: $data) {
-      user_id
-      user_name
-      country_code
+      updated_profile {
+        user_id
+        user_name
+        country_code
+      }
+      password_saved
     }
   }
 `;
@@ -106,14 +109,15 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               }
             }
           });
-          const { user_name, country_code } = response.data.updateProfile;
+          const { user_name, country_code } = response.data.updateProfile.updated_profile;
+          const passwordSaved = response.data.updateProfile.password_saved;
           const user = getLocalAuthInfo()!;
           await new Promise(resolve => setTimeout(resolve, 500))
           const newUserData = {...user}
           if (newUserData && newUserData.profile) {
             newUserData.profile.user_name = user_name;
             newUserData.profile.country_code = country_code;
-            if (!isEmpty(values.password)) {
+            if (passwordSaved) {
               newUserData.is_exist_pass = true
             }
             setLocalAuthInfo(newUserData);
@@ -125,7 +129,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
         }
       })
       .catch(info => {
-        console.log('Validate Failed:', info);
+        console.log('Validate Failed');
       });
   };
 
@@ -224,7 +228,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             }}
             placeholder="Select country"
             className={`${s.formFieldBg} ${s.formFieldSelect}`}
-            defaultValue={localUserInfo?.profile?.country_code}
+            defaultValue={localUserInfo?.profile?.country_code ?? 'VN'}
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>

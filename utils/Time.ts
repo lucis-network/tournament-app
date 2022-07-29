@@ -174,3 +174,11 @@ export const dateToHoursFormat = (date: Date) => {
 
   return `${hours}:${minutes}`;
 }
+
+export const dateFormatYYYMMDD = (year: number | string, month: number | string, day: number | string) => {
+  if (month < 10) month = `0${month}`;
+  if (day < 10) day = `0${day}`;
+
+  return `${year}/${month}/${day}`;
+}
+
