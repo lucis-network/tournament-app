@@ -82,6 +82,10 @@ const NftPreviewPage = () => {
   const [nftImg, setNftImg] = useState('');
   const [generating, setGenerating] = useState(false);
   const [cpBtnText, setCpBtnText] = useState("Copy Link");
+  const [errorMsg, setErrorMsg] = useState("");
+
+  const defaultImgUri = '/assets/Raffles/imageReward.png';
+  const trelloLink = '<a href="https://trello.com/c/5K2jvFzl/411-gh%C3%A9p-nft-ch%C6%B0a-chu%E1%BA%A9n" target="_blank" rel="noreferrer">Trello Check list này</a>';
 
   useEffect(() => {
     // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
@@ -104,12 +108,15 @@ const NftPreviewPage = () => {
         setGenerating(false);
 
         if (res.status !== 200) {
+          setNftImg(defaultImgUri)
+          setErrorMsg("Image cannot be generated due to Internal server error: Please click `Copy Link` and then paste it to " + trelloLink + " to fix this.")
           return;
         }
 
         const img = res.data.medium;
         const baseImgUri = 'https://nft-img-mixer.lucis.network'
         setNftImg(baseImgUri + img)
+        setErrorMsg("")
       });
   }, [character, cloth, hat, glasses, weapon, halo, haloLv])
 
@@ -156,7 +163,7 @@ const NftPreviewPage = () => {
         <Space className={s.nftForm} align={"center"}>
           <div>
             <p>Character</p>
-            <Select defaultValue="mouse" style={{ width: 120 }} onChange={setCharacter} value={character}>
+            <Select defaultValue="mouse" style={{ width: 100 }} onChange={setCharacter} value={character}>
               {characters.map(i => (
                 <Option key={i} value={i}>{characters_config[i]}</Option>
               ))}
@@ -210,7 +217,7 @@ const NftPreviewPage = () => {
 
           <div>
             <p>Halo Level</p>
-            <Select style={{ width: 80 }} onChange={setHaloLv} value={haloLv}>
+            <Select style={{ width: 100 }} onChange={setHaloLv} value={haloLv}>
               {[1,2,3,4,5,6].map(i => (
                 <Option key={i} value={i}>{i}</Option>
               ))}
@@ -237,19 +244,19 @@ const NftPreviewPage = () => {
 
         </Space>
 
-        <div style={{
-          padding: 50,
-          display: "flex",
-          justifyContent: "center",
-        }}>
-          <div style={{
-            border: '1px solid #000',
-            background: bg,
-            width: '60%',
-          }}>
-            <Img src={nftImg} srcFallback={'/assets/Raffles/imageReward.png'} />
+        <div className={s.previewWrapper}>
+          {errorMsg
+            ? <p className={s.errMsg} dangerouslySetInnerHTML={{__html: errorMsg}} />
+            : <p
+              className={s.infoMsg}
+              dangerouslySetInnerHTML={{__html: 'Nếu thấy ảnh nào bị xấu/lệch/đè layer thì copy link paste vào ' + trelloLink + ' nhá ae!'}}
+            />
+          }
+          <div className={s.previewImgC} style={{background: bg,}}>
+            <Img src={nftImg} srcFallback={defaultImgUri} />
           </div>
         </div>
+
       </div>
     </P2EWrapper>
   );
