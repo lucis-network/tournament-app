@@ -1801,6 +1801,12 @@ export type GetRefereeInput = {
   page?: InputMaybe<Scalars['Int']>;
 };
 
+export enum ItemGroup {
+  Csgo = 'Csgo',
+  Lol = 'Lol',
+  Nft = 'Nft'
+}
+
 export enum LolLane {
   Bottom = 'Bottom',
   Jungle = 'Jungle',
@@ -2140,10 +2146,13 @@ export type LuckyChestPrize = {
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   img?: Maybe<Scalars['String']>;
+  inventory_item?: Maybe<Array<UserInventoryItem>>;
+  inventory_piece?: Maybe<Array<UserInventoryPiece>>;
   prize_amount?: Maybe<Scalars['Decimal']>;
   prize_type: PrizeType;
   quantity_in_stock: Scalars['Int'];
   rarity: PrizeRarity;
+  retrieve_method?: Maybe<RetrieveMethod>;
   title: Scalars['String'];
   updated_at: Scalars['DateTime'];
   user_prize_history?: Maybe<Array<UserLuckyChestHistory>>;
@@ -2152,6 +2161,8 @@ export type LuckyChestPrize = {
 
 export type LuckyChestPrizeCount = {
   __typename?: 'LuckyChestPrizeCount';
+  inventory_item: Scalars['Int'];
+  inventory_piece: Scalars['Int'];
   user_prize_history: Scalars['Int'];
 };
 
@@ -2170,10 +2181,13 @@ export type LuckyChestPrizeCreateWithoutUser_Prize_HistoryInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
+  inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
+  inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
   prize_amount?: InputMaybe<Scalars['Decimal']>;
   prize_type: PrizeType;
   quantity_in_stock: Scalars['Int'];
   rarity?: InputMaybe<PrizeRarity>;
+  retrieve_method?: InputMaybe<RetrieveMethod>;
   title: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
   valued_at?: InputMaybe<Scalars['Decimal']>;
@@ -2514,7 +2528,7 @@ export type Mutation = {
   unsubscribeToTournament?: Maybe<Scalars['Boolean']>;
   /** Only referee can update match result */
   updateMatchResult?: Maybe<Scalars['String']>;
-  updateProfile?: Maybe<UserProfile>;
+  updateProfile?: Maybe<UpdateProfileResponse>;
 };
 
 
@@ -2922,6 +2936,12 @@ export type Participant = {
   team?: Maybe<Array<Team>>;
   tournament_uid?: Maybe<Scalars['String']>;
 };
+
+export enum PieceGroup {
+  CsgoKnifeOrGlovePiece = 'CSGO_KNIFE_OR_GLOVE_PIECE',
+  NftBoxPiece = 'NFT_BOX_PIECE',
+  RiotCard_150Piece = 'RIOT_CARD_150_PIECE'
+}
 
 export type Platform = {
   __typename?: 'Platform';
@@ -4002,12 +4022,6 @@ export enum PrizeType {
   CsgoKnifeOrGlovePiece_2 = 'CSGO_KNIFE_OR_GLOVE_PIECE_2',
   CsgoKnifeOrGlovePiece_3 = 'CSGO_KNIFE_OR_GLOVE_PIECE_3',
   CsgoKnifeOrGlovePiece_4 = 'CSGO_KNIFE_OR_GLOVE_PIECE_4',
-  GoodLuck = 'GOOD_LUCK',
-  LolCostume = 'LOL_COSTUME',
-  LolCostumePiece_1 = 'LOL_COSTUME_PIECE_1',
-  LolCostumePiece_2 = 'LOL_COSTUME_PIECE_2',
-  LolCostumePiece_3 = 'LOL_COSTUME_PIECE_3',
-  LolCostumePiece_4 = 'LOL_COSTUME_PIECE_4',
   LucisPoint = 'LUCIS_POINT',
   LucisToken = 'LUCIS_TOKEN',
   NftBox = 'NFT_BOX',
@@ -4444,6 +4458,13 @@ export type Region = {
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
 };
+
+export enum RetrieveMethod {
+  Contact = 'Contact',
+  InventoryItem = 'InventoryItem',
+  InventoryPiece = 'InventoryPiece',
+  Wallet = 'Wallet'
+}
 
 export type Reward = {
   __typename?: 'Reward';
@@ -6478,6 +6499,12 @@ export enum TransactionStatus {
   Succeed = 'SUCCEED'
 }
 
+export type UpdateProfileResponse = {
+  __typename?: 'UpdateProfileResponse';
+  password_saved?: Maybe<Scalars['Boolean']>;
+  updated_profile?: Maybe<UserProfile>;
+};
+
 export type User = {
   __typename?: 'User';
   _count: UserCount;
@@ -7587,6 +7614,120 @@ export type UserGraphql = {
   updated_at: Scalars['DateTime'];
   user_ticket?: Maybe<Array<UserTicket>>;
   withdraws?: Maybe<Array<WithdrawTransaction>>;
+};
+
+export type UserInventoryItem = {
+  __typename?: 'UserInventoryItem';
+  created_at: Scalars['DateTime'];
+  group?: Maybe<ItemGroup>;
+  is_claimed: Scalars['Boolean'];
+  prize?: Maybe<LuckyChestPrize>;
+  prize_id?: Maybe<Scalars['Int']>;
+  steam_url?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryItemCreateManyPrizeInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  group?: InputMaybe<ItemGroup>;
+  is_claimed?: InputMaybe<Scalars['Boolean']>;
+  steam_url?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryItemCreateManyPrizeInputEnvelope = {
+  data: Array<UserInventoryItemCreateManyPrizeInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UserInventoryItemCreateNestedManyWithoutPrizeInput = {
+  connect?: InputMaybe<Array<UserInventoryItemWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserInventoryItemCreateOrConnectWithoutPrizeInput>>;
+  create?: InputMaybe<Array<UserInventoryItemCreateWithoutPrizeInput>>;
+  createMany?: InputMaybe<UserInventoryItemCreateManyPrizeInputEnvelope>;
+};
+
+export type UserInventoryItemCreateOrConnectWithoutPrizeInput = {
+  create: UserInventoryItemCreateWithoutPrizeInput;
+  where: UserInventoryItemWhereUniqueInput;
+};
+
+export type UserInventoryItemCreateWithoutPrizeInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  group?: InputMaybe<ItemGroup>;
+  is_claimed?: InputMaybe<Scalars['Boolean']>;
+  steam_url?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryItemWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
+};
+
+export type UserInventoryPiece = {
+  __typename?: 'UserInventoryPiece';
+  created_at: Scalars['DateTime'];
+  group?: Maybe<PieceGroup>;
+  item_group?: Maybe<ItemGroup>;
+  prize?: Maybe<LuckyChestPrize>;
+  prize_id: Scalars['Int'];
+  quantity: Scalars['Int'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryPieceCreateManyPrizeInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  group?: InputMaybe<PieceGroup>;
+  item_group?: InputMaybe<ItemGroup>;
+  quantity: Scalars['Int'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryPieceCreateManyPrizeInputEnvelope = {
+  data: Array<UserInventoryPieceCreateManyPrizeInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UserInventoryPieceCreateNestedManyWithoutPrizeInput = {
+  connect?: InputMaybe<Array<UserInventoryPieceWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserInventoryPieceCreateOrConnectWithoutPrizeInput>>;
+  create?: InputMaybe<Array<UserInventoryPieceCreateWithoutPrizeInput>>;
+  createMany?: InputMaybe<UserInventoryPieceCreateManyPrizeInputEnvelope>;
+};
+
+export type UserInventoryPieceCreateOrConnectWithoutPrizeInput = {
+  create: UserInventoryPieceCreateWithoutPrizeInput;
+  where: UserInventoryPieceWhereUniqueInput;
+};
+
+export type UserInventoryPieceCreateWithoutPrizeInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  group?: InputMaybe<PieceGroup>;
+  item_group?: InputMaybe<ItemGroup>;
+  quantity: Scalars['Int'];
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryPieceUser_Inventory_Piece_Unique_User_Id_Prize_Id_KeyCompoundUniqueInput = {
+  prize_id: Scalars['Int'];
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryPieceWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
+  user_inventory_piece_unique_user_id_prize_id_key?: InputMaybe<UserInventoryPieceUser_Inventory_Piece_Unique_User_Id_Prize_Id_KeyCompoundUniqueInput>;
 };
 
 export type UserLuckyChestHistory = {

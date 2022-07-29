@@ -1,7 +1,10 @@
-import {useState} from "react";
-import s from "./RankingTabs.module.sass"
+import {ReactElement, useState} from "react";
+
 import {Table} from "antd";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useSwiper } from 'swiper/react';
+
+import s from "./RankingTabs.module.sass"
 
 const tabs = [
   {
@@ -31,38 +34,92 @@ const tabs = [
   },
 ]
 
+const columns = [
+  {
+    title: 'No',
+    dataIndex: 'rank',
+    className: s.columnNo,
+    render: () => {
+      return (
+        <div className={s.userRank}>
+          <div className={s.userMedal}>
+            <img src="/assets/Ranking/medalGold.svg" alt=""/>
+          </div>
+          <div className={s.userRankName}>
+            <span className={s.rankNameText}>TOP</span> 1
+          </div>
+        </div>
+      )
+    }
+  },
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    className: s.columnName,
+    render: (name: string) => {
+      return (
+        <div className={s.userWrap}>
+          <div className={`${s.userAvatar} top1`}>
+            <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
+          </div>
+          <div className={`${s.userName} top1`}>{name}</div>
+          <div className={s.userValue}>63 NFTs</div>
+        </div>
+      )
+    }
+  },
+  {
+    title: 'Your Reward',
+    dataIndex: 'reward',
+    className: s.columnReward,
+    render: () => {
+      return (
+        <div className={s.userReward}>
+          <div className={s.rewardPoint}>
+            9000 <img src="/assets/P2E/lucis-point.svg" alt=""/>
+          </div>
+          <div className={s.rewardToken}>
+            9000 <img src="/assets/P2E/lucis-token.svg" alt=""/>
+          </div>
+        </div>
+      )
+    }
+  },
+];
+
+const data: any[] = [];
+
+for (let i = 0; i < 100; i++) {
+  data.push({
+    key: i,
+    rank: i,
+    name: `Mèo Đi Here`,
+    reward: `Reward no. ${i}`,
+  });
+}
+
+type SwiperNavProps = {
+  direction: 'prev' | 'next',
+}
+
+const SwiperNav = ({direction}: SwiperNavProps) => {
+  const swiper = useSwiper()
+
+  const navigate = () => {
+    direction === 'prev' ? swiper.slidePrev() : swiper.slideNext()
+  }
+  
+  return (
+    <button onClick={navigate} className={`${s.sliderNav} ${direction}`}>
+      <img src={direction === 'prev' ? '/assets/Ranking/sliderNavLeft.svg' : '/assets/Ranking/sliderNavRight.svg'} alt="" />
+    </button>
+  )
+}
+
 const RankingTabs = () => {
   const [activeTab, setActiveTab] = useState(1)
   const handleTabChange = (tab: number) => {
     setActiveTab(tab)
-  }
-
-  const columns = [
-    {
-      title: 'No',
-      dataIndex: 'rank',
-      className: s.columnNo,
-    },
-    {
-      title: 'Name',
-      dataIndex: 'name',
-      className: s.columnName,
-    },
-    {
-      title: 'Your Reward',
-      dataIndex: 'reward',
-      className: s.columnReward,
-    },
-  ];
-
-  const data = [];
-  for (let i = 0; i < 100; i++) {
-    data.push({
-      key: i,
-      rank: i,
-      name: `Edward King ${i}`,
-      reward: `Reward no. ${i}`,
-    });
   }
 
   return (
@@ -91,44 +148,64 @@ const RankingTabs = () => {
           centeredSlides
           initialSlide={0}
           slidesPerView="auto"
-          spaceBetween={10}
           allowTouchMove={false}
+          className={s.rankingSwiperWrapper}
+          breakpoints={{
+            320: {
+              spaceBetween: 10
+            },
+            992: {
+              spaceBetween: 0
+            }
+          }}
         >
           <SwiperSlide>
-            <div className="">
-              <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="">
-              <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="">
-              <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="">
-              <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="">
-              <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
             </div>
           </SwiperSlide>
           <SwiperSlide>
-            <div className="">
-              <Table columns={columns} dataSource={data} pagination={false} scroll={{ y: 240 }} />
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
             </div>
           </SwiperSlide>
-
+          <SwiperSlide>
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
+            </div>
+          </SwiperSlide>
+          <SwiperSlide>
+            <div className={s.rankingTableResponsive}>
+              <Table columns={columns} dataSource={data} pagination={false} />
+            </div>
+          </SwiperSlide>
+          <div className={`${s.rankingSwiperNavWrap}`}>
+            <SwiperNav direction="prev" />
+            <SwiperNav direction="next" />
+          </div>
         </Swiper>
       </div>
     </section>
-
   )
 }
 

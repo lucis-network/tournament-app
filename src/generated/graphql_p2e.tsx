@@ -618,11 +618,25 @@ export type GamePlatformCount = {
   lucky_chest: Scalars['Int'];
 };
 
-export type InventoryGql = {
-  __typename?: 'InventoryGql';
-  assembled_avail?: Maybe<Array<PrizeType>>;
-  user_inventory?: Maybe<Array<UserInventory>>;
+export type InventoryItem = {
+  __typename?: 'InventoryItem';
+  prize?: Maybe<LuckyChestPrize>;
+  quantity?: Maybe<Scalars['Int']>;
 };
+
+export type InventoryPieceGroup = {
+  __typename?: 'InventoryPieceGroup';
+  achieved?: Maybe<Scalars['Int']>;
+  pieces?: Maybe<Array<UserInventoryPiece>>;
+  target?: Maybe<Scalars['Int']>;
+  type?: Maybe<PieceGroup>;
+};
+
+export enum ItemGroup {
+  Csgo = 'Csgo',
+  Lol = 'Lol',
+  Nft = 'Nft'
+}
 
 export type LolAccountDto = {
   __typename?: 'LolAccountDto';
@@ -854,10 +868,13 @@ export type LuckyChestPrize = {
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   img?: Maybe<Scalars['String']>;
+  inventory_item?: Maybe<Array<UserInventoryItem>>;
+  inventory_piece?: Maybe<Array<UserInventoryPiece>>;
   prize_amount?: Maybe<Scalars['Decimal']>;
   prize_type: PrizeType;
   quantity_in_stock: Scalars['Int'];
   rarity: PrizeRarity;
+  retrieve_method?: Maybe<RetrieveMethod>;
   title: Scalars['String'];
   updated_at: Scalars['DateTime'];
   user_prize_history?: Maybe<Array<UserLuckyChestHistory>>;
@@ -866,6 +883,8 @@ export type LuckyChestPrize = {
 
 export type LuckyChestPrizeCount = {
   __typename?: 'LuckyChestPrizeCount';
+  inventory_item: Scalars['Int'];
+  inventory_piece: Scalars['Int'];
   user_prize_history: Scalars['Int'];
 };
 
@@ -992,7 +1011,7 @@ export enum MissionStatus {
 export type Mutation = {
   __typename?: 'Mutation';
   addStakedNft?: Maybe<Scalars['Boolean']>;
-  assemble?: Maybe<UserInventory>;
+  assemble?: Maybe<UserInventoryItem>;
   buyRaffleTicket?: Maybe<Scalars['Boolean']>;
   claimBox?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<ClaimResponse>;
@@ -1024,7 +1043,7 @@ export type MutationAddStakedNftArgs = {
 
 
 export type MutationAssembleArgs = {
-  type: PrizeType;
+  piece_group: PieceGroup;
 };
 
 
@@ -1212,6 +1231,12 @@ export type P2eSponsor = {
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
 };
+
+export enum PieceGroup {
+  CsgoKnifeOrGlovePiece = 'CSGO_KNIFE_OR_GLOVE_PIECE',
+  NftBoxPiece = 'NFT_BOX_PIECE',
+  RiotCard_150Piece = 'RIOT_CARD_150_PIECE'
+}
 
 export type Platform = {
   __typename?: 'Platform';
@@ -1443,12 +1468,6 @@ export enum PrizeType {
   CsgoKnifeOrGlovePiece_2 = 'CSGO_KNIFE_OR_GLOVE_PIECE_2',
   CsgoKnifeOrGlovePiece_3 = 'CSGO_KNIFE_OR_GLOVE_PIECE_3',
   CsgoKnifeOrGlovePiece_4 = 'CSGO_KNIFE_OR_GLOVE_PIECE_4',
-  GoodLuck = 'GOOD_LUCK',
-  LolCostume = 'LOL_COSTUME',
-  LolCostumePiece_1 = 'LOL_COSTUME_PIECE_1',
-  LolCostumePiece_2 = 'LOL_COSTUME_PIECE_2',
-  LolCostumePiece_3 = 'LOL_COSTUME_PIECE_3',
-  LolCostumePiece_4 = 'LOL_COSTUME_PIECE_4',
   LucisPoint = 'LUCIS_POINT',
   LucisToken = 'LUCIS_TOKEN',
   NftBox = 'NFT_BOX',
@@ -1506,9 +1525,10 @@ export type Query = {
   getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
   getWonTickets?: Maybe<Array<Scalars['String']>>;
   hasJoinedDiscord?: Maybe<Scalars['Boolean']>;
+  inventoryItems?: Maybe<Array<InventoryItem>>;
+  inventoryPieces?: Maybe<Array<InventoryPieceGroup>>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
   isConnectPlatform?: Maybe<Scalars['Boolean']>;
-  myInventory?: Maybe<InventoryGql>;
   myWonTickets?: Maybe<Array<UserWonTicketGql>>;
   searchBySummonerName?: Maybe<LolAccountDto>;
   searchRaffle?: Maybe<Array<RaffleGql>>;
@@ -1650,6 +1670,20 @@ export type QueryGetUserTournamentRankingArgs = {
 
 export type QueryGetWonTicketsArgs = {
   raffle_uid: Scalars['String'];
+};
+
+
+export type QueryInventoryItemsArgs = {
+  group_filter?: InputMaybe<ItemGroup>;
+  search_name?: InputMaybe<Scalars['String']>;
+  user_id: Scalars['Int'];
+};
+
+
+export type QueryInventoryPiecesArgs = {
+  group_filter?: InputMaybe<PieceGroup>;
+  search_name?: InputMaybe<Scalars['String']>;
+  user_id: Scalars['Int'];
 };
 
 
@@ -1796,6 +1830,13 @@ export enum ReferFriendStatus {
   EarningPoint = 'EarningPoint',
   JoinSystem = 'JoinSystem',
   None = 'None'
+}
+
+export enum RetrieveMethod {
+  Contact = 'Contact',
+  InventoryItem = 'InventoryItem',
+  InventoryPiece = 'InventoryPiece',
+  Wallet = 'Wallet'
 }
 
 export type SponsorSlot = {
@@ -2230,14 +2271,27 @@ export type UserHistory = {
   user_id: Scalars['Int'];
 };
 
-export type UserInventory = {
-  __typename?: 'UserInventory';
+export type UserInventoryItem = {
+  __typename?: 'UserInventoryItem';
   created_at: Scalars['DateTime'];
-  desc?: Maybe<Scalars['String']>;
-  img?: Maybe<Scalars['String']>;
-  quantity?: Maybe<Scalars['Int']>;
-  title: Scalars['String'];
-  type: PrizeType;
+  group?: Maybe<ItemGroup>;
+  is_claimed: Scalars['Boolean'];
+  prize?: Maybe<LuckyChestPrize>;
+  prize_id?: Maybe<Scalars['Int']>;
+  steam_url?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryPiece = {
+  __typename?: 'UserInventoryPiece';
+  created_at: Scalars['DateTime'];
+  group?: Maybe<PieceGroup>;
+  item_group?: Maybe<ItemGroup>;
+  prize?: Maybe<LuckyChestPrize>;
+  prize_id: Scalars['Int'];
+  quantity: Scalars['Int'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   user_id: Scalars['Int'];
