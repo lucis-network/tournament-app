@@ -91,7 +91,7 @@ export default observer(function ContentMyProfile({
       <TabPane tab="Refer history" key="refer">
         <ReferHistory></ReferHistory>
       </TabPane>
-      <TabPane tab="Inventory" key="inventory" disabled>
+      <TabPane tab="Inventory" key="inventory">
         <Inventory></Inventory>
       </TabPane>
     </Tabs>
