@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  playcore_fe:
+    build:
+      context: ../../
+      dockerfile: docker/Dockerfile
+    image: playcore_fe
+    ports:
+      - '15001:3000'
