@@ -42,8 +42,8 @@
 .rankingFlag
   width: 100%
   position: relative
-  @media screen and (min-width: 992px)
-
+  &:global(.comingSoon)
+    opacity: 0.4 !important
 .rankingAvatar
   display: flex
   align-items: center
@@ -119,6 +119,7 @@
   @include line-camp(1)
   @media screen and (min-width: 1200px)
     font-size: 12px
+    line-height: 16px
     margin-bottom: 5px
   @media screen and (min-width: 1600px)
     font-size: 14px
@@ -131,6 +132,7 @@
   @include line-camp(1)
   @media screen and (min-width: 1200px)
     font-size: 10px
+    line-height: 14px
   @media screen and (min-width: 1600px)
     font-size: 12px
 .rankingMedal
