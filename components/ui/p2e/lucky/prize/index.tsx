@@ -27,8 +27,8 @@ const ChestPrize = ({image, title, description, rarity, amount}: ChestPrizeProps
         </div>
         {
           amount &&
-            <div className={s.prizeTitle}>
-              {amount}
+            <div className={s.prizeAmount}>
+              Amount:{" "}{amount}
             </div>
         }
       </div>

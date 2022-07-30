@@ -1,4 +1,4 @@
-name: Node.js CD
+name: Node.js CD - Deploy to dev
 
 on:
   #pull_request:

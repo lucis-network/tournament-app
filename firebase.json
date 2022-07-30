@@ -60,8 +60,8 @@
         "destination": "/playcore/missions.html"
       },
       {
-        "source": "/profile/*",
-        "destination": "/profile/[username].html"
+        "source": "/ranking",
+        "destination": "/ranking.html"
       },
       {
         "source": "/profile/*",
