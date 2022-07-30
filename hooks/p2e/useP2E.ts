@@ -624,6 +624,12 @@ export const HAS_JOINED_DISCORD = gql`
   }
 `
 
+export const CREATE_INVITE_LINK_DISCORD = gql`
+  query {
+    createInviteLinkDiscord
+  }
+`
+
 
 export const GET_DAILY_POINT = gql`
 query ($game_uid: String!, $platform_id: Int!) {
