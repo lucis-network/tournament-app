@@ -1,8 +1,10 @@
 import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
 import {TopRanking} from "../../src/generated/graphql_p2e";
 
+export type AcceptedMonths = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
+
 type GetTopRankingProps = {
-  month: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12,
+  month: AcceptedMonths,
   year: number,
 }
 
