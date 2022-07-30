@@ -73,9 +73,8 @@ export default observer(function Navigation ({balance}: any) {
     {
       color: "#FF008C",
       text: "RANKING",
-      disable: true,
       class: { cursor: "context-menu" },
-      isComingSoon: true
+      to: "/ranking",
     },
     // {
     //   color: "#FF008C",
