@@ -24,6 +24,9 @@ jobs:
           port: 22
           script: |
             cd /home/dev/tournament/tournament-fe-isr/deploy
+            echo "Current directory: "
+            pwd
             git pull
             git status
+            pwd
             bash ./deploy.sh
