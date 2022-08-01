@@ -225,7 +225,7 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/playcore/raffles") &&
+                {(AuthStore.isLoggedIn && router.pathname !== "/" && !router.pathname.includes("/playcore/raffles")) &&
                   <div className={s.chooseGame}>
                     {AuthGameStore.isLoggedInLMSS && (
                       <div className={`${s.gameWrap} ${currentGame === Game.LOL ? s.gameActive : ""}`}>

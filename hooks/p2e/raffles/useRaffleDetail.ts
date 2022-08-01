@@ -39,7 +39,7 @@ export const useGetRaffleDetail = (raffle_uid?: string): {
     variables: {
       raffle_uid: raffle_uid
     },
-    skip: isEmpty(raffle_uid),
+    //skip: isEmpty(raffle_uid),
     context: {
       endpoint: 'p2e'
     },
