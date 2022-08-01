@@ -496,6 +496,38 @@ class MissionService {
     return response;
   }
 
+  public async createInviteLinkDiscord() {
+      const response = await apoloClient.query<{createInviteLinkDiscord: string}>({
+          query: gql`
+              query {
+                  createInviteLinkDiscord
+              }
+          `,
+        context: {
+          endpoint: 'p2e'
+        }
+
+      });
+
+    return response;
+  }
+
+  public async hasJoinDiscord() {
+      const response = await apoloClient.query<{hasJoinedDiscord: boolean}>({
+          query: gql`
+              query {
+                  hasJoinedDiscord
+              }
+          `,
+        context: {
+          endpoint: 'p2e'
+        }
+
+      });
+
+    return response;
+  }
+
 }
 
 export default new MissionService();

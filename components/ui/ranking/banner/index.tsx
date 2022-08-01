@@ -1,8 +1,64 @@
 import s from "/components/ui/ranking/Ranking.module.sass"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
+import {AcceptedMonths, useTopRanking} from "../../../../hooks/ranking/useTopRanking";
+import {UserProfile} from "../../../../src/generated/graphql";
+import {UserRanking} from "../../../../src/generated/graphql_p2e";
+
+type SwiperSlideContentProps = {
+  title: string,
+  type: string,
+  image: string,
+  data?: UserRanking,
+  comingSoon?: boolean,
+}
+
+const SwiperSlideContent = ({title, type, image, data, comingSoon}: SwiperSlideContentProps) => {
+  const userName = data?.profile?.user_name
+  const displayName = data?.profile?.display_name
+  const avatar = data?.profile?.avatar
+  const rank = data?.rank
+
+  return (
+    <div className={`${s.rankingFlag} ${type} ${comingSoon ? 'comingSoon' : ''}`}>
+      <img src={image} alt="" className={s.flag} />
+      <div className={s.rankingAvatar}>
+        {(!comingSoon && avatar) && (
+          <img src={avatar} alt=""/>
+        )}
+      </div>
+      <div className={s.rankingInfo}>
+        <div className={s.rankingTitle}>{title}</div>
+        {displayName && (
+          <div className={s.rankingUserDisplayName}>{displayName}</div>
+        )}
+        {userName && (
+          <div className={s.rankingUsername}>{data?.profile?.user_name}</div>
+        )}
+        {(!comingSoon && (rank && (rank < 3))) && (
+          <div className={s.rankingMedal}>
+            <img src={`${rank === 1 ? '/assets/Ranking/medalGold.svg' : '/assets/Ranking/medalSilver.svg'}`} alt=""/>
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+const now = new Date()
+export const currentMonth = now.getMonth() + 1 as AcceptedMonths
+export const currentYear = now.getFullYear()
 
 const BannerRanking = () => {
+  const {getTopRankingError, getTopRankingLoading, dataTopRanking} = useTopRanking({
+    month: currentMonth,
+    year: currentYear,
+  })
+
+  const raffleTopRank = dataTopRanking?.getTopRanking?.raffle
+  const playcoreTopRank = dataTopRanking?.getTopRanking?.playcore
+  const tournamentTopRank = dataTopRanking?.getTopRanking?.tournament
+
   return (
     <section className={s.sectionBanner}>
       <div className="lucis-container-2">
@@ -22,84 +78,46 @@ const BannerRanking = () => {
           }}
         >
           <SwiperSlide>
-            <div className={`${s.rankingFlag} raffles`}>
-              <img src="/assets/Ranking/flagRaffles.png" alt="" className={s.flag} />
-              <div className={s.rankingAvatar}>
-                <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
-              </div>
-              <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total rewards</div>
-                <div className={s.rankingUserDisplayName}>Mèo đi here</div>
-                <div className={s.rankingUsername}>chaupa</div>
-                <div className={s.rankingMedal}>
-                  <img src="/assets/Ranking/medalSilver.svg" alt=""/>
-                </div>
-              </div>
-            </div>
+            <SwiperSlideContent
+              // title="Total nfts"
+              title="Coming soon"
+              image="/assets/Ranking/flagNFTs.png"
+              type="nfts"
+              comingSoon
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <div className={`${s.rankingFlag} arena`}>
-              <img src="/assets/Ranking/flagArena.png" alt="" className={s.flag} />
-              <div className={s.rankingAvatar}>
-                <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
-              </div>
-              <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total earnings</div>
-                <div className={s.rankingUserDisplayName}>Mèo đi here</div>
-                <div className={s.rankingUsername}>chaupa</div>
-                <div className={s.rankingMedal}>
-                  <img src="/assets/Ranking/medalSilver.svg" alt=""/>
-                </div>
-              </div>
-            </div>
+            <SwiperSlideContent
+              title="Total earnings"
+              image="/assets/Ranking/flagArena.png"
+              type="arena"
+              data={tournamentTopRank}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <div className={`${s.rankingFlag} nfts`}>
-              <img src="/assets/Ranking/flagNFTs.png" alt="" className={s.flag} />
-              <div className={s.rankingAvatar}>
-                <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
-              </div>
-              <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total nfts</div>
-                <div className={s.rankingUserDisplayName}>Mèo đi here</div>
-                <div className={s.rankingUsername}>chaupa</div>
-                <div className={s.rankingMedal}>
-                  <img src="/assets/Ranking/medalSilver.svg" alt=""/>
-                </div>
-              </div>
-            </div>
+            <SwiperSlideContent
+              title="Missions"
+              image="/assets/Ranking/flagPlaycore.png"
+              type="playcore"
+              data={playcoreTopRank}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <div className={`${s.rankingFlag} playcore`}>
-              <img src="/assets/Ranking/flagPlaycore.png" alt="" className={s.flag} />
-              <div className={s.rankingAvatar}>
-                <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
-              </div>
-              <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Missions</div>
-                <div className={s.rankingUserDisplayName}>Mèo đi here</div>
-                <div className={s.rankingUsername}>chaupa</div>
-                <div className={s.rankingMedal}>
-                  <img src="/assets/Ranking/medalSilver.svg" alt=""/>
-                </div>
-              </div>
-            </div>
+            <SwiperSlideContent
+              title="Total rewards"
+              image="/assets/Ranking/flagRaffles.png"
+              type="raffles"
+              data={raffleTopRank}
+            />
           </SwiperSlide>
           <SwiperSlide>
-            <div className={`${s.rankingFlag} scholarship`}>
-              <img src="/assets/Ranking/flagScholarship.png" alt="" className={s.flag} />
-              <div className={s.rankingAvatar}>
-                <img src="/assets/Ranking/tempAvatar.jpg" alt=""/>
-              </div>
-              <div className={s.rankingInfo}>
-                <div className={s.rankingTitle}>Total earnings</div>
-                <div className={s.rankingUserDisplayName}>Mèo đi here</div>
-                <div className={s.rankingUsername}>chaupa</div>
-                <div className={s.rankingMedal}>
-                  <img src="/assets/Ranking/medalSilver.svg" alt=""/>
-                </div>
-              </div>
-            </div>
+            <SwiperSlideContent
+              // title="Total earnings"
+              title="Coming soon"
+              image="/assets/Ranking/flagScholarship.png"
+              type="scholarship"
+              comingSoon
+            />
           </SwiperSlide>
         </Swiper>
       </div>
