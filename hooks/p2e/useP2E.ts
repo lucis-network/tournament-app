@@ -1,6 +1,5 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, InventoryItem, InventoryPieceGroup, LolMatchStatisticGql,
-  PieceGroup, PlatformAccount, ReferFriendGql } from "../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, InventoryItem, InventoryPieceGroup, LolMatchStatisticGql, PiecesFilter, PlatformAccount, ReferFriendGql } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
   offset: number
@@ -240,6 +239,29 @@ export function useGetMyInventoryItems(props: PropsInventoryPieces): {
     errorMyInventoryItems: error,
     refetchMyInventoryItems: refetch,
     dataMyInventoryItems: data?.inventoryItems,
+  };
+}
+
+export function useGetMyInventoryPiecesConfig(): {
+  loading: boolean,
+  errorMyInventoryPiecesConfig: ApolloError | undefined,
+  refetchMyInventoryPiecesConfig: () => Promise<ApolloQueryResult<any>>;
+  dataMyInventoryPiecesConfig: PiecesFilter[] | undefined
+} {
+  const { loading, error, data, refetch } = useQuery(GET_MY_INVENTORY_PIECES_CONFIG, {
+    variables: {
+    },
+    context: {
+      endpoint: 'p2e'
+    },
+    fetchPolicy: "network-only",
+  });
+
+  return {
+    loading,
+    errorMyInventoryPiecesConfig: error,
+    refetchMyInventoryPiecesConfig: refetch,
+    dataMyInventoryPiecesConfig: data?.piecesFilter,
   };
 }
 
@@ -664,19 +686,15 @@ query {
 `
 
 export const GET_MY_INVENTORY_PIECES = gql`
-query ($user_id: Int!, $group_filter: PieceGroup, $search_name: String) {
+query ($user_id: Int!, $group_filter: String, $search_name: String) {
   inventoryPieces (user_id: $user_id, group_filter: $group_filter, search_name: $search_name) {
     pieces { 
         uid 
         user_id
-        group
         prize {
-          id
           title
           desc
           img
-          prize_type
-          retrieve_method
           rarity
           prize_amount
           quantity_in_stock
@@ -693,17 +711,22 @@ export const GET_MY_INVENTORY_ITEMS = gql`
 query ($user_id: Int!, $group_filter: ItemGroup, $search_name: String) {
   inventoryItems (user_id: $user_id, group_filter: $group_filter, search_name: $search_name) {
    prize {
-    id
     title
     desc
     img
-    prize_type
-    retrieve_method
     rarity
     prize_amount
     quantity_in_stock
     }
    quantity
+  }
+}
+`
+
+export const GET_MY_INVENTORY_PIECES_CONFIG = gql`
+query {
+  piecesFilter {
+    piece_group
   }
 }
 `

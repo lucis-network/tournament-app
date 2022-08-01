@@ -26,12 +26,16 @@
         flex-wrap: wrap
         //align-items: center
         flex-grow: 3
-        gap: 0 96px
+        gap: 10px 48px
+        @media screen and (min-width: 768px)
+          gap: 10px 96px
         .itemPrize
           display: flex
           flex-direction: column
           img
-            width: 214px
+            width: 180px
+            @media screen and (min-width: 768px)
+              width: 214px
           h2
             text-align: center
       .btnCombine
@@ -56,16 +60,22 @@
       display: flex
 .groupSearch
   display: flex
-  gap: 0 20px
-  justify-content: space-between
+  gap: 20px 0
+  flex-direction: column
   margin-top: 25px
+  @media screen and (min-width: 768px)
+    justify-content: space-between
+    flex-direction: row
+
   :global(.ant-select-selector)
     background: rgba(69, 80, 107, 0.5) !important
     color: #DBE0E8
   :global(.ant-select-arrow)
     color: #DBE0E8
   .dropdownSearch
-    min-width: 343px
+    width: 100%
+    @media screen and (min-width: 768px)
+      min-width: 343px
   .searchText
     color: rgba(219, 224, 232, 0.5)
     font-family: 'Lexend'
@@ -76,7 +86,9 @@
     background: rgba(69, 80, 107, 0.5)
     backdrop-filter: blur(40px)
     border-radius: 50px
-    min-width: 343px
+    width: 100%
+    @media screen and (min-width: 768px)
+      min-width: 343px
 .listItemsInventory
   display: flex
   gap: 0 20px

@@ -1,13 +1,10 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useState} from "react";
 import s from "./index.module.sass";
-import {Button, Input, message, Select} from "antd";
-import {ASSEMBLE_INVENTORY_PIECE, useGetMyInventoryPieces} from "../../../../../../hooks/p2e/useP2E";
+import {message} from "antd";
+import {ASSEMBLE_INVENTORY_PIECE} from "../../../../../../hooks/p2e/useP2E";
 import ChestPrize from "components/ui/p2e/lucky/prize";
-import { PieceGroup } from "src/generated/graphql";
-import debounce from "lodash/debounce";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
-import {InventoryPieceGroup, LuckyChestPrize, LuckyChestTier} from "src/generated/graphql_p2e";
-import {b64DecodeUnicode} from "../../../../../../utils/String";
+import {InventoryPieceGroup} from "src/generated/graphql_p2e";
 import {AppEmitter} from "../../../../../../services/emitter";
 import ButtonWrapper from "../../../../../common/button/Button";
 
@@ -25,7 +22,7 @@ const ItemsPiece = (props: Props) => {
     }
   })
 
-  const assemble = (type?: PieceGroup) => {
+  const assemble = (type?: string) => {
     setIsLoading(true);
     assembleInventoryPiece({
       variables: {

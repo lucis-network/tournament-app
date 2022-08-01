@@ -1,8 +1,7 @@
 import React, {useCallback, useState} from "react";
 import s from "./index.module.sass";
 import {Input, Select} from "antd";
-import {useGetMyInventoryPieces} from "../../../../../../hooks/p2e/useP2E";
-import {PieceGroup} from "src/generated/graphql";
+import {useGetMyInventoryPieces, useGetMyInventoryPiecesConfig} from "../../../../../../hooks/p2e/useP2E";
 import debounce from "lodash/debounce";
 import ItemsPiece from "./itemsPiece";
 import AuthStore from "../../../../../Auth/AuthStore";
@@ -22,6 +21,8 @@ const TabPiecesInventory = (props: Props) => {
       search_name: searchName,
     }
   );
+
+  const {dataMyInventoryPiecesConfig} = useGetMyInventoryPiecesConfig();
 
   const handleChange = (value: string) => {
     setSearchGroupFilter(value);
@@ -44,9 +45,9 @@ const TabPiecesInventory = (props: Props) => {
         <div>
           <Select defaultValue="All" className={s.dropdownSearch} onChange={handleChange}>
             <Option value="">All</Option>
-            <Option value={PieceGroup.RiotCard_150Piece}>{PieceGroup.RiotCard_150Piece}</Option>
-            <Option value={PieceGroup.CsgoKnifeOrGlovePiece}>{PieceGroup.CsgoKnifeOrGlovePiece}</Option>
-            <Option value={PieceGroup.NftBoxPiece}>{PieceGroup.NftBoxPiece}</Option>
+            {dataMyInventoryPiecesConfig && dataMyInventoryPiecesConfig?.map((item, index) => (
+              <Option key={`${item?.piece_group}${index}`} value={item?.piece_group}>{item?.piece_group}</Option>
+            ))}
           </Select>
         </div>
         <div>
@@ -74,7 +75,6 @@ const TabPiecesInventory = (props: Props) => {
             ))
           }
         </div>
-
       </div>
     </>
 
