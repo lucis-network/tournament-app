@@ -121,7 +121,7 @@
         background: rgba(45, 52, 70, 0.5)
       td
         border: none
-        padding: 0
+        padding: 5px
         height: 34px
         @media screen and (min-width: 768px)
           padding: 10px
@@ -252,15 +252,20 @@
     img
       min-width: 44px
       max-width: 44px
-      height: 44px
+      aspect-ratio: 1/1
+      display: block
       border-radius: 50%
       border: 1px solid #DBE0E8
       @media screen and (min-width: 1200px)
         min-width: 64px
         max-width: 64px
-        height: 64px
   .userName
     margin-right: 21px
+    width: calc(100% - 100px)
+    @media screen and (min-width: 992px)
+      width: calc(100% - 190px)
+    @media screen and (min-width: 1200px)
+      width: calc(100% - 220px)
     a
       font-family: 'Lexend'
       font-weight: 400

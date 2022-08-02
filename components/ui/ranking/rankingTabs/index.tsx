@@ -1,4 +1,4 @@
-import {ReactElement, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 
 import {Table} from "antd";
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,7 +9,6 @@ import {useArenaRanking, usePlaycoreRanking, useRaffleRanking} from "../../../..
 import {currentMonth as defaultCurrentMonth, currentYear as defaultCurrentYear} from "../banner";
 import {AcceptedMonths} from "../../../../hooks/ranking/useTopRanking";
 import {UserRanking} from "../../../../src/generated/graphql_p2e";
-import {UserProfile} from "../../../../src/generated/graphql";
 import Link from "next/link"
 
 const tabs = [
@@ -74,7 +73,9 @@ const columns = [
           <div className={`${s.userAvatar} ${userRank}`}>
             <Link href={`/profile/${profile?.user_name}`} passHref>
               <a target="_blank">
-                <img src={profile?.avatar ?? '/assets/avatar.jpg'} alt=""/>
+                <img src={profile?.avatar ? profile?.avatar : '/assets/MyProfile/default_avatar.png'} alt="" onError={(e) => {
+                  e.currentTarget.src = '/assets/MyProfile/default_avatar.png'
+                }} />
               </a>
             </Link>
           </div>
@@ -83,9 +84,9 @@ const columns = [
               <a target="_blank">{profile?.display_name}</a>
             </Link>
           </div>
-          {/*{totalEarning && (*/}
-          {/*  <div className={s.userValue}>{totalEarning} NFTs</div>*/}
-          {/*)}*/}
+          {totalEarning && (
+            <div className={s.userValue}>{totalEarning} NFTs</div>
+          )}
         </div>
       )
     }
@@ -138,26 +139,27 @@ const SwiperNav = ({direction}: SwiperNavProps) => {
   )
 }
 
-const RankingTabs = () => {
+type RankingTabsProps = {
+  seasonId: string
+}
+
+const RankingTabs = ({seasonId}: RankingTabsProps) => {
   const [activeTab, setActiveTab] = useState<string>('playcore')
   const [currentMonth, setCurrentMonth] = useState<AcceptedMonths>(defaultCurrentMonth)
   const [currentYear, setCurrentYear] = useState<number>(defaultCurrentYear)
   const [rankingData, setRankingData] = useState<UserRanking[]>([])
 
   const {getPlaycoreRankingError, getPlaycoreRankingLoading, dataPlaycoreRanking} = usePlaycoreRanking({
-    month: currentMonth,
-    year: currentYear,
-    skip: activeTab !== 'playcore'
+    seasonId: seasonId,
+    skip: (activeTab !== 'playcore') || !seasonId
   })
   const {getArenaRankingError, getArenaRankingLoading, dataArenaRanking} = useArenaRanking({
-    month: currentMonth,
-    year: currentYear,
-    skip: activeTab !== 'arena'
+    seasonId: seasonId,
+    skip: (activeTab !== 'arena') || !seasonId
   })
   const {getRaffleRankingError, getRaffleRankingLoading, dataRaffleRanking} = useRaffleRanking({
-    month: currentMonth,
-    year: currentYear,
-    skip: activeTab !== 'raffles'
+    seasonId: seasonId,
+    skip: (activeTab !== 'raffles') || !seasonId
   })
 
   const playcoreRanking = dataPlaycoreRanking?.getPlaycoreRanking

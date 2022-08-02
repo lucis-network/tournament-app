@@ -2,8 +2,7 @@ import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
 import {UserRanking} from "../../src/generated/graphql_p2e";
 
 type GetRankingProps = {
-  month: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12,
-  year: number,
+  seasonId: string,
   skip?: boolean,
 }
 
@@ -13,7 +12,7 @@ type GetUserRankingProps = {
   user_id: number,
 }
 
-export const usePlaycoreRanking = ({month, year, skip}: GetRankingProps): {
+export const usePlaycoreRanking = ({seasonId, skip}: GetRankingProps): {
   getPlaycoreRankingLoading: boolean,
   getPlaycoreRankingError: ApolloError | undefined,
   refetchPlaycoreRanking: () => Promise<ApolloQueryResult<any>>,
@@ -28,8 +27,7 @@ export const usePlaycoreRanking = ({month, year, skip}: GetRankingProps): {
     data: dataPlaycoreRanking,
   } = useQuery(GET_PLAYCORE_RANKING, {
     variables: {
-      month: month,
-      year: year,
+      seasonId: seasonId,
     },
     skip: skip,
     context: {
@@ -46,7 +44,7 @@ export const usePlaycoreRanking = ({month, year, skip}: GetRankingProps): {
   }
 }
 
-export const useArenaRanking = ({month, year, skip}: GetRankingProps): {
+export const useArenaRanking = ({seasonId, skip}: GetRankingProps): {
   getArenaRankingLoading: boolean,
   getArenaRankingError: ApolloError | undefined,
   refetchArenaRanking: () => Promise<ApolloQueryResult<any>>,
@@ -61,8 +59,7 @@ export const useArenaRanking = ({month, year, skip}: GetRankingProps): {
     data: dataArenaRanking,
   } = useQuery(GET_ARENA_RANKING, {
     variables: {
-      month: month,
-      year: year,
+      seasonId: seasonId,
     },
     skip: skip,
     context: {
@@ -79,7 +76,7 @@ export const useArenaRanking = ({month, year, skip}: GetRankingProps): {
   }
 }
 
-export const useRaffleRanking = ({month, year, skip}: GetRankingProps): {
+export const useRaffleRanking = ({seasonId, skip}: GetRankingProps): {
   getRaffleRankingLoading: boolean,
   getRaffleRankingError: ApolloError | undefined,
   refetchRaffleRanking: () => Promise<ApolloQueryResult<any>>,
@@ -94,8 +91,7 @@ export const useRaffleRanking = ({month, year, skip}: GetRankingProps): {
     data: dataRaffleRanking,
   } = useQuery(GET_RAFFLE_RANKING, {
     variables: {
-      month: month,
-      year: year,
+      seasonId: seasonId,
     },
     skip: skip,
     context: {
@@ -113,8 +109,8 @@ export const useRaffleRanking = ({month, year, skip}: GetRankingProps): {
 }
 
 const GET_PLAYCORE_RANKING = gql`
-  query ($month: Int!, $year: Int!) {
-    getPlaycoreRanking (month: $month, year: $year) {
+  query ($seasonId: String!) {
+    getPlaycoreRanking (seasonId: $seasonId) {
       id
       code
       email
@@ -130,8 +126,8 @@ const GET_PLAYCORE_RANKING = gql`
 `
 
 const GET_ARENA_RANKING = gql`
-  query ($month: Int!, $year: Int!) {
-    getTournamentRanking (month: $month, year: $year) {
+  query ($seasonId: String!) {
+    getTournamentRanking (seasonId: $seasonId) {
       id
       code
       email
@@ -147,8 +143,8 @@ const GET_ARENA_RANKING = gql`
 `
 
 const GET_RAFFLE_RANKING = gql`
-  query ($month: Int!, $year: Int!) {
-    getRaffleRanking (month: $month, year: $year) {
+  query ($seasonId: String!) {
+    getRaffleRanking (seasonId: $seasonId) {
       id
       code
       email
