@@ -1508,6 +1508,7 @@ export type Query = {
   getRaffleDetail?: Maybe<RaffleDetail>;
   getRaffleRanking?: Maybe<Array<UserRanking>>;
   getRaffles?: Maybe<Array<RaffleGql>>;
+  getRankingSeasons?: Maybe<Array<RankingSeasonDto>>;
   getRecentWinners?: Maybe<Array<RecentWinner>>;
   getRecentlyCsgoMatch?: Maybe<GCsgoMatch>;
   getRecentlyLolMatch?: Maybe<LolMatchGql>;
@@ -1590,8 +1591,7 @@ export type QueryGetMyTicketsArgs = {
 
 
 export type QueryGetPlaycoreRankingArgs = {
-  month: Scalars['Int'];
-  year: Scalars['Int'];
+  seasonId: Scalars['String'];
 };
 
 
@@ -1607,8 +1607,7 @@ export type QueryGetRaffleDetailArgs = {
 
 
 export type QueryGetRaffleRankingArgs = {
-  month: Scalars['Int'];
-  year: Scalars['Int'];
+  seasonId: Scalars['String'];
 };
 
 
@@ -1632,35 +1631,30 @@ export type QueryGetRecentlyLolMatchArgs = {
 
 
 export type QueryGetTopRankingArgs = {
-  month: Scalars['Int'];
-  year: Scalars['Int'];
+  seasonId: Scalars['String'];
 };
 
 
 export type QueryGetTournamentRankingArgs = {
-  month: Scalars['Int'];
-  year: Scalars['Int'];
+  seasonId: Scalars['String'];
 };
 
 
 export type QueryGetUserPlaycoreRankingArgs = {
-  month: Scalars['Int'];
+  seasonId: Scalars['String'];
   user_id: Scalars['Int'];
-  year: Scalars['Int'];
 };
 
 
 export type QueryGetUserRaffleRankingArgs = {
-  month: Scalars['Int'];
+  seasonId: Scalars['String'];
   user_id: Scalars['Int'];
-  year: Scalars['Int'];
 };
 
 
 export type QueryGetUserTournamentRankingArgs = {
-  month: Scalars['Int'];
+  seasonId: Scalars['String'];
   user_id: Scalars['Int'];
-  year: Scalars['Int'];
 };
 
 
@@ -1788,6 +1782,18 @@ export enum RaffleStatusType {
   Disabled = 'DISABLED',
   Enabled = 'ENABLED'
 }
+
+export type RankingSeasonDto = {
+  __typename?: 'RankingSeasonDto';
+  created_at: Scalars['DateTime'];
+  description?: Maybe<Scalars['String']>;
+  fromDate: Scalars['DateTime'];
+  name: Scalars['String'];
+  status: StatusSeason;
+  toDate: Scalars['DateTime'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
 
 export type Reaction = {
   __typename?: 'Reaction';
@@ -1921,6 +1927,12 @@ export type StakedCount = {
 export type StakedNft = {
   apr?: InputMaybe<Scalars['Float']>;
 };
+
+export enum StatusSeason {
+  Active = 'ACTIVE',
+  Closed = 'CLOSED',
+  Upcoming = 'UPCOMING'
+}
 
 export type StringNullableFilter = {
   contains?: InputMaybe<Scalars['String']>;

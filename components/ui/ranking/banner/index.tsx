@@ -1,9 +1,10 @@
 import s from "/components/ui/ranking/Ranking.module.sass"
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import {AcceptedMonths, useTopRanking} from "../../../../hooks/ranking/useTopRanking";
+import {AcceptedMonths, useRankingSeason, useTopRanking} from "../../../../hooks/ranking/useTopRanking";
 import {UserProfile} from "../../../../src/generated/graphql";
 import {UserRanking} from "../../../../src/generated/graphql_p2e";
+import {useEffect} from "react";
 
 type SwiperSlideContentProps = {
   title: string,
@@ -23,8 +24,10 @@ const SwiperSlideContent = ({title, type, image, data, comingSoon}: SwiperSlideC
     <div className={`${s.rankingFlag} ${type} ${comingSoon ? 'comingSoon' : ''}`}>
       <img src={image} alt="" className={s.flag} />
       <div className={s.rankingAvatar}>
-        {(!comingSoon && avatar) && (
-          <img src={avatar} alt=""/>
+        {(!comingSoon) && (
+          <img src={avatar ? avatar : '/assets/MyProfile/default_avatar.png'} alt="" onError={(e) => {
+            e.currentTarget.src = '/assets/MyProfile/default_avatar.png'
+          }} />
         )}
       </div>
       <div className={s.rankingInfo}>
@@ -37,7 +40,7 @@ const SwiperSlideContent = ({title, type, image, data, comingSoon}: SwiperSlideC
         )}
         {(!comingSoon && (rank && (rank < 3))) && (
           <div className={s.rankingMedal}>
-            <img src={`${rank === 1 ? '/assets/Ranking/medalGold.svg' : '/assets/Ranking/medalSilver.svg'}`} alt=""/>
+            <img src={`${rank === 1 ? '/assets/Ranking/medalGold.svg' : '/assets/Ranking/medalSilver.svg'}`} alt="" />
           </div>
         )}
       </div>
@@ -49,10 +52,13 @@ const now = new Date()
 export const currentMonth = now.getMonth() + 1 as AcceptedMonths
 export const currentYear = now.getFullYear()
 
-const BannerRanking = () => {
-  const {getTopRankingError, getTopRankingLoading, dataTopRanking} = useTopRanking({
-    month: currentMonth,
-    year: currentYear,
+type BannerRankingProps = {
+  seasonId: string,
+}
+
+const BannerRanking = ({seasonId}: BannerRankingProps) => {
+  const {dataTopRanking} = useTopRanking({
+    seasonId: seasonId,
   })
 
   const raffleTopRank = dataTopRanking?.getTopRanking?.raffle

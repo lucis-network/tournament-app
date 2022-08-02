@@ -1,14 +1,13 @@
 import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
-import {TopRanking} from "../../src/generated/graphql_p2e";
+import {RankingSeasonDto, TopRanking} from "../../src/generated/graphql_p2e";
 
 export type AcceptedMonths = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
 
 type GetTopRankingProps = {
-  month: AcceptedMonths,
-  year: number,
+  seasonId: string,
 }
 
-export const useTopRanking = ({month, year}: GetTopRankingProps): {
+export const useTopRanking = ({seasonId}: GetTopRankingProps): {
   getTopRankingLoading: boolean,
   getTopRankingError: ApolloError | undefined,
   refetchTopRanking: () => Promise<ApolloQueryResult<any>>,
@@ -23,10 +22,9 @@ export const useTopRanking = ({month, year}: GetTopRankingProps): {
     data: dataTopRanking,
   } = useQuery(GET_TOP_RANKING, {
     variables: {
-      month: month,
-      year: year,
+      seasonId: seasonId,
     },
-    skip: !month || !year,
+    skip: !seasonId,
     context: {
       endpoint: 'p2e'
     },
@@ -41,10 +39,37 @@ export const useTopRanking = ({month, year}: GetTopRankingProps): {
   }
 }
 
+export const useRankingSeason = (): {
+  getRankingSeasonLoading: boolean,
+  getRankingSeasonError: ApolloError | undefined,
+  refetchRankingSeason: () => Promise<ApolloQueryResult<any>>,
+  dataRankingSeason: {
+    getRankingSeasons: RankingSeasonDto[]
+  },
+} => {
+  const {
+    loading: getRankingSeasonLoading,
+    error: getRankingSeasonError,
+    refetch: refetchRankingSeason,
+    data: dataRankingSeason,
+  } = useQuery(GET_RANKING_SEASON, {
+    context: {
+      endpoint: 'p2e'
+    },
+  })
+
+  return {
+    getRankingSeasonLoading,
+    getRankingSeasonError,
+    refetchRankingSeason,
+    dataRankingSeason,
+  }
+}
+
 const GET_TOP_RANKING = gql`
-  query ($month: Int!, $year: Int!) {
-    getTopRanking (month: $month, year: $year) {
-     raffle {
+  query ($seasonId: String!) {
+    getTopRanking (seasonId: $seasonId) {
+      raffle {
         id
         code
         email
@@ -69,7 +94,7 @@ const GET_TOP_RANKING = gql`
         rank
       }
       tournament {
-      id
+        id
         code
         email
         profile {
@@ -80,6 +105,19 @@ const GET_TOP_RANKING = gql`
         total_earning
         rank
       }
+    }
+  }
+`
+
+const GET_RANKING_SEASON = gql`
+  query {
+    getRankingSeasons {
+      uid
+      name
+      description
+      fromDate
+      toDate
+      status
     }
   }
 `
