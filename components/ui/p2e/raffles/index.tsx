@@ -1,5 +1,5 @@
 import s from './Raffles.module.sass'
-import {Image, Input, Empty, Space, Spin, Checkbox, Radio} from "antd";
+import {Image, Input, Empty, Radio} from "antd";
 import Link from "next/link";
 import {
   useGetFeaturedRaffle,
@@ -8,14 +8,14 @@ import {
   useSearchRaffles,
 } from "../../../../hooks/p2e/raffles/useRafflesList";
 import React, {useCallback, useEffect, useState} from "react";
-import {Raffle, RaffleStatusType} from "../../../../src/generated/graphql_p2e";
 import {debounce, isEmpty} from "lodash";
 import SpinLoading from "../../common/Spin";
 import CountdownTimer from "../../common/CountDown";
 import moment from "moment";
+import { RaffleGql } from 'src/generated/graphql_p2e';
 
 const Raffles = () => {
-  const [rafflesData, setRafflesData] = useState<Raffle[]>([])
+  const [rafflesData, setRafflesData] = useState<RaffleGql[]>([])
   const [rafflesKeyword, setRafflesKeyword] = useState<string>('')
   const [searchOption, setSearchOption] = useState<string>('ENABLED');
   const [isCheckFirstTimeRender, setIsCheckFirstTimeRender] = useState<boolean>(false);
@@ -27,7 +27,7 @@ const Raffles = () => {
     status: searchOption
   })
   const recentWinnersEmpty = isEmpty(getRecentWinnersData?.getRecentWinners)
-  const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  // const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   useEffect(() => {
     if (searchRafflesData?.searchRaffle.length == 0  && !isCheckFirstTimeRender) {
@@ -96,7 +96,7 @@ const Raffles = () => {
                     </div>
                   </div>
                   {item?.raffle?.valued_at && (
-                    <div className={s.winnerValued}>Valued at {item?.raffle?.valued_at}</div>
+                    <div className={s.winnerValued}>Valued at ${item?.raffle?.valued_at}</div>
                   )}
                 </div>
               </div>
@@ -133,7 +133,7 @@ const Raffles = () => {
                 </Link>
                 <div className={s.featuredRaffleTitleWrap}>
                   <h3>{getFeaturedRaffleData?.spotlightRaffle?.name}</h3>
-                  <p>Valued at {getFeaturedRaffleData?.spotlightRaffle?.valued_at}</p>
+                  <p>{getFeaturedRaffleData?.spotlightRaffle?.valued_at ? `Valued at $${getFeaturedRaffleData?.spotlightRaffle?.valued_at}` : ''}</p>
                 </div>
                 <div className={s.featuredRafflePriceWrap}>
                   <div className={s.rafflePrice}>
@@ -236,7 +236,7 @@ const Raffles = () => {
                       )}
                       <h3 className={s.raffleTitle}>{raffle?.name}</h3>
                       <div className={s.rafflePriceWrap}>
-                        <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
+                        <div className={s.raffleValued}>{raffle?.valued_at ? `Valued at $${raffle?.valued_at}` : ''}</div>
                         <div className={s.rafflePrice}>
                           <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
                           {

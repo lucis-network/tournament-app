@@ -15,7 +15,12 @@ import {debounce, isEmpty} from "lodash";
 import Head from "next/head";
 import DefaultErrorPage from "next/error";
 import SpinLoading from "../../common/Spin";
-import {BuyRaffleTicketErrorCode, RaffleStatusType, UserTicketGql, RaffleStatus} from "../../../../src/generated/graphql_p2e";
+import {
+  BuyRaffleTicketErrorCode,
+  RaffleStatusType,
+  UserTicketGql,
+  RaffleStatus
+} from "../../../../src/generated/graphql_p2e";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
 import RollingRaffles from "./rolling";
 import RafflesStore from "../../../../src/store/RafflesStore";
@@ -23,10 +28,12 @@ import moment from "moment";
 import {mapToDict} from "../../../../utils/Array";
 import {useGetWonTickets} from "../../../../hooks/p2e/useRaffleDetail";
 import {AppEmitter} from "../../../../services/emitter";
+import {isClientDevMode} from "../../../../utils/Env";
 
-const RafflesDetail = observer(() => {
+const RafflesDetail = observer((props: { raffleUID: string}) => {
+  const {raffleUID} = props;
   const router = useRouter()
-  const raffleUID = router.query.id as string | undefined
+
   const [allTickets, setAllTickets] = useState<UserTicketGql[]>([])
   const [ticketBuyAmount, setTicketBuyAmount] = useState<number>(0)
   const [totalCost, setTotalCost] = useState<number>(0)
@@ -36,12 +43,12 @@ const RafflesDetail = observer(() => {
   const [isCheckRefetchDataWonTickets, setIsCheckRefetchDataWonTickets] = useState(false);
 
   const {dataWonTickets, refetchDataWonTickets, errorGetWonTickets} = useGetWonTickets({
-    raffle_uid: raffleUID,
-    skip: !isCheckRefetchDataWonTickets
-  },
+      raffle_uid: raffleUID,
+      skip: !isCheckRefetchDataWonTickets
+    },
   );
 
-  if(errorGetWonTickets) {
+  if (errorGetWonTickets) {
     console.log("errorGetWonTickets", errorGetWonTickets);
   }
 
@@ -50,7 +57,12 @@ const RafflesDetail = observer(() => {
     skipRaflleUid: raffleUID,
     status: RaffleStatusType.Enabled
   })
-  const {getRaffleDetailLoading, getRaffleDetailError, getRaffleDetailData, refetchRaffleDetail} = useGetRaffleDetail(`${raffleUID}`)
+  const {
+    getRaffleDetailLoading,
+    getRaffleDetailError,
+    getRaffleDetailData,
+    refetchRaffleDetail
+  } = useGetRaffleDetail(`${raffleUID}`)
   const {getMyTicketsLoading, getMyTicketsError, refetchMyTickets, getMyTicketsData} = useGetMyTicket({
     raffle_uid: raffleUID,
     limit: 9999,
@@ -67,7 +79,6 @@ const RafflesDetail = observer(() => {
 
   useEffect(() => {
     if (getAllTicketsData?.getAllTickets?.user_tickets && getAllTicketsData?.getAllTickets?.user_tickets.length > 0) {
-      console.log(1243213213213)
       setAllTickets(getAllTicketsData?.getAllTickets?.user_tickets)
     }
   }, [getAllTicketsData?.getAllTickets?.user_tickets])
@@ -104,30 +115,30 @@ const RafflesDetail = observer(() => {
     }
   }, [RafflesStore.dataWinTicketLastUpdated])
 
-
-
   useEffect(() => {
-    const checkDateInterval =  setInterval(() => {
+    const checkDateInterval = setInterval(() => {
       const dateNow = moment(new Date()).valueOf();
       const endAtBefore = moment(getRaffleDetailData?.getRaffleDetail?.end_at)
         .valueOf();
-      const timeBefore = (endAtBefore - dateNow)/(1000 * 60);
-      if(timeBefore <= 5 && !checkDisplayEndAt) {
+      const timeBefore = (endAtBefore - dateNow) / (1000 * 60);
+      if (timeBefore <= 5 && !checkDisplayEndAt) {
         setCheckDisplayEndAt(true);
-        refetchRaffleDetail();
+        if (getRaffleDetailData?.getRaffleDetail?.status !== "CLOSED") {
+          refetchRaffleDetail();
+        }
       }
-      if(timeBefore <= 0.5) {
+      if (timeBefore <= 0.5) {
         if (!isCheckRefetchDataWonTickets) {
           refetchDataWonTickets();
           setIsCheckRefetchDataWonTickets(true);
         }
       }
     }, 1000)
-    if(checkDisplayEndAt && isCheckRefetchDataWonTickets)  clearInterval(checkDateInterval);
+    if (checkDisplayEndAt && isCheckRefetchDataWonTickets) clearInterval(checkDateInterval);
     return () => {
       clearInterval(checkDateInterval)
     }
-  }, [getRaffleDetailData?.getRaffleDetail, checkDisplayEndAt, isCheckRefetchDataWonTickets])
+  }, [getRaffleDetailData?.getRaffleDetail?.end_at, checkDisplayEndAt, isCheckRefetchDataWonTickets])
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail
   const raffleEndAt = moment(raffleDetailData?.end_at).format('HH:mm MMM Do')
@@ -219,6 +230,16 @@ const RafflesDetail = observer(() => {
     }).finally(() => setTicketBuying(false))
   }
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setCheckDisplayEndAt(false);
+    }
+    router.events.on('routeChangeStart', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeStart', handleRouteChange)
+    }
+  }, [])
+
   if (getRaffleDetailLoading) return (
     <div className={s.rafflesDetailWrapper}>
       <div className="lucis-container-2">
@@ -254,10 +275,10 @@ const RafflesDetail = observer(() => {
                      fallback="/assets/P2E/raffles/defaultImage.jpg"/>
             </div>
             <div className={s.featuredRaffleInfo}>
-              <div className={s.featuredRaffleTitleWrap}>
+              <div className={`${s.featuredRaffleTitleWrap} ${s.featuredRaffleTitleWrapDetail}`}>
                 <h3>{raffleDetailData?.name}</h3>
                 {raffleDetailData?.valued_at && (
-                  <p>Valued at {raffleDetailData?.valued_at}</p>
+                  <p>{raffleDetailData?.valued_at ? `Valued at $${raffleDetailData?.valued_at}` : ''}</p>
                 )}
               </div>
               {raffleDetailData?.type && (
@@ -279,7 +300,8 @@ const RafflesDetail = observer(() => {
         </section>
         <div className={s.rafflesDetailSidebar}>
           <div className={s.stickySidebar}>
-            <section className={`${s.buyTicketSection} ${s.sidebarSection} ${checkDisplayEndAt ? s.sidebarHidden : ''}`} >
+            <section
+              className={`${s.buyTicketSection} ${s.sidebarSection} ${checkDisplayEndAt ? s.sidebarHidden : ''}`}>
               <div className={s.raffleCountdown}>
                 <Image src="/assets/P2E/raffles/iconCalendar.svg" preview={false} alt="" fallback=""/>
                 <span className={s.raffleCountdownText}>Rolling at <span
@@ -309,7 +331,8 @@ const RafflesDetail = observer(() => {
                   </div>
                 </div>
                 <div className={s.buyTicketInfoItem}>
-                  <div className={s.buyTicketInfoLabel}>Amount {ticketLimitationPerUser && `(Max: ${ticketLimitationPerUser})`}</div>
+                  <div
+                    className={s.buyTicketInfoLabel}>Amount {ticketLimitationPerUser && `(Max: ${ticketLimitationPerUser})`}</div>
                   {
                     // chaupa todo user limit validation
                   }
@@ -344,7 +367,8 @@ const RafflesDetail = observer(() => {
             </section>
             {checkDisplayEndAt &&
                 <section className={`${s.rafflesRollingSection} ${s.sidebarSection}`}>
-                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""} refetchRaffleDetail={refetchRaffleDetail} dataWonTickets={dataWonTickets}
+                    <RollingRaffles raffleUid={raffleUID ? raffleUID.toString() : ""}
+                                    refetchRaffleDetail={refetchRaffleDetail} dataWonTickets={dataWonTickets}
                                     dataRaffleDetail={getRaffleDetailData?.getRaffleDetail}></RollingRaffles>
                 </section>
             }
@@ -353,7 +377,8 @@ const RafflesDetail = observer(() => {
         <section className={s.myTicketsSection}>
           <h2 className={s.sectionTitle}>My tickets [{myTicketsCount}]</h2>
           {(getMyTicketsError || (getMyTicketsData?.getMyTickets?.user_tickets && (getMyTicketsData?.getMyTickets?.user_tickets.length <= 0))) ?
-            <Empty/> :
+            <p className={s.myTicketsEmpty}>You haven&apos;t bought any tickets yet. Please buy some tickets to try your
+              luck!</p> :
             (getMyTicketsLoading ? (
               <SpinLoading/>
             ) : (
@@ -399,11 +424,11 @@ const RafflesDetail = observer(() => {
                         <td className={s.ticketCrown}>
                           {isRaffleClosed ? (
                             ticket?.is_winner && (
-                              <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
+                              <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt=""/>
                             )
                           ) : (
                             dataWinTicketDict[ticket.uid] && (
-                              <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt="" />
+                              <Image src="/assets/P2E/raffles/iconCrown.svg" preview={false} alt=""/>
                             )
                           )}
                         </td>
@@ -434,44 +459,73 @@ const RafflesDetail = observer(() => {
           </div>
           {searchRafflesLoading ? (
             <SpinLoading/>
-          ) : (((searchRafflesData?.searchRaffle.length <= 0) || searchRafflesError) ? <Empty/> : (
-            <div className={s.rafflesList}>
-              {searchRafflesData?.searchRaffle.length > 0 && searchRafflesData?.searchRaffle.map((raffle, index) => (
-                <Link href={`/playcore/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
-                  <a className={s.rafflesItem}>
-                    <div className={s.raffleThumbnail}>
-                      <Image src={raffle?.img as string} preview={false} alt=""/>
-                    </div>
-                    <div className={s.raffleInfo}>
-                      {raffle?.type && (
-                        <div className={s.raffleTagWrap}>
-                          {
-                            // @ts-ignore
-                            raffle?.type.map((type: string, index: number) => (
-                              <div className={s.raffleTag} key={`${type}${index}`}>{type}</div>
-                            ))}
-                        </div>
-                      )}
-                      <h3 className={s.raffleTitle}>{raffle?.name}</h3>
-                      <div className={s.rafflePriceWrap}>
-                        <div className={s.raffleValued}>Valued at {raffle?.valued_at}</div>
-                        <div className={s.rafflePrice}>
-                          <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
-                          <Image src="/assets/P2E/raffles/iconLucisPoint.svg" preview={false} alt=""/>
+          ) : (((searchRafflesData?.searchRaffle.length <= 0) || searchRafflesError) ?
+            <>
+              <div className={s.rafflesList}>
+                <div className={`${s.rafflesItem} comingSoon ${s.rafflesItemEmpty}`}>
+                  NEW RAFFLES<br/>COMING SOON
+                </div>
+              </div>
+            </> : (
+              <div className={s.rafflesList}>
+                {searchRafflesData?.searchRaffle.length > 0 && searchRafflesData?.searchRaffle.map((raffle, index) => (
+                  <Link href={`/playcore/raffles/${raffle?.uid}`} passHref key={`${raffle?.uid}${index}`}>
+                    <a className={s.rafflesItem}>
+                      <div className={s.raffleThumbnail}>
+                        <Image src={raffle?.img as string} preview={false} alt=""/>
+                      </div>
+                      <div className={s.raffleInfo}>
+                        {raffle?.type && (
+                          <div className={s.raffleTagWrap}>
+                            {
+                              // @ts-ignore
+                              raffle?.type.map((type: string, index: number) => (
+                                <div className={s.raffleTag} key={`${type}${index}`}>{type}</div>
+                              ))}
+                          </div>
+                        )}
+                        <h3 className={s.raffleTitle}>{raffle?.name}</h3>
+                        <div className={s.rafflePriceWrap}>
+                          <div
+                            className={s.raffleValued}>{raffle?.valued_at ? `Valued at $${raffle?.valued_at}` : ''}</div>
+                          <div className={s.rafflePrice}>
+                            <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
+                            {
+                              raffle?.prize_type === "LUCIS_POINT" &&
+                                <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
+                            }
+                            {
+                              raffle?.prize_type === "LUCIS_TOKEN" &&
+                                <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                            }
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
-                </Link>
-              ))}
-              <div className={`${s.rafflesItem} comingSoon`}>
-                NEW RAFFLES<br/>COMING SOON
+                    </a>
+                  </Link>
+                ))}
+                <div className={`${s.rafflesItem} comingSoon`}>
+                  NEW RAFFLES<br/>COMING SOON
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </section>
       </div>
     </div>
   )
 })
-export default RafflesDetail
+// export default RafflesDetail
+
+export default function RafflesDetailSafe() {
+  const router = useRouter();
+  const { id } = router.query;
+  if (!id) {
+    if (isClientDevMode) {
+      console.warn("{RafflesDetailDetail} Hey rafleUID is NULL");
+    }
+  }
+
+  return id ? (
+    <RafflesDetail raffleUID={id as string}/>
+  ) : null;
+}

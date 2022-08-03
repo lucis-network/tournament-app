@@ -6,7 +6,8 @@ import AuthStore from "../../Auth/AuthStore";
 import {useRouter} from "next/router";
 import PopupShareRefer from "./dashboard/popup/popupShare";
 import {useQuery} from "@apollo/client";
-import {HAS_JOINED_DISCORD} from "../../../hooks/p2e/useP2E";
+import {CREATE_INVITE_LINK_DISCORD, HAS_JOINED_DISCORD} from "../../../hooks/p2e/useP2E";
+import missionService from "../../service/p2e/MissionService";
 
 
 interface IProps {
@@ -21,17 +22,23 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
   const [linkRef, setLinkRef] = useState("");
   const [isShowPopupShare, setIsShowPopupShare] = useState(false);
   const [isCheckJoinDiscord, setIsCheckJoinDiscord] = useState(false);
+  const [linkInviteDiscord, setLinkInviteDiscord] = useState("");
 
-  const hasJoinedDiscord = useQuery(HAS_JOINED_DISCORD, {
-    context: {
-      endpoint: 'p2e'
-    },
-    fetchPolicy: 'network-only',
-    onCompleted: (data) => {
-      if(data?.hasJoinedDiscord) setIsCheckJoinDiscord(true);
+
+  const getJoinDiscord = async () => {
+    const res = await missionService.hasJoinDiscord();
+
+    if (res.data?.hasJoinedDiscord) {
+      setIsCheckJoinDiscord(true);
+    } else {
+      const resLinkDiscord = await missionService.createInviteLinkDiscord();
+      setLinkInviteDiscord(resLinkDiscord?.data?.createInviteLinkDiscord);
     }
-  },)
+  }
 
+  useEffect(() => {
+    getJoinDiscord();
+  }, []);
   useEffect(() => {
     let linkUrlRef = window.location.origin;
     if (AuthStore.code) {
@@ -47,7 +54,7 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
       return;
     }
     else {
-      window.open("https://discord.gg/Y3E4x4U38k");
+      window.open(linkInviteDiscord);
     }
   }
 
@@ -132,7 +139,10 @@ const SidebarRight = React.memo(({ lucisPoint, lucisToken, onlyWallet = false }:
                 <div className={s.shareDiscordText}>
                   <img src="/assets/P2E/discord.svg" alt="" width="36" height="36" />
                   <p>Connect your Discord account and join our server!</p>
-                  <ButtonWrapper width={59} onClick={joinDiscord}>Join</ButtonWrapper>
+                  {isCheckJoinDiscord
+                    ? <img src="/assets/P2E/overview/check-icon.svg" alt="" />
+                    : <ButtonWrapper width={59} onClick={joinDiscord}>Join</ButtonWrapper>
+                  }
                 </div>
                 <div className={s.shareBonus}>
                   <p>Join bonus:</p>

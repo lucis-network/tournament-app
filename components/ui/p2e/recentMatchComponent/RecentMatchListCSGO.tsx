@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { CsgoPlayerMatch, LolMatchGql } from "src/generated/graphql_p2e";
 import { Game, MAP_CSGO } from "utils/Enum";
-import { dateToHoursFormat } from "utils/Time";
+import {dateFormatYYYMMDD, dateToHoursFormat} from "utils/Time";
 import SpinLoading from "../../common/Spin";
 import s from './recentMatch.module.sass'
 
@@ -30,7 +30,8 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
 
 
   const lucisPointReward = (date: string) => {
-    const current = props.dailyPoint?.find((p) => moment(`${p.year}/${p.month}/${p.day}`, "YYYY/MM/DD").format("YYYY/MM/DD") === date);
+    const current = props.dailyPoint
+      ?.find((p) => dateFormatYYYMMDD(p.year,p.month,p.day) === date);
     return current?.point ?? "--";
   }
 
@@ -39,7 +40,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
     let filteredList: { [endAt: string]: CsgoPlayerMatch[] } = {};
     props?.recentMatches
       ?.forEach((item: CsgoPlayerMatch) => {
-        const endAtString = moment(new Date(item?.match?.end_at)).format("YYYY/MM/DD")
+        const endAtString = moment(new Date(item?.match?.end_at)).utc().format("YYYY/MM/DD")
         if (!filteredList[endAtString]) {
           filteredList[endAtString] = [item];
         } else {
@@ -97,7 +98,7 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                 </Col>}
                 <Col xs={24} md={index === 0 ? 12 : 24} className={s.recentMatchRewardGeneral}>
                   <div style={{ marginRight: 16 }}>
-                    {item[0]} :
+                    {moment(new Date(item[1][0]?.match?.end_at)).format("YYYY/MM/DD")} :
                   </div>
                   <div className={s.rewardItem} style={{ marginRight: 16 }}>
                     <span className={s.lucisPoint}>{lucisPointReward(item[0])} / {props.maxPoint === "UNLIMIT" ? "∞" : props.maxPoint}</span>
@@ -127,7 +128,8 @@ export const RecentMatchListCSGO = React.memo((props: IProps) => {
                             background:
                               index % 2 === 0
                                 ? `linear-gradient(90deg, rgba(47, 54, 75, 0) 0%, #2F364B 21.88%), url("${item?.map_img}")`
-                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`
+                                : `linear-gradient(90deg, rgba(46, 53, 74, 0) 0%, #232939 21.88%), url("${item?.map_img}")`,
+                            backgroundSize: "contain",
                           }}
                         >
                           <Link href={`/playcore/dashboard/history/${item?.id}`}>

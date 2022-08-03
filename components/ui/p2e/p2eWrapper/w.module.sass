@@ -86,7 +86,8 @@
     line-height: 18px
     overflow-x: auto
     position: relative
-
+    flex: 1
+    margin-right: 7px
     .tabItem
       padding: 12px 24px
       height: 60px
@@ -113,31 +114,51 @@
   .chooseGame
     display: flex
     align-items: center
-    justify-content: flex-end
-    min-width: 170px
-    .csgoGame
-      cursor: pointer
-      border-radius: 4.5px
-      margin-right: 32px
+    //justify-content: flex-end
+    max-width: 40%
+    //padding: 10px 0 10px 15px
+    overflow-x: auto
+    margin-left: 7px
+    .gameWrap
+      position: relative
       filter: grayscale(1)
-      @media screen and ( max-width: 550px )
-        margin-right: 12px
-        width: 28px
-        height: 28px
-    .lolGame
       cursor: pointer
-      border-radius: 4.5px
-      margin-right: 32px
-      filter: grayscale(1)
-      @media screen and ( max-width: 550px )
-        margin-right: 12px
-        width: 28px
-        height: 28px
+      min-width: 28px
+      min-height: 28px
+      max-width: 28px
+      max-height: 28px
+      margin-right: 12px
+      @media screen and (min-width: 768px)
+        min-width: 40px
+        min-height: 40px
+        max-width: 40px
+        max-height: 40px
+        margin-right: 32px
+      img
+        width: 100%
+        aspect-ratio: 1/1
+        border-radius: 2px
+        @media screen and (min-width: 768px)
+          border-radius: 4.5px
+      &.gameActive
+        padding: 1px
+        cursor: pointer !important
+        filter: unset
+        &:before
+          content: ''
+          display: block
+          position: absolute
+          top: 0
+          right: 0
+          bottom: 0
+          left: 0
+          background: linear-gradient(to right, rgba(24, 137, 228, 1), rgba(11, 235, 214, 1))
+          z-index: -1
+          border-radius: 2px
+          @media screen and (min-width: 768px)
+            border-radius: 4.5px
     .addGame
       cursor: pointer
-    .gameActive
-      filter: drop-shadow(0px 0px 14px #12B0B4) !important
-      cursor: pointer !important
   .p2eContent
     margin-top: 148px
     @media screen and ( max-width: 1024px )

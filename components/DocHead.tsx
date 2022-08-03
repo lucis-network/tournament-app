@@ -49,10 +49,10 @@ export default function DocHead(props: Props) {
       <meta data-hid="og:image" property="og:image" content={thumb} />
       <meta property="og:locale" content="en_US" />
 
-      <meta
-        httpEquiv="Content-Security-Policy"
-        content="upgrade-insecure-requests"
-      ></meta>
+      {/*<meta*/}
+      {/*  httpEquiv="Content-Security-Policy"*/}
+      {/*  content="upgrade-insecure-requests"*/}
+      {/*></meta>*/}
     </Head>
   );
 }

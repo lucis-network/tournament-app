@@ -33,7 +33,7 @@ export default observer(function P2EWrapper(props: IProps) {
   }, [AuthStore.isLoggedIn])
 
   useEffect(() => {
-    // 
+    //
     const overviewSection = sessionStorage.getItem("overviewSection");
     if (overviewSection) {
       setOverviewSection(Number(overviewSection));
@@ -133,6 +133,7 @@ export default observer(function P2EWrapper(props: IProps) {
     return "";
   }
 
+  // luatnd: Why clone?
   const wrapperChildren = () => {
     return React.Children.map(props.children, child => {
       return React.cloneElement(child as any, {
@@ -201,6 +202,7 @@ export default observer(function P2EWrapper(props: IProps) {
   }
   return (
     <>
+      {/* TODO: Get dynamic page title pass to doc head */}
       <DocHead />
       <main style={{ minHeight: "100vh" }} className={`${s.homeWrap} ${props.mainClassname ?? ''} ${backgroundPage()}`}>
         <div className={`${s.p2eWrap}`}>
@@ -223,20 +225,24 @@ export default observer(function P2EWrapper(props: IProps) {
                     )
                   })}
                 </div>
-                {(AuthStore.isLoggedIn && router.pathname !== "/" && router.pathname !== "/playcore/raffles") &&
-                  <div className={s.chooseGame}
-                    style={
-                      styleChooseGame()
-                    }
-                  >
-                    {AuthGameStore.isLoggedInLMSS && <img
-                      className={`${s.lolGame} ${currentGame === Game.LOL ? s.gameActive : ""}`}
-                      src="/assets/P2E/lol-game.svg" alt="lol-game"
-                      onClick={() => setGame(Game.LOL)} />}
-                    {AuthGameStore.isLoggedInFaceit && <img
-                      className={`${s.csgoGame} ${currentGame === Game.CSGO ? s.gameActive : ""}`}
-                      onClick={() => setGame(Game.CSGO)}
-                      src="/assets/P2E/csgo-game.svg" alt="csgo-game" />}
+                {(AuthStore.isLoggedIn && router.pathname !== "/" && !router.pathname.includes("/playcore/raffles")) &&
+                  <div className={s.chooseGame}>
+                    {AuthGameStore.isLoggedInLMSS && (
+                      <div className={`${s.gameWrap} ${currentGame === Game.LOL ? s.gameActive : ""}`}>
+                        <img
+                          src="/assets/P2E/lol-game.svg" alt="lol-game"
+                          onClick={() => setGame(Game.LOL)}
+                        />
+                      </div>
+                    )}
+                    {AuthGameStore.isLoggedInFaceit && (
+                      <div className={`${s.gameWrap} ${currentGame === Game.CSGO ? s.gameActive : ""}`}>
+                        <img
+                          onClick={() => setGame(Game.CSGO)}
+                          src="/assets/P2E/csgo-game.svg" alt="csgo-game"
+                        />
+                      </div>
+                    )}
                     <img
                       className={s.addGame}
                       src="/assets/P2E/add-game.svg"

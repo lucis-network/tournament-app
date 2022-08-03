@@ -130,7 +130,6 @@ const GET_CHEST_DETAIL = gql`
         id
         title
         desc
-        prize_type
         prize_amount
         quantity_in_stock
         valued_at

@@ -460,34 +460,12 @@ export const RecentMatchDetailLOL = () => {
                       <Row className={s.row}>
                         <Col span={3}>
                           <div className={s.parameterItem}>
-                            <img src="/assets/P2E/lol/detail/wards-destroyed-icon.svg" alt="" />
-                          </div>
-                        </Col>
-                        <Col span={7}>
-                          <div className={s.parameterItemText}>
-                            Eyes killed
-                          </div>
-                        </Col>
-                        <Col span={7}><div className={s.rewardItem}>
-                          <span>{"-"}</span>
-                          <img src="/assets/P2E/lucis-token.svg" alt="" />
-                        </div>
-                        </Col>
-                        <Col span={7}><div className={s.rewardItem}>
-                          <span className={s.lucisPoint}>+ {lucisPointEarned.eyesKilled ?? "-"}</span>
-                          <img src="/assets/P2E/lucis-point.svg" alt="" />
-                        </div>
-                        </Col>
-                      </Row>
-                      <Row className={s.row}>
-                        <Col span={3}>
-                          <div className={s.parameterItem}>
                             <img src="/assets/P2E/lol/detail/wards-placed-icon.svg" alt="" />
                           </div>
                         </Col>
                         <Col span={7}>
                           <div className={s.parameterItemText}>
-                            Eyes placed
+                            Wards placed
                           </div>
                         </Col>
                         <Col span={7}><div className={s.rewardItem}>
@@ -497,6 +475,28 @@ export const RecentMatchDetailLOL = () => {
                         </Col>
                         <Col span={7}><div className={s.rewardItem}>
                           <span className={s.lucisPoint}>+ {lucisPointEarned.eyesPlaced ?? "-"}</span>
+                          <img src="/assets/P2E/lucis-point.svg" alt="" />
+                        </div>
+                        </Col>
+                      </Row>
+                      <Row className={s.row}>
+                        <Col span={3}>
+                          <div className={s.parameterItem}>
+                            <img src="/assets/P2E/lol/detail/wards-destroyed-icon.svg" alt="" />
+                          </div>
+                        </Col>
+                        <Col span={7}>
+                          <div className={s.parameterItemText}>
+                            Wards destroyed
+                          </div>
+                        </Col>
+                        <Col span={7}><div className={s.rewardItem}>
+                          <span>{"-"}</span>
+                          <img src="/assets/P2E/lucis-token.svg" alt="" />
+                        </div>
+                        </Col>
+                        <Col span={7}><div className={s.rewardItem}>
+                          <span className={s.lucisPoint}>+ {lucisPointEarned.eyesKilled ?? "-"}</span>
                           <img src="/assets/P2E/lucis-point.svg" alt="" />
                         </div>
                         </Col>

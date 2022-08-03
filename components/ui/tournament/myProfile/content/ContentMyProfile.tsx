@@ -13,6 +13,7 @@ import { Router, useRouter } from "next/router";
 import TournamentStore from "src/store/TournamentStore";
 import {AuthUser} from "../../../../Auth/AuthStore";
 import ReferHistory from "../tabsitem/referHistory";
+import Inventory from "../tabsitem/inventory";
 
 type ContentMyProfileProps = {
   isOwner?: boolean;
@@ -41,7 +42,7 @@ export default observer(function ContentMyProfile({
   };
 
   const handleBeforeHistoryChange = (url: string) => {
-    if(url.includes("/tournament/") && router?.query?.page === "teams") {
+    if(url.includes("/arena/") && router?.query?.page === "teams") {
       TournamentStore.checkBacktoTournament = true;
     }
   };
@@ -81,14 +82,17 @@ export default observer(function ContentMyProfile({
           isOwner={isOwner}
         />
       </TabPane>
-      <TabPane tab="NFTs" key="5">
+      <TabPane tab="NFTs" key="5" disabled>
         {/* <NFTs isOwner={isOwner} /> */}
       </TabPane>
       <TabPane tab="My Staking" key="6" disabled>
         {/* <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} /> */}
       </TabPane>
-      <TabPane tab="Refer History" key="refer">
+      <TabPane tab="Refer history" key="refer">
         <ReferHistory></ReferHistory>
+      </TabPane>
+      <TabPane tab="Inventory" key="inventory">
+        <Inventory></Inventory>
       </TabPane>
     </Tabs>
   );

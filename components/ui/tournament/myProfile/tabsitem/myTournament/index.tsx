@@ -70,7 +70,7 @@ const MyTournament = ({
     if (!AuthStore.isLoggedIn) {
       message.warn("Please login first");
     } else {
-      router.push("/tournament/create");
+      router.push("/arena/create");
     }
   };
 

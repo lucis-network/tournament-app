@@ -1,5 +1,5 @@
 import { ApolloError, ApolloQueryResult, gql, useQuery } from "@apollo/client";
-import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, LolMatchStatisticGql, PlatformAccount, ReferFriendGql } from "../../src/generated/graphql_p2e";
+import { CsgoMatch, CsgoMatchStatistics, GCsgoMatch, InventoryItem, InventoryPieceGroup, LolMatchStatisticGql, PiecesFilter, PlatformAccount, ReferFriendGql } from "../../src/generated/graphql_p2e";
 
 type UseGetRecentMatchesProps = {
   offset: number
@@ -182,6 +182,86 @@ export function useGetReferHistory(): {
     errorDataReferHistory: error,
     refetchDataReferHistory: refetch,
     dataReferHistory: data?.getInvitedFriend,
+  };
+}
+
+ type PropsInventoryPieces = {
+   user_id?: number,
+   group_filter?: string,
+   search_name?: string,
+}
+export function useGetMyInventoryPieces(props: PropsInventoryPieces): {
+  loading: boolean,
+  errorMyInventoryPieces: ApolloError | undefined,
+  refetchMyInventoryPieces: () => Promise<ApolloQueryResult<any>>;
+  dataMyInventoryPieces: InventoryPieceGroup[] | undefined
+} {
+  const { loading, error, data, refetch } = useQuery(GET_MY_INVENTORY_PIECES, {
+    variables: {
+      user_id: props.user_id,
+      group_filter: props?.group_filter == "" ? null : props?.group_filter,
+      search_name: props?.search_name,
+    },
+    context: {
+      endpoint: 'p2e'
+    },
+    fetchPolicy: "network-only",
+  });
+
+  return {
+    loading,
+    errorMyInventoryPieces: error,
+    refetchMyInventoryPieces: refetch,
+    dataMyInventoryPieces: data?.inventoryPieces,
+  };
+}
+
+export function useGetMyInventoryItems(props: PropsInventoryPieces): {
+  loading: boolean,
+  errorMyInventoryItems: ApolloError | undefined,
+  refetchMyInventoryItems: () => Promise<ApolloQueryResult<any>>;
+  dataMyInventoryItems: InventoryItem[] | undefined
+} {
+  const { loading, error, data, refetch } = useQuery(GET_MY_INVENTORY_ITEMS, {
+    variables: {
+      user_id: props.user_id,
+      group_filter: props?.group_filter == "" ? null : props?.group_filter,
+      search_name: props?.search_name,
+    },
+    context: {
+      endpoint: 'p2e'
+    },
+    fetchPolicy: "network-only",
+  });
+
+  return {
+    loading,
+    errorMyInventoryItems: error,
+    refetchMyInventoryItems: refetch,
+    dataMyInventoryItems: data?.inventoryItems,
+  };
+}
+
+export function useGetMyInventoryPiecesConfig(): {
+  loading: boolean,
+  errorMyInventoryPiecesConfig: ApolloError | undefined,
+  refetchMyInventoryPiecesConfig: () => Promise<ApolloQueryResult<any>>;
+  dataMyInventoryPiecesConfig: PiecesFilter[] | undefined
+} {
+  const { loading, error, data, refetch } = useQuery(GET_MY_INVENTORY_PIECES_CONFIG, {
+    variables: {
+    },
+    context: {
+      endpoint: 'p2e'
+    },
+    fetchPolicy: "network-only",
+  });
+
+  return {
+    loading,
+    errorMyInventoryPiecesConfig: error,
+    refetchMyInventoryPiecesConfig: refetch,
+    dataMyInventoryPiecesConfig: data?.piecesFilter,
   };
 }
 
@@ -566,6 +646,12 @@ export const HAS_JOINED_DISCORD = gql`
   }
 `
 
+export const CREATE_INVITE_LINK_DISCORD = gql`
+  query {
+    createInviteLinkDiscord
+  }
+`
+
 
 export const GET_DAILY_POINT = gql`
 query ($game_uid: String!, $platform_id: Int!) {
@@ -603,4 +689,65 @@ query {
     }
   }
 }
+`
+
+export const GET_MY_INVENTORY_PIECES = gql`
+query ($user_id: Int!, $group_filter: String, $search_name: String) {
+  inventoryPieces (user_id: $user_id, group_filter: $group_filter, search_name: $search_name) {
+    pieces { 
+        uid 
+        user_id
+        prize {
+          title
+          desc
+          img
+          rarity
+          prize_amount
+          quantity_in_stock
+        }
+        quantity
+     }
+    type
+    achieved
+  }
+}
+`
+
+export const GET_MY_INVENTORY_ITEMS = gql`
+query ($user_id: Int!, $group_filter: ItemGroup, $search_name: String) {
+  inventoryItems (user_id: $user_id, group_filter: $group_filter, search_name: $search_name) {
+   prize {
+    title
+    desc
+    img
+    rarity
+    prize_amount
+    quantity_in_stock
+    }
+   quantity
+  }
+}
+`
+
+export const GET_MY_INVENTORY_PIECES_CONFIG = gql`
+query {
+  piecesFilter {
+    piece_group
+  }
+}
+`
+
+export const ASSEMBLE_INVENTORY_PIECE = gql`
+  mutation ($piece_group: PieceGroup!) {
+    assemble (piece_group: $piece_group) {
+      uid
+      group
+      prize_id
+      prize {
+        title
+        desc
+        img
+      }
+    }
+  }
 `

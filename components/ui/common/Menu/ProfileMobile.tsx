@@ -146,7 +146,7 @@ export default observer(function User(props: Props) {
       </div>
       {address ?
         <div className={s.profileMobileWallet}>
-          <div className={s.address}>{address}</div>
+          <div className={s.address}>{address?.slice(0, 10) + "..." + address?.slice(address?.length - 10)}</div>
           <div className={s.headerButton}>
             <span onClick={onDisconnectWallet}>Disconnect</span>
           </div>

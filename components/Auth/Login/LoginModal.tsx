@@ -75,7 +75,7 @@ export default observer(function LoginModal(props: Props) {
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
         AppEmitter.emit("saveUtmAfterLoginSuccess", r);
-        if (isEmpty(localUserInfo?.profile?.user_name)) {
+        if (isEmpty(localUserInfo?.profile?.user_name) || localUserInfo?.is_exist_pass === false) {
           LoginBoxStore.signupInfoModalVisible = true;
         }
         // setTimeout(() => {
@@ -83,7 +83,7 @@ export default observer(function LoginModal(props: Props) {
         // }, 2000);
         setIsModalVisible(false);
         setMessageInvalLogin("");
-        if (route.pathname === "/tournament/[id]/[...slug]" || route.pathname === "/playcore/lucky-chest") {
+        if (route.pathname === "/arena/[id]/[...slug]" || route.pathname === "/playcore/lucky-chest") {
           route.reload();
         }
         break;

@@ -4,12 +4,13 @@ import BannerPage from 'components/ui/tournament/home/banner'
 import TabHome from 'components/ui/tournament/home/tabs'
 import PlayerHome from "components/ui/tournament/home/player"
 import type { NextPage } from 'next'
+import s from "./ArenaHome.module.sass"
 
 const TournamentHome: NextPage = () => {
   return (
     <div>
       <DocHead />
-      <main style={{minHeight: "100vh"}}>
+      <main style={{minHeight: "100vh"}} className={s.arenaHomeWrapper}>
         <BannerPage />
         <TabHome />
         <PlayerHome />

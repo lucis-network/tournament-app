@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import s from "./index.module.sass";
-import {message, Table} from "antd";
+import {Image, message, Table} from "antd";
 import {useGetReferHistory} from "../../../../../../hooks/p2e/useP2E";
 import {ReferFriendGql} from "../../../../../../src/generated/graphql_p2e";
 import {isClient} from "../../../../../../utils/DOM";
@@ -42,7 +42,15 @@ const ReferHistory = (props: Props) => {
       key: 'invited',
       render: (_: any, data: ReferFriendGql) => {
         return (
-          <div className={s.prizeWrap}>
+          <div className={s.prizeInvited}>
+            <Image
+              className={s.avatar}
+              src={`${
+                data?.user?.profile?.avatar ??  "/assets/avatar.jpg"
+              }`}
+              preview={false}
+              alt=""
+            />
             {data?.user?.profile?.display_name}
           </div>
         )
@@ -102,18 +110,23 @@ const ReferHistory = (props: Props) => {
       title: 'Reward',
       dataIndex: ['reward'],
       key: 'reward',
+      hidden: (_: any, data: ReferFriendGql) => data?.status !== "EarningPoint",
       render: (_: any, data: ReferFriendGql) => {
         return (
           <div className={s.prizeWrap}>
             <div className={s.rewardItem}>
-              <span className={s.lucisPoint}>+50</span>
-              <img src="/assets/P2E/lucis-point.svg" alt="" />
+              {data?.status === "EarningPoint" &&
+                  <>
+                      <span className={s.lucisPoint}>+50</span>
+                      <img src="/assets/P2E/lucis-point.svg" alt="" />
+                  </>
+              }
             </div>
           </div>
         )
       }
     }
-  ]
+  ].filter(item => !item.hidden)
 
   const handleCopy = () => {
     if (linkRef) {
@@ -155,7 +168,7 @@ const ReferHistory = (props: Props) => {
         columns={columns}
         pagination={false}
         locale={{
-          emptyText: `You haven't any refer yet.`
+          emptyText: `You haven't invited anyone yet`
         }}
       />
     </div>

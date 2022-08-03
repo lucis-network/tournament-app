@@ -2,12 +2,13 @@ import { Button, Form, FormInstance, Image, Input, Modal, Select } from "antd";
 import LoginBoxStore from "./LoginBoxStore";
 import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
 import { observer } from "mobx-react-lite";
-import React, { useCallback, useEffect, useState } from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import s from "./Login.module.sass"
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { debounce, isEmpty } from "lodash";
 import AuthService from "../AuthService";
 import Country from "country.json"
+import AuthStore from "../AuthStore";
 
 type SignupInfoModalProps = {};
 
@@ -21,9 +22,12 @@ type Country = {
 const UPDATE_PROFILE = gql`
   mutation UpdateProfile($data: ProfileUpdateInput!) {
     updateProfile(data: $data) {
-      user_id
-      user_name
-      country_code
+      updated_profile {
+        user_id
+        user_name
+        country_code
+      }
+      password_saved
     }
   }
 `;
@@ -35,11 +39,24 @@ const CHECK_USERNAME = gql`
 `;
 
 export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
+  const localUserInfo = getLocalAuthInfo();
   const [countryList, setCountryList] = useState<Country[]>([]);
   const [updateProfileMutation] = useMutation(UPDATE_PROFILE);
-  const [username, setUsername] = useState<string>('');
+  const [username, setUsername] = useState<string>(localUserInfo?.profile?.user_name ?? '');
   const [userNameExisted, setUserNameExisted] = useState(false)
   const [form] = Form.useForm();
+  const ref = useRef();
+
+  const handleKeyUp = (event: any) => {
+    // Enter
+    if (event.keyCode === 13) {
+      // @ts-ignore
+      //ref.current.submit();
+      handleComplete();
+    }
+  }
+
+  const userNameRef = useRef(null)
   const {
     loading: checkUsernameLoading,
     error: checkUsernameError,
@@ -53,6 +70,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
       setUserNameExisted(data.checkUserName)
     }
   })
+
+
   useEffect(() => {
     if (!isEmpty(username) && userNameExisted) {
       form.setFields([
@@ -81,7 +100,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             variables: {
               data: {
                 user_name: {
-                  set: values.user_name
+                  set: username
                 },
                 country_code: values.country_code,
                 password: {
@@ -90,13 +109,18 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
               }
             }
           });
-          const { user_name, country_code } = response.data.updateProfile;
+          const { user_name, country_code } = response.data.updateProfile.updated_profile;
+          const passwordSaved = response.data.updateProfile.password_saved;
           const user = getLocalAuthInfo()!;
-
-          if (user && user.profile) {
-            user.profile.user_name = user_name;
-            user.profile.country_code = country_code;
-            setLocalAuthInfo(user);
+          await new Promise(resolve => setTimeout(resolve, 500))
+          const newUserData = {...user}
+          if (newUserData && newUserData.profile) {
+            newUserData.profile.user_name = user_name;
+            newUserData.profile.country_code = country_code;
+            if (passwordSaved) {
+              newUserData.is_exist_pass = true
+            }
+            setLocalAuthInfo(newUserData);
           }
         } catch (error) {
           console.error('error updateProfileMutation: ', error);
@@ -105,7 +129,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
         }
       })
       .catch(info => {
-        console.log('Validate Failed:', info);
+        console.log('Validate Failed');
       });
   };
 
@@ -123,6 +147,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     []
   );
 
+
   const handleUsernameInput = (event: React.FormEvent<HTMLInputElement>) => {
     setUserNameExisted(false)
     debouncedInputTyping(event.currentTarget.value)
@@ -132,6 +157,13 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
     fetchCountryList();
   }, []);
 
+  useEffect(() => {
+    const authUsername = AuthStore.profile?.user_name
+    if (authUsername) {
+      setUsername(authUsername)
+    }
+
+}, []);
   return (
     <Modal
       title={<span className="font-[600]">Sign in info</span>}
@@ -148,8 +180,9 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
         form={form}
         labelCol={{span: 8}}
         wrapperCol={{span: 16}}
-        initialValues={{country_code: null}}
+        initialValues={{country_code: localUserInfo?.profile?.country_code, user_name: localUserInfo?.profile?.user_name}}
         autoComplete="off"
+        onKeyUp={handleKeyUp}
       >
         <Form.Item
           label="Username"
@@ -181,7 +214,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             },
           ]}
         >
-          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg}/>
+          <Input placeholder="Enter username" onChange={handleUsernameInput} className={s.formFieldBg} autoComplete="false" />
         </Form.Item>
         <Form.Item
           label="Country"
@@ -195,6 +228,7 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
             }}
             placeholder="Select country"
             className={`${s.formFieldBg} ${s.formFieldSelect}`}
+            defaultValue={localUserInfo?.profile?.country_code ?? 'VN'}
           >
             {countryList.length > 0 && countryList.map(country => (
               <Option key={country.name} value={country.iso2}>
@@ -212,19 +246,21 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           rules={[
             {required: true, message: 'Please input your password!'},
             {
-              min: 8,
-              message: "Password must be minimum 8 characters."
+              pattern: /^(?=.{8,32}$)(?=.*?[A-Za-z])(?=.*?[0-9])/g,
+              message: "Use 8 to 32 characters with a mix of letters & numbers"
             },
-            {
-              max: 32,
-              message: "Confirm Password must be maximum 32 characters."
-            },
-            {
-              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
-              message: "Valid characters are A-Z a-z 0-9"
-            },]}
+            // ({ getFieldValue }) => ({
+            //   validator(_, value) {
+            //     if (!value || getFieldValue('confirmPassword') === value) {
+            //       return Promise.resolve();
+            //     }
+            //     return Promise.reject(new Error('The two passwords that you entered do not match!'));
+            //   },
+            // }),
+          ]}
+
         >
-          <Input.Password placeholder="Enter password" className={s.formFieldBg}/>
+          <Input.Password placeholder="Enter password" className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
         <Form.Item
           label="Confirm Password"
@@ -232,16 +268,8 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
           rules={[
             {required: true, message: 'Please input your confirm password!'},
             {
-              min: 8,
-              message: "Confirm Password must be minimum 8 characters."
-            },
-            {
-              max: 32,
-              message: "Confirm Password must be maximum 32 characters."
-            },
-            {
-              pattern: /^(?=.*?[a-z])(?=.*?[0-9])/g,
-              message: "Valid characters are A-Z a-z 0-9"
+              pattern: /^(?=.{8,32}$)(?=.*?[a-zA-Z])(?=.*?[0-9])/g,
+              message: "Use 8 to 32 characters with a mix of letters & numbers"
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
@@ -250,10 +278,11 @@ export default observer(function SignupInfoModal(props: SignupInfoModalProps) {
                 }
                 return Promise.reject(new Error('The two passwords that you entered do not match!'));
               },
+              validateTrigger: "onSubmit"
             }),
           ]}
         >
-          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg}/>
+          <Input.Password placeholder="Enter confirm password" className={s.formFieldBg} autoComplete="off" />
         </Form.Item>
       </Form>
     </Modal>

@@ -67,11 +67,13 @@ export const MAP_CSGO: { [s: string]: string } = {
   "de_cache": "Cache",
   "de_nuke": "Nuke",
   "de_overpass": "Overpass",
-  "de_anciant": "Anciant",
+  "de_ancient": "Ancient",
   "de_cbble": "Cbble",
   "de_train": "Train",
-  "Dust2": "Dust II"
-
+  "Dust2": "Dust II",
+  "de_aztec": "Aztec",
+  "de_tuscan": "Tuscan",
+  "de_prodigy": "Prodigy",
 }
 
 export const MAP_LOL: { [type: string]: string } = {
@@ -85,7 +87,7 @@ export const MAP_LOL: { [type: string]: string } = {
 
 export const MODE_LOL: { [type: string]: string } = {
   "NormalDraft": "Normal",
-  "Aram": "Normal",
+  "Aram": "ARAM",
   "RankSingleDouble": "Rank",
   "RankFlexible": "Rank",
   "None": "Other"

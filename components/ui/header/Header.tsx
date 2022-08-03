@@ -41,9 +41,10 @@ export default observer(function Header(props: Props) {
   const usernameCheck = async () => {
     const localUserInfo = getLocalAuthInfo();
     const isUsernameEmpty = (): boolean | null => (localUserInfo && isEmpty(localUserInfo?.profile?.user_name))
+    const isPasswordEmpty = AuthStore.isLoggedIn && !localUserInfo?.is_exist_pass
     LoginBoxStore.signupInfoModalVisible = false;
     await new Promise((resolve) => setTimeout(resolve, 500));
-    if (isUsernameEmpty()) {
+    if (isUsernameEmpty() || isPasswordEmpty) {
       LoginBoxStore.signupInfoModalVisible = true;
     }
   }
@@ -136,11 +137,11 @@ export default observer(function Header(props: Props) {
                       PLAYCORE
                     </a>
                   </Link></li>
-                <li className={`${router.pathname === "/arena" ? s.active : ""}`}><Link href="/arena">ARENA</Link></li>
+                <li className={`${router.pathname.includes("/arena") ? s.active : ""}`}><Link href="/arena">ARENA</Link></li>
 
                 <li><a href="https://insight.lucis.network/" target="_blank"
                        rel="noopener noreferrer">INSIGHT</a></li>
-                <li className={s.default}><a>RANKING <span>Coming Soon</span></a></li>
+                <li className={`${router.pathname.includes("/ranking") ? s.active : ""}`}><Link href="/ranking">RANKING</Link></li>
                 {/*<li className={s.default}><a>SCHORLARSHIP <span>Coming Soon</span></a></li>*/}
                 {/*<li className={s.default}><a>SOCIAL <span>Coming Soon</span></a></li>*/}
               </ul>

@@ -1,0 +1,139 @@
+.wrapper
+  margin-bottom: 32px
+  margin-top: 15px
+  @media screen and (min-width: 1200px)
+    margin-bottom: 64px
+  h2
+    font-family: 'Revx Neue Demo'
+    font-style: normal
+    font-weight: 600
+    font-size: 20px
+    line-height: 22px
+    color: #00F9FF
+    margin-bottom: 16px
+  .groupInventory
+    display: flex
+    //align-items: center
+    .listPiecesInventory
+      margin-top: 50px
+      display: flex
+      flex-direction: column
+      gap: 40px 0
+      width: 100%
+      .itemPieces
+        display: flex
+        //justify-content: space-around
+        flex-wrap: wrap
+        //align-items: center
+        flex-grow: 3
+        gap: 10px 48px
+        @media screen and (min-width: 768px)
+          gap: 10px 96px
+        .itemPrize
+          display: flex
+          flex-direction: column
+          img
+            width: 180px
+            @media screen and (min-width: 768px)
+              width: 214px
+          h2
+            text-align: center
+      .btnCombine
+        flex-grow: 1
+        display: flex
+        align-items: center
+        button
+          font-family: 'Revx Neue Demo'
+          font-style: normal
+          font-weight: 600
+          font-size: 24px !important
+          line-height: 26px
+          letter-spacing: 0.04em
+          color: #000625
+          padding: 16px 32px !important
+      .cross
+        width: 100%
+        height: 1px
+        border: 1px solid #38505F
+        transform: matrix(1, 0, 0, -1, 0, 0)
+    .rowPieces
+      display: flex
+.groupSearch
+  display: flex
+  gap: 20px 0
+  flex-direction: column
+  margin-top: 25px
+  @media screen and (min-width: 768px)
+    justify-content: space-between
+    flex-direction: row
+
+  :global(.ant-select-selector)
+    background: rgba(69, 80, 107, 0.5) !important
+    color: #DBE0E8
+  :global(.ant-select-arrow)
+    color: #DBE0E8
+  .dropdownSearch
+    width: 100%
+    @media screen and (min-width: 768px)
+      min-width: 343px
+  .searchText
+    color: rgba(219, 224, 232, 0.5)
+    font-family: 'Lexend'
+    font-weight: 400
+    font-size: 16px
+    line-height: 20px
+    padding: 8px 16px
+    background: rgba(69, 80, 107, 0.5)
+    backdrop-filter: blur(40px)
+    border-radius: 50px
+    width: 100%
+    @media screen and (min-width: 768px)
+      min-width: 343px
+.listItemsInventory
+  display: flex
+  gap: 0 20px
+  flex-wrap: wrap
+  margin-top: 50px
+  .item
+    p
+      color: #FFFFFF
+      text-align: center
+      font-size: 18px
+    img
+      width: 280px
+    .btnClaim
+      text-align: center
+.contentPrize
+  background: rgba(45, 52, 70, 0.5)
+  backdrop-filter: blur(40px)
+.chestPrize
+  img
+    width: 214px !important
+  .prizeAmount
+    padding-bottom: 12px
+    .prizeAmountQty
+      font-family: 'Revx Neue Demo'
+      font-weight: 600
+      font-size: 12px
+      line-height: 13px
+      letter-spacing: 0.04em
+      background: rgba(69, 80, 107, 0.5)
+      padding: 8px 15px
+      color: #FFFFFF
+      backdrop-filter: blur(40px)
+      border-radius: 72px
+  .prizeTitle
+    font-family: 'Revx Neue Demo'
+    font-style: normal
+    font-style: normal
+    font-weight: 600
+    font-size: 14px
+    line-height: 22px
+  .prizeAmount
+    display: flex
+    //gap: 0 24px
+    align-items: center
+    background: rgba(45, 52, 70, 0.5)
+    backdrop-filter: blur(40px)
+    width: 100%
+    justify-content: space-around
