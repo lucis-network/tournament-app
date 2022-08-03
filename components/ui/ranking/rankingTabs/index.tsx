@@ -1,15 +1,21 @@
 import {useEffect, useState} from "react";
 
-import {Table} from "antd";
+import {Dropdown, Menu, Space, Table} from "antd";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useSwiper } from 'swiper/react';
 
 import s from "./RankingTabs.module.sass"
-import {useArenaRanking, usePlaycoreRanking, useRaffleRanking} from "../../../../hooks/ranking/useRanking";
+import {
+  useArenaRanking,
+  usePlaycoreRanking,
+  useRaffleRanking, useUserArenaRanking,
+  useUserPlaycoreRanking, useUserRaffleRanking
+} from "../../../../hooks/ranking/useRanking";
 import {currentMonth as defaultCurrentMonth, currentYear as defaultCurrentYear} from "../banner";
 import {AcceptedMonths} from "../../../../hooks/ranking/useTopRanking";
 import {UserRanking} from "../../../../src/generated/graphql_p2e";
 import Link from "next/link"
+import AuthStore from "../../../Auth/AuthStore";
 
 const tabs = [
   // {
@@ -37,7 +43,7 @@ const tabs = [
 
 const columns = [
   {
-    title: 'No',
+    title: 'Rank',
     dataIndex: 'rank',
     className: s.columnNo,
     render: (rank: number) => {
@@ -60,12 +66,11 @@ const columns = [
   },
   {
     title: 'Name',
-    dataIndex: ['profile', 'rank', 'total_earning'],
+    dataIndex: ['profile', 'rank'],
     className: s.columnName,
     render: (text: string, data: UserRanking) => {
       const profile = data?.profile
       const rank = data?.rank
-      const totalEarning = data?.total_earning
       const userRank = rank === 1 ? 'top1' : rank === 2 ? 'top2' : ''
 
       return (
@@ -84,26 +89,24 @@ const columns = [
               <a target="_blank">{profile?.display_name}</a>
             </Link>
           </div>
-          {totalEarning && (
-            <div className={s.userValue}>{totalEarning} NFTs</div>
-          )}
+          {/*<div className={s.userValue}>{totalEarning} NFTs</div>*/}
         </div>
       )
     }
   },
   {
-    title: 'Your Reward',
+    title: 'Reward',
     dataIndex: 'reward',
     className: s.columnReward,
-    render: () => {
+    render: (totalEarning: number) => {
       return (
         <div className={s.userReward}>
           <div className={s.rewardPoint}>
             9000 <img src="/assets/P2E/lucis-point.svg" alt=""/>
           </div>
-          <div className={s.rewardToken}>
-            9000 <img src="/assets/P2E/lucis-token.svg" alt=""/>
-          </div>
+          {/*<div className={s.rewardToken}>*/}
+          {/*  9000 <img src="/assets/P2E/lucis-token.svg" alt=""/>*/}
+          {/*</div>*/}
         </div>
       )
     }
@@ -148,7 +151,10 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
   const [currentMonth, setCurrentMonth] = useState<AcceptedMonths>(defaultCurrentMonth)
   const [currentYear, setCurrentYear] = useState<number>(defaultCurrentYear)
   const [rankingData, setRankingData] = useState<UserRanking[]>([])
+  const [yourRankData, setYourRankData] = useState<UserRanking[]>([])
 
+  const userId = AuthStore.id
+  console.log('[RankingTabs] userId: ', userId);
   const {getPlaycoreRankingError, getPlaycoreRankingLoading, dataPlaycoreRanking} = usePlaycoreRanking({
     seasonId: seasonId,
     skip: (activeTab !== 'playcore') || !seasonId
@@ -161,10 +167,28 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
     seasonId: seasonId,
     skip: (activeTab !== 'raffles') || !seasonId
   })
+  const {getUserPlaycoreRankingError, getUserPlaycoreRankingLoading, dataUserPlaycoreRanking} = useUserPlaycoreRanking({
+    userId: userId,
+    seasonId: seasonId,
+    skip: (activeTab !== 'playcore') || !seasonId || !userId
+  })
+  const {getUserArenaRankingError, getUserArenaRankingLoading, dataUserArenaRanking} = useUserArenaRanking({
+    userId: userId,
+    seasonId: seasonId,
+    skip: (activeTab !== 'arena') || !seasonId || !userId
+  })
+  const {getUserRaffleRankingError, getUserRaffleRankingLoading, dataUserRaffleRanking} = useUserRaffleRanking({
+    userId: userId,
+    seasonId: seasonId,
+    skip: (activeTab !== 'raffles') || !seasonId || !userId
+  })
 
   const playcoreRanking = dataPlaycoreRanking?.getPlaycoreRanking
   const arenaRanking = dataArenaRanking?.getTournamentRanking
   const rafflesRanking = dataRaffleRanking?.getRaffleRanking
+  const userPlaycoreRanking = dataUserPlaycoreRanking?.getUserPlaycoreRanking
+  const userArenaRanking = dataUserArenaRanking?.getUserTournamentRanking
+  const userRafflesRanking = dataUserRaffleRanking?.getUserRaffleRanking
 
   useEffect(() => {
     if (playcoreRanking) {
@@ -190,9 +214,94 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
     }
   }, [dataRaffleRanking?.getRaffleRanking])
 
+  useEffect(() => {
+    if (userRafflesRanking) {
+      setYourRankData([{...userRafflesRanking}])
+    } else {
+      setYourRankData([])
+    }
+  }, [dataUserRaffleRanking?.getUserRaffleRanking])
+
+  useEffect(() => {
+    if (userArenaRanking) {
+      setYourRankData([{...userArenaRanking}])
+    } else {
+      setYourRankData([])
+    }
+  }, [dataUserArenaRanking?.getUserTournamentRanking])
+
+  useEffect(() => {
+    if (userPlaycoreRanking) {
+      setYourRankData([{...userPlaycoreRanking}])
+    } else {
+      setYourRankData([])
+    }
+  }, [dataUserPlaycoreRanking?.getUserPlaycoreRanking])
+
   const handleTabChange = (tab: string) => {
     setActiveTab(tab)
   }
+
+  const handleSeasonSelect = () => {
+
+  }
+
+  const seasonMenu = (
+    <Menu
+      items={[
+        {
+          label: (
+            <div className={s.seasonsByYear}>
+              <div className={s.seasonsByYearTitle}>
+                <div>SEASON 2022</div>
+                <img src="/assets/Ranking/caretDown.svg" alt=""/>
+              </div>
+              <ul className={s.seasonsList}>
+                <li>
+                  <div className={s.seasonTitle}>SEASON IV/2022</div>
+                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
+                </li>
+                <li>
+                  <div className={s.seasonTitle}>SEASON IV/2022</div>
+                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
+                </li>
+                <li>
+                  <div className={s.seasonTitle}>SEASON IV/2022</div>
+                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
+                </li>
+              </ul>
+            </div>
+          ),
+          key: '0',
+        },
+        {
+          label: (
+            <div className={s.seasonsByYear}>
+              <div className={s.seasonsByYearTitle}>
+                <div>SEASON 2022</div>
+                <img src="/assets/Ranking/caretDown.svg" alt=""/>
+              </div>
+              <ul className={s.seasonsList}>
+                <li>
+                  <div className={s.seasonTitle}>SEASON IV/2022</div>
+                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
+                </li>
+                <li>
+                  <div className={s.seasonTitle}>SEASON IV/2022</div>
+                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
+                </li>
+                <li>
+                  <div className={s.seasonTitle}>SEASON IV/2022</div>
+                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
+                </li>
+              </ul>
+            </div>
+          ),
+          key: '1',
+        },
+      ]}
+    />
+  );
 
   return (
     <section className={s.sectionRanking}>
@@ -203,16 +312,21 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
               <button key={tab.key} className={`${s.rankingTabsItem} ${activeTab === tab.key ? 'active' : ''}`} onClick={() => handleTabChange(tab.key)}>{tab.name}</button>
             ))}
           </div>
-          {/*<div className={s.rankingTabsFilter}>*/}
-          {/*  <div className={s.filterItems}>*/}
-          {/*    <button className={`active`}>Total NFTS</button>*/}
-          {/*    <button>Total Quality NFTS</button>*/}
-          {/*  </div>*/}
-          {/*  <div className={s.filterDateTime}>*/}
-          {/*    <div className={s.seasonCountdown}><span className={s.endText}>End Season In</span> <span className={s.countdownText}>12 Days 00:09:54</span></div>*/}
-          {/*    <div className={s.season}>SEASON I/2022</div>*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          <div className={s.rankingTabsFilter}>
+            <div className={s.filterItems}>
+              <button className={`active`}>Total NFTS</button>
+              <button>Total Quality NFTS</button>
+            </div>
+            <div className={s.filterDateTime}>
+              <div className={s.seasonCountdown}><span className={s.endText}>End Season In</span> <span className={s.countdownText}>12 Days 00:09:54</span></div>
+              <Dropdown overlay={seasonMenu} trigger={['click']} overlayClassName={s.seasonSelect}>
+                <button className={s.seasonSelectTrigger}>
+                  <span>SEASON IV/2022</span>
+                  <img src="/assets/Ranking/caretDown.svg" alt=""/>
+                </button>
+              </Dropdown>
+            </div>
+          </div>
         </div>
       </div>
       <div className={s.rankingTableWrapper}>
@@ -233,7 +347,7 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
         >
           <SwiperSlide>
             <div className={s.rankingTableResponsive}>
-              <Table columns={columns} dataSource={rankingData} pagination={false} loading={getPlaycoreRankingLoading || getArenaRankingLoading || getRaffleRankingLoading} />
+              <Table className={s.rankingTable} columns={columns} dataSource={rankingData} pagination={false} loading={getPlaycoreRankingLoading || getArenaRankingLoading || getRaffleRankingLoading} />
             </div>
           </SwiperSlide>
           <div className={`${s.rankingSwiperNavWrap}`}>
@@ -242,6 +356,13 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
           </div>
         </Swiper>
       </div>
+      {AuthStore?.isLoggedIn && (
+        <div className={s.yourRankWrapper}>
+          <div className={s.rankingTableResponsive}>
+            <Table columns={columns} dataSource={yourRankData} pagination={false} loading={getUserRaffleRankingLoading || getUserArenaRankingLoading || getUserPlaycoreRankingLoading} />
+          </div>
+        </div>
+      )}
     </section>
   )
 }

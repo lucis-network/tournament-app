@@ -27,35 +27,75 @@
       background: rgba(18, 176, 180, 0.1)
       color: #00F9FF
 .rankingTabsFilter
+  margin-bottom: 30px
+  @media screen and (min-width: 375px)
+    display: flex
+    align-items: center
+    justify-content: space-between
+    padding-bottom: 5px
+    border-bottom: 1px solid #38505F
+  @media screen and (min-width: 768px)
+    padding-bottom: 15px
   .filterItems
     display: flex
     align-items: center
+    margin-bottom: 15px
+    @media screen and (min-width: 375px)
+      margin-bottom: 0
     button
       font-family: 'Revx Neue Demo'
       font-weight: 400
       font-size: 12px
-      line-height: 13px
+      line-height: 14px
       color: rgba(255, 255, 255, 0.3)
       padding: 4px 8px
       display: block
+      border-right: 1px solid rgba(255, 255, 255, 0.3)
+      @media screen and (min-width: 992px)
+        font-size: 16px
+      &:last-of-type
+        border-right: none
       &:global(.active)
         font-weight: 600
         color: #00F9FF
+        @media screen and (min-width: 375px)
+          position: relative
+          &:after
+            content: ''
+            width: 15px
+            height: 15px
+            background: url('/assets/P2E/lucky-chest/iconTabActive.svg') no-repeat top center
+            background-size: cover
+            display: block
+            position: absolute
+            left: 50%
+            transform: translateX(-50%)
+            bottom: -14px
+        @media screen and (min-width: 768px)
+          &:after
+            bottom: -28px
   .filterDateTime
-    text-transform: uppercase
-    font-size: 16px
+    text-transform: capitalize
+    @media screen and (min-width: 768px)
+      display: flex
+      align-items: center
     .seasonCountdown
+      margin-right: 16px
+      @media screen and (max-width: 767px)
+        display: none
       .endText
         font-family: 'Poppins'
         font-weight: 400
+        font-size: 16px
         line-height: 24px
         background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
         -webkit-background-clip: text
         -webkit-text-fill-color: transparent
         text-fill-color: transparent
       .countdownText
-        font-family: 'Lexend'
+        font-family: 'Poppins'
         font-weight: 500
+        font-size: 16px
         line-height: 20px
         color: #DF9B16
     .season
@@ -98,7 +138,6 @@
       bottom: 0
       background: linear-gradient(90deg, #000D0E 0%, rgba(0, 13, 14, 0.1) 104.81%)
       z-index: 2
-
   :global(.swiper-slide)
     padding: 0 30px
     @media screen and (min-width: 992px)
@@ -108,6 +147,7 @@
       width: 960px !important
     @media screen and (min-width: 1600px)
       width: 1400px !important
+.rankingTable
   :global(.ant-table)
     background: none
   :global(.ant-table-tbody)
@@ -124,9 +164,9 @@
         padding: 5px
         height: 34px
         @media screen and (min-width: 768px)
-          padding: 10px
+          padding: 10px 20px
         @media screen and (min-width: 1200px)
-          padding: 15px
+          padding: 15px 25px
   :global(.ant-table-thead)
     position: relative
     z-index: 2
@@ -175,21 +215,20 @@
 .columnNo
   min-width: 40px
   width: 40px
-  @media screen and (min-width: 768px)
-    max-width: 100px
+  @media screen and (min-width: 1200px)
+    min-width: 220px
   @media screen and (min-width: 1600px)
-    width: 202px
-    max-width: 202px
-    padding: 10px 20px 10px 165px !important
+    min-width: 360px
+    padding: 10px 20px 10px 135px !important
 .columnName
-  min-width: 170px
-  width: 170px
+  //min-width: 170px
+  //width: 170px
 .columnReward
-  min-width: 100px
-  width: 100px
+  //min-width: 100px
+  //width: 100px
   @media screen and (min-width: 1600px)
-    width: 200px
-    max-width: 200px
+    //width: 200px
+    //max-width: 200px
     padding-right: 155px !important
 .userRank
   display: flex
@@ -261,11 +300,13 @@
         max-width: 64px
   .userName
     margin-right: 21px
-    width: calc(100% - 100px)
-    @media screen and (min-width: 992px)
-      width: calc(100% - 190px)
-    @media screen and (min-width: 1200px)
-      width: calc(100% - 220px)
+    //width: calc(100% - 80px)
+    //@media screen and (min-width: 768px)
+    //  width: calc(100% - 100px)
+    //@media screen and (min-width: 992px)
+    //  width: calc(100% - 190px)
+    //@media screen and (min-width: 1200px)
+    //  width: calc(100% - 220px)
     a
       font-family: 'Lexend'
       font-weight: 400
@@ -298,6 +339,7 @@
     line-height: 120%
     letter-spacing: 0.04em
     color: #DBE0E8
+    flex: 1
     @media screen and (min-width: 768px)
       font-size: 16px
     @media screen and (min-width: 1200px)
@@ -369,3 +411,114 @@
       aspect-ratio: 24/40
       @media screen and (min-width: 992px)
         width: 18px
+.seasonSelectTrigger
+  background: rgba(69, 80, 107, 0.5)
+  backdrop-filter: blur(40px)
+  border-radius: 2px
+  padding: 8px 12px
+  line-height: 1
+  display: flex
+  align-items: center
+  justify-content: space-between
+  font-family: 'Lexend'
+  font-weight: 400
+  font-size: 16px
+  text-transform: uppercase
+  color: #DBE0E8
+  width: 100%
+  @media screen and (min-width: 375px)
+    width: 124px
+    min-height: 24px
+    padding: 5px
+    font-size: 10px
+  @media screen and (min-width: 575px)
+    padding: 8px 12px
+    font-size: 16px
+    width: 210px
+  @media screen and (min-width: 992px)
+    font-size: 16px
+  img
+    width: 13px
+    height: 8px
+    @media screen and (min-width: 375px)
+      width: 9px
+      height: 5px
+    @media screen and (min-width: 575px)
+      width: 13px
+      height: 8px
+.seasonSelect
+  background: rgba(45, 52, 70, 0.5)
+  backdrop-filter: blur(40px)
+  border-radius: 2px
+  padding: 12px 15px
+  :global(.ant-dropdown-menu)
+    background: none
+    padding: 0
+    max-height: 357px
+    overflow-y: auto
+    box-shadow: none
+    :global(.ant-dropdown-menu-item-active)
+      background: none
+    :global(.ant-dropdown-menu-item)
+      padding: 0
+      margin-bottom: 16px
+      cursor: auto
+      pointer-events: none
+      &:first-of-type
+        .seasonsByYearTitle
+          border-top: none
+          padding-top: 8px
+      &:last-of-type
+        margin-bottom: 0
+.seasonsByYear
+  .seasonsByYearTitle
+    padding: 12px
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 400
+    font-size: 16px
+    line-height: 20px
+    text-transform: uppercase
+    color: #DBE0E8
+    display: flex
+    align-items: center
+    justify-content: space-between
+    border-bottom: 1px solid #4F525A
+    border-top: 1px solid #4F525A
+  .seasonsList
+    padding-top: 16px
+    li
+      background: rgba(69, 80, 107, 0.2)
+      border-radius: 4px
+      padding: 4px 10px
+      margin-bottom: 16px
+      position: relative
+      font-family: 'Lexend'
+      cursor: pointer
+      pointer-events: auto
+      &:hover, &:global(.active)
+        background: #45506B
+      &:after
+        content: ''
+        width: 100%
+        height: 1px
+        position: absolute
+        left: 0
+        bottom: -8px
+        background: #4F525A
+      &:last-of-type
+        margin-bottom: 0
+        &:after
+          content: none
+      .seasonTitle
+        font-weight: 400
+        font-size: 14px
+        line-height: 18px
+        color: #DBE0E8
+      .seasonDesc
+        font-weight: 300
+        font-size: 10px
+        line-height: 12px
+        color: #FFD058
+        margin: 4px 0 0
+
