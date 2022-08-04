@@ -148,7 +148,7 @@ const RankingTabs = ({rankingSeasons}: RankingTabsProps) => {
 
   const userId = AuthStore.id
 
-  const seasonId = rankingSeasons?.filter(season => season.status === StatusSeason.Active)[0].uid
+  const defaultSeason = rankingSeasons?.filter(season => season.status === StatusSeason.Active)[0]
 
   const fetchDataRanking = (seasonId: string) => {
     if (!seasonId) return
@@ -168,7 +168,11 @@ const RankingTabs = ({rankingSeasons}: RankingTabsProps) => {
       .finally(() => setRankingLoading(false))
   }
 
-  console.log('[RankingTabs] rankingData: ', rankingData);
+  useEffect(() => {
+    if (defaultSeason) {
+      setCurrentSeason(defaultSeason)
+    }
+  }, [defaultSeason])
   useEffect(() => {
     setRankingData([])
     rankingSeasons && rankingSeasons?.map(season => {
@@ -178,18 +182,18 @@ const RankingTabs = ({rankingSeasons}: RankingTabsProps) => {
 
   const {getUserPlaycoreRankingError, getUserPlaycoreRankingLoading, dataUserPlaycoreRanking} = useUserPlaycoreRanking({
     userId: userId,
-    seasonId: seasonId,
-    skip: (activeTab !== 'playcore') || !seasonId || !userId
+    seasonId: currentSeason?.uid as string,
+    skip: (activeTab !== 'playcore') || !currentSeason?.uid || !userId
   })
   const {getUserArenaRankingError, getUserArenaRankingLoading, dataUserArenaRanking} = useUserArenaRanking({
     userId: userId,
-    seasonId: seasonId,
-    skip: (activeTab !== 'arena') || !seasonId || !userId
+    seasonId: currentSeason?.uid as string,
+    skip: (activeTab !== 'arena') || !currentSeason?.uid || !userId
   })
   const {getUserRaffleRankingError, getUserRaffleRankingLoading, dataUserRaffleRanking} = useUserRaffleRanking({
     userId: userId,
-    seasonId: seasonId,
-    skip: (activeTab !== 'raffles') || !seasonId || !userId
+    seasonId: currentSeason?.uid as string,
+    skip: (activeTab !== 'raffles') || !currentSeason?.uid || !userId
   })
 
   const userPlaycoreRanking = dataUserPlaycoreRanking?.getUserPlaycoreRanking
