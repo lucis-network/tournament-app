@@ -10,6 +10,7 @@ import {StatusSeason} from "../../src/generated/graphql_p2e";
 
 const RankingPage: NextPage = () => {
   const {dataRankingSeason} = useRankingSeason()
+  const rankingSeasons = dataRankingSeason?.getRankingSeasons
   const seasonId = dataRankingSeason?.getRankingSeasons?.filter(season => season.status === StatusSeason.Active)[0]?.uid
 
   return (
@@ -17,7 +18,7 @@ const RankingPage: NextPage = () => {
       <DocHead title="Lucis Ranking" />
       <main style={{minHeight: "100vh"}} className={s.rankingWrapper}>
         <BannerRanking seasonId={seasonId} />
-        <RankingTabs seasonId={seasonId} />
+        <RankingTabs rankingSeasons={rankingSeasons} />
       </main>
       <Footer />
     </div>

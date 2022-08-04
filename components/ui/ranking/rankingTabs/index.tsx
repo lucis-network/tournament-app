@@ -1,21 +1,22 @@
 import {useEffect, useState} from "react";
 
-import {Dropdown, Menu, Space, Table} from "antd";
+import {Dropdown, Menu, Table} from "antd";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useSwiper } from 'swiper/react';
 
 import s from "./RankingTabs.module.sass"
 import {
-  useArenaRanking,
-  usePlaycoreRanking,
-  useRaffleRanking, useUserArenaRanking,
-  useUserPlaycoreRanking, useUserRaffleRanking
+  RankingTabsKey,
+  useRanking,
+  useUserArenaRanking,
+  useUserPlaycoreRanking,
+  useUserRaffleRanking,
 } from "../../../../hooks/ranking/useRanking";
-import {currentMonth as defaultCurrentMonth, currentYear as defaultCurrentYear} from "../banner";
-import {AcceptedMonths} from "../../../../hooks/ranking/useTopRanking";
-import {UserRanking} from "../../../../src/generated/graphql_p2e";
+import {RankingSeasonDto, StatusSeason, UserRanking} from "../../../../src/generated/graphql_p2e";
 import Link from "next/link"
 import AuthStore from "../../../Auth/AuthStore";
+import {groupBy} from "lodash";
+import moment from "moment";
 
 const tabs = [
   // {
@@ -40,6 +41,8 @@ const tabs = [
   //   tabIndex: 5,
   // },
 ]
+
+const tabFilters = []
 
 const columns = [
   {
@@ -113,17 +116,6 @@ const columns = [
   },
 ];
 
-const data: any[] = [];
-
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i,
-    rank: i,
-    name: `Mèo Đi Here`,
-    reward: `Reward no. ${i}`,
-  });
-}
-
 type SwiperNavProps = {
   direction: 'prev' | 'next',
 }
@@ -143,30 +135,47 @@ const SwiperNav = ({direction}: SwiperNavProps) => {
 }
 
 type RankingTabsProps = {
-  seasonId: string
+  rankingSeasons: RankingSeasonDto[]
 }
 
-const RankingTabs = ({seasonId}: RankingTabsProps) => {
-  const [activeTab, setActiveTab] = useState<string>('playcore')
-  const [currentMonth, setCurrentMonth] = useState<AcceptedMonths>(defaultCurrentMonth)
-  const [currentYear, setCurrentYear] = useState<number>(defaultCurrentYear)
-  const [rankingData, setRankingData] = useState<UserRanking[]>([])
+const RankingTabs = ({rankingSeasons}: RankingTabsProps) => {
+  const [activeTab, setActiveTab] = useState<RankingTabsKey>('playcore')
+  const [rankingData, setRankingData] = useState<any[]>([])
   const [yourRankData, setYourRankData] = useState<UserRanking[]>([])
+  const [currentSeason, setCurrentSeason] = useState<RankingSeasonDto>()
+  const [rankingLoading, setRankingLoading] = useState(false)
+  const {getDataRanking} = useRanking()
 
   const userId = AuthStore.id
-  console.log('[RankingTabs] userId: ', userId);
-  const {getPlaycoreRankingError, getPlaycoreRankingLoading, dataPlaycoreRanking} = usePlaycoreRanking({
-    seasonId: seasonId,
-    skip: (activeTab !== 'playcore') || !seasonId
-  })
-  const {getArenaRankingError, getArenaRankingLoading, dataArenaRanking} = useArenaRanking({
-    seasonId: seasonId,
-    skip: (activeTab !== 'arena') || !seasonId
-  })
-  const {getRaffleRankingError, getRaffleRankingLoading, dataRaffleRanking} = useRaffleRanking({
-    seasonId: seasonId,
-    skip: (activeTab !== 'raffles') || !seasonId
-  })
+
+  const seasonId = rankingSeasons?.filter(season => season.status === StatusSeason.Active)[0].uid
+
+  const fetchDataRanking = (seasonId: string) => {
+    if (!seasonId) return
+    setRankingLoading(true)
+    getDataRanking({
+      seasonId: seasonId,
+      type: activeTab,
+    })
+      .then((result) => {
+        setRankingData((prevState) => (
+          [
+            ...prevState,
+            result[activeTab]
+          ]
+        ))
+      })
+      .finally(() => setRankingLoading(false))
+  }
+
+  console.log('[RankingTabs] rankingData: ', rankingData);
+  useEffect(() => {
+    setRankingData([])
+    rankingSeasons && rankingSeasons?.map(season => {
+      fetchDataRanking(season.uid)
+    })
+  }, [activeTab, rankingSeasons])
+
   const {getUserPlaycoreRankingError, getUserPlaycoreRankingLoading, dataUserPlaycoreRanking} = useUserPlaycoreRanking({
     userId: userId,
     seasonId: seasonId,
@@ -183,36 +192,9 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
     skip: (activeTab !== 'raffles') || !seasonId || !userId
   })
 
-  const playcoreRanking = dataPlaycoreRanking?.getPlaycoreRanking
-  const arenaRanking = dataArenaRanking?.getTournamentRanking
-  const rafflesRanking = dataRaffleRanking?.getRaffleRanking
   const userPlaycoreRanking = dataUserPlaycoreRanking?.getUserPlaycoreRanking
   const userArenaRanking = dataUserArenaRanking?.getUserTournamentRanking
   const userRafflesRanking = dataUserRaffleRanking?.getUserRaffleRanking
-
-  useEffect(() => {
-    if (playcoreRanking) {
-      setRankingData(playcoreRanking)
-    } else {
-      setRankingData([])
-    }
-  }, [dataPlaycoreRanking?.getPlaycoreRanking])
-
-  useEffect(() => {
-    if (arenaRanking) {
-      setRankingData(arenaRanking)
-    } else {
-      setRankingData([])
-    }
-  }, [dataArenaRanking?.getTournamentRanking])
-
-  useEffect(() => {
-    if (rafflesRanking) {
-      setRankingData(rafflesRanking)
-    } else {
-      setRankingData([])
-    }
-  }, [dataRaffleRanking?.getRaffleRanking])
 
   useEffect(() => {
     if (userRafflesRanking) {
@@ -238,7 +220,7 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
     }
   }, [dataUserPlaycoreRanking?.getUserPlaycoreRanking])
 
-  const handleTabChange = (tab: string) => {
+  const handleTabChange = (tab: RankingTabsKey) => {
     setActiveTab(tab)
   }
 
@@ -246,60 +228,37 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
 
   }
 
+  const seasonsGroupByYear = groupBy(rankingSeasons, (n) => {
+    return (new Date(n.toDate)).getFullYear()
+  })
+
   const seasonMenu = (
     <Menu
-      items={[
-        {
+      items={Object.entries(seasonsGroupByYear)?.map(season => {
+        return {
           label: (
             <div className={s.seasonsByYear}>
               <div className={s.seasonsByYearTitle}>
-                <div>SEASON 2022</div>
+                <div>SEASON {season[0]}</div>
                 <img src="/assets/Ranking/caretDown.svg" alt=""/>
               </div>
               <ul className={s.seasonsList}>
-                <li>
-                  <div className={s.seasonTitle}>SEASON IV/2022</div>
-                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
-                </li>
-                <li>
-                  <div className={s.seasonTitle}>SEASON IV/2022</div>
-                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
-                </li>
-                <li>
-                  <div className={s.seasonTitle}>SEASON IV/2022</div>
-                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
-                </li>
+                {season[1].map(item => {
+                  const fromDate = moment(item.fromDate).format('MMM, Do YYYY')
+                  const toDate = moment(item.toDate).format('MMM, Do YYYY')
+                  return (
+                    <li key={item.uid} onClick={() => setCurrentSeason(item)}>
+                      <div className={s.seasonTitle}>{item.name}</div>
+                      <p className={s.seasonDesc}>{fromDate} - {toDate}</p>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           ),
-          key: '0',
-        },
-        {
-          label: (
-            <div className={s.seasonsByYear}>
-              <div className={s.seasonsByYearTitle}>
-                <div>SEASON 2022</div>
-                <img src="/assets/Ranking/caretDown.svg" alt=""/>
-              </div>
-              <ul className={s.seasonsList}>
-                <li>
-                  <div className={s.seasonTitle}>SEASON IV/2022</div>
-                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
-                </li>
-                <li>
-                  <div className={s.seasonTitle}>SEASON IV/2022</div>
-                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
-                </li>
-                <li>
-                  <div className={s.seasonTitle}>SEASON IV/2022</div>
-                  <p className={s.seasonDesc}>Jan, 1st 2022 - Apr, 28th 2022</p>
-                </li>
-              </ul>
-            </div>
-          ),
-          key: '1',
-        },
-      ]}
+          key: season[0],
+        }
+      })}
     />
   );
 
@@ -309,7 +268,14 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
         <div className="lucis-container-2">
           <div className={s.rankingTabsNav}>
             {tabs.map(tab => (
-              <button key={tab.key} className={`${s.rankingTabsItem} ${activeTab === tab.key ? 'active' : ''}`} onClick={() => handleTabChange(tab.key)}>{tab.name}</button>
+              <button
+                key={tab.key}
+                className={`${s.rankingTabsItem} ${activeTab === tab.key ? 'active' : ''}`}
+                onClick={() => handleTabChange(tab.key as RankingTabsKey)}
+                disabled={rankingLoading}
+              >
+                {tab.name}
+              </button>
             ))}
           </div>
           <div className={s.rankingTabsFilter}>
@@ -321,7 +287,7 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
               <div className={s.seasonCountdown}><span className={s.endText}>End Season In</span> <span className={s.countdownText}>12 Days 00:09:54</span></div>
               <Dropdown overlay={seasonMenu} trigger={['click']} overlayClassName={s.seasonSelect}>
                 <button className={s.seasonSelectTrigger}>
-                  <span>SEASON IV/2022</span>
+                  <span>{currentSeason?.name}</span>
                   <img src="/assets/Ranking/caretDown.svg" alt=""/>
                 </button>
               </Dropdown>
@@ -345,11 +311,13 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
             }
           }}
         >
-          <SwiperSlide>
-            <div className={s.rankingTableResponsive}>
-              <Table className={s.rankingTable} columns={columns} dataSource={rankingData} pagination={false} loading={getPlaycoreRankingLoading || getArenaRankingLoading || getRaffleRankingLoading} />
-            </div>
-          </SwiperSlide>
+          {rankingData.map(data => (
+            <SwiperSlide key={data.id}>
+              <div className={s.rankingTableResponsive}>
+                <Table className={s.rankingTable} columns={columns} dataSource={data} pagination={false} loading={rankingLoading} />
+              </div>
+            </SwiperSlide>
+          ))}
           <div className={`${s.rankingSwiperNavWrap}`}>
             <SwiperNav direction="prev" />
             <SwiperNav direction="next" />
@@ -358,6 +326,7 @@ const RankingTabs = ({seasonId}: RankingTabsProps) => {
       </div>
       {AuthStore?.isLoggedIn && (
         <div className={s.yourRankWrapper}>
+          <h3 className={s.yourRankTitle}>Your Rank</h3>
           <div className={s.rankingTableResponsive}>
             <Table columns={columns} dataSource={yourRankData} pagination={false} loading={getUserRaffleRankingLoading || getUserArenaRankingLoading || getUserPlaycoreRankingLoading} />
           </div>

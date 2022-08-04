@@ -1,9 +1,52 @@
-import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
+import {ApolloError, ApolloQueryResult, DocumentNode, gql, useQuery} from "@apollo/client";
 import {UserRanking} from "../../src/generated/graphql_p2e";
+import client from "utils/apollo_client"
+
+export type RankingTabsKey = 'playcore' | 'arena' | 'raffles'
 
 type GetRankingProps = {
   seasonId: string,
   skip?: boolean,
+  type?: RankingTabsKey,
+  onCompleted?: (data: any) => void
+}
+
+export const useRanking = (): {
+  getDataRanking: ({seasonId, type, onCompleted}: GetRankingProps) => Promise<any>,
+} => {
+  const getDataRanking = async ({seasonId, type, onCompleted}: GetRankingProps) => {
+    try {
+      const query: DocumentNode | undefined =
+        type === 'playcore' ? GET_PLAYCORE_RANKING :
+          (type === 'arena') ? GET_ARENA_RANKING :
+            (type === 'raffles') ? GET_RAFFLE_RANKING : undefined
+      if (!query) return
+      const result = await client.query({
+        query: query,
+        variables: {
+          seasonId: seasonId,
+        },
+        context: {
+          endpoint: 'p2e'
+        },
+      })
+      onCompleted && onCompleted(result)
+      const arenaRanking = result?.data?.getTournamentRanking ?? []
+      const rafflesRanking = result?.data?.getRaffleRanking ?? []
+      const playcoreRanking = result?.data?.getPlaycoreRanking ?? []
+      return {
+        arena: arenaRanking,
+        raffles: rafflesRanking,
+        playcore: playcoreRanking,
+      }
+    } catch (error) {
+      console.log('[getDataRanking] error: ', error);
+    }
+  }
+
+  return {
+    getDataRanking,
+  }
 }
 
 export const usePlaycoreRanking = ({seasonId, skip}: GetRankingProps): {
