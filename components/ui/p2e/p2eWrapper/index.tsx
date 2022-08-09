@@ -203,7 +203,7 @@ export default observer(function P2EWrapper(props: IProps) {
   return (
     <>
       {/* TODO: Get dynamic page title pass to doc head */}
-      <DocHead />
+      {/*<DocHead />*/}
       <main style={{ minHeight: "100vh" }} className={`${s.homeWrap} ${props.mainClassname ?? ''} ${backgroundPage()}`}>
         <div className={`${s.p2eWrap}`}>
           <div className={s.tabsWrap}>
