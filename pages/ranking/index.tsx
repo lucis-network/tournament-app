@@ -14,7 +14,11 @@ const RankingPage: NextPage = () => {
 
   return (
     <div>
-      <DocHead title="Lucis Ranking" />
+      <DocHead
+        title="LUCIS RANKING - More skills, more rewards for playing your games with Lucis"
+        description={"A very competitive environment for Lucis users, gamers, game clubs, and guild games that lets them actively enjoy the game and platform with very big prizes."}
+        thumb={"/assets/P2E/seo/ranking.png"}
+      />
       <main style={{minHeight: "100vh"}} className={s.rankingWrapper}>
         <BannerRanking seasonId={seasonId} />
         <RankingTabs seasonId={seasonId} />

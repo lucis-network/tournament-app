@@ -11,7 +11,7 @@ const LuckyChestPage = () => {
         <DocHeadPlaycore
           title="LUCKY CHEST - PlayCore | Play your Game | Earn your Fame | Win Crypto"
           description={"Join Lucky Chest to win NFTs, Steam Cards, Crypto, and other valuable prizes."}
-          thumb={"/assets/P2E/ceo/lucky-chest.png"}
+          thumb={"/assets/P2E/seo/lucky-chest.png"}
         />
         <LuckyChest />
       </P2eWrapper>

@@ -11,7 +11,7 @@ const MissionPage = () => {
         <DocHeadPlaycore
           title="MISSIONS - PlayCore | Play your Game | Earn your Fame | Win Crypto"
           description={"Join Lucis PlayCore; Complete Lucis missions to increase your achievements and earnings!"}
-          thumb={"/assets/P2E/ceo/lucis-mission.png"}
+          thumb={"/assets/P2E/seo/lucis-mission.png"}
         />
         <Mission />
       </P2EWrapper>

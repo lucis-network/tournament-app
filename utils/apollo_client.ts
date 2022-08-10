@@ -15,13 +15,15 @@ import {
   clearLocalAuthInfo,
   getLocalAuthInfo,
 } from "../components/Auth/AuthLocal";
-import { message as antd_message, notification } from "antd";
+import {message as antd_message, Modal, notification} from "antd";
 import { GraphQLError } from "graphql";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import AuthStore from "../components/Auth/AuthStore";
 import AuthGameStore from "components/Auth/AuthGameStore";
+
+import { debounce } from "lodash";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -118,6 +120,7 @@ if (isClient) {
 }
 
 let countGqlErrNetwork = 0;
+let errorWait: any = null;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach((e) => {
@@ -134,7 +137,13 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
           AuthStore.resetStates();
           AuthGameStore.resetStates(); // reset game store
 
-          antd_message.error("Session has expired. Please sign in again!", 5);
+          if (!errorWait) {
+            errorWait = antd_message.error("Session has expired. Please sign in again!", 5);
+            setTimeout(() => {
+              errorWait = null;
+            }, 5000)
+          }
+          // Modal.info({content: "sdfsdfsdfsd"});
         }
       }
     });

@@ -21,22 +21,12 @@ export const RecentMatchDetail = (props: IProps) => {
     case Game.CSGO:
       return (
         <>
-          <DocHeadPlaycore
-            title={"[MATCH DETAILS] - More skills | More rewards"}
-            description={"Join Lucis PlayCore Now!! Every matches will be recorded and you will be rewarded from it."}
-            thumb={"/assets/P2E/ceo/match-detail-csgo.png"}
-          />
           <RecentMatchDetailCSGO />
         </>
       );
     case Game.LOL:
       return (
         <>
-          <DocHeadPlaycore
-            title={"[MATCH DETAILS] - More skills | More rewards"}
-            description={"Join Lucis PlayCore Now!! Every matches will be recorded and you will be rewarded from it."}
-            thumb={"/assets/P2E/ceo/match-detail-lol.png"}
-          />
           <RecentMatchDetailLOL />
         </>
       )

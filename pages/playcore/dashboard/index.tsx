@@ -11,7 +11,7 @@ const DashboardPage = () => {
         <DocHeadPlaycore
           title="[LUCIS PLAYCORE] - Play your Game | Earn your Fame | Win Crypto"
           description={"Join Lucis PlayCore Now!! Get reward from playing your favourite traditional games. SIGN IN - PLAY - ENJOY - EARN - REPEAT. "}
-          thumb={"/assets/P2E/ceo/dashboard.png"}
+          thumb={"/assets/P2E/seo/dashboard.png"}
         />
         <Dashboard />
       </P2EWrapper>

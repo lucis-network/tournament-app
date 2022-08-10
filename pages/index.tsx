@@ -12,7 +12,7 @@ const P2eOverviewPage = () => {
         <DocHeadPlaycore
           title="[LUCIS PLAYCORE] - Play your Game | Earn your Fame | Win Crypto"
           description={"Join Lucis PlayCore Now!! Get reward from playing your favourite traditional games. SIGN IN - PLAY - ENJOY - EARN - REPEAT. "}
-          thumb={"/assets/P2E/ceo/home-Playcore.png"}
+          thumb={"/assets/P2E/seo/home-Playcore.png"}
         />
         <Overview />
       </P2EWrapper>

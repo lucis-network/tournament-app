@@ -5,12 +5,14 @@ import { app_env } from "../utils/Env";
 type Props = {
   title?: string;
   description?: string;
+  thumb?: string;
 };
 
 export default function DocHead(props: Props) {
   const titleSuffix = props.title ?? "LUCIS ARENA - Automated Gaming Tournaments ";
-  const env_str = app_env !== "prod" ? `[${app_env}] ` : '';
-  const title = env_str + "Lucis Tournament - " + titleSuffix;
+  //const env_str = app_env !== "prod" ? `[${app_env}] ` : '';
+  // const title = env_str + "Lucis Tournament - " + titleSuffix;
+  const title = titleSuffix;
   const desc = props.description ?? 'Join Lucis Arena to start, manage, and find your own Battlefield | Just Battle & Earn.';
   const thumb = "https://lucis.network/assets/lucis_preview_169.jpg?v=1656073943366";
 

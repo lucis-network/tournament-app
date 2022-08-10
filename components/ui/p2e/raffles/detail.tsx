@@ -260,11 +260,6 @@ const RafflesDetail = observer((props: { raffleUID: string}) => {
   )
   return (
     <>
-      <DocHeadPlaycore
-        title="RAFFLES - PlayCore | Play your Game | Earn your Fame | Win Crypto"
-        description={"Join Lucis Raffle to turn your achievements and earnings into valuable rewards."}
-        thumb={getRaffleDetailData?.getRaffleDetail?.img as string}
-      />
       <div className={s.rafflesDetailWrapper}>
         <div className={`lucis-container-2 ${s.rafflesDetailContainer}`}>
           <section className={s.breadcrumbSection}>

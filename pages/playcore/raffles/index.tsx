@@ -10,7 +10,7 @@ const RafflesPage = () => {
       <DocHeadPlaycore
         title="RAFFLES - PlayCore | Play your Game | Earn your Fame | Win Crypto"
         description={"Join Lucis Raffle to turn your achievements and earnings into valuable rewards."}
-        thumb={"/assets/P2E/ceo/raffles.png"}
+        thumb={"/assets/P2E/seo/raffles.png"}
       />
       <Raffles/>
     </P2EWrapper>
