@@ -210,7 +210,13 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
         const claimChestPrizeData = data?.data?.claimChestPrize
         if (claimChestPrizeData) {
           antMessage.success('Success!')
-          refetchGetLuckyChestUserInfo()
+          refetchGetLuckyChestUserInfo({
+              game_platform_id: tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : GAMES.GARENALOL),
+              tier: tier,
+              page: currentPage,
+              limit: historyLimit,
+            }
+          )
           AppEmitter.emit("updateBalance")
         }
       }
