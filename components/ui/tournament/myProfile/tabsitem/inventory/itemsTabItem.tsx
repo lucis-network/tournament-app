@@ -6,11 +6,12 @@ import PrizePopover from "../../../../p2e/lucky/prize/popover";
 import sChestPrize from "../../../../p2e/lucky/prize/ChestPrize.module.sass"
 import ButtonWrapper from "../../../../../common/button/Button";
 type Props = {
-  item: InventoryItem
+  item: InventoryItem;
+  isOwner?: boolean;
 };
 
 const ItemsTabItem = (props: Props) => {
-  const {item} = props
+  const {item, isOwner} = props
   return (
     <>
       <PrizePopover
@@ -27,7 +28,7 @@ const ItemsTabItem = (props: Props) => {
             {item?.prize?.title ?? ''}
           </div>
             {
-              item?.quantity &&
+              item?.quantity && isOwner &&
                 <div className={s.prizeAmount}>
                     <div className={s.prizeAmountQty}>
                         Amount:{" "}{item?.quantity}

@@ -738,10 +738,9 @@ query {
 `
 
 export const ASSEMBLE_INVENTORY_PIECE = gql`
-  mutation ($piece_group: PieceGroup!) {
+  mutation ($piece_group: String!) {
     assemble (piece_group: $piece_group) {
       uid
-      group
       prize_id
       prize {
         title

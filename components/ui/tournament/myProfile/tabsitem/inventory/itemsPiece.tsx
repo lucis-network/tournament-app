@@ -11,11 +11,12 @@ import ButtonWrapper from "../../../../../common/button/Button";
 type Props = {
   item : InventoryPieceGroup,
   refetchMyInventoryPieces : () => Promise<ApolloQueryResult<any>>,
+  isOwner?: boolean;
 };
 
 const ItemsPiece = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {item, refetchMyInventoryPieces} = props;
+  const {item, isOwner, refetchMyInventoryPieces} = props;
   const [assembleInventoryPiece] = useMutation(ASSEMBLE_INVENTORY_PIECE, {
     context: {
       endpoint: 'p2e'
@@ -58,10 +59,12 @@ const ItemsPiece = (props: Props) => {
           ))
         }
       </div>
-      <div className={s.btnCombine}>
-        {/*<Button loading={isLoading} onClick={() => assemble(item?.type ?? undefined)}>Combine</Button>*/}
-        <ButtonWrapper loading={isLoading} onClick={() => assemble(item?.type ?? undefined)} width={120}>Craft</ButtonWrapper>
-      </div>
+      {isOwner &&
+          <div className={s.btnCombine}>
+            {/*<Button loading={isLoading} onClick={() => assemble(item?.type ?? undefined)}>Combine</Button>*/}
+              <ButtonWrapper loading={isLoading} onClick={() => assemble(item?.type ?? undefined)} width={120} disabled={!item.achieved}>Merge</ButtonWrapper>
+          </div>
+      }
     </>
 
   );
