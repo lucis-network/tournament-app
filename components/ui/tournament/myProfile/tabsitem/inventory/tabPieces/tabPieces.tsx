@@ -1,10 +1,10 @@
 import React, {useCallback, useState} from "react";
-import s from "./index.module.sass";
+import s from "../index.module.sass";
 import {Input, Select} from "antd";
-import {useGetMyInventoryPieces, useGetMyInventoryPiecesConfig} from "../../../../../../hooks/p2e/useP2E";
+import {useGetMyInventoryPieces, useGetMyInventoryPiecesConfig} from "../../../../../../../hooks/p2e/useP2E";
 import debounce from "lodash/debounce";
 import ItemsPiece from "./itemsPiece";
-import AuthStore, {AuthUser} from "../../../../../Auth/AuthStore";
+import AuthStore, {AuthUser} from "../../../../../../Auth/AuthStore";
 
 type Props = {
   isOwner?: boolean;

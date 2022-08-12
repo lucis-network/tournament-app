@@ -314,8 +314,8 @@ export default function LuckyChest(props: any) {
                         key={prize?.id}
                         description={prize?.desc}
                         image={prize?.img ?? ''}
-                        title={prize?.title}
-                        rarity={prize?.rarity}
+                        title={prize?.title ?? ''}
+                        rarity={prize?.rarity ?? ''}
                       />
                     </>
                   ))}

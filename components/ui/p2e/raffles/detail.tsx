@@ -493,12 +493,16 @@ const RafflesDetail = observer((props: { raffleUID: string}) => {
                             <div className={s.rafflePrice}>
                               <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
                               {
-                                raffle?.prize_type === "LUCIS_POINT" &&
+                                raffle?.prize_category?.currency_type === "LUCIS_POINT" &&
                                   <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
                               }
                               {
-                                raffle?.prize_type === "LUCIS_TOKEN" &&
+                                raffle?.prize_category?.currency_type === "LUCIS_TOKEN" &&
                                   <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                              }
+                              {
+                                raffle?.prize_category?.currency_type === "DECENTRALIZED" &&
+                                  <Image src={raffle?.prize_category?.currency?.icon ?? ''} preview={false} alt=""/>
                               }
                             </div>
                           </div>

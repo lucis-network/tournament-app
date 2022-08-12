@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
 import s from './index.module.sass'
 import DigitRoll from "components/digit-roll-react/src";
-import {b64DecodeUnicode, replaceCharAt} from "../../../../../utils/String";
-import {useGetWonTickets, useMyWonTickets} from "../../../../../hooks/p2e/useRaffleDetail";
+import {fromBinary, replaceCharAt} from "../../../../../utils/String";
+import {useMyWonTickets} from "../../../../../hooks/p2e/useRaffleDetail";
 import {isEmpty, parseInt} from "lodash";
 import moment from "moment";
 import {RaffleDetail, UserTicketGql} from "../../../../../src/generated/graphql_p2e";
@@ -212,7 +212,7 @@ const RollingRaffles = (props: Props) => {
     if(dataWonTickets) {
       let obj = {};
       dataWonTickets.forEach((item) => {
-        obj = b64DecodeUnicode(item);
+        obj = fromBinary(item);
         // @ts-ignore
         data.push(JSON.parse(obj));
       })
@@ -377,7 +377,7 @@ const RollingRaffles = (props: Props) => {
       {
         isPopupClaim
       &&
-          <PopupClaimTicket status={isPopupClaim} dataMyWonTickets={dataMyWonTickets} raffleUid={raffleUid} closePopupClaimTicket={closePopupClaimTicket}/>
+          <PopupClaimTicket dataRaffleDetail={dataRaffleDetail} status={isPopupClaim} dataMyWonTickets={dataMyWonTickets} raffleUid={raffleUid} closePopupClaimTicket={closePopupClaimTicket}/>
       }
 
     </div>

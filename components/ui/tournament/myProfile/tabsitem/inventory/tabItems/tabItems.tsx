@@ -1,11 +1,11 @@
 import React, {useCallback, useEffect, useState} from "react";
-import s from "./index.module.sass";
+import s from "../index.module.sass";
 import {Input, Select} from "antd";
-import {ItemGroup} from "../../../../../../src/generated/graphql";
+import {ItemGroup} from "../../../../../../../src/generated/graphql";
 import debounce from "lodash/debounce";
 import { useGetMyInventoryItems } from "hooks/p2e/useP2E";
-import AuthStore, {AuthUser} from "../../../../../Auth/AuthStore";
-import {AppEmitter} from "../../../../../../services/emitter";
+import AuthStore, {AuthUser} from "../../../../../../Auth/AuthStore";
+import {AppEmitter} from "../../../../../../../services/emitter";
 import ItemsTabItem from "./itemsTabItem";
 
 type Props = {

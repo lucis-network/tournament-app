@@ -1,6 +1,6 @@
 import {Button, message, Modal} from "antd";
 import s from "./index.module.sass";
-import {UserWonTicketGql} from "../../../../../../src/generated/graphql_p2e";
+import {CurrrencyType, RaffleDetail, UserWonTicketGql} from "../../../../../../src/generated/graphql_p2e";
 import {useMutation} from "@apollo/client";
 import {CLAIM_RAFFLE_TICKETS} from "../../../../../../hooks/p2e/useRaffleDetail";
 import {handleGraphqlErrors} from "../../../../../../utils/apollo_client";
@@ -10,10 +10,11 @@ type Props = {
   item?: UserWonTicketGql;
   raffleUid?: string;
   openPopupContactRaffes: () => void;
+  dataRaffleDetail?: RaffleDetail;
 };
 
 const ItemClaimTicket = (props: Props) => {
-  const { item, raffleUid, openPopupContactRaffes } = props;
+  const { item, raffleUid, openPopupContactRaffes, dataRaffleDetail } = props;
   const [isLoading, setIsLoading] = useState(false);
   const [isDisable, setIsDisable] = useState(false);
   const [claimRaffleTicket] = useMutation(CLAIM_RAFFLE_TICKETS, {
@@ -24,6 +25,11 @@ const ItemClaimTicket = (props: Props) => {
 
   const handleClaim = async () => {
     setIsLoading(true);
+
+    if(dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
+      await signMetamask();
+    }
+
     try {
       await claimRaffleTicket({
         variables: {
@@ -57,13 +63,17 @@ const ItemClaimTicket = (props: Props) => {
     }
   }
 
+  const signMetamask = async () => {
+
+  }
+
   return (
     <div className={s.item}>
       {isDisable || item?.is_claimed as boolean ?
         <>
           <span className={`${s.itemTickets} ${s.itemTicketsClaimed}`}>#{item?.ticket_number}</span>
           <div className={s.imgChecked}>
-            <img  src="/assets/Raffles/checked.svg"/>
+            <img  src="/assets/Raffles/checked.svg" alt=""/>
           </div>
         </>
          :
