@@ -3,7 +3,7 @@ import {ChestDetail, LuckyChestUserInfo} from "../../../src/generated/graphql_p2
 import {isEmpty} from "lodash";
 
 type GetChestDetailProps = {
-  game_platform_id: number,
+  game_platform_id?: number,
   tier: string,
 }
 
@@ -24,7 +24,7 @@ export type ClaimChestPrizeProps = {
 export const useGetChestDetail = ({game_platform_id, tier}: GetChestDetailProps): {
   getChestDetailLoading: boolean,
   getChestDetailError: ApolloError | undefined,
-  refetchChestDetail: () => Promise<ApolloQueryResult<any>>,
+  refetchChestDetail: ({game_platform_id, tier}: GetChestDetailProps) => Promise<ApolloQueryResult<any>>,
   getChestDetailData: {
     getChestDetail: ChestDetail
   },
@@ -56,7 +56,7 @@ export const useGetChestDetail = ({game_platform_id, tier}: GetChestDetailProps)
 export const useGetLuckyChestUserInfo = ({game_platform_id, tier, page, limit}: GetUserHistoryProps): {
   getLuckyChestUserInfoLoading: boolean,
   getLuckyChestUserInfoError: ApolloError | undefined,
-  refetchGetLuckyChestUserInfo: () => Promise<ApolloQueryResult<any>>,
+  refetchGetLuckyChestUserInfo: ({game_platform_id, tier, page, limit}: GetUserHistoryProps) => Promise<ApolloQueryResult<any>>,
   dataLuckyChestUserInfo: LuckyChestUserInfo,
 } => {
   const {
@@ -114,7 +114,7 @@ export const useClaimChestPrize = (): {
 }
 
 const GET_CHEST_DETAIL = gql`
-  query($game_platform_id: Int!, $tier: LuckyChestTier!) {
+  query($game_platform_id: Int, $tier: LuckyChestTier!) {
     getChestDetail(game_platform_id: $game_platform_id, tier: $tier) {
       id
       title
@@ -153,7 +153,7 @@ const GET_CHEST_DETAIL = gql`
 `
 
 const GET_LUCKY_CHEST_USER_INFO = gql`
-  query($game_platform_id: Int!, $tier: LuckyChestTier!, $page: Int, $limit: Int) {
+  query($game_platform_id: Int, $tier: LuckyChestTier!, $page: Int, $limit: Int) {
     getLuckyChestUserInfo(game_platform_id: $game_platform_id, tier: $tier, page: $page ,limit: $limit) {
       history_count
       history {
@@ -183,7 +183,7 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
 `
 
 export const OPEN_CHEST = gql`
-  mutation ($game_platform_id: Int!, $tier: LuckyChestTier!) {
+  mutation ($game_platform_id: Int, $tier: LuckyChestTier!) {
     openChest (game_platform_id: $game_platform_id, tier: $tier)
   }
 `
