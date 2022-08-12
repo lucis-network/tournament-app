@@ -2,16 +2,8 @@ import React, {useState} from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
-import {
-  OPEN_CHEST,
-  useGetChestDetail,
-} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
-import {
-  CostType,
-  LuckyChestPrize,
-  LuckyChestTier,
-  OpenChestErrorCode,
-} from "../../../../src/generated/graphql_p2e";
+import {OPEN_CHEST, useGetChestDetail,} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {CostType, LuckyChestPrize, LuckyChestTier, OpenChestErrorCode,} from "../../../../src/generated/graphql_p2e";
 import SpinLoading from "../../common/Spin";
 import {isEmpty} from "lodash";
 import Head from "next/head";
@@ -21,7 +13,6 @@ import {Image, message} from "antd";
 import ChestPrize from "./prize";
 import {ScrollMenu} from "react-horizontal-scrolling-menu";
 import {isClient} from "../../../../utils/Env";
-import {b64DecodeUnicode} from "../../../../utils/String";
 import {useMutation, useQuery} from "@apollo/client";
 import PopupRollingChest from "./popup/popupRollingChest";
 import {GET_STATISTICS} from "../../../../hooks/p2e/useP2E";
@@ -38,17 +29,20 @@ export enum GAMES {
   GARENALOL = 2,
 }
 
+
 const games: number[] = [
   GAMES.FACEITCSGO,
   GAMES.GARENALOL,
 ]
 
+
 export default function LuckyChest(props: any) {
+    const [currentLuckyChestTab, setCurrentLuckyChestTab] = useState(LuckyChestTier.Standard)
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
     const [chestPrize, setChestPrize] = useState<LuckyChestPrize>({} as LuckyChestPrize);
     const gameType = props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL
-    const {getChestDetailLoading, getChestDetailError, getChestDetailData} = useGetChestDetail({
+    const {getChestDetailLoading, getChestDetailError, getChestDetailData, refetchChestDetail} = useGetChestDetail({
         game_platform_id: gameType,
         tier: LuckyChestTier.Standard,
     })
@@ -106,8 +100,8 @@ export default function LuckyChest(props: any) {
     try {
       await openLuckyChest({
         variables: {
-          game_platform_id: gameType,
-          tier: LuckyChestTier.Standard,
+          game_platform_id: currentLuckyChestTab === LuckyChestTier.Free ? undefined : gameType,
+          tier: currentLuckyChestTab,
         },
         onCompleted: (data) => {
           // const decodedData: LuckyChestPrize = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
@@ -242,13 +236,20 @@ export default function LuckyChest(props: any) {
           <DefaultErrorPage statusCode={404}/>
       </>
     )
-
+    const switchLuckyChestTab = (tab: LuckyChestTier) => {
+      setCurrentLuckyChestTab(tab);
+      refetchChestDetail({
+        game_platform_id: tab === LuckyChestTier.Free ? undefined : gameType,
+        tier: tab,
+      })
+    }
     return (
       <>
         <div className={s.luckyChestTabsSection}>
           <div className="lucis-container-2">
             <div className={s.luckyChestTabs}>
-              <div className={`${s.luckyChestTabsItem} active`}>Standard</div>
+              <div onClick={() => switchLuckyChestTab(LuckyChestTier.Standard)} className={`${s.luckyChestTabsItem} ${currentLuckyChestTab === LuckyChestTier.Standard ? "active" : ""}`}>Standard</div>
+              <div onClick={() => switchLuckyChestTab(LuckyChestTier.Free)} className={`${s.luckyChestTabsItem} ${currentLuckyChestTab === LuckyChestTier.Free ? "active" : ""}`}>Free</div>
               <div className={`${s.luckyChestTabsItem} disabled`}>Premium</div>
               <div className={`${s.luckyChestTabsItem} disabled`}>NFTs</div>
             </div>
@@ -325,7 +326,7 @@ export default function LuckyChest(props: any) {
               </div>
             </div>
           )}
-          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType} />}
+          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType} tier={currentLuckyChestTab} />}
           {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">
