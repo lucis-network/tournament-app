@@ -13,6 +13,10 @@ import {AppEmitter} from "../../../../../services/emitter";
 import PopupContactRaffles from "../../raffles/popup/popupContact";
 import PrizePopover from "../prize/popover";
 import {GAMES} from "../index";
+import ConnectWalletStore from "../../../../Auth/ConnectWalletStore";
+import AuthBoxStore from "../../../../Auth/components/AuthBoxStore";
+import {observer} from "mobx-react-lite";
+import Link from "next/link"
 
 type HistoryTableProps = {
   currentGame: number,
@@ -20,7 +24,7 @@ type HistoryTableProps = {
 
 const historyLimit = 10
 
-export default function HistoryTable({currentGame}: HistoryTableProps) {
+export default observer(function HistoryTable({currentGame}: HistoryTableProps) {
   const [historyData, setHistoryData] = useState<any[]>([])
   const [claimingChestPrize, setClaimingChestPrize] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -39,7 +43,8 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     limit: historyLimit,
   })
   const {claimChestPrize} = useClaimChestPrize()
-
+  const {address} = ConnectWalletStore;
+  // console.log(dataLuckyChestUserInfo)
   const userHistory = dataLuckyChestUserInfo?.history
   const historyCount = dataLuckyChestUserInfo?.history_count
 
@@ -119,8 +124,9 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
               </div>
               <ButtonClaim
                 isClaimed={data.is_claimed}
-                onClick={() => handleClaimChestPrize(data.user_prize_history_uid.toString(), data.code)}
+                onClick={() => handleClaimChestPrize(data.prize?.category.currency_uid, data.user_prize_history_uid.toString(), data.code)}
                 disabled={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
+                buttonText={!data.prize?.category?.currency_type ? "Archived" : null}
               />
             </div>
         )
@@ -128,12 +134,17 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     }
   ]
 
-  const handleClaimChestPrize = (user_prize_history_uid: string, code: string) => {
+  const handleClaimChestPrize = (currency_uid: string | null, user_prize_history_uid: string, code: string) => {
+    if (currency_uid && !address) {
+      AuthBoxStore.connectModalVisible = true;
+      return;
+    }
     if (!user_prize_history_uid) return
     setPrizeCode(code)
     setClaimingChestPrize(user_prize_history_uid)
     claimChestPrize({
       user_prize_history_uid: user_prize_history_uid,
+      address: address,
       onError: (error) => handleGraphqlErrors(error, (code, message) => {
         if (code !== 'UnAuth') {
           switch (code) {
@@ -152,13 +163,9 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       onCompleted: (data) => {
         const claimChestPrizeData = data?.data?.claimChestPrize
         if (claimChestPrizeData) {
-          if (claimChestPrizeData?.required_contact) {
-            setModalContactVisible(true)
-          } else {
-            antMessage.success('Success!')
-            refetchGetLuckyChestUserInfo()
-            AppEmitter.emit("updateBalance");
-          }
+          antMessage.success('Success!')
+          refetchGetLuckyChestUserInfo()
+          AppEmitter.emit("updateBalance")
         }
       }
     }).finally(() => setClaimingChestPrize(''))
@@ -176,7 +183,13 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
   return (
     <>
       <div className={s.wrapper}>
-        <h2>Your history</h2>
+        <div style={{display: "flex", justifyContent: "space-between"}}>
+          <h2>Your history</h2>
+          <div>
+            <Link href={"profile?page=inventory"}>View user inventory</Link>
+          </div>
+        </div>
+
         <Table
           dataSource={historyData}
           // dataSource={[]}
@@ -209,4 +222,4 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       />
     </>
   )
-}
+});

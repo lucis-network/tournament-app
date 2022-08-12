@@ -4,13 +4,19 @@ type ButtonClaimProps = {
     isClaimed?: boolean,
     onClick?: () => void,
     disabled: boolean,
+    buttonText?: string | null;
 }
 
-export default function ButtonClaim({isClaimed, onClick, disabled}: ButtonClaimProps) {
+export default function ButtonClaim({isClaimed, onClick, disabled, buttonText}: ButtonClaimProps) {
     return (
         <div className={s.wrapper}>
             <button className={s.btn} disabled={disabled} onClick={onClick}>
-                <span>{isClaimed ? 'Claimed' : 'Claim'}</span>
+              {
+                !!buttonText ?
+                  <span>{buttonText}</span>
+                  :
+                  <span>{isClaimed ? 'Claimed' : 'Claim'}</span>
+              }
             </button>
         </div>
     )

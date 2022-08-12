@@ -16,6 +16,7 @@ type GetUserHistoryProps = {
 
 export type ClaimChestPrizeProps = {
   user_prize_history_uid: string,
+  address?: string,
   onError?: (error: ApolloError) => void,
   onCompleted?: (data: any) => void,
 }
@@ -86,15 +87,16 @@ export const useGetLuckyChestUserInfo = ({game_platform_id, tier, page, limit}: 
 }
 
 export const useClaimChestPrize = (): {
-  claimChestPrize: ({user_prize_history_uid, onCompleted, onError}: ClaimChestPrizeProps) => Promise<any>
+  claimChestPrize: ({user_prize_history_uid, address, onCompleted, onError}: ClaimChestPrizeProps) => Promise<any>
 } => {
   const client = useApolloClient()
-  const claimChestPrize = async ({user_prize_history_uid, onCompleted, onError}: ClaimChestPrizeProps) => {
+  const claimChestPrize = async ({user_prize_history_uid, address, onCompleted, onError}: ClaimChestPrizeProps) => {
     try {
       const result = await client.mutate({
         mutation: CLAIM_CHEST_PRIZE,
         variables: {
           user_prize_history_uid: user_prize_history_uid,
+          address: address
         },
         context: {
           endpoint: 'p2e'
@@ -164,10 +166,14 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
           title
           desc
           img
-          prize_type
           rarity
           prize_amount
           created_at
+          category {
+            prize_type
+            currency_uid
+            currency_type
+          }  
         }
         is_claimed
         created_at
@@ -178,17 +184,12 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
 
 export const OPEN_CHEST = gql`
   mutation ($game_platform_id: Int!, $tier: LuckyChestTier!) {
-    openChest (game_platform_id: $game_platform_id, tier: $tier) {
-      prize
-      user_prize_history_uid
-    }
+    openChest (game_platform_id: $game_platform_id, tier: $tier)
   }
 `
 
 const CLAIM_CHEST_PRIZE = gql`
-  mutation($user_prize_history_uid: String!) {
-    claimChestPrize(user_prize_history_uid: $user_prize_history_uid) {
-      required_contact
-    }
+  mutation($user_prize_history_uid: String!, $address: String) {
+    claimChestPrize(user_prize_history_uid: $user_prize_history_uid, address: $address)
   }
 `

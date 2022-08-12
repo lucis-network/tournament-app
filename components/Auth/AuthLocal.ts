@@ -14,7 +14,7 @@ function toBinary(string: string) {
   return window.btoa(String.fromCharCode(...new Uint8Array(codeUnits.buffer)));
 }
 
-function fromBinary(encoded: string) {
+export function fromBinary(encoded: string) {
   const binary = window.atob(encoded);
   const bytes = new Uint8Array(binary.length);
   for (let i = 0; i < bytes.length; i++) {
