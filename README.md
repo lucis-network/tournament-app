@@ -5,6 +5,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+cp .env.example .env
+# Then edit the .env with the correct content
+echo "I'm sure .env is correct"
+
 npm run dev
 # or
 yarn dev

@@ -1,0 +1,2 @@
+- `docker` folder is for ISR deployment
+- `deploy` folder is for static web deployment

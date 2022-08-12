@@ -263,8 +263,10 @@ const RollingRaffles = (props: Props) => {
       const timeBefore = (endAtBefore - dateNow)/(1000 * 60 * 60);
       if(timeBefore <= 1) {
         setIsCheckStatusClosed(true);
-        refetchRaffleDetail().then(r => {});
-        refetchMyWonTickets().then(r => {});
+        if(dataRaffleDetail?.status !== "CLOSED") {
+          refetchRaffleDetail().then(r => {});
+          refetchMyWonTickets().then(r => {});
+        }
       }
     }, 1000)
     if(isCheckStatusClosed)  clearInterval(checkDateInterval);
@@ -343,7 +345,7 @@ const RollingRaffles = (props: Props) => {
                             <span>End rolling in</span>
                         </div>
                         <div className={s.rollingTime}>
-                            <CountdownTimeEnd targetDate={timeEnd} refetchRaffleDetail={refetchRaffleDetail} refetchMyWonTickets={refetchMyWonTickets}/>
+                            <CountdownTimeEnd targetDate={timeEnd} status={dataRaffleDetail?.status ?? ""} refetchRaffleDetail={refetchRaffleDetail} refetchMyWonTickets={refetchMyWonTickets}/>
                         </div>
                     </>
                 }

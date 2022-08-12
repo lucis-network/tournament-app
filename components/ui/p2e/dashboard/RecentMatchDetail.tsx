@@ -3,6 +3,7 @@ import React from "react";
 import { Game, } from "utils/Enum";
 import { RecentMatchDetailCSGO } from "./csgo/RecentMatchDetailCSGO";
 import { RecentMatchDetailLOL } from "./lol/RecentMatchDetailLOL";
+import DocHeadPlaycore from "../../../DocHeadPlaycore";
 
 interface IProps {
   currentGame?: Game;
@@ -18,9 +19,17 @@ export const RecentMatchDetail = (props: IProps) => {
 
   switch (currentGame) {
     case Game.CSGO:
-      return <RecentMatchDetailCSGO />
+      return (
+        <>
+          <RecentMatchDetailCSGO />
+        </>
+      );
     case Game.LOL:
-      return <RecentMatchDetailLOL />
+      return (
+        <>
+          <RecentMatchDetailLOL />
+        </>
+      )
     default:
       return null;
   }

@@ -120,7 +120,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   }, [dataSponsors]);
 
   if (loading) {
-    return null;
+    return <DocHead/>;
   }
 
   const openModal = (item: string) => {
@@ -230,7 +230,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
   return (
     <>
-      <DocHead title={name} />
+      <DocHead />
       <div className={`${s.wrapper}`}>
         <Banner
           cover={cover}
@@ -819,5 +819,5 @@ export default function TournamentDetailSafe() {
 
   return id ? (
     <TournamentDetail tournamentId={id as string} asPath={router.asPath} />
-  ) : null;
+  ) : <DocHead />;
 }

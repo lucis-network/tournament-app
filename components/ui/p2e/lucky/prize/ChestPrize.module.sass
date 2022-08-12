@@ -6,6 +6,7 @@
   height: 100%
   display: flex
   flex-direction: column
+  align-items: center
   color: $colorPrizeCommon
   @media screen and (min-width: 1200px)
     min-width: 130px
@@ -71,6 +72,7 @@
     background: rgba(45, 52, 70, 0.5)
     backdrop-filter: blur(40px)
     height: 100%
+    width: 100%
     display: flex
     align-items: center
     justify-content: center
@@ -81,6 +83,18 @@
     font-size: 12px
     line-height: 13px
     text-transform: uppercase
+  .prizeAmount
+    font-family: 'Revx Neue Demo'
+    font-weight: 600
+    font-size: 12px
+    line-height: 13px
+    letter-spacing: 0.04em
+    margin-top: 16px
+    background: rgba(69, 80, 107, 0.5)
+    padding: 8px 15px
+    color: #FFFFFF
+    backdrop-filter: blur(40px)
+    border-radius: 72px
 .prizeDetail
   border: none
   border-radius: 4px 4px 0 0
@@ -206,3 +220,6 @@
     font-weight: 300
     font-size: 16px
     line-height: 20px
+
+.disableImg
+  filter: saturate(0)

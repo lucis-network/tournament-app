@@ -72,9 +72,9 @@ export default observer(function ContentMyProfile({
       <TabPane tab="Teams" key="teams">
         <MyTeamDetail isOwnerProp={isOwner} />
       </TabPane>
-      <TabPane tab="For Sponsor" disabled key="sponsor">
-        Content of Tab Pane 3
-      </TabPane>
+      {/*<TabPane tab="For Sponsor" disabled key="sponsor">*/}
+      {/*  Content of Tab Pane 3*/}
+      {/*</TabPane>*/}
       <TabPane tab="Tournaments" key="tournaments">
         <MyTournament
           userInfo={userInfo}
@@ -88,11 +88,13 @@ export default observer(function ContentMyProfile({
       <TabPane tab="My Staking" key="6" disabled>
         {/* <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} /> */}
       </TabPane>
-      <TabPane tab="Refer history" key="refer">
-        <ReferHistory></ReferHistory>
-      </TabPane>
-      <TabPane tab="Inventory" key="inventory" disabled>
-        <Inventory></Inventory>
+      {isOwner &&
+          <TabPane tab="Refer history" key="refer">
+              <ReferHistory></ReferHistory>
+          </TabPane>
+      }
+      <TabPane tab="Inventory" key="inventory">
+        <Inventory isOwner={isOwner} userInfo={userInfo}></Inventory>
       </TabPane>
     </Tabs>
   );
