@@ -183,10 +183,14 @@ export default observer(function HistoryTable({currentGame}: HistoryTableProps) 
   return (
     <>
       <div className={s.wrapper}>
-        <div style={{display: "flex", justifyContent: "space-between"}}>
+        <div className={s.historyHeader}>
           <h2>Your history</h2>
           <div>
-            <Link href={"profile?page=inventory"}>View user inventory</Link>
+            <Link href={"/profile?page=inventory"} passHref>
+              <a>
+                View user inventory
+              </a>
+            </Link>
           </div>
         </div>
 

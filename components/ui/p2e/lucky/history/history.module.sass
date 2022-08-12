@@ -50,16 +50,26 @@
         backdrop-filter: blur(40px)
     :global(.ant-table)
         background: transparent
-    h2
-        font-family: 'Revx Neue Demo'
-        font-style: normal
-        font-weight: 600
-        font-size: 20px
-        line-height: 22px
-        color: #00F9FF
-        margin-bottom: 16px
-        @media screen and (min-width: 768px)
-            margin-bottom: 24px
+    .historyHeader
+        display: flex
+        justify-content: space-between
+        a
+            font-family: 'Revx Neue Demo'
+            font-style: normal
+            font-weight: 600
+            font-size: 16px
+            text-decoration: underline
+            color: #00F9FF
+        h2
+            font-family: 'Revx Neue Demo'
+            font-style: normal
+            font-weight: 600
+            font-size: 20px
+            line-height: 22px
+            color: #00F9FF
+            margin-bottom: 16px
+            @media screen and (min-width: 768px)
+                margin-bottom: 24px
     .prizeWrap
         display: flex
         align-items: center
