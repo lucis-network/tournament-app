@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
@@ -37,7 +37,8 @@ const games: number[] = [
 
 
 export default function LuckyChest(props: any) {
-    const [currentLuckyChestTab, setCurrentLuckyChestTab] = useState(LuckyChestTier.Standard)
+    const [currentLuckyChestTab, setCurrentLuckyChestTab] = useState(LuckyChestTier.Standard);
+    const [disabledTab, setDisabledTab] = useState(false);
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
     const [chestPrize, setChestPrize] = useState<LuckyChestPrize>({} as LuckyChestPrize);
@@ -96,6 +97,18 @@ export default function LuckyChest(props: any) {
       }
     }
 
+  useEffect(() => {
+    if(!props.currentGame) {
+      setCurrentLuckyChestTab(LuckyChestTier.Free);
+      setDisabledTab(true);
+      refetchChestDetail({
+        game_platform_id: undefined,
+        tier: LuckyChestTier.Free,
+      })
+    } else {
+      setDisabledTab(false);
+    }
+  }, [props.currentGame])
   const openRollingLuckyChest = async () => {
     try {
       await openLuckyChest({
@@ -237,6 +250,13 @@ export default function LuckyChest(props: any) {
       </>
     )
     const switchLuckyChestTab = (tab: LuckyChestTier) => {
+      if (tab === currentLuckyChestTab) {
+        return;
+      }
+      if (!props.currentGame && tab !== LuckyChestTier.Free) {
+        setDisabledTab(true);
+        return;
+      }
       setCurrentLuckyChestTab(tab);
       refetchChestDetail({
         game_platform_id: tab === LuckyChestTier.Free ? undefined : gameType,
@@ -248,8 +268,16 @@ export default function LuckyChest(props: any) {
         <div className={s.luckyChestTabsSection}>
           <div className="lucis-container-2">
             <div className={s.luckyChestTabs}>
-              <div onClick={() => switchLuckyChestTab(LuckyChestTier.Standard)} className={`${s.luckyChestTabsItem} ${currentLuckyChestTab === LuckyChestTier.Standard ? "active" : ""}`}>Standard</div>
-              <div onClick={() => switchLuckyChestTab(LuckyChestTier.Free)} className={`${s.luckyChestTabsItem} ${currentLuckyChestTab === LuckyChestTier.Free ? "active" : ""}`}>Free</div>
+              <div
+                onClick={() => switchLuckyChestTab(LuckyChestTier.Standard)}
+                className={`${s.luckyChestTabsItem} ${currentLuckyChestTab === LuckyChestTier.Standard ? "active" : ""} ${disabledTab && "disabled"}`}>
+                Standard
+              </div>
+              <div
+                onClick={() => switchLuckyChestTab(LuckyChestTier.Free)}
+                className={`${s.luckyChestTabsItem} ${currentLuckyChestTab === LuckyChestTier.Free ? "active" : ""}`}>
+                Trial
+              </div>
               <div className={`${s.luckyChestTabsItem} disabled`}>Premium</div>
               <div className={`${s.luckyChestTabsItem} disabled`}>NFTs</div>
             </div>
