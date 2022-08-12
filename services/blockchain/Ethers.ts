@@ -69,6 +69,19 @@ export default class EtherContract {
     return new ethers.Contract(contractAddress, Erc721Abi, this.getSigner());
   }
 
+  async signMessage(
+    message: string,
+  ): Promise<string> {
+    const signer = this.getSigner();
+
+    return await signer.signMessage(message);
+  }
+
+  getAddressFromSignature(message: string, signature: string): string {
+    return ethers.utils.verifyMessage(message, signature);
+
+  }
+
   async getBalanceOf(
     address: string,
     erc20ContractAddress: string

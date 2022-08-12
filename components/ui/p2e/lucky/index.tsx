@@ -31,6 +31,7 @@ import AuthGameStore from "../../../Auth/AuthGameStore";
 import {useRouter} from "next/router";
 import {OverviewSection} from "../../../../utils/Enum";
 import {AppEmitter} from "../../../../services/emitter";
+import {fromBinary} from "../../../Auth/AuthLocal";
 
 export enum GAMES {
   FACEITCSGO = 1,
@@ -109,8 +110,9 @@ export default function LuckyChest(props: any) {
           tier: LuckyChestTier.Standard,
         },
         onCompleted: (data) => {
-          const decodedData: LuckyChestPrize = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
-          setChestPrize(decodedData);
+          // const decodedData: LuckyChestPrize = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
+          // console.log(fromBinary(data?.openChest))
+          setChestPrize(JSON.parse(fromBinary(data?.openChest)));
           setRollingChestPopupVisible(true);
           AppEmitter.emit("updateBalance");
         }

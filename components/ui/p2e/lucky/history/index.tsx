@@ -13,6 +13,14 @@ import {AppEmitter} from "../../../../../services/emitter";
 import PopupContactRaffles from "../../raffles/popup/popupContact";
 import PrizePopover from "../prize/popover";
 import {GAMES} from "../index";
+import ConnectWalletStore, {
+  nonReactive as ConnectWalletStore_NonReactiveData
+} from "../../../../Auth/ConnectWalletStore";
+import AuthBoxStore from "../../../../Auth/components/AuthBoxStore";
+import {observer} from "mobx-react-lite";
+import Link from "next/link"
+import EtherContract from "../../../../../services/blockchain/Ethers";
+import {ColumnsType} from "antd/es/table";
 
 type HistoryTableProps = {
   currentGame: number,
@@ -20,13 +28,14 @@ type HistoryTableProps = {
 
 const historyLimit = 10
 
-export default function HistoryTable({currentGame}: HistoryTableProps) {
+export default observer(function HistoryTable({currentGame}: HistoryTableProps) {
   const [historyData, setHistoryData] = useState<any[]>([])
   const [claimingChestPrize, setClaimingChestPrize] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [totalHistory, setTotalHistory] = useState<number>(0)
   const [prizeCode, setPrizeCode] = useState<string>('')
-  const [isModalContactVisible, setModalContactVisible] = useState<boolean>(false)
+  const [isModalContactVisible, setModalContactVisible] = useState<boolean>(false);
+  const [loadingList, setLoadingList] = useState<number[]>([]);
   const {
     getLuckyChestUserInfoLoading,
     getLuckyChestUserInfoError,
@@ -39,7 +48,8 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     limit: historyLimit,
   })
   const {claimChestPrize} = useClaimChestPrize()
-
+  const {address} = ConnectWalletStore;
+  // console.log(dataLuckyChestUserInfo)
   const userHistory = dataLuckyChestUserInfo?.history
   const historyCount = dataLuckyChestUserInfo?.history_count
 
@@ -82,7 +92,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     }
   }, [historyCount])
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: 'Code',
       dataIndex: 'code',
@@ -101,7 +111,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       dataIndex: ['prize', 'user_prize_history_uid', 'is_claimed', 'code'],
       key: 'title',
       className: s.columnReward,
-      render: (text: string, data: any) => {
+      render: (text: string, data: any, index) => {
         return (
             <div className={s.prizeWrap}>
               <div className={`${s.prize} ${data.prize.rarity}`}>
@@ -119,8 +129,10 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
               </div>
               <ButtonClaim
                 isClaimed={data.is_claimed}
-                onClick={() => handleClaimChestPrize(data.user_prize_history_uid.toString(), data.code)}
+                onClick={() => handleClaimChestPrize(index, data.prize?.category.currency_uid, data.prize?.category?.currency_type, data.user_prize_history_uid.toString(), data.code)}
                 disabled={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
+                buttonText={!data.prize?.category?.currency_type ? "Archived" : null}
+                loading={loadingList.findIndex(item => item === index) > -1}
               />
             </div>
         )
@@ -128,13 +140,35 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     }
   ]
 
-  const handleClaimChestPrize = (user_prize_history_uid: string, code: string) => {
+  const handleClaimChestPrize = async (index: number, currency_uid: string | null, currency_type: string, user_prize_history_uid: string, code: string) => {
+
+    if (currency_uid && !address) {
+      AuthBoxStore.connectModalVisible = true;
+      return;
+    }
+
+    if (currency_type === "DECENTRALIZED") {
+      const ether = new EtherContract(ConnectWalletStore_NonReactiveData.web3Provider as any);
+      const message = "Sign to claim your reward!";
+      try {
+        const signature = await ether.signMessage(message);
+        // const addressFromSignature = ether.getAddressFromSignature(message, signature);
+      } catch (e) {
+        antMessage.error("User denied");
+        return;
+      }
+
+    }
     if (!user_prize_history_uid) return
     setPrizeCode(code)
     setClaimingChestPrize(user_prize_history_uid)
+    setLoadingList([...loadingList, index]);
     claimChestPrize({
       user_prize_history_uid: user_prize_history_uid,
+      address: address,
       onError: (error) => handleGraphqlErrors(error, (code, message) => {
+        const newLoadingList = loadingList.filter(item => item !== index);
+        setLoadingList(newLoadingList);
         if (code !== 'UnAuth') {
           switch (code) {
             case ClaimChestPrizeErrorCode.UserHistoryNotFound:
@@ -150,15 +184,13 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
         }
       }),
       onCompleted: (data) => {
+        const newLoadingList = loadingList.filter(item => item !== index);
+        setLoadingList(newLoadingList);
         const claimChestPrizeData = data?.data?.claimChestPrize
         if (claimChestPrizeData) {
-          if (claimChestPrizeData?.required_contact) {
-            setModalContactVisible(true)
-          } else {
-            antMessage.success('Success!')
-            refetchGetLuckyChestUserInfo()
-            AppEmitter.emit("updateBalance");
-          }
+          antMessage.success('Success!')
+          refetchGetLuckyChestUserInfo()
+          AppEmitter.emit("updateBalance")
         }
       }
     }).finally(() => setClaimingChestPrize(''))
@@ -176,7 +208,17 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
   return (
     <>
       <div className={s.wrapper}>
-        <h2>Your history</h2>
+        <div className={s.historyHeader}>
+          <h2>Your history</h2>
+          <div>
+            <Link href={"/profile?page=inventory"} passHref>
+              <a>
+                View user inventory
+              </a>
+            </Link>
+          </div>
+        </div>
+
         <Table
           dataSource={historyData}
           // dataSource={[]}
@@ -209,4 +251,4 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       />
     </>
   )
-}
+});
