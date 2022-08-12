@@ -24,7 +24,7 @@ const MyProfile = () => {
     skip: isEmpty(user_name),
   });
   const currentPage = router.query?.page ?? ''
-  const allowedPages = ['', 'teams', 'tournaments']
+  const allowedPages = ['', 'teams', 'tournaments', 'inventory']
 
   useEffect(() => {
     if (currentPage === '') {

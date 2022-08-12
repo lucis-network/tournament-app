@@ -1,22 +1,26 @@
 import React, {useCallback, useState} from "react";
-import s from "./index.module.sass";
+import s from "../index.module.sass";
 import {Input, Select} from "antd";
-import {useGetMyInventoryPieces, useGetMyInventoryPiecesConfig} from "../../../../../../hooks/p2e/useP2E";
+import {useGetMyInventoryPieces, useGetMyInventoryPiecesConfig} from "../../../../../../../hooks/p2e/useP2E";
 import debounce from "lodash/debounce";
 import ItemsPiece from "./itemsPiece";
-import AuthStore from "../../../../../Auth/AuthStore";
+import AuthStore, {AuthUser} from "../../../../../../Auth/AuthStore";
 
-type Props = {};
+type Props = {
+  isOwner?: boolean;
+  userInfo: AuthUser;
+};
 
 const {Option} = Select;
 
 const TabPiecesInventory = (props: Props) => {
+  const {isOwner, userInfo} = props;
   const [searchName, setSearchName] = useState<string>("");
   const [searchGroupFilter, setSearchGroupFilter] = useState<string>("");
 
   const {dataMyInventoryPieces, loading, refetchMyInventoryPieces} = useGetMyInventoryPieces(
     {
-      user_id: AuthStore.id || undefined,
+      user_id: isOwner ? AuthStore.id || undefined : userInfo.id,
       group_filter: searchGroupFilter,
       search_name: searchName,
     }
@@ -66,7 +70,7 @@ const TabPiecesInventory = (props: Props) => {
             dataMyInventoryPieces.map((item, index) => (
               <>
                 <div className={s.rowPieces} key={`${index}${item?.type}`}>
-                  <ItemsPiece item={item} refetchMyInventoryPieces={refetchMyInventoryPieces}></ItemsPiece>
+                  <ItemsPiece item={item} isOwner={isOwner} refetchMyInventoryPieces={refetchMyInventoryPieces}></ItemsPiece>
                 </div>
                 {index < dataMyInventoryPieces.length-1 &&
                     <div className={s.cross}></div>
@@ -76,6 +80,12 @@ const TabPiecesInventory = (props: Props) => {
           }
         </div>
       </div>
+      {
+        !dataMyInventoryPieces &&
+          <div className={s.emptyItem}>
+              No items
+          </div>
+      }
     </>
 
   );

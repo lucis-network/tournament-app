@@ -1,16 +1,23 @@
-import React from "react";
-import s from "./index.module.sass";
-import {Button} from "antd";
+import React, {useState} from "react";
+import s from "../index.module.sass";
 import {InventoryItem} from "src/generated/graphql_p2e";
-import PrizePopover from "../../../../p2e/lucky/prize/popover";
-import sChestPrize from "../../../../p2e/lucky/prize/ChestPrize.module.sass"
-import ButtonWrapper from "../../../../../common/button/Button";
+import PrizePopover from "../../../../../p2e/lucky/prize/popover";
+import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass"
+import ButtonWrapper from "../../../../../../common/button/Button";
+import PopupConfirmItems from "../popup/popupConfirmItems";
 type Props = {
-  item: InventoryItem
+  item: InventoryItem;
+  isOwner?: boolean;
 };
 
 const ItemsTabItem = (props: Props) => {
-  const {item} = props
+  const {item, isOwner} = props
+  const [status, setStatus] = useState<boolean>(false);
+
+  const openClaimConfirmPopup = () => {
+    setStatus(true);
+  }
+
   return (
     <>
       <PrizePopover
@@ -27,18 +34,22 @@ const ItemsTabItem = (props: Props) => {
             {item?.prize?.title ?? ''}
           </div>
             {
-              item?.quantity &&
+              item?.quantity && isOwner &&
                 <div className={s.prizeAmount}>
                     <div className={s.prizeAmountQty}>
                         Amount:{" "}{item?.quantity}
                     </div>
                     <div>
-                        <ButtonWrapper width={80}>Claim</ButtonWrapper>
+                        <ButtonWrapper width={80} onClick={openClaimConfirmPopup}>Claim</ButtonWrapper>
                     </div>
                 </div>
             }
         </div>
       </PrizePopover>
+      {
+        status &&
+          <PopupConfirmItems item={item} status={status} onClosePopup={() => setStatus(false)}></PopupConfirmItems>
+      }
     </>
   );
 };

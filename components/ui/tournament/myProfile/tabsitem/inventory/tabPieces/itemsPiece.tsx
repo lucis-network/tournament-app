@@ -1,21 +1,22 @@
 import React, {useState} from "react";
-import s from "./index.module.sass";
+import s from "../index.module.sass";
 import {message} from "antd";
-import {ASSEMBLE_INVENTORY_PIECE} from "../../../../../../hooks/p2e/useP2E";
+import {ASSEMBLE_INVENTORY_PIECE} from "../../../../../../../hooks/p2e/useP2E";
 import ChestPrize from "components/ui/p2e/lucky/prize";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
 import {InventoryPieceGroup} from "src/generated/graphql_p2e";
-import {AppEmitter} from "../../../../../../services/emitter";
-import ButtonWrapper from "../../../../../common/button/Button";
+import {AppEmitter} from "../../../../../../../services/emitter";
+import ButtonWrapper from "../../../../../../common/button/Button";
 
 type Props = {
   item : InventoryPieceGroup,
   refetchMyInventoryPieces : () => Promise<ApolloQueryResult<any>>,
+  isOwner?: boolean;
 };
 
 const ItemsPiece = (props: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {item, refetchMyInventoryPieces} = props;
+  const {item, isOwner, refetchMyInventoryPieces} = props;
   const [assembleInventoryPiece] = useMutation(ASSEMBLE_INVENTORY_PIECE, {
     context: {
       endpoint: 'p2e'
@@ -58,10 +59,12 @@ const ItemsPiece = (props: Props) => {
           ))
         }
       </div>
-      <div className={s.btnCombine}>
-        {/*<Button loading={isLoading} onClick={() => assemble(item?.type ?? undefined)}>Combine</Button>*/}
-        <ButtonWrapper loading={isLoading} onClick={() => assemble(item?.type ?? undefined)} width={120}>Craft</ButtonWrapper>
-      </div>
+      {isOwner &&
+          <div className={s.btnCombine}>
+            {/*<Button loading={isLoading} onClick={() => assemble(item?.type ?? undefined)}>Combine</Button>*/}
+              <ButtonWrapper loading={isLoading} onClick={() => assemble(item?.type ?? undefined)} width={120} disabled={!item.achieved}>Merge</ButtonWrapper>
+          </div>
+      }
     </>
 
   );

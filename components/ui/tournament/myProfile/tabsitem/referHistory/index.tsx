@@ -4,7 +4,8 @@ import {Image, message, Table} from "antd";
 import {useGetReferHistory} from "../../../../../../hooks/p2e/useP2E";
 import {ReferFriendGql} from "../../../../../../src/generated/graphql_p2e";
 import {isClient} from "../../../../../../utils/DOM";
-import AuthStore from "../../../../../Auth/AuthStore";
+import AuthStore, {AuthUser} from "../../../../../Auth/AuthStore";
+import {ApolloQueryResult} from "@apollo/client";
 
 type Props = {
 };

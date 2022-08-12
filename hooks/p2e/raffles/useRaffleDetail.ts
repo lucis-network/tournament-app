@@ -158,7 +158,6 @@ const GET_RAFFLE_DETAIL = gql`
       uid
       name
       desc
-      prize_type
       prize_amount
       winner_total
       valued_at
@@ -192,6 +191,13 @@ const GET_RAFFLE_DETAIL = gql`
       }
       regions
       type
+      prize_category {
+        currency_type
+        currency {
+          icon
+          name
+        }
+      }
     }
   }
 `

@@ -1,23 +1,26 @@
 import React, {useCallback, useEffect, useState} from "react";
-import s from "./index.module.sass";
-import {Button, Input, Select} from "antd";
-import {ItemGroup} from "../../../../../../src/generated/graphql";
+import s from "../index.module.sass";
+import {Input, Select} from "antd";
+import {ItemGroup} from "../../../../../../../src/generated/graphql";
 import debounce from "lodash/debounce";
 import { useGetMyInventoryItems } from "hooks/p2e/useP2E";
-import AuthStore from "../../../../../Auth/AuthStore";
-import {AppEmitter} from "../../../../../../services/emitter";
+import AuthStore, {AuthUser} from "../../../../../../Auth/AuthStore";
+import {AppEmitter} from "../../../../../../../services/emitter";
 import ItemsTabItem from "./itemsTabItem";
 
 type Props = {
+  isOwner?: boolean;
+  userInfo: AuthUser;
 };
 const { Option } = Select;
 
 const TabItemsInventory = (props: Props) => {
+  const {isOwner, userInfo} = props;
   const [searchName, setSearchName] = useState<string>("");
   const [searchGroupFilter, setSearchGroupFilter] = useState<string>("");
   const {dataMyInventoryItems, loading, refetchMyInventoryItems} = useGetMyInventoryItems(
     {
-      user_id: AuthStore.id || undefined,
+      user_id: isOwner ? AuthStore.id || undefined : userInfo.id,
       group_filter: searchGroupFilter,
       search_name: searchName,
     }
@@ -53,9 +56,9 @@ const TabItemsInventory = (props: Props) => {
         <div>
           <Select defaultValue="All" className={s.dropdownSearch} onChange={handleChange}>
             <Option value="">All</Option>
-            <Option value={ItemGroup.Csgo}>{ItemGroup.Csgo}</Option>
-            <Option value={ItemGroup.Lol}>{ItemGroup.Lol}</Option>
-            <Option value={ItemGroup.Nft}>{ItemGroup.Nft}</Option>
+            <Option value={ItemGroup.Csgo}>{ItemGroup.Csgo.toUpperCase()}</Option>
+            <Option value={ItemGroup.Lol}>{ItemGroup.Lol.toUpperCase()}</Option>
+            <Option value={ItemGroup.Nft}>{ItemGroup.Nft.toUpperCase()}</Option>
           </Select>
         </div>
         <div>
@@ -74,13 +77,19 @@ const TabItemsInventory = (props: Props) => {
             (
               <>
                 <div className={s.item} key={`${index}`}>
-                  <ItemsTabItem item={item}></ItemsTabItem>
+                  <ItemsTabItem item={item} isOwner={isOwner}></ItemsTabItem>
                 </div>
               </>
             )
           )
         }
       </div>
+      {
+        !dataMyInventoryItems &&
+          <div className={s.emptyItem}>
+              No items
+          </div>
+      }
     </div>
 
   );

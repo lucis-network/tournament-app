@@ -6,7 +6,7 @@ import SliderBox from "../slider";
 import PopupRollingChest from "./popupRollingChest";
 import ButtonOpenBox from "../button/buttonOpen";
 import PopupRewardChest from "./popupRewardChest";
-import {ChestDetail, LuckyChestPrize, LuckyChestTier, OpenChestResponse} from "../../../../../src/generated/graphql_p2e";
+import {ChestDetail, LuckyChestPrize, LuckyChestTier} from "../../../../../src/generated/graphql_p2e";
 import {OPEN_CHEST, useGetLuckyChestUserInfo} from "../../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
 import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
