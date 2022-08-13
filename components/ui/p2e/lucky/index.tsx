@@ -3,7 +3,13 @@ import ButtonOpenBox from './button/buttonOpen'
 import HistoryTable from './history'
 import s from './LuckyChest.module.sass'
 import {OPEN_CHEST, useGetChestDetail,} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
-import {CostType, LuckyChestPrize, LuckyChestTier, OpenChestErrorCode,} from "../../../../src/generated/graphql_p2e";
+import {
+  ChestDetail,
+  CostType,
+  LuckyChestPrize,
+  LuckyChestTier,
+  OpenChestErrorCode,
+} from "../../../../src/generated/graphql_p2e";
 import SpinLoading from "../../common/Spin";
 import {isEmpty} from "lodash";
 import Head from "next/head";
@@ -23,6 +29,7 @@ import {useRouter} from "next/router";
 import {OverviewSection} from "../../../../utils/Enum";
 import {AppEmitter} from "../../../../services/emitter";
 import {fromBinary} from "../../../Auth/AuthLocal";
+import LuckyChestSevice from "../../../service/p2e/LuckyChestSevice";
 
 export enum GAMES {
   FACEITCSGO = 1,
@@ -42,16 +49,34 @@ export default function LuckyChest(props: any) {
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
     const [chestPrize, setChestPrize] = useState<LuckyChestPrize>({} as LuckyChestPrize);
-    const gameType = props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL
-    const {getChestDetailLoading, getChestDetailError, getChestDetailData, refetchChestDetail} = useGetChestDetail({
-        game_platform_id: gameType,
-        tier: LuckyChestTier.Standard,
-    })
+    const [gameType, setGameType] = useState<GAMES>(GAMES.GARENALOL);
+    const [chestDetail, setChestDetail] = useState<ChestDetail | undefined>(undefined);
+    const [chestDetailLoading, setChestDetailLoading] = useState(false);
+    const [chestDetailError, setChestDetailError] = useState(false);
+
+    const getChestDetail = async (type: GAMES | undefined, tier: LuckyChestTier) => {
+      setChestDetailLoading(true);
+      setChestDetailError(false);
+      try {
+        const res = await LuckyChestSevice.getChestDetail(
+          type,
+          tier
+        );
+        setChestDetailLoading(false);
+        setChestDetail(res.data?.getChestDetail);
+      } catch (e) {
+        setChestDetailLoading(false);
+        setChestDetailError(true);
+      }
+
+    }
     const [openLuckyChest] = useMutation(OPEN_CHEST, {
       context: {
         endpoint: 'p2e'
       }
-    })
+    });
+
+
     const {data: getBalanceData, refetch: refetchBalanceData} = useQuery(GET_STATISTICS, {
       context: {
         endpoint: 'p2e'
@@ -59,7 +84,8 @@ export default function LuckyChest(props: any) {
       skip: !AuthStore.isLoggedIn
     })
     const router = useRouter()
-    const chestDetail = getChestDetailData?.getChestDetail
+    // const chestDetail = getChestDetailData?.getChestDetail
+    // console.log(chestDetail)
     const ticketCost = chestDetail?.ticket_cost
     const ticketCostType = chestDetail?.ticket_cost_type
     const luckyChestSponsor = chestDetail?.sponsors
@@ -98,17 +124,30 @@ export default function LuckyChest(props: any) {
     }
 
   useEffect(() => {
+    if (!AuthStore.isLoggedIn) {
+      setCurrentLuckyChestTab(LuckyChestTier.Standard);
+      // setDisabledTab(true);
+      setGameType(GAMES.GARENALOL);
+      getChestDetail(GAMES.GARENALOL, LuckyChestTier.Standard)
+      return;
+    }
     if(!props.currentGame) {
       setCurrentLuckyChestTab(LuckyChestTier.Free);
-      setDisabledTab(true);
-      refetchChestDetail({
-        game_platform_id: undefined,
-        tier: LuckyChestTier.Free,
-      })
+      if (!AuthStore.isLoggedIn) {
+        setDisabledTab(false);
+      } else {
+        setDisabledTab(true);
+      }
+
+      getChestDetail(undefined, LuckyChestTier.Free)
     } else {
+      setGameType(props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL);
+      getChestDetail(props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL,LuckyChestTier.Standard);
       setDisabledTab(false);
+      setCurrentLuckyChestTab(LuckyChestTier.Standard);
     }
-  }, [props.currentGame])
+
+  }, [AuthStore.isLoggedIn, props.currentGame])
   const openRollingLuckyChest = async () => {
     try {
       await openLuckyChest({
@@ -234,13 +273,13 @@ export default function LuckyChest(props: any) {
     }
   }
 
-    if (getChestDetailLoading) return (
-      <div className={`${s.wrapper} lucis-container-2`}>
-        <SpinLoading/>
-      </div>
-    )
+    // if (chestDetailLoading) return (
+    //   <div className={`${s.wrapper} lucis-container-2`}>
+    //     <SpinLoading/>
+    //   </div>
+    // )
 
-    if (getChestDetailError || isEmpty(chestDetail)) return (
+    if (chestDetailError) return (
       <>
           <Head>
               <meta name="robots" content="noindex"/>
@@ -253,15 +292,12 @@ export default function LuckyChest(props: any) {
       if (tab === currentLuckyChestTab) {
         return;
       }
-      if (!props.currentGame && tab !== LuckyChestTier.Free) {
+      if (!props.currentGame && tab !== LuckyChestTier.Free && AuthStore.isLoggedIn) {
         setDisabledTab(true);
         return;
       }
       setCurrentLuckyChestTab(tab);
-      refetchChestDetail({
-        game_platform_id: tab === LuckyChestTier.Free ? undefined : gameType,
-        tier: tab,
-      })
+      getChestDetail(tab === LuckyChestTier.Free ? undefined : gameType, tab);
     }
     return (
       <>
@@ -354,7 +390,7 @@ export default function LuckyChest(props: any) {
               </div>
             </div>
           )}
-          {AuthStore.isLoggedIn && <HistoryTable currentGame={gameType} tier={currentLuckyChestTab} />}
+          {AuthStore.isLoggedIn && <HistoryTable currentGame={props.currentGame} tier={currentLuckyChestTab} />}
           {(luckyChestSponsor && (luckyChestSponsor.length > 0)) && (
             <div className={s.luckyChestSponsor}>
               <div className="lucis-container-2">
@@ -372,7 +408,7 @@ export default function LuckyChest(props: any) {
           {rollingChestPopupVisible && <PopupRollingChest
               visible={rollingChestPopupVisible}
               closePopupRollingChest={() => setRollingChestPopupVisible(false)}
-              chestDetail={chestDetail}
+              chestDetail={chestDetail as ChestDetail}
               chestPrize={chestPrize}
           />}
         </div>
