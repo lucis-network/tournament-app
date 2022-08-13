@@ -31,10 +31,16 @@ const ItemClaimTicket = (props: Props) => {
     setIsLoading(true);
 
     try {
+      let address;
+      if(dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
+        address = ConnectWalletStore.address;
+      }
+
       await claimRaffleTicket({
         variables: {
           raffle_uid : raffleUid,
           ticket_number: item?.ticket_number,
+          address: address,
         },
         onCompleted: (data) => {
           setIsLoading(false);
@@ -59,6 +65,9 @@ const ItemClaimTicket = (props: Props) => {
         switch (code) {
           case "HAS_CLAIMED":
             message.error("You had claim this ticket!");
+            return;
+          case "INSUFFICIENT_FUNDS":
+            message.error("!");
             return;
           default:
             message.error("Something was wrong! Please contact to Lucis network!");
