@@ -42,7 +42,7 @@ export const useGetChestDetail = ({game_platform_id, tier}: GetChestDetailProps)
     context: {
       endpoint: 'p2e'
     },
-    fetchPolicy: "no-cache"
+    skip: true
   })
 
   return {
