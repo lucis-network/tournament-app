@@ -47,7 +47,7 @@ export default observer(function User(props: Props) {
     AuthBoxStore.connectModalVisible = true;
   };
 
-  const disconnectWallet = useCallback(async () => {
+  const logOut = useCallback(async () => {
     const authService = new AuthService();
     authService.logout();
 
@@ -149,7 +149,7 @@ export default observer(function User(props: Props) {
           <Button type="link" onClick={onClickProfile}>
             My Profile
           </Button>
-          <Button type="link" onClick={disconnectWallet}>
+          <Button type="link" onClick={logOut}>
             Sign out
           </Button>
           {/* <GoogleLogout

@@ -24,11 +24,12 @@ import {ColumnsType} from "antd/es/table";
 
 type HistoryTableProps = {
   currentGame: number,
+  tier?: LuckyChestTier
 }
 
 const historyLimit = 10
 
-export default observer(function HistoryTable({currentGame}: HistoryTableProps) {
+export default observer(function HistoryTable({currentGame, tier}: HistoryTableProps) {
   const [historyData, setHistoryData] = useState<any[]>([])
   const [claimingChestPrize, setClaimingChestPrize] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
@@ -53,13 +54,33 @@ export default observer(function HistoryTable({currentGame}: HistoryTableProps) 
   const userHistory = dataLuckyChestUserInfo?.history
   const historyCount = dataLuckyChestUserInfo?.history_count
 
+  useEffect(() =>{
+    refetchGetLuckyChestUserInfo({
+        game_platform_id: tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : GAMES.GARENALOL),
+        tier: tier,
+        page: currentPage,
+        limit: historyLimit,
+      }
+    )
+  }, [tier])
   useEffect(() => {
-    const l = AppEmitter.addListener('refresh_history', refetchGetLuckyChestUserInfo)
+    const l = AppEmitter.addListener('refresh_history',
+      () => {
+        refetchGetLuckyChestUserInfo({
+            game_platform_id: tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : GAMES.GARENALOL),
+            tier: tier,
+            page: currentPage,
+            limit: historyLimit,
+          }
+        )
+      }
+
+    )
 
     return () => {
       l.remove()
     }
-  }, [])
+  }, [tier])
 
   useEffect(() => {
     let isSubscribed = true
@@ -189,7 +210,13 @@ export default observer(function HistoryTable({currentGame}: HistoryTableProps) 
         const claimChestPrizeData = data?.data?.claimChestPrize
         if (claimChestPrizeData) {
           antMessage.success('Success!')
-          refetchGetLuckyChestUserInfo()
+          refetchGetLuckyChestUserInfo({
+              game_platform_id: tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : GAMES.GARENALOL),
+              tier: tier,
+              page: currentPage,
+              limit: historyLimit,
+            }
+          )
           AppEmitter.emit("updateBalance")
         }
       }
@@ -213,7 +240,7 @@ export default observer(function HistoryTable({currentGame}: HistoryTableProps) 
           <div>
             <Link href={"/profile?page=inventory"} passHref>
               <a>
-                View user inventory
+                View my inventory
               </a>
             </Link>
           </div>
