@@ -66,6 +66,7 @@ export default function PopupConfirmItemsCsgo(props: Props) {
       title={<h3 className="text-20px text-white">{item?.prize?.title}</h3>}
       visible={status}
       wrapClassName={s.mdl}
+      onCancel={onClosePopup}
       footer={[
         <Button key="cancel" onClick={onCancel}>Cancel</Button>,
 
@@ -93,6 +94,7 @@ export default function PopupConfirmItemsCsgo(props: Props) {
           </Button>
         </Popconfirm>
       ]}
+
     >
       <div className={s.wrapper}>
         <PrizePopover

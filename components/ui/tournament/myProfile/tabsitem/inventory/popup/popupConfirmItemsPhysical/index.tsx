@@ -6,6 +6,9 @@ import sChestPrize from "../../../../../../p2e/lucky/prize/ChestPrize.module.sas
 import PrizePopover from "components/ui/p2e/lucky/prize/popover";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
 import {CLAIM_PHYSICAL_ITEM} from "../../../../../../../../hooks/p2e/useP2E";
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css';
+import AuthStore from "../../../../../../../Auth/AuthStore";
 
 interface Props {
   status: boolean;
@@ -15,6 +18,9 @@ interface Props {
 }
 
 export default function PopupConfirmItemsPhysical(props: Props) {
+  const localUserInfo = AuthStore;
+  const [phone, setPhone] = useState<string>(localUserInfo?.profile?.phone as string);
+  const [phoneError, setPhoneError] = useState<string | undefined>(undefined)
   const {status, item, onClosePopup, refetchMyInventoryItems} = props;
   const [visible, setVisible] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
@@ -69,6 +75,7 @@ export default function PopupConfirmItemsPhysical(props: Props) {
       title={<h3 className="text-20px text-white">{item?.prize?.title}</h3>}
       visible={status}
       wrapClassName={s.mdl}
+      onCancel={onCancel}
       footer={[
         <Button key="cancel" onClick={onCancel}>Cancel</Button>,
 
@@ -137,6 +144,23 @@ export default function PopupConfirmItemsPhysical(props: Props) {
                 },
               ]}>
               <Input placeholder="Your phone" className={s.formFieldBg} autoComplete="false" />
+            </Form.Item>
+            <Form.Item
+              labelCol={{ span: 24 }}
+            >
+              <PhoneInput
+                country={`${localUserInfo?.profile?.country_code?.toLowerCase()}`}
+                enableSearch
+                value={phone}
+                onChange={(phone) => {
+                  setPhoneError(undefined)
+                  setPhone(phone)
+                }}
+                placeholder="Enter phone number"
+                buttonClass={`${s.inputPhone}`}
+
+              />
+              <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
             </Form.Item>
           </Form>
         </div>
