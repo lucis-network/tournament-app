@@ -121,14 +121,14 @@ export default function PopupConfirmItemsCsgo(props: Props) {
               rules={[
                 {
                   required: true,
-                  message: "Please input your steam url!"
+                  message: "Please input your steam URL!"
                 },
                 {
                   type: "url",
-                  message: "This field must be a valid url!"
+                  message: "This field must be a valid URL!"
                 }
               ]}>
-              <Input placeholder="Your steam url" className={s.formFieldBg} autoComplete="false" />
+              <Input placeholder="Your steam URL" className={s.formFieldBg} autoComplete="false" />
             </Form.Item>
           </Form>
         </div>

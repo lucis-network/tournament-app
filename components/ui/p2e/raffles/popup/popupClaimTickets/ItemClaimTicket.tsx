@@ -40,14 +40,16 @@ const ItemClaimTicket = (props: Props) => {
           setIsLoading(false);
           setIsDisable(true);
 
-          if (data?.claimRaffle?.required_contact) {
-            openPopupContactRaffes();
+          // if (data?.claimRaffle?.required_contact) {
+          //   openPopupContactRaffes();
+          // } else {
+          //
+          // }
+
+          if (dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
+            signMetamask();
           } else {
-            if (dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
-              signMetamask();
-            } else {
-              message.success("Claim success!");
-            }
+            message.success("Claim success!");
           }
         }
       })

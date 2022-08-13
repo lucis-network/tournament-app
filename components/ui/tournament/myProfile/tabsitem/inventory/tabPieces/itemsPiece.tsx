@@ -53,7 +53,7 @@ const ItemsPiece = (props: Props) => {
                 image={itemPrize?.prize?.img ?? ''}
                 title={itemPrize?.prize?.title ?? ''}
                 rarity={itemPrize?.prize?.rarity ?? ''}
-                amount={itemPrize?.quantity ?? 0}
+                amount={itemPrize?.quantity > 0 ? itemPrize?.quantity : 0}
               />
             </div>
           ))

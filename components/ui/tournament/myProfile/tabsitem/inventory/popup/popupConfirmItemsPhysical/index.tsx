@@ -5,7 +5,7 @@ import {InventoryItem} from "../../../../../../../../src/generated/graphql_p2e";
 import sChestPrize from "../../../../../../p2e/lucky/prize/ChestPrize.module.sass";
 import PrizePopover from "components/ui/p2e/lucky/prize/popover";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
-import {CLAIM_CSGO_ITEM, CLAIM_PHYSICAL_ITEM} from "../../../../../../../../hooks/p2e/useP2E";
+import {CLAIM_PHYSICAL_ITEM} from "../../../../../../../../hooks/p2e/useP2E";
 
 interface Props {
   status: boolean;
@@ -37,12 +37,15 @@ export default function PopupConfirmItemsPhysical(props: Props) {
   const handleOk = () => {
     setConfirmLoading(true);
     const shipping_address = form.getFieldValue("address");
-
+    const phone = form.getFieldValue("phone");
     const response = claimPhysicalItem({
       variables: {
         input: {
           prize_id: Number(item?.prize?.id),
           shipping_address: shipping_address,
+          phone: {
+            set: phone
+          }
         }
       },
       context: {
@@ -74,8 +77,8 @@ export default function PopupConfirmItemsPhysical(props: Props) {
           title={
           <>
             <div className={s.descPopConfirm}>
-              <p>Make sure this is your address.</p>
-              <p>If this URL is incorrect, Lucis will not be responsible for any problems.</p>
+              <p>Make sure your information is correct.</p>
+              <p>If this is incorrect, Lucis will not be responsible for any problems.</p>
             </div>
           </>
           }
@@ -108,10 +111,9 @@ export default function PopupConfirmItemsPhysical(props: Props) {
           </div>
         </PrizePopover>
         <div className={s.desc}>
-          <p>Please leave your steam URL here.</p>
-          <p> Lucis will send you a trade offer immediately.</p>
-          <p> Confirm this trade offer within 1 day.</p>
-          <p> We will send your prize in the shortest time possible.</p>
+          <p>Please leave your address and phone number here.</p>
+          <p>We will send your prize in the shortest time possible.</p>
+          <p>Please watch out your phone during this time.</p>
         </div>
 
         <div className={s.form}>
@@ -125,6 +127,16 @@ export default function PopupConfirmItemsPhysical(props: Props) {
                 }
               ]}>
               <Input placeholder="Your address" className={s.formFieldBg} autoComplete="false" />
+            </Form.Item>
+            <Form.Item
+              name="phone"
+              rules={[
+                {
+                  required: true,
+                  message: "Please input your phone!"
+                },
+              ]}>
+              <Input placeholder="Your phone" className={s.formFieldBg} autoComplete="false" />
             </Form.Item>
           </Form>
         </div>

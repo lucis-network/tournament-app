@@ -8406,6 +8406,7 @@ export type UserInventoryItem = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
+  user_phone?: Maybe<Scalars['String']>;
 };
 
 export type UserInventoryItemCreateManyPrizeInput = {
@@ -8416,6 +8417,7 @@ export type UserInventoryItemCreateManyPrizeInput = {
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user_id: Scalars['Int'];
+  user_phone?: InputMaybe<Scalars['String']>;
 };
 
 export type UserInventoryItemCreateManyPrizeInputEnvelope = {
@@ -8431,6 +8433,7 @@ export type UserInventoryItemCreateManyUserInput = {
   steam_url?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_phone?: InputMaybe<Scalars['String']>;
 };
 
 export type UserInventoryItemCreateManyUserInputEnvelope = {
@@ -8470,6 +8473,7 @@ export type UserInventoryItemCreateWithoutPrizeInput = {
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   user: UserCreateNestedOneWithoutInventory_ItemsInput;
+  user_phone?: InputMaybe<Scalars['String']>;
 };
 
 export type UserInventoryItemCreateWithoutUserInput = {
@@ -8480,6 +8484,7 @@ export type UserInventoryItemCreateWithoutUserInput = {
   steam_url?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_phone?: InputMaybe<Scalars['String']>;
 };
 
 export type UserInventoryItemWhereUniqueInput = {

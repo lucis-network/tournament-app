@@ -76,8 +76,6 @@ const GET_MY_WON_TICKETS = gql`
 
 export const CLAIM_RAFFLE_TICKETS = gql`
   mutation ($raffle_uid: String!, $ticket_number: String!) {
-    claimRaffle (raffle_uid: $raffle_uid, ticket_number: $ticket_number) {
-      required_contact
-    }
+    claimRaffle (raffle_uid: $raffle_uid, ticket_number: $ticket_number)
   }
 `
