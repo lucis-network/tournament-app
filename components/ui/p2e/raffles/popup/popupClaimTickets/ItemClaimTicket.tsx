@@ -1,10 +1,13 @@
-import {Button, message, Modal} from "antd";
+import {Button, message as antMessage, message, Modal} from "antd";
 import s from "./index.module.sass";
 import {CurrrencyType, RaffleDetail, UserWonTicketGql} from "../../../../../../src/generated/graphql_p2e";
 import {useMutation} from "@apollo/client";
 import {CLAIM_RAFFLE_TICKETS} from "../../../../../../hooks/p2e/useRaffleDetail";
 import {handleGraphqlErrors} from "../../../../../../utils/apollo_client";
 import { useState } from "react";
+import EtherContract from "../../../../../../services/blockchain/Ethers";
+import ConnectWalletStore, {nonReactive as ConnectWalletStore_NonReactiveData} from "../../../../../Auth/ConnectWalletStore";
+import AuthBoxStore from "../../../../../Auth/components/AuthBoxStore";
 
 type Props = {
   item?: UserWonTicketGql;
@@ -22,13 +25,10 @@ const ItemClaimTicket = (props: Props) => {
       endpoint: 'p2e'
     }
   })
+  const {address} = ConnectWalletStore;
 
   const handleClaim = async () => {
     setIsLoading(true);
-
-    if(dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
-      await signMetamask();
-    }
 
     try {
       await claimRaffleTicket({
@@ -40,11 +40,14 @@ const ItemClaimTicket = (props: Props) => {
           setIsLoading(false);
           setIsDisable(true);
 
-          if(data?.claimRaffle?.required_contact) {
+          if (data?.claimRaffle?.required_contact) {
             openPopupContactRaffes();
-          }
-          else {
-            message.success("Claim success!");
+          } else {
+            if (dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
+              signMetamask();
+            } else {
+              message.success("Claim success!");
+            }
           }
         }
       })
@@ -64,7 +67,20 @@ const ItemClaimTicket = (props: Props) => {
   }
 
   const signMetamask = async () => {
+    if (!address) {
+      AuthBoxStore.connectModalVisible = true;
+      return;
+    }
 
+    const ether = new EtherContract(ConnectWalletStore_NonReactiveData.web3Provider as any);
+    const message = "Sign to claim your reward!";
+    try {
+      const signature = await ether.signMessage(message);
+      // const addressFromSignature = ether.getAddressFromSignature(message, signature);
+    } catch (e) {
+      antMessage.error("User denied");
+      return;
+    }
   }
 
   return (

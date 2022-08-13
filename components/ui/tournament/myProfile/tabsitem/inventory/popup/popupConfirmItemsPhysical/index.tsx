@@ -4,64 +4,60 @@ import s from "./index.module.sass";
 import {InventoryItem} from "../../../../../../../../src/generated/graphql_p2e";
 import sChestPrize from "../../../../../../p2e/lucky/prize/ChestPrize.module.sass";
 import PrizePopover from "components/ui/p2e/lucky/prize/popover";
-import {getLocalAuthInfo, setLocalAuthInfo} from "../../../../../../../Auth/AuthLocal";
+import {ApolloQueryResult, useMutation} from "@apollo/client";
+import {CLAIM_CSGO_ITEM, CLAIM_PHYSICAL_ITEM} from "../../../../../../../../hooks/p2e/useP2E";
 
 interface Props {
   status: boolean;
   onClosePopup: () => void;
   item: InventoryItem;
+  refetchMyInventoryItems: () => Promise<ApolloQueryResult<any>>
 }
 
-export default function PopupConfirmItems(props: Props) {
-  const {status, onClosePopup, item} = props;
+export default function PopupConfirmItemsPhysical(props: Props) {
+  const {status, item, onClosePopup, refetchMyInventoryItems} = props;
   const [visible, setVisible] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const [form] = Form.useForm();
-
+  const [claimPhysicalItem] = useMutation(CLAIM_PHYSICAL_ITEM);
   const onCancel = () => {
     onClosePopup();
-
   }
-
   const onCancelPopupconfirm = () => {
     setVisible(false);
   };
 
   const showPopconfirm = () => {
-    setVisible(true);
-  };
-
-  const handleOk = () => {
-    setConfirmLoading(true);
-
     form
       .validateFields()
-      .then(
-        //async (values) => {
-        //try {
-        // const response = await updateProfileMutation({
-        //   variables: {
-        //     data: {
-        //       user_name: {
-        //         set: username
-        //       },
-        //       country_code: values.country_code,
-        //       password: {
-        //         set: values.password
-        //       }
-        //     }
-        //   }
-        //});
-        //}
-      )
-      .catch(info => {
-        console.log('Validate Failed');
-      });
+      .then( () =>
+        setVisible(true)
+      );
+  };
+  const handleOk = () => {
+    setConfirmLoading(true);
+    const shipping_address = form.getFieldValue("address");
 
-    setTimeout(() => {
-      setVisible(false);
+    const response = claimPhysicalItem({
+      variables: {
+        input: {
+          prize_id: Number(item?.prize?.id),
+          shipping_address: shipping_address,
+        }
+      },
+      context: {
+        endpoint: 'p2e'
+      }
+    }).then((res) => {
+      message.success("Success!");
       setConfirmLoading(false);
-    }, 2000);
+      onClosePopup();
+      refetchMyInventoryItems();
+    }).catch((err) => {
+      message.error("Error!");
+      setConfirmLoading(false);
+      setVisible(false);
+    })
   };
 
   return (
@@ -78,7 +74,7 @@ export default function PopupConfirmItems(props: Props) {
           title={
           <>
             <div className={s.descPopConfirm}>
-              <p>Make sure this is your Steam URL.</p>
+              <p>Make sure this is your address.</p>
               <p>If this URL is incorrect, Lucis will not be responsible for any problems.</p>
             </div>
           </>
@@ -121,18 +117,14 @@ export default function PopupConfirmItems(props: Props) {
         <div className={s.form}>
           <Form form={form} autoComplete="off">
             <Form.Item
-              name="steamUrl"
+              name="address"
               rules={[
                 {
                   required: true,
-                  message: "Please input your steam url!"
-                },
-                {
-                  type: "url",
-                  message: "This field must be a valid url."
+                  message: "Please input your address!"
                 }
               ]}>
-              <Input placeholder="Your steam url" className={s.formFieldBg} autoComplete="false" />
+              <Input placeholder="Your address" className={s.formFieldBg} autoComplete="false" />
             </Form.Item>
           </Form>
         </div>

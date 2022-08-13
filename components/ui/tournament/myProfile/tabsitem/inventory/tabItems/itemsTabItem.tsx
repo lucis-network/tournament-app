@@ -1,21 +1,35 @@
 import React, {useState} from "react";
 import s from "../index.module.sass";
-import {InventoryItem} from "src/generated/graphql_p2e";
+import {InventoryItem, ItemGroup} from "src/generated/graphql_p2e";
 import PrizePopover from "../../../../../p2e/lucky/prize/popover";
 import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass"
 import ButtonWrapper from "../../../../../../common/button/Button";
-import PopupConfirmItems from "../popup/popupConfirmItems";
+import {ApolloQueryResult} from "@apollo/client";
+import PopupConfirmItemsCsgo from "../popup/popupConfirmItemsCsgo";
+import PopupConfirmItemsPhysical from "../popup/popupConfirmItemsPhysical";
+import PopupContactRaffles from "components/ui/p2e/raffles/popup/popupContact";
 type Props = {
   item: InventoryItem;
   isOwner?: boolean;
+  refetchMyInventoryItems: () => Promise<ApolloQueryResult<any>>
 };
 
 const ItemsTabItem = (props: Props) => {
-  const {item, isOwner} = props
-  const [status, setStatus] = useState<boolean>(false);
+  const {item, isOwner, refetchMyInventoryItems} = props
+  const [statusCsgo, setStatusCsgo] = useState<boolean>(false);
+  const [statusPhysical, setStatusPhysical] = useState<boolean>(false);
+  const [statusPopupContact, setStatusPopupContact] = useState<boolean>(false);
 
   const openClaimConfirmPopup = () => {
-    setStatus(true);
+    if(item?.prize?.category?.item_group === ItemGroup.Csgo) {
+      setStatusCsgo(true);
+    }
+    else if(item?.prize?.category?.item_group === ItemGroup.Physical) {
+      setStatusPhysical(true);
+    }
+    else {
+      setStatusPopupContact(true);
+    }
   }
 
   return (
@@ -40,15 +54,23 @@ const ItemsTabItem = (props: Props) => {
                         Amount:{" "}{item?.quantity}
                     </div>
                     <div>
-                        <ButtonWrapper width={80} onClick={openClaimConfirmPopup}>Claim</ButtonWrapper>
+                        <ButtonWrapper width={80} onClick={openClaimConfirmPopup} disabled={item?.quantity <= 0}>Claim</ButtonWrapper>
                     </div>
                 </div>
             }
         </div>
       </PrizePopover>
       {
-        status &&
-          <PopupConfirmItems item={item} status={status} onClosePopup={() => setStatus(false)}></PopupConfirmItems>
+        statusCsgo &&
+          <PopupConfirmItemsCsgo item={item} status={statusCsgo} refetchMyInventoryItems={refetchMyInventoryItems} onClosePopup={() => setStatusCsgo(false)}></PopupConfirmItemsCsgo>
+      }
+      {
+        statusPhysical &&
+          <PopupConfirmItemsPhysical item={item} status={statusPhysical} refetchMyInventoryItems={refetchMyInventoryItems} onClosePopup={() => setStatusPhysical(false)}></PopupConfirmItemsPhysical>
+      }
+      {
+        statusPopupContact &&
+          <PopupContactRaffles status={statusPopupContact} closePopupContact={() => setStatusPopupContact(false)} contactURL="https://discord.gg/7SdtYpGENT" description="Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize." />
       }
     </>
   );

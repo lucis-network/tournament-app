@@ -20,7 +20,7 @@ const TabPiecesInventory = (props: Props) => {
 
   const {dataMyInventoryPieces, loading, refetchMyInventoryPieces} = useGetMyInventoryPieces(
     {
-      user_id: isOwner ? AuthStore.id || undefined : userInfo.id,
+      user_id: isOwner ? AuthStore.id || undefined : Number(userInfo.id),
       group_filter: searchGroupFilter,
       search_name: searchName,
     }

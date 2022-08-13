@@ -20,7 +20,7 @@ const TabItemsInventory = (props: Props) => {
   const [searchGroupFilter, setSearchGroupFilter] = useState<string>("");
   const {dataMyInventoryItems, loading, refetchMyInventoryItems} = useGetMyInventoryItems(
     {
-      user_id: isOwner ? AuthStore.id || undefined : userInfo.id,
+      user_id: isOwner ? AuthStore.id || undefined : Number(userInfo.id),
       group_filter: searchGroupFilter,
       search_name: searchName,
     }
@@ -77,7 +77,7 @@ const TabItemsInventory = (props: Props) => {
             (
               <>
                 <div className={s.item} key={`${index}`}>
-                  <ItemsTabItem item={item} isOwner={isOwner}></ItemsTabItem>
+                  <ItemsTabItem item={item} isOwner={isOwner} refetchMyInventoryItems={refetchMyInventoryItems}></ItemsTabItem>
                 </div>
               </>
             )
