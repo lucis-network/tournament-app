@@ -28,13 +28,21 @@ const ItemClaimTicket = (props: Props) => {
   const {address} = ConnectWalletStore;
 
   const handleClaim = async () => {
-    setIsLoading(true);
-
     try {
+      let address;
+      if(dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
+        if (!address) {
+          AuthBoxStore.connectModalVisible = true;
+          return;
+        }
+        address = ConnectWalletStore.address;
+      }
+      setIsLoading(true);
       await claimRaffleTicket({
         variables: {
           raffle_uid : raffleUid,
           ticket_number: item?.ticket_number,
+          address: address,
         },
         onCompleted: (data) => {
           setIsLoading(false);
@@ -60,20 +68,18 @@ const ItemClaimTicket = (props: Props) => {
           case "HAS_CLAIMED":
             message.error("You had claim this ticket!");
             return;
-          default:
-            message.error("Something was wrong! Please contact to Lucis network!");
+          case "INSUFFICIENT_FUNDS":
+            message.error("Something went wrong. Please contact Lucis for support and detailed information.");
             return;
-        }
+          default:
+            message.error("Something went wrong. Please contact Lucis for support and detailed information.");
+            return;
+        } 
       })
     }
   }
 
   const signMetamask = async () => {
-    if (!address) {
-      AuthBoxStore.connectModalVisible = true;
-      return;
-    }
-
     const ether = new EtherContract(ConnectWalletStore_NonReactiveData.web3Provider as any);
     const message = "Sign to claim your reward!";
     try {
