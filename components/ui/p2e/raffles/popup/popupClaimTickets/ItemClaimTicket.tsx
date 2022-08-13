@@ -69,12 +69,12 @@ const ItemClaimTicket = (props: Props) => {
             message.error("You had claim this ticket!");
             return;
           case "INSUFFICIENT_FUNDS":
-            message.error("!");
+            message.error("Something went wrong. Please contact Lucis for support and detailed information.");
             return;
           default:
-            message.error("Something was wrong! Please contact to Lucis network!");
+            message.error("Something went wrong. Please contact Lucis for support and detailed information.");
             return;
-        }
+        } 
       })
     }
   }
