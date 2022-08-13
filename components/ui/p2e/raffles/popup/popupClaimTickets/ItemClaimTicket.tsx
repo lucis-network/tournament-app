@@ -28,14 +28,16 @@ const ItemClaimTicket = (props: Props) => {
   const {address} = ConnectWalletStore;
 
   const handleClaim = async () => {
-    setIsLoading(true);
-
     try {
       let address;
       if(dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
+        if (!address) {
+          AuthBoxStore.connectModalVisible = true;
+          return;
+        }
         address = ConnectWalletStore.address;
       }
-
+      setIsLoading(true);
       await claimRaffleTicket({
         variables: {
           raffle_uid : raffleUid,
@@ -78,11 +80,6 @@ const ItemClaimTicket = (props: Props) => {
   }
 
   const signMetamask = async () => {
-    if (!address) {
-      AuthBoxStore.connectModalVisible = true;
-      return;
-    }
-
     const ether = new EtherContract(ConnectWalletStore_NonReactiveData.web3Provider as any);
     const message = "Sign to claim your reward!";
     try {
