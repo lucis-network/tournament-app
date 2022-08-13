@@ -9,6 +9,8 @@ import {CLAIM_PHYSICAL_ITEM} from "../../../../../../../../hooks/p2e/useP2E";
 import PhoneInput from "react-phone-input-2";
 import 'react-phone-input-2/lib/style.css';
 import AuthStore from "../../../../../../../Auth/AuthStore";
+import {isEmpty} from "lodash";
+import {isPhoneNumber} from "class-validator";
 
 interface Props {
   status: boolean;
@@ -36,14 +38,24 @@ export default function PopupConfirmItemsPhysical(props: Props) {
   const showPopconfirm = () => {
     form
       .validateFields()
-      .then( () =>
-        setVisible(true)
+      .then( () => {
+          setVisible(true);
+
+          if (!isEmpty(phone)) {
+            const _phone = (!phone.includes('+')) ? ('+' + phone) : phone
+            if (!isPhoneNumber(_phone)) {
+              setPhoneError("Invalid phone number")
+              return
+            }
+            setPhone(_phone);
+          }
+        }
       );
   };
   const handleOk = () => {
     setConfirmLoading(true);
     const shipping_address = form.getFieldValue("address");
-    const phone = form.getFieldValue("phone");
+    //const phone = form.getFieldValue("phone");
     const response = claimPhysicalItem({
       variables: {
         input: {
@@ -134,16 +146,6 @@ export default function PopupConfirmItemsPhysical(props: Props) {
                 }
               ]}>
               <Input placeholder="Your address" className={s.formFieldBg} autoComplete="false" />
-            </Form.Item>
-            <Form.Item
-              name="phone"
-              rules={[
-                {
-                  required: true,
-                  message: "Please input your phone!"
-                },
-              ]}>
-              <Input placeholder="Your phone" className={s.formFieldBg} autoComplete="false" />
             </Form.Item>
             <Form.Item
               labelCol={{ span: 24 }}
