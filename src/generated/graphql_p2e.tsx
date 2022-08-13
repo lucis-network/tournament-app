@@ -266,6 +266,12 @@ export enum ClaimChestPrizeErrorCode {
   WalletAddressRequired = 'WalletAddressRequired'
 }
 
+export type ClaimPhysicalInput = {
+  phone: NullableStringFieldUpdateOperationsInput;
+  prize_id: Scalars['Int'];
+  shipping_address: Scalars['String'];
+};
+
 export type ClaimPrizeTransaction = {
   __typename?: 'ClaimPrizeTransaction';
   amount: Scalars['Decimal'];
@@ -1110,8 +1116,7 @@ export type MutationClaimMissionArgs = {
 
 
 export type MutationClaimPhysicalItemArgs = {
-  prize_id: Scalars['Int'];
-  shipping_address: Scalars['String'];
+  input: ClaimPhysicalInput;
 };
 
 
@@ -1249,6 +1254,10 @@ export type Notification = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
+};
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: InputMaybe<Scalars['String']>;
 };
 
 export enum OpenChestErrorCode {
@@ -2419,6 +2428,7 @@ export type UserInventoryItem = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
+  user_phone?: Maybe<Scalars['String']>;
 };
 
 export type UserInventoryPiece = {

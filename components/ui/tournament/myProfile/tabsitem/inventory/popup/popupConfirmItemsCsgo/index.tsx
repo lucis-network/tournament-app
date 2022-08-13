@@ -66,6 +66,7 @@ export default function PopupConfirmItemsCsgo(props: Props) {
       title={<h3 className="text-20px text-white">{item?.prize?.title}</h3>}
       visible={status}
       wrapClassName={s.mdl}
+      onCancel={onClosePopup}
       footer={[
         <Button key="cancel" onClick={onCancel}>Cancel</Button>,
 
@@ -93,6 +94,7 @@ export default function PopupConfirmItemsCsgo(props: Props) {
           </Button>
         </Popconfirm>
       ]}
+
     >
       <div className={s.wrapper}>
         <PrizePopover
@@ -121,14 +123,14 @@ export default function PopupConfirmItemsCsgo(props: Props) {
               rules={[
                 {
                   required: true,
-                  message: "Please input your steam url!"
+                  message: "Please input your steam URL!"
                 },
                 {
                   type: "url",
-                  message: "This field must be a valid url!"
+                  message: "This field must be a valid URL!"
                 }
               ]}>
-              <Input placeholder="Your steam url" className={s.formFieldBg} autoComplete="false" />
+              <Input placeholder="Your steam URL" className={s.formFieldBg} autoComplete="false" />
             </Form.Item>
           </Form>
         </div>

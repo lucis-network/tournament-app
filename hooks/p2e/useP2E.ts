@@ -765,7 +765,7 @@ export const CLAIM_CSGO_ITEM = gql`
 `
 
 export const CLAIM_PHYSICAL_ITEM = gql`
-  mutation ($prize_id: Int!, $shipping_address: String!) {
-    claimPhysicalItem (prize_id: $prize_id, shipping_address: $shipping_address)
+  mutation ($input: ClaimPhysicalInput!) {
+    claimPhysicalItem (input: $input)
   }
 `

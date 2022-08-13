@@ -54,7 +54,7 @@ const PopupClaimTicket = (props: Props) => {
           dataRaffleDetail && !dataRaffleDetail?.prize_category?.currency_type &&
             <div className={s.myInventory}>
                 <p>
-                    Note: Your prize will be archived after claim
+                    Note: Your prize will be stored in your inventory after claiming
                 </p>
               {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
                 <div><a href="/profile?page=inventory" target="_blank" rel="noopener noreferrer">View my inventory</a></div>

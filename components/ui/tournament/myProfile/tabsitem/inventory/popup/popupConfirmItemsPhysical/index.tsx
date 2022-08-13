@@ -5,7 +5,12 @@ import {InventoryItem} from "../../../../../../../../src/generated/graphql_p2e";
 import sChestPrize from "../../../../../../p2e/lucky/prize/ChestPrize.module.sass";
 import PrizePopover from "components/ui/p2e/lucky/prize/popover";
 import {ApolloQueryResult, useMutation} from "@apollo/client";
-import {CLAIM_CSGO_ITEM, CLAIM_PHYSICAL_ITEM} from "../../../../../../../../hooks/p2e/useP2E";
+import {CLAIM_PHYSICAL_ITEM} from "../../../../../../../../hooks/p2e/useP2E";
+import PhoneInput from "react-phone-input-2";
+import 'react-phone-input-2/lib/style.css';
+import AuthStore from "../../../../../../../Auth/AuthStore";
+import {isEmpty} from "lodash";
+import {isPhoneNumber} from "class-validator";
 
 interface Props {
   status: boolean;
@@ -15,6 +20,9 @@ interface Props {
 }
 
 export default function PopupConfirmItemsPhysical(props: Props) {
+  const localUserInfo = AuthStore;
+  const [phone, setPhone] = useState<string>(localUserInfo?.profile?.phone as string);
+  const [phoneError, setPhoneError] = useState<string | undefined>(undefined)
   const {status, item, onClosePopup, refetchMyInventoryItems} = props;
   const [visible, setVisible] = useState<boolean>(false);
   const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
@@ -30,19 +38,32 @@ export default function PopupConfirmItemsPhysical(props: Props) {
   const showPopconfirm = () => {
     form
       .validateFields()
-      .then( () =>
-        setVisible(true)
+      .then( () => {
+          setVisible(true);
+
+          if (!isEmpty(phone)) {
+            const _phone = (!phone.includes('+')) ? ('+' + phone) : phone
+            if (!isPhoneNumber(_phone)) {
+              setPhoneError("Invalid phone number")
+              return
+            }
+            setPhone(_phone);
+          }
+        }
       );
   };
   const handleOk = () => {
     setConfirmLoading(true);
     const shipping_address = form.getFieldValue("address");
-
+    //const phone = form.getFieldValue("phone");
     const response = claimPhysicalItem({
       variables: {
         input: {
           prize_id: Number(item?.prize?.id),
           shipping_address: shipping_address,
+          phone: {
+            set: phone
+          }
         }
       },
       context: {
@@ -66,6 +87,7 @@ export default function PopupConfirmItemsPhysical(props: Props) {
       title={<h3 className="text-20px text-white">{item?.prize?.title}</h3>}
       visible={status}
       wrapClassName={s.mdl}
+      onCancel={onCancel}
       footer={[
         <Button key="cancel" onClick={onCancel}>Cancel</Button>,
 
@@ -74,8 +96,8 @@ export default function PopupConfirmItemsPhysical(props: Props) {
           title={
           <>
             <div className={s.descPopConfirm}>
-              <p>Make sure this is your address.</p>
-              <p>If this URL is incorrect, Lucis will not be responsible for any problems.</p>
+              <p>Make sure your information is correct.</p>
+              <p>If this is incorrect, Lucis will not be responsible for any problems.</p>
             </div>
           </>
           }
@@ -108,10 +130,9 @@ export default function PopupConfirmItemsPhysical(props: Props) {
           </div>
         </PrizePopover>
         <div className={s.desc}>
-          <p>Please leave your steam URL here.</p>
-          <p> Lucis will send you a trade offer immediately.</p>
-          <p> Confirm this trade offer within 1 day.</p>
-          <p> We will send your prize in the shortest time possible.</p>
+          <p>Please leave your address and phone number here.</p>
+          <p>We will send your prize in the shortest time possible.</p>
+          <p>Please watch out your phone during this time.</p>
         </div>
 
         <div className={s.form}>
@@ -125,6 +146,23 @@ export default function PopupConfirmItemsPhysical(props: Props) {
                 }
               ]}>
               <Input placeholder="Your address" className={s.formFieldBg} autoComplete="false" />
+            </Form.Item>
+            <Form.Item
+              labelCol={{ span: 24 }}
+            >
+              <PhoneInput
+                country={`${localUserInfo?.profile?.country_code?.toLowerCase()}`}
+                enableSearch
+                value={phone}
+                onChange={(phone) => {
+                  setPhoneError(undefined)
+                  setPhone(phone)
+                }}
+                placeholder="Enter phone number"
+                buttonClass={`${s.inputPhone}`}
+
+              />
+              <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
             </Form.Item>
           </Form>
         </div>
