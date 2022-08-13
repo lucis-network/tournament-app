@@ -26,21 +26,10 @@ import AuthStore from "../../../Auth/AuthStore";
 import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
 import AuthGameStore from "../../../Auth/AuthGameStore";
 import {useRouter} from "next/router";
-import {OverviewSection} from "../../../../utils/Enum";
+import {Game, OverviewSection} from "../../../../utils/Enum";
 import {AppEmitter} from "../../../../services/emitter";
 import {fromBinary} from "../../../Auth/AuthLocal";
 import LuckyChestSevice from "../../../service/p2e/LuckyChestSevice";
-
-export enum GAMES {
-  FACEITCSGO = 1,
-  GARENALOL = 2,
-}
-
-
-const games: number[] = [
-  GAMES.FACEITCSGO,
-  GAMES.GARENALOL,
-]
 
 
 export default function LuckyChest(props: any) {
@@ -49,12 +38,12 @@ export default function LuckyChest(props: any) {
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
     const [chestPrize, setChestPrize] = useState<LuckyChestPrize>({} as LuckyChestPrize);
-    const [gameType, setGameType] = useState<GAMES>(GAMES.GARENALOL);
+    const [gameType, setGameType] = useState<Game>(Game.NONE);
     const [chestDetail, setChestDetail] = useState<ChestDetail | undefined>(undefined);
     const [chestDetailLoading, setChestDetailLoading] = useState(false);
     const [chestDetailError, setChestDetailError] = useState(false);
 
-    const getChestDetail = async (type: GAMES | undefined, tier: LuckyChestTier) => {
+    const getChestDetail = async (type: Game | undefined, tier: LuckyChestTier) => {
       setChestDetailLoading(true);
       setChestDetailError(false);
       try {
@@ -127,24 +116,27 @@ export default function LuckyChest(props: any) {
     if (!AuthStore.isLoggedIn) {
       setCurrentLuckyChestTab(LuckyChestTier.Standard);
       // setDisabledTab(true);
-      setGameType(GAMES.GARENALOL);
-      getChestDetail(GAMES.GARENALOL, LuckyChestTier.Standard)
+      setGameType(Game.LOL);
+      getChestDetail(Game.LOL, LuckyChestTier.Standard)
       return;
     }
-    if(!props.currentGame) {
-      setCurrentLuckyChestTab(LuckyChestTier.Free);
-      if (!AuthStore.isLoggedIn) {
-        setDisabledTab(false);
+    if(props.currentGame !== null) {
+
+      if (props.currentGame === 0) {
+        setCurrentLuckyChestTab(LuckyChestTier.Free);
+        if (!AuthStore.isLoggedIn) {
+          setDisabledTab(false);
+        } else {
+          setDisabledTab(true);
+        }
+        getChestDetail(undefined, LuckyChestTier.Free)
       } else {
-        setDisabledTab(true);
+        setGameType(props.currentGame ? props.currentGame : Game.LOL);
+        getChestDetail(props.currentGame ? props.currentGame : Game.LOL,LuckyChestTier.Standard);
+        setDisabledTab(false);
+        setCurrentLuckyChestTab(LuckyChestTier.Standard);
       }
 
-      getChestDetail(undefined, LuckyChestTier.Free)
-    } else {
-      setGameType(props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL);
-      getChestDetail(props.currentGame ? games[props.currentGame - 1] : GAMES.GARENALOL,LuckyChestTier.Standard);
-      setDisabledTab(false);
-      setCurrentLuckyChestTab(LuckyChestTier.Standard);
     }
 
   }, [AuthStore.isLoggedIn, props.currentGame])
@@ -201,24 +193,24 @@ export default function LuckyChest(props: any) {
         LoginBoxStore.connectModalVisible = true
         return
       }
-      switch (gameType) {
-        case GAMES.FACEITCSGO:
-          if (!AuthGameStore.isLoggedInFaceit) {
-            message.warning("Please connect game first.");
-            router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
-            return
-          }
-          break
-        case GAMES.GARENALOL:
-          if (!AuthGameStore.isLoggedInLMSS) {
-            message.warning("Please connect game first.")
-            router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
-            return
-          }
-          break
-        default:
-          break
-      }
+      // switch (gameType) {
+      //   case GAMES.FACEITCSGO:
+      //     if (!AuthGameStore.isLoggedInFaceit) {
+      //       message.warning("Please connect game first.");
+      //       router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
+      //       return
+      //     }
+      //     break
+      //   case GAMES.GARENALOL:
+      //     if (!AuthGameStore.isLoggedInLMSS) {
+      //       message.warning("Please connect game first.")
+      //       router.push("/"); sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
+      //       return
+      //     }
+      //     break
+      //   default:
+      //     break
+      // }
       setChestUnlocking(true)
       try {
         let canOpen = true

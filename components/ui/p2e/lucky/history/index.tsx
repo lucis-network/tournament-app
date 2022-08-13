@@ -12,7 +12,6 @@ import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 import {AppEmitter} from "../../../../../services/emitter";
 import PopupContactRaffles from "../../raffles/popup/popupContact";
 import PrizePopover from "../prize/popover";
-import {GAMES} from "../index";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData
 } from "../../../../Auth/ConnectWalletStore";
@@ -22,6 +21,7 @@ import Link from "next/link"
 import EtherContract from "../../../../../services/blockchain/Ethers";
 import {ColumnsType} from "antd/es/table";
 import LuckyChestSevice from "../../../../service/p2e/LuckyChestSevice";
+import {Game} from "../../../../../utils/Enum";
 
 type HistoryTableProps = {
   currentGame: number,
@@ -56,7 +56,7 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
   // console.log(dataLuckyChestUserInfo)
   const userHistory = listChestUserInfo?.history
   const historyCount = listChestUserInfo?.history_count
-  const getLuckyChestUserInfo = async (game_platform_id: GAMES | undefined, tier: LuckyChestTier | undefined, page: number, limit: number) => {
+  const getLuckyChestUserInfo = async (game_platform_id: Game | undefined, tier: LuckyChestTier | undefined, page: number, limit: number) => {
     setLoading(true);
     const res = await LuckyChestSevice.getLuckyChestUserInfo({
       game_platform_id,
@@ -67,13 +67,16 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
     setListChestUserInfo(res.data?.getLuckyChestUserInfo);
     setLoading(false);
   }
-  useEffect(() =>{
-    getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : GAMES.GARENALOL), tier, currentPage, historyLimit)
-  }, [tier])
+  useEffect(() => {
+    console.log(currentGame)
+    if (currentGame !== null) {
+        getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit)
+      }
+    }, [currentGame, tier])
   useEffect(() => {
     const l = AppEmitter.addListener('refresh_history',
       () => {
-        getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : GAMES.GARENALOL), tier, currentPage, historyLimit,)
+        getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit,)
       }
 
     )
@@ -135,7 +138,7 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
       className: s.columnReward,
       render: (text: string, data: any, index) => {
         return (
-            <div className={s.prizeWrap}>
+            <div className={s.prizeWrap} key={index}>
               <div className={`${s.prize} ${data.prize.rarity}`}>
                 <PrizePopover
                   image={data.prize.img}
@@ -211,7 +214,7 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
         const claimChestPrizeData = data?.data?.claimChestPrize
         if (claimChestPrizeData) {
           antMessage.success('Success!')
-          getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : GAMES.GARENALOL), tier, currentPage, historyLimit)
+          getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit)
           AppEmitter.emit("updateBalance")
         }
       }
