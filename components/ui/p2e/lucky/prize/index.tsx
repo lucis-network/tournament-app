@@ -25,12 +25,12 @@ const ChestPrize = ({image, title, description, rarity, amount}: ChestPrizeProps
         <div className={s.prizeTitle}>
           {title ?? ''}
         </div>
-        { amount &&
-            <div className={`${s.prizeAmount} ${amount == 0 ? s.disableImg : ``}`}>
-                Amount:{" "}{amount}
+        { amount && amount > 0 ?
+            <div className={`${s.prizeAmount}`}>
+              Amount:{" "}{amount}
             </div>
+          : <></>
         }
-
       </div>
     </PrizePopover>
   )
