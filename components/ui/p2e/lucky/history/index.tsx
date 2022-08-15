@@ -68,8 +68,7 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
     setLoading(false);
   }
   useEffect(() => {
-    // console.log(currentGame)
-    if (currentGame !== null) {
+    if (tier && currentGame !== null) {
         getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit)
       }
     }, [currentGame, tier])
