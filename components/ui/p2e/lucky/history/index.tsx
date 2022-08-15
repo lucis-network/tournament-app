@@ -68,11 +68,10 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
     setLoading(false);
   }
   useEffect(() => {
-    console.log(currentGame)
-    if (currentGame !== null) {
+    if (tier && currentGame !== null) {
         getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit)
       }
-    }, [currentGame, tier])
+    }, [currentGame, tier, currentPage])
   useEffect(() => {
     const l = AppEmitter.addListener('refresh_history',
       () => {
@@ -90,7 +89,7 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
     let isSubscribed = true
     const dataSource: any = []
 
-    userHistory && userHistory.map((item, index) => {
+    userHistory?.map((item, index) => {
       dataSource.push({
         code: item?.code,
         created_at: item?.created_at,
@@ -98,8 +97,8 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
         user_prize_history_uid: item?.uid,
         is_claimed: item?.is_claimed,
       })
-      if (isSubscribed) setHistoryData(dataSource)
     })
+    if (isSubscribed) setHistoryData(dataSource)
 
     return () => {
       isSubscribed = false

@@ -33,7 +33,7 @@ import LuckyChestSevice from "../../../service/p2e/LuckyChestSevice";
 
 
 export default function LuckyChest(props: any) {
-    const [currentLuckyChestTab, setCurrentLuckyChestTab] = useState(LuckyChestTier.Standard);
+    const [currentLuckyChestTab, setCurrentLuckyChestTab] = useState<LuckyChestTier | undefined>(undefined);
     const [disabledTab, setDisabledTab] = useState(false);
     const [rollingChestPopupVisible, setRollingChestPopupVisible] = useState(false);
     const [chestUnlocking, setChestUnlocking] = useState(false);
