@@ -36,9 +36,12 @@ const ItemClaimTicket = (props: Props) => {
           return;
         }
         address = ConnectWalletStore.address;
+
+        const bool = await signMetamask();
+        if(!bool) return;
       }
       setIsLoading(true);
-      await claimRaffleTicket({
+      const res = await claimRaffleTicket({
         variables: {
           raffle_uid : raffleUid,
           ticket_number: item?.ticket_number,
@@ -47,18 +50,7 @@ const ItemClaimTicket = (props: Props) => {
         onCompleted: (data) => {
           setIsLoading(false);
           setIsDisable(true);
-
-          // if (data?.claimRaffle?.required_contact) {
-          //   openPopupContactRaffes();
-          // } else {
-          //
-          // }
-
-          if (dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
-            signMetamask();
-          } else {
-            message.success("Claim success!");
-          }
+          message.success("Claim success!");
         }
       })
     } catch (error: any) {
@@ -84,10 +76,11 @@ const ItemClaimTicket = (props: Props) => {
     const message = "Sign to claim your reward!";
     try {
       const signature = await ether.signMessage(message);
+      return true;
       // const addressFromSignature = ether.getAddressFromSignature(message, signature);
     } catch (e) {
       antMessage.error("User denied");
-      return;
+      return false;
     }
   }
 
