@@ -31,7 +31,7 @@ const ItemClaimTicket = (props: Props) => {
     try {
       let address;
       if(dataRaffleDetail?.prize_category?.currency_type === CurrrencyType.Decentralized) {
-        if (!address) {
+        if (!ConnectWalletStore.address) {
           AuthBoxStore.connectModalVisible = true;
           return;
         }
@@ -74,7 +74,7 @@ const ItemClaimTicket = (props: Props) => {
           default:
             message.error("Something went wrong. Please contact Lucis for support and detailed information.");
             return;
-        } 
+        }
       })
     }
   }
