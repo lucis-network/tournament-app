@@ -73,6 +73,7 @@ export default observer(function HistoryTable({currentGame, tier}: HistoryTableP
       }
     }, [currentGame, tier, currentPage])
   useEffect(() => {
+    setCurrentPage(1);
     const l = AppEmitter.addListener('refresh_history',
       () => {
         getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit,)
