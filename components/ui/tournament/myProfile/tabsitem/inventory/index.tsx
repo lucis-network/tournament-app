@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 import s from "./index.module.sass";
 import Tabs from "antd/lib/tabs";
-import TabItemsInventory from "./tabItems";
-import TabPiecesInventory from "./tabPieces";
+import TabItemsInventory from "./tabItems/tabItems";
+import TabPiecesInventory from "./tabPieces/tabPieces";
 import {AuthUser} from "../../../../../Auth/AuthStore";
 
 type Props = {

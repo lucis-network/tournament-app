@@ -139,12 +139,16 @@ const Raffles = () => {
                   <div className={s.rafflePrice}>
                     <div className={s.rafflePriceText}>{getFeaturedRaffleData?.spotlightRaffle?.prize_amount}</div>
                     {
-                      getFeaturedRaffleData?.spotlightRaffle?.prize_type === "LUCIS_POINT" &&
+                      getFeaturedRaffleData?.spotlightRaffle?.prize_category?.currency_type === "LUCIS_POINT" &&
                         <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
                     }
                     {
-                      getFeaturedRaffleData?.spotlightRaffle?.prize_type === "LUCIS_TOKEN" &&
+                      getFeaturedRaffleData?.spotlightRaffle?.prize_category?.currency_type === "LUCIS_TOKEN" &&
                         <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                    }
+                    {
+                      getFeaturedRaffleData?.spotlightRaffle?.prize_category?.currency_type === "DECENTRALIZED" &&
+                        <Image src={getFeaturedRaffleData?.spotlightRaffle?.prize_category?.currency?.icon ?? ''} preview={false} alt=""/>
                     }
                   </div>
                   { getFeaturedRaffleData?.spotlightRaffle?.status === "ENABLED" &&
@@ -240,12 +244,16 @@ const Raffles = () => {
                         <div className={s.rafflePrice}>
                           <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
                           {
-                            raffle?.prize_type === "LUCIS_POINT" &&
+                            raffle?.prize_category?.currency_type === "LUCIS_POINT" &&
                               <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
                           }
                           {
-                            raffle?.prize_type === "LUCIS_TOKEN" &&
+                            raffle?.prize_category?.currency_type === "LUCIS_TOKEN" &&
                               <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                          }
+                          {
+                            raffle?.prize_category?.currency_type === "DECENTRALIZED" &&
+                              <Image src={raffle?.prize_category?.currency?.icon ?? ''} preview={false} alt=""/>
                           }
                         </div>
                       </div>

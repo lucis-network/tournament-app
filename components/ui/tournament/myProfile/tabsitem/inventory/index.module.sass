@@ -26,7 +26,7 @@
         flex-wrap: wrap
         //align-items: center
         flex-grow: 3
-        gap: 10px 20px
+        gap: 20px 20px
         @media screen and (min-width: 575px)
           gap: 20px 48px
         @media screen and (min-width: 768px)
@@ -34,6 +34,9 @@
         @media screen and (min-width: 992px)
           gap: 20px 120px
         @media screen and (min-width: 1200px)
+          gap: 20px 180px
+          //justify-content: flex-start
+        @media screen and (min-width: 1440px)
           gap: 20px 96px
           justify-content: flex-start
         .itemPrize
@@ -105,16 +108,26 @@
       min-width: 343px
 .listItemsInventory
   display: flex
-  gap: 0 20px
+  gap: 20px 20px
   flex-wrap: wrap
   margin-top: 50px
+  @media screen and (min-width: 575px)
+    gap: 20px 48px
+  @media screen and (min-width: 768px)
+    gap: 20px 64px
+  @media screen and (min-width: 1200px)
+    gap: 20px 96px
   .item
     p
       color: #FFFFFF
       text-align: center
       font-size: 18px
     img
-      width: 280px
+      width: 150px
+      @media screen and (min-width: 640px)
+        width: 180px
+      @media screen and (min-width: 768px)
+        width: 214px
     .btnClaim
       text-align: center
 .contentPrize
@@ -122,20 +135,27 @@
   backdrop-filter: blur(40px)
 .chestPrize
   img
-    width: 214px !important
+    width: 150px !important
+    @media screen and (min-width: 640px)
+      width: 180px !important
+    @media screen and (min-width: 768px)
+      width: 214px !important
   .prizeAmount
     padding-bottom: 12px
     .prizeAmountQty
       font-family: 'Revx Neue Demo'
       font-weight: 600
-      font-size: 12px
+      font-size: 10px
       line-height: 13px
       letter-spacing: 0.04em
       background: rgba(69, 80, 107, 0.5)
-      padding: 8px 15px
+      padding: 8px 10px
       color: #FFFFFF
       backdrop-filter: blur(40px)
       border-radius: 72px
+      @media screen and (min-width: 768px)
+        font-size: 12px
+        padding: 8px 15px
   .prizeTitle
     font-family: 'Revx Neue Demo'
     font-style: normal

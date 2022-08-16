@@ -61,9 +61,12 @@ export default observer(function P2EWrapper(props: IProps) {
         localStorage.setItem("currentGame", Game.LOL.toString());
       }
 
-      if (AuthGameStore.isLoggedInFaceit) {
+      else if (AuthGameStore.isLoggedInFaceit) {
         setCurrentGame(Game.CSGO);
         localStorage.setItem("currentGame", Game.CSGO.toString());
+      } else {
+        setCurrentGame(Game.NONE);
+        localStorage.setItem("currentGame", Game.NONE.toString());
       }
     }
   }, [])

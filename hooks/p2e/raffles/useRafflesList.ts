@@ -150,12 +150,18 @@ const GET_RAFFLE_IN_CURRENT_MONTH = gql`
       uid
       name
       valued_at
-      prize_type
       prize_amount
       img
       type
       end_at
       status
+      prize_category {
+        currency_type
+        currency {
+          icon
+          name
+        }
+      }
     }
   }
 `
@@ -181,9 +187,15 @@ const SEARCH_RAFFLE = gql`
       img
       type
       valued_at
-      prize_type
       prize_amount
       status
+      prize_category {
+        currency_type
+        currency {
+          icon
+          name
+        }
+      }
     }
   }
 `

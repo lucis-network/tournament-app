@@ -1,0 +1,86 @@
+.mdl
+  :global(.ant-modal-content)
+    margin: 0 auto
+  :global(.anticon )
+    color: #CD28E8
+.mdlPopConfirm
+  :global(.ant-popover-placement-topRight)
+    padding-bottom: 0
+.wrapper
+  .chestPrize
+    img
+      width: 164px
+      @media screen and (min-width: 768px)
+        width: 200px
+  .desc
+    margin-top: 20px
+    p
+      font-family: 'Lexend', serif
+      font-size: 14px
+      font-weight: 400
+      margin-bottom: 0
+      @media screen and (min-width: 575px)
+        font-size: 16px
+      @media screen and (min-width: 768px)
+        font-size: 18px
+  .form
+    margin-top: 20px
+    :global(.react-tel-input)
+      input
+        background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+        -webkit-backdrop-filter: blur(42px)
+        backdrop-filter: blur(42px)
+        transition: 0.3s
+        border: 1px solid #d9d9d933
+        border-radius: 8px 0 0 8px
+        color: #fff
+        padding: 8px 12px 8px 50px
+        width: 100%
+      :global(.flag-dropdown)
+        border: none
+        background: none
+        &:global(.open .selected-flag), &:global(.open)
+          background: none
+        :global(.selected-flag)
+          &:hover, &:focus
+            background: none
+          :global(.arrow)
+            border-top-color: #fff
+            border-bottom-color: #fff
+      :global(.country-list)
+        background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+        -webkit-backdrop-filter: blur(42px)
+        backdrop-filter: blur(42px)
+        transition: 0.3s
+        border: 1px solid #d9d9d933
+        border-radius: 8px
+        color: #ffffff
+        :global(.search)
+          background: #b1b1b1
+          left: 0
+          padding: 10px
+          input
+            margin: 0
+            color: #000000
+            &::placeholder
+              color: #3c3c3c
+        :global(.country)
+          &:hover
+            background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+          :global(.dial-code)
+            color: #FFFFFF
+        :global(.country.highlight)
+          background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+      .formFieldBg
+        &:global(.ant-input-status-error)
+          background: none !important
+.descPopConfirm
+  p
+    font-family: 'Lexend', serif
+    font-size: 10px
+    font-weight: 300
+    margin-bottom: 0
+    @media screen and (min-width: 575px)
+      font-size: 12px
+    @media screen and (min-width: 768px)
+      font-size: 14px

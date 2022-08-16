@@ -168,8 +168,8 @@ export default observer(function Navigation ({balance}: any) {
       text: (
         <div>
           {AuthStore.isLoggedIn ? (
-            <div className={s.headerButton}>
-              <span onClick={disconnectWallet}>Sign out</span>
+            <div className={s.headerButton} onClick={disconnectWallet}>
+              <span >Sign out</span>
             </div>
           ) : (
             <div className={s.headerButton} onClick={openPopupSignIn}>

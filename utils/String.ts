@@ -1,4 +1,5 @@
 import { Maybe } from "graphql/jsutils/Maybe";
+import {isClient} from "./DOM";
 
 export const to_hex_str = (str: string): string => {
   let result = "";
@@ -74,4 +75,20 @@ export function b64EncodeUnicode (str: string) {
       return String.fromCharCode(parseInt(p1, 16));
     }),
   );
+}
+
+// ----- Solution: https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
+export function fromBinary(encoded: string) {
+  const binary = window.atob(encoded);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < bytes.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  // @ts-ignore
+  return String.fromCharCode(...new Uint16Array(bytes.buffer));
+}
+
+if(isClient) {
+  // @ts-ignore
+  window.test__decode = fromBinary
 }

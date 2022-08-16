@@ -717,13 +717,20 @@ export const GET_MY_INVENTORY_ITEMS = gql`
 query ($user_id: Int!, $group_filter: ItemGroup, $search_name: String) {
   inventoryItems (user_id: $user_id, group_filter: $group_filter, search_name: $search_name) {
    prize {
+    id
     title
     desc
     img
     rarity
     prize_amount
     quantity_in_stock
+    category {
+      item_group
+      piece_group
+      prize_type
+      currency_type    
     }
+   }
    quantity
   }
 }
@@ -748,5 +755,17 @@ export const ASSEMBLE_INVENTORY_PIECE = gql`
         img
       }
     }
+  }
+`
+
+export const CLAIM_CSGO_ITEM = gql`
+  mutation ($input: ClaimCSGOInput!) {
+    claimCSGOItem (input: $input)
+  }
+`
+
+export const CLAIM_PHYSICAL_ITEM = gql`
+  mutation ($input: ClaimPhysicalInput!) {
+    claimPhysicalItem (input: $input)
   }
 `

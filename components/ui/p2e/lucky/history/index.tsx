@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {message, message as antMessage, Pagination, Table} from 'antd';
 import ButtonClaim from '../button/ButtonClaim';
 import s from './history.module.sass'
-import {ClaimChestPrizeErrorCode, LuckyChestTier} from "../../../../../src/generated/graphql_p2e";
+import {ClaimChestPrizeErrorCode, LuckyChestTier, LuckyChestUserInfo} from "../../../../../src/generated/graphql_p2e";
 import {
   useClaimChestPrize,
   useGetLuckyChestUserInfo
@@ -12,50 +12,85 @@ import {handleGraphqlErrors} from "../../../../../utils/apollo_client";
 import {AppEmitter} from "../../../../../services/emitter";
 import PopupContactRaffles from "../../raffles/popup/popupContact";
 import PrizePopover from "../prize/popover";
-import {GAMES} from "../index";
+import ConnectWalletStore, {
+  nonReactive as ConnectWalletStore_NonReactiveData
+} from "../../../../Auth/ConnectWalletStore";
+import AuthBoxStore from "../../../../Auth/components/AuthBoxStore";
+import {observer} from "mobx-react-lite";
+import Link from "next/link"
+import EtherContract from "../../../../../services/blockchain/Ethers";
+import {ColumnsType} from "antd/es/table";
+import LuckyChestSevice from "../../../../service/p2e/LuckyChestSevice";
+import {Game} from "../../../../../utils/Enum";
 
 type HistoryTableProps = {
   currentGame: number,
+  tier?: LuckyChestTier
 }
 
 const historyLimit = 10
 
-export default function HistoryTable({currentGame}: HistoryTableProps) {
+export default observer(function HistoryTable({currentGame, tier}: HistoryTableProps) {
   const [historyData, setHistoryData] = useState<any[]>([])
   const [claimingChestPrize, setClaimingChestPrize] = useState<string>('')
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [totalHistory, setTotalHistory] = useState<number>(0)
   const [prizeCode, setPrizeCode] = useState<string>('')
-  const [isModalContactVisible, setModalContactVisible] = useState<boolean>(false)
-  const {
-    getLuckyChestUserInfoLoading,
-    getLuckyChestUserInfoError,
-    refetchGetLuckyChestUserInfo,
-    dataLuckyChestUserInfo
-  } = useGetLuckyChestUserInfo({
-    game_platform_id: currentGame ? currentGame : GAMES.GARENALOL,
-    tier: LuckyChestTier.Standard,
-    page: currentPage,
-    limit: historyLimit,
-  })
+  const [isModalContactVisible, setModalContactVisible] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingList, setLoadingList] = useState<number[]>([]);
+  const [listChestUserInfo, setListChestUserInfo] = useState<LuckyChestUserInfo | undefined>(undefined);
+  // const {
+  //   getLuckyChestUserInfoLoading,
+  //   getLuckyChestUserInfoError,
+  //   refetchGetLuckyChestUserInfo,
+  //   dataLuckyChestUserInfo
+  // } = useGetLuckyChestUserInfo({
+  //   game_platform_id: currentGame ? currentGame : GAMES.GARENALOL,
+  //   tier: LuckyChestTier.Standard,
+  //   page: currentPage,
+  //   limit: historyLimit,
+  // })
   const {claimChestPrize} = useClaimChestPrize()
-
-  const userHistory = dataLuckyChestUserInfo?.history
-  const historyCount = dataLuckyChestUserInfo?.history_count
-
+  const { address } = ConnectWalletStore;
+  // console.log(dataLuckyChestUserInfo)
+  const userHistory = listChestUserInfo?.history
+  const historyCount = listChestUserInfo?.history_count
+  const getLuckyChestUserInfo = async (game_platform_id: Game | undefined, tier: LuckyChestTier | undefined, page: number, limit: number) => {
+    setLoading(true);
+    const res = await LuckyChestSevice.getLuckyChestUserInfo({
+      game_platform_id,
+      tier,
+      page,
+      limit
+    })
+    setListChestUserInfo(res.data?.getLuckyChestUserInfo);
+    setLoading(false);
+  }
   useEffect(() => {
-    const l = AppEmitter.addListener('refresh_history', refetchGetLuckyChestUserInfo)
+    if (tier && currentGame !== null) {
+        getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit)
+      }
+    }, [currentGame, tier, currentPage])
+  useEffect(() => {
+    setCurrentPage(1);
+    const l = AppEmitter.addListener('refresh_history',
+      () => {
+        getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit,)
+      }
+
+    )
 
     return () => {
       l.remove()
     }
-  }, [])
+  }, [tier])
 
   useEffect(() => {
     let isSubscribed = true
     const dataSource: any = []
 
-    userHistory && userHistory.map((item, index) => {
+    userHistory?.map((item, index) => {
       dataSource.push({
         code: item?.code,
         created_at: item?.created_at,
@@ -63,8 +98,8 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
         user_prize_history_uid: item?.uid,
         is_claimed: item?.is_claimed,
       })
-      if (isSubscribed) setHistoryData(dataSource)
     })
+    if (isSubscribed) setHistoryData(dataSource)
 
     return () => {
       isSubscribed = false
@@ -82,7 +117,7 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     }
   }, [historyCount])
 
-  const columns = [
+  const columns: ColumnsType<any> = [
     {
       title: 'Code',
       dataIndex: 'code',
@@ -101,9 +136,9 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       dataIndex: ['prize', 'user_prize_history_uid', 'is_claimed', 'code'],
       key: 'title',
       className: s.columnReward,
-      render: (text: string, data: any) => {
+      render: (text: string, data: any, index) => {
         return (
-            <div className={s.prizeWrap}>
+            <div className={s.prizeWrap} key={index}>
               <div className={`${s.prize} ${data.prize.rarity}`}>
                 <PrizePopover
                   image={data.prize.img}
@@ -119,8 +154,10 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
               </div>
               <ButtonClaim
                 isClaimed={data.is_claimed}
-                onClick={() => handleClaimChestPrize(data.user_prize_history_uid.toString(), data.code)}
+                onClick={() => handleClaimChestPrize(index, data.prize?.category.currency_uid, data.prize?.category?.currency_type, data.user_prize_history_uid.toString(), data.code)}
                 disabled={data.is_claimed || (claimingChestPrize === data.user_prize_history_uid)}
+                buttonText={!data.prize?.category?.currency_type ? "Archived" : null}
+                loading={loadingList.findIndex(item => item === index) > -1}
               />
             </div>
         )
@@ -128,13 +165,35 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
     }
   ]
 
-  const handleClaimChestPrize = (user_prize_history_uid: string, code: string) => {
+  const handleClaimChestPrize = async (index: number, currency_uid: string | null, currency_type: string, user_prize_history_uid: string, code: string) => {
+
+    if (currency_uid && !address) {
+      AuthBoxStore.connectModalVisible = true;
+      return;
+    }
+
+    if (currency_type === "DECENTRALIZED") {
+      const ether = new EtherContract(ConnectWalletStore_NonReactiveData.web3Provider as any);
+      const message = "Sign to claim your reward!";
+      try {
+        const signature = await ether.signMessage(message);
+        // const addressFromSignature = ether.getAddressFromSignature(message, signature);
+      } catch (e) {
+        antMessage.error("User denied");
+        return;
+      }
+
+    }
     if (!user_prize_history_uid) return
     setPrizeCode(code)
     setClaimingChestPrize(user_prize_history_uid)
+    setLoadingList([...loadingList, index]);
     claimChestPrize({
       user_prize_history_uid: user_prize_history_uid,
+      address: address,
       onError: (error) => handleGraphqlErrors(error, (code, message) => {
+        const newLoadingList = loadingList.filter(item => item !== index);
+        setLoadingList(newLoadingList);
         if (code !== 'UnAuth') {
           switch (code) {
             case ClaimChestPrizeErrorCode.UserHistoryNotFound:
@@ -150,15 +209,13 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
         }
       }),
       onCompleted: (data) => {
+        const newLoadingList = loadingList.filter(item => item !== index);
+        setLoadingList(newLoadingList);
         const claimChestPrizeData = data?.data?.claimChestPrize
         if (claimChestPrizeData) {
-          if (claimChestPrizeData?.required_contact) {
-            setModalContactVisible(true)
-          } else {
-            antMessage.success('Success!')
-            refetchGetLuckyChestUserInfo()
-            AppEmitter.emit("updateBalance");
-          }
+          antMessage.success('Success!')
+          getLuckyChestUserInfo(tier === LuckyChestTier.Free ? undefined : (currentGame ? currentGame : Game.LOL), tier, currentPage, historyLimit)
+          AppEmitter.emit("updateBalance")
         }
       }
     }).finally(() => setClaimingChestPrize(''))
@@ -176,13 +233,23 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
   return (
     <>
       <div className={s.wrapper}>
-        <h2>Your history</h2>
+        <div className={s.historyHeader}>
+          <h2>Your history</h2>
+          <div>
+            <Link href={"/profile?page=inventory"} passHref>
+              <a>
+                View my inventory
+              </a>
+            </Link>
+          </div>
+        </div>
+
         <Table
           dataSource={historyData}
           // dataSource={[]}
           columns={columns}
           pagination={false}
-          loading={getLuckyChestUserInfoLoading}
+          loading={loading}
           locale={{
             emptyText: `You haven't opened any chests yet.`
           }}
@@ -209,4 +276,4 @@ export default function HistoryTable({currentGame}: HistoryTableProps) {
       />
     </>
   )
-}
+});

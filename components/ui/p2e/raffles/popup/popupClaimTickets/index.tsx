@@ -1,6 +1,6 @@
 import {Button, Modal } from "antd";
 import s from "./index.module.sass";
-import {UserWonTicketGql} from "../../../../../../src/generated/graphql_p2e";
+import {RaffleDetail, UserWonTicketGql} from "../../../../../../src/generated/graphql_p2e";
 
 import ItemClaimTicket from "./ItemClaimTicket";
 import React, {useState} from "react";
@@ -11,10 +11,11 @@ type Props = {
   status: boolean;
   dataMyWonTickets?: UserWonTicketGql[];
   raffleUid?: string;
+  dataRaffleDetail?: RaffleDetail;
 };
 
 const PopupClaimTicket = (props: Props) => {
-  const { status, closePopupClaimTicket, dataMyWonTickets, raffleUid } = props;
+  const { status, closePopupClaimTicket, dataMyWonTickets, raffleUid, dataRaffleDetail } = props;
   const [isPopupContactVisible, setIsPopupContactVisible] = useState<boolean>(false);
 
   const closePopupContact = () => {
@@ -42,13 +43,23 @@ const PopupClaimTicket = (props: Props) => {
             dataMyWonTickets ? dataMyWonTickets.map((item, index) => {
               return(
                 <div key={`${item.uid}${index}`}>
-                  <ItemClaimTicket item={item} raffleUid={raffleUid} openPopupContactRaffes={openPopupContactRaffes}></ItemClaimTicket>
+                  <ItemClaimTicket dataRaffleDetail={dataRaffleDetail} item={item} raffleUid={raffleUid} openPopupContactRaffes={openPopupContactRaffes} ></ItemClaimTicket>
                 </div>
               )
             })
               : ""
           }
         </div>
+        {
+          dataRaffleDetail && !dataRaffleDetail?.prize_category?.currency_type &&
+            <div className={s.myInventory}>
+                <p>
+                    Note: Your prize will be stored in your inventory after claiming
+                </p>
+              {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+                <div><a href="/profile?page=inventory" target="_blank" rel="noopener noreferrer">View my inventory</a></div>
+            </div>
+        }
       </div>
       {isPopupContactVisible &&
           <PopupContactRaffles status={isPopupContactVisible} closePopupContact={closePopupContact} contactURL="https://discord.gg/7SdtYpGENT" description="Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize." />

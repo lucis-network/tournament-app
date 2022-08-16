@@ -254,12 +254,23 @@ export type ChestDetail = {
   updated_at: Scalars['DateTime'];
 };
 
+export type ClaimCsgoInput = {
+  prize_id: Scalars['Int'];
+  steam_url: Scalars['String'];
+};
+
 export enum ClaimChestPrizeErrorCode {
   ServerError = 'ServerError',
   UserHasClaimed = 'UserHasClaimed',
   UserHistoryNotFound = 'UserHistoryNotFound',
   WalletAddressRequired = 'WalletAddressRequired'
 }
+
+export type ClaimPhysicalInput = {
+  phone: NullableStringFieldUpdateOperationsInput;
+  prize_id: Scalars['Int'];
+  shipping_address: Scalars['String'];
+};
 
 export type ClaimPrizeTransaction = {
   __typename?: 'ClaimPrizeTransaction';
@@ -659,7 +670,8 @@ export type InventoryPieceGroup = {
 export enum ItemGroup {
   Csgo = 'Csgo',
   Lol = 'Lol',
-  Nft = 'Nft'
+  Nft = 'Nft',
+  Physical = 'Physical'
 }
 
 export type LolAccountDto = {
@@ -1041,8 +1053,10 @@ export type Mutation = {
   assemble?: Maybe<UserInventoryItem>;
   buyRaffleTicket?: Maybe<Scalars['Boolean']>;
   claimBox?: Maybe<Scalars['Boolean']>;
+  claimCSGOItem?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<Scalars['Boolean']>;
   claimMission?: Maybe<Scalars['Boolean']>;
+  claimPhysicalItem?: Maybe<Scalars['Boolean']>;
   claimRaffle?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
   connect?: Maybe<PlatformAccountDto>;
@@ -1085,6 +1099,11 @@ export type MutationClaimBoxArgs = {
 };
 
 
+export type MutationClaimCsgoItemArgs = {
+  input: ClaimCsgoInput;
+};
+
+
 export type MutationClaimChestPrizeArgs = {
   address?: InputMaybe<Scalars['String']>;
   user_prize_history_uid: Scalars['String'];
@@ -1093,6 +1112,11 @@ export type MutationClaimChestPrizeArgs = {
 
 export type MutationClaimMissionArgs = {
   player_mission_uid: Scalars['String'];
+};
+
+
+export type MutationClaimPhysicalItemArgs = {
+  input: ClaimPhysicalInput;
 };
 
 
@@ -1230,6 +1254,10 @@ export type Notification = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
+};
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: InputMaybe<Scalars['String']>;
 };
 
 export enum OpenChestErrorCode {
@@ -1603,7 +1631,6 @@ export type Query = {
   getProgressDailyMission?: Maybe<ProgressDailyMission>;
   getRaffleDetail?: Maybe<RaffleDetail>;
   getRaffleRanking?: Maybe<Array<UserRanking>>;
-  getRaffles?: Maybe<Array<RaffleGql>>;
   getRankingSeasons?: Maybe<Array<RankingSeasonDto>>;
   getRecentWinners?: Maybe<Array<RecentWinner>>;
   getRecentlyCsgoMatch?: Maybe<GCsgoMatch>;
@@ -1706,11 +1733,6 @@ export type QueryGetRaffleDetailArgs = {
 
 export type QueryGetRaffleRankingArgs = {
   seasonId: Scalars['String'];
-};
-
-
-export type QueryGetRafflesArgs = {
-  filter?: InputMaybe<RaffleFilter>;
 };
 
 
@@ -2302,6 +2324,8 @@ export type User = {
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  inventory_items?: Maybe<Array<UserInventoryItem>>;
+  inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   luckychest_history?: Maybe<Array<UserLuckyChestHistory>>;
   nfts?: Maybe<Array<Nft>>;
@@ -2335,6 +2359,8 @@ export type UserCount = {
   dailyMission: Scalars['Int'];
   daily_history: Scalars['Int'];
   favorite_game: Scalars['Int'];
+  inventory_items: Scalars['Int'];
+  inventory_pieces: Scalars['Int'];
   leader_board: Scalars['Int'];
   luckychest_history: Scalars['Int'];
   nfts: Scalars['Int'];
@@ -2396,20 +2422,24 @@ export type UserInventoryItem = {
   is_claimed: Scalars['Boolean'];
   prize?: Maybe<LuckyChestPrize>;
   prize_id?: Maybe<Scalars['Int']>;
+  shipping_address?: Maybe<Scalars['String']>;
   steam_url?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
+  user: User;
   user_id: Scalars['Int'];
+  user_phone?: Maybe<Scalars['String']>;
 };
 
 export type UserInventoryPiece = {
   __typename?: 'UserInventoryPiece';
   created_at: Scalars['DateTime'];
-  prize?: Maybe<LuckyChestPrize>;
+  prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   quantity: Scalars['Int'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
+  user: User;
   user_id: Scalars['Int'];
 };
 
