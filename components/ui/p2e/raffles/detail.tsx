@@ -491,7 +491,7 @@ const RafflesDetail = observer((props: { raffleUID: string}) => {
                             <div
                               className={s.raffleValued}>{raffle?.valued_at ? `Valued at $${raffle?.valued_at}` : ''}</div>
                             <div className={s.rafflePrice}>
-                              <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
+                              <div className={s.rafflePriceText}>{raffle?.amount_of_currency}</div>
                               {
                                 raffle?.prize_category?.currency_type === "LUCIS_POINT" &&
                                   <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>

@@ -245,7 +245,7 @@ export type ChestDetail = {
   game_platform?: Maybe<GamePlatform>;
   game_platform_id?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
-  prizes: Array<LuckyChestPrize>;
+  prizes: Array<LuckyChestPrizeGql>;
   sponsors?: Maybe<Array<P2eSponsor>>;
   ticket_cost?: Maybe<Scalars['Decimal']>;
   ticket_cost_type?: Maybe<CostType>;
@@ -260,6 +260,7 @@ export type ClaimCsgoInput = {
 };
 
 export enum ClaimChestPrizeErrorCode {
+  CurrencyNotSupported = 'CurrencyNotSupported',
   ServerError = 'ServerError',
   UserHasClaimed = 'UserHasClaimed',
   UserHistoryNotFound = 'UserHistoryNotFound',
@@ -908,7 +909,6 @@ export type LuckyChestPrize = {
   img?: Maybe<Scalars['String']>;
   inventory_item?: Maybe<Array<UserInventoryItem>>;
   inventory_piece?: Maybe<Array<UserInventoryPiece>>;
-  prize_amount?: Maybe<Scalars['Decimal']>;
   quantity_in_stock?: Maybe<Scalars['Int']>;
   raffle?: Maybe<Array<Raffle>>;
   rarity?: Maybe<PrizeRarity>;
@@ -924,6 +924,25 @@ export type LuckyChestPrizeCount = {
   inventory_piece: Scalars['Int'];
   raffle: Scalars['Int'];
   user_prize_history: Scalars['Int'];
+};
+
+export type LuckyChestPrizeGql = {
+  __typename?: 'LuckyChestPrizeGql';
+  _count: LuckyChestPrizeCount;
+  amount_of_currency?: Maybe<Scalars['Float']>;
+  category?: Maybe<PrizeCategory>;
+  category_id?: Maybe<Scalars['Int']>;
+  desc?: Maybe<Scalars['String']>;
+  id: Scalars['ID'];
+  img?: Maybe<Scalars['String']>;
+  inventory_item?: Maybe<Array<UserInventoryItem>>;
+  inventory_piece?: Maybe<Array<UserInventoryPiece>>;
+  number_of_prize: Scalars['Int'];
+  quantity_in_stock?: Maybe<Scalars['Int']>;
+  raffle?: Maybe<Array<Raffle>>;
+  rarity?: Maybe<PrizeRarity>;
+  title?: Maybe<Scalars['String']>;
+  valued_at?: Maybe<Scalars['Decimal']>;
 };
 
 export enum LuckyChestTier {
@@ -1248,9 +1267,8 @@ export type Notification = {
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
   is_seen: Scalars['Boolean'];
+  link?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  tournament_uid?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
@@ -1839,13 +1857,14 @@ export type QuerySearchRaffleArgs = {
 
 export type Raffle = {
   __typename?: 'Raffle';
+  amount_of_currency?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  number_of_prize?: Maybe<Scalars['Int']>;
   prize?: Maybe<LuckyChestPrize>;
-  prize_amount?: Maybe<Scalars['Decimal']>;
   prize_id?: Maybe<Scalars['Int']>;
   raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
@@ -1861,12 +1880,14 @@ export type Raffle = {
 
 export type RaffleDetail = {
   __typename?: 'RaffleDetail';
+  amount_of_currency?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  prize_amount?: Maybe<Scalars['Decimal']>;
+  number_of_prize?: Maybe<Scalars['Int']>;
+  prize?: Maybe<LuckyChestPrize>;
   prize_category?: Maybe<PrizeCategory>;
   raffle_sponsors?: Maybe<Array<P2eSponsor>>;
   regions?: Maybe<Array<Scalars['String']>>;
@@ -1889,12 +1910,14 @@ export type RaffleFilter = {
 
 export type RaffleGql = {
   __typename?: 'RaffleGql';
+  amount_of_currency?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  prize_amount?: Maybe<Scalars['Decimal']>;
+  number_of_prize?: Maybe<Scalars['Int']>;
+  prize?: Maybe<LuckyChestPrize>;
   prize_category?: Maybe<PrizeCategory>;
   raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Array<Scalars['String']>>;
@@ -2405,10 +2428,12 @@ export type UserFavoriteGame = {
 
 export type UserHistory = {
   __typename?: 'UserHistory';
+  amount_of_currency?: Maybe<Scalars['Decimal']>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   game_platform_id?: Maybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
+  number_of_prize?: Maybe<Scalars['Int']>;
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
@@ -2445,10 +2470,12 @@ export type UserInventoryPiece = {
 
 export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
+  amount_of_currency?: Maybe<Scalars['Decimal']>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   game_platform_id?: Maybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
+  number_of_prize?: Maybe<Scalars['Int']>;
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;

@@ -31,21 +31,11 @@ class LuckyChestService {
                           id
                           title
                           desc
-                          prize_amount
+                          amount_of_currency
                           quantity_in_stock
                           valued_at
                           img
                           rarity
-                          user_prize_history {
-                              uid
-                              prize_id
-                              prize {
-                                  id
-                                  title
-                                  desc
-                              }
-                              is_claimed
-                          }
                       }
                   }
               }
@@ -79,7 +69,6 @@ class LuckyChestService {
                               desc
                               img
                               rarity
-                              prize_amount
                               created_at
                               category {
                                   prize_type

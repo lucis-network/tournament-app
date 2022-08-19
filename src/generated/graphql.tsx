@@ -2357,7 +2357,6 @@ export type LuckyChestPrize = {
   img?: Maybe<Scalars['String']>;
   inventory_item?: Maybe<Array<UserInventoryItem>>;
   inventory_piece?: Maybe<Array<UserInventoryPiece>>;
-  prize_amount?: Maybe<Scalars['Decimal']>;
   quantity_in_stock?: Maybe<Scalars['Int']>;
   raffle?: Maybe<Array<Raffle>>;
   rarity?: Maybe<PrizeRarity>;
@@ -2380,7 +2379,6 @@ export type LuckyChestPrizeCreateManyCategoryInput = {
   desc?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
   img?: InputMaybe<Scalars['String']>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   rarity?: InputMaybe<PrizeRarity>;
   title?: InputMaybe<Scalars['String']>;
@@ -2455,7 +2453,6 @@ export type LuckyChestPrizeCreateWithoutCategoryInput = {
   img?: InputMaybe<Scalars['String']>;
   inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
   inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -2471,7 +2468,6 @@ export type LuckyChestPrizeCreateWithoutInventory_ItemInput = {
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
   inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -2487,7 +2483,6 @@ export type LuckyChestPrizeCreateWithoutInventory_PieceInput = {
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
   inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -2504,7 +2499,6 @@ export type LuckyChestPrizeCreateWithoutRaffleInput = {
   img?: InputMaybe<Scalars['String']>;
   inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
   inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   rarity?: InputMaybe<PrizeRarity>;
   title?: InputMaybe<Scalars['String']>;
@@ -2520,7 +2514,6 @@ export type LuckyChestPrizeCreateWithoutUser_Prize_HistoryInput = {
   img?: InputMaybe<Scalars['String']>;
   inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
   inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -3211,9 +3204,8 @@ export type Notification = {
   id: Scalars['ID'];
   image?: Maybe<Scalars['String']>;
   is_seen: Scalars['Boolean'];
+  link?: Maybe<Scalars['String']>;
   title?: Maybe<Scalars['String']>;
-  tournament_uid?: Maybe<Scalars['String']>;
-  type?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
@@ -3225,9 +3217,8 @@ export type NotificationCreateManyUserInput = {
   id?: InputMaybe<Scalars['Int']>;
   image?: InputMaybe<Scalars['String']>;
   is_seen?: InputMaybe<Scalars['Boolean']>;
+  link?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  tournament_uid?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -3253,9 +3244,8 @@ export type NotificationCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   image?: InputMaybe<Scalars['String']>;
   is_seen?: InputMaybe<Scalars['Boolean']>;
+  link?: InputMaybe<Scalars['String']>;
   title?: InputMaybe<Scalars['String']>;
-  tournament_uid?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
@@ -4696,13 +4686,14 @@ export type QueryVerifyEmailArgs = {
 
 export type Raffle = {
   __typename?: 'Raffle';
+  amount_of_currency?: Maybe<Scalars['Decimal']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  number_of_prize?: Maybe<Scalars['Int']>;
   prize?: Maybe<LuckyChestPrize>;
-  prize_amount?: Maybe<Scalars['Decimal']>;
   prize_id?: Maybe<Scalars['Int']>;
   raffle_sponsors?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
@@ -4717,12 +4708,13 @@ export type Raffle = {
 };
 
 export type RaffleCreateManyPrizeInput = {
+  amount_of_currency?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
+  number_of_prize?: InputMaybe<Scalars['Int']>;
   raffle_sponsors?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
@@ -4763,12 +4755,13 @@ export type RaffleCreateOrConnectWithoutTicketInput = {
 };
 
 export type RaffleCreateWithoutPrizeInput = {
+  amount_of_currency?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
+  number_of_prize?: InputMaybe<Scalars['Int']>;
   raffle_sponsors?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
@@ -4782,13 +4775,14 @@ export type RaffleCreateWithoutPrizeInput = {
 };
 
 export type RaffleCreateWithoutTicketInput = {
+  amount_of_currency?: InputMaybe<Scalars['Decimal']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   end_at: Scalars['DateTime'];
   img?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  number_of_prize?: InputMaybe<Scalars['Int']>;
   prize?: InputMaybe<LuckyChestPrizeCreateNestedOneWithoutRaffleInput>;
-  prize_amount?: InputMaybe<Scalars['Decimal']>;
   raffle_sponsors?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<RaffleStatus>;
@@ -8581,10 +8575,12 @@ export type UserInventoryPieceWhereUniqueInput = {
 
 export type UserLuckyChestHistory = {
   __typename?: 'UserLuckyChestHistory';
+  amount_of_currency?: Maybe<Scalars['Decimal']>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   game_platform_id?: Maybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
+  number_of_prize?: Maybe<Scalars['Int']>;
   prize: LuckyChestPrize;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
@@ -8595,10 +8591,12 @@ export type UserLuckyChestHistory = {
 };
 
 export type UserLuckyChestHistoryCreateManyPrizeInput = {
+  amount_of_currency?: InputMaybe<Scalars['Decimal']>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_platform_id?: InputMaybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
+  number_of_prize?: InputMaybe<Scalars['Int']>;
   tier: LuckyChestTier;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -8611,10 +8609,12 @@ export type UserLuckyChestHistoryCreateManyPrizeInputEnvelope = {
 };
 
 export type UserLuckyChestHistoryCreateManyUserInput = {
+  amount_of_currency?: InputMaybe<Scalars['Decimal']>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_platform_id?: InputMaybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
+  number_of_prize?: InputMaybe<Scalars['Int']>;
   prize_id: Scalars['Int'];
   tier: LuckyChestTier;
   uid?: InputMaybe<Scalars['String']>;
@@ -8651,10 +8651,12 @@ export type UserLuckyChestHistoryCreateOrConnectWithoutUserInput = {
 };
 
 export type UserLuckyChestHistoryCreateWithoutPrizeInput = {
+  amount_of_currency?: InputMaybe<Scalars['Decimal']>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_platform_id?: InputMaybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
+  number_of_prize?: InputMaybe<Scalars['Int']>;
   tier: LuckyChestTier;
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
@@ -8662,10 +8664,12 @@ export type UserLuckyChestHistoryCreateWithoutPrizeInput = {
 };
 
 export type UserLuckyChestHistoryCreateWithoutUserInput = {
+  amount_of_currency?: InputMaybe<Scalars['Decimal']>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   game_platform_id?: InputMaybe<Scalars['Int']>;
   is_claimed: Scalars['Boolean'];
+  number_of_prize?: InputMaybe<Scalars['Int']>;
   prize: LuckyChestPrizeCreateNestedOneWithoutUser_Prize_HistoryInput;
   tier: LuckyChestTier;
   uid?: InputMaybe<Scalars['String']>;
