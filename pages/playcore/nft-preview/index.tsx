@@ -194,7 +194,6 @@ const NftPreviewPage = () => {
         display: 'flex',
         flexDirection: 'column',
       }}>
-        <h3 style={{color: "white"}}>Select your NFT specs:</h3>
         <Space className={s.nftForm} align={"center"}>
           <div>
             <p>Character</p>
@@ -289,6 +288,10 @@ const NftPreviewPage = () => {
         </Space>
 
         <div className={s.previewWrapper}>
+          <div className={s.previewImgC} style={{background: bg,}}>
+            <Img src={nftImg} srcFallback={defaultImgUri} />
+          </div>
+
           {errorMsg
             ? <p className={s.errMsg} dangerouslySetInnerHTML={{__html: errorMsg}} />
             : <p
@@ -296,9 +299,6 @@ const NftPreviewPage = () => {
               dangerouslySetInnerHTML={{__html: 'Nếu thấy ảnh nào bị xấu/lệch/đè layer thì copy link paste vào ' + trelloLink + ' nhá ae!'}}
             />
           }
-          <div className={s.previewImgC} style={{background: bg,}}>
-            <Img src={nftImg} srcFallback={defaultImgUri} />
-          </div>
         </div>
 
       </div>
