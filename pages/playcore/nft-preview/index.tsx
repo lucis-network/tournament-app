@@ -7,6 +7,7 @@ import Img from "components/ui/common/Img";
 import {randomPick} from "../../../utils/Array";
 import s from './nft-preview.module.sass'
 import { isClient } from "../../../utils/Env";
+import { useRouter } from 'next/router';
 
 const { Option } = Select;
 
@@ -89,9 +90,10 @@ const NftPreviewPage = () => {
   const defaultImgUri = '/assets/Raffles/imageReward.png';
   const trelloLink = '<a href="https://trello.com/c/5K2jvFzl/411-gh%C3%A9p-nft-ch%C6%B0a-chu%E1%BA%A9n" target="_blank" rel="noreferrer">Trello Check list này</a>';
 
-  useEffect(() => {
-    // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
-    const queryString = qs.stringify({
+  const router = useRouter();
+
+  const getMixerQueryStr = useCallback(() => {
+    return {
       face: character,
       clother: cloth,
       hat,
@@ -100,8 +102,35 @@ const NftPreviewPage = () => {
       halo,
       halo_level: haloLv,
       level: rarityLv,
-    })
-    const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + queryString;
+    }
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv])
+
+  const getAppQueryStr = useCallback(() => {
+    return {
+      character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv
+    } as Record<string, string>
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv])
+
+  const aliasToLinkWithoutRouterChange = useCallback(() => {
+    const newParams: Record<string, string> = getAppQueryStr();
+    console.log('{aliasToLinkWithoutRouterChange.replace} newParams: ', newParams);
+
+    const url = new URL(location.href);
+
+    const keys = Object.keys(newParams);
+    for (let i = 0, c = keys.length; i < c; i++) {
+      const k = keys[i];
+      const v = newParams[k];
+      url.searchParams.set(k, v);
+    }
+
+    history.pushState(null, '', url);
+  }, [getAppQueryStr]);
+
+  useEffect(() => {
+    // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
+    const newQueryString = getMixerQueryStr();
+    const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + qs.stringify(newQueryString);
     console.log('{genNft} genNftUrl: ', genNftUrl);
 
     setGenerating(true);
@@ -109,6 +138,7 @@ const NftPreviewPage = () => {
       .then((res) => {
         console.log('{genNft} res: ', res);
         setGenerating(false);
+        aliasToLinkWithoutRouterChange();
 
         if (res.status !== 200) {
           setNftImg(defaultImgUri)
@@ -121,7 +151,7 @@ const NftPreviewPage = () => {
         setNftImg(baseImgUri + img)
         setErrorMsg("")
       });
-  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv])
+  }, [getMixerQueryStr, aliasToLinkWithoutRouterChange])
 
   const randomNft = useCallback(() => {
     setCharacter(randomPick(characters));
@@ -145,9 +175,7 @@ const NftPreviewPage = () => {
 
   const copyLink = useCallback(() => {
     const baseLink = 'https://play-beta.lucis.network/playcore/nft-preview';
-    const nftParams = qs.stringify({
-      character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv
-    });
+    const nftParams = qs.stringify(getAppQueryStr());
     const nftPreviewLink = baseLink + '?' +  nftParams;
 
     navigator.clipboard.writeText(nftPreviewLink);
@@ -156,7 +184,7 @@ const NftPreviewPage = () => {
     setTimeout(() => {
       setCpBtnText('Copy Link');
     }, 3000)
-  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv, setCpBtnText])
+  }, [getAppQueryStr, setCpBtnText])
 
   return (
     <P2EWrapper>
@@ -253,10 +281,10 @@ const NftPreviewPage = () => {
             <p>&nbsp;</p>
             <Button type="primary" onClick={randomNft} loading={generating}>Randomize</Button>
           </div>
-          <div>
-            <p>&nbsp;</p>
-            <Button type="ghost" onClick={copyLink}>{cpBtnText}</Button>
-          </div>
+          {/*<div>*/}
+          {/*  <p>&nbsp;</p>*/}
+          {/*  <Button type="ghost" onClick={copyLink}>{cpBtnText}</Button>*/}
+          {/*</div>*/}
 
         </Space>
 
