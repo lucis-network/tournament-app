@@ -67,6 +67,7 @@ const NftPreviewPage = () => {
     weapon: _weapon,
     halo: _halo,
     haloLv: _haloLv,
+    rarityLv: _rarityLv,
   } = queryParams;
 
 
@@ -77,6 +78,7 @@ const NftPreviewPage = () => {
   const [weapon, setWeapon] = useState(_weapon ?? 'mouse');
   const [halo, setHalo] = useState(_halo ?? 'water');
   const [haloLv, setHaloLv] = useState(_haloLv ?? 1);
+  const [rarityLv, setRarityLv] = useState(_rarityLv ?? 1);
 
   const [bg, setBg] = useState('black');
   const [nftImg, setNftImg] = useState('');
@@ -97,6 +99,7 @@ const NftPreviewPage = () => {
       weapon,
       halo,
       halo_level: haloLv,
+      level: rarityLv,
     })
     const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + queryString;
     console.log('{genNft} genNftUrl: ', genNftUrl);
@@ -118,7 +121,7 @@ const NftPreviewPage = () => {
         setNftImg(baseImgUri + img)
         setErrorMsg("")
       });
-  }, [character, cloth, hat, glasses, weapon, halo, haloLv])
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv])
 
   const randomNft = useCallback(() => {
     setCharacter(randomPick(characters));
@@ -128,18 +131,22 @@ const NftPreviewPage = () => {
     setWeapon(randomPick(characters));
     setHalo(randomPick(halos));
     setHaloLv(randomPick([1,2,3,4,5,6]));
+    setRarityLv(randomPick([1,2,3,4,5,6]));
   }, [
     setCharacter,
     setCloth,
     setHat,
     setGlasses,
     setWeapon,
+    setHalo,
+    setHaloLv,
+    setRarityLv,
   ])
 
   const copyLink = useCallback(() => {
     const baseLink = 'https://play-beta.lucis.network/playcore/nft-preview';
     const nftParams = qs.stringify({
-      character, cloth, hat, glasses, weapon, halo, haloLv
+      character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv
     });
     const nftPreviewLink = baseLink + '?' +  nftParams;
 
@@ -149,7 +156,7 @@ const NftPreviewPage = () => {
     setTimeout(() => {
       setCpBtnText('Copy Link');
     }, 3000)
-  }, [character, cloth, hat, glasses, weapon, halo, haloLv, setCpBtnText])
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv, setCpBtnText])
 
   return (
     <P2EWrapper>
@@ -218,6 +225,15 @@ const NftPreviewPage = () => {
           <div>
             <p>Halo Level</p>
             <Select style={{ width: 100 }} onChange={setHaloLv} value={haloLv}>
+              {[1,2,3,4,5,6].map(i => (
+                <Option key={i} value={i}>{i}</Option>
+              ))}
+            </Select>
+          </div>
+
+          <div>
+            <p>Rarity Level</p>
+            <Select style={{ width: 100 }} onChange={setRarityLv} value={rarityLv}>
               {[1,2,3,4,5,6].map(i => (
                 <Option key={i} value={i}>{i}</Option>
               ))}
