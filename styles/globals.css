@@ -735,6 +735,22 @@ div {
   backdrop-filter: blur(10px);
 }
 
+.ant-notification-notice {
+  background: rgba(123, 123, 123, 0.2) !important;
+  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2) !important;
+  backdrop-filter: blur(20px) !important;
+  /* Note: backdrop-filter has minimal browser support */
+  border-radius: 10px !important;
+  color: white !important;
+}
+
+.ant-notification-notice-message {
+  color: #fff !important;
+}
+
+.anticon-close {
+  color: #fff !important;
+}
 /* .ant-form-item {
   margin: 0;
 }

@@ -11,6 +11,7 @@ export const useGetNotification = () => {
     loading: getNotificationLoading,
     error: getNotificationError,
     data,
+    refetch: refetchNotification
   } = useQuery(
     GET_NOTIFICATION,
     {
@@ -21,6 +22,7 @@ export const useGetNotification = () => {
   return {
     getNotificationLoading,
     getNotificationError,
+    refetchNotification,
     getNotificationData: data?.getNotification,
   };
 };
@@ -43,15 +45,15 @@ export const useSubscribtionNotification = ({ user_id }: UseSubscribtionNotifica
 }
 
 const PUSH_NOTIFICATION = gql`
-  subscription ($user_id: Float!) {
-    pushNotification(user_id: $user_id) {
-      user_id
-      title
-      image
-      is_seen
-      content
+    subscription ($user_id: Float!){
+        pushNotification(user_id: $user_id) {
+            user_id
+            title
+            image
+            is_seen
+            content,
+        }
     }
-  }
 `;
 
 const GET_NOTIFICATION = gql`
