@@ -1,0 +1,41 @@
+.notification
+  margin-right: 5px
+  cursor: pointer
+.infinite
+  .infiniteContainer
+    height: 350px
+    overflow: auto
+    width: 350px
+    @media screen and (min-width: 768px)
+      width: 450px
+
+.notificationIcon
+  width: 30px
+  min-width: 30px
+
+.notificationItem
+  display: flex
+  gap: 20px
+  padding: 0 12px
+  color: #ffffff
+  img
+    width: 50px
+    height: 50px
+  .notificationTime
+    width: 45%
+
+.subMenu
+  color: white
+  padding: 0px 16px
+  & > li
+    color: #fff
+    font-size: 20px
+    padding: 12px 0px
+    cursor: pointer
+    transition: 0.3s
+    border-bottom: 2px solid #fff
+  & > li:last-child
+    border-bottom: none
+  &  > li:hover a
+    color: white
+    opacity: 0.8
