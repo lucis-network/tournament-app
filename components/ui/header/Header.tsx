@@ -25,6 +25,7 @@ import AuthBoxStore from "../../Auth/components/AuthBoxStore";
 import {AppEmitter} from "../../../services/emitter";
 import AnimatedNumber from "../common/AnimatedNumber/index";
 import LoginModal from "../../Auth/Login/LoginModal";
+import Notification from "../../Auth/components/notification";
 
 type Props = {
   handleMenuOpen: Function;
@@ -157,6 +158,9 @@ export default observer(function Header(props: Props) {
                         </div>
                       </div>
                       <div className={s.profileBalance}>
+                        <div>
+                          <Notification/>
+                        </div>
                         {
                           !address ?
                             <div style={{display: "flex", alignItems: "center", marginRight: 8}}>
