@@ -76,6 +76,7 @@ const p2eEndpoint = createHttpLink({
 });
 
 let splitLink: any;
+let splitLinkP2E: any;
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -99,6 +100,12 @@ if (isClient) {
     })
   );
 
+  const wsLinkP2E = new GraphQLWsLink(
+    createClient({
+      url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_P2E_URL ?? "",
+    })
+  );
+
   splitLink = split(
     (op) => {
       const endpoint = op.getContext().endpoint;
@@ -114,6 +121,24 @@ if (isClient) {
         );
       },
       authLink.concat(wsLink),
+      authLink.concat(httpLink)
+    )
+  );
+  splitLinkP2E = split(
+    (op) => {
+      const endpoint = op.getContext().endpoint;
+      return endpoint === "p2e";
+    },
+    authLink.concat(p2eEndpoint),
+    split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      authLink.concat(wsLinkP2E),
       authLink.concat(httpLink)
     )
   );
@@ -157,6 +182,17 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 
 const client = new ApolloClient({
   link: from([errorLink, splitLink != null ? splitLink : httpLink]),
+  cache,
+  connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }
+});
+
+export const clientP2E = new ApolloClient({
+  link: from([errorLink, splitLinkP2E != null ? splitLinkP2E : httpLink]),
   cache,
   connectToDevTools: true,
   defaultOptions: {

@@ -10,19 +10,28 @@
       width: 450px
 
 .notificationIcon
-  width: 30px
-  min-width: 30px
+  width: 23px
+  min-width: 23px
 
 .notificationItem
-  display: flex
-  gap: 20px
-  padding: 0 12px
+  cursor: pointer
   color: #ffffff
+  width: 100%
+  .notificationItemImage
+    display: flex
+    justify-content: center
+    align-items: flex-start
+  .notificationItemTime
+    opacity: 0.7
+    margin: 0
+  .notificationItemTitle
+    font-weight: 600
+    font-size: 16px
+    margin: 0
+
   img
-    width: 50px
-    height: 50px
-  .notificationTime
-    width: 45%
+    width: 60px
+    height: 60px
 
 .subMenu
   color: white

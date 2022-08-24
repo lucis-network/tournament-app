@@ -707,12 +707,12 @@ body .ant-modal-footer {
   /*  #fdf074 84.9%,*/
   /*  #c1d8f8 100%*/
   /*);*/
-  background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);
+  /*background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%);*/
 }
 
 .ant-popover-content .ant-popover-inner {
   background: rgba(123, 123, 123, 0.2);
-  box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);
+  /*box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.2);*/
   backdrop-filter: blur(20px);
   /* Note: backdrop-filter has minimal browser support */
   border-radius: 10px;
