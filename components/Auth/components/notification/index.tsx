@@ -1,7 +1,7 @@
 import {Badge, notification, Popover} from "antd";
 import InfiniteList from "./InfiniteNoti";
 import { observer } from "mobx-react";
-import {useGetNotification, useSubscribtionNotification} from "hooks/notification/useNotification";
+import {useGetNotification} from "hooks/notification/useNotification";
 import React, { useEffect, useState } from "react";
 import s from "./Notification.module.sass";
 import { useWindowSize } from "hooks/useWindowSize";
@@ -9,20 +9,24 @@ import AuthStore from "../../AuthStore";
 import {Notification as NotificationType} from "src/generated/graphql";
 import {isEmpty} from "lodash";
 import moment from "moment";
+import RealtimeService from "../../../service/RealtimeService";
+import {useRouter} from "next/router";
 
 const Notification = () => {
   const [width] = useWindowSize()
   const { id } = AuthStore
   const [visible, setVisible] = useState(false);
+  const router = useRouter();
   const {
     getNotificationError,
     getNotificationLoading,
     getNotificationData,
     refetchNotification
   } = useGetNotification()
-  const {notificationSubscriptionData} = useSubscribtionNotification({
-    user_id: id
-  })
+  // const {notificationSubscriptionData, notificationSubscriptionDataArena} = useSubscriptionNotification({
+  //   user_id: id
+  // })
+
   const [isSeen, setIsSeen] = useState(false)
   const [countNoti, setCountNoti] = useState(0)
   const [notiList, setNotiList] = useState<NotificationType[]>([])
@@ -56,35 +60,57 @@ const Notification = () => {
       isSubscribed = false
     }
   }, [getNotificationData])
-
   useEffect(() => {
-    // console.log('notificationSubscriptionData: ', notificationSubscriptionData)
-    let isSubscribed = true
-    if (!isEmpty(notificationSubscriptionData)) {
-      if (isSubscribed) {
-        // setNotiList(notificationSubscriptionData.reverse())
-        notification.open({
-          message: notificationSubscriptionData.title,
-          description: (
-            <div className={s.notificationItem}>
-              <img
-                // className="w-[30px] h-[30px]"
-                src={notificationSubscriptionData?.image ?? ""}
-                alt=""
-              />
-              <div>
-                <p>{notificationSubscriptionData?.content}</p>
-              </div>
-            </div>
-          ),
-          placement: "bottomRight",
-        });
-      }
+    if(id) {
+      RealtimeService.subscriptionArena(id as any).then(res => {
+        res.subscribe({ next(value) {
+            const data = value.data?.pushNotification;
+            notification.open({
+              message: data.title,
+              onClick: () => router.push(data.link),
+              description: (
+                <div className={s.notificationItem}>
+                  <img
+                    // className="w-[30px] h-[30px]"
+                    src={data?.image ?? ""}
+                    alt=""
+                  />
+                  <div>
+                    <p>{data?.content}</p>
+                  </div>
+                </div>
+              ),
+              placement: "bottomRight",
+            });
+          }})
+      });
+
+      RealtimeService.subscriptionP2e(id as any).then(res => {
+        res.subscribe({ next(value) {
+            const data = value.data?.pushNotification;
+            notification.open({
+              message: data.title,
+              onClick: () => router.push(data.link),
+              description: (
+                <div className={s.notificationItem}>
+                  <img
+                    // className="w-[30px] h-[30px]"
+                    src={data?.image ?? ""}
+                    alt=""
+                  />
+                  <div>
+                    <p>{data?.content}</p>
+                  </div>
+                </div>
+              ),
+              placement: "bottomRight",
+            });
+          }})
+      });
     }
-    return () => {
-      isSubscribed = false
-    }
-  }, [notificationSubscriptionData])
+
+  }, [id])
+
 
   useEffect(() => {
     setVisible(false);

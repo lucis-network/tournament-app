@@ -1,0 +1,61 @@
+import { gql } from "@apollo/client";
+import apoloClient, { clientP2E } from "utils/apollo_client";
+class RealtimeService {
+  public async subscriptionP2e(userId: number) {
+      const response = await clientP2E.subscribe<{ pushNotification: any }>({
+          query: gql`
+              subscription ($user_id: Int!){
+                  pushNotification(user_id: $user_id) {
+                      new_noti {
+                          user_id
+                          title
+                          image
+                          is_seen
+                          content,
+                          link,
+                          created_at
+                      }
+                      unseen_count
+                      
+                  }
+              }
+          `,
+        variables: {
+          user_id: Number(userId)
+        },
+      });
+
+    return response;
+  }
+
+  public async subscriptionArena(userId: number) {
+      const response = await apoloClient.subscribe<{ pushNotification: any }>({
+          query: gql`
+              subscription ($user_id: Int!){
+                  pushNotification(user_id: $user_id) {
+                      new_noti {
+                          user_id
+                          title
+                          image
+                          is_seen
+                          content,
+                          link,
+                          created_at
+                      }
+                      unseen_count
+
+                  }
+              }
+          `,
+          variables: {
+            user_id: Number(userId)
+          }
+      });
+
+    return response;
+  }
+
+
+}
+
+export default new RealtimeService();

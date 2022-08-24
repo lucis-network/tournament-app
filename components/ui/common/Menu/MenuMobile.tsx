@@ -9,6 +9,7 @@ import {AppEmitter} from "services/emitter";
 import Link from "next/link";
 
 import AuthService from "../../../Auth/AuthService";
+import Notification from "../../../Auth/components/notification";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -85,7 +86,8 @@ export const MenuMobile = (props: any) => {
               <img src="/assets/home/logo.png" alt=""/>
             </Link>
           </div>
-          <motion.div initial={false} animate={"closed"}>
+          <motion.div initial={false} animate={"closed"} style={{display: "flex", alignItems: "center", marginBottom: 3}}>
+            <Notification/>
             <MenuToggle toggle={() => toggleOpen()}/>
           </motion.div>
         </div>
