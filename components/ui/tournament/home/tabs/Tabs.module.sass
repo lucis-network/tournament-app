@@ -8,54 +8,47 @@
     background-position: top left
   .top_tab
     justify-content: space-between
-    @media ( min-width: 1024px )
-      flex-wrap: nowrap
+    @media screen and (min-width: 376px)
+      display: none
   .tabs
     display: flex
+    flex-direction: column
+    justify-content: center
     align-items: center
     color: #FFF
-    min-height: 50px
-    padding-bottom: 40px
+    padding-bottom: 20px
     cursor: pointer
+    width: 100%
+    .groupType
+      display: flex
     .tab_item
-      font-weight: 300
       transition: 0.1s
-      padding: 8px 20px
-      transition: 0.2s
+      padding: 12px 20px
       box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
-      border-radius: 4px
-      @media ( min-width: 0px )
-        margin-right: 8px
-        font-size: 14px
-      @media ( min-width: 414px )
-        margin-right: 20px
-        font-size: 16px
-      @media ( min-width: 1440px )
-        margin-right: 40px
-        font-size: 20px
+      color: #DBE0E8
+      font-family: 'Revx Neue Demo'
+      font-style: normal
+      font-weight: 400
+      font-size: 14px
+      line-height: 15px
+
     .active
-      font-weight: 700
-      background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-      backdrop-filter: blur(12px)
-      position: relative
-      .ic_tab
-        position: absolute
-        top: 0
-        right: 0
-        line-height: 0
-    .active::before
-      content: ''
-      position: absolute
-      top: 0
-      left: 0
-      right: 0
-      bottom: 0
-      border-radius: 4px
-      padding: 1px
-      background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
-      -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-      -webkit-mask-composite: xor
-      mask-composite: exclude
+      font-weight: 600
+      background: rgba(18, 176, 180, 0.2)
+      color: #00FFEC
+    //.active::before
+    //  content: ''
+    //  position: absolute
+    //  top: 0
+    //  left: 0
+    //  right: 0
+    //  bottom: 0
+    //  border-radius: 4px
+    //  padding: 1px
+    //  background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
+    //  -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+    //  -webkit-mask-composite: xor
+    //  mask-composite: exclude
   .container_create
     margin-top: 190px
     box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
@@ -205,37 +198,19 @@
           -webkit-transition: all .3s ease-in-out
           transition: all .3s ease-in-out
 .container_search
-  @media (max-width: 640px)
-    width: 100%
-  .search
-    :global(.ant-input-group .ant-input:hover),
-    :global(.ant-input-group .ant-input:focus)
-      border-color: transparent
-      box-shadow: none
-    :global(.ant-btn-primary)
-      background: transparent
-      display: flex
-      align-items: center
-      margin: 0 auto
-    :global(.ant-btn-primary:hover)
-      background: transparent
-    :global(.ant-input-search-button)
-      border: none
-      color: white !important
-    :global(.ant-btn)
-      border: none
-      color: white !important
-      outline: none
-      &:active
-        border: none
-        outline: none
-        background: none !important
-      &:focus
-        border: none
-        outline: none
-        background: none !important
-      &:hover
-        border: none
-        outline: none
-        color: none !important
-        background: none !important
+  width: 100%
+  padding: 0 16px
+  :global(.ant-input-group-addon)
+    background: rgba(255, 255, 255, 0.1)
+  :global(.ant-input)
+    background: rgba(255, 255, 255, 0.1)
+    border-radius: 4px
+    backdrop-filter: blur(40px)
+  :global(.ant-btn)
+    border: none
+  :global(.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary))
+    color: #FFFFFF
+  :global(.ant-select-item-option-selected:not(.ant-select-item-option-disabled))
+    background-color: var(--ant-primary-1)
+  :global(.ant-select-item-option-active:not(.ant-select-item-option-disabled))
+    background-color: #f5f5f5

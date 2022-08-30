@@ -439,3 +439,311 @@
   z-index: -1
 .wrapper:hover .container_card
   box-shadow: inset 0px 6.44px 25.77px rgba(255, 255, 255, 0.4)
+
+.listItems
+  display: flex
+  justify-content: center
+  align-items: center
+  gap: 10px 7px
+  flex-wrap: wrap
+  @media screen and (max-width: 374px)
+    width: 360px !important
+  @media screen and (min-width: 575px)
+    gap: 15px 15px
+  @media screen and (min-width: 768px)
+    gap: 10px 7px
+  @media screen and (min-width: 992px)
+    gap: 20px 20px
+  @media screen and (min-width: 1200px)
+    //width: 992px !important
+    gap: 32px 40px
+  //@media screen and (min-width: 1400px)
+  //  width: 1400px !important
+
+  .item
+    display: flex
+    flex-direction: column
+    color: #FFFFFF
+    width: 176px
+    position: relative
+    cursor: pointer
+    border-radius: 4px
+    backdrop-filter: blur(40px)
+    background: rgba(69, 80, 107, 0.4)
+    @media screen and (min-width: 375px)
+      width: 184px
+    @media screen and (min-width: 768px)
+      width: 235px
+    @media screen and (min-width: 1200px)
+      width: 320px
+    > *
+      z-index: 1
+    &:after
+      position: absolute
+      content: ""
+      background: rgba(69, 80, 107, 0.4)
+      //backdrop-filter: blur(32.2681px)
+      width: 100%
+      height: 100%
+      z-index: 0
+    &:hover
+      &:before
+        position: absolute
+        content: ""
+        width: 100%
+        height: 100%
+        z-index: 2
+        box-shadow: inset 0px 0px 40px rgba(11, 235, 214, 0.64)
+    .itemImg
+      position: relative
+      &:hover
+        box-shadow: inset 0px 0px 40px rgba(11, 235, 214, 0.64)
+      .itemDescImg
+        position: absolute
+        display: flex
+        justify-content: space-around
+        background: linear-gradient(180deg, rgba(23, 29, 46, 0.8) 0%, rgba(23, 29, 46, 0.8) 0.01%, rgba(23, 29, 46, 0.48) 73.33%, rgba(0, 6, 37, 0) 100%)
+        color: #FFFFFF
+        padding: 8px 0
+        width: 100%
+        margin-bottom: 16px
+        .itemDescImgL
+          display: flex
+          align-items: center
+          img
+            width: 10px
+            height: 10px
+            margin-right: 4px
+            @media screen and (min-width: 768px)
+              width: 14px
+              height: 13px
+              margin-right: 8px
+          span
+            font-family: 'Lexend', serif
+            font-weight: 300
+            font-size: 10px
+            line-height: 15px
+            @media screen and (min-width: 768px)
+              font-size: 12px
+              line-height: 18px
+            @media screen and (min-width: 1200px)
+              font-size: 14px
+              line-height: 21px
+        .itemDescImgLR
+          display: flex
+          align-items: center
+          //background: linear-gradient(91.01deg, rgba(0, 6, 37, 0.4) 3.83%, rgba(0, 0, 0, 0.4) 108.05%)
+          img
+            width: 14px
+            height: 15px
+            margin-right: 4px
+            @media screen and (min-width: 768px)
+              width: 20px
+              height: 20px
+              margin-right: 8px
+          span
+            font-family: 'Lexend', serif
+            font-weight: 300
+            font-size: 10px
+            line-height: 15px
+            @media screen and (min-width: 768px)
+              font-size: 12px
+              line-height: 18px
+            @media screen and (min-width: 1200px)
+              font-size: 14px
+              line-height: 21px
+        .itemDescImgGameMode
+          font-family: 'Lexend', serif
+          font-weight: 300
+          font-size: 10px
+          line-height: 15px
+          color: #DBE0E8
+          @media screen and (min-width: 768px)
+            font-size: 12px
+            line-height: 15px
+          @media screen and (min-width: 1200px)
+            font-size: 14px
+            line-height: 18px
+      .thumbnail
+        img
+          width: 184px
+          aspect-ratio: 350/180
+          @media screen and (min-width: 768px)
+            width: 245px
+          @media screen and (min-width: 1200px)
+            width: 350px
+    .itemDesc
+      display: flex
+      //padding: 0 8px
+      //margin-top: 10px
+      //@media screen and (min-width: 768px)
+      //  margin-top: 12px
+      .itemFreeEntry
+        padding: 4px
+        min-width: 62px
+        max-width: 62px
+        position: relative
+        overflow: hidden
+        opacity: 0.8
+        @media screen and (min-width: 575px)
+          min-width: 80px
+          max-width: 80px
+        @media screen and (min-width: 768px)
+          min-width: 106px
+          max-width: 106px
+          padding: 9px 20px 9px 9px
+        &:after
+          z-index: -1
+          content: ''
+          position: absolute
+          right: 0
+          top: 0
+          background: linear-gradient(91.01deg, rgba(0, 6, 37, 0.4) 3.83%, rgba(0, 0, 0, 0.4) 108.05%)
+          width: 100%
+          height: 100%
+          transform: skewX(340deg)
+          transform-origin: top
+        img
+          width: 40px
+          aspect-ratio: 72/25
+          @media screen and (min-width: 768px)
+            width: 72px
+        p
+          font-family: 'Lexend', serif
+          font-weight: 300
+          font-size: 6px
+          line-height: 8px
+          text-transform: uppercase
+          margin-bottom: 0 !important
+          width: 71px
+          @media screen and (min-width: 375px)
+            font-size: 7px
+          @media screen and (min-width: 575px)
+            font-size: 8px
+            line-height: 10px
+            margin-left: 2px
+          @media screen and (min-width: 768px)
+            font-size: 10px
+            line-height: 12px
+            margin-left: 7px
+          @media screen and (min-width: 1200px)
+            font-size: 12px
+            line-height: 15px
+            margin-left: 0
+      //background: linear-gradient(91.01deg, rgba(0, 6, 37, 0.4) 3.83%, rgba(0, 0, 0, 0.4) 108.05%)
+      .itemAva
+        margin-top: 8px
+        margin-right: 8px
+        @media screen and (min-width: 768px)
+          margin-top: 12px
+        img
+          width: 20px
+          height: 20px
+          border-radius: 50%
+          @media screen and (min-width: 575px)
+            width: 30px
+            height: 30px
+      .itemCreator
+        margin-top: 6px
+        @media screen and (min-width: 575px)
+          margin-top: 9px
+        @media screen and (min-width: 768px)
+          margin-top: 13px
+        p
+          font-family: 'Lexend', serif
+          font-weight: 300
+          font-size: 10px
+          line-height: 12px
+          margin-bottom: 0
+          color: #DBE0E8
+          @media screen and (min-width: 575px)
+            font-size: 12px
+            line-height: 15px
+        h2
+          font-family: 'Lexend', serif
+          font-weight: 400
+          font-size: 10px
+          line-height: 12px
+          color: #00F9FF
+          overflow: hidden
+          display: -webkit-box
+          -webkit-line-clamp: 1
+          -webkit-box-orient: vertical
+          margin-bottom: 0
+          @media screen and (min-width: 575px)
+            font-size: 12px
+            line-height: 15px
+    .itemTitle
+      margin: 6px 8px
+      @media screen and (min-width: 375px)
+          margin: 10px 6px 13px 6px
+      @media screen and (min-width: 768px)
+        margin: 10px 15px 13px 15px
+      p
+        max-height: 31px
+        min-height: 31px
+        //display: flex
+        align-items: center
+        font-family: 'Lexend', serif
+        font-weight: 600
+        font-size: 13px
+        line-height: 15px
+        padding: 0
+        letter-spacing: -0.04em
+        text-overflow: ellipsis
+        overflow: hidden
+        display: -webkit-box
+        -webkit-line-clamp: 2
+        -webkit-box-orient: vertical
+        margin-bottom: 0
+        @media screen and (min-width: 768px)
+          font-size: 20px
+          line-height: 28px
+          padding: 0 8px
+          max-height: 56px
+          min-height: 56px
+    .itemGroupCT
+      display: flex
+      justify-content: space-between
+      padding: 4px
+      background: linear-gradient(88.26deg, rgba(11, 235, 214, 0.4) 0%, rgba(57, 199, 255, 0) 100%)
+      @media screen and (min-width: 575px)
+        padding: 8px
+      @media screen and (min-width: 768px)
+        padding: 15px 15px
+      .itemCurrency
+        font-family: 'Lexend', serif
+        font-weight: 500
+        font-size: 14px
+        line-height: 18px
+        color: #FFD058
+        @media screen and (min-width: 768px)
+          font-size: 18px
+          line-height: 22px
+        @media screen and (min-width: 1200px)
+          font-size: 24px
+          line-height: 30px
+      .itemTime
+        display: flex
+        align-items: center
+        img
+          width: 10px
+          height: 10px
+          margin-right: 4px
+          @media screen and (min-width: 768px)
+            width: 14px
+            height: 14px
+        span
+          margin-bottom: 0
+          font-family: 'Lexend', serif
+          font-weight: 400
+          font-size: 10px
+          line-height: 15px
+          margin-top: 3px
+          color: #00F9FF
+          @media screen and (min-width: 768px)
+            font-size: 12px
+            line-height: 16px
+          @media screen and (min-width: 1200px)
+            font-size: 13px
+            line-height: 16px

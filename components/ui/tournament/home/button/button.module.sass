@@ -1,107 +1,149 @@
 .container
-  position: relative
   display: flex
-  align-items: center
-  @media (max-width: 991px)
-    flex-direction: column
-    align-items: flex-start
-  @media (max-width: 768px)
-    margin-top: 30px
-  .key
-    width: 110px
-    @media (max-width: 540px)
-      width: 80px
-  .item
-    color: #FFF
+  justify-content: space-between
+  flex-wrap: wrap
+  margin-bottom: 32px
+  gap: 16px 0
+  @media screen and (max-width: 575px)
+    margin-bottom: 24px
+    padding: 0 16px
+  :global(.ant-select-item-option-content)
+    color: #FFFFFF
+    font-family: 'Revx Neue Demo'
+    font-style: normal
     font-weight: 400
     font-size: 16px
-    line-height: 115%
+    line-height: 18px
+  :global(.ant-select-item)
+      color: #FFFFFF
+  .leftGroupItem
     display: flex
-    align-items: center
-    margin-bottom: 0px
-    @media (max-width: 540px)
-      width: 100%
-      align-items: flex-start
+    flex-wrap: wrap
+    gap: 0 8px
+    color: #FFFFFF
+    @media screen and (max-width: 375px)
+      margin-top: 16px
+      justify-content: space-between
 
-    .ic
-      display: flex
-      align-items: center
-      @media (max-width: 540px)
-        align-items: flex-start
-        margin-right: 8px
-        max-width: 74px
-    .ic_sort
-      @media (max-width: 540px)
-        align-items: center
-  .item > div
-    @media (min-width: 992px)
-      padding-right: 20px
-    .item_bracket
-      @media (max-width: 540px)
-        order: 1
-  .m
-    font-size: 14px
-    font-weight: 300
-    @media (min-width: 540px)
-      margin-left: 4px
-  .m_time
-    @media (min-width: 0px)
-      margin-left: 0px
-    @media (min-width: 540px)
-      margin-left: -12px
-    @media (min-width: 992px)
-      margin-left: 0px
-
-  :global(.ant-select),
-  .m
-    margin-right: 0
-    @media (min-width: 0px)
-      margin-bottom: 8px
-    @media (min-width: 640px)
-      margin-right: 0px
-      margin-bottom: 16px
-    // @media (min-width: 992px)
-    //   margin-bottom: 0px
-
-  :global(.ant-select-single .ant-select-selector .ant-select-selection-item)
+    .time
+      width: 75px
+      margin-right: auto
+    .leftTypeItem
+      @media screen and (min-width: 376px)
+        display: none
+      .leftType
+        width: 121px
+        @media screen and (min-width: 375px)
+          width: 130px
+  .rightGroupItem
     display: flex
-    align-items: center
-    @media (min-width: 0px)
+    width: 100% 
+    flex-wrap: wrap
+    @media screen and (min-width: 360px)
+      gap: 8px 8px
+    @media screen and (min-width: 768px)
+      gap: 12px 12px
+    :global(.ant-select-selection-placeholder)
+      font-family: 'Revx Neue Demo'
+      font-style: normal
+      font-weight: 400
       font-size: 14px
+      line-height: 18px
+      color: #FFFFFF
+      @media screen and (min-width: 575px)
+        font-size: 16px
+    :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
+      background: rgba(69, 80, 107, 0.4)
+      border: none
+      //backdrop-filter: blur(40px)
+    :global(.ant-select-single:not(.ant-select-customize-input) .ant-select-selector)
+      padding: 7px 10px
+      height: 32px
+      @media screen and (min-width: 575px)
+        padding: 11px 10px
+        height: 40px
+    :global(.ant-select-selection-item)
+      color: #ffffff
+      line-height: 18px
+    :global(.ant-select:not(.ant-select-disabled):hover .ant-select-selector)
+      border-color: rgba(69, 80, 107, 0.4)
+      box-shadow: 0 0 0 0
+      border: none
+    :global(.ant-select-arrow)
+      color: #00FFEC
+      font-size: 12px
+    :global(.ant-select-dropdown)
+      background: rgba(69, 80, 107, 0.4)
       padding: 0
-  :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
-    background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-    box-shadow: 50px 60px 100px rgba(0, 0, 0, 0.05)
-    color: #FFF
-    border-radius: 8px
-    border: none
-    position: relative
-  :global(.ant-select-arrow)
-    color: #FFF
-
-  :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector::before)
-    content: ''
-    position: absolute
-    top: 0
-    left: 0
-    right: 0
-    bottom: 0
-    border-radius: 8px
-    padding: 1px
-    background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
-    -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
-    -webkit-mask-composite: xor
-    mask-composite: exclude
-
-  .sl_item
-    @media (min-width: 0px)
-      width: 130px
-    @media (min-width: 992px)
-      width: 140px
-  :global(.ant-select-clear)
-    background: transparent
-    color: #FFF
-  :global(.anticon)
-    display: flex
-    align-items: center
-    justify-content: center
+      backdrop-filter: blur(10px)
+    .prizepool
+      order: 0
+      @media screen and (min-width: 360px)
+        width: 129px
+      @media screen and (min-width: 575px)
+        width: 122px
+      @media screen and (min-width: 1200px)
+        width: 143px
+    .time
+      width: 75px
+      order: 0
+      @media screen and (min-width: 1200px)
+        margin-right: auto
+        width: 94px
+    .game_uid
+      order: 3
+      div
+        width: 108px
+        @media screen and (min-width: 375px)
+          width: 122px
+        @media screen and (min-width: 1200px)
+          width: 140px
+        @media screen and (min-width: 1400px)
+          width: 170px
+    .item_bracket
+      order: 3
+      div
+        width: 130px
+        @media screen and (min-width: 1200px)
+          width: 157px
+    .rightTeamSize
+      order: 3
+      div
+        width: 75px
+        @media screen and (min-width: 1200px)
+          width: 81px
+    .selectType
+      order: 3
+      div
+        width: 107px
+        @media screen and (min-width: 375px)
+          width: 122px
+        @media screen and (min-width: 1400px)
+          width: 143px
+    .container_search
+      width: 360px
+      order: -1
+      @media screen and (min-width: 575px) and (max-width: 991px)
+        order: 2
+        width: calc(100% - 221px)
+      @media screen and (min-width: 992px)
+        width: 242px
+        order: 4
+      @media screen and (min-width: 1200px)
+        width: 330px
+      @media screen and (min-width: 1320px)
+        width: 332px
+      :global(.ant-input-group-addon)
+        background: rgba(255, 255, 255, 0.1)
+      :global(.ant-input)
+        background: rgba(255, 255, 255, 0.1)
+        border-radius: 4px
+        backdrop-filter: blur(40px)
+      :global(.ant-btn)
+        border: none
+      :global(.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary))
+        color: #FFFFFF
+      :global(.ant-select-item-option-selected:not(.ant-select-item-option-disabled))
+        background-color: var(--ant-primary-1)
+      :global(.ant-select-item-option-active:not(.ant-select-item-option-disabled))
+        background-color: #f5f5f5
