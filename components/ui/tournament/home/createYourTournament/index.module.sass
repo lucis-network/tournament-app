@@ -1,0 +1,222 @@
+.container_create_tournament
+  display: flex
+  justify-content: space-between
+  height: fit-content
+  margin: 0 auto
+  flex-direction: column
+  gap: 16px
+  padding: 64px 8px 0 8px
+  max-width: 360px
+  @media screen and (min-width: 414px)
+    max-width: 414px
+  @media screen and (min-width: 540px)
+    gap: 32px
+    max-width: 540px
+  @media screen and (min-width: 640px)
+    max-width: 640px
+  @media screen and (min-width: 768px)
+    flex-direction: row-reverse
+    background: radial-gradient(#0bffd64a, transparent 70%)
+    // background: linear-gradient(90deg, rgba(11, 235, 214, 0) -0.04%, rgba(11, 235, 214, 0.4) 51.33%, rgba(11, 235, 214, 0) 99.96%), linear-gradient(180deg, rgba(11, 235, 214, 0) 0%, rgba(11, 235, 214, 0.4) 51.37%, rgba(11, 235, 214, 0) 100%)
+    gap: 40px
+    align-items: center
+    max-width: 768px
+    padding: 100px 32px
+  @media screen and (min-width: 992px)
+    max-width: 992px
+    padding: 100px 48px
+  @media screen and (min-width: 1024px)
+    max-width: 1024px
+  @media screen and (min-width: 1280px)
+    // gap: 96px
+    max-width: 1280px
+    padding: 48px 80px
+  @media screen and (min-width: 1440px)
+    max-width: 1440px
+  @media screen and (min-width: 1600px)
+    max-width: 1600px
+  @media screen and (min-width: 1920px)
+    max-width: 1920px
+    padding: 48px 260px
+
+.info
+  display: flex
+  flex-direction: column
+  position: relative
+  width: 100%
+  padding-bottom: 20px
+  h1
+    font-family: 'Revx Neue Demo'
+    width: fit-content
+    text-transform: uppercase
+    background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+    -webkit-background-clip: text
+    -webkit-text-fill-color: transparent
+    background-clip: text
+    text-fill-color: transparent
+    font-weight: 600
+    font-size: 16px
+    line-height: 18px
+    &::selection
+      -webkit-text-fill-color: white
+      text-fill-color: white
+  p
+    font-weight: 300
+    color: #fff
+    font-size: 14px
+    line-height: 18px
+    font-family: "Lexend"
+    margin-bottom: 16px
+  @media screen and (min-width: 540px)
+    h1
+      font-size: 28px
+      line-height: 42px
+      margin-bottom: 16px
+    p
+      font-size: 20px
+      line-height: 30px
+  @media screen and (min-width: 768px)
+    h1
+      font-size: 27px
+      line-height: 53px
+      margin-bottom: 16px
+    p
+      text-transform: capitalize
+      margin-bottom: 32px
+      font-size: 16px
+      line-height: 22px
+      &:after
+        position: absolute
+        content: url(/assets/home/create/group-1.svg)
+        aspect-ratio: 4600/4200
+        bottom: -30px
+        left: 270px 
+        transform: scale(0.8)
+    &:before
+      position: absolute
+      content: url(/assets/home/create/group-2.svg)
+      aspect-ratio: 164/175
+      left: 40px
+      top: -150px
+      transform: scale(0.8)
+    &:after
+      position: absolute
+      content: url(/assets/home/create/group.svg)
+      aspect-ratio: 2677/2450
+      bottom: -116px
+      left: 80px
+      transform: scale(0.8)
+  @media screen and (min-width: 992px)
+    padding-bottom: 56px
+    p
+      &:after
+        bottom: -20px
+        left: 360px
+        transform: scale(0.9)
+    &:before
+      transform: scale(0.9)
+    &:before
+      transform: scale(0.9)
+  // @media screen and (min-width: 1024px)
+
+  @media screen and (min-width: 1280px)
+    p
+      &:after
+        left: 460px
+
+  @media screen and (min-width: 1440px)
+    h1
+      font-size: 48px
+      line-height: 53px
+      margin-bottom: 16px
+    p
+      font-size: 24px
+      line-height: 30px
+      &:after
+        transform: scale(1)
+    &:before
+      left: 40px
+      top: -180px
+      transform: scale(1)
+    &:after
+      bottom: -120px
+      left: 117px
+      transform: scale(1)
+
+.img
+  padding: 0 37px
+
+.img>div
+  content: url(/assets/home/create/create-tour-m.png)
+  aspect-ratio: 269/337
+  margin: 0 auto
+  max-width: 100%
+  // padding: 0 37px
+  @media screen and (min-width: 540px)
+    max-width: 300px
+  @media screen and (min-width: 768px)
+    content: url(/assets/home/create/create-tour.png)
+    aspect-ratio: 560/655
+    max-width: 330px
+    margin: 0
+  @media screen and (min-width: 1024px)
+    max-width: 400px
+  @media screen and (min-width: 1280px)
+    max-width: 460px
+  @media screen and (min-width: 1440px)
+    max-width: 560px
+
+.btn
+  background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+  width: 157px
+  padding: 10px 0
+  position: relative
+  cursor: pointer
+  z-index: 10
+  overflow: hidden
+  color: #fff
+  &:hover
+    color: #000
+    background: #fff
+  @media screen and (min-width: 768px)
+    width: 243px
+  @media screen and (min-width: 1280px)
+    width: 327px
+  div
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    font-size: 14px
+    line-height: 15px
+    text-align: center
+    letter-spacing: 0.2em
+    text-transform: uppercase
+    // color: #FFF
+    height: 10px
+    position: relative
+    z-index: 5
+    // &:hover
+    //   color: #000
+    @media screen and (min-width: 768px)
+      font-size: 18px
+      line-height: 22px
+      height: 18px
+    @media screen and (min-width: 992px)
+      font-size: 24px
+      line-height: 28px
+      height: 25px
+    @media screen and (min-width: 1280px)
+      font-size: 28px
+      line-height: 31px
+      height: 28px
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    top: 1px
+    right: 1px
+    bottom: 1px
+    left: 1px
+    border: 1px solid #000
+    @media screen and (min-width: 768px)
+      border: 2px solid #000
+
