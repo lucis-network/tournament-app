@@ -3,8 +3,10 @@
   display: flex
   align-items: center
   justify-content: space-between
-  background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-  padding: 6px 8px 6px 12px
+  background: rgba(69, 80, 107, 0.4)
+  padding: 7px 10px
+  @media screen and (min-width: 575px)
+    padding: 11px 10px
   border-radius: 4px
   overflow: hidden
   &::before
@@ -14,8 +16,19 @@
     left: 0
     right: 0
     bottom: 0
-    border-radius: 8px
     padding: 1px
-    background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.5) -37.08%, rgba(255, 0, 214, 0.5) 96.75%), rgba(241, 241, 241, 0.1)
+    border-radius: 4px
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
     -webkit-mask-composite: xor
+  p
+    font-family: 'Revx Neue Demo'
+    font-style: normal
+    font-weight: 400
+    font-size: 14px
+    line-height: 18px
+    color: #FFFFFF
+    @media screen and (min-width: 575px)
+      font-size: 16px
+  span
+    color: #00FFEC
+    font-size: 13px

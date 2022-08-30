@@ -45,42 +45,42 @@ export default function  TabHome() {
 
   return (
     <div className={`${s.container_card_tournament}`}>
-      <div className="lucis-container">
-        <Row className={s.top_tab}>
-          <Col className={s.tabs}>
-            {listTabs.map((item: StatusGameType) => (
-              <div
-                key={item}
-                onClick={() => handleChangeTab(item)}
-                className={
-                  filter.type === item
-                    ? `${s.tab_item} ${s.active}`
-                    : `${s.tab_item}`
-                }
-              >
-                {filter.type === item && (
-                  <div className={s.ic_tab}>
-                    <img src="/assets/home/ic_tab.svg" alt="" />
-                  </div>
-                )}
-                <p className="uppercase mb-0">{item}</p>
-              </div>
-            ))}
-          </Col>
-          <Col className={s.container_search}>
-            <Search
-              className={s.search}
-              placeholder="Search"
-              value={filter.search}
-              onChange={(e) => handleChangeFilter("search", e.target.value)}
-            />
-          </Col>
-        </Row>
+      <div className="lucis-container-2">
+        {/*<Row className={s.top_tab}>*/}
+        {/*  <Col className={s.tabs}>*/}
+        {/*    <img src="/assets/home/line_type.svg" alt=""/>*/}
+        {/*    <div className={s.groupType}>*/}
+        {/*      {listTabs.map((item: StatusGameType) => (*/}
+        {/*        <div*/}
+        {/*          key={item}*/}
+        {/*          onClick={() => handleChangeTab(item)}*/}
+        {/*          className={*/}
+        {/*            filter.type === item*/}
+        {/*              ? `${s.tab_item} ${s.active}`*/}
+        {/*              : `${s.tab_item}`*/}
+        {/*          }*/}
+        {/*        >*/}
+        {/*          <p className="mb-0">{item}</p>*/}
+        {/*        </div>*/}
+        {/*      ))}*/}
+        {/*    </div>*/}
+        {/*    <img  src="/assets/home/line_type.svg" alt=""/>*/}
+        {/*  </Col>*/}
+        {/*  <Col className={s.container_search}>*/}
+        {/*    <Search*/}
+        {/*      className={s.search}*/}
+        {/*      placeholder="Name of tournament"*/}
+        {/*      value={filter.search}*/}
+        {/*      onChange={(e) => handleChangeFilter("search", e.target.value)}*/}
+        {/*    />*/}
+        {/*  </Col>*/}
+        {/*</Row>*/}
         <ButtonSort
           filter={filter}
           gameData={gameData}
           onFilter={handleChangeFilter}
           onOrder={handleOrder}
+          listTabs={listTabs}
         />
         <div style={{ minHeight: "380px" }}>{cardHome}</div>
         <div className={s.container_create}>
