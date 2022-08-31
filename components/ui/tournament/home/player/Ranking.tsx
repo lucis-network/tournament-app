@@ -1,7 +1,7 @@
 import { Table } from "antd";
 import Link from "next/link";
 import s from "./Ranking.module.sass";
-import { useArenaRanking, useArenaUserRanking } from "../../../../../hooks/ranking/useRanking";
+import { useArenaRanking } from "../../../../../hooks/ranking/useRanking";
 import { useEffect, useState } from "react";
 import { UserRanking } from "../../../../../src/generated/graphql_p2e";
 import AuthStore from "../../../../Auth/AuthStore";
