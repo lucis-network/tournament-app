@@ -77,7 +77,9 @@ const InfiniteList = (
           {notifications.map((item: Notification, idx: number) => {
             return (
               <List.Item key={idx} onClick={async () => {
-                await seenNotification(item.id);
+                if (!item.is_seen) {
+                  await seenNotification(item.id);
+                }
                 if (item?.link) router.push(item?.link)
               }}>
                 <Row className={`${s.notificationItem} ${!item.is_seen ? s.notificationItemUnseen : ""}`}>
@@ -98,6 +100,7 @@ const InfiniteList = (
                   </Col>
                 </Row>
               </List.Item>
+
             );
           })}
           <List.Item>

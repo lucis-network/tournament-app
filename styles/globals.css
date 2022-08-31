@@ -730,6 +730,9 @@ div {
 .ant-list-item {
   padding: 0 !important;
 }
+.ant-popover-arrow {
+  display: none !important;
+}
 
 .ant-popover-buttons button {
   background: transparent;

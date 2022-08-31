@@ -12,6 +12,7 @@ export class RealtimeService {
               subscription ($user_id: Int!){
                   pushNotification(user_id: $user_id) {
                       new_noti {
+                          id
                           user_id
                           title
                           image
@@ -39,6 +40,7 @@ export class RealtimeService {
               subscription ($user_id: Int!){
                   pushNotification(user_id: $user_id) {
                       new_noti {
+                          id
                           user_id
                           title
                           image
