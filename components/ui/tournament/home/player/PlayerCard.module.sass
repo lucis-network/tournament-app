@@ -23,7 +23,12 @@
   position: relative
 
 .player_top1
-  left: -14px
+  left: -6px
+  @media screen and (min-width: 575px)
+    left: -18px
+  @media screen and (min-width: 768px)
+    left: 0
+  
 
 .player_top2
   order: -1
@@ -34,9 +39,7 @@
     top: 120px
   @media screen and (min-width: 768px)
     top: 145px
-    left: 16px
-  @media screen and (min-width: 992px)
-    left: 0
+    left: 20px
 
 .player_top3
   top: 100px
@@ -51,7 +54,7 @@
     top: 198px
     right: 26px
   @media screen and (min-width: 992px)
-    right: 8px
+    right: 12px
 
 .player_name
   font-family: 'Lexend'
@@ -60,9 +63,18 @@
   font-size: 14px
   line-height: 110%
   letter-spacing: 0.4%
+  display: block
+  text-align: center
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  width: 110px
+  max-width: 110px
 
   @media screen and (min-width: 768px)
     font-size: 24px
+    width: 214px
+    max-width: 214px
 
 .top_platform
   display: block
