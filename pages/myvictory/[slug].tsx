@@ -41,7 +41,7 @@ const MyVictory = () => {
       <div className="lucis-container">
         {isShowEdit ? <EditProfile /> : <ContentTournament />}
       </div> */}
-      <PlayerHome />
+      <PlayerHome seasonId={tournamentId as string} />
       {/* <div></div> */}
       {/* <div>
         <CardPlayer data={listData} />
