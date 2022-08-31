@@ -1,7 +1,6 @@
 import s from "./Player.module.sass";
 import PlayerCard from "./PlayerCard";
 import Ranking from "./Ranking";
-import { Button } from "antd";
 import useTopPlayer from "../hooks/useTopPlayer";
 
 type Props = {
@@ -20,9 +19,6 @@ export default function PlayerHome({ seasonId }: Props) {
         <div>
           <Ranking seasonId={seasonId} />
         </div>
-        {/* <div className={s.btn_see_all}>
-          <Button type="primary">SEE ALL</Button>
-        </div> */}
       </div>
     </div>
   );

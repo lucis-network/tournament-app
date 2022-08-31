@@ -1,10 +1,5 @@
 import s from "./PlayerCard.module.sass";
-import GradientLinkButton from "components/ui/common/button/GradientButton";
-import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
-import { Button } from "antd";
-import { useState } from "react";
 import { GTopEarning } from "src/generated/graphql";
-import { currency } from "utils/Number";
 import Link from "next/link";
 import { slugify } from "utils/String";
 
@@ -15,20 +10,10 @@ type Props = {
 
 export default function CardPlayer(props: Props) {
   const { data, loading } = props;
-  const [isPopUp, setIsPopUp] = useState(false);
-  const [newData, setNewData] = useState({});
 
   if (loading) {
     return <></>;
   }
-  const showPopUpDonate = (e: any) => {
-    setNewData(e);
-    setIsPopUp(true);
-  };
-  const click = () => {
-    setIsPopUp(false);
-  };
-  const hanldeLike = (id: any) => { };
 
   return (
     <div className={s.top}>
@@ -56,7 +41,7 @@ export default function CardPlayer(props: Props) {
                 1500 mission
               </p>
 
-              <p className={s.top_reward}>
+              <p className={`${s.top_reward} ${i !== 0 ? s.top_reward_fix : ''}`}>
                 <span className={s.reward_point}>
                   +1000 <img className={s.reward_point_icon} src="/assets/P2E/lucis-point.svg" alt=""/>
                 </span>

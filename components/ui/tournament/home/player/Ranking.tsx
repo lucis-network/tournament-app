@@ -59,7 +59,7 @@ const columns = [
     className: s.columnEarning,
     render: (totalEarning: number) => {
       return totalEarning > 0 && (
-        <div className={`${s.userEarning} ${s.userValue}`}>{totalEarning} NFTs</div>
+        <div className={`${s.userEarning} ${s.userValue}`}>{totalEarning} BUSD</div>
       )
     }
   },
