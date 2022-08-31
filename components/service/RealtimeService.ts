@@ -1,7 +1,12 @@
 import { gql } from "@apollo/client";
 import apoloClient, { clientP2E } from "utils/apollo_client";
-class RealtimeService {
-  public async subscriptionP2e(userId: number) {
+export class RealtimeService {
+  private readonly _userId: number;
+
+  constructor(userId:number) {
+    this._userId = userId;
+  }
+  public async subscriptionP2e() {
       const response = await clientP2E.subscribe<{ pushNotification: any }>({
           query: gql`
               subscription ($user_id: Int!){
@@ -21,14 +26,14 @@ class RealtimeService {
               }
           `,
         variables: {
-          user_id: Number(userId)
+          user_id: Number(this._userId)
         },
       });
 
     return response;
   }
 
-  public async subscriptionArena(userId: number) {
+  public async subscriptionArena() {
       const response = await apoloClient.subscribe<{ pushNotification: any }>({
           query: gql`
               subscription ($user_id: Int!){
@@ -48,8 +53,9 @@ class RealtimeService {
               }
           `,
           variables: {
-            user_id: Number(userId)
-          }
+            user_id: Number(this._userId)
+          },
+
       });
 
     return response;
@@ -57,5 +63,3 @@ class RealtimeService {
 
 
 }
-
-export default new RealtimeService();

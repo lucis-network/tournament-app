@@ -97,12 +97,14 @@ if (isClient) {
   const wsLink = new GraphQLWsLink(
     createClient({
       url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL ?? "",
+      retryAttempts: 5000
     })
   );
 
   const wsLinkP2E = new GraphQLWsLink(
     createClient({
       url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_P2E_URL ?? "",
+      retryAttempts: 5000
     })
   );
 

@@ -6,7 +6,7 @@ type UseSubscribtionNotificationProps = {
   user_id: number | undefined;
 };
 
-export const useGetNotification = () => {
+export const useGetNotification = (page: number, limit: number) => {
   const {
     loading: getNotificationLoading,
     error: getNotificationError,
@@ -17,8 +17,8 @@ export const useGetNotification = () => {
     {
       fetchPolicy: "no-cache",
       variables: {
-        page: 1,
-        limit: 10
+        page: page,
+        limit: limit
       }
     }
   );
@@ -27,7 +27,7 @@ export const useGetNotification = () => {
     getNotificationLoading,
     getNotificationError,
     refetchNotification,
-    getNotificationData: data?.getNotification?.notifications,
+    getNotificationData: data?.getNotification,
   };
 };
 
@@ -87,6 +87,18 @@ export const useGetNotification = () => {
 //         }
 //     }
 // `;
+
+export const MARK_ALL_NOTIFICATION_AS_SEEN = gql`
+    mutation {
+        markAllNotisAsSeen
+    }
+`;
+
+export const SEEN_NOTIFICATION = gql`
+    mutation($id: Float!) {
+        seenNotification(id: $id)
+    }
+`;
 
 
 const GET_NOTIFICATION = gql`
