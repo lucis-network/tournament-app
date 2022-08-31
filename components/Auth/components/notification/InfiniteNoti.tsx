@@ -4,7 +4,6 @@ import React, {useEffect, useState} from "react";
 import {Notification} from "src/generated/graphql";
 import s from "./Notification.module.sass";
 import {isEmpty} from "lodash";
-import InfiniteScroll from 'react-infinite-scroll-component';
 import {
   ApolloCache,
   ApolloQueryResult,
