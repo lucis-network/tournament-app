@@ -11,13 +11,12 @@ import {RealtimeService} from "../../../service/RealtimeService";
 import {useRouter} from "next/router";
 import {useMutation} from "@apollo/client";
 import {OPEN_CHEST} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {AppEmitter} from "../../../../services/emitter";
 
 const Notification = () => {
   const [width] = useWindowSize()
   const {id} = AuthStore
-  const [oldId, setOldId] = useState(id)
   const [visible, setVisible] = useState(false);
-  const [idState, setIdState] = useState(undefined);
   const router = useRouter();
   const [page, setPage] = useState(1);
   const {
@@ -54,15 +53,6 @@ const Notification = () => {
 
   }, [getNotificationData])
 
-  const visibleNotification = () => {
-    setVisible(false);
-  }
-
-  useEffect(() => {
-    if (!visible) {
-      window.removeEventListener("scroll", visibleNotification);
-    }
-  }, [visible])
 
 
   const notificationList = {
@@ -72,11 +62,6 @@ const Notification = () => {
     // fetchNotification,
   };
   const handleVisibleChange = (newVisible: boolean) => {
-    if (newVisible) {
-      window.addEventListener("scroll", visibleNotification)
-    } else {
-      window.removeEventListener("scroll", visibleNotification);
-    }
     setVisible(newVisible);
   }
   const [markAllNotisAsSeen] = useMutation(MARK_ALL_NOTIFICATION_AS_SEEN);
@@ -99,66 +84,27 @@ const Notification = () => {
       }
       return item;
     }));
-    setCountNoti(countNoti - 1);
+    setCountNoti(Math.max(0, countNoti - 1));
   }
 
-  const subscribe = (value: any) => {
-    const data = value.data?.pushNotification.new_noti;
-    const countNoti = value.data?.pushNotification.unseen_count;
-
-    setNotiList((oldState) => {
-      return [data, ...oldState]
-    });
-    setCountNoti(Number(countNoti))
-    notification.open({
-      message: data.title,
-      onClick: () => router.push(data.link),
-      description: (
-        <div className={s.notificationItemToast}>
-          <img
-            // className="w-[30px] h-[30px]"
-            src={data?.image ?? ""}
-            alt=""
-          />
-          <div>
-            <p>{data?.content}</p>
-          </div>
-        </div>
-      ),
-      placement: "bottomRight",
-    });
-  };
-
-
-  useEffect(() => {
-    if (id) {
-      const realTimeService = new RealtimeService(id);
-      realTimeService.subscriptionArena().then(res => {
-        res.subscribe({
-          next(value) {
-            subscribe(value);
-          }
-        })
-      });
-
-      realTimeService.subscriptionP2e().then(res => {
-        res.subscribe({
-          next(value) {
-            subscribe(value);
-          }
-        })
-      });
-    }
-  }, [])
 
   useEffect(() => {
     setVisible(false);
   }, [width])
 
-
+  useEffect(() => {
+    const listener = AppEmitter.addListener("updateNotification", (res: any) => {
+      setCountNoti(Number(res.countNotification));
+      setNotiList((oldState) =>[res.data, ...oldState]);
+    });
+    return () => {
+      listener.remove();
+    };
+  }, [])
   return (
     <div className={s.notification}>
       <Popover
+        getPopupContainer={trigger => trigger.parentElement!}
         // placement={width < 1024 ? "bottom" : "bottomRight"}
         // trigger={width < 1024 ? "click" : "hover"}
         placement="bottom"
