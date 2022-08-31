@@ -279,8 +279,7 @@ export type ClaimPrizeTransaction = {
   block?: Maybe<Scalars['Int']>;
   chest_user_history_uid?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
-  currency: Currency;
-  currency_uid: Scalars['String'];
+  currency_uid?: Maybe<Scalars['String']>;
   fee?: Maybe<Scalars['Decimal']>;
   raffle_user_ticket_uid?: Maybe<Scalars['String']>;
   status: TransactionStatus;
@@ -290,24 +289,7 @@ export type ClaimPrizeTransaction = {
   usd_value?: Maybe<Scalars['Decimal']>;
   user: User;
   user_id: Scalars['Int'];
-};
-
-export type ClaimStakedTransaction = {
-  __typename?: 'ClaimStakedTransaction';
-  amount: Scalars['Decimal'];
-  block?: Maybe<Scalars['Int']>;
-  created_at: Scalars['DateTime'];
-  currency_uid: Scalars['String'];
-  fee?: Maybe<Scalars['Decimal']>;
-  staked: Staked;
-  staked_uid: Scalars['String'];
-  status: TransactionStatus;
-  tx_hash?: Maybe<Scalars['String']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  usd_value?: Maybe<Scalars['Decimal']>;
-  user: User;
-  user_id: Scalars['Int'];
+  user_inventory_item_uid?: Maybe<Scalars['String']>;
 };
 
 export type ClaimTransaction = {
@@ -361,6 +343,7 @@ export type Contract = {
 
 export enum ContractType {
   Donate = 'DONATE',
+  LucisBox = 'LUCIS_BOX',
   LucisToken = 'LUCIS_TOKEN',
   Prize = 'PRIZE'
 }
@@ -522,7 +505,6 @@ export type Currency = {
   address?: Maybe<Scalars['String']>;
   chain?: Maybe<Chain>;
   chain_symbol?: Maybe<ChainSymbol>;
-  claim_prize_transactions?: Maybe<Array<ClaimPrizeTransaction>>;
   created_at: Scalars['DateTime'];
   decimals?: Maybe<Scalars['Int']>;
   donateTransactions?: Maybe<Array<DonateTransaction>>;
@@ -541,7 +523,6 @@ export type Currency = {
 
 export type CurrencyCount = {
   __typename?: 'CurrencyCount';
-  claim_prize_transactions: Scalars['Int'];
   donateTransactions: Scalars['Int'];
   prize_category: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
@@ -621,7 +602,6 @@ export type Game = {
   favorite_user?: Maybe<Array<UserFavoriteGame>>;
   logo?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  nft?: Maybe<Array<PlayerNft>>;
   nft_limit?: Maybe<Scalars['Int']>;
   platform?: Maybe<Array<GamePlatform>>;
   tournaments?: Maybe<Array<Tournament>>;
@@ -632,7 +612,6 @@ export type Game = {
 export type GameCount = {
   __typename?: 'GameCount';
   favorite_user: Scalars['Int'];
-  nft: Scalars['Int'];
   platform: Scalars['Int'];
   tournaments: Scalars['Int'];
 };
@@ -653,6 +632,12 @@ export type GamePlatform = {
 export type GamePlatformCount = {
   __typename?: 'GamePlatformCount';
   lucky_chest: Scalars['Int'];
+};
+
+export type IntroductoryChestPrizes = {
+  __typename?: 'IntroductoryChestPrizes';
+  id?: Maybe<Scalars['Int']>;
+  prizes: Array<LuckyChestPrizeGql>;
 };
 
 export type InventoryItem = {
@@ -1075,6 +1060,7 @@ export type Mutation = {
   claimCSGOItem?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<Scalars['Boolean']>;
   claimMission?: Maybe<Scalars['Boolean']>;
+  claimNftBox?: Maybe<Scalars['Boolean']>;
   claimPhysicalItem?: Maybe<Scalars['Boolean']>;
   claimRaffle?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
@@ -1089,6 +1075,7 @@ export type Mutation = {
   kycAccount?: Maybe<PlatformAccountDto>;
   openChest?: Maybe<Scalars['String']>;
   rerollDailyMission?: Maybe<PlayerMission>;
+  sendPendingTransactionOpenBox?: Maybe<Scalars['Boolean']>;
   setUtm?: Maybe<Scalars['Boolean']>;
   unStakedNft?: Maybe<Scalars['Boolean']>;
   updateDailyMission?: Maybe<Array<PlayerMission>>;
@@ -1131,6 +1118,12 @@ export type MutationClaimChestPrizeArgs = {
 
 export type MutationClaimMissionArgs = {
   player_mission_uid: Scalars['String'];
+};
+
+
+export type MutationClaimNftBoxArgs = {
+  address: Scalars['String'];
+  prize_id: Scalars['Float'];
 };
 
 
@@ -1194,6 +1187,11 @@ export type MutationRerollDailyMissionArgs = {
 };
 
 
+export type MutationSendPendingTransactionOpenBoxArgs = {
+  tx_hash: Scalars['String'];
+};
+
+
 export type MutationSetUtmArgs = {
   raw_uri: Scalars['String'];
   user_id?: InputMaybe<Scalars['Float']>;
@@ -1235,30 +1233,6 @@ export type NestedStringNullableFilter = {
   search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
 };
-
-export type Nft = {
-  __typename?: 'Nft';
-  contract?: Maybe<Scalars['String']>;
-  created_at: Scalars['DateTime'];
-  desc?: Maybe<Scalars['String']>;
-  img?: Maybe<Scalars['String']>;
-  mission_value?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  play_nft?: Maybe<PlayerNft>;
-  staked_nft?: Maybe<Staked>;
-  tier?: Maybe<Scalars['Int']>;
-  token_id?: Maybe<Scalars['String']>;
-  type?: Maybe<NftType>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export enum NftType {
-  Equip = 'EQUIP',
-  Staked = 'STAKED'
-}
 
 export type Notification = {
   __typename?: 'Notification';
@@ -1566,19 +1540,6 @@ export type PlayerMissionGql = {
   mission_type?: Maybe<Scalars['String']>;
 };
 
-export type PlayerNft = {
-  __typename?: 'PlayerNFT';
-  created_at: Scalars['DateTime'];
-  game: Game;
-  game_uid: Scalars['String'];
-  nft: Nft;
-  nft_uid: Scalars['ID'];
-  slot?: Maybe<Scalars['Int']>;
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
 export type PoolWallet = {
   __typename?: 'PoolWallet';
   address: Scalars['String'];
@@ -1627,9 +1588,14 @@ export type ProgressDailyMission = {
   is_open?: Maybe<Scalars['Boolean']>;
 };
 
+export type PushNotiGql = {
+  __typename?: 'PushNotiGql';
+  new_noti: Notification;
+  unseen_count: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  GetAllPlayerNFT?: Maybe<Array<PlayerNft>>;
   createInviteLinkDiscord?: Maybe<Scalars['String']>;
   /** this token will expire after 5 minutes */
   generateToken?: Maybe<Scalars['String']>;
@@ -1663,6 +1629,7 @@ export type Query = {
   getWinnerAnnouncement?: Maybe<Array<WinnerAnnouncement>>;
   getWonTickets?: Maybe<Array<Scalars['String']>>;
   hasJoinedDiscord?: Maybe<Scalars['Boolean']>;
+  introductoryChestPrizes?: Maybe<IntroductoryChestPrizes>;
   inventoryItems?: Maybe<Array<InventoryItem>>;
   inventoryPieces?: Maybe<Array<InventoryPieceGroup>>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
@@ -1673,11 +1640,7 @@ export type Query = {
   searchBySummonerName?: Maybe<LolAccountDto>;
   searchRaffle?: Maybe<Array<RaffleGql>>;
   spotlightRaffle?: Maybe<RaffleGql>;
-};
-
-
-export type QueryGetAllPlayerNftArgs = {
-  game_uid: Scalars['String'];
+  testOpenChest?: Maybe<Array<TestOpenChestResponse>>;
 };
 
 
@@ -1853,6 +1816,12 @@ export type QuerySearchBySummonerNameArgs = {
 
 export type QuerySearchRaffleArgs = {
   filter: RaffleFilter;
+};
+
+
+export type QueryTestOpenChestArgs = {
+  open_turns: Scalars['Int'];
+  prize_alloc_id: Scalars['Int'];
 };
 
 export type Raffle = {
@@ -2065,26 +2034,6 @@ export type SpotlightAnnouncement = {
   updated_at: Scalars['DateTime'];
 };
 
-export type Staked = {
-  __typename?: 'Staked';
-  _count: StakedCount;
-  apr?: Maybe<Scalars['Decimal']>;
-  claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
-  created_at: Scalars['DateTime'];
-  nft: Nft;
-  ntf_uid: Scalars['String'];
-  total_reward?: Maybe<Scalars['Decimal']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type StakedCount = {
-  __typename?: 'StakedCount';
-  claim_staked: Scalars['Int'];
-};
-
 export type StakedNft = {
   apr?: InputMaybe<Scalars['Float']>;
 };
@@ -2112,13 +2061,13 @@ export type StringNullableFilter = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  pushNotification: Notification;
+  pushNotification: PushNotiGql;
   winnerAnnouncement: WinnerAnnouncement;
 };
 
 
 export type SubscriptionPushNotificationArgs = {
-  user_id: Scalars['Float'];
+  user_id: Scalars['Int'];
 };
 
 export type SystemSponsor = {
@@ -2163,6 +2112,14 @@ export type TeamMember = {
   updated_at: Scalars['DateTime'];
   user: User;
   user_id: Scalars['Int'];
+};
+
+export type TestOpenChestResponse = {
+  __typename?: 'TestOpenChestResponse';
+  actual_odds?: Maybe<Scalars['Float']>;
+  number_of_hits: Scalars['Int'];
+  prize?: Maybe<LuckyChestPrize>;
+  supposed_odds?: Maybe<Scalars['Float']>;
 };
 
 export type Ticket = {
@@ -2336,7 +2293,6 @@ export type User = {
   balace_history?: Maybe<Array<BalanceHistory>>;
   balance?: Maybe<Balance>;
   claim_prize_transactions?: Maybe<Array<ClaimPrizeTransaction>>;
-  claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
   claim_tournament?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -2351,19 +2307,16 @@ export type User = {
   inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   luckychest_history?: Maybe<Array<UserLuckyChestHistory>>;
-  nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
   platform_account?: Maybe<Array<PlatformAccount>>;
   platform_uid?: Maybe<Scalars['String']>;
   playTeamMembers?: Maybe<Array<PlayTeamMember>>;
-  player_nft?: Maybe<PlayerNft>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
   ref_code?: Maybe<Scalars['String']>;
   role: UserRole;
   sponsorTransactions?: Maybe<Array<SponsorTransaction>>;
-  staked_nft?: Maybe<Array<Staked>>;
   status: UserStatus;
   teamMembers?: Maybe<Array<TeamMember>>;
   tournament?: Maybe<Array<Tournament>>;
@@ -2377,7 +2330,6 @@ export type UserCount = {
   __typename?: 'UserCount';
   balace_history: Scalars['Int'];
   claim_prize_transactions: Scalars['Int'];
-  claim_staked: Scalars['Int'];
   claim_tournament: Scalars['Int'];
   dailyMission: Scalars['Int'];
   daily_history: Scalars['Int'];
@@ -2386,13 +2338,11 @@ export type UserCount = {
   inventory_pieces: Scalars['Int'];
   leader_board: Scalars['Int'];
   luckychest_history: Scalars['Int'];
-  nfts: Scalars['Int'];
   notification: Scalars['Int'];
   platform_account: Scalars['Int'];
   playTeamMembers: Scalars['Int'];
   reaction: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
-  staked_nft: Scalars['Int'];
   teamMembers: Scalars['Int'];
   tournament: Scalars['Int'];
   tournamentSubscriber: Scalars['Int'];

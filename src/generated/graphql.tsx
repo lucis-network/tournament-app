@@ -37,7 +37,6 @@ export type AuthUserGql = {
   balace_history?: Maybe<Array<BalanceHistory>>;
   balance?: Maybe<Balance>;
   claim_prize_transactions?: Maybe<Array<ClaimPrizeTransaction>>;
-  claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
   claim_tournament?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -53,18 +52,15 @@ export type AuthUserGql = {
   is_exist_pass?: Maybe<Scalars['Boolean']>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   luckychest_history?: Maybe<Array<UserLuckyChestHistory>>;
-  nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
   platform_account?: Maybe<Array<PlatformAccount>>;
   platform_uid?: Maybe<Scalars['String']>;
   playTeamMembers?: Maybe<Array<PlayTeamMember>>;
-  player_nft?: Maybe<PlayerNft>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
   ref_code?: Maybe<Scalars['String']>;
   role: UserRole;
   sponsorTransactions?: Maybe<Array<SponsorTransaction>>;
-  staked_nft?: Maybe<Array<Staked>>;
   status: UserStatus;
   teamMembers?: Maybe<Array<TeamMember>>;
   tournament?: Maybe<Array<Tournament>>;
@@ -671,8 +667,7 @@ export type ClaimPrizeTransaction = {
   block?: Maybe<Scalars['Int']>;
   chest_user_history_uid?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
-  currency: Currency;
-  currency_uid: Scalars['String'];
+  currency_uid?: Maybe<Scalars['String']>;
   fee?: Maybe<Scalars['Decimal']>;
   raffle_user_ticket_uid?: Maybe<Scalars['String']>;
   status: TransactionStatus;
@@ -682,26 +677,7 @@ export type ClaimPrizeTransaction = {
   usd_value?: Maybe<Scalars['Decimal']>;
   user: User;
   user_id: Scalars['Int'];
-};
-
-export type ClaimPrizeTransactionCreateManyCurrencyInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
-  chest_user_history_uid?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  fee?: InputMaybe<Scalars['Decimal']>;
-  raffle_user_ticket_uid?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
-  user_id: Scalars['Int'];
-};
-
-export type ClaimPrizeTransactionCreateManyCurrencyInputEnvelope = {
-  data: Array<ClaimPrizeTransactionCreateManyCurrencyInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+  user_inventory_item_uid?: Maybe<Scalars['String']>;
 };
 
 export type ClaimPrizeTransactionCreateManyUserInput = {
@@ -709,7 +685,7 @@ export type ClaimPrizeTransactionCreateManyUserInput = {
   block?: InputMaybe<Scalars['Int']>;
   chest_user_history_uid?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
+  currency_uid?: InputMaybe<Scalars['String']>;
   fee?: InputMaybe<Scalars['Decimal']>;
   raffle_user_ticket_uid?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TransactionStatus>;
@@ -717,18 +693,12 @@ export type ClaimPrizeTransactionCreateManyUserInput = {
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   usd_value?: InputMaybe<Scalars['Decimal']>;
+  user_inventory_item_uid?: InputMaybe<Scalars['String']>;
 };
 
 export type ClaimPrizeTransactionCreateManyUserInputEnvelope = {
   data: Array<ClaimPrizeTransactionCreateManyUserInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type ClaimPrizeTransactionCreateNestedManyWithoutCurrencyInput = {
-  connect?: InputMaybe<Array<ClaimPrizeTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimPrizeTransactionCreateOrConnectWithoutCurrencyInput>>;
-  create?: InputMaybe<Array<ClaimPrizeTransactionCreateWithoutCurrencyInput>>;
-  createMany?: InputMaybe<ClaimPrizeTransactionCreateManyCurrencyInputEnvelope>;
 };
 
 export type ClaimPrizeTransactionCreateNestedManyWithoutUserInput = {
@@ -738,29 +708,9 @@ export type ClaimPrizeTransactionCreateNestedManyWithoutUserInput = {
   createMany?: InputMaybe<ClaimPrizeTransactionCreateManyUserInputEnvelope>;
 };
 
-export type ClaimPrizeTransactionCreateOrConnectWithoutCurrencyInput = {
-  create: ClaimPrizeTransactionCreateWithoutCurrencyInput;
-  where: ClaimPrizeTransactionWhereUniqueInput;
-};
-
 export type ClaimPrizeTransactionCreateOrConnectWithoutUserInput = {
   create: ClaimPrizeTransactionCreateWithoutUserInput;
   where: ClaimPrizeTransactionWhereUniqueInput;
-};
-
-export type ClaimPrizeTransactionCreateWithoutCurrencyInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
-  chest_user_history_uid?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  fee?: InputMaybe<Scalars['Decimal']>;
-  raffle_user_ticket_uid?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
-  user: UserCreateNestedOneWithoutClaim_Prize_TransactionsInput;
 };
 
 export type ClaimPrizeTransactionCreateWithoutUserInput = {
@@ -768,7 +718,7 @@ export type ClaimPrizeTransactionCreateWithoutUserInput = {
   block?: InputMaybe<Scalars['Int']>;
   chest_user_history_uid?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
-  currency: CurrencyCreateNestedOneWithoutClaim_Prize_TransactionsInput;
+  currency_uid?: InputMaybe<Scalars['String']>;
   fee?: InputMaybe<Scalars['Decimal']>;
   raffle_user_ticket_uid?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<TransactionStatus>;
@@ -776,122 +726,10 @@ export type ClaimPrizeTransactionCreateWithoutUserInput = {
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
   usd_value?: InputMaybe<Scalars['Decimal']>;
+  user_inventory_item_uid?: InputMaybe<Scalars['String']>;
 };
 
 export type ClaimPrizeTransactionWhereUniqueInput = {
-  tx_hash?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-};
-
-export type ClaimStakedTransaction = {
-  __typename?: 'ClaimStakedTransaction';
-  amount: Scalars['Decimal'];
-  block?: Maybe<Scalars['Int']>;
-  created_at: Scalars['DateTime'];
-  currency_uid: Scalars['String'];
-  fee?: Maybe<Scalars['Decimal']>;
-  staked: Staked;
-  staked_uid: Scalars['String'];
-  status: TransactionStatus;
-  tx_hash?: Maybe<Scalars['String']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  usd_value?: Maybe<Scalars['Decimal']>;
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type ClaimStakedTransactionCreateManyStakedInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
-  user_id: Scalars['Int'];
-};
-
-export type ClaimStakedTransactionCreateManyStakedInputEnvelope = {
-  data: Array<ClaimStakedTransactionCreateManyStakedInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type ClaimStakedTransactionCreateManyUserInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  staked_uid: Scalars['String'];
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
-};
-
-export type ClaimStakedTransactionCreateManyUserInputEnvelope = {
-  data: Array<ClaimStakedTransactionCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type ClaimStakedTransactionCreateNestedManyWithoutStakedInput = {
-  connect?: InputMaybe<Array<ClaimStakedTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimStakedTransactionCreateOrConnectWithoutStakedInput>>;
-  create?: InputMaybe<Array<ClaimStakedTransactionCreateWithoutStakedInput>>;
-  createMany?: InputMaybe<ClaimStakedTransactionCreateManyStakedInputEnvelope>;
-};
-
-export type ClaimStakedTransactionCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<ClaimStakedTransactionWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<ClaimStakedTransactionCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<ClaimStakedTransactionCreateWithoutUserInput>>;
-  createMany?: InputMaybe<ClaimStakedTransactionCreateManyUserInputEnvelope>;
-};
-
-export type ClaimStakedTransactionCreateOrConnectWithoutStakedInput = {
-  create: ClaimStakedTransactionCreateWithoutStakedInput;
-  where: ClaimStakedTransactionWhereUniqueInput;
-};
-
-export type ClaimStakedTransactionCreateOrConnectWithoutUserInput = {
-  create: ClaimStakedTransactionCreateWithoutUserInput;
-  where: ClaimStakedTransactionWhereUniqueInput;
-};
-
-export type ClaimStakedTransactionCreateWithoutStakedInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
-  user: UserCreateNestedOneWithoutClaim_StakedInput;
-};
-
-export type ClaimStakedTransactionCreateWithoutUserInput = {
-  amount: Scalars['Decimal'];
-  block?: InputMaybe<Scalars['Int']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  currency_uid: Scalars['String'];
-  fee?: InputMaybe<Scalars['Decimal']>;
-  staked: StakedCreateNestedOneWithoutClaim_StakedInput;
-  status?: InputMaybe<TransactionStatus>;
-  tx_hash?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Decimal']>;
-};
-
-export type ClaimStakedTransactionWhereUniqueInput = {
   tx_hash?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
 };
@@ -1091,6 +929,7 @@ export type ContractCreateWithoutChainInput = {
 
 export enum ContractType {
   Donate = 'DONATE',
+  LucisBox = 'LUCIS_BOX',
   LucisToken = 'LUCIS_TOKEN',
   Prize = 'PRIZE'
 }
@@ -1248,7 +1087,6 @@ export type Currency = {
   address?: Maybe<Scalars['String']>;
   chain?: Maybe<Chain>;
   chain_symbol?: Maybe<ChainSymbol>;
-  claim_prize_transactions?: Maybe<Array<ClaimPrizeTransaction>>;
   created_at: Scalars['DateTime'];
   decimals?: Maybe<Scalars['Int']>;
   donateTransactions?: Maybe<Array<DonateTransaction>>;
@@ -1267,18 +1105,11 @@ export type Currency = {
 
 export type CurrencyCount = {
   __typename?: 'CurrencyCount';
-  claim_prize_transactions: Scalars['Int'];
   donateTransactions: Scalars['Int'];
   prize_category: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
   tournaments: Scalars['Int'];
   withdrawTransactions: Scalars['Int'];
-};
-
-export type CurrencyCreateNestedOneWithoutClaim_Prize_TransactionsInput = {
-  connect?: InputMaybe<CurrencyWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<CurrencyCreateOrConnectWithoutClaim_Prize_TransactionsInput>;
-  create?: InputMaybe<CurrencyCreateWithoutClaim_Prize_TransactionsInput>;
 };
 
 export type CurrencyCreateNestedOneWithoutDonateTransactionsInput = {
@@ -1311,11 +1142,6 @@ export type CurrencyCreateNestedOneWithoutWithdrawTransactionsInput = {
   create?: InputMaybe<CurrencyCreateWithoutWithdrawTransactionsInput>;
 };
 
-export type CurrencyCreateOrConnectWithoutClaim_Prize_TransactionsInput = {
-  create: CurrencyCreateWithoutClaim_Prize_TransactionsInput;
-  where: CurrencyWhereUniqueInput;
-};
-
 export type CurrencyCreateOrConnectWithoutDonateTransactionsInput = {
   create: CurrencyCreateWithoutDonateTransactionsInput;
   where: CurrencyWhereUniqueInput;
@@ -1341,29 +1167,9 @@ export type CurrencyCreateOrConnectWithoutWithdrawTransactionsInput = {
   where: CurrencyWhereUniqueInput;
 };
 
-export type CurrencyCreateWithoutClaim_Prize_TransactionsInput = {
-  address?: InputMaybe<Scalars['String']>;
-  chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  decimals?: InputMaybe<Scalars['Int']>;
-  donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
-  icon?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  owner?: InputMaybe<Scalars['String']>;
-  prize_category?: InputMaybe<PrizeCategoryCreateNestedManyWithoutCurrencyInput>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutCurrencyInput>;
-  symbol?: InputMaybe<Scalars['String']>;
-  tournaments?: InputMaybe<TournamentCreateNestedManyWithoutCurrencyInput>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  usd_value?: InputMaybe<Scalars['Float']>;
-  withdrawTransactions?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutCurrencyInput>;
-};
-
 export type CurrencyCreateWithoutDonateTransactionsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   icon?: InputMaybe<Scalars['String']>;
@@ -1382,7 +1188,6 @@ export type CurrencyCreateWithoutDonateTransactionsInput = {
 export type CurrencyCreateWithoutPrize_CategoryInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1401,7 +1206,6 @@ export type CurrencyCreateWithoutPrize_CategoryInput = {
 export type CurrencyCreateWithoutSponsorTransactionsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1420,7 +1224,6 @@ export type CurrencyCreateWithoutSponsorTransactionsInput = {
 export type CurrencyCreateWithoutTournamentsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1439,7 +1242,6 @@ export type CurrencyCreateWithoutTournamentsInput = {
 export type CurrencyCreateWithoutWithdrawTransactionsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1459,7 +1261,6 @@ export type CurrencyGql = {
   __typename?: 'CurrencyGql';
   address?: Maybe<Scalars['String']>;
   chain_symbol?: Maybe<ChainSymbol>;
-  claim_prize_transactions?: Maybe<Array<ClaimPrizeTransaction>>;
   created_at: Scalars['DateTime'];
   decimals?: Maybe<Scalars['Int']>;
   donateTransactions?: Maybe<Array<DonateTransaction>>;
@@ -1796,7 +1597,6 @@ export type Game = {
   favorite_user?: Maybe<Array<UserFavoriteGame>>;
   logo?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
-  nft?: Maybe<Array<PlayerNft>>;
   nft_limit?: Maybe<Scalars['Int']>;
   platform?: Maybe<Array<GamePlatform>>;
   tournaments?: Maybe<Array<Tournament>>;
@@ -1807,7 +1607,6 @@ export type Game = {
 export type GameCount = {
   __typename?: 'GameCount';
   favorite_user: Scalars['Int'];
-  nft: Scalars['Int'];
   platform: Scalars['Int'];
   tournaments: Scalars['Int'];
 };
@@ -1816,12 +1615,6 @@ export type GameCreateNestedOneWithoutFavorite_UserInput = {
   connect?: InputMaybe<GameWhereUniqueInput>;
   connectOrCreate?: InputMaybe<GameCreateOrConnectWithoutFavorite_UserInput>;
   create?: InputMaybe<GameCreateWithoutFavorite_UserInput>;
-};
-
-export type GameCreateNestedOneWithoutNftInput = {
-  connect?: InputMaybe<GameWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<GameCreateOrConnectWithoutNftInput>;
-  create?: InputMaybe<GameCreateWithoutNftInput>;
 };
 
 export type GameCreateNestedOneWithoutPlatformInput = {
@@ -1841,11 +1634,6 @@ export type GameCreateOrConnectWithoutFavorite_UserInput = {
   where: GameWhereUniqueInput;
 };
 
-export type GameCreateOrConnectWithoutNftInput = {
-  create: GameCreateWithoutNftInput;
-  where: GameWhereUniqueInput;
-};
-
 export type GameCreateOrConnectWithoutPlatformInput = {
   create: GameCreateWithoutPlatformInput;
   where: GameWhereUniqueInput;
@@ -1861,20 +1649,6 @@ export type GameCreateWithoutFavorite_UserInput = {
   desc?: InputMaybe<Scalars['String']>;
   logo?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
-  nft_limit?: InputMaybe<Scalars['Int']>;
-  platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
-  tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type GameCreateWithoutNftInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  desc?: InputMaybe<Scalars['String']>;
-  favorite_user?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutGameInput>;
-  logo?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
   nft_limit?: InputMaybe<Scalars['Int']>;
   platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
@@ -1888,7 +1662,6 @@ export type GameCreateWithoutPlatformInput = {
   favorite_user?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutGameInput>;
   logo?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
   tournaments?: InputMaybe<TournamentCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
@@ -1901,7 +1674,6 @@ export type GameCreateWithoutTournamentsInput = {
   favorite_user?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutGameInput>;
   logo?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
-  nft?: InputMaybe<PlayerNftCreateNestedManyWithoutGameInput>;
   nft_limit?: InputMaybe<Scalars['Int']>;
   platform?: InputMaybe<GamePlatformCreateNestedManyWithoutGameInput>;
   uid?: InputMaybe<Scalars['String']>;
@@ -1994,6 +1766,12 @@ export type GamePlatformWhereUniqueInput = {
 
 export type GameWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
+};
+
+export type GetNotiResponse = {
+  __typename?: 'GetNotiResponse';
+  notifications?: Maybe<Array<Notification>>;
+  unseen_count?: Maybe<Scalars['Int']>;
 };
 
 export type GetRefereeInput = {
@@ -2829,6 +2607,7 @@ export type Mutation = {
   loginFacebook: AuthGraphql;
   /** Google login */
   loginGoogle: AuthGraphql;
+  markAllNotisAsSeen?: Maybe<Scalars['Boolean']>;
   reactToTournament?: Maybe<Scalars['Boolean']>;
   /**
    *
@@ -3066,135 +2845,6 @@ export type NestedStringNullableFilter = {
   notIn?: InputMaybe<Array<Scalars['String']>>;
   search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
-};
-
-export type Nft = {
-  __typename?: 'Nft';
-  contract?: Maybe<Scalars['String']>;
-  created_at: Scalars['DateTime'];
-  desc?: Maybe<Scalars['String']>;
-  img?: Maybe<Scalars['String']>;
-  mission_value?: Maybe<Scalars['String']>;
-  name?: Maybe<Scalars['String']>;
-  play_nft?: Maybe<PlayerNft>;
-  staked_nft?: Maybe<Staked>;
-  tier?: Maybe<Scalars['Int']>;
-  token_id?: Maybe<Scalars['String']>;
-  type?: Maybe<NftType>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type NftCreateManyUserInput = {
-  contract?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  desc?: InputMaybe<Scalars['String']>;
-  img?: InputMaybe<Scalars['String']>;
-  mission_value?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  tier?: InputMaybe<Scalars['Int']>;
-  token_id?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<NftType>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type NftCreateManyUserInputEnvelope = {
-  data: Array<NftCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type NftCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<NftWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<NftCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<NftCreateWithoutUserInput>>;
-  createMany?: InputMaybe<NftCreateManyUserInputEnvelope>;
-};
-
-export type NftCreateNestedOneWithoutPlay_NftInput = {
-  connect?: InputMaybe<NftWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NftCreateOrConnectWithoutPlay_NftInput>;
-  create?: InputMaybe<NftCreateWithoutPlay_NftInput>;
-};
-
-export type NftCreateNestedOneWithoutStaked_NftInput = {
-  connect?: InputMaybe<NftWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<NftCreateOrConnectWithoutStaked_NftInput>;
-  create?: InputMaybe<NftCreateWithoutStaked_NftInput>;
-};
-
-export type NftCreateOrConnectWithoutPlay_NftInput = {
-  create: NftCreateWithoutPlay_NftInput;
-  where: NftWhereUniqueInput;
-};
-
-export type NftCreateOrConnectWithoutStaked_NftInput = {
-  create: NftCreateWithoutStaked_NftInput;
-  where: NftWhereUniqueInput;
-};
-
-export type NftCreateOrConnectWithoutUserInput = {
-  create: NftCreateWithoutUserInput;
-  where: NftWhereUniqueInput;
-};
-
-export type NftCreateWithoutPlay_NftInput = {
-  contract?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  desc?: InputMaybe<Scalars['String']>;
-  img?: InputMaybe<Scalars['String']>;
-  mission_value?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  staked_nft?: InputMaybe<StakedCreateNestedOneWithoutNftInput>;
-  tier?: InputMaybe<Scalars['Int']>;
-  token_id?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<NftType>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutNftsInput;
-};
-
-export type NftCreateWithoutStaked_NftInput = {
-  contract?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  desc?: InputMaybe<Scalars['String']>;
-  img?: InputMaybe<Scalars['String']>;
-  mission_value?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  play_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutNftInput>;
-  tier?: InputMaybe<Scalars['Int']>;
-  token_id?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<NftType>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutNftsInput;
-};
-
-export type NftCreateWithoutUserInput = {
-  contract?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  desc?: InputMaybe<Scalars['String']>;
-  img?: InputMaybe<Scalars['String']>;
-  mission_value?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  play_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutNftInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedOneWithoutNftInput>;
-  tier?: InputMaybe<Scalars['Int']>;
-  token_id?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<NftType>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export enum NftType {
-  Equip = 'EQUIP',
-  Staked = 'STAKED'
-}
-
-export type NftWhereUniqueInput = {
-  uid?: InputMaybe<Scalars['String']>;
 };
 
 export type Notification = {
@@ -4164,95 +3814,6 @@ export type PlayerMissionWhereUniqueInput = {
   uid?: InputMaybe<Scalars['String']>;
 };
 
-export type PlayerNft = {
-  __typename?: 'PlayerNFT';
-  created_at: Scalars['DateTime'];
-  game: Game;
-  game_uid: Scalars['String'];
-  nft: Nft;
-  nft_uid: Scalars['ID'];
-  slot?: Maybe<Scalars['Int']>;
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type PlayerNftCreateManyGameInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  nft_uid: Scalars['String'];
-  slot?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_id: Scalars['Int'];
-};
-
-export type PlayerNftCreateManyGameInputEnvelope = {
-  data: Array<PlayerNftCreateManyGameInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type PlayerNftCreateNestedManyWithoutGameInput = {
-  connect?: InputMaybe<Array<PlayerNftWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<PlayerNftCreateOrConnectWithoutGameInput>>;
-  create?: InputMaybe<Array<PlayerNftCreateWithoutGameInput>>;
-  createMany?: InputMaybe<PlayerNftCreateManyGameInputEnvelope>;
-};
-
-export type PlayerNftCreateNestedOneWithoutNftInput = {
-  connect?: InputMaybe<PlayerNftWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<PlayerNftCreateOrConnectWithoutNftInput>;
-  create?: InputMaybe<PlayerNftCreateWithoutNftInput>;
-};
-
-export type PlayerNftCreateNestedOneWithoutUserInput = {
-  connect?: InputMaybe<PlayerNftWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<PlayerNftCreateOrConnectWithoutUserInput>;
-  create?: InputMaybe<PlayerNftCreateWithoutUserInput>;
-};
-
-export type PlayerNftCreateOrConnectWithoutGameInput = {
-  create: PlayerNftCreateWithoutGameInput;
-  where: PlayerNftWhereUniqueInput;
-};
-
-export type PlayerNftCreateOrConnectWithoutNftInput = {
-  create: PlayerNftCreateWithoutNftInput;
-  where: PlayerNftWhereUniqueInput;
-};
-
-export type PlayerNftCreateOrConnectWithoutUserInput = {
-  create: PlayerNftCreateWithoutUserInput;
-  where: PlayerNftWhereUniqueInput;
-};
-
-export type PlayerNftCreateWithoutGameInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  nft: NftCreateNestedOneWithoutPlay_NftInput;
-  slot?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutPlayer_NftInput;
-};
-
-export type PlayerNftCreateWithoutNftInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  game: GameCreateNestedOneWithoutNftInput;
-  slot?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutPlayer_NftInput;
-};
-
-export type PlayerNftCreateWithoutUserInput = {
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  game: GameCreateNestedOneWithoutNftInput;
-  nft: NftCreateNestedOneWithoutPlay_NftInput;
-  slot?: InputMaybe<Scalars['Int']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type PlayerNftWhereUniqueInput = {
-  nft_uid?: InputMaybe<Scalars['String']>;
-  user_id?: InputMaybe<Scalars['Int']>;
-};
-
 export type PoolWallet = {
   __typename?: 'PoolWallet';
   address: Scalars['String'];
@@ -4442,6 +4003,12 @@ export type ProfileUpdateInput = {
   youtube?: InputMaybe<NullableStringFieldUpdateOperationsInput>;
 };
 
+export type PushNotiGql = {
+  __typename?: 'PushNotiGql';
+  new_noti: Notification;
+  unseen_count: Scalars['Int'];
+};
+
 export type Query = {
   __typename?: 'Query';
   IsSubscribeToTournament?: Maybe<Scalars['Boolean']>;
@@ -4460,7 +4027,7 @@ export type Query = {
   getGame?: Maybe<Array<Game>>;
   getJoinedTournament?: Maybe<Array<TTournament>>;
   getMyTeam?: Maybe<Array<UserTeam>>;
-  getNotification?: Maybe<Array<Notification>>;
+  getNotification?: Maybe<GetNotiResponse>;
   getOnGoingTournament?: Maybe<Array<TournamentGql>>;
   getOwnedTournament?: Maybe<Array<TTournament>>;
   getReferee?: Maybe<GUser>;
@@ -4546,6 +4113,12 @@ export type QueryGetJoinedTournamentArgs = {
 
 export type QueryGetMyTeamArgs = {
   user_id: Scalars['String'];
+};
+
+
+export type QueryGetNotificationArgs = {
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
 };
 
 
@@ -5326,109 +4899,6 @@ export type SpotlightAnnouncementWhereUniqueInput = {
   id?: InputMaybe<Scalars['Int']>;
 };
 
-export type Staked = {
-  __typename?: 'Staked';
-  _count: StakedCount;
-  apr?: Maybe<Scalars['Decimal']>;
-  claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
-  created_at: Scalars['DateTime'];
-  nft: Nft;
-  ntf_uid: Scalars['String'];
-  total_reward?: Maybe<Scalars['Decimal']>;
-  uid: Scalars['ID'];
-  updated_at: Scalars['DateTime'];
-  user: User;
-  user_id: Scalars['Int'];
-};
-
-export type StakedCount = {
-  __typename?: 'StakedCount';
-  claim_staked: Scalars['Int'];
-};
-
-export type StakedCreateManyUserInput = {
-  apr?: InputMaybe<Scalars['Decimal']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  ntf_uid: Scalars['String'];
-  total_reward?: InputMaybe<Scalars['Decimal']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type StakedCreateManyUserInputEnvelope = {
-  data: Array<StakedCreateManyUserInput>;
-  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
-};
-
-export type StakedCreateNestedManyWithoutUserInput = {
-  connect?: InputMaybe<Array<StakedWhereUniqueInput>>;
-  connectOrCreate?: InputMaybe<Array<StakedCreateOrConnectWithoutUserInput>>;
-  create?: InputMaybe<Array<StakedCreateWithoutUserInput>>;
-  createMany?: InputMaybe<StakedCreateManyUserInputEnvelope>;
-};
-
-export type StakedCreateNestedOneWithoutClaim_StakedInput = {
-  connect?: InputMaybe<StakedWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<StakedCreateOrConnectWithoutClaim_StakedInput>;
-  create?: InputMaybe<StakedCreateWithoutClaim_StakedInput>;
-};
-
-export type StakedCreateNestedOneWithoutNftInput = {
-  connect?: InputMaybe<StakedWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<StakedCreateOrConnectWithoutNftInput>;
-  create?: InputMaybe<StakedCreateWithoutNftInput>;
-};
-
-export type StakedCreateOrConnectWithoutClaim_StakedInput = {
-  create: StakedCreateWithoutClaim_StakedInput;
-  where: StakedWhereUniqueInput;
-};
-
-export type StakedCreateOrConnectWithoutNftInput = {
-  create: StakedCreateWithoutNftInput;
-  where: StakedWhereUniqueInput;
-};
-
-export type StakedCreateOrConnectWithoutUserInput = {
-  create: StakedCreateWithoutUserInput;
-  where: StakedWhereUniqueInput;
-};
-
-export type StakedCreateWithoutClaim_StakedInput = {
-  apr?: InputMaybe<Scalars['Decimal']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  nft: NftCreateNestedOneWithoutStaked_NftInput;
-  total_reward?: InputMaybe<Scalars['Decimal']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutStaked_NftInput;
-};
-
-export type StakedCreateWithoutNftInput = {
-  apr?: InputMaybe<Scalars['Decimal']>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutStakedInput>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  total_reward?: InputMaybe<Scalars['Decimal']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user: UserCreateNestedOneWithoutStaked_NftInput;
-};
-
-export type StakedCreateWithoutUserInput = {
-  apr?: InputMaybe<Scalars['Decimal']>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutStakedInput>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  nft: NftCreateNestedOneWithoutStaked_NftInput;
-  total_reward?: InputMaybe<Scalars['Decimal']>;
-  uid?: InputMaybe<Scalars['String']>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-};
-
-export type StakedWhereUniqueInput = {
-  ntf_uid?: InputMaybe<Scalars['String']>;
-  uid?: InputMaybe<Scalars['String']>;
-};
-
 export enum Status {
   Closed = 'CLOSED',
   Ongoing = 'ONGOING',
@@ -5454,7 +4924,7 @@ export type StringNullableFilter = {
 export type Subscription = {
   __typename?: 'Subscription';
   getSpotlightAnnouncement: AnnouncementType;
-  pushNotification: Notification;
+  pushNotification: PushNotiGql;
   updateParticipant: Participant;
   updateTotalDonation: TotalDonation;
   updateTotalPrizePool: TotalPrizePool;
@@ -5462,7 +4932,7 @@ export type Subscription = {
 
 
 export type SubscriptionPushNotificationArgs = {
-  user_id: Scalars['Float'];
+  user_id: Scalars['Int'];
 };
 
 
@@ -6973,7 +6443,6 @@ export type User = {
   balace_history?: Maybe<Array<BalanceHistory>>;
   balance?: Maybe<Balance>;
   claim_prize_transactions?: Maybe<Array<ClaimPrizeTransaction>>;
-  claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
   claim_tournament?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -6988,19 +6457,16 @@ export type User = {
   inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   luckychest_history?: Maybe<Array<UserLuckyChestHistory>>;
-  nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
   password?: Maybe<Scalars['String']>;
   platform_account?: Maybe<Array<PlatformAccount>>;
   platform_uid?: Maybe<Scalars['String']>;
   playTeamMembers?: Maybe<Array<PlayTeamMember>>;
-  player_nft?: Maybe<PlayerNft>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
   ref_code?: Maybe<Scalars['String']>;
   role: UserRole;
   sponsorTransactions?: Maybe<Array<SponsorTransaction>>;
-  staked_nft?: Maybe<Array<Staked>>;
   status: UserStatus;
   teamMembers?: Maybe<Array<TeamMember>>;
   tournament?: Maybe<Array<Tournament>>;
@@ -7014,7 +6480,6 @@ export type UserCount = {
   __typename?: 'UserCount';
   balace_history: Scalars['Int'];
   claim_prize_transactions: Scalars['Int'];
-  claim_staked: Scalars['Int'];
   claim_tournament: Scalars['Int'];
   dailyMission: Scalars['Int'];
   daily_history: Scalars['Int'];
@@ -7023,30 +6488,16 @@ export type UserCount = {
   inventory_pieces: Scalars['Int'];
   leader_board: Scalars['Int'];
   luckychest_history: Scalars['Int'];
-  nfts: Scalars['Int'];
   notification: Scalars['Int'];
   platform_account: Scalars['Int'];
   playTeamMembers: Scalars['Int'];
   reaction: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
-  staked_nft: Scalars['Int'];
   teamMembers: Scalars['Int'];
   tournament: Scalars['Int'];
   tournamentSubscriber: Scalars['Int'];
   user_ticket: Scalars['Int'];
   withdraws: Scalars['Int'];
-};
-
-export type UserCreateNestedOneWithoutClaim_Prize_TransactionsInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutClaim_Prize_TransactionsInput>;
-  create?: InputMaybe<UserCreateWithoutClaim_Prize_TransactionsInput>;
-};
-
-export type UserCreateNestedOneWithoutClaim_StakedInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutClaim_StakedInput>;
-  create?: InputMaybe<UserCreateWithoutClaim_StakedInput>;
 };
 
 export type UserCreateNestedOneWithoutClaim_TournamentInput = {
@@ -7097,12 +6548,6 @@ export type UserCreateNestedOneWithoutLuckychest_HistoryInput = {
   create?: InputMaybe<UserCreateWithoutLuckychest_HistoryInput>;
 };
 
-export type UserCreateNestedOneWithoutNftsInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutNftsInput>;
-  create?: InputMaybe<UserCreateWithoutNftsInput>;
-};
-
 export type UserCreateNestedOneWithoutPlatform_AccountInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
   connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutPlatform_AccountInput>;
@@ -7115,12 +6560,6 @@ export type UserCreateNestedOneWithoutPlayTeamMembersInput = {
   create?: InputMaybe<UserCreateWithoutPlayTeamMembersInput>;
 };
 
-export type UserCreateNestedOneWithoutPlayer_NftInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutPlayer_NftInput>;
-  create?: InputMaybe<UserCreateWithoutPlayer_NftInput>;
-};
-
 export type UserCreateNestedOneWithoutReactionInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
   connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutReactionInput>;
@@ -7131,12 +6570,6 @@ export type UserCreateNestedOneWithoutSponsorTransactionsInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
   connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutSponsorTransactionsInput>;
   create?: InputMaybe<UserCreateWithoutSponsorTransactionsInput>;
-};
-
-export type UserCreateNestedOneWithoutStaked_NftInput = {
-  connect?: InputMaybe<UserWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutStaked_NftInput>;
-  create?: InputMaybe<UserCreateWithoutStaked_NftInput>;
 };
 
 export type UserCreateNestedOneWithoutTeamMembersInput = {
@@ -7167,16 +6600,6 @@ export type UserCreateNestedOneWithoutWithdrawsInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
   connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutWithdrawsInput>;
   create?: InputMaybe<UserCreateWithoutWithdrawsInput>;
-};
-
-export type UserCreateOrConnectWithoutClaim_Prize_TransactionsInput = {
-  create: UserCreateWithoutClaim_Prize_TransactionsInput;
-  where: UserWhereUniqueInput;
-};
-
-export type UserCreateOrConnectWithoutClaim_StakedInput = {
-  create: UserCreateWithoutClaim_StakedInput;
-  where: UserWhereUniqueInput;
 };
 
 export type UserCreateOrConnectWithoutClaim_TournamentInput = {
@@ -7219,11 +6642,6 @@ export type UserCreateOrConnectWithoutLuckychest_HistoryInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateOrConnectWithoutNftsInput = {
-  create: UserCreateWithoutNftsInput;
-  where: UserWhereUniqueInput;
-};
-
 export type UserCreateOrConnectWithoutPlatform_AccountInput = {
   create: UserCreateWithoutPlatform_AccountInput;
   where: UserWhereUniqueInput;
@@ -7234,11 +6652,6 @@ export type UserCreateOrConnectWithoutPlayTeamMembersInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateOrConnectWithoutPlayer_NftInput = {
-  create: UserCreateWithoutPlayer_NftInput;
-  where: UserWhereUniqueInput;
-};
-
 export type UserCreateOrConnectWithoutReactionInput = {
   create: UserCreateWithoutReactionInput;
   where: UserWhereUniqueInput;
@@ -7246,11 +6659,6 @@ export type UserCreateOrConnectWithoutReactionInput = {
 
 export type UserCreateOrConnectWithoutSponsorTransactionsInput = {
   create: UserCreateWithoutSponsorTransactionsInput;
-  where: UserWhereUniqueInput;
-};
-
-export type UserCreateOrConnectWithoutStaked_NftInput = {
-  create: UserCreateWithoutStaked_NftInput;
   where: UserWhereUniqueInput;
 };
 
@@ -7279,89 +6687,10 @@ export type UserCreateOrConnectWithoutWithdrawsInput = {
   where: UserWhereUniqueInput;
 };
 
-export type UserCreateWithoutClaim_Prize_TransactionsInput = {
-  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
-  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
-  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
-  code?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
-  email?: InputMaybe<Scalars['String']>;
-  facebook_id?: InputMaybe<Scalars['String']>;
-  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
-  google_id?: InputMaybe<Scalars['String']>;
-  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
-  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
-  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
-  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
-  password?: InputMaybe<Scalars['String']>;
-  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
-  platform_uid?: InputMaybe<Scalars['String']>;
-  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
-  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
-  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
-  ref_code?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<UserRole>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
-  status?: InputMaybe<UserStatus>;
-  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
-  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
-  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
-  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
-};
-
-export type UserCreateWithoutClaim_StakedInput = {
-  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
-  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
-  code?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
-  email?: InputMaybe<Scalars['String']>;
-  facebook_id?: InputMaybe<Scalars['String']>;
-  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
-  google_id?: InputMaybe<Scalars['String']>;
-  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
-  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
-  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
-  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
-  password?: InputMaybe<Scalars['String']>;
-  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
-  platform_uid?: InputMaybe<Scalars['String']>;
-  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
-  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
-  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
-  ref_code?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<UserRole>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
-  status?: InputMaybe<UserStatus>;
-  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
-  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
-  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
-  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
-};
-
 export type UserCreateWithoutClaim_TournamentInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
@@ -7374,19 +6703,16 @@ export type UserCreateWithoutClaim_TournamentInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7400,7 +6726,6 @@ export type UserCreateWithoutDailyMissionInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7413,19 +6738,16 @@ export type UserCreateWithoutDailyMissionInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7439,7 +6761,6 @@ export type UserCreateWithoutDaily_HistoryInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7452,19 +6773,16 @@ export type UserCreateWithoutDaily_HistoryInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7478,7 +6796,6 @@ export type UserCreateWithoutFavorite_GameInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7491,19 +6808,16 @@ export type UserCreateWithoutFavorite_GameInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7517,7 +6831,6 @@ export type UserCreateWithoutInventory_ItemsInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7530,19 +6843,16 @@ export type UserCreateWithoutInventory_ItemsInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7556,7 +6866,6 @@ export type UserCreateWithoutInventory_PiecesInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7569,19 +6878,16 @@ export type UserCreateWithoutInventory_PiecesInput = {
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7595,7 +6901,6 @@ export type UserCreateWithoutLeader_BoardInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7608,19 +6913,16 @@ export type UserCreateWithoutLeader_BoardInput = {
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7634,7 +6936,6 @@ export type UserCreateWithoutLuckychest_HistoryInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7647,58 +6948,16 @@ export type UserCreateWithoutLuckychest_HistoryInput = {
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
-  status?: InputMaybe<UserStatus>;
-  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
-  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
-  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
-  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
-};
-
-export type UserCreateWithoutNftsInput = {
-  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
-  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
-  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
-  code?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
-  email?: InputMaybe<Scalars['String']>;
-  facebook_id?: InputMaybe<Scalars['String']>;
-  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
-  google_id?: InputMaybe<Scalars['String']>;
-  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
-  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
-  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
-  password?: InputMaybe<Scalars['String']>;
-  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
-  platform_uid?: InputMaybe<Scalars['String']>;
-  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
-  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
-  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
-  ref_code?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<UserRole>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7712,7 +6971,6 @@ export type UserCreateWithoutPlatform_AccountInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7726,18 +6984,15 @@ export type UserCreateWithoutPlatform_AccountInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7751,7 +7006,6 @@ export type UserCreateWithoutPlayTeamMembersInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7765,57 +7019,15 @@ export type UserCreateWithoutPlayTeamMembersInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
-  status?: InputMaybe<UserStatus>;
-  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
-  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
-  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
-  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
-};
-
-export type UserCreateWithoutPlayer_NftInput = {
-  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
-  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
-  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
-  code?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
-  email?: InputMaybe<Scalars['String']>;
-  facebook_id?: InputMaybe<Scalars['String']>;
-  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
-  google_id?: InputMaybe<Scalars['String']>;
-  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
-  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
-  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
-  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
-  password?: InputMaybe<Scalars['String']>;
-  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
-  platform_uid?: InputMaybe<Scalars['String']>;
-  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
-  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
-  ref_code?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<UserRole>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7829,7 +7041,6 @@ export type UserCreateWithoutReactionInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7843,18 +7054,15 @@ export type UserCreateWithoutReactionInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7868,7 +7076,6 @@ export type UserCreateWithoutSponsorTransactionsInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7882,57 +7089,15 @@ export type UserCreateWithoutSponsorTransactionsInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
-  status?: InputMaybe<UserStatus>;
-  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
-  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
-  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
-  updated_at?: InputMaybe<Scalars['DateTime']>;
-  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
-  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
-};
-
-export type UserCreateWithoutStaked_NftInput = {
-  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
-  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
-  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
-  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
-  code?: InputMaybe<Scalars['String']>;
-  created_at?: InputMaybe<Scalars['DateTime']>;
-  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
-  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
-  email?: InputMaybe<Scalars['String']>;
-  facebook_id?: InputMaybe<Scalars['String']>;
-  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
-  google_id?: InputMaybe<Scalars['String']>;
-  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
-  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
-  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
-  luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
-  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
-  password?: InputMaybe<Scalars['String']>;
-  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
-  platform_uid?: InputMaybe<Scalars['String']>;
-  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
-  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
-  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
-  ref_code?: InputMaybe<Scalars['String']>;
-  role?: InputMaybe<UserRole>;
-  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -7946,7 +7111,6 @@ export type UserCreateWithoutTeamMembersInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7960,19 +7124,16 @@ export type UserCreateWithoutTeamMembersInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
   tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
@@ -7985,7 +7146,6 @@ export type UserCreateWithoutTournamentInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -7999,19 +7159,16 @@ export type UserCreateWithoutTournamentInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
@@ -8024,7 +7181,6 @@ export type UserCreateWithoutTournamentSubscriberInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -8038,19 +7194,16 @@ export type UserCreateWithoutTournamentSubscriberInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -8063,7 +7216,6 @@ export type UserCreateWithoutUser_TicketInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -8077,19 +7229,16 @@ export type UserCreateWithoutUser_TicketInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -8102,7 +7251,6 @@ export type UserCreateWithoutWithdrawsInput = {
   balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
   balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
   claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
-  claim_staked?: InputMaybe<ClaimStakedTransactionCreateNestedManyWithoutUserInput>;
   claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
   code?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
@@ -8116,19 +7264,16 @@ export type UserCreateWithoutWithdrawsInput = {
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
-  nfts?: InputMaybe<NftCreateNestedManyWithoutUserInput>;
   notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
   password?: InputMaybe<Scalars['String']>;
   platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
   platform_uid?: InputMaybe<Scalars['String']>;
   playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
-  player_nft?: InputMaybe<PlayerNftCreateNestedOneWithoutUserInput>;
   profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
   ref_code?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<UserRole>;
   sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
-  staked_nft?: InputMaybe<StakedCreateNestedManyWithoutUserInput>;
   status?: InputMaybe<UserStatus>;
   teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
   tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
@@ -8352,7 +7497,6 @@ export type UserGraphql = {
   balace_history?: Maybe<Array<BalanceHistory>>;
   balance?: Maybe<Balance>;
   claim_prize_transactions?: Maybe<Array<ClaimPrizeTransaction>>;
-  claim_staked?: Maybe<Array<ClaimStakedTransaction>>;
   claim_tournament?: Maybe<Array<ClaimTransaction>>;
   code?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
@@ -8367,18 +7511,15 @@ export type UserGraphql = {
   inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
   luckychest_history?: Maybe<Array<UserLuckyChestHistory>>;
-  nfts?: Maybe<Array<Nft>>;
   notification?: Maybe<Array<Notification>>;
   platform_account?: Maybe<Array<PlatformAccount>>;
   platform_uid?: Maybe<Scalars['String']>;
   playTeamMembers?: Maybe<Array<PlayTeamMember>>;
-  player_nft?: Maybe<PlayerNft>;
   profile?: Maybe<UserProfile>;
   reaction?: Maybe<Array<Reaction>>;
   ref_code?: Maybe<Scalars['String']>;
   role: UserRole;
   sponsorTransactions?: Maybe<Array<SponsorTransaction>>;
-  staked_nft?: Maybe<Array<Staked>>;
   status: UserStatus;
   teamMembers?: Maybe<Array<TeamMember>>;
   tournament?: Maybe<Array<Tournament>>;
