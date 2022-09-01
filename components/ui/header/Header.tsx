@@ -117,12 +117,13 @@ export default observer(function Header(props: Props) {
       description: (
         <div className={s.notificationItemToast}>
           <img
-            // className="w-[30px] h-[30px]"
+            className="mr-2"
             src={data?.image ?? ""}
             alt=""
+            onError={(e) => e.currentTarget.src = "/assets/P2E/raffles/defaultAvatar.jpg"}
           />
           <div>
-            <p>{data?.content}</p>
+            <p dangerouslySetInnerHTML={{__html: data?.content}}/>
           </div>
         </div>
       ),

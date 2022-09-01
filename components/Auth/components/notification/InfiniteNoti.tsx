@@ -87,12 +87,13 @@ const InfiniteList = (
                       // className="w-[30px] h-[30px]"
                       src={item?.image ?? ""}
                       alt=""
+                      onError={(e) => e.currentTarget.src = "/assets/P2E/raffles/defaultAvatar.jpg"}
                     />
                   </Col>
                   <Col span={20} className={s.notificationItemContent}>
                     <p className={`font-[600] m-0 ${s.notiContentTitle}`}>{item?.title}
                     </p>
-                    <p className={` m-0 ${s.notiContentDescription}`}>{item?.content}</p>
+                    <p className={` m-0 ${s.notiContentDescription}`} dangerouslySetInnerHTML={{__html: item?.content!}} />
                     <p className={s.notificationItemTime}>
                       {moment(item?.created_at).fromNow()}
                     </p>
