@@ -1,0 +1,115 @@
+.content_modal
+  min-width: 325px
+  @media (min-width: 768px)
+    min-width: 650px
+  :global(.ant-modal-body)
+    background-image: url("/assets/Raffles/BgClaim.png")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
+    padding: 20px 40px 20px 40px
+    @media (min-width: 768px)
+      padding: 24px 100px 24px 100px
+  :global(.ant-modal-close .ant-modal-close-x)
+    color: #6c6b6b
+    background: none
+
+.title
+  font-family: 'Revx Neue Demo'
+  text-align: center
+  margin-bottom: 18px
+  .logo
+    margin-top: 14px
+    margin-bottom: 8px
+  .titleSuccess
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 700
+    font-size: 20px
+    line-height: 30px
+    letter-spacing: 0.04em
+    text-transform: uppercase
+    background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+    -webkit-background-clip: text
+    -webkit-text-fill-color: transparent
+    text-fill-color: transparent
+    margin-bottom: 0
+    @media (min-width: 525px)
+      font-size: 26px
+    @media (min-width: 768px)
+      font-size: 32px
+      line-height: 40px
+  .titleTicket
+    font-weight: 400
+    font-size: 18px
+    line-height: 20px
+    margin-bottom: 0
+.tickets
+  height: auto
+  display: flex
+  justify-content: space-around
+  flex-wrap: wrap
+  gap: 18px 10px
+  .item
+    display: flex
+    align-items: center
+    :global(.ant-btn[disabled])
+      background: #d9d9d9
+    .itemTickets
+      font-family: 'Revx Neue Demo'
+      font-style: normal
+      font-weight: 600
+      font-size: 24px
+      line-height: 26px
+      background: #F0B90B
+      border-radius: 4px 0px 0px 4px
+      padding: 10px 14px
+      min-width: 130px
+    .itemTicketsClaimed
+      background: rgba(69, 80, 107, 0.5)
+    .imgChecked
+      display: flex
+      align-items: center
+      justify-content: center
+      background: rgba(69, 80, 107, 0.5)
+      min-height: 46px
+      max-height: 46px
+      padding: 0 30px
+      border-radius: 0 4px 4px 0
+    .itemBtn
+      font-family: 'Revx Neue Demo'
+      font-style: normal
+      font-weight: 600
+      font-size: 14px
+      line-height: 15px
+      padding: 10px 22px
+      //display: flex;
+      //align-items: center;
+      //text-align: center;
+      border: 1px solid #F0B90B
+      margin-left: -1px
+      min-height: 46px
+      max-height: 46px
+      border-radius: 0px 4px 4px 0px
+.buttonClaim
+  display: flex
+  justify-content: flex-end
+  button
+    font-weight: 600
+    font-size: 12px
+    line-height: 13px
+    height: auto
+    padding: 8px 20px !important
+    background: linear-gradient(91.09deg, #1889E4 0.33%, #0BEBD6 99.88%)
+    border: 0.833333px solid #222837
+.myInventory
+  margin-top: 20px
+  text-align: center
+  p
+    font-size: 16px
+    margin-bottom: 0
+  div
+    text-decoration: underline
+    cursor: pointer
+    a
+      color: #00F9FF

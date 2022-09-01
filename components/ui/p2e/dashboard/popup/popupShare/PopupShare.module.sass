@@ -1,0 +1,65 @@
+.content_modal
+  min-width: 325px
+  font-size: 16px
+  @media (min-width: 768px)
+    min-width: 650px
+  :global(.ant-modal-body)
+    background-image: url("/assets/P2E/BgPopupShareRefer.png")
+    background-repeat: no-repeat
+    background-size: cover
+    background-position: center
+    padding: 70px 50px 50px 50px
+  :global(.ant-modal-close .ant-modal-close-x)
+    background: none
+    color: #FFFFFF
+.content
+  p
+    font-family: 'Lexend'
+    font-size: 14px
+    font-weight: 400
+    line-height: 22px
+    margin-bottom: 5px
+    @media (min-width: 768px)
+      font-size: 18px
+.group_ic
+  display: flex
+  align-items: center
+  justify-content: space-between
+  flex-wrap: wrap
+  padding: 12px 20px
+  //border-radius: 12px
+  border: none
+  margin: 12px 0
+  //gap: 0 60px
+  .ic_item
+    max-width: 64px
+    margin: 12px
+    img
+      width: 64px
+      transition: 0.3s
+      &:hover
+        transform: scale(1.2)
+
+.group_ic::before
+  content: ''
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  border-radius: 12px
+  padding: 1px
+  z-index: -1
+  background: linear-gradient(99.92deg, #CD28E8 0%, #0BEBD6 115%)
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0)
+  -webkit-mask-composite: xor
+  mask-composite: exclude
+
+.inputUrl
+  color: white
+  width: 100%
+  border-radius: 2px
+  border: 1px solid #fff
+  padding: 0 10px
+  font-size: 16px
+  background: transparent !important

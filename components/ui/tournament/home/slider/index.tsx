@@ -19,7 +19,7 @@ export default function SilderBanner({ data }: SliderBannerProps) {
 
   const handleJoinDetail = (dataTournament: GTournament) => {
     const { uid, name } = dataTournament;
-    router.push(`/tournament/${uid}/${slugify(name)}`);
+    router.push(`/arena/${uid}/${slugify(name)}`);
   };
 
   return (

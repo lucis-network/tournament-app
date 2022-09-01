@@ -3,12 +3,17 @@ import { Tabs } from "antd";
 import MyTeamDetail from "components/ui/common/tabsItem/myTeamDetail";
 import MyOverview from "../tabsitem/overview/Index";
 import MyTournament from "../tabsitem/myTournament";
+import MyProfileStore from "../../../../../src/store/MyProfileStore";
+import { UserGraphql } from "../../../../../src/generated/graphql";
+import { NFTs } from "../tabsitem/nfts";
 import { observer } from "mobx-react-lite";
 import { ApolloQueryResult } from "@apollo/client";
 import { useEffect } from "react";
 import { Router, useRouter } from "next/router";
 import TournamentStore from "src/store/TournamentStore";
 import {AuthUser} from "../../../../Auth/AuthStore";
+import ReferHistory from "../tabsitem/referHistory";
+import Inventory from "../tabsitem/inventory";
 
 type ContentMyProfileProps = {
   isOwner?: boolean;
@@ -37,7 +42,7 @@ export default observer(function ContentMyProfile({
   };
 
   const handleBeforeHistoryChange = (url: string) => {
-    if(url.includes("/tournament/") && router?.query?.page === "teams") {
+    if(url.includes("/arena/") && router?.query?.page === "teams") {
       TournamentStore.checkBacktoTournament = true;
     }
   };
@@ -49,7 +54,7 @@ export default observer(function ContentMyProfile({
       Router.events.off('beforeHistoryChange', handleBeforeHistoryChange);
     };
   }, []);
-  
+
   return (
     <Tabs
       defaultActiveKey={tabActiveKey}
@@ -67,15 +72,29 @@ export default observer(function ContentMyProfile({
       <TabPane tab="Teams" key="teams">
         <MyTeamDetail isOwnerProp={isOwner} />
       </TabPane>
-      <TabPane tab="For Sponsor" disabled key="sponsor">
-        Content of Tab Pane 3
-      </TabPane>
+      {/*<TabPane tab="For Sponsor" disabled key="sponsor">*/}
+      {/*  Content of Tab Pane 3*/}
+      {/*</TabPane>*/}
       <TabPane tab="Tournaments" key="tournaments">
         <MyTournament
           userInfo={userInfo}
           getUserProfileRefetch={getUserProfileRefetch}
           isOwner={isOwner}
         />
+      </TabPane>
+      <TabPane tab="NFTs" key="5" disabled>
+        {/* <NFTs isOwner={isOwner} /> */}
+      </TabPane>
+      <TabPane tab="My Staking" key="6" disabled>
+        {/* <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} /> */}
+      </TabPane>
+      {isOwner &&
+          <TabPane tab="Refer history" key="refer">
+              <ReferHistory></ReferHistory>
+          </TabPane>
+      }
+      <TabPane tab="Inventory" key="inventory">
+        <Inventory isOwner={isOwner} userInfo={userInfo}></Inventory>
       </TabPane>
     </Tabs>
   );

@@ -5,16 +5,17 @@ import { useEffect, useState } from "react";
 
 import { useRouter } from "next/router";
 
-import Login from "components/Auth/Login/Login";
 import AuthService from "../../../Auth/AuthService";
-import ConnectWalletStore, {
-  nonReactive as ConnectWalletStore_NonReactiveData,
-} from "../../../Auth/ConnectWalletStore";
-import { Button } from "antd/lib/radio";
+import ConnectWalletStore
+ from "../../../Auth/ConnectWalletStore";
 import AuthStore from "../../../Auth/AuthStore";
-import { trim_middle } from "utils/String";
 import { AppEmitter } from "services/emitter";
-import User from "components/Auth/components/User";
+import s from "./MenuMobile.module.sass";
+import ProfileMobile from "./ProfileMobile";
+import LoginBoxStore from "../../../Auth/Login/LoginBoxStore";
+import {observer} from "mobx-react-lite";
+import LoginModal from "../../../Auth/Login/LoginModal";
+
 
 const variants = {
   open: {
@@ -25,49 +26,7 @@ const variants = {
   },
 };
 
-// const dataSubMenu = [
-//   {
-//     id: 1,
-//     text: 'Social-Fi network platform',
-//     disabled: false
-//   },
-//   {
-//     id: 2,
-//     text: 'Tournaments',
-//     disabled: false
-//   },
-//   {
-//     id: 3,
-//     text: 'Lucis Insight & Game Ranking system',
-//     disabled: false
-//   },
-//   {
-//     id: 4,
-//     text: 'Lucis Media',
-//     disabled: false
-//   },
-//   {
-//     id: 5,
-//     text: 'Launchpad & Marketplace',
-//     disabled: false
-//   },
-//   {
-//     id: 6,
-//     text: 'Gaming Guild',
-//     disabled: false
-//   },
-//   {
-//     id: 7,
-//     text: 'Automation tool zone',
-//     disabled: true
-//   },
-//   {
-//     id: 8,
-//     text: 'Streaming platform',
-//     disabled: true
-//   },
-// ]
-export const Navigation = () => {
+export default observer(function Navigation ({balance}: any) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const router = useRouter();
@@ -78,6 +37,7 @@ export const Navigation = () => {
     router.push("/profile");
     setIsVisible(false);
   };
+
   const disconnectWallet = React.useCallback(async () => {
     const authService = new AuthService();
     authService.logout();
@@ -85,12 +45,25 @@ export const Navigation = () => {
     AppEmitter.emit("onWalletDisconnect");
   }, []);
 
+  const openPopupSignIn = () => {
+    console.log(1234)
+    LoginBoxStore.connectModalVisible = true;
+  }
+
   const menuItems: MenuItemType[] = [
     {
       color: "#FF008C",
-      text: "HOME",
+      text: "PLAYCORE",
       isBlank: false,
       to: "/",
+      active: router.pathname === "/"
+    },
+    {
+      color: "#FF008C",
+      text: "ARENA",
+      isBlank: false,
+      to: "/arena",
+      active: router.pathname === "/arena"
     },
     {
       color: "#FF008C",
@@ -99,37 +72,53 @@ export const Navigation = () => {
     },
     {
       color: "#FF008C",
-      text: "FAQ",
-      src: "https://tournament-lucis.gitbook.io/lucis-tournament/",
-    },
-    {
-      color: "#FF008C",
       text: "RANKING",
-      disable: true,
       class: { cursor: "context-menu" },
+      to: "/ranking",
     },
-    {
-      color: "#FF008C",
-      text: "SOCIAL",
-      disable: true,
-      class: { cursor: "context-menu" },
-    },
+    // {
+    //   color: "#FF008C",
+    //   text: "SCHORLARSHIP",
+    //   disable: true,
+    //   class: { cursor: "context-menu" },
+    // },
+    // {
+    //   color: "#FF008C",
+    //   text: "SOCIAL",
+    //   disable: true,
+    //   class: { cursor: "context-menu", paddingBottom: 24 },
+    // },
     {
       color: "#FF008C",
       text: (
-        <div>
+        <div style={AuthStore.isLoggedIn ? {borderBottom: "1px solid #3D475C", paddingBottom: "24px"} : undefined}>
           {AuthStore.isLoggedIn ? (
             <>
-              <User></User>
+              <ProfileMobile balance={balance}/>
             </>
           ) : (
             ""
           )}
         </div>
       ),
-      class: { position: "absolute", bottom: "260px" },
+      class: { paddingBottom: "24px" },
       isBlank: false,
+      isMarginTop: true,
     },
+    // {
+    //   color: "#FF008C",
+    //   text: (
+    //     AuthStore.isLoggedIn ? (
+    //       <div>
+    //         <div style={{borderBottom: "1px solid #3D475C"}}></div>
+    //       </div>
+    //     ) : (
+    //       ""
+    //     )
+    //   ),
+    //   class: { paddingBottom: "24px" },
+    //   isBlank: false,
+    // },
     {
       color: "#FF008C",
       text: (
@@ -137,59 +126,58 @@ export const Navigation = () => {
           {AuthStore.isLoggedIn ? (
             <div onClick={onClickProfile}>My Profile</div>
           ) : (
-            <Login />
+            ""
           )}
         </div>
       ),
-      class: { position: "absolute", bottom: "210px" },
       isBlank: false,
     },
-    {
-      color: "#FF008C",
-      text: (
-        <div>{AuthStore.isLoggedIn ? <p>{profile?.display_name}</p> : ""}</div>
-      ),
-      isBlank: false,
-      class: {
-        position: "absolute",
-        bottom: "160px",
-        fontSize: 14,
-        cursor: "auto",
-      },
-    },
+
     {
       color: "#FF008C",
       text: (
         <div>
           {AuthStore.isLoggedIn ? (
-            <p>{trim_middle(address ?? "", 7, 8)}</p>
+            <div onClick={onClickProfile}>Stake</div>
           ) : (
             ""
           )}
         </div>
       ),
       isBlank: false,
-      class: {
-        position: "absolute",
-        bottom: "144px",
-        fontSize: 12,
-        cursor: "auto",
-      },
+      disable: true,
+    },
+
+    {
+      color: "#FF008C",
+      text: (
+        <div>
+          {AuthStore.isLoggedIn ? (
+            <div onClick={onClickProfile}>NFTs</div>
+          ) : (
+            ""
+          )}
+        </div>
+      ),
+      class: { paddingBottom: 24 },
+      isBlank: false,
+      disable: true,
     },
     {
       color: "#FF008C",
       text: (
         <div>
           {AuthStore.isLoggedIn ? (
-            <div>
-              <div onClick={disconnectWallet}>Log out</div>
+            <div className={s.headerButton} onClick={disconnectWallet}>
+              <span >Sign out</span>
             </div>
           ) : (
-            ""
+            <div className={s.headerButton} onClick={openPopupSignIn}>
+              <span>Sign in</span>
+            </div>
           )}
         </div>
       ),
-      class: { position: "absolute", bottom: "120px" },
       isBlank: false,
     },
   ];
@@ -215,4 +203,4 @@ export const Navigation = () => {
       </motion.ul>
     </div>
   );
-};
+});

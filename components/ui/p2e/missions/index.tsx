@@ -1,67 +1,127 @@
 import React, { useEffect, useState } from 'react'
-import { useMutation } from "@apollo/client";
-import { GET_OR_SET_DAILY_MISSION, UPDATE_DAILY_MISSION } from "../../../../hooks/p2e/useP2E";
-import s from "../daily/Daily.module.sass";
-import { Image } from "antd";
-import MissionsList from "../MissionsList";
-import OnUsingNFTs from '../OnUsingNFTs';
-import Statistics from '../Statistics';
+import s from '../dashboard/dashboard.module.sass'
+import { Col, message, Row } from "antd"
+import {
+  GET_LUCIS_MISSION,
+  GET_STATISTICS,
+} from "../../../../hooks/p2e/useP2E";
 
-const Missions = () => {
-  const [dailyMission, setDailyMission] = useState([]);
+import { useQuery } from "@apollo/client";
+import MissionsList from "../missionComponent/MissionList";
+import { PlayerMission } from "../../../../src/generated/graphql_p2e";
+// import ButtonWrapper from 'components/common/button/Button';
+import NFTList from '../NFTList';
+import SidebarRight from '../SidebarRight';
+import { Game } from 'utils/Enum';
+import MissionService from 'components/service/p2e/MissionService';
+import {AppEmitter} from "../../../../services/emitter";
 
-  const [getDailyMission] = useMutation(GET_OR_SET_DAILY_MISSION, {
-    variables: {
-      game_uid: '03',
-    },
+interface IProps {
+  currentGame?: Game;
+}
+const Mission = (props: IProps) => {
+  const [loading, setLoading] = useState(false);
+  const [mission, setMission] = useState<PlayerMission[]>([])
+  const [loadingLucisMission, setLoadingLucisMission] = useState(false);
+  const statisticQuery = useQuery(GET_STATISTICS, {
     context: {
       endpoint: 'p2e'
     }
-  })
-  const [updateDailyMission] = useMutation(UPDATE_DAILY_MISSION, {
-    variables: {
-      game_uid: '03',
-    },
-    context: {
-      endpoint: 'p2e'
-    }
-  })
+  });
 
-  const handleUpdateMissions = () => {
-    updateDailyMission()
-      .then(response => {
-        setDailyMission(response.data.updateDailyMission)
-      })
+
+
+
+  // if (getDailyMissionLoading || isEmpty(getDailyMissionData)) return null
+
+  const handleUpdateMissions = async (showMessage = true, loadingIconUpdate = true) => {
+    if (loadingIconUpdate) {
+      setLoading(true);
+    }
+    await MissionService.updateDailyMission();
+    await queryData();
+    // await statisticQuery.refetch();
+    setLoading(false);
+    if (showMessage) {
+      message.success("Update!");
+    }
   }
 
   useEffect(() => {
-    getDailyMission()
-      .then(response => {
-        setDailyMission(response.data.getOrSetDailyMission)
-      })
-  }, [])
+    switch (props.currentGame) {
+      case Game.CSGO:
+        MissionService.setVariable("03", 1);
+        break;
+      case Game.LOL:
+        MissionService.setVariable("06", 4);
+        break;
+
+      default:
+        break;
+    }
+    if (props.currentGame) {
+      queryData();
+    }
+  }, [props?.currentGame])
+
+  const queryData = async () => {
+    setLoadingLucisMission(true);
+    const res = await MissionService.getLucisMission();
+    setMission(res.data.getLucisMission);
+    setLoadingLucisMission(false);
+
+
+  }
 
   return (
-    <div className={s.dailyContainer}>
-      <div className={s.userInfo}>
+    <div className="lucis-container-2">
+      <div className={s.dailyContainer}>
+        <SidebarRight
+          onlyWallet
+          lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+          lucisToken={statisticQuery?.data?.getBalance?.lucis_point} />
+        <Row gutter={51}>
+          <Col lg={16} md={24}>
+            <div>
+              {/* <h2>
+                Your NFTs card
+              </h2> */}
+              <NFTList currentGame={props.currentGame} />
+            </div>
+            <div className={s.dailyTitle}>
+              <h2>
+                Lucis missions
+              </h2>
+            </div>
+            <MissionsList
+              title="Completed  the Lucis missions to receive"
+              missions={mission}
+              handleUpdateMissions={(showMessage, loadingIconUpdate) => handleUpdateMissions(showMessage, loadingIconUpdate)}
+              handleUpdateStatistic={() => statisticQuery.refetch().then((res) => {
+                  AppEmitter.emit("updateBalance",
+                    {
+                      balance: {
+                        lucis_point: res.data?.getBalance?.lucis_point,
+                        lucis_token: res.data?.getBalance?.lucis_token
+                      }
+                    })
+                }
+              )}
+              loading={loadingLucisMission}
+              currentGame={props.currentGame}
+              loadingUpdate={loading} />
+          </Col>
+          <Col lg={8} md={24}>
+            <SidebarRight
+              lucisPoint={statisticQuery?.data?.getBalance?.lucis_point}
+              lucisToken={statisticQuery?.data?.getBalance?.lucis_point}
+            />
 
+          </Col>
+        </Row>
       </div>
-      <div className={s.gameInfo}>
-        <Image src="/assets/P2E/csgo-logo-icon.png" preview={false} alt="" />
-        <h3>CS:GO FACEIT</h3>
-      </div>
-
-      <Statistics />
-      <OnUsingNFTs />
-      <MissionsList
-        title="Lucis missions"
-        description="Complete the missions to get reward and up level"
-        missions={dailyMission}
-        handleUpdateMissions={handleUpdateMissions}
-        canChooseGame
-      />
     </div>
   )
 }
 
-export default Missions
+export default Mission

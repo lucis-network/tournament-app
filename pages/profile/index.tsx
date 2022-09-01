@@ -52,7 +52,7 @@ export default observer(function MyProfile() {
 	})
 	const router = useRouter();
 	const currentPage = router.query?.page ?? ''
-	const allowedPages = ['', 'teams', 'tournaments', 'edit']
+	const allowedPages = ['', 'teams', 'tournaments', 'edit', 'refer', 'inventory']
 	useEffect(() => {
 		if (!AuthStore.isLoggedIn) {
 			router.push('/')

@@ -35,13 +35,13 @@ export function toDict<T>(items: T[], key = 'id'): Record<any, T> {
  * @param getKeyFn(element) get dict key from element
  * @param filterFn(element, index) if filterFn was specified, only item that match the filterFn was return to result
  */
-export function mapToDict<T>(
-  items: any[],
-  transformFn: (item: T, idx: number) => T,
+export function mapToDict<T, TAfter>(
+  items: T[],
+  transformFn: (item: T, idx: number) => TAfter,
   getKeyFn: (item: T) => MapKey,
-  filterFn: (item: T, idx: number) => boolean,
-): Record<MapKey, T> {
-  const itemsObj = {} as Record<MapKey, T>;
+  filterFn?: (item: T, idx: number) => boolean,
+): Record<MapKey, TAfter> {
+  const itemsObj = {} as Record<MapKey, TAfter>;
   for (let i = 0, c = items.length; i < c; i++) {
     const item = items[i]
     const k = getKeyFn(item)

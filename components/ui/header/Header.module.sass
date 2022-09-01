@@ -1,66 +1,206 @@
 @import "styles/common"
 
 .pcMenu
-  //position: absolute
+  position: fixed
+  top: 0
   width: 100%
-  //z-index: 10
-    
+  background: #000625
+  z-index: 13
+  // position: relative
+  @media screen and (max-width: 1024px)
+    display: none
 .menu_container
   color: inherit
-  background: linear-gradient(152.97deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
-  @media (min-width: 1024px)
-    backdrop-filter: blur(4px)
-    border-bottom: 1px solid #cfcfcf73
-    padding-top: 12px
-    padding-bottom: 12px
-
-.logo
-  height: 75px
-  width: 268px
+  background: #000625
+  height: 88px
   display: flex
-  flex-flow: row wrap
-  align-items: center
-  justify-content: flex-start
-  cursor: pointer
-  p
-    margin: 0
-    font-size: 12px
-    color: white
+  :global(.lucis-container-2)
+    @media screen and (min-width: 1600px)
+      width: 1400px
+
+
+.logoSection
+  display: none
+  @media screen and (min-width: 1800px)
+    display: block
+    position: absolute
+    left: 62px
+    top: 50%
+    transform: translate(0, -50%)
+  .logo
+    cursor: pointer
+    height: 40px
+    p
+      margin: 0
+      font-size: 12px
+      color: white
+.logoTab
+  display: none
+  @media screen and (max-width: 1800px)
+    display: block
+    .logo
+      cursor: pointer
+      height: 40px
+      margin-right: 64px
+      margin-bottom: 20px
+  @media screen and ( min-width: 1024px )
+    .logo
+      margin-right: 30px
+
 .block_item_menu
   display: flex
   align-items: center
-  line-height: 23px
+  line-height: 26px
   margin: 0
   color: #FFF
   li
     a
-      color: #FFF
-      cursor: pointer
+      white-space: nowrap
+      font-family: 'Revx Neue Demo'
+      font-style: normal
       font-weight: 400
+      font-size: 20px
+      letter-spacing: 0.04em
+      color: #fff
       transition: 0.3s
       @media ( min-width: 1024px )
-        margin-right: 30px
-        font-size: 16px
-      @media ( min-width: 1280px )
+        margin-right: 20px
+        font-size: 14px
+      @media ( min-width: 1200px )
         margin-right: 40px
         font-size: 18px
-      @media ( min-width: 1440px )
-        margin-right: 60px
+      @media ( min-width: 1800px )
+        margin-right: 64px
         font-size: 20px
-  .default
-    opacity: 0.4
-    pointer-events: none
-    display: flex
-    flex-direction: column
-    margin-top: 10px
-    span
-      font-weight: 400
-      font-size: 10px
-      line-height: 115%
+
+  .active
+    a
       color: #0BEBD6
-      margin-left: 12px
+  .default
+    cursor: not-allowed
+    a
+      pointer-events: none
+      display: flex
+      flex-direction: column
+      position: relative
+      span
+        font-weight: 300
+        font-family: 'Lexend', serif
+        font-size: 8px
+        line-height: 115%
+        color: #0BEBD6
+        position: absolute
+        bottom: -5px
+        right: 0
+        white-space: nowrap
+        text-transform: uppercase
+        @media ( max-width: 1200px )
+          font-size: 6px
 .block_item_menu li a:hover
   color: #0BEBD6
 
 .loginCol
   display: flex !important
+.profileUser
+  display: flex
+  justify-content: flex-end
+  .address
+    color: #0BEBD6
+    display: flex
+    align-items: flex-end
+    div
+      overflow: hidden
+      font-family: 'Lexend'
+      font-style: normal
+      font-weight: 300
+      font-size: 13px
+      margin-right: 10px
+  .avatar
+    margin-left: 8px
+    cursor: pointer
+    display: flex
+    align-items: flex-end
+    height: 100%
+    img
+      width: 40px
+      height: 40px
+      min-width: 40px
+      border-radius: 50%
+  .profileName
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 300
+    font-size: 16px
+    text-align: right
+    color: #fff
+    width: 100%
+    display: flex
+    justify-content: flex-end
+    .displayName
+      white-space: nowrap
+      width: 230px
+      overflow: hidden
+      text-overflow: ellipsis
+  .profileInfo
+    .profileBalance
+      display: flex
+      justify-content: flex-end
+      .wrapperReward
+        background: rgba(255, 255, 255, 0.1)
+        padding: 2px 8px
+        border-radius: 2px
+        display: flex
+      .rewardItem
+        display: flex
+        justify-content: center
+        align-items: center
+        font-family: 'Lexend'
+        font-size: 14px
+        .lucisPoint
+          color: #DF9B16
+        img
+          width: 14px
+          height: 14px
+          margin-left: 4px
+          box-shadow: 0 0 6.3px rgba(11, 235, 214, 0.5)
+          border-radius: 50%
+.overviewBtn
+  width: 107px
+  height: 24px
+  background: #ffffff
+  position: relative
+  cursor: pointer
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    top: 1px
+    right: 1px
+    bottom: 1px
+    left: 1px
+    border: 1px solid #000000
+  &:hover
+    background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+    div
+      color: #fff
+  div
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    font-size: 12px !important
+    line-height: 1
+    height: 100%
+    color: #333333
+    align-items: center
+    justify-content: center
+    display: flex
+    padding-top: 2px
+.notificationItemToast
+  cursor: pointer
+  display: flex
+  color: #ffffff
+  width: 100%
+  padding: 8px
+  img
+    width: 60px
+    height: 60px
+    object-fit: contain

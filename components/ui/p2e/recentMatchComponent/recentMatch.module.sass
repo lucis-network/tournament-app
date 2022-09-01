@@ -1,0 +1,196 @@
+.rewardItem
+  display: flex
+  align-items: center
+  img
+    box-shadow: 0px 0px 10.6312px rgba(11, 235, 214, 0.5)
+    backdrop-filter: blur(19.6875px)
+    border-radius: 50%
+  span
+    font-weight: 500
+    font-size: 16px
+    line-height: 30px
+    margin-right: 8px
+    display: flex
+    align-items: center
+  .lucisPoint
+    color: #DF9B16
+.recentMatchList
+  margin-bottom: 20px
+  .recentMatchItem
+    background-repeat: no-repeat !important
+    background-size: cover
+    cursor: pointer
+    min-height: 95px
+    position: relative
+    &:first-of-type
+      &:before
+        border-top-left-radius: 4px
+        border-top-right-radius: 4px
+    &:last-of-type
+      &:before
+        border-bottom-left-radius: 4px
+        border-bottom-right-radius: 4px
+    &:hover
+      &:before
+        content: ''
+        position: absolute
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        border: 1px solid rgba(0, 255, 255, 0.8)
+        box-shadow: inset 0px 1px 16px rgba(0, 255, 255, 0.8)
+    @media screen and ( max-width: 574px )
+      border-radius: 4px !important
+    .recentMatchResult
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      height: 100%
+      color: #DBE0E8
+      span
+        font-size: 16px
+        font-weight: bold
+        line-height: 24px
+      .mapName
+        font-style: normal
+        font-weight: 400
+        font-size: 12px
+        line-height: 18px
+        border-bottom: 1px solid #DBE0E8
+      .endTime
+        font-weight: 500
+        font-size: 14px
+        line-height: 21px
+    .scoreMatch
+      display: flex
+      height: 95px
+      font-size: 24px
+      font-weight: 500
+      line-height: 36px
+      // flex-direction: column
+      justify-content: center
+      align-items: center
+    .recentMatchTime
+      display: flex
+      // height: 95px
+      height: 100%
+      font-size: 14px
+      font-weight: 400
+      line-height: 21px
+      // flex-direction: column
+      justify-content: center
+      align-items: center
+      @media screen and ( max-width: 768px )
+        justify-content: flex-end
+        margin-right: 16px
+
+    .recentMatchTimeResponsive
+      display: flex
+      // height: 95px
+      height: 100%
+      font-size: 14px
+      font-weight: 400
+      line-height: 21px
+      // flex-direction: column
+      justify-content: flex-end
+      align-items: center
+      padding: 8px 12px
+      padding-top: 0
+    .recentMatchRewardResponsive
+      display: flex
+      // height: 95px
+      height: 100%
+      font-size: 14px
+      font-weight: 400
+      line-height: 21px
+      // flex-direction: column
+      justify-content: flex-start
+      align-items: center
+      padding: 8px 12px
+      padding-top: 0
+    .recentMatchReward
+      display: flex
+      // height: 95px
+      height: 100%
+      font-size: 14px
+      font-weight: 400
+      line-height: 21px
+      @media screen and ( max-width: 768px )
+        justify-content: flex-start
+        margin-left: 16px
+      .rewardItem
+        justify-content: flex-end
+        padding-right: 32px
+        @media screen and ( max-width: 768px )
+          justify-content: flex-start
+    .recentMatchContentItem
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      height: 50px
+      margin-top: 22.5px
+      border-right: 0.5px solid rgba(166, 166, 166, 0.32)
+      img
+        margin-bottom: 6px
+      span
+        font-size: 20px
+    // LOL
+    .gameAvatar
+      display: flex
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      height: 100%
+      img
+        width: 64px
+        height: 64px
+        border-radius: 50%
+    .wrapperCreepAndGold
+      @media screen and ( max-width: 1200px )
+        padding: 16px
+      @media screen and ( max-width: 992px )
+        padding: 0px
+      @media screen and ( max-width: 768px )
+        padding: 16px
+      .recentMatchContentItemCreepAndGold
+        display: flex
+        justify-content: center
+        align-items: center
+        height: 100%
+        @media screen and ( max-width: 1200px )
+          justify-content: flex-start
+        img
+          margin-right: 10px
+.blankState
+  width: 100%
+  padding: 10px
+  text-align: center
+
+/* Chrome, Safari, Opera */ 
+@keyframes spin
+  0%
+    transform: rotate(360deg)
+  100%
+    transform: rotate(0deg)
+.recentMatchTitle
+  margin-top: 64px
+  margin-bottom: 24px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  h2
+    img
+      @media screen and ( max-width: 992px )
+        display: none
+  .recentMatchRewardGeneral
+    display: flex
+    font-size: 14px
+    font-weight: 400
+    line-height: 21px
+    justify-content: flex-end
+    align-items: center
+    @media screen and ( max-width: 768px )
+      margin-top: 24px

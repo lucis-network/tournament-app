@@ -26,7 +26,7 @@ export default function CardPlayed({tournament, type, isOwner, isHidden}: CardPl
 
   return (
     <Link
-      href={tournament?.tournament_status === 'REVIEWING' ? '#' : `/tournament/${tournament?.uid}/${slugify(tournament?.name)}`}
+      href={tournament?.tournament_status === 'REVIEWING' ? '#' : `/arena/${tournament?.uid}/${slugify(tournament?.name)}`}
       passHref>
       <a style={{
         display: isHidden ? 'none' : 'block',
@@ -57,7 +57,7 @@ export default function CardPlayed({tournament, type, isOwner, isHidden}: CardPl
           {/*{(isOwner && type === 'owned') && (*/}
           {/*  <div>*/}
           {/*    <Button>*/}
-          {/*      <Link href={`/tournament/${tournament?.uid}/edit`} passHref>*/}
+          {/*      <Link href={`/arena/${tournament?.uid}/edit`} passHref>*/}
           {/*        <span>Edit</span>*/}
           {/*      </Link>*/}
           {/*    </Button>*/}

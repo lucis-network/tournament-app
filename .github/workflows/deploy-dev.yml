@@ -1,0 +1,31 @@
+name: Node.js CD - Deploy to dev
+
+on:
+  #pull_request:
+  #  branches: [ develop ]
+  push:
+    branches: [ play-to-earn ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_DEV }}
+          username: ${{ secrets.USERNAME_DEV }}
+          key: ${{ secrets.PRIVATE_KEY_DEV }}
+          port: 22
+          script: |
+            cd /home/dev/tournament/tournament-fe-isr/docker
+            echo "Current directory: "
+            pwd
+            git pull
+            git status
+            bash ./deploy.sh

@@ -3,16 +3,22 @@
  * NOTE: Currently we use GraphQL instead
  */
 
+// @ts-nocheck
 
-export {}
-/*
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
+
+type ApiClientOptions = {
+  baseURL?: string,
+}
 
 const isClient = typeof window !== 'undefined'
 class ApiClient {
   private instance: AxiosInstance
-  private baseUrl: string = process.env.NEXT_PUBLIC_API_URL as string
-  constructor() {
+  private baseUrl: string;
+
+  constructor(opt?: ApiClientOptions) {
+    this.baseUrl = opt?.baseURL ?? process.env.NEXT_PUBLIC_API_URL as string
+
     this.instance = axios.create({
       baseURL: this.baseUrl,
       timeout: 10000,
@@ -70,4 +76,3 @@ export interface AppApiResponse {
   message: string | null
   data: any
 }
-*/

@@ -1,20 +1,231 @@
 .nftCategories
-  h2
-    font-size: 25px
-    color: #fff
-    margin: 0
-  .card
+  margin-bottom: 80px
+  margin-top: 44px
+  position: relative
+  .subTitle
+    font-weight: 400
+    font-size: 16px
+    line-height: 24px
+    color: rgba(255, 255, 255, 0.8)
+    margin-top: 16px
+  .cardList
     display: flex
-    flex-direction: column
-    align-items: center
-    margin-bottom: 10px
-  .buttonWrapper
-    bottom: 0px
-    position: absolute
-    margin: 10px
+    justify-content: space-between
+    overflow: auto
+    .cardItem
+      margin-right: 16px
+    .cardWrap
+      display: flex
+      flex-direction: column
+      align-items: center
+      margin-bottom: 10px
+      @media screen and ( max-width: 768px )
+        min-width: 212px
+
+    .card
+      height: 300px,
+      background: rgba(45, 52, 70, 0.5),
+      backdrop-filter: blur(12px),
+      width: 100%,
+      margin-fottom: 10px,
+      position: relative,
+      display: flex,
+      flex-direction: column
+      justify-content: center
+      align-items: center
+      padding: 25px 24px 0
+      .nftImage
+        width: 162px
+        height: 216px
+    .buttonWrapper
+      margin: 10px
+      text-align: center
   .tier
     border: 1px solid rgb(255 255 255 / 57%)
     padding: 15px
     margin-bottom: 20px
   .tierTitle
     font-size: 20px
+  .coin
+    display: flex
+    justify-content: space-between
+    font-size: 12px
+    padding: 26px 25px 20px 25px
+    width: 100%
+  .comingSoon
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background-color: #000625CC
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    z-index: 2
+    h2
+      font-weight: 600
+      font-size: 40px
+      line-height: 44px
+      text-transform: uppercase
+      @media screen and ( max-width: 768px )
+        font-size: 34px
+      @media screen and ( max-width: 530px )
+        font-size: 30px
+      @media screen and ( max-width: 470px )
+        font-size: 22px
+        
+    p
+      font-weight: 300
+      font-size: 16px
+      line-height: 24px
+      text-align: center
+      @media screen and ( max-width: 530px )
+        font-size: 14px
+      @media screen and ( max-width: 470px )
+        font-size: 12px
+
+      color: rgba(255, 255, 255, 0.8)
+    .comingSoonSubTitle
+      font-style: normal
+      font-weight: 400
+      font-size: 24px
+      line-height: 26px
+      text-transform: uppercase
+      color: #DBE0E8
+      @media screen and ( max-width: 530px )
+        font-size: 18px
+      @media screen and ( max-width: 470px )
+        font-size: 16px
+    img
+      position: absolute
+      z-index: -1
+      opacity: 0.6
+      transform: translate(-50%, -50%)
+      top: 50%
+      left: 50%
+.rewardItem
+  display: flex
+  align-items: center
+  img
+    box-shadow: 0px 0px 10.6312px rgba(11, 235, 214, 0.5)
+    backdrop-filter: blur(19.6875px)
+    border-radius: 50%
+  span
+    font-weight: 500
+    font-size: 16px
+    line-height: 30px
+    margin-right: 8px
+    display: flex
+    align-items: center
+  .lucisPoint
+    color: #DF9B16
+.blankState
+  width: 100%
+  padding: 10px
+  text-align: center
+
+/* Chrome, Safari, Opera */ 
+@keyframes spin
+  0%
+    transform: rotate(360deg)
+  100%
+    transform: rotate(0deg)
+
+.walletTitle
+  margin-bottom: 16px
+.wallet
+  font-weight: 600
+  font-size: 16px
+  line-height: 20px
+
+  .lucisPointWallet
+    display: flex
+    border-radius: 4px
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    color: #DF9B16
+    background: rgba(81, 100, 147, 0.5)
+    backdrop-filter: blur(40px)
+    height: 236px
+    img
+      margin: 12px 0
+      box-shadow: 0px 0px 10.6312px rgba(11, 235, 214, 0.5)
+      backdrop-filter: blur(19.6875px)
+      border-radius: 50%
+  .busdClaim
+    display: flex
+    justify-content: center
+    margin-top: 16px
+  .BUSDWallet
+    border-radius: 4px
+    display: flex
+    justify-content: center
+    align-items: center
+    flex-direction: column
+    color: #12B0B4
+    background: rgba(81, 100, 147, 0.5)
+    backdrop-filter: blur(40px)
+    height: 236px
+    img
+      margin: 12px 0
+      box-shadow: 0px 0px 10.6312px rgba(11, 235, 214, 0.5)
+      backdrop-filter: blur(19.6875px)
+      border-radius: 50%
+.share
+  h2
+    margin-bottom: 16px
+  .shareDiscordContent
+    .shareDiscordText
+      display: flex
+      justify-content: space-between
+      align-items: center
+      height: 106px
+      width: 100%
+      padding: 32px
+      background: rgba(45, 52, 70, 0.5)
+      backdrop-filter: blur(40px)
+      border-radius: 4px 4px 0px 0px
+      font-weight: 500
+      font-size: 14px
+      line-height: 21px
+      @media screen and ( max-width: 1200px )
+        height: 90px
+        padding: 24px
+      @media screen and ( max-width: 992px )
+        height: 106px
+        padding: 32px
+      p
+        margin: 0
+        padding: 0 30px 0 16px
+        -webkit-line-clamp: 1
+        -webkit-box-orient: vertical
+        overflow: hidden
+        word-break: break-all
+        text-overflow: ellipsis
+        white-space: nowrap
+        @media screen and ( max-width: 1200px )
+          font-size: 12px
+          padding: 0px 15px 0px 8px
+        @media screen and ( max-width: 992px )
+          font-size: 14px
+          padding: 0 30px 0 16px
+    .shareBonus
+      display: flex
+      justify-content: space-between
+      align-items: center
+      height: 53px
+      width: 100%
+      background: rgba(69, 80, 107, 0.5)
+      backdrop-filter: blur(40px)
+      border-radius: 0px 0px 4px 4px
+      padding: 16px 32px
+      @media screen and ( max-width: 1200px )
+        padding: 16px 24px
+      @media screen and ( max-width: 992px )
+        padding: 16px 32px
+.sidebarRight
+  position: sticky
+  top: 20px

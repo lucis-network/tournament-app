@@ -1,19 +1,20 @@
-import {Button, Form, Input, message, Modal} from "antd";
+import {Button, Form, Input, Modal} from "antd";
 import GoogleLogin from "react-google-login";
-import {observer} from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
+import { getLocalAuthInfo } from "../AuthLocal";
+import { isEmpty } from "lodash"
 import AuthStore, {AuthUser} from "../AuthStore";
 import AuthService, { AuthError } from "../AuthService";
-import {useCallback, useEffect, useRef, useState} from "react";
-import {getLocalAuthInfo, setLocalAuthInfo} from "../AuthLocal";
-import {isEmpty} from "lodash"
+import {useEffect, useState} from "react";
 import Logo from "../../../assets/icon/logo.png";
 import Image from "../../ui/common/images/Image";
 import s from "./Login.module.sass"
 import GAService from "../../../services/GA";
 import {useRouter} from "next/router";
 import {isClientDevMode} from "../../../utils/Env";
+import {AppEmitter} from "../../../services/emitter";
 
 type Props = {};
 
@@ -27,8 +28,16 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
 export default observer(function LoginModal(props: Props) {
   const route = useRouter();
   const [form] = Form.useForm();
+
   const [messageInvalLogin, setMessageInvalLogin] = useState("");
-  const ref = useRef();
+  const [code, setCode] = useState<string>();
+
+  useEffect(() => {
+    if(route?.query && route?.query?.ref) {
+      // @ts-ignore
+      setCode(route?.query?.ref)
+    }
+  }, [route?.query])
 
   const trackUserChangeToAnalytic = (user: AuthUser) => {
     if (user.id) {
@@ -38,15 +47,9 @@ export default observer(function LoginModal(props: Props) {
   }
 
   useEffect(() => {
-    const cachedUser: AuthUser | null = getLocalAuthInfo();
-    const token = cachedUser?.token;
-    if (token) {
-      console.log("{AuthService.login} re-login user: ");
-      AuthStore.setAuthUser(cachedUser);
-
-      trackUserChangeToAnalytic(cachedUser);
-    }
-  });
+    const authService = new AuthService();
+    authService.getUserData();
+  }, []);
 
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
@@ -58,8 +61,8 @@ export default observer(function LoginModal(props: Props) {
 
     if (type === "google") tokenid = res?.tokenId;
     if (type === "facebook") tokenid = res?.accessToken;
-    const r = await authService.login(tokenid, 100, type, username, password);
-    console.log(AuthStore);
+    const r = await authService.login(tokenid,code, 100, type, username, password);
+    // console.log(AuthStore);
     const localUserInfo = getLocalAuthInfo();
 
     if (localUserInfo?.token) {
@@ -71,7 +74,8 @@ export default observer(function LoginModal(props: Props) {
         // Success
         // Already set the auth token to the LoginStore in LoginService
         console.log("Successfully connect");
-        if (isEmpty(localUserInfo?.profile?.user_name)) {
+        AppEmitter.emit("saveUtmAfterLoginSuccess", r);
+        if (isEmpty(localUserInfo?.profile?.user_name) || localUserInfo?.is_exist_pass === false) {
           LoginBoxStore.signupInfoModalVisible = true;
         }
         // setTimeout(() => {
@@ -79,7 +83,7 @@ export default observer(function LoginModal(props: Props) {
         // }, 2000);
         setIsModalVisible(false);
         setMessageInvalLogin("");
-        if (route.pathname === "/tournament/[id]/[...slug]") {
+        if (route.pathname === "/arena/[id]/[...slug]" || route.pathname === "/playcore/lucky-chest") {
           route.reload();
         }
         break;
@@ -194,9 +198,9 @@ export default observer(function LoginModal(props: Props) {
       >
         <div className="text-center mb-10">
           <div className="mb-5">
-            <Image src={Logo}/>
+            <Image src={Logo} />
           </div>
-          <h2 className="mb-1">Welcome to Lucis tournament</h2>
+          <h2 className="mb-1">Welcome to Lucis Network</h2>
           <h4>Play to relax, but earn</h4>
         </div>
         <div>
@@ -231,7 +235,7 @@ export default observer(function LoginModal(props: Props) {
                 <Input.Password placeholder="Enter password" />
               </Form.Item>
             </div>
-            <div className={s.forgotPassword}>
+            <div className={s.forgotPassword} title="Coming soon" style={{cursor: 'pointer', textDecoration: 'underline'}}>
               Forgot password
             </div>
             <div className={`${s.message_error} ml-[10px]`}>
@@ -289,13 +293,12 @@ export default observer(function LoginModal(props: Props) {
             onClick={onLoginClicked(undefined)}
             className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded gg mt-20 ${s.loginBtn}`}
           >
-            test user agent
+            Test user agent
           </button>
         )}
         <p className="text-center mt-8">By continuing, you agree to Lucis&apos;s Terms of Service and acknowledge
           you&apos;ve read our Privacy Policy</p>
       </Modal>
-
     </>
   );
 });

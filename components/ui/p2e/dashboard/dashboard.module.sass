@@ -1,0 +1,349 @@
+.dailyContainer
+  padding-top: 48px
+  @media screen and ( max-width: 550px )
+    padding-top: 32px
+  *
+    color: #ffffff
+  p
+    margin: 0
+  h3
+    font-family: "Revx Neue Demo"
+  h2
+    margin: 0
+    font-weight: 600
+    font-size: 24px
+    line-height: 26px
+    color: #00F9FF
+    font-family: "Revx Neue Demo"
+  :global(.ant-checkbox-checked .ant-checkbox-inner)
+    background-color: #0BEBD6
+    border-color: #0BEBD6 !important
+  :global(.ant-pagination-simple-pager input)
+    background: transparent
+  .dailyTitle
+    margin-bottom: 34px
+  .rewardItem
+    display: flex
+    align-items: center
+    img
+      box-shadow: 0px 0px 10.6312px rgba(11, 235, 214, 0.5)
+      backdrop-filter: blur(19.6875px)
+      border-radius: 50%
+    span
+      font-weight: 500
+      font-size: 16px
+      line-height: 30px
+      margin-right: 8px
+      display: flex
+      align-items: center
+    .lucisPoint
+      color: #DF9B16
+  .missionsWrap
+    .missionsWrapHeader
+      display: flex
+      justify-content: space-between
+      margin-bottom: 20px
+      h2
+        font-size: 30px
+        margin: 0
+      button
+        margin-left: 20px
+  .recentMatchTitle
+    margin-top: 44px
+    margin-bottom: 24px
+    display: flex
+    justify-content: space-between
+    align-items: center
+    .recentMatchRewardGeneral
+      display: flex
+      font-size: 14px
+      font-weight: 400
+      line-height: 21px
+      justify-content: flex-end
+      align-items: center
+  .recentMatchesWrap
+    .recentMatchesList
+      .recentMatchesItem
+        display: flex
+        justify-content: space-between
+        align-items: center
+        border: 1px solid rgb(255 255 255 / 57%)
+        padding: 15px
+        margin-bottom: 15px
+        .recentMatchesLogo
+          img
+            width: 30px
+            aspect-ratio: 1 / 1
+            object-fit: contains
+            object-position: center
+      .recentMatchesBtn
+        text-align: center
+        margin-bottom: 15px
+      .recentMatchesNodata
+        text-align: center
+        margin-bottom: 15px
+        font-size: 18px
+  .viewAllHistory
+    text-align: center
+    margin-bottom: 30px
+    a
+      padding: 0 6px
+      color: #00F9FF
+      cursor: pointer
+  .informationDetail
+    .detailTitle
+      margin-bottom: 25px
+    .mapBackground
+      display: flex
+      justify-content: center
+      align-items: center
+      flex-direction: column
+      width: 100%
+      height: 255px
+      background: rgba(69, 80, 107, 1)
+      background-repeat: no-repeat !important
+      background-size: cover !important
+      border-radius: 4px 4px 0 0
+      .scoreMatch
+        color: #00F9FF
+        font-weight: 600
+        font-size: 60px
+        line-height: 66px
+      .mapName
+        font-weight: 400
+        font-size: 28px
+        line-height: 31px
+      .endAt
+        font-size: 16px
+        line-height: 24px
+        color: rgba(255, 255, 255, 0.8)
+    .matchDetail
+      background: rgba(69, 80, 107, 0.5)
+      backdrop-filter: blur(40px)
+      border-radius: 0 0 4px 4px
+      padding: 32px
+      @media screen and ( max-width: 1400px )
+        padding: 24px
+      @media screen and ( max-width: 992px )
+        padding: 32px
+      @media screen and ( max-width: 410px )
+        padding: 24px
+      .accountInfo
+        display: flex
+        justify-content: space-between
+        padding-bottom: 30px
+        align-items: center
+        .platformInfo
+          display: flex
+          align-items: center
+          .platformUserAvatar
+            border-radius: 50%
+            width: 40px
+            height: 40px
+            object-fit: contain
+            object-position: center
+          .platformUserName
+            margin-left: 10px
+            font-size: 14px
+      .playerParameters
+        .parameterHeader
+          display: flex
+          justify-content: space-between
+          font-style: normal
+          font-weight: 400
+          font-size: 16px
+          line-height: 24px
+          padding-bottom: 32px
+          .headerRight
+            color: #00F9FF
+        .parameterBody
+          .row
+            margin-bottom: 10px
+          .rowTotal
+            padding-top: 20px
+            .parameterItem
+              font-weight: 600
+              font-size: 18px
+              line-height: 27px
+              @media screen and ( max-width: 1400px )
+                font-size: 15px
+              @media screen and ( max-width: 992px )
+                font-size: 18px
+              @media screen and ( max-width: 410px )
+                font-size: 14px
+            span
+              font-size: 20px
+              line-height: 24px
+          .parameterItem
+            display: flex
+            align-items: center
+            height: 100%
+            font-size: 18px
+            line-height: 27px
+            @media screen and ( max-width: 1400px )
+              font-size: 12px
+            @media screen and ( max-width: 992px )
+              font-size: 18px
+            @media screen and ( max-width: 410px )
+              font-size: 14px
+            img
+              width: 20px
+              height: 20px
+            span
+              margin-left: 8px
+              @media screen and ( max-width: 1400px )
+                font-size: 12px
+              @media screen and ( max-width: 992px )
+                font-size: 18px
+              @media screen and ( max-width: 410px )
+                font-size: 14px
+          .parameterItemText
+            display: flex
+            align-items: center
+            // justify-content: center
+            height: 100%
+            font-size: 18px
+            line-height: 27px
+            white-space: nowrap
+            @media screen and ( max-width: 1400px )
+              font-size: 12px
+            @media screen and ( max-width: 992px )
+              font-size: 18px
+            @media screen and ( max-width: 410px )
+              font-size: 14px
+          .rewardItem
+            display: flex
+            align-items: center
+            justify-content: flex-end
+    .grandTotal
+      padding: 32px
+      .parameterItem
+        font-weight: 600
+        font-size: 18px
+        line-height: 27px
+      span
+        font-size: 20px
+        line-height: 24px
+      .rewardItem
+        display: flex
+        align-items: center
+        justify-content: flex-end
+  .achievementListCard
+    .achievementHeader
+      display: flex
+      justify-content: space-between
+      align-items: center
+      h2
+        img
+          margin-right: 16px
+          cursor: pointer
+          @media screen and ( max-width: 992px )
+            display: none
+
+      .lucisBonus
+        display: flex
+        align-items: center
+        justify-content: flex-end
+        font-weight: 400
+        font-size: 16px
+        line-height: 24px
+    .achievementBody
+      margin-top: 24px
+      width: 100%
+      margin-bottom: 24px
+      .achievementItem
+        @media screen and ( max-width: 1400px )
+          padding: 0 16px !important
+        @media screen and ( max-width: 1200px )
+          padding: 0 8px !important
+      .listCardCsgo
+        .card
+          height: 228px
+          background-repeat: no-repeat !important
+          background-size: cover !important
+          border-radius: 4px
+          position: relative
+          .cardContent
+            height: 40px
+            border-radius: 4px
+            background: #45506B
+            backdrop-filter: blur(4px)
+            position: absolute
+            bottom: 0
+            left: 0
+            width: 100%
+            clip-path: polygon(0 0, 25% 0, 50% 40%, 75% 0, 100% 0, 100% 100%, 0 100%)
+            display: flex
+            justify-content: space-between
+            padding: 8px 12px
+            align-items: center
+          .cardTitle
+            position: absolute
+            bottom: 60px
+            text-align: center
+            width: 100%
+            font-weight: 600
+            font-size: 16px
+            line-height: 24px
+          .fillCard
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: #000
+            opacity: 0.5
+        .card:hover
+          box-shadow: inset 0px 1px 27px #90C6F1
+      .listCard
+        .wrapperCard
+          position: relative
+          .card
+            height: auto
+            width: 100%
+            border-radius: 4px
+          .cardContent
+            height: 40px
+            border-radius: 0 0 4px 4px
+            background: #45506B
+            backdrop-filter: blur(4px)
+            width: 100%
+            clip-path: polygon(0 0, 25% 0, 50% 40%, 75% 0, 100% 0, 100% 100%, 0 100%)
+            display: flex
+            justify-content: space-between
+            padding: 8px 12px
+            align-items: center
+          .cardTitle
+            position: absolute
+            bottom: 45px
+            text-align: center
+            width: 100%
+            font-weight: 600
+            font-size: 16px
+            line-height: 24px
+            z-index: 1
+            background: linear-gradient(270deg, rgba(0, 255, 255, 0) 0%, rgba(0, 255, 255, 0.5) 49.54%, rgba(0, 255, 255, 0) 100%)
+            backdrop-filter: blur(2px)
+          .cardBackgroundTitle
+            background: url(/assets/P2E/lol/bg-title.svg)
+            position: absolute
+            bottom: 15px
+            background-size: cover
+            background-repeat: no-repeat
+            width: 150px
+            height: 48px
+            bottom: 0
+            left: 50%
+            transform: translate(-50%, 0)
+            z-index: 1
+          .fillCard
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            height: 100%
+            background-color: #000
+            opacity: 0.5
+            z-index: 2
+          .card:hover
+            box-shadow: inset 0px 1px 27px #90C6F1

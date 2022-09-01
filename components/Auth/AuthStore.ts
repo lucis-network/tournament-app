@@ -67,10 +67,11 @@ class AuthStore implements AuthUser {
 	private _balance?: string;
 	private _loading: boolean = false;
 	private _favorite_game?: UserFavoriteGame[];
+	private _isLoggedIn?: boolean;
 	private _is_exist_pass: boolean | undefined;
 
-	public get isLoggedIn(): boolean {
-		return !!this._token;
+	public get isLoggedIn(): boolean | undefined {
+		return this._isLoggedIn;
 	}
 
 	public get isHasMail(): boolean {
@@ -80,6 +81,7 @@ class AuthStore implements AuthUser {
 	constructor() {
 		makeAutoObservable(this);
 	}
+
 
 	resetStates() {
 		this._id = undefined;
@@ -95,6 +97,7 @@ class AuthStore implements AuthUser {
 		this._status = undefined;
 		this._updated_at = undefined;
 		this._favorite_game = undefined;
+		this._isLoggedIn = false;
 		this._is_exist_pass = undefined;
 	}
 
@@ -112,6 +115,7 @@ class AuthStore implements AuthUser {
 		this._status = user.status;
 		this._updated_at = user.updated_at;
 		this._favorite_game = user.favorite_game;
+		this._isLoggedIn = !!user.token;
 		this._is_exist_pass = user.is_exist_pass;
 	}
 

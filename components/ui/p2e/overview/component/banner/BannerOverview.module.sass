@@ -1,0 +1,148 @@
+
+.container
+  position: relative
+  display: flex
+  align-items: center
+  padding: 20px 0px
+  flex-direction: column
+  @media (min-width: 992px)
+    justify-content: space-between
+    flex-direction: row
+    padding: 80px 0px
+  .banner_heading
+    flex: 50% 0 0
+    text-align: center
+    @media (min-width: 992px)
+      text-align: left
+
+    h1
+      font-family: 'Revx Neue Demo'
+      font-weight: 600
+      font-size: 60px
+      line-height: 66px
+      letter-spacing: 0.04em
+      text-transform: uppercase
+      margin-bottom: 16px
+      background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+      -webkit-background-clip: text
+      -webkit-text-fill-color: transparent
+      background-clip: text
+      text-fill-color: transparent
+      @media screen and ( max-width:  768px)
+        font-size: 40px
+      @media screen and ( max-width:  467px)
+        font-size: 40px
+
+    p
+      font-family: 'Revx Neue Demo'
+      font-weight: 400
+      font-size: 32px
+      line-height: 35px
+      letter-spacing: 5px
+      color: #DBE0E8
+      margin: 0
+      @media screen and ( max-width:  1600px)
+        font-size: 24px
+      @media screen and ( max-width:  1320px)
+        font-size: 24px
+      @media screen and ( max-width:  1200px)
+        font-size: 18px
+      @media screen and ( max-width:  768px)
+        font-size: 28px
+      @media screen and ( max-width:  546px)
+        font-size: 24px
+      @media screen and ( max-width:  500px)
+        font-size: 18px
+      @media screen and ( max-width:  375px)
+        font-size: 14px
+    span
+      font-weight: 300
+      font-size: 24px
+      line-height: 33px
+      letter-spacing: 0.04em
+
+      color: #DBE0E8
+      @media screen and ( max-width:  1600px)
+        font-size: 20px
+      @media screen and ( max-width:  1320px)
+        font-size: 18px
+      @media screen and ( max-width:  1200px)
+        font-size: 16px
+      @media screen and ( max-width:  768px)
+        font-size: 18px
+      @media screen and ( max-width:  546px)
+        font-size: 13px
+  .btn_sign_in
+    margin: 32px 0px
+    width: 240px
+    height: 48px
+    position: relative
+    font-weight: 600
+    color: #fff
+    cursor: pointer
+    // margin: 20px auto
+    text-align: center
+    border: none
+    display: flex
+    align-items: center
+    justify-content: center
+    background-size: 300% 100%
+
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+    background-image: linear-gradient(to right, #2f94e6, #2aead7, #1889E4, #0BEBD6)
+    @media screen and ( max-width:  992px)
+      margin: 60px auto
+    span
+      margin-top: 4px
+      font-family: 'Revx Neue Demo'
+      font-weight: 300
+      letter-spacing: 6px
+      color: #fff
+      transition: .4s
+      font-size: 28px
+
+  .btn_sign_in:before
+    content: ''
+    position: absolute
+    top: -6px
+    left: -6px
+    right: -6px
+    bottom: -6px
+    z-index: 1
+
+    transition: 0.4s
+    border-radius: inherit
+    padding: 3px
+    -webkit-mask: linear-gradient(#2f94e6 0 0) content-box, linear-gradient(#2f94e6 0 0)
+    -webkit-mask-composite: xor
+    mask-composite: exclude
+    background: #FFF
+    background-size: 300% 100%
+
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+    background-image: linear-gradient(to right, #2f94e6, #0BEBD6, #1889E4, #0BEBD6)
+
+  .btn_sign_in:hover::before,
+  .btn_sign_in:hover
+    background-position: 100% 0
+    moz-transition: all .4s ease-in-out
+    -o-transition: all .4s ease-in-out
+    -webkit-transition: all .4s ease-in-out
+    transition: all .4s ease-in-out
+  .btn_sign_in:hover p
+    color: #fff
+
+.banner_thumb
+  width: 100%
+  order: -1
+  margin-bottom: 20px
+  @media (min-width: 992px)
+    order: 1
+  img
+    width: 937px

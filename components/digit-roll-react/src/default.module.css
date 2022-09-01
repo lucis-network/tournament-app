@@ -1,0 +1,46 @@
+.DigitRoll__Out {}
+
+.DigitRoll {
+  display: flex;
+  flex-direction: row-reverse;
+  overflow-y: hidden;
+  border: 1px solid;
+}
+
+.DigitRoll__Slice {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.DigitRoll__Cell {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.DigitRoll__Divider {
+  padding: 0 2px;
+  display: flex;
+  align-items: center;
+}
+
+
+/* --- custom styling ---*/
+.DigitRoll__Cell {
+  margin: 0 5px;
+  border: 1px solid brown;
+  background: red;
+  font-size: 24px;
+  color: white;
+}
+
+.DigitRoll {
+  border: none;
+}
+
+.DigitRoll__Divider {
+  width: 10px;
+}

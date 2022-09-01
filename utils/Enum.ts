@@ -57,3 +57,59 @@ export const bracketValues = [
 
 export const LINK_URL = "https://lucis-tn.koolab.io";
 
+export const MAP_CSGO: { [s: string]: string } = {
+  "de_inferno": "Inferno",
+  "de_dust2": "Dust II",
+  "de_dust3": "Dust III",
+  "de_dust1": "Dust I",
+  "de_vertigo": "Vertigo",
+  "de_mirage": "Mirage",
+  "de_cache": "Cache",
+  "de_nuke": "Nuke",
+  "de_overpass": "Overpass",
+  "de_ancient": "Ancient",
+  "de_cbble": "Cbble",
+  "de_train": "Train",
+  "Dust2": "Dust II",
+  "de_aztec": "Aztec",
+  "de_tuscan": "Tuscan",
+  "de_prodigy": "Prodigy",
+}
+
+export const MAP_LOL: { [type: string]: string } = {
+  "NormalDraft": "SUMMONER'S RIFT",
+  "Aram": "ARAM",
+  "None": "SUMMONER'S RIFT",
+  "RankSingleDouble": "SUMMONER'S RIFT",
+  "RankFlexible": "SUMMONER'S RIFT"
+
+}
+
+export const MODE_LOL: { [type: string]: string } = {
+  "NormalDraft": "Normal",
+  "Aram": "ARAM",
+  "RankSingleDouble": "Rank",
+  "RankFlexible": "Rank",
+  "None": "Other"
+}
+
+export enum Game {
+  NONE,
+  CSGO,
+  LOL
+}
+
+export enum Platform {
+  NONE,
+  FACEIT,
+  STEAM,
+  RIOT,
+  GARENA
+}
+
+
+export enum OverviewSection {
+  NONE,
+  CONNECT_GAME
+}
+

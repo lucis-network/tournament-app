@@ -3,10 +3,10 @@ import GoogleLogin from "react-google-login";
 import { observer } from "mobx-react-lite";
 import LoginBoxStore from "./LoginBoxStore";
 import FacebookLogin from "@greatsumini/react-facebook-login";
-import AuthStore, { AuthUser } from "../AuthStore";
 import AuthService from "../AuthService";
-import { useCallback, useEffect } from "react";
-import { getLocalAuthInfo, setLocalAuthInfo } from "../AuthLocal";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
+
 
 type Props = {};
 
@@ -18,14 +18,12 @@ const facebookId = process.env.NEXT_PUBLIC_FACEBOOK_ID
   : "";
 
 export default observer(function LoginModal(props: Props) {
+  const route = useRouter();
+
   useEffect(() => {
-    const cachedUser: AuthUser | null = getLocalAuthInfo();
-    const token = cachedUser?.token;
-    if (token) {
-      console.log("{AuthService.login} re-login user: ");
-      AuthStore.setAuthUser(cachedUser);
-    }
-  });
+    const authService = new AuthService();
+    authService.getUserData();
+  }, []);
 
   const isModalVisible = LoginBoxStore.connectModalVisible,
     setIsModalVisible = (v: boolean) => (LoginBoxStore.connectModalVisible = v);
@@ -37,7 +35,7 @@ export default observer(function LoginModal(props: Props) {
     if (type === "google") tokenid = res?.tokenId;
     if (type === "facebook") tokenid = res?.accessToken;
 
-    const r = await authService.login(tokenid, 100, type);
+    const r = await authService.login(tokenid,undefined, 100, type);
 
     switch (r.error) {
       case null:
@@ -71,7 +69,7 @@ export default observer(function LoginModal(props: Props) {
       if (isFacebookApp(ua)) {
         console.log('window.location.href: ', window.location.href)
         if (!window.location.href.match('redirect_fb')) {
-          // force open in browser ... 
+          // force open in browser ...
           // location.href = location.href;
         }
         message.warn("Please open web in browser to use full function")
@@ -133,6 +131,5 @@ export default observer(function LoginModal(props: Props) {
     </>
   );
 });
-function ApoloClient_setAuthToken(token: string) {
-  throw new Error("Function not implemented.");
-}
+
+

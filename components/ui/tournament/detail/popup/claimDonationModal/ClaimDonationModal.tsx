@@ -1,13 +1,15 @@
-import {observer} from "mobx-react-lite";
+import { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
 import {Button, message, Modal, Table} from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
-import {format} from "utils/Number";
+import { currency, fomatNumber, format } from "utils/Number";
 import TournamentService from "components/service/tournament/TournamentService";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
-import {useEffect, useState} from "react";
-import {LUCIS_FEE_DONATION} from "utils/Enum";
+import AuthService from "components/Auth/AuthService";
+import { to_hex_str } from "utils/String";
+import { LUCIS_FEE_DONATION } from "utils/Enum";
 import ClaimResultModal from "../claimResultModal/ClaimResultModal";
 
 type Props = {

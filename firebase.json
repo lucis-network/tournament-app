@@ -1,0 +1,101 @@
+{
+  "hosting": {
+    "public": "out",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/arena",
+        "destination": "/arena.html"
+      },
+      {
+        "source": "/arena/*/edit$",
+        "destination": "/arena/[id]/edit.html"
+      },
+      {
+        "source": "/arena/*/*",
+        "destination": "/arena/[id]/[...slug].html"
+      },
+      {
+        "source": "/arena/*/*/**",
+        "destination": "/arena/[id]/[...slug].html"
+      },
+      {
+        "source": "/arena/1",
+        "destination": "/arena/[id]/[...slug].html"
+      },
+      {
+        "source": "/playcore/dashboard/history/*",
+        "destination": "/playcore/dashboard/history/[id].html"
+      },
+      {
+        "source": "/playcore/raffles/**",
+        "destination": "/playcore/raffles/[id].html"
+      },
+      {
+        "source": "/playcore/dashboard",
+        "destination": "/playcore/dashboard.html"
+      },
+      {
+        "source": "/p2e/dashboard/history/*",
+        "destination": "/p2e/dashboard/history/[id].html"
+      },
+      {
+        "source": "/playcore/raffles",
+        "destination": "/playcore/raffles.html"
+      },
+      {
+        "source": "/p2e/dashboard",
+        "destination": "/p2e/dashboard.html"
+      },
+      {
+        "source": "/playcore/lucky-chest",
+        "destination": "/playcore/lucky-chest.html"
+      },
+      {
+        "source": "/playcore/missions",
+        "destination": "/playcore/missions.html"
+      },
+      {
+        "source": "/ranking",
+        "destination": "/ranking.html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
+      },
+      {
+        "source": "/p2e/raffles",
+        "destination": "/p2e/raffles.html"
+      },
+      {
+        "source": "/p2e/lucky-chest",
+        "destination": "/p2e/lucky-chest.html"
+      },
+      {
+        "source": "/profile",
+        "destination": "/profile.html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
+      },
+      {
+        "source": "/profile/*",
+        "destination": "/profile/[username].html"
+      }
+    ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true,
+      "port": 9000
+    }
+  }
+}

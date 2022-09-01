@@ -1,0 +1,371 @@
+.sectionRanking
+  padding-bottom: 60px
+  :global(.lucis-container-2)
+    @media screen and (min-width: 1600px)
+      width: 1400px
+.rankingTabsNav
+  display: flex
+  align-items: center
+  justify-content: space-between
+  overflow-x: auto
+  background: rgba(255, 255, 255, 0.1)
+  backdrop-filter: blur(40px)
+  margin-bottom: 24px
+  .rankingTabsItem
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    font-size: 14px
+    line-height: 15px
+    color: #DBE0E8
+    padding: 12px
+    text-transform: uppercase
+    text-align: center
+    flex: 1
+    @media screen and (min-width: 768px)
+      min-width: 20%
+    &:global(.active)
+      background: rgba(18, 176, 180, 0.1)
+      color: #00F9FF
+.rankingTabsFilter
+  .filterItems
+    display: flex
+    align-items: center
+    button
+      font-family: 'Revx Neue Demo'
+      font-weight: 400
+      font-size: 12px
+      line-height: 13px
+      color: rgba(255, 255, 255, 0.3)
+      padding: 4px 8px
+      display: block
+      &:global(.active)
+        font-weight: 600
+        color: #00F9FF
+  .filterDateTime
+    text-transform: uppercase
+    font-size: 16px
+    .seasonCountdown
+      .endText
+        font-family: 'Poppins'
+        font-weight: 400
+        line-height: 24px
+        background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
+        -webkit-background-clip: text
+        -webkit-text-fill-color: transparent
+        text-fill-color: transparent
+      .countdownText
+        font-family: 'Lexend'
+        font-weight: 500
+        line-height: 20px
+        color: #DF9B16
+    .season
+      font-family: 'Lexend'
+      font-weight: 400
+      line-height: 20px
+      color: #E4E4E4
+.rankingTableWrapper
+  :global(.swiper)
+    @media screen and (min-width: 576px)
+      width: 540px
+      padding: 0
+    @media screen and (min-width: 768px)
+      width: 720px
+    @media screen and (min-width: 992px)
+      width: 100%
+  :global(.swiper-slide-prev)
+    .rankingTableResponsive
+      z-index: 1
+      position: relative
+    &:after
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      background: linear-gradient(-90deg, #000D0E 0%, rgba(0, 13, 14, 0.1) 104.81%)
+      z-index: 2
+  :global(.swiper-slide-next)
+    .rankingTableResponsive
+      z-index: 1
+      position: relative
+    &:after
+      content: ''
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+      background: linear-gradient(90deg, #000D0E 0%, rgba(0, 13, 14, 0.1) 104.81%)
+      z-index: 2
+
+  :global(.swiper-slide)
+    padding: 0 30px
+    @media screen and (min-width: 992px)
+      width: 900px !important
+      padding: 0
+    @media screen and (min-width: 1200px)
+      width: 960px !important
+    @media screen and (min-width: 1600px)
+      width: 1400px !important
+  :global(.ant-table)
+    background: none
+  :global(.ant-table-tbody)
+    position: relative
+    z-index: 1
+    tr
+      backdrop-filter: blur(40px)
+      &:nth-of-type(odd)
+        background: rgba(69, 80, 107, 0.5)
+      &:nth-of-type(even)
+        background: rgba(45, 52, 70, 0.5)
+      td
+        border: none
+        padding: 5px
+        height: 34px
+        @media screen and (min-width: 768px)
+          padding: 10px
+        @media screen and (min-width: 1200px)
+          padding: 15px
+  :global(.ant-table-thead)
+    position: relative
+    z-index: 2
+    @media screen and (max-width: 767px)
+      display: none
+    tr
+      z-index: 1
+      th
+        background: none
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 20px
+        line-height: 120%
+        letter-spacing: 0.04em
+        color: #DBE0E8
+        padding: 10px
+        text-align: center
+        border: none
+        position: sticky
+        top: 0
+        background: rgba(45, 52, 70, 0.5)
+        backdrop-filter: blur(40px)
+  :global(.ant-table-cell-row-hover)
+    background: none !important
+    @media screen and (min-width: 768px)
+      background: rgba(255, 255, 255, .3) !important
+.rankingTableResponsive
+  min-width: 100%
+  max-height: 252px
+  overflow: auto
+  @media screen and (min-width: 768px)
+    max-height: 504px
+  &::-webkit-scrollbar
+    display: block
+    width: 3px
+    height: 2px
+    @media screen and (min-width: 768px)
+      width: 10px
+      height: 5px
+  &::-webkit-scrollbar-track
+    background: rgba(0, 249, 255, 0.1)
+    border-radius: 10px
+  &::-webkit-scrollbar-thumb
+    background: #00F9FF
+    border-radius: 10px
+.columnNo
+  min-width: 40px
+  width: 40px
+  @media screen and (min-width: 768px)
+    max-width: 100px
+  @media screen and (min-width: 1600px)
+    width: 202px
+    max-width: 202px
+    padding: 10px 20px 10px 165px !important
+.columnName
+  min-width: 170px
+  width: 170px
+.columnReward
+  min-width: 100px
+  width: 100px
+  @media screen and (min-width: 1600px)
+    width: 200px
+    max-width: 200px
+    padding-right: 155px !important
+.userRank
+  display: flex
+  align-items: center
+  justify-content: flex-end
+  flex-direction: column-reverse
+  @media screen and (min-width: 768px)
+    flex-direction: row
+  .userRankName
+    font-family: 'Lexend'
+    font-weight: 400
+    font-size: 10px
+    line-height: 120%
+    text-align: center
+    letter-spacing: 0.04em
+    color: #DBE0E8
+    @media screen and (min-width: 768px)
+      font-size: 16px
+    @media screen and (min-width: 1200px)
+      font-size: 24px
+    &:global(.top1)
+      color: #FFF500
+    &:global(.top2)
+      color: #00F0FF
+    &:global(.top3)
+      color: #00FF29
+    .rankNameText
+      @media screen and (max-width: 767px)
+        display: none
+  .userMedal
+    min-width: 24px
+    max-width: 24px
+    @media screen and (min-width: 768px)
+      min-width: 64px
+      max-width: 64px
+      margin-right: 20px
+    @media screen and (min-width: 1600px)
+      margin-right: 64px
+.userWrap
+  display: flex
+  align-items: center
+  @media screen and (min-width: 768px)
+    justify-content: flex-start
+  .userAvatar
+    margin-right: 32px
+    @media screen and (max-width: 767px)
+      display: none
+    &:global(.top1)
+      img
+        border: 1px solid #FFF500
+        box-shadow: 0 0 8px #FFF500
+    &:global(.top2)
+      img
+        border: 1px solid #00F0FF
+        box-shadow: 0 0 8px #00F0FF
+    &:global(.top3)
+      img
+        border: 1px solid #00FF29
+        box-shadow: 0 0 8px #00FF29
+    img
+      min-width: 44px
+      max-width: 44px
+      aspect-ratio: 1/1
+      display: block
+      border-radius: 50%
+      border: 1px solid #DBE0E8
+      @media screen and (min-width: 1200px)
+        min-width: 64px
+        max-width: 64px
+  .userName
+    margin-right: 21px
+    width: calc(100% - 100px)
+    @media screen and (min-width: 992px)
+      width: calc(100% - 190px)
+    @media screen and (min-width: 1200px)
+      width: calc(100% - 220px)
+    a
+      font-family: 'Lexend'
+      font-weight: 400
+      font-size: 10px
+      line-height: 120%
+      letter-spacing: 0.04em
+      text-transform: capitalize
+      color: #DBE0E8
+    @media screen and (min-width: 768px)
+      a
+        font-size: 16px
+    @media screen and (min-width: 1200px)
+      a
+        font-size: 18px
+    &:global(.top1)
+      a
+        color: #FFF500
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.25)
+    &:global(.top2)
+      a
+        color: #00F0FF
+    &:global(.top3)
+      a
+        color: rgba(255, 212, 157, 0.9069)
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.25)
+  .userValue
+    font-family: 'Lexend'
+    font-weight: 300
+    font-size: 10px
+    line-height: 120%
+    letter-spacing: 0.04em
+    color: #DBE0E8
+    @media screen and (min-width: 768px)
+      font-size: 16px
+    @media screen and (min-width: 1200px)
+      font-size: 18px
+.userReward
+  display: flex
+  gap: 6px
+  font-family: 'Lexend'
+  font-weight: 500
+  font-size: 8px
+  line-height: 120%
+  letter-spacing: 0.04em
+  @media screen and (min-width: 768px)
+    font-size: 16px
+    justify-content: center
+  @media screen and (min-width: 1200px)
+    font-size: 20px
+    gap: 23px
+  .rewardPoint
+    color: #DF9B16
+  .rewardToken
+    color: #12B0B4
+  div
+    display: flex
+    align-items: center
+    img
+      margin-left: 4px
+      width: 10px
+      height: 10px
+      box-shadow: 0 0 4.5px rgba(11, 235, 214, 0.5)
+      border-radius: 50%
+      @media screen and (min-width: 768px)
+        width: 16px
+        height: 16px
+      @media screen and (min-width: 1200px)
+        width: 24px
+        height: 24px
+      @media screen and (min-width: 1600px)
+        margin-left: 10px
+.rankingSwiperWrapper
+  position: relative
+  .rankingSwiperNavWrap
+    position: absolute
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+    z-index: 2
+    width: 100%
+    @media screen and (min-width: 992px)
+      width: 980px
+    @media screen and (min-width: 1200px)
+      width: 1050px
+    @media screen and (min-width: 1400px)
+      width: 1070px
+    @media screen and (min-width: 1600px)
+      width: 1520px
+  .sliderNav
+    position: absolute
+    top: 50%
+    transform: translateY(-50%)
+    z-index: 2
+    padding: 10px
+    &:global(.prev)
+      left: 0
+    &:global(.next)
+      right: 0
+    img
+      width: 8px
+      aspect-ratio: 24/40
+      @media screen and (min-width: 992px)
+        width: 18px

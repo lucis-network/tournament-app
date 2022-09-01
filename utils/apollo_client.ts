@@ -15,12 +15,15 @@ import {
   clearLocalAuthInfo,
   getLocalAuthInfo,
 } from "../components/Auth/AuthLocal";
-import { message as antd_message, notification } from "antd";
+import {message as antd_message, Modal, notification} from "antd";
 import { GraphQLError } from "graphql";
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { createClient } from "graphql-ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 import AuthStore from "../components/Auth/AuthStore";
+import AuthGameStore from "components/Auth/AuthGameStore";
+
+import { debounce } from "lodash";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -73,6 +76,7 @@ const p2eEndpoint = createHttpLink({
 });
 
 let splitLink: any;
+let splitLinkP2E: any;
 
 const authLink = setContext((_, { headers }) => {
   // get the authentication token from local storage if it exists
@@ -93,6 +97,14 @@ if (isClient) {
   const wsLink = new GraphQLWsLink(
     createClient({
       url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_URL ?? "",
+      retryAttempts: 5000
+    })
+  );
+
+  const wsLinkP2E = new GraphQLWsLink(
+    createClient({
+      url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_P2E_URL ?? "",
+      retryAttempts: 5000
     })
   );
 
@@ -114,9 +126,28 @@ if (isClient) {
       authLink.concat(httpLink)
     )
   );
+  splitLinkP2E = split(
+    (op) => {
+      const endpoint = op.getContext().endpoint;
+      return endpoint === "p2e";
+    },
+    authLink.concat(p2eEndpoint),
+    split(
+      ({ query }) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      authLink.concat(wsLinkP2E),
+      authLink.concat(httpLink)
+    )
+  );
 }
 
 let countGqlErrNetwork = 0;
+let errorWait: any = null;
 const errorLink = onError(({ graphQLErrors, networkError }) => {
   if (graphQLErrors) {
     graphQLErrors.forEach((e) => {
@@ -131,6 +162,15 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
         if (_getAuthToken() != null) {
           clearLocalAuthInfo();
           AuthStore.resetStates();
+          AuthGameStore.resetStates(); // reset game store
+
+          if (!errorWait) {
+            errorWait = antd_message.error("Session has expired. Please sign in again!", 5);
+            setTimeout(() => {
+              errorWait = null;
+            }, 5000)
+          }
+          // Modal.info({content: "sdfsdfsdfsd"});
         }
       }
     });
@@ -146,6 +186,22 @@ const client = new ApolloClient({
   link: from([errorLink, splitLink != null ? splitLink : httpLink]),
   cache,
   connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }
+});
+
+export const clientP2E = new ApolloClient({
+  link: from([errorLink, splitLinkP2E != null ? splitLinkP2E : httpLink]),
+  cache,
+  connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }
 });
 
 export default client;
@@ -247,7 +303,7 @@ export function handleGraphqlErrors(
     }
 
     // @ts-ignore
-    networkError.result.errors.forEach((e) => onSingleError(e, onError));
+    networkError.result && networkError.result.errors.forEach((e) => onSingleError(e, onError));
   }
 
   if (graphQLErrors) {

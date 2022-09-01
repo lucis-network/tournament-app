@@ -1,0 +1,657 @@
+@import styles/common
+.wrapper
+  min-height: 100vh
+  background: url("/assets/TournamentDetail/bgTournamentDetail.png") top left / cover no-repeat
+  padding-top: 70px
+  overflow-x: hidden
+  word-break: break-word
+  @media screen and (min-width: 992px)
+    padding-top: 71px
+  @media screen and (min-width: 1024px)
+    padding-top: 87px
+  .banner
+    position: relative
+    //min-height: 400px
+    .im_cover
+      position: absolute
+      width: 100%
+      background-size: cover
+      background-repeat: no-repeat
+      background-position: bottom center
+      //min-height: 400px
+  .bannerTourDetailWrap
+    padding-top: 1px
+    :global(.lucis-container-2)
+      width: 100%
+      padding: 0
+      @media screen and (min-width: 2048px)
+        padding: 0 15px
+        width: 1600px
+    .bannerTourDetail
+      border-radius: 0
+      @media screen and (min-width: 2048px)
+        border-radius: 16px
+  .group_button
+    display: flex
+    flex-direction: column
+    align-items: center
+    width: 100%
+    justify-content: space-between
+    gap: 12px
+    margin-bottom: 64px
+    margin-top: 40px
+    max-width: 450px
+    @media screen and (min-width: 0px)
+      margin-top: 10px
+      margin-bottom: 12px
+      max-width: 100%
+    @media screen and (min-width: 768px)
+      flex-direction: row
+      max-width: 300px
+    @media screen and (min-width: 992px)
+      margin-top: 0px
+      margin-bottom: 22px
+    @media screen and (min-width: 1440px)
+      max-width: 450px
+
+    :global(.btn-blur)
+      background: rgba(255, 255, 255, 0.2)
+      font-weight: 400
+      font-size: 20px
+      line-height: 115%
+      width: 100%
+      border-radius: 4px
+      @media screen and (min-width: 0px)
+        font-size: 16px
+      @media screen and (min-width: 768px)
+        width: 100%
+        text-align: center
+  .gradientBtnWrap
+    width: 100%
+    display: flex
+    text-align: center
+    justify-content: flex-start
+    margin-top: 12px
+    @media (min-width: 0px)
+      flex-wrap: wrap
+    @media (min-width: 540px)
+      flex-wrap: nowrap
+    @media (min-width: 768px)
+      width: auto
+      margin: 0
+    @media screen and (max-width: 767px)
+      margin-top: 10px
+    @media screen and (min-width: 1300px)
+      margin: 0
+    :global(.ant-spin-nested-loading)
+      display: inline-block
+      @media screen and (min-width: 0px)
+        order: 3
+      @media screen and (min-width: 414px)
+        order: 2
+      @media screen and (min-width: 576px)
+        width: auto
+        width: auto
+    // :global(.ant-btn-primary)
+    //   background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+    //   margin-left: 12px
+    //   border-radius: 10px
+  .content_top
+    .img_game
+      width: 450px
+      height: auto
+      overflow: hidden
+      border-radius: 20px
+      background: #FFF
+    h2
+      color: #FFF
+      font-size: 22px
+      max-width: 258px
+      text-align: center
+      margin-top: 12px
+      font-weight: 600
+  .content_center
+    h1
+      color: #FFF
+      font-size: 32px
+      font-weight: 600
+    p
+      color: #FFF
+      font-size: 20px
+      margin: 0
+    .free_entry
+      .title
+        font-size: 14px
+        padding: 2px 0px
+        max-width: 100px
+        background: linear-gradient(99.92deg, #cd28e8 0%, #0bebd6 100%)
+        border-radius: 16px
+        text-align: center
+        line-height: 28px
+  .text
+    margin-top: 22px
+    p
+      font-size: 16px
+      margin: 0
+    span
+      font-size: 20px
+      color: #FFF
+      font-weight: 600
+  .container_Tabs
+    min-height: 60vh
+    :global(.ant-tabs-tab-btn)
+      color: #FFF
+      font-size: 20px
+    @media (min-width: 768px)
+      font-size: 24px
+    @media (min-width: 992px)
+      font-size: 26px
+    .block_tabs
+      :global(.ant-tabs-nav-list)
+        width: 100%
+        justify-content: space-between
+        @media ( max-width: 1023px)
+          justify-content: flex-start
+      :global(.ant-tabs-tab)
+        padding: 4px 8px
+      :global(.ant-tabs-tab-btn)
+        font-size: 16px
+
+.lucis_offical
+  margin-top: 30px
+
+.tournament_by
+  img
+    border-radius: 50px
+
+.communityC
+  height: 50px
+  margin-top: 50px
+  margin-bottom: 50px
+.bgCharacters
+  position: relative
+  margin-bottom: 30px
+  @media screen and (min-width: 1300px)
+    width: 1320px
+  // @media screen and (min-width: 1900px)
+  //   width: 1320px
+.tournamentInfo
+  margin-bottom: 20px
+  position: relative
+  z-index: 10
+  .containnerTournamentDetail
+    @media screen and (min-width: 1300px)
+      width: 1320px
+  *
+    color: #ffffff
+  .infoWrap
+    display: flex
+    flex-direction: column
+    @media screen and (min-width: 992px)
+      flex-direction: row
+      align-items: flex-start
+    .tournamentThumbnail
+      border-radius: 16px
+      overflow: hidden
+      box-shadow: 0px 0px 20px 0px #D9D9D9
+      width: 100%
+      margin-bottom: 18px
+      @media screen and (max-width: 991px)
+        display: none
+      @media screen and (min-width: 992px)
+        width: 300px
+        min-width: 300px
+        height: auto
+        margin: 0 30px 0 0
+        display: block
+      @media screen and (min-width: 1200px)
+        margin: 0 55px 0 0
+        width: 460px
+        min-width: 460px
+      // @media screen and (min-width: 1400px)
+
+      :global(.ant-image)
+        width: 100%
+        img
+          width: 100%
+          aspect-ratio: 460 / 250
+          object-fit: cover
+          object-position: center
+    .tournamentMetadataWrap
+      @media screen and (min-width: 992px)
+        margin-top: 8px
+      .tournamentTitle
+        font-weight: 700
+        font-size: 24px
+        margin-bottom: 5px
+        color: #0BEBD6
+        @media screen and (min-width: 0px)
+          font-size: 24px
+          line-height: 1.3
+        @media screen and (min-width: 768px)
+          margin: -7px 0 15px
+
+        @media screen and (min-width: 1200px)
+          margin: -17px 0 0
+          font-size: 38px
+      .tournamentStartTime
+        font-size: 18px
+        font-weight: 500
+        margin-bottom: 10px
+        line-height: 1
+        :global(.ant-image)
+          margin-right: 7px
+          width: 16px
+          img
+            max-width: 100%
+        span
+          font-size: 16px
+      .tournamentMetadataRow
+        border-top: 1px solid rgba(255, 255, 255, 0.2)
+        padding-top: 10px
+      .tournamentMetadata
+        margin-bottom: 20px
+        @media screen and (max-width: 575px)
+          .gameInfoBlock
+            order: 1
+          .userInfoBlock
+            order: 2
+        // .metadataBlock
+        //   @media screen and (min-width: 768px)
+        //     margin-bottom: 15px
+        .tournamentTagWrap
+          margin-bottom: 10px
+          @media screen and (min-width: 768px)
+            margin-bottom: 20px
+          .contentTopWrap
+            display: flex
+            align-items: center
+            //justify-content: space-between
+            flex-wrap: wrap
+            @media (min-width: 1300px)
+              flex-wrap: nowrap
+              justify-content: flex-start
+            .tournamentTag
+              padding: 6px 8px
+              background: rgba(255, 255, 255, 0.2)
+              border-radius: 4px
+              display: inline-flex
+              align-items: center
+              justify-content: center
+              margin: 0 12px 0px 0
+              font-size: 12px
+              line-height: 1
+              min-width: 100px
+              :global(.ant-image)
+                margin-right: 5px
+                min-width: 12px
+              &:last-of-type
+                margin-right: 15px
+            .joinDiscord
+              display: inline-block
+              border-radius: 4px
+              padding: 6px
+              display: flex
+              align-items: center
+              justify-content: center
+              max-height: 27px
+              background: linear-gradient(91.09deg, rgba(24, 137, 228, .4) 0.33%, rgba(11, 235, 214, .4) 99.88%)
+              @media (min-width: 0px)
+                margin-right: 12px
+                margin-bottom: 12px
+              @media (min-width: 540px)
+                min-width: 190px
+                margin-right: 12px
+                margin-bottom: 0px
+              @media (max-width: 991px)
+                padding: 6px !important
+              @media (max-width: 1299px)
+                margin-right: 12px
+                padding: 6px 20px
+              :global(.ant-image)
+                padding-right: 5px
+            &:hover a
+              color: #FFF
+        .content_bottom
+          margin: 0 !important
+          .col_item
+            //@media (min-width: 0px)
+              //margin: 10px 0px
+          // .col_team
+          //   @media (min-width: 992px)
+          //     margin-left: 20px
+          //   @media (min-width: 1280px)
+          //     margin-left: 12px
+        .metadataTitle
+          margin-bottom: 8px
+          font-weight: 400
+          font-size: 12px
+          line-height: 115%
+          @media screen and (min-width: 576px)
+            font-size: 14px
+          @media screen and (min-width: 768px)
+            font-size: 18px
+        .metadataValue
+          font-weight: 600
+          font-size: 18px
+          color: #0BEBD6
+          @media screen and (min-width: 576px)
+            font-size: 20px
+          @media screen and (min-width: 992px)
+            font-size: 24px
+        .bo
+          display: flex
+          flex-direction: column
+          justify-content: space-between
+          @media screen and (max-width: 575px)
+            flex-flow: column-reverse
+        .alignRightMb
+          @media screen and (max-width: 575px)
+            justify-content: flex-start
+            text-align: left
+            margin-top: 10px
+        .profileAva
+          @media screen and (max-width: 575px)
+            margin-top: 0px !important
+        .gameInfo, .userInfo
+          display: flex
+          align-items: center
+          min-height: 68px
+          :global(.ant-image)
+            margin-right: 10px
+          .gameName, .userName
+            font-size: 12px
+            @media screen and (min-width: 992px)
+              font-size: 18px
+        .gameInfo
+          margin-bottom: 20px
+          :global(.ant-image)
+            img
+              min-height: 68px
+              max-height: 68px
+          .gameName
+            font-weight: 300
+        .userInfo
+          :global(.ant-image)
+            img
+              min-height: 30px
+              max-height: 30px
+          .userAvatar
+            border-radius: 50px
+      .generousSponsorsWrap
+        .generousSponsorsTitle
+          font-weight: 700
+          font-size: 20px
+        .generousSponsorsList
+          display: flex
+          flex-wrap: wrap
+          align-items: flex-end
+          padding-top: 30px
+          .generousSponsor
+            width: 70px
+            min-width: 70px
+            position: relative
+            margin-right: 20px
+            margin-bottom: 30px
+            &:last-of-type
+              margin-right: 0
+            &:before
+              content: ''
+              display: block
+              background: url("/assets/TournamentDetail/goldCoin.svg") no-repeat top center
+              background-size: cover
+              width: 30px
+              height: 30px
+              position: absolute
+              top: -23%
+              left: 50%
+              transform: translateX(-50%)
+              z-index: 1
+            &.vip
+              width: 80px
+              min-width: 80px
+              &:before
+                background: url("/assets/TournamentDetail/diamond.svg") no-repeat top center
+                background-size: cover
+                width: 40px
+                height: 37px
+              .generousSponsorAvatar
+                :global(.ant-image)
+                  height: 80px
+              .generousSponsorName
+                font-size: 20px
+                @media screen and (min-width: 1200px)
+                  font-size: 14px
+            .generousSponsorAvatar
+              border-radius: 50px
+              overflow: hidden
+              margin-bottom: 5px
+              :global(.ant-image)
+                width: 100%
+                height: 70px
+                img
+                  width: 100%
+                  height: 100%
+                  object-fit: cover
+            .generousSponsorName
+              font-size: 16px
+              font-weight: 600
+              line-height: 1.3
+              text-align: center
+              color: #0BEBD6
+              @media screen and (min-width: 1200px)
+                font-size: 12px
+.container900
+  @media screen and (min-width: 1200px)
+    width: 1200px
+    //margin: 0 auto
+
+.container_Tabs::-webkit-scrollbar
+  width: 4px
+  height: 4px
+  border-radius: 16px
+  display: block
+  background: rgba(255,255,255,.3)
+.container_Tabs::-webkit-scrollbar-thumb
+  border-radius: 16px
+  background: linear-gradient(290.92deg,#0bebd6,#cd28e8)
+
+.block_tabs
+  display: flex
+  align-items: center
+  justify-content: space-between
+  color: #FFF
+  overflow: scroll
+  padding-bottom: 8px
+  .tab_item
+    font-size: 20px
+    cursor: pointer
+    transition: 0.3s
+    min-width: 180px
+    @media (min-width: 0px)
+      min-width: 140px
+      font-size: 16px
+    @media (min-width: 768px)
+      font-size: 18px
+    @media (min-width: 1280px)
+      font-size: 20px
+.btn_detail
+  border-radius: 4px
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, .4) 0.33%, rgba(11, 235, 214, .4) 99.88%)
+  padding: 5px 20px
+  //margin-left: 14px
+  display: flex
+  align-items: center
+  justify-content: center
+  max-height: 27px
+  @media screen and (min-width: 376px)
+    width: auto
+    margin-right: 12px !important
+  @media screen and (min-width: 768px)
+    width: auto
+    font-size: 14px
+    margin-right: 12px
+  @media screen and (min-width: 992px)
+    font-size: 16px
+  @media screen and (min-width: 1300px)
+    padding: 5px 30px
+  span
+    font-size: 14px
+  :global(.ant-image)
+    display: flex
+    align-items: center
+    flex-direction: column
+    min-width: 14px
+.btn_sub
+  padding: 5px 15px !important
+  @media screen and (min-width: 1300px)
+    padding: 5px 24px !important
+.btn_detail_share
+  border-radius: 90px
+  padding: 3px 6px 2px 2px
+  @media screen and (min-width: 0px)
+    order: 2
+  span
+    color: #0BEBD6
+.block_tabs::-webkit-scrollbar
+  width: 0px
+  height: 3px
+  border-radius: 16px
+  display: block
+  background: rgba(255,255,255,.3)
+.block_tabs::-webkit-scrollbar-thumb
+  border-radius: 16px
+  background: linear-gradient(290.92deg,#0bebd6,#cd28e8)
+.btn_share_top
+  display: none
+  @media (max-width: 575px)
+    display: block
+.btn_subscribed
+  min-height: auto
+  padding: 2px 8px
+  margin-right: 12px
+  border-radius: 4px
+  background: linear-gradient(91.09deg, rgba(24, 137, 228, .2) 0.33%, rgba(11, 235, 214, .3) 99.88%)
+.btb_free_entry
+  display: flex
+  @media (max-width: 767px)
+    width: 100% !important
+  @media (min-width: 1280px)
+    width: 36%
+.btn_subscribe
+  @media (min-width: 0px)
+    order: 1
+    height: 28px
+    overflow: hidden
+  button
+    :global(.ant-image)
+      max-width: 20px
+.btn_share
+  @media (min-width: 0px)
+    order: 1
+  @media (max-width: 574px)
+    display: none
+
+.bracket
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 36%
+  @media (min-width: 992px)
+    width: 36%
+.team_size
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 28%
+  @media (min-width: 992px)
+    width: 25%
+  @media (min-width: 1280px)
+    width: 25%
+.participants
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 23%
+  @media (min-width: 992px)
+    width: 24%
+  @media (min-width: 1200px)
+    width: 24%
+  @media (min-width: 1300px)
+    width: 20%
+.bo
+  @media (min-width: 992px)
+    margin-left: 21px
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 768px)
+    width: 10%
+
+.gameInfoBlock
+  @media (min-width: 0px)
+    width: 50%
+  @media (min-width: 640px)
+    padding: 0px !important
+    //width: 30%
+  @media (min-width: 768px)
+    width: 36%
+  @media (min-width: 992px)
+    width: 61%
+  @media (min-width: 1300px)
+    width: 36%
+.userInfoBlock
+  @media (min-width: 0px)
+    width: 50%
+    padding: 0px !important
+  @media (min-width: 640px)
+    padding: 0px !important
+
+.wrapper
+  &::before, &::after
+    content: ''
+    display: block
+    position: absolute
+    z-index: 0
+  &::before
+    height: 40%
+    aspect-ratio: 700 / 1300
+    top: 160px
+    left: 0px
+    background: url("/assets/TournamentDetail/leftCharacter.png") no-repeat center
+    background-size: cover
+    top: 141%
+    @media screen and (min-width: 768px)
+      top: 125%
+      left: 0px
+    @media screen and (min-width: 1200px)
+      top: 125%
+      left: -30px
+      height: 60%
+    @media screen and (min-width: 1600px)
+      height: 100%
+      left: -30px
+      top: 123%
+    @media screen and (min-width: 1920px)
+      left: 0px
+      top: 136%
+  &::after
+    aspect-ratio: 700 / 1300
+    height: 40%
+    bottom: 90px
+    right: 0px
+    background: url("/assets/TournamentDetail/rightCharacter.png") no-repeat center
+    background-size: cover
+    z-index: 0
+    top: 76%
+    @media screen and (min-width: 768px)
+      bottom: 0px
+      top: 82%
+      height: 70%
+    @media screen and (min-width: 1200px)
+      top: 93%
+    @media screen and (min-width: 1600px)
+      top: 62%
+      height: 100%
+    @media screen and (min-width: 1920px)
+      top: 83%
+      height: 100%

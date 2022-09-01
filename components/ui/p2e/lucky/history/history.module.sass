@@ -1,0 +1,219 @@
+@import "/styles/playcore/variables"
+
+.wrapper
+    margin-bottom: 32px
+    @media screen and (min-width: 1200px)
+        margin-bottom: 64px
+    :global(.ant-table)
+        table
+            border-collapse: collapse
+            font-family: 'Lexend'
+            font-weight: 300
+            font-size: 16px
+            line-height: 115%
+            color: #DBE0E8
+        :global(.ant-table-placeholder)
+            &:hover
+                td
+                    background: unset
+    :global(.ant-table-content)
+        overflow-x: auto
+    :global(.ant-table-thead > tr > th)
+        text-align: center
+        background: rgba(0, 240, 255, 0.15)
+        backdrop-filter: blur(40px)
+        color: #00F9FF
+        border: 1px solid transparent
+        padding: 10px
+        @media screen and (min-width: 768px)
+            padding: 16px
+            font-family: 'Revx Neue Demo'
+            font-weight: 400
+            font-size: 24px
+            line-height: 115%
+        &:first-of-type
+            border-top-left-radius: 8px !important
+        &:last-of-type
+            border-top-right-radius: 8px !important
+    :global(.ant-table-tbody .ant-table-cell-row-hover)
+        background: rgba(0, 240, 255, 0.10) !important
+    :global(.ant-table-tbody > tr)
+        background: none
+    :global(.ant-table-tbody > tr > td)
+        color: #DBE0E8
+        text-align: center
+        border: 1px solid transparent
+    :global(.ant-table-tbody > tr:nth-child(even) td)
+        background: rgba(0, 6, 37, 0.1)
+    :global(.ant-table-tbody > tr td)
+        background: rgba(69, 80, 107, 0.1)
+        backdrop-filter: blur(40px)
+    :global(.ant-table)
+        background: transparent
+    .historyHeader
+        display: flex
+        justify-content: space-between
+        a
+            font-family: 'Revx Neue Demo'
+            font-style: normal
+            font-weight: 600
+            font-size: 16px
+            text-decoration: underline
+            color: #00F9FF
+        h2
+            font-family: 'Revx Neue Demo'
+            font-style: normal
+            font-weight: 600
+            font-size: 20px
+            line-height: 22px
+            color: #00F9FF
+            margin-bottom: 16px
+            @media screen and (min-width: 768px)
+                margin-bottom: 24px
+    .prizeWrap
+        display: flex
+        align-items: center
+        position: relative
+        @media screen and (min-width: 1200px)
+            button
+                position: absolute
+                top: 50%
+                right: 0
+                transform: translateY(-50%)
+    .prizeImg
+        min-width: 50px
+        max-width: 50px
+        margin-right: 20px
+        background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+        backdrop-filter: blur(40px)
+        position: relative
+        border-bottom: 2px solid
+        &:before
+            content: ''
+            display: block
+            position: absolute
+            top: 0
+            left: 0
+            right: 0
+            bottom: 0
+        img
+            width: 100%
+            aspect-ratio: 1/1
+            object-fit: cover
+    .prize
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 14px
+        line-height: 15px
+        flex: 1
+        padding: 0 10px 0 0
+        display: flex
+        align-items: center
+        @media screen and (min-width: 768px)
+            font-weight: 600
+            font-size: 20px
+            line-height: 22px
+        @media screen and (min-width: 1200px)
+            padding: 0 120px
+        &:global(.Common)
+            color: $colorPrizeCommon
+            .prizeImg
+                border-bottom-color: $colorPrizeCommon
+                &:before
+                    background: $bgPrizeCommon
+        &:global(.Uncommon)
+            color: $colorPrizeUncommon
+            .prizeImg
+                border-bottom-color: $colorPrizeUncommon
+                &:before
+                    background: $bgPrizeUncommon
+        &:global(.Rare)
+            color: $colorPrizeRare
+            .prizeImg
+                border-bottom-color: $colorPrizeRare
+                &:before
+                    background: $bgPrizeRare
+        &:global(.Epic)
+            color: $colorPrizeEpic
+            .prizeImg
+                border-bottom-color: $colorPrizeEpic
+                &:before
+                    background: $bgPrizeEpic
+        &:global(.Legendary)
+            color: $colorPrizeLegendary
+            .prizeImg
+                border-bottom-color: $colorPrizeLegendary
+                &:before
+                    background: $bgPrizeLegendary
+        &:global(.Mythic)
+            color: $colorPrizeMythic
+            .prizeImg
+                border-bottom-color: $colorPrizeMythic
+                &:before
+                    background: $bgPrizeMythic
+
+    .columnCounter
+        width: 50px
+        min-width: 50px
+        &:not(th)
+            font-family: 'Poppins'
+            font-weight: 400
+            font-size: 14px
+            line-height: 115%
+            color: #00F9FF !important
+            text-align: left !important
+            @media screen and (min-width: 768px)
+                font-family: 'Revx Neue Demo'
+                font-weight: 400
+                font-size: 24px
+                line-height: 115%
+        @media screen and (min-width: 768px)
+            width: 118px
+            min-width: 118px
+    .columnTime
+        @media screen and (max-width: 767px)
+            display: none
+        @media screen and (min-width: 768px)
+            width: 240px
+            min-width: 240px
+        @media screen and (min-width: 1200px)
+            width: 298px
+            min-width: 298px
+
+    .columnReward
+        width: 285px
+        min-width: 285px
+        @media screen and (min-width: 768px)
+            width: auto
+.paginationWrap
+    text-align: right
+    margin-top: 24px
+    padding: 0 24px
+    .historyPagination
+        display: inline-block
+        :global(.anticon)
+            color: #00F9FF
+        :global(.ant-pagination-item a), :global(.ant-pagination-item-ellipsis)
+            color: rgba(219, 224, 232, 0.5)
+        :global(.ant-pagination-jump-next), :global(.ant-pagination-jump-prev)
+            a
+                display: block
+                height: 100%
+                :global(.ant-pagination-item-container)
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    height: 100%
+        :global(.ant-pagination-next), :global(.ant-pagination-prev)
+            button
+                display: flex
+                align-items: center
+                justify-content: center
+        :global(.ant-pagination-item-active)
+            background: none
+            border-color: #00F9FF
+            border-radius: 0
+            a
+                color: #00F9FF
+                font-weight: 400
+

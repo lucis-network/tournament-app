@@ -1,11 +1,21 @@
+@import "/styles/common"
+
 .pcMenu
   border-bottom: 1px solid #010242
 
 .mobileMenu
   border-bottom: 1px solid #010242
+  background: #000625
+  backdrop-filter: blur(40px)
+  display: none
+  @media screen and (max-width: 1024px)
+    display: block
 .menuMobile
   margin-top: 0
   padding: 10px 30px
+  background: rgba(0, 6, 37, 0.8)
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.8)
+  backdrop-filter: blur(40px)
 .mHumber
   position: absolute
   top: 10px
@@ -45,3 +55,97 @@
 
 .User_avatar
   display: none
+
+.headerButton
+  width: 100%
+  height: 34px
+  line-height: 1
+  color: #000625
+  background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+  border-radius: 4px
+  display: flex
+  justify-content: center
+  align-items: center
+  span
+    font-family: 'Revx Neue Demo'
+    font-style: normal
+    font-weight: 600
+    font-size: 12px
+.profileMobileUser
+  display: flex
+  .avatar
+    margin-right: 12px
+    img
+      min-width: 40px
+      min-height: 40px
+      max-width: 40px
+      max-height: 40px
+      border-radius: 50%
+  .profileMobileName
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 300
+    font-size: 16px
+    line-height: 18px
+    color: #00F9FF
+    width: 152px
+    margin-bottom: 4px
+  .profileMobileInfo
+    min-width: 0
+    .profileMobileBalance
+      display: flex
+      width: 100%
+      flex-wrap: wrap
+      .rewardItem
+        display: flex
+        justify-content: center
+        align-items: center
+        font-family: 'Lexend'
+        font-size: 14px
+        .lucisPoint
+          margin-right: 8px
+          color: #DF9B16
+        img
+          min-width: 14px
+          min-height: 14px
+          max-width: 14px
+          max-height: 14px
+          margin-right: 4px
+          box-shadow: 0 0 6.3px rgba(11, 235, 214, 0.5)
+          border-radius: 50%
+        span
+          word-break: break-all
+.profileMobileWallet
+  margin-top: 24px
+  .address
+    white-space: nowrap
+    width: 216px
+    overflow: hidden
+    border-radius: 50px
+    background: #2E384D
+    text-overflow: ellipsis
+    padding: 8px 28px
+    margin-bottom: 8px
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 500
+    font-size: 12px
+    text-align: center
+
+.menuMobileItem
+  :global(.comingSoon)
+    position: relative
+    span
+      font-weight: 300
+      font-family: "Lexend", serif
+      font-size: 8px
+      line-height: 115%
+      color: #0BEBD6
+      position: absolute
+      bottom: -5px
+      left: 10px
+      white-space: nowrap
+      text-transform: uppercase
+.menuMobileItemMarginTop
+  margin-top: auto
+  padding-top: 24px

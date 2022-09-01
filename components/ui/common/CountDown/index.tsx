@@ -11,7 +11,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, refetch }) 
 	const [days, hours, minutes, seconds] = useCountdown(targetDate);
 
 	if (days + hours + minutes + seconds <= 0) {
-		refetch();
+		if (refetch) refetch();
 		return <ShowCounter days={0} hours={0} minutes={0} seconds={0} />;
 	} else {
 		return (

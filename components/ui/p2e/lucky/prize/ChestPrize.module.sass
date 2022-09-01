@@ -1,0 +1,227 @@
+@import "/styles/playcore/variables"
+
+.chestPrize
+  min-width: 90px
+  margin-right: 16px
+  height: 100%
+  display: flex
+  flex-direction: column
+  align-items: center
+  color: $colorPrizeCommon
+  @media screen and (min-width: 1200px)
+    min-width: 130px
+  &:global(.Common)
+    color: $colorPrizeCommon
+    .prizeImg
+      border-bottom-color: $colorPrizeCommon
+      &:before
+        background: $bgPrizeCommon
+  &:global(.Uncommon)
+    color: $colorPrizeUncommon
+    .prizeImg
+      border-bottom-color: $colorPrizeUncommon
+      &:before
+        background: $bgPrizeUncommon
+  &:global(.Rare)
+    color: $colorPrizeRare
+    .prizeImg
+      border-bottom-color: $colorPrizeRare
+      &:before
+        background: $bgPrizeRare
+  &:global(.Epic)
+    color: $colorPrizeEpic
+    .prizeImg
+      border-bottom-color: $colorPrizeEpic
+      &:before
+        background: $bgPrizeEpic
+  &:global(.Legendary)
+    color: $colorPrizeLegendary
+    .prizeImg
+      border-bottom-color: $colorPrizeLegendary
+      &:before
+        background: $bgPrizeLegendary
+  &:global(.Mythic)
+    color: $colorPrizeMythic
+    .prizeImg
+      border-bottom-color: $colorPrizeMythic
+      &:before
+        background: $bgPrizeMythic
+  &:last-of-type
+    margin-right: 0
+  .prizeImg
+    display: flex
+    align-items: center
+    justify-content: center
+    background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+    backdrop-filter: blur(40px)
+    border-bottom: 2px solid #787878
+    position: relative
+    &:before
+      content: ''
+      display: block
+      position: absolute
+      top: 0
+      left: 0
+      right: 0
+      bottom: 0
+    img
+      width: 100%
+      aspect-ratio: 1/1
+      object-fit: cover
+  .prizeTitle
+    background: rgba(45, 52, 70, 0.5)
+    backdrop-filter: blur(40px)
+    height: 100%
+    width: 100%
+    display: flex
+    align-items: center
+    justify-content: center
+    text-align: center
+    padding: 7px
+    font-family: 'Revx Neue Demo'
+    font-weight: 600
+    font-size: 12px
+    line-height: 13px
+    text-transform: uppercase
+    max-height: 30px
+    min-height: 30px
+  .prizeAmount
+    font-family: 'Revx Neue Demo'
+    font-weight: 600
+    font-size: 12px
+    line-height: 13px
+    letter-spacing: 0.04em
+    margin-top: 16px
+    background: rgba(69, 80, 107, 0.5)
+    padding: 8px 15px
+    color: #FFFFFF
+    backdrop-filter: blur(40px)
+    border-radius: 72px
+.prizeDetail
+  border: none
+  border-radius: 4px 4px 0 0
+  background: rgba(69, 80, 107, 0.5)
+  backdrop-filter: blur(40px)
+  width: 343px
+  max-width: 100%
+  padding: 0
+  &:before
+    content: none
+  &:global(.Common)
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeCommon
+  &:global(.Uncommon)
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeUncommon
+  &:global(.Rare)
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeRare
+  &:global(.Epic)
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeEpic
+  &:global(.Legendary)
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeLegendary
+  &:global(.Mythic)
+    :global(.ant-popover-title), .detailPrizeTitle, .detailPrizeRarity
+      color: $colorPrizeMythic
+  :global(.ant-popover-content)
+    :global(.ant-popover-arrow)
+      display: none
+      :global(.ant-popover-arrow-content)
+        background: rgba(69, 80, 107, 0.7)
+        backdrop-filter: blur(40px)
+        &:before
+          content: none
+    :global(.ant-popover-inner)
+      box-shadow: none
+      :global(.ant-popover-title)
+        border-top-left-radius: 4px
+        border-top-right-radius: 4px
+        background: rgba(45, 52, 70, 0.5)
+        backdrop-filter: blur(40px)
+        border-bottom: 0
+      :global(.ant-popover-inner-content)
+        font-family: 'Lexend'
+        font-weight: 300
+        font-size: 16px
+        line-height: 20px
+        color: #DBE0E8
+      background: none
+      backdrop-filter: none
+      border-radius: 0
+      &:before
+        content: none !important
+.prizeDetailContent
+  display: flex
+  &:global(.Common)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeCommon
+      &:before
+        background: $bgPrizeCommon
+  &:global(.Uncommon)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeUncommon
+      &:before
+        background: $bgPrizeUncommon
+  &:global(.Rare)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeRare
+      &:before
+        background: $bgPrizeRare
+  &:global(.Epic)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeEpic
+      &:before
+        background: $bgPrizeEpic
+  &:global(.Legendary)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeLegendary
+      &:before
+        background: $bgPrizeLegendary
+  &:global(.Mythic)
+    .detailPrizeImage
+      border-bottom: 2px solid $colorPrizeMythic
+      &:before
+        background: $bgPrizeMythic
+  .detailPrizeCard
+    min-width: 80px
+    max-width: 80px
+    margin-right: 16px
+    .detailPrizeImage
+      background: rgba(248, 237, 255, 0.2) radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
+      backdrop-filter: blur(40px)
+      position: relative
+      &:before
+        content: ''
+        display: block
+        position: absolute
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+      img
+        width: 100%
+        aspect-ratio: 1/1
+        object-fit: cover
+  .detailPrizeTitle
+    font-family: 'Revx Neue Demo'
+    font-weight: 600
+    font-size: 12px
+    text-align: center
+    background: rgba(69, 80, 107, 0.5)
+    backdrop-filter: blur(40px)
+    padding: 4px
+  .detailPrizeRarity
+    font-family: 'Lexend'
+    font-weight: 500
+    font-size: 16px
+    line-height: 20px
+  .detailPrizeDesc
+    font-family: 'Lexend'
+    font-weight: 300
+    font-size: 16px
+    line-height: 20px
+
+.disableImg
+  filter: saturate(0)

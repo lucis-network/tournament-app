@@ -1,6 +1,10 @@
 import numeral from 'numeral'
 import {isClientDevMode} from "./Env";
 
+export function randInt(min: number, max: number) {
+  return Math.max(min, Math.min(max, Math.floor(Math.random() * 10)))
+}
+
 type NumberFormatOption = {
   // whether to show +/- sign before formatter number
   sign?: boolean
@@ -158,3 +162,11 @@ if (isClientDevMode) {
     }
   }
 }
+
+export const formatNumber = (number: number, style?: string, currency?: string) => {
+  return number.toLocaleString("en-US", {
+    style: style ?? "currency",
+    currency: currency ?? "USD",
+    maximumFractionDigits: 0,
+  });
+};
