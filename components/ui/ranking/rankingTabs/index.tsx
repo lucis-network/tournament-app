@@ -37,7 +37,7 @@ const tabs = [
 
 const columns = [
   {
-    title: 'No',
+    title: () => <div className={s.headerNo}>No</div>,
     dataIndex: 'rank',
     className: s.columnNo,
     render: (rank: number) => {
@@ -49,17 +49,19 @@ const columns = [
             </div>
           )}
           <div className={`${s.userRankName} ${rank === 1 ? 'top1' : rank === 2 ? 'top2' : ''}`}>
-            {rank < 3 && (
-              <span className={s.rankNameText}>TOP </span>
-            )}
-            {rank}
+            <div className={s.rankNumber}>
+              {rank < 3 && (
+                <span className={s.rankNameText}>TOP </span>
+              )}
+              {rank}
+            </div>
           </div>
         </div>
       )
     }
   },
   {
-    title: 'Name',
+    title: () => <div className={s.headerName}>Name</div>,
     dataIndex: ['profile', 'rank', 'total_earning'],
     className: s.columnName,
     render: (text: string, data: UserRanking) => {
@@ -85,7 +87,7 @@ const columns = [
             </Link>
           </div>
           {totalEarning && (
-            <div className={s.userValue}>{totalEarning} NFTs</div>
+            <div className={s.userValue}>-- NFTs</div>
           )}
         </div>
       )
@@ -95,14 +97,15 @@ const columns = [
     title: 'Your Reward',
     dataIndex: 'reward',
     className: s.columnReward,
-    render: () => {
+    render: (text: string, data: UserRanking) => {
+      const totalEarning = data?.total_earning;
       return (
         <div className={s.userReward}>
           <div className={s.rewardPoint}>
-            9000 <img src="/assets/P2E/lucis-point.svg" alt=""/>
+            {totalEarning} <img src="/assets/P2E/lucis-point.svg" alt=""/>
           </div>
           <div className={s.rewardToken}>
-            9000 <img src="/assets/P2E/lucis-token.svg" alt=""/>
+            -- <img src="/assets/P2E/lucis-token.svg" alt=""/>
           </div>
         </div>
       )
