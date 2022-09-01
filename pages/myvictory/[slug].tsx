@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { isClient } from "utils/DOM";
 import { useRouter } from "next/router";
 import PlayerHome from "components/ui/tournament/home/player";
-import CardPlayer from "components/ui/tournament/home/cardPlayer";
+// import CardPlayer from "components/ui/tournament/home/cardPlayer";
 
 const listData = [
   { id: 1, position: 1, name: "Top1" },

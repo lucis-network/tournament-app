@@ -113,7 +113,13 @@ export default observer(function Header(props: Props) {
     AppEmitter.emit("updateNotification", {data, countNotification: countNoti});
     notification.open({
       message: data.title,
-      onClick: () => router.push(data.link),
+      onClick: () => {
+        if (data?.link) {
+          router.push(data.link);
+          AppEmitter.emit("seenNotification", {data});
+        }
+
+      },
       description: (
         <div className={s.notificationItemToast}>
           <img

@@ -93,12 +93,17 @@ const Notification = () => {
   }, [width])
 
   useEffect(() => {
-    const listener = AppEmitter.addListener("updateNotification", (res: any) => {
+    const listener1 = AppEmitter.addListener("updateNotification", (res: any) => {
       setCountNoti(Number(res.countNotification));
       setNotiList((oldState) =>[res.data, ...oldState]);
     });
+    const listener2 = AppEmitter.addListener("seenNotification", (res: any) => {
+      setCountNoti((oldState) => oldState - 1);
+      setNotiList((oldState) =>oldState.map(item => ({...item, is_seen: item.id === res.data.id ? true : item.is_seen})));
+    });
     return () => {
-      listener.remove();
+      listener1.remove();
+      listener2.remove();
     };
   }, [])
   return (
