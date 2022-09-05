@@ -2,10 +2,9 @@
   display: flex
   justify-content: space-between
   flex-wrap: wrap
-  margin-bottom: 32px
+  margin-bottom: 24px
   gap: 16px 0
   @media screen and (max-width: 575px)
-    margin-bottom: 24px
     padding: 0 16px
   :global(.ant-select-item-option-content)
     color: #FFFFFF
@@ -16,6 +15,8 @@
     line-height: 18px
   :global(.ant-select-item)
       color: #FFFFFF
+  :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
+    border-radius: 4px
   .leftGroupItem
     display: flex
     flex-wrap: wrap
@@ -114,6 +115,8 @@
           width: 81px
     .selectType
       order: 3
+      :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
+        background: linear-gradient(93.02deg, rgba(24, 137, 228, 0.4) 0.52%, rgba(11, 235, 214, 0.4) 100.48%)
       div
         width: 107px
         @media screen and (min-width: 375px)
@@ -139,6 +142,11 @@
         background: rgba(255, 255, 255, 0.1)
         border-radius: 4px
         backdrop-filter: blur(40px)
+        font-family: 'Revx Neue Demo'
+        font-style: normal
+        font-weight: 400
+        font-size: 16px
+        line-height: 18px
       :global(.ant-btn)
         border: none
       :global(.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary))

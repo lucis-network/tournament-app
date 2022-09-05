@@ -5,15 +5,17 @@ import TabHome from 'components/ui/tournament/home/tabs'
 import PlayerHome from "components/ui/tournament/home/player"
 import type { NextPage } from 'next'
 import s from "./ArenaHome.module.sass"
+import TopSponsors from "../../components/ui/tournament/home/topSponsors";
 
 const TournamentHome: NextPage = () => {
   return (
     <div>
       <DocHead />
-      <main style={{minHeight: "100vh"}} className={s.arenaHomeWrapper}>
+      <main className={s.arenaHomeWrapper}>
         <BannerPage />
         <TabHome />
         <PlayerHome />
+        <TopSponsors />
       </main>
       <Footer />
     </div>

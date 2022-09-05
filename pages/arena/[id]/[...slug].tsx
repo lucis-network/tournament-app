@@ -231,7 +231,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   return (
     <>
       <DocHead />
-      <div className={`${s.wrapper}`}>
+      <div className={`${s.wrapper} lucis-container-2`}>
         <Banner
           cover={cover}
           className={s.bannerTourDetailWrap}

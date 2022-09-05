@@ -33,47 +33,6 @@ export default function ButtonSort({
 	};
 	return (
 		<div className={`lucis-container-2 ${s.container} `}>
-				{/*<div className={s.leftGroupItem}>*/}
-				{/*	<div className={s.prizepool}>*/}
-				{/*		<Order*/}
-				{/*			title="Prize pool"*/}
-				{/*			id="prize_pool"*/}
-				{/*			value={filter?.prize_pool}*/}
-				{/*			onClick={onOrder}*/}
-				{/*		/>*/}
-				{/*	</div>*/}
-				{/*	<div className={s.time}>*/}
-				{/*		<Order*/}
-				{/*			id="time"*/}
-				{/*			title="Time"*/}
-				{/*			value={filter?.time}*/}
-				{/*			onClick={onOrder}*/}
-				{/*		/>*/}
-				{/*	</div>*/}
-				{/*	<div className={`${s.rightGroupItem} ${s.leftTypeItem}`}>*/}
-				{/*		<Select*/}
-				{/*			onChange={handleChange("type")}*/}
-				{/*			className={`${s.leftType}`}*/}
-				{/*			//defaultValue={defaultValueType}*/}
-				{/*			allowClear={false}*/}
-				{/*			value={filter.type}*/}
-				{/*		>*/}
-				{/*			{listTabs.map((item, i) => (*/}
-				{/*				<Option key={i} value={item}>*/}
-				{/*					{item}*/}
-				{/*				</Option>*/}
-				{/*			))}*/}
-				{/*		</Select>*/}
-				{/*	</div>*/}
-				{/*	<div className={`${s.rightGroupItem} ${s.container_search}`}>*/}
-				{/*		<Search*/}
-				{/*			className={s.search}*/}
-				{/*			placeholder="Name of tournament"*/}
-				{/*			value={filter.search}*/}
-				{/*			onChange={(e) => onFilter("search", e.target.value)}*/}
-				{/*		/>*/}
-				{/*	</div>*/}
-				{/*</div>*/}
 				<div className={s.rightGroupItem}>
 					<div className={s.prizepool}>
 						<Order
@@ -146,7 +105,7 @@ export default function ButtonSort({
 					<div className={s.container_search}>
 						<Search
 							className={s.search}
-							placeholder="Name of tournament"
+							placeholder="Name Of Tournament"
 							value={filter.search}
 							onChange={(e) => onFilter("search", e.target.value)}
 						/>
