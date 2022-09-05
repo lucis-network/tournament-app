@@ -441,8 +441,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                               {dataBracket?.type === "SINGLE"
                                 ? "Single elimination"
                                 : dataBracket?.type === "DOUBLE"
-                                ? "Double elimination"
-                                : ""}
+                                  ? "Double elimination"
+                                  : ""}
                             </div>
                           </Col>
                           <Col
