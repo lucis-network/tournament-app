@@ -231,25 +231,16 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   return (
     <>
       <DocHead />
-        <div className={`${s.page} lucis-container-2`}>
+        <div className={`lucis-container-2 ${s.page}`}>
           <div className={`${s.wrapper} ${s.main}`}>
             <Banner
               cover={cover}
               className={s.bannerTourDetailWrap}
               bannerClassName={s.bannerTourDetail}
             />
-            <div>
-              <TournamentDetailSponsor
-                tournamentId={tournamentId as string}
-                tournament_status={tournament_status as string}
-                refetchTounament={refetch}
-                currency={currency}
-                type={"banner"}
-              />
-            </div>
             <section className={s.tournamentInfo}>
               <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
-                <TournamentDetailMarquee tournamentId={tournamentId as string} />
+                {/*<TournamentDetailMarquee tournamentId={tournamentId as string} />*/}
                 {userLocal?.id === user?.id &&
                   tournament_status === "FINISH" &&
                   !isCheckConfirmResult && (
@@ -573,7 +564,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               </div>
             </div>
           </section>
-          <div className={`lucis-container-2 ${s.bgCharacters}`}>
+          <div className={`${s.bgCharacters}`}>
             <div>
               {/* ==== registration phase ====  */}
               <RegistrationPhase
@@ -806,7 +797,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         </div>
 
         <div className={s.side}>
-          right side bar
+          <div>
+            right side bar
+          </div>
         </div>
       </div>
       <LoginModal />
