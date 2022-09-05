@@ -10,6 +10,7 @@ import Link from "next/link";
 
 import AuthService from "../../../Auth/AuthService";
 import Notification from "../../../Auth/components/notification";
+import {useWindowSize} from "../../../../hooks/useWindowSize";
 
 const sidebar = {
   open: (height = 1000) => ({
@@ -50,6 +51,7 @@ const nav = {
 };
 export const MenuMobile = (props: any) => {
   const [isOpen, toggleOpen] = useCycle(false, true);
+  const [width] = useWindowSize()
   // const containerRef = useRef(null);
   // const {height} = useDimensions(containerRef);
   useEffect(() => {
@@ -81,13 +83,13 @@ export const MenuMobile = (props: any) => {
         className={`${s.mobileMenu} fixed top-0 left-0 right-0 z-[101] bg-nav backdrop-blur-sm`}
       >
         <div className={`${s.menuMobile} flex justify-between items-center`}>
-          <div style={{width: 120, height: 42}}>
+          <div style={{width: 120, height: 52}}>
             <Link href={"/"}>
               <img src="/assets/home/logo.png" alt=""/>
             </Link>
           </div>
           <motion.div initial={false} animate={"closed"} style={{display: "flex", alignItems: "center", marginBottom: 3}}>
-            <Notification/>
+            {width < 1024 && <Notification/>}
             <MenuToggle toggle={() => toggleOpen()}/>
           </motion.div>
         </div>

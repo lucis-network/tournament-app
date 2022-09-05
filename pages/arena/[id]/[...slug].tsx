@@ -231,184 +231,94 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   return (
     <>
       <DocHead />
-      <div className={`${s.wrapper} lucis-container-2`}>
-        <Banner
-          cover={cover}
-          className={s.bannerTourDetailWrap}
-          bannerClassName={s.bannerTourDetail}
-        />
-        <div>
-          <TournamentDetailSponsor
-            tournamentId={tournamentId as string}
-            tournament_status={tournament_status as string}
-            refetchTounament={refetch}
-            currency={currency}
-            type={"banner"}
+      <div className={`${s.page} lucis-container-2`}>
+        <div className={`${s.wrapper} ${s.main}`}>
+          <Banner
+            cover={cover}
+            className={s.bannerTourDetailWrap}
+            bannerClassName={s.bannerTourDetail}
           />
-        </div>
-        <section className={s.tournamentInfo}>
-          <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
-            <TournamentDetailMarquee tournamentId={tournamentId as string} />
-            {userLocal?.id === user?.id &&
-              tournament_status === "FINISH" &&
-              !isCheckConfirmResult && (
-                <div className={s.group_button}>
-                  <a
-                    className="text-16px btn-blur"
-                    onClick={handleOpenConfirmResult}
-                  >
-                    Confirm tournament result
-                  </a>
-                </div>
-              )}
-            <div className={s.infoWrap}>
-              <div className={s.tournamentThumbnail}>
-                <Image src={thumbnail} alt="" preview={false} />
-              </div>
-              <div className={s.tournamentMetadataWrap}>
-                <h1 className={s.tournamentTitle}>
-                  {name.length > 120 ? name.slice(0, 120) + "..." : name}
-                </h1>
-                {/* {name.length <= 35 && (
-                  <>
-                    <br /> <br />
-                  </>
-                )} */}
-                <div className={s.tournamentStartTime}>
-                  <Image
-                    src="/assets/TournamentDetail/iconClock.svg"
-                    preview={false}
-                    alt=""
-                  />
-                  <span>
-                    Start time:{" "}
-                    {moment(dataTournamentDetail?.brackets[0]?.start_at).format(
-                      "YYYY/MM/DD HH:mm"
-                    )}
-                  </span>
-                </div>
-                <Row className={s.tournamentMetadataRow}>
-                  {/* metadata */}
-                  <Col
-                    xs={{ span: 24 }}
-                    xl={{ span: 24 }}
-                    className={s.tournamentMetadata}
-                  >
-                    <Row
-                      gutter={{ sm: 20, lg: 30 }}
-                      className={s.tournamentTagWrap}
+          <div>
+            <TournamentDetailSponsor
+              tournamentId={tournamentId as string}
+              tournament_status={tournament_status as string}
+              refetchTounament={refetch}
+              currency={currency}
+              type={"banner"}
+            />
+          </div>
+          <section className={s.tournamentInfo}>
+            <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
+              <TournamentDetailMarquee tournamentId={tournamentId as string} />
+              {userLocal?.id === user?.id &&
+                tournament_status === "FINISH" &&
+                !isCheckConfirmResult && (
+                  <div className={s.group_button}>
+                    <a
+                      className="text-16px btn-blur"
+                      onClick={handleOpenConfirmResult}
                     >
-                      <Col style={{ width: "100%" }}>
-                        <Row className={s.contentTopWrap}>
-                          <Col className={`${s.btb_free_entry} ${s.bracket}`}>
-                            <div className={s.tournamentTag}>
-                              <Image
-                                src="/assets/TournamentDetail/iconDollarCoin.svg"
-                                preview={false}
-                                alt=""
-                              />{" "}
-                              Free entry
-                            </div>
-                            <div className={s.tournamentTag}>
-                              <Image
-                                src="/assets/TournamentDetail/iconMapMark.svg"
-                                preview={false}
-                                alt=""
-                              />{" "}
-                              {region}
-                            </div>
-                            <div className={`${s.btn_share_top}`}>
-                              <button
-                                key={"InviteorShare"}
-                                className={`${s.btn_detail} ${s.btn_detail_share}`}
-                                onClick={() => openModal("Invite or Share")}
-                              >
+                      Confirm tournament result
+                    </a>
+                  </div>
+                )}
+              <div className={s.infoWrap}>
+                <div className={s.tournamentThumbnail}>
+                  <Image src={thumbnail} alt="" preview={false} />
+                </div>
+                <div className={s.tournamentMetadataWrap}>
+                  <h1 className={s.tournamentTitle}>
+                    {name.length > 120 ? name.slice(0, 120) + "..." : name}
+                  </h1>
+                  {/* {name.length <= 35 && (
+                    <>
+                      <br /> <br />
+                    </>
+                  )} */}
+                  <div className={s.tournamentStartTime}>
+                    <Image
+                      src="/assets/TournamentDetail/iconClock.svg"
+                      preview={false}
+                      alt=""
+                    />
+                    <span>
+                      Start time:{" "}
+                      {moment(dataTournamentDetail?.brackets[0]?.start_at).format(
+                        "YYYY/MM/DD HH:mm"
+                      )}
+                    </span>
+                  </div>
+                  <Row className={s.tournamentMetadataRow}>
+                    {/* metadata */}
+                    <Col
+                      xs={{ span: 24 }}
+                      xl={{ span: 24 }}
+                      className={s.tournamentMetadata}
+                    >
+                      <Row
+                        gutter={{ sm: 20, lg: 30 }}
+                        className={s.tournamentTagWrap}
+                      >
+                        <Col style={{ width: "100%" }}>
+                          <Row className={s.contentTopWrap}>
+                            <Col className={`${s.btb_free_entry} ${s.bracket}`}>
+                              <div className={s.tournamentTag}>
                                 <Image
-                                  src="/assets/TournamentDetail/ic_share.svg"
+                                  src="/assets/TournamentDetail/iconDollarCoin.svg"
                                   preview={false}
                                   alt=""
-                                />
-                                <span className="ml-2">Share</span>
-                              </button>
-                            </div>
-                          </Col>
-                          <Col
-                            className={`${s.gradientBtnWrap} ${s.team_size}`}
-                          >
-                            <Row style={{ width: "100%" }}>
-                              <Col className={s.btn_join_discord}>
-                                {discord && (
-                                  <Link
-                                    href={
-                                      discord ? discord : `https://discord.com/`
-                                    }
-                                    passHref
-                                  >
-                                    <a
-                                      className={s.joinDiscord}
-                                      target="_blank"
-                                    >
-                                      <Image
-                                        src="/assets/TournamentDetail/ic_dis.svg"
-                                        alt=""
-                                        preview={false}
-                                      />
-                                      Join our Discord server{" "}
-                                    </a>
-                                  </Link>
-                                )}
-                              </Col>
-                              <Col className={`${s.btn_subscribe}`}>
-                                {!dataIsubscribeToTournament?.IsSubscribeToTournament && (
-                                  <Spin spinning={isLoadingSub}>
-                                    <button
-                                      className={s.btn_detail}
-                                      key={"Subscribe"}
-                                      onClick={handSubscribe}
-                                    >
-                                      <Image
-                                        src="/assets/TournamentDetail/ic_sub.svg"
-                                        preview={false}
-                                        alt=""
-                                      />
-                                      <span className="ml-2">
-                                        Subscribe (
-                                        {/* {
-                                        dataTournamentDetail
-                                          ?.tournament_subscribes?.length
-                                      } */}
-                                        {dataSubscriber})
-                                      </span>
-                                    </button>
-                                  </Spin>
-                                )}
-                                <Col className={s.btn_subscribe}>
-                                  {dataIsubscribeToTournament?.IsSubscribeToTournament && (
-                                    <Spin spinning={isLoadingSub}>
-                                      <button
-                                        className={`${s.btn_detail} ${s.btn_sub}`}
-                                        key={"Subscribe"}
-                                        onClick={handUnsubscribe}
-                                      >
-                                        <Image
-                                          src="/assets/Campaign/Banner/svg/subcribed.svg"
-                                          preview={false}
-                                          alt=""
-                                        />
-                                        <span className="ml-2">
-                                          Subscribed (
-                                          {/* {
-                                      dataTournamentDetail
-                                        ?.tournament_subscribes?.length
-                                    } */}
-                                          {dataSubscriber})
-                                        </span>
-                                      </button>
-                                    </Spin>
-                                  )}
-                                </Col>
-                              </Col>
-                              <Col className={s.btn_share}>
+                                />{" "}
+                                Free entry
+                              </div>
+                              <div className={s.tournamentTag}>
+                                <Image
+                                  src="/assets/TournamentDetail/iconMapMark.svg"
+                                  preview={false}
+                                  alt=""
+                                />{" "}
+                                {region}
+                              </div>
+                              <div className={`${s.btn_share_top}`}>
                                 <button
                                   key={"InviteorShare"}
                                   className={`${s.btn_detail} ${s.btn_detail_share}`}
@@ -421,50 +331,141 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                                   />
                                   <span className="ml-2">Share</span>
                                 </button>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row
-                      gutter={{ sm: 20, lg: 30 }}
-                      className={s.content_bottom}
-                    >
-                      <Row style={{ width: "100%" }}>
-                        <Col
-                          className={`${s.metadataBlock} ${s.col_item} ${s.bracket}`}
-                        >
-                          <h4 className={s.metadataTitle}>Bracket type</h4>
-                          <div className={s.metadataValue}>
-                            {dataBracket?.type === "SINGLE"
-                              ? "Single elimination"
-                              : dataBracket?.type === "DOUBLE"
-                              ? "Double elimination"
-                              : ""}
-                          </div>
-                        </Col>
-                        <Col
-                          className={`${s.metadataBlock} ${s.col_item} ${s.col_team} ${s.team_size}`}
-                        >
-                          <h4 className={s.metadataTitle}>Team size</h4>
-                          <div className={s.metadataValue}>
-                            {team_size ?? "-"}v{team_size ?? "-"}
-                          </div>
-                        </Col>
-                        <Col
-                          className={`${s.metadataBlock} ${s.alignRightMb} ${s.col_item} ${s.participants}`}
-                        >
-                          <h4 className={s.metadataTitle}>Max participants</h4>
-                          <div className={s.metadataValue}>{participants}</div>
-                        </Col>
-                        <Col
-                          className={`${s.metadataBlock} ${s.alignRightMb} ${s.bo} ${s.col_item} ${s.participants}`}
-                        >
-                          <h4 className={s.metadataTitle}></h4>
-                          <div className={s.metadataValue}>BO{turns}</div>
+                              </div>
+                            </Col>
+                            <Col
+                              className={`${s.gradientBtnWrap} ${s.team_size}`}
+                            >
+                              <Row style={{ width: "100%" }}>
+                                <Col className={s.btn_join_discord}>
+                                  {discord && (
+                                    <Link
+                                      href={
+                                        discord ? discord : `https://discord.com/`
+                                      }
+                                      passHref
+                                    >
+                                      <a
+                                        className={s.joinDiscord}
+                                        target="_blank"
+                                      >
+                                        <Image
+                                          src="/assets/TournamentDetail/ic_dis.svg"
+                                          alt=""
+                                          preview={false}
+                                        />
+                                        Join our Discord server{" "}
+                                      </a>
+                                    </Link>
+                                  )}
+                                </Col>
+                                <Col className={`${s.btn_subscribe}`}>
+                                  {!dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                                    <Spin spinning={isLoadingSub}>
+                                      <button
+                                        className={s.btn_detail}
+                                        key={"Subscribe"}
+                                        onClick={handSubscribe}
+                                      >
+                                        <Image
+                                          src="/assets/TournamentDetail/ic_sub.svg"
+                                          preview={false}
+                                          alt=""
+                                        />
+                                        <span className="ml-2">
+                                          Subscribe (
+                                          {/* {
+                                          dataTournamentDetail
+                                            ?.tournament_subscribes?.length
+                                        } */}
+                                          {dataSubscriber})
+                                        </span>
+                                      </button>
+                                    </Spin>
+                                  )}
+                                  <Col className={s.btn_subscribe}>
+                                    {dataIsubscribeToTournament?.IsSubscribeToTournament && (
+                                      <Spin spinning={isLoadingSub}>
+                                        <button
+                                          className={`${s.btn_detail} ${s.btn_sub}`}
+                                          key={"Subscribe"}
+                                          onClick={handUnsubscribe}
+                                        >
+                                          <Image
+                                            src="/assets/Campaign/Banner/svg/subcribed.svg"
+                                            preview={false}
+                                            alt=""
+                                          />
+                                          <span className="ml-2">
+                                            Subscribed (
+                                            {/* {
+                                        dataTournamentDetail
+                                          ?.tournament_subscribes?.length
+                                      } */}
+                                            {dataSubscriber})
+                                          </span>
+                                        </button>
+                                      </Spin>
+                                    )}
+                                  </Col>
+                                </Col>
+                                <Col className={s.btn_share}>
+                                  <button
+                                    key={"InviteorShare"}
+                                    className={`${s.btn_detail} ${s.btn_detail_share}`}
+                                    onClick={() => openModal("Invite or Share")}
+                                  >
+                                    <Image
+                                      src="/assets/TournamentDetail/ic_share.svg"
+                                      preview={false}
+                                      alt=""
+                                    />
+                                    <span className="ml-2">Share</span>
+                                  </button>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
                         </Col>
                       </Row>
+                      <Row
+                        gutter={{ sm: 20, lg: 30 }}
+                        className={s.content_bottom}
+                      >
+                        <Row style={{ width: "100%" }}>
+                          <Col
+                            className={`${s.metadataBlock} ${s.col_item} ${s.bracket}`}
+                          >
+                            <h4 className={s.metadataTitle}>Bracket type</h4>
+                            <div className={s.metadataValue}>
+                              {dataBracket?.type === "SINGLE"
+                                ? "Single elimination"
+                                : dataBracket?.type === "DOUBLE"
+                                ? "Double elimination"
+                                : ""}
+                            </div>
+                          </Col>
+                          <Col
+                            className={`${s.metadataBlock} ${s.col_item} ${s.col_team} ${s.team_size}`}
+                          >
+                            <h4 className={s.metadataTitle}>Team size</h4>
+                            <div className={s.metadataValue}>
+                              {team_size ?? "-"}v{team_size ?? "-"}
+                            </div>
+                          </Col>
+                          <Col
+                            className={`${s.metadataBlock} ${s.alignRightMb} ${s.col_item} ${s.participants}`}
+                          >
+                            <h4 className={s.metadataTitle}>Max participants</h4>
+                            <div className={s.metadataValue}>{participants}</div>
+                          </Col>
+                          <Col
+                            className={`${s.metadataBlock} ${s.alignRightMb} ${s.bo} ${s.col_item} ${s.participants}`}
+                          >
+                            <h4 className={s.metadataTitle}></h4>
+                            <div className={s.metadataValue}>BO{turns}</div>
+                          </Col>
+                        </Row>
 
                       <Col className={s.gameInfoBlock}>
                         <div className={s.gameInfo}>
@@ -802,6 +803,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           status={isPopupNotifyProfile}
           onCancel={onCancelPopupNotifyProfile}
         ></PopupNotifyProfile>
+      </div>
       </div>
       <LoginModal />
     </>

@@ -719,10 +719,32 @@ body .ant-modal-footer {
   color: white;
 }
 
+@media (max-width: 1024px) {
+  .ant-popover-content .ant-popover-inner {
+    background: rgba(123, 123, 123, 0.7);
+  }
+  .ant-popover-content {
+    right: 20px;
+  }
+
+}
+
 /* .ant-popover-inner-content a,
 div {
   color: white;
 } */
+/* css for notification*/
+
+
+.ant-popover-inner-content {
+  padding: 0 !important;
+}
+.ant-list-item {
+  padding: 0 !important;
+}
+.ant-popover-arrow {
+  display: none !important;
+}
 
 .ant-popover-buttons button {
   background: transparent;

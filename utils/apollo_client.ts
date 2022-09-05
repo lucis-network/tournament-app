@@ -124,7 +124,7 @@ if (isClient) {
       authLink.concat(httpLink)
     )
   );
-  splitLinkP2E = split(
+    splitLinkP2E = split(
     (op) => {
       const endpoint = op.getContext().endpoint;
       return endpoint === "p2e";

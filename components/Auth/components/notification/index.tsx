@@ -1,28 +1,28 @@
 import {Badge, notification, Popover} from "antd";
 import InfiniteList from "./InfiniteNoti";
-import { observer } from "mobx-react";
-import {useGetNotification} from "hooks/notification/useNotification";
-import React, { useEffect, useState } from "react";
+import {observer} from "mobx-react";
+import {MARK_ALL_NOTIFICATION_AS_SEEN, SEEN_NOTIFICATION, useGetNotification} from "hooks/notification/useNotification";
+import React, {useCallback, useEffect, useState} from "react";
 import s from "./Notification.module.sass";
-import { useWindowSize } from "hooks/useWindowSize";
+import {useWindowSize} from "hooks/useWindowSize";
 import AuthStore from "../../AuthStore";
 import {Notification as NotificationType} from "src/generated/graphql";
-import {isEmpty} from "lodash";
-import moment from "moment";
-import RealtimeService from "../../../service/RealtimeService";
+import {RealtimeService} from "../../../service/RealtimeService";
 import {useRouter} from "next/router";
+import {useMutation} from "@apollo/client";
+import {OPEN_CHEST} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
+import {AppEmitter} from "../../../../services/emitter";
 
 const Notification = () => {
   const [width] = useWindowSize()
-  const { id } = AuthStore
+  const {id} = AuthStore
   const [visible, setVisible] = useState(false);
   const router = useRouter();
+  const [page, setPage] = useState(1);
   const {
-    getNotificationError,
-    getNotificationLoading,
     getNotificationData,
     refetchNotification
-  } = useGetNotification()
+  } = useGetNotification(page, 10)
   // const {notificationSubscriptionData, notificationSubscriptionDataArena} = useSubscriptionNotification({
   //   user_id: id
   // })
@@ -30,100 +30,95 @@ const Notification = () => {
   const [isSeen, setIsSeen] = useState(false)
   const [countNoti, setCountNoti] = useState(0)
   const [notiList, setNotiList] = useState<NotificationType[]>([])
+
+  const loadMoreData = async () => {
+    setPage(page + 1);
+    try {
+      const res = await refetchNotification({
+        page: page + 1,
+        limit: 10
+      })
+      // setNotiList([...notiList,...res.data.getNotification.notifications])
+    } catch (e) {
+      console.log(e);
+    }
+
+  }
+
+  useEffect(() => {
+    if (getNotificationData) {
+      setNotiList([...notiList, ...getNotificationData?.notifications]);
+      setCountNoti(Number(getNotificationData.unseen_count));
+    }
+
+  }, [getNotificationData])
+
+
+
   const notificationList = {
     notificationData: notiList,
-    getNotificationLoading,
-    // notificationSubscription,
+    unseenNotificationCount: countNoti
+    // noatificationSubscription,
     // fetchNotification,
   };
   const handleVisibleChange = (newVisible: boolean) => {
-    if (newVisible) {
-      refetchNotification()
-        .then(data => {
-          setNotiList(data.data.getNotification.reverse())
-        })
-        .catch((err) => console.log(err));
-      setIsSeen(true);
-    }
     setVisible(newVisible);
   }
-  useEffect(() => {
-    // console.log('getNotificationData: ', getNotificationData)
-    let isSubscribed = true
-    if (!isEmpty(getNotificationData)) {
-      if (isSubscribed) {
-        setNotiList(getNotificationData.reverse())
-        // setCountNoti(getNotificationData.filter((item) => !item?.is_seen).length)
+  const [markAllNotisAsSeen] = useMutation(MARK_ALL_NOTIFICATION_AS_SEEN);
+  const [seenNotification] = useMutation(SEEN_NOTIFICATION);
+
+  const markAllNotificationAsSeen = async () => {
+    await markAllNotisAsSeen();
+    setCountNoti(0);
+  }
+
+  const onSeenNotification = async (id: string) => {
+    setVisible(false);
+    await seenNotification({variables: {id: parseFloat(id)}})
+    setNotiList(notiList.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          is_seen: true
+        }
       }
-    }
-    return () => {
-      isSubscribed = false
-    }
-  }, [getNotificationData])
-  useEffect(() => {
-    if(id) {
-      RealtimeService.subscriptionArena(id as any).then(res => {
-        res.subscribe({ next(value) {
-            const data = value.data?.pushNotification;
-            notification.open({
-              message: data.title,
-              onClick: () => router.push(data.link),
-              description: (
-                <div className={s.notificationItem}>
-                  <img
-                    // className="w-[30px] h-[30px]"
-                    src={data?.image ?? ""}
-                    alt=""
-                  />
-                  <div>
-                    <p>{data?.content}</p>
-                  </div>
-                </div>
-              ),
-              placement: "bottomRight",
-            });
-          }})
-      });
-
-      RealtimeService.subscriptionP2e(id as any).then(res => {
-        res.subscribe({ next(value) {
-            const data = value.data?.pushNotification;
-            notification.open({
-              message: data.title,
-              onClick: () => router.push(data.link),
-              description: (
-                <div className={s.notificationItem}>
-                  <img
-                    // className="w-[30px] h-[30px]"
-                    src={data?.image ?? ""}
-                    alt=""
-                  />
-                  <div>
-                    <p>{data?.content}</p>
-                  </div>
-                </div>
-              ),
-              placement: "bottomRight",
-            });
-          }})
-      });
-    }
-
-  }, [id])
+      return item;
+    }));
+    setCountNoti(Math.max(0, countNoti - 1));
+  }
 
 
   useEffect(() => {
     setVisible(false);
   }, [width])
 
-
+  useEffect(() => {
+    const listener1 = AppEmitter.addListener("updateNotification", (res: any) => {
+      setCountNoti(Number(res.countNotification));
+      setNotiList((oldState) =>[res.data, ...oldState]);
+    });
+    const listener2 = AppEmitter.addListener("seenNotification", (res: any) => {
+      setCountNoti((oldState) => oldState - 1);
+      setNotiList((oldState) =>oldState.map(item => ({...item, is_seen: item.id === res.data.id ? true : item.is_seen})));
+    });
+    return () => {
+      listener1.remove();
+      listener2.remove();
+    };
+  }, [])
   return (
     <div className={s.notification}>
       <Popover
+        getPopupContainer={trigger => trigger.parentElement!}
         // placement={width < 1024 ? "bottom" : "bottomRight"}
         // trigger={width < 1024 ? "click" : "hover"}
         placement="bottom"
-        content={<InfiniteList {...notificationList} />}
+        content={<InfiniteList
+          {...notificationList}
+          loadMoreData={() => loadMoreData()}
+          markAllNotificationAsSeen={markAllNotificationAsSeen}
+          seenNotification={onSeenNotification}
+        />}
         trigger="click"
         visible={visible}
         onVisibleChange={handleVisibleChange}
