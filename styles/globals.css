@@ -721,12 +721,19 @@ body .ant-modal-footer {
 
 @media (max-width: 1024px) {
   .ant-popover-content .ant-popover-inner {
-    background: rgba(123, 123, 123, 0.7);
+    background: rgba(80, 80, 90, 1);
   }
   .ant-popover-content {
-    right: 20px;
+    right: 5px;
   }
-
+}
+.ant-badge-count-sm {
+  min-width: 12px !important;
+  height: 12px !important;
+  padding: 0;
+  font-size: 10px !important;
+  line-height: 12px !important;
+  border-radius: 7px;
 }
 
 /* .ant-popover-inner-content a,

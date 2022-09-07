@@ -123,7 +123,7 @@ const Notification = () => {
         visible={visible}
         onVisibleChange={handleVisibleChange}
       >
-        <Badge count={isSeen ? 0 : countNoti} size="small">
+        <Badge count={isSeen ? 10 : countNoti} size="small">
           <img
             className={s.notificationIcon}
             src="/assets/notification-icon.svg"

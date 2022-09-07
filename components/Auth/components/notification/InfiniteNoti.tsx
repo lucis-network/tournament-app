@@ -13,6 +13,7 @@ import {
 } from "@apollo/client";
 import SpinLoading from "../../../ui/common/Spin";
 import {useRouter} from "next/router";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 type Props = {
   notificationData: Notification[];
@@ -32,18 +33,19 @@ const InfiniteList = (
   }: Props
 ) => {
   const router = useRouter();
-  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [loadingMarkAllAsRead, setLoadingMarkAllAsRead] = useState(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
 
   useEffect(() => {
-    setNotifications(notificationData);
+    if (notifications.length === notificationData.length) {
+      setHasMore(false);
+    }
+    setNotifications([...notificationData]);
   }, [notificationData]);
 
   const onLoadMore = async () => {
-    setLoadingMore(true);
     await loadMoreData()
-    setLoadingMore(false);
   }
 
   const onMarkAllNotificationAsSeen = async () => {
@@ -59,12 +61,28 @@ const InfiniteList = (
     }
     setLoadingMarkAllAsRead(false);
   }
-
   return (
     <div className={s.infinite}>
-      <div className={s.infiniteContainer} id="list">
+      <InfiniteScroll
+        className={s.infiniteContainer}
+        hasMore={hasMore}
+        next={onLoadMore}
+        height={560}
+        dataLength={notifications.length}
+        loader={
+          <div className={s.loadMore}>
+            Load more
+            <span className="ml-2"><Spin size="small"/></span>
+          </div>
+        }
+        endMessage={
+          <div className={s.loadMore}>
+            Yay! You have seen it all
+          </div>
+        }
+      >
         <List split={false}>
-          <List.Item>
+          <List.Item className={s.sticky}>
             <div className={s.topOption}>
               <div className={s.title}>Notifications</div>
               <div className={`${s.option} ${unseenNotificationCount == 0 ? s.notificationSeenAll : ""}`}
@@ -93,7 +111,8 @@ const InfiniteList = (
                   <Col span={20} className={s.notificationItemContent}>
                     <p className={`font-[600] m-0 ${s.notiContentTitle}`}>{item?.title}
                     </p>
-                    <p className={` m-0 ${s.notiContentDescription}`} dangerouslySetInnerHTML={{__html: item?.content!}} />
+                    <p className={` m-0 ${s.notiContentDescription}`}
+                       dangerouslySetInnerHTML={{__html: item?.content!}}/>
                     <p className={s.notificationItemTime}>
                       {moment(item?.created_at).fromNow()}
                     </p>
@@ -103,12 +122,8 @@ const InfiniteList = (
 
             );
           })}
-          <List.Item>
-            <div className={s.loadMore} onClick={() => onLoadMore()}>Load more {loadingMore &&
-                <span className="ml-2"><Spin size="small"/></span>}</div>
-          </List.Item>
         </List>
-      </div>
+      </InfiniteScroll>
     </div>
   );
 };
