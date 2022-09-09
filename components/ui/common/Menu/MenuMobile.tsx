@@ -89,7 +89,7 @@ export const MenuMobile = (props: any) => {
             </Link>
           </div>
           <motion.div initial={false} animate={"closed"} style={{display: "flex", alignItems: "center", marginBottom: 3}}>
-            {width < 1024 && <Notification/>}
+            {width < 1024 && props.id && <Notification userId={props.id}/>}
             <MenuToggle toggle={() => toggleOpen()}/>
           </motion.div>
         </div>

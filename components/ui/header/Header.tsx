@@ -21,7 +21,7 @@ import MissionService from "../../service/p2e/MissionService";
 import {currency, fomatNumber, format} from "../../../utils/Number";
 import AuthBoxStore from "../../Auth/components/AuthBoxStore";
 import {AppEmitter} from "../../../services/emitter";
-import AnimatedNumber from "../common/AnimatedNumber/index";
+// import AnimatedNumber from "../common/AnimatedNumber/index";
 import LoginModal from "../../Auth/Login/LoginModal";
 import Notification from "../../Auth/components/notification";
 import {RealtimeService} from "../../service/RealtimeService";
@@ -106,59 +106,6 @@ export default observer(function Header(props: Props) {
     // )
   }
 
-  const subscribe = (value: any) => {
-    const data = value.data?.pushNotification.new_noti;
-    const countNoti = value.data?.pushNotification.unseen_count;
-
-    AppEmitter.emit("updateNotification", {data, countNotification: countNoti});
-    notification.open({
-      message: data.title,
-      onClick: () => {
-        if (data?.link) {
-          router.push(data.link);
-          AppEmitter.emit("seenNotification", {data});
-        }
-
-      },
-      description: (
-        <div className={s.notificationItemToast}>
-          <img
-            className="mr-2"
-            src={data?.image ?? ""}
-            alt=""
-            onError={(e) => e.currentTarget.src = "/assets/P2E/raffles/defaultAvatar.jpg"}
-          />
-          <div>
-            <p dangerouslySetInnerHTML={{__html: data?.content}}/>
-          </div>
-        </div>
-      ),
-      placement: "bottomRight",
-    });
-  };
-
-
-  useEffect(() => {
-    if (id) {
-      const realTimeService = new RealtimeService(id);
-      realTimeService.subscriptionArena().then(res => {
-        res.subscribe({
-          next(value) {
-            subscribe(value);
-          }
-        })
-      });
-
-      realTimeService.subscriptionP2e().then(res => {
-        res.subscribe({
-          next(value) {
-            subscribe(value);
-          }
-        })
-      });
-    }
-  }, [id])
-
   return (
     <>
       <div className={`${s.pcMenu} bg-nav`}>
@@ -212,7 +159,7 @@ export default observer(function Header(props: Props) {
                       </div>
                       <div className={s.profileBalance}>
                         <div>
-                          {width > 1024 && <Notification/>}
+                          {width > 1024 && id && <Notification userId={id}/>}
                         </div>
                         {
                           !address ?
@@ -264,7 +211,7 @@ export default observer(function Header(props: Props) {
           {/* <InfiniteList /> */}
         </div>
       </div>
-      <MenuMobile balance={balance}/>
+      <MenuMobile id={id} balance={balance}/>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal/>}
       {LoginBoxStore.alertInAppModalVisible && <AlertInAppModal/>}
       <LoginModal />
