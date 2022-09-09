@@ -78,7 +78,7 @@ const InfiniteList = (
         endMessage={
           notifications.length === 0 ?
             <div className={s.loadMore}>
-              You don't have any notifications
+              You don&apos;t have any notifications
             </div> :
             <div className={s.loadMore}>
               Yay! You have seen it all
