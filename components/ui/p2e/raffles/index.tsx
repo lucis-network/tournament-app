@@ -123,7 +123,7 @@ const Raffles = () => {
           ) : ((getFeaturedRaffleError || !getFeaturedRaffleData?.spotlightRaffle) ? <Empty /> : (
             <div className={s.featuredRaffle}>
               <div className={s.featuredRaffleThumbnail}>
-                <Image src={getFeaturedRaffleData?.spotlightRaffle?.img as string} preview={false} alt="" />
+                <Image src={getFeaturedRaffleData?.spotlightRaffle?.img as string} preview={false} fallback={"/assets/P2E/raffles/defaultImage.jpg"} alt="" />
               </div>
               <div className={s.featuredRaffleInfo}>
                 <Link href={`/playcore/raffles/${getFeaturedRaffleData?.spotlightRaffle?.uid}`} passHref>
