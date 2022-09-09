@@ -1,0 +1,270 @@
+.rankingTableWrapper
+  :global(.ant-table)
+    background: none
+  :global(.ant-table-tbody)
+    position: relative
+    z-index: 1
+    tr
+      backdrop-filter: blur(40px)
+      &:nth-of-type(odd)
+        background: rgba(69, 80, 107, 0.5)
+      &:nth-of-type(even)
+        background: rgba(45, 52, 70, 0.5)
+      td
+        border: none
+        padding: 5px
+        height: 34px
+        @media screen and (min-width: 768px)
+          padding: 10px
+        @media screen and (min-width: 1200px)
+          padding: 15px
+  :global(.ant-table-thead)
+    position: relative
+    z-index: 2
+    @media screen and (max-width: 767px)
+      display: none
+    tr
+      z-index: 1
+      th
+        font-family: 'Revx Neue Demo'
+        font-weight: 600
+        font-size: 20px
+        line-height: 120%
+        letter-spacing: 0.04em
+        color: #DBE0E8
+        padding: 10px
+        text-align: center
+        border: none
+        position: sticky
+        top: 0
+        background: rgba(45, 52, 70, 0.5)
+        backdrop-filter: blur(40px)
+  :global(.ant-table-cell-row-hover)
+    background: none !important
+    @media screen and (min-width: 768px)
+      background: rgba(255, 255, 255, .3) !important
+
+  margin-top: -90px
+  @media screen and (max-width: 767px)
+    margin-top: -40px
+
+
+.rankingTableResponsive
+  min-width: 100%
+  min-width: 120px
+  max-height: 252px
+  overflow: auto
+  @media screen and (min-width: 768px)
+    max-height: 504px
+  &::-webkit-scrollbar
+    display: block
+    width: 3px
+    height: 2px
+    @media screen and (min-width: 768px)
+      width: 10px
+      height: 5px
+  &::-webkit-scrollbar-track
+    background: rgba(0, 249, 255, 0.1)
+    border-radius: 10px
+  &::-webkit-scrollbar-thumb
+    background: #00F9FF
+    border-radius: 10px
+
+.columnRank
+  min-width: 40px
+  width: 40px
+  @media screen and (min-width: 768px)
+    max-width: 100px
+  @media screen and (min-width: 1600px)
+    max-width: 180px
+    padding-left: 165px !important
+
+.columnName
+  min-width: 120px
+  width: 120px
+  @media screen and (min-width: 768px)
+    width: 150px
+  @media screen and (min-width: 1600px)
+    min-width: 300px
+    width: 300px
+
+.columnEarning
+  width: 60px
+  min-width: 60px
+  @media screen and (min-width: 1600px)
+    width: 120px
+    min-width: 120px
+
+.columnReward
+  min-width: 100px
+  width: 100px
+  @media screen and (min-width: 1600px)
+    padding-right: 165px !important
+
+.userRank
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column-reverse
+  @media screen and (min-width: 768px)
+    flex-direction: row
+
+  .userRankName
+    font-family: 'Lexend'
+    font-weight: 400
+    font-size: 10px
+    line-height: 120%
+    text-align: center
+    letter-spacing: 0.04em
+    color: #DBE0E8
+    @media screen and (min-width: 768px)
+      font-size: 16px
+    @media screen and (min-width: 1200px)
+      font-size: 24px
+    &:global(.top1)
+      color: #FFF500
+    &:global(.top2)
+      color: #00F0FF
+    &:global(.top3)
+      color: #00FF29
+
+    .rankNameText
+      @media screen and (max-width: 767px)
+        display: none
+
+.userWrap
+  display: flex
+  align-items: center
+  @media screen and (min-width: 768px)
+    justify-content: center
+
+  .userAvatar
+    margin-right: 32px
+    @media screen and (max-width: 767px)
+      display: none
+    &:global(.top1)
+      img
+        border: 1px solid #FFF500
+        box-shadow: 0 0 8px #FFF500
+    &:global(.top2)
+      img
+        border: 1px solid #00F0FF
+        box-shadow: 0 0 8px #00F0FF
+    &:global(.top3)
+      img
+        border: 1px solid #00FF29
+        box-shadow: 0 0 8px #00FF29
+    img
+      width: 44px
+      height: 44px
+      max-width: 44px
+      max-height: 44px
+      display: block
+      border-radius: 50%
+      border: 1px solid #DBE0E8
+      @media screen and (min-width: 1200px)
+        min-width: 64px
+        min-height: 64px
+        width: 64px
+        height: 64px
+
+  .userName
+    margin-right: 21px
+    width: calc(100% - 50px)
+    @media screen and (min-width: 768px)
+      width: calc(100% - 100px)
+    @media screen and (min-width: 992px)
+      width: calc(100% - 120px)
+    @media screen and (min-width: 1200px)
+      width: calc(100% - 150px)
+    a
+      font-family: 'Lexend'
+      font-weight: 400
+      font-size: 10px
+      line-height: 120%
+      letter-spacing: 0.04em
+      text-transform: capitalize
+      color: #DBE0E8
+    @media screen and (min-width: 768px)
+      a
+        font-size: 16px
+    @media screen and (min-width: 1200px)
+      a
+        font-size: 22px
+    &:global(.top1)
+      a
+        color: #FFF500
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.25)
+    &:global(.top2)
+      a
+        color: #00F0FF
+    &:global(.top3)
+      a
+        color: rgba(255, 212, 157, 0.9069)
+        text-shadow: 0 0 4px rgba(255, 255, 255, 0.25)
+
+.userValue
+  font-family: 'Lexend'
+  font-weight: 300
+  font-size: 10px
+  line-height: 120%
+  letter-spacing: 0.04em
+  color: #DBE0E8
+  @media screen and (min-width: 768px)
+    font-size: 16px
+  @media screen and (min-width: 1200px)
+    font-size: 20px
+
+.userReward
+  display: flex
+  gap: 10px
+  font-family: 'Lexend'
+  font-weight: 500
+  font-size: 8px
+  line-height: 120%
+  letter-spacing: 0.04em
+  @media screen and (min-width: 768px)
+    font-size: 16px
+    justify-content: center
+    gap: 20px
+  @media screen and (min-width: 1600px)
+    font-size: 20px
+
+  .rewardPoint
+    color: #DF9B16
+
+  .rewardToken
+    color: #12B0B4
+
+  .rewardChest
+    width: 28px
+
+    @media screen and (min-width: 768px)
+      width: 50px
+
+    @media screen and (min-width: 1200px)
+      width: 60px
+
+
+  div
+    display: flex
+    align-items: center
+    img
+      margin-left: 4px
+      width: 10px
+      height: 10px
+      box-shadow: 0 0 4.5px rgba(11, 235, 214, 0.5)
+      border-radius: 50%
+      @media screen and (min-width: 768px)
+        width: 16px
+        height: 16px
+      @media screen and (min-width: 1200px)
+        width: 24px
+        height: 24px
+      @media screen and (min-width: 1600px)
+        margin-left: 10px
+
+.userEarning
+  display: flex
+  align-items: center
+  justify-content: flex-start

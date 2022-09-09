@@ -1,0 +1,154 @@
+.top
+  transform-style: preserve-3d
+  perspective: 1000px
+  margin-top: 100px
+  @media screen and (min-width: 768px)
+    margin-top: 0
+
+.top_players
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 28px
+  position: relative
+  top: -96px
+  @media screen and (min-width: 768px)
+    top: -80px
+
+.top_player
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+  position: relative
+
+.player_top1
+  left: -6px
+  @media screen and (min-width: 575px)
+    left: -18px
+  @media screen and (min-width: 768px)
+    left: 0
+  
+
+.player_top2
+  order: -1
+  top: 86px
+  @media screen and (min-width: 414px)
+    top: 104px
+  @media screen and (min-width: 575px)
+    top: 120px
+  @media screen and (min-width: 768px)
+    top: 145px
+    left: 20px
+
+.player_top3
+  top: 100px
+  right: 20px
+  @media screen and (min-width: 414px)
+    top: 120px
+    right: 22px
+  @media screen and (min-width: 575px)
+    top: 160px
+    right: 24px
+  @media screen and (min-width: 768px)
+    top: 198px
+    right: 26px
+  @media screen and (min-width: 992px)
+    right: 12px
+
+.player_name
+  font-family: 'Lexend'
+  color: #fff
+  font-weight: 600
+  font-size: 14px
+  line-height: 110%
+  letter-spacing: 0.4%
+  display: block
+  text-align: center
+  overflow: hidden
+  white-space: nowrap
+  text-overflow: ellipsis
+  width: 110px
+  max-width: 110px
+
+  @media screen and (min-width: 768px)
+    font-size: 24px
+    width: 214px
+    max-width: 214px
+
+.top_platform
+  display: block
+  margin-top: -100px
+  transform: translateX(-10px) translateZ(-100px) scale(1.1)
+
+  @media screen and (min-width: 768px)
+    transform: translateZ(-100px)
+
+.top_mission
+  color: #FFDE9D
+  font-size: 12px
+  line-height: 13px
+  letter-spacing: 0.4%
+  font-family: 'Revx Neue Demo'
+  margin: 12px 0 6px 0
+
+  @media screen and (min-width: 768px)
+    font-size: 16px
+    line-height: 18px
+    margin-bottom: 4px
+
+.top_mission_top1
+  font-size: 14px
+  line-height: 15px
+
+  @media screen and (min-width: 768px)
+    font-size: 18px
+    line-height: 20px
+
+.top_reward
+  display: flex
+  gap: 11px
+  margin-bottom: 28px
+
+.top_reward_fix
+  margin-bottom: 11px
+
+.reward_point
+  color: #DF9B16
+  font-family: 'Lexend'
+  font-weight: 300
+  font-size: 8px
+  line-height: 125%
+
+  @media screen and (min-width: 768px)
+    font-size: 14px
+    line-height: 18px
+
+.reward_token
+  color: #12B0B4
+  font-family: 'Lexend'
+  font-weight: 300
+  font-size: 8px
+  line-height: 125%
+
+  @media screen and (min-width: 768px)
+    font-size: 14px
+    line-height: 18px
+
+.reward_point_icon
+  background: linear-gradient(99.92deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
+  box-shadow: 0px 0px 8.1px rgba(11, 235, 214, 0.5)
+  backdrop-filter: blur(15px)
+  border-radius: 50%
+  width: 10px
+  @media screen and (min-width: 575px)
+    width: 18px
+
+.reward_token_icon
+  background: linear-gradient(99.92deg, rgba(205, 40, 232, 0.2) 0%, rgba(11, 235, 214, 0.2) 100%)
+  box-shadow: 0px 0px 8.1px rgba(11, 235, 214, 0.5)
+  backdrop-filter: blur(15px)
+  border-radius: 50%
+  width: 10px
+  @media screen and (min-width: 575px)
+    width: 18px

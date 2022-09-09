@@ -4,10 +4,12 @@ import {
 	bracketValues,
 	OrderType,
 	orderValues,
-	Participants,
+	Participants, StatusGameType,
 } from "utils/Enum";
-import { FilterGame } from "hooks/home/useHomePage";
+import {FilterGame, useHomePage} from "hooks/home/useHomePage";
 import Order from "components/ui/common/Order";
+import Search from "antd/lib/input/Search";
+import {useEffect, useMemo, useState} from "react";
 
 const { Option } = Select;
 
@@ -16,6 +18,7 @@ interface ButtonSort {
 	gameData: any[];
 	onFilter: (type: keyof FilterGame, value: string) => void;
 	onOrder: (value: OrderType) => void;
+	listTabs: StatusGameType[];
 }
 
 export default function ButtonSort({
@@ -23,90 +26,15 @@ export default function ButtonSort({
 	gameData,
 	onFilter,
 	onOrder,
+	listTabs
 }: ButtonSort) {
 	const handleChange = (type: keyof FilterGame) => (value: string) => {
 		onFilter(type, value?.toString() || "");
 	};
-
 	return (
-		<div className={s.container}>
-			<div className={`${s.item} mb-6`}>
-				<div className={`w-24 ${s.ic} mb-4`}>
-					<img src="/assets/home/ic_filter.svg" alt="" />
-					Filter
-				</div>
-				<div className="flex items-center flex-wrap justify-between w-full">
-					<Select
-						onChange={handleChange("game_uid")}
-						allowClear
-						placeholder="Game"
-						className="w-[165px]"
-					>
-						{gameData?.map((item) => (
-							<Option key={item.uid} value={item.uid}>
-								{item.name}
-							</Option>
-						))}
-					</Select>
-					<Select
-						onChange={handleChange("bracket")}
-						allowClear
-						placeholder="Bracket Type"
-						className={`w-[165px] ${s.item_bracket}`}
-					>
-						{bracketValues.map((item) => (
-							<Option key={item.key} value={item.key}>
-								{item.value}
-							</Option>
-						))}
-					</Select>
-					<Select
-						onChange={handleChange("size")}
-						allowClear
-						placeholder="Size"
-						className="w-20"
-					>
-						{Participants.map((item, i) => (
-							<Option key={i} value={item}>
-								{item}
-							</Option>
-						))}
-					</Select>
-				</div>
-			</div>
-			<div className={s.item}>
-				<div className={`w-24 ${s.ic} ${s.ic_sort} mb-4`}>
-					<img src="/assets/home/ic_sort.svg" alt="" />
-					Sort
-				</div>
-				{/* <div>
-					<Select
-						defaultValue="Prize pool"
-						style={{ width: 120 }}
-						onChange={handleChange}
-						onClick={() => handleCheckType("prize_pool")}
-					>
-						{orderValues.map((item) => (
-							<Option key={item.key} value={item.key}>
-								{item.value}
-							</Option>
-						))}
-					</Select>
-					<Select
-						defaultValue="Time"
-						style={{ width: 120 }}
-						onChange={handleChange}
-						onClick={() => handleCheckType("time")}
-					>
-						{orderValues.map((item) => (
-							<Option key={item.key} value={item.key}>
-								{item.value}
-							</Option>
-						))}
-					</Select>
-				</div> */}
-				<div className="flex items-center align-middle justify-between w-full cursor-pointer">
-					<div className={`mr-4 w-[165px] ${s.m}`}>
+		<div className={`lucis-container-2 ${s.container} `}>
+				<div className={s.rightGroupItem}>
+					<div className={s.prizepool}>
 						<Order
 							title="Prize pool"
 							id="prize_pool"
@@ -114,7 +42,7 @@ export default function ButtonSort({
 							onClick={onOrder}
 						/>
 					</div>
-					<div className={`${s.m} ${s.m_time}`}>
+					<div className={s.time}>
 						<Order
 							id="time"
 							title="Time"
@@ -122,8 +50,67 @@ export default function ButtonSort({
 							onClick={onOrder}
 						/>
 					</div>
+					<div className={`${s.game_uid}`}>
+						<Select
+							onChange={handleChange("game_uid")}
+							allowClear
+							placeholder="Game"
+						>
+							{gameData?.map((item) => (
+								<Option key={item.uid} value={item.uid}>
+									{item.name}
+								</Option>
+							))}
+						</Select>
+					</div>
+					<div className={`${s.item_bracket}`}>
+						<Select
+							onChange={handleChange("bracket")}
+							allowClear
+							placeholder="Bracket Type"
+						>
+							{bracketValues.map((item) => (
+								<Option key={item.key} value={item.key}>
+									{item.value}
+								</Option>
+							))}
+						</Select>
+					</div>
+					<div className={s.rightTeamSize}>
+						<Select
+							onChange={handleChange("size")}
+							allowClear
+							placeholder="Size"
+						>
+							{Participants.map((item, i) => (
+								<Option key={i} value={item}>
+									{item}
+								</Option>
+							))}
+						</Select>
+					</div>
+					<div className={s.selectType}>
+						<Select
+							onChange={handleChange("type")}
+							allowClear={false}
+							value={filter.type}
+						>
+							{listTabs.map((item, i) => (
+								<Option key={i} value={item}>
+									{item}
+								</Option>
+							))}
+						</Select>
+					</div>
+					<div className={s.container_search}>
+						<Search
+							className={s.search}
+							placeholder="Name Of Tournament"
+							value={filter.search}
+							onChange={(e) => onFilter("search", e.target.value)}
+						/>
+					</div>
 				</div>
-			</div>
 		</div>
 	);
 }

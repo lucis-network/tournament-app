@@ -5,15 +5,23 @@ import TabHome from 'components/ui/tournament/home/tabs'
 import PlayerHome from "components/ui/tournament/home/player"
 import type { NextPage } from 'next'
 import s from "./ArenaHome.module.sass"
+import CreateTournament from 'components/ui/tournament/home/createYourTournament'
+import { useRankingSeason } from "../../hooks/ranking/useTopRanking";
+import { StatusSeason } from "../../src/generated/graphql_p2e";
+import TopSponsors from "../../components/ui/tournament/home/topSponsors";
 
 const TournamentHome: NextPage = () => {
+  const {dataRankingSeason} = useRankingSeason();
+  const seasonId = dataRankingSeason?.getRankingSeasons?.filter(season => season.status === StatusSeason.Active)[0]?.uid
   return (
     <div>
       <DocHead />
-      <main style={{minHeight: "100vh"}} className={s.arenaHomeWrapper}>
+      <main className={s.arenaHomeWrapper}>
         <BannerPage />
         <TabHome />
-        <PlayerHome />
+        <CreateTournament />
+        <PlayerHome seasonId={seasonId} />
+        <TopSponsors />
       </main>
       <Footer />
     </div>
