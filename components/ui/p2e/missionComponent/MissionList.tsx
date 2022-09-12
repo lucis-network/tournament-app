@@ -1,12 +1,12 @@
-import React, { useState } from 'react'
+import React, {useState} from 'react'
 import s from "./mission.module.sass";
-import { Row, Col, Skeleton } from "antd";
+import {Row, Col, Skeleton} from "antd";
 import SpinLoading from "../../common/Spin";
-import { PlayerMission } from "../../../../src/generated/graphql_p2e";
-import { isEmpty } from 'lodash';
+import {PlayerMission} from "../../../../src/generated/graphql_p2e";
+import {isEmpty} from 'lodash';
 import MissionItem from './MissionItem';
-import { Game } from 'utils/Enum';
-import { SkeletonItem } from './SkeletonItem';
+import {Game} from 'utils/Enum';
+import {SkeletonItem} from './SkeletonItem';
 
 type MissionsListProp = {
   title?: string;
@@ -22,17 +22,17 @@ type MissionsListProp = {
 };
 
 const MissionList = ({
-  title,
-  missions,
-  handleUpdateMissions,
-  handleUpdateStatistic,
-  onClaimBox,
-  loading,
-  loadingUpdate,
-  isClaimBox,
-  currentGame,
-  isDailyMission
-}: MissionsListProp) => {
+                       title,
+                       missions,
+                       handleUpdateMissions,
+                       handleUpdateStatistic,
+                       onClaimBox,
+                       loading,
+                       loadingUpdate,
+                       isClaimBox,
+                       currentGame,
+                       isDailyMission
+                     }: MissionsListProp) => {
   const [loadingOpenBox, setLoadingOpenBox] = useState(false);
   const boxOpen = missions?.[0]?.is_claim
     && missions?.[1]?.is_claim
@@ -66,13 +66,14 @@ const MissionList = ({
               return (
                 <div className={s.checkListMissionItem} key={index}>
                   {currentGame === Game.LOL ?
-                    <img className={s.csgoImage} src="/assets/P2E/lol-game.svg" alt="lol-checklist-mission" />
-                    : <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png" alt="csgo-checklist-mission" />
+                    <img className={s.csgoImage} src="/assets/P2E/lol-game.svg" alt="lol-checklist-mission"/>
+                    : <img className={s.csgoImage} src="/assets/P2E/csgo/csgo-checklist-mission.png"
+                           alt="csgo-checklist-mission"/>
                   }
 
                   {item
-                    ? <img src="/assets/P2E/checkbox-active.svg" />
-                    : <img src="/assets/P2E/checkbox-default.svg" />}
+                    ? <img src="/assets/P2E/checkbox-active.svg"/>
+                    : <img src="/assets/P2E/checkbox-default.svg"/>}
                 </div>
               );
             })}
@@ -83,22 +84,23 @@ const MissionList = ({
               <img src={
                 isClaimBox ?
                   "/assets/P2E/box-open.png"
-                  : "/assets/P2E/box-normal.png"
+                  : (!boxOpen && lengthMissionDone < 4 ? "/assets/P2E/box.png"
+                    : "/assets/P2E/box-normal.png")
               }
-                style={
-                  !boxOpen && lengthMissionDone < 4 ? { filter: "grayscale(100%)", cursor: "no-drop" }
-                    : isClaimBox ? { cursor: "auto" } : {}
+                   style={
+                     !boxOpen && lengthMissionDone < 4 ? {cursor: "no-drop"} :
+                       isClaimBox ? {cursor: "auto"} : {}
+                   }
+                   alt="" onClick={async () => {
+                if (!boxOpen && lengthMissionDone < 4 || isClaimBox || loadingOpenBox) {
+                  return;
                 }
-                alt="" onClick={async () => {
-                  if (!boxOpen && lengthMissionDone < 4 || isClaimBox || loadingOpenBox) {
-                    return;
-                  }
-                  setLoadingOpenBox(true);
-                  if (onClaimBox) {
-                    await onClaimBox();
-                  }
-                  setLoadingOpenBox(false);
-                }} />
+                setLoadingOpenBox(true);
+                if (onClaimBox) {
+                  await onClaimBox();
+                }
+                setLoadingOpenBox(false);
+              }}/>
             </div>
 
           </Col>
@@ -111,8 +113,8 @@ const MissionList = ({
         </p>
         <div className={s.updateButton} onClick={() => clickUpdateButton()}>
           <img src="/assets/P2E/reload-icon.png"
-            alt=""
-            className={loadingUpdate ? `${s.spinner}` : ""} />
+               alt=""
+               className={loadingUpdate ? `${s.spinner}` : ""}/>
           Update
         </div>
       </div>
@@ -120,7 +122,7 @@ const MissionList = ({
         {loading ? (
           [1, 2, 3, 4].map(item => {
             return (
-              <SkeletonItem key={item} />
+              <SkeletonItem key={item}/>
             )
           })
         ) : (
@@ -133,7 +135,7 @@ const MissionList = ({
                 mission={mission}
                 key={`${mission?.mission?.game_uid}-${index}`}
                 handleUpdateMission={async () => await handleUpdateMissions(false, false)}
-                handleUpdateStatistic={() =>  handleUpdateStatistic()} />;
+                handleUpdateStatistic={() => handleUpdateStatistic()}/>;
             })
         )}
       </div>

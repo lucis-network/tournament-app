@@ -773,8 +773,25 @@ div {
   color: white !important;
 }
 
+@media (max-width: 768px) {
+  .ant-notification-notice {
+    padding: 8px 12px !important;
+  }
+}
+
+.ant-badge-multiple-words {
+  padding: 0px 4px !important;
+}
+
 .ant-notification-notice-message {
   color: #fff !important;
+  font-weight: 700 !important;
+}
+
+@media (max-width: 768px) {
+  .ant-notification-notice-message {
+    font-size: 14px !important;
+  }
 }
 
 .anticon-close {

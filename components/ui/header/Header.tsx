@@ -7,7 +7,7 @@ import AuthStore from "components/Auth/AuthStore";
 import User from "components/Auth/components/User";
 import {observer} from "mobx-react-lite";
 import {useWindowSize} from "hooks/useWindowSize";
-import {Button, Col, notification, Row} from "antd";
+import {Col, notification, Row} from "antd";
 import SignupInfoModal from "../../Auth/Login/SignupInfoModal"
 import {isEmpty} from "lodash";
 import LoginBoxStore from "../../Auth/Login/LoginBoxStore";
@@ -29,6 +29,10 @@ import {RealtimeService} from "../../service/RealtimeService";
 type Props = {
   handleMenuOpen: Function;
 };
+
+let arenaSub: any = null;
+let playcoreSub: any = null;
+let adminSub: any = null;
 
 export default observer(function Header(props: Props) {
   const router = useRouter();
@@ -85,6 +89,79 @@ export default observer(function Header(props: Props) {
       listener.remove();
     };
   }, [])
+
+  const displayNotification = (value: any) => {
+    const data = value.data?.pushNotification.new_noti;
+    const countNoti = value.data?.pushNotification.unseen_count;
+
+    AppEmitter.emit("updateNotification", {data, countNotification: countNoti});
+    notification.open({
+      message: data.title,
+      onClick: () => {
+        if (data?.link) {
+          router.push(data.link);
+          AppEmitter.emit("seenNotification", {data});
+        }
+
+      },
+      description: (
+        <div className={s.notificationItemToast}>
+          <img
+            className="mr-2"
+            src={data?.image ?? ""}
+            alt=""
+            onError={(e) => e.currentTarget.src = "/assets/P2E/raffles/defaultAvatar.jpg"}
+          />
+          <div>
+            <p dangerouslySetInnerHTML={{__html: data?.content}}/>
+          </div>
+        </div>
+      ),
+      placement: "bottomRight",
+    });
+  };
+
+
+  useEffect(() => {
+    console.log(id)
+    if (id) {
+      const realTimeService = new RealtimeService(id);
+      realTimeService.subscriptionArena().then(res => {
+        arenaSub = res.subscribe({
+          next(value) {
+            displayNotification(value);
+          }
+        })
+      });
+
+      realTimeService.subscriptionP2e().then(res => {
+        playcoreSub = res.subscribe({
+          next(value) {
+            displayNotification(value);
+          }
+        })
+      });
+
+      realTimeService.subscriptionAdmin().then(res => {
+        adminSub = res.subscribe({
+          next(value) {
+            displayNotification(value);
+          }
+        });
+      });
+    } else {
+      // unsubscribe wss
+      adminSub && adminSub.unsubscribe();
+      arenaSub && arenaSub.unsubscribe();
+      playcoreSub && playcoreSub.unsubscribe();
+    }
+
+    return () => {
+      adminSub?.unsubscribe();
+      arenaSub?.unsubscribe();
+      playcoreSub?.unsubscribe();
+    };
+  }, [id]);
 
 
   const animatedNumber = (value: any, decimal: number = 0) => {
