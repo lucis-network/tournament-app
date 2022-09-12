@@ -52,7 +52,7 @@ export default observer(function MyProfile() {
 	})
 	const router = useRouter();
 	const currentPage = router.query?.page ?? ''
-	const allowedPages = ['', 'teams', 'tournaments', 'edit', 'refer', 'inventory']
+	const allowedPages = ['', 'teams', 'tournaments', 'edit', 'refer', 'inventory', 'nfts']
 	useEffect(() => {
 		if (!AuthStore.isLoggedIn) {
 			router.push('/')
@@ -76,11 +76,11 @@ export default observer(function MyProfile() {
 	} else if (isEmpty(getUserProfileData?.getUserProfile) || !allowedPages.includes(currentPage as string)) {
 		return (
 			<>
-				<Head>
-					<meta name="robots" content="noindex" />
-					<title>404 | This page could not be found.</title>
-				</Head>
-				<DefaultErrorPage statusCode={404} />
+				{/*<Head>*/}
+				{/*	<meta name="robots" content="noindex" />*/}
+				{/*	<title>404 | This page could not be found.</title>*/}
+				{/*</Head>*/}
+				{/*<DefaultErrorPage statusCode={404} />*/}
 			</>
 		)
 	}

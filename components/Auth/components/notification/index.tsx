@@ -112,7 +112,7 @@ const Notification = ({ userId }: IProps) => {
   }, [])
 
 
-  const subscribe = (value: any) => {
+  const displayNotification = (value: any) => {
     const data = value.data?.pushNotification.new_noti;
     const countNoti = value.data?.pushNotification.unseen_count;
 
@@ -149,7 +149,7 @@ const Notification = ({ userId }: IProps) => {
     realTimeService.subscriptionArena().then(res => {
       res.subscribe({
         next(value) {
-          subscribe(value);
+          displayNotification(value);
         }
       })
     });
@@ -157,18 +157,18 @@ const Notification = ({ userId }: IProps) => {
     realTimeService.subscriptionP2e().then(res => {
       res.subscribe({
         next(value) {
-          subscribe(value);
+          displayNotification(value);
         }
       })
     });
 
-    // realTimeService.subscriptionAdmin().then(res => {
-    //   res.subscribe({
-    //     next(value) {
-    //       subscribe(value);
-    //     }
-    //   })
-    // });
+    realTimeService.subscriptionAdmin().then(res => {
+      res.subscribe({
+        next(value) {
+          displayNotification(value);
+        }
+      })
+    });
 
   }, [])
 

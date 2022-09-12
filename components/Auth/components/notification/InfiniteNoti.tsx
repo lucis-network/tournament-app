@@ -70,10 +70,10 @@ const InfiniteList = (
         height={560}
         dataLength={notifications.length}
         loader={
-          <div className={s.loadMore}>
-            Load more
-            <span className="ml-2"><Spin size="small"/></span>
-          </div>
+            notifications.length > 5 ? <div className={s.loadMore}>
+              Load more
+              <span className="ml-2"><Spin size="small"/></span>
+            </div> : null
         }
         endMessage={
           notifications.length === 0 ?
@@ -92,7 +92,7 @@ const InfiniteList = (
               <div className={`${s.option} ${unseenNotificationCount == 0 ? s.notificationSeenAll : ""}`}
                    onClick={() => onMarkAllNotificationAsSeen()}>
                 Mark all as read {loadingMarkAllAsRead &&
-                  <span className="ml-2"><Spin size="small"/></span>}</div>
+                <span className="ml-2"><Spin size="small"/></span>}</div>
             </div>
           </List.Item>
           {notifications.map((item: Notification, idx: number) => {
