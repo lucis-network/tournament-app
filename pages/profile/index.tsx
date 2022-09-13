@@ -76,11 +76,11 @@ export default observer(function MyProfile() {
 	} else if (isEmpty(getUserProfileData?.getUserProfile) || !allowedPages.includes(currentPage as string)) {
 		return (
 			<>
-				{/*<Head>*/}
-				{/*	<meta name="robots" content="noindex" />*/}
-				{/*	<title>404 | This page could not be found.</title>*/}
-				{/*</Head>*/}
-				{/*<DefaultErrorPage statusCode={404} />*/}
+				<Head>
+					<meta name="robots" content="noindex" />
+					<title>404 | This page could not be found.</title>
+				</Head>
+				<DefaultErrorPage statusCode={404} />
 			</>
 		)
 	}
@@ -99,6 +99,10 @@ export default observer(function MyProfile() {
 
 	return (
 		<div className={s.wrapper_profile}>
+			<Head>
+				<meta name="robots" content="noindex" />
+				<title>Profile</title>
+			</Head>
 			{/* Content */}
 			<InfoMyProfile click={handleEditClick} userInfo={localUserInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner isShowEdit={page === 'edit'} />
 			<div className="lucis-container">
