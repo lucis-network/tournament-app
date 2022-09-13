@@ -55,7 +55,7 @@ const InfiniteList = (
     setLoadingMarkAllAsRead(true);
     try {
       await markAllNotificationAsSeen();
-      setNotifications(notifications.map(item => ({...item, is_seen: true})));
+      // setNotifications(notifications.map(item => ({...item, is_seen: true})));
     } catch (e) {
 
     }

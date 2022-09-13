@@ -69,6 +69,7 @@ const Notification = ({ userId }: IProps) => {
 
   const markAllNotificationAsSeen = async () => {
     await markAllNotisAsSeen();
+    setNotiList(notiList.map(item => ({...item, is_seen: true})));
     setCountNoti(0);
   }
 
