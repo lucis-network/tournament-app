@@ -1532,6 +1532,7 @@ export type GTournament = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -1680,6 +1681,63 @@ export type GameCreateWithoutTournamentsInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type GameGiftCard = {
+  __typename?: 'GameGiftCard';
+  code: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  is_used?: Maybe<Scalars['Boolean']>;
+  platform: Platform;
+  platform_id: Scalars['Int'];
+  reference?: Maybe<Scalars['String']>;
+  reference_desc?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardCreateManyPlatformInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  reference?: InputMaybe<Scalars['String']>;
+  reference_desc?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardCreateManyPlatformInputEnvelope = {
+  data: Array<GameGiftCardCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GameGiftCardCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<GameGiftCardWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<GameGiftCardCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<GameGiftCardCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<GameGiftCardCreateManyPlatformInputEnvelope>;
+};
+
+export type GameGiftCardCreateOrConnectWithoutPlatformInput = {
+  create: GameGiftCardCreateWithoutPlatformInput;
+  where: GameGiftCardWhereUniqueInput;
+};
+
+export type GameGiftCardCreateWithoutPlatformInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  reference?: InputMaybe<Scalars['String']>;
+  reference_desc?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
+};
+
 export type GamePlatform = {
   __typename?: 'GamePlatform';
   _count: GamePlatformCount;
@@ -1779,6 +1837,11 @@ export type GetRefereeInput = {
   name?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Int']>;
 };
+
+export enum InGamePrizeType {
+  GiftCard = 'GiftCard',
+  Skin = 'Skin'
+}
 
 export enum ItemGroup {
   Csgo = 'Csgo',
@@ -2321,6 +2384,7 @@ export type Member = {
   avatar?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   is_leader?: Maybe<Scalars['Boolean']>;
+  is_valid?: Maybe<Scalars['Boolean']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -2921,8 +2985,10 @@ export type Platform = {
   accounts?: Maybe<Array<PlatformAccount>>;
   created_at: Scalars['DateTime'];
   game?: Maybe<Array<GamePlatform>>;
+  gift_cards?: Maybe<Array<GameGiftCard>>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  prize_categories?: Maybe<Array<PrizeCategory>>;
   updated_at: Scalars['DateTime'];
 };
 
@@ -3071,6 +3137,8 @@ export type PlatformCount = {
   __typename?: 'PlatformCount';
   accounts: Scalars['Int'];
   game: Scalars['Int'];
+  gift_cards: Scalars['Int'];
+  prize_categories: Scalars['Int'];
 };
 
 export type PlatformCreateNestedOneWithoutAccountsInput = {
@@ -3085,6 +3153,12 @@ export type PlatformCreateNestedOneWithoutGameInput = {
   create?: InputMaybe<PlatformCreateWithoutGameInput>;
 };
 
+export type PlatformCreateNestedOneWithoutPrize_CategoriesInput = {
+  connect?: InputMaybe<PlatformWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlatformCreateOrConnectWithoutPrize_CategoriesInput>;
+  create?: InputMaybe<PlatformCreateWithoutPrize_CategoriesInput>;
+};
+
 export type PlatformCreateOrConnectWithoutAccountsInput = {
   create: PlatformCreateWithoutAccountsInput;
   where: PlatformWhereUniqueInput;
@@ -3095,16 +3169,34 @@ export type PlatformCreateOrConnectWithoutGameInput = {
   where: PlatformWhereUniqueInput;
 };
 
+export type PlatformCreateOrConnectWithoutPrize_CategoriesInput = {
+  create: PlatformCreateWithoutPrize_CategoriesInput;
+  where: PlatformWhereUniqueInput;
+};
+
 export type PlatformCreateWithoutAccountsInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   game?: InputMaybe<GamePlatformCreateNestedManyWithoutPlatformInput>;
+  gift_cards?: InputMaybe<GameGiftCardCreateNestedManyWithoutPlatformInput>;
   name: Scalars['String'];
+  prize_categories?: InputMaybe<PrizeCategoryCreateNestedManyWithoutPlatformInput>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type PlatformCreateWithoutGameInput = {
   accounts?: InputMaybe<PlatformAccountCreateNestedManyWithoutPlatformInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  gift_cards?: InputMaybe<GameGiftCardCreateNestedManyWithoutPlatformInput>;
+  name: Scalars['String'];
+  prize_categories?: InputMaybe<PrizeCategoryCreateNestedManyWithoutPlatformInput>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlatformCreateWithoutPrize_CategoriesInput = {
+  accounts?: InputMaybe<PlatformAccountCreateNestedManyWithoutPlatformInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game?: InputMaybe<GamePlatformCreateNestedManyWithoutPlatformInput>;
+  gift_cards?: InputMaybe<GameGiftCardCreateNestedManyWithoutPlatformInput>;
   name: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3891,8 +3983,11 @@ export type PrizeCategory = {
   currency_type?: Maybe<CurrrencyType>;
   currency_uid?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  in_game_prize_type?: Maybe<InGamePrizeType>;
   item_group?: Maybe<ItemGroup>;
   piece_group?: Maybe<Scalars['String']>;
+  platform?: Maybe<Platform>;
+  platform_id?: Maybe<Scalars['Int']>;
   prize?: Maybe<Array<LuckyChestPrize>>;
   prize_type?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
@@ -3907,8 +4002,10 @@ export type PrizeCategoryCreateManyCurrencyInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_type?: InputMaybe<CurrrencyType>;
   id?: InputMaybe<Scalars['Int']>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
   item_group?: InputMaybe<ItemGroup>;
   piece_group?: InputMaybe<Scalars['String']>;
+  platform_id?: InputMaybe<Scalars['Int']>;
   prize_type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3918,11 +4015,35 @@ export type PrizeCategoryCreateManyCurrencyInputEnvelope = {
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type PrizeCategoryCreateManyPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency_type?: InputMaybe<CurrrencyType>;
+  currency_uid?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
+  item_group?: InputMaybe<ItemGroup>;
+  piece_group?: InputMaybe<Scalars['String']>;
+  prize_type?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PrizeCategoryCreateManyPlatformInputEnvelope = {
+  data: Array<PrizeCategoryCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type PrizeCategoryCreateNestedManyWithoutCurrencyInput = {
   connect?: InputMaybe<Array<PrizeCategoryWhereUniqueInput>>;
   connectOrCreate?: InputMaybe<Array<PrizeCategoryCreateOrConnectWithoutCurrencyInput>>;
   create?: InputMaybe<Array<PrizeCategoryCreateWithoutCurrencyInput>>;
   createMany?: InputMaybe<PrizeCategoryCreateManyCurrencyInputEnvelope>;
+};
+
+export type PrizeCategoryCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<PrizeCategoryWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PrizeCategoryCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<PrizeCategoryCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<PrizeCategoryCreateManyPlatformInputEnvelope>;
 };
 
 export type PrizeCategoryCreateNestedOneWithoutPrizeInput = {
@@ -3936,6 +4057,11 @@ export type PrizeCategoryCreateOrConnectWithoutCurrencyInput = {
   where: PrizeCategoryWhereUniqueInput;
 };
 
+export type PrizeCategoryCreateOrConnectWithoutPlatformInput = {
+  create: PrizeCategoryCreateWithoutPlatformInput;
+  where: PrizeCategoryWhereUniqueInput;
+};
+
 export type PrizeCategoryCreateOrConnectWithoutPrizeInput = {
   create: PrizeCategoryCreateWithoutPrizeInput;
   where: PrizeCategoryWhereUniqueInput;
@@ -3944,6 +4070,20 @@ export type PrizeCategoryCreateOrConnectWithoutPrizeInput = {
 export type PrizeCategoryCreateWithoutCurrencyInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_type?: InputMaybe<CurrrencyType>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
+  item_group?: InputMaybe<ItemGroup>;
+  piece_group?: InputMaybe<Scalars['String']>;
+  platform?: InputMaybe<PlatformCreateNestedOneWithoutPrize_CategoriesInput>;
+  prize?: InputMaybe<LuckyChestPrizeCreateNestedManyWithoutCategoryInput>;
+  prize_type?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PrizeCategoryCreateWithoutPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<CurrencyCreateNestedOneWithoutPrize_CategoryInput>;
+  currency_type?: InputMaybe<CurrrencyType>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
   item_group?: InputMaybe<ItemGroup>;
   piece_group?: InputMaybe<Scalars['String']>;
   prize?: InputMaybe<LuckyChestPrizeCreateNestedManyWithoutCategoryInput>;
@@ -3955,8 +4095,10 @@ export type PrizeCategoryCreateWithoutPrizeInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency?: InputMaybe<CurrencyCreateNestedOneWithoutPrize_CategoryInput>;
   currency_type?: InputMaybe<CurrrencyType>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
   item_group?: InputMaybe<ItemGroup>;
   piece_group?: InputMaybe<Scalars['String']>;
+  platform?: InputMaybe<PlatformCreateNestedOneWithoutPrize_CategoriesInput>;
   prize_type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -4049,6 +4191,7 @@ export type Query = {
   getUserProfile?: Maybe<UserGraphql>;
   isCheckInTournament?: Maybe<Scalars['Boolean']>;
   isConfirmTournamentResult?: Maybe<Scalars['Boolean']>;
+  isConnectGame?: Maybe<Scalars['Boolean']>;
   isJoinedTournament?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
@@ -4112,6 +4255,7 @@ export type QueryGetJoinedTournamentArgs = {
 
 
 export type QueryGetMyTeamArgs = {
+  tournament_uid: Scalars['String'];
   user_id: Scalars['String'];
 };
 
@@ -4214,6 +4358,11 @@ export type QueryIsCheckInTournamentArgs = {
 
 
 export type QueryIsConfirmTournamentResultArgs = {
+  tournament_uid: Scalars['String'];
+};
+
+
+export type QueryIsConnectGameArgs = {
   tournament_uid: Scalars['String'];
 };
 
@@ -5035,6 +5184,7 @@ export type TTournament = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -5332,6 +5482,7 @@ export type Tournament = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -5385,6 +5536,7 @@ export type TournamentCreateInputGql = {
   prize_allocation: Array<PrizeAllocation>;
   referees?: InputMaybe<Array<Scalars['Int']>>;
   regions?: InputMaybe<Array<Scalars['String']>>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rounds: Array<BracketRoundCreateInputGql>;
   rules?: InputMaybe<Scalars['String']>;
   sponsor_slots: Array<SponsorSlotCreateInputGql>;
@@ -5414,6 +5566,7 @@ export type TournamentCreateManyCurrencyInput = {
   prize_allocation: Scalars['JSON'];
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -5447,6 +5600,7 @@ export type TournamentCreateManyGameInput = {
   prize_allocation: Scalars['JSON'];
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -5481,6 +5635,7 @@ export type TournamentCreateManyUserInput = {
   prize_allocation: Scalars['JSON'];
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -5646,6 +5801,7 @@ export type TournamentCreateWithoutBracketsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5687,6 +5843,7 @@ export type TournamentCreateWithoutClaim_TransactionsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5728,6 +5885,7 @@ export type TournamentCreateWithoutCurrencyInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5769,6 +5927,7 @@ export type TournamentCreateWithoutDonate_TransactionsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5810,6 +5969,7 @@ export type TournamentCreateWithoutGameInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5851,6 +6011,7 @@ export type TournamentCreateWithoutLeader_BoardInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5892,6 +6053,7 @@ export type TournamentCreateWithoutPlayTeamsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5933,6 +6095,7 @@ export type TournamentCreateWithoutReactionInput = {
   ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5975,6 +6138,7 @@ export type TournamentCreateWithoutSponsorSlotInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -6016,6 +6180,7 @@ export type TournamentCreateWithoutTournament_SubscribesInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -6057,6 +6222,7 @@ export type TournamentCreateWithoutUserInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -6120,6 +6286,8 @@ export type TournamentDepositWhereUniqueInput = {
 export type TournamentFilterInput = {
   bracket?: InputMaybe<GBracketType>;
   game_uid?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
   /** ASC OR DESC */
   prize_pool?: InputMaybe<SortType>;
   size?: InputMaybe<Scalars['String']>;
@@ -6158,6 +6326,7 @@ export type TournamentGql = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   region?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
