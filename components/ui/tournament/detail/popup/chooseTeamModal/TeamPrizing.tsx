@@ -157,12 +157,9 @@ const TeamPrizing: React.FC<TeamPrizingProps> = ({
 			editable: true,
 			render: (_: any, record: Item) => {
 				return (
-					<Input
-						value={record.game_member_id}
-						onClick={() => handleEdit(record, "text")}
-						className="!rounded-8px"
-						placeholder="Enter member ID"
-					/>
+					<p className="flex items-center align-middle mb-0 font-normal">
+						<StarFilled className="!text-[transparent] text-18px mr-1" /> {record.nick_name}
+					</p>
 				);
 			},
 		},

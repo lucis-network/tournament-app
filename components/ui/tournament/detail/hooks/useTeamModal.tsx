@@ -123,7 +123,9 @@ const UseTeamModal = (tournamentData: any) => {
   };
 
   const handleSelectTeam = (team: MyTeamType) => {
-    const checkOverSize = (team.team?.length || 0) > team_size;
+    const validMember = team.team?.filter(item => !!item.is_valid);
+    const checkOverSize = (validMember?.length || 0) > team_size;
+
     setStep("step-2");
     setSelectedTeam({
       ...team!,
@@ -139,12 +141,12 @@ const UseTeamModal = (tournamentData: any) => {
                 prize: 100,
               } as any,
             ]
-          : team?.team,
+          : validMember,
         true
       ),
     });
 
-    setDraftSelectedTeam(team);
+    setDraftSelectedTeam({...team, team: dataTeam(validMember)});
     setErrorTour({} as any);
     setErrorPassword("");
   };
@@ -409,14 +411,13 @@ const UseTeamModal = (tournamentData: any) => {
             </div>
             <div className={s.teamListChoosGame}>
               {teamList?.map((team, i) => (
-                <TeamSelect
-                  key={i}
-                  team={team}
-                  isValidMemberLength={team.team?.length! >= team_size}
-                  isValidMemberConnectedGame={team.team?.every(item => item.is_valid === true)!}
-                  onSelect={() => handleSelectTeam(team)}
-                />
-              ))}
+                  <TeamSelect
+                    key={i}
+                    team={team}
+                    team_size={team_size}
+                    onSelect={() => handleSelectTeam(team)}
+                  />
+                ))}
             </div>
           </div>
         ),

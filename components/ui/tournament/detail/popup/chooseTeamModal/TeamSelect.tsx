@@ -5,14 +5,16 @@ import { Tooltip } from "antd";
 
 interface TeamSelectProps {
   team: MyTeamType;
-  isValidMemberLength: boolean;
-  isValidMemberConnectedGame: boolean;
+  team_size: number;
   onSelect: () => void;
 }
 
-const TeamSelect: React.FC<TeamSelectProps> = ({ team, isValidMemberLength,isValidMemberConnectedGame, onSelect }) => {
+const TeamSelect: React.FC<TeamSelectProps> = ({ team, onSelect, team_size }) => {
+
+  const isValidMemberLength = team.team?.length! >= team_size;
   const validMember = team.team?.filter(item => item.is_valid === true);
   const invalidMember = team.team?.filter(item => item.is_valid === false);
+  const isValidMemberConnectedGame = validMember?.length! >= team_size;
   return (
     <div className="p-4 mb-4 border bg-card relative flex flex-col rounded-8px">
       <div>
