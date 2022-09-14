@@ -30,6 +30,7 @@ export const GET_MY_TEAM = gql`
 				is_leader
 				avatar
 				is_valid
+				nick_name
 			}
 		}
 	}

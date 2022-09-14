@@ -353,6 +353,31 @@ export enum CostType {
   LucisToken = 'LUCIS_TOKEN'
 }
 
+export type Coupon = {
+  __typename?: 'Coupon';
+  _count: CouponCount;
+  code: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  currency?: Maybe<Currency>;
+  currency_type: CurrrencyType;
+  currency_uid?: Maybe<Scalars['String']>;
+  discount: Scalars['Int'];
+  max_value_off: Scalars['Decimal'];
+  prizes?: Maybe<Array<LuckyChestPrize>>;
+  type: CouponType;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type CouponCount = {
+  __typename?: 'CouponCount';
+  prizes: Scalars['Int'];
+};
+
+export enum CouponType {
+  Raffle = 'Raffle'
+}
+
 export type CsgoLucisMission = {
   __typename?: 'CsgoLucisMission';
   created_at: Scalars['DateTime'];
@@ -505,6 +530,7 @@ export type Currency = {
   address?: Maybe<Scalars['String']>;
   chain?: Maybe<Chain>;
   chain_symbol?: Maybe<ChainSymbol>;
+  coupons?: Maybe<Array<Coupon>>;
   created_at: Scalars['DateTime'];
   decimals?: Maybe<Scalars['Int']>;
   donateTransactions?: Maybe<Array<DonateTransaction>>;
@@ -523,6 +549,7 @@ export type Currency = {
 
 export type CurrencyCount = {
   __typename?: 'CurrencyCount';
+  coupons: Scalars['Int'];
   donateTransactions: Scalars['Int'];
   prize_category: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
@@ -618,16 +645,21 @@ export type GameCount = {
 
 export type GameGiftCard = {
   __typename?: 'GameGiftCard';
+  _count: GameGiftCardCount;
   code: Scalars['String'];
   created_at: Scalars['DateTime'];
+  inventory_items?: Maybe<Array<UserInventoryItem>>;
   is_used?: Maybe<Scalars['Boolean']>;
   platform: Platform;
   platform_id: Scalars['Int'];
-  reference?: Maybe<Scalars['String']>;
-  reference_desc?: Maybe<Scalars['String']>;
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
   valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardCount = {
+  __typename?: 'GameGiftCardCount';
+  inventory_items: Scalars['Int'];
 };
 
 export type GamePlatform = {
@@ -659,8 +691,14 @@ export type IntroductoryChestPrizes = {
   prizes: Array<LuckyChestPrizeGql>;
 };
 
+export type InventoryCouponFilter = {
+  search?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+};
+
 export type InventoryItem = {
   __typename?: 'InventoryItem';
+  gift_card?: Maybe<GameGiftCard>;
   prize?: Maybe<LuckyChestPrize>;
   quantity?: Maybe<Scalars['Int']>;
   uid?: Maybe<Scalars['String']>;
@@ -908,12 +946,15 @@ export type LuckyChestPrize = {
   _count: LuckyChestPrizeCount;
   category?: Maybe<PrizeCategory>;
   category_id?: Maybe<Scalars['Int']>;
+  coupon?: Maybe<Coupon>;
+  coupon_uid?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   img?: Maybe<Scalars['String']>;
-  inventory_item?: Maybe<Array<UserInventoryItem>>;
-  inventory_piece?: Maybe<Array<UserInventoryPiece>>;
+  inventory_coupons?: Maybe<Array<UserInventoryCoupon>>;
+  inventory_items?: Maybe<Array<UserInventoryItem>>;
+  inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   quantity_in_stock?: Maybe<Scalars['Int']>;
   raffle?: Maybe<Array<Raffle>>;
   rarity?: Maybe<PrizeRarity>;
@@ -925,8 +966,9 @@ export type LuckyChestPrize = {
 
 export type LuckyChestPrizeCount = {
   __typename?: 'LuckyChestPrizeCount';
-  inventory_item: Scalars['Int'];
-  inventory_piece: Scalars['Int'];
+  inventory_coupons: Scalars['Int'];
+  inventory_items: Scalars['Int'];
+  inventory_pieces: Scalars['Int'];
   raffle: Scalars['Int'];
   user_prize_history: Scalars['Int'];
 };
@@ -940,8 +982,9 @@ export type LuckyChestPrizeGql = {
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   img?: Maybe<Scalars['String']>;
-  inventory_item?: Maybe<Array<UserInventoryItem>>;
-  inventory_piece?: Maybe<Array<UserInventoryPiece>>;
+  inventory_coupons?: Maybe<Array<UserInventoryCoupon>>;
+  inventory_items?: Maybe<Array<UserInventoryItem>>;
+  inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   number_of_prize: Scalars['Int'];
   quantity_in_stock?: Maybe<Scalars['Int']>;
   raffle?: Maybe<Array<Raffle>>;
@@ -1004,6 +1047,7 @@ export type Member = {
   display_name?: Maybe<Scalars['String']>;
   is_leader?: Maybe<Scalars['Boolean']>;
   is_valid?: Maybe<Scalars['Boolean']>;
+  nick_name?: Maybe<Scalars['String']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -1080,7 +1124,7 @@ export type Mutation = {
   claimBox?: Maybe<Scalars['Boolean']>;
   claimCSGOItem?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<Scalars['Boolean']>;
-  claimGiftCard?: Maybe<GameGiftCard>;
+  claimGiftCard?: Maybe<Scalars['Boolean']>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimNftBox?: Maybe<Scalars['Boolean']>;
   claimPhysicalItem?: Maybe<Scalars['Boolean']>;
@@ -1664,6 +1708,7 @@ export type Query = {
   getWonTickets?: Maybe<Array<Scalars['String']>>;
   hasJoinedDiscord?: Maybe<Scalars['Boolean']>;
   introductoryChestPrizes?: Maybe<IntroductoryChestPrizes>;
+  inventoryCoupons?: Maybe<Array<UserInventoryCoupon>>;
   inventoryItems?: Maybe<Array<InventoryItem>>;
   inventoryPieces?: Maybe<Array<InventoryPieceGroup>>;
   isClaimBox?: Maybe<Scalars['Boolean']>;
@@ -1803,6 +1848,11 @@ export type QueryGetUserTournamentRankingArgs = {
 
 export type QueryGetWonTicketsArgs = {
   raffle_uid: Scalars['String'];
+};
+
+
+export type QueryInventoryCouponsArgs = {
+  filter?: InputMaybe<InventoryCouponFilter>;
 };
 
 
@@ -2338,6 +2388,7 @@ export type User = {
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  inventory_coupons?: Maybe<Array<UserInventoryCoupon>>;
   inventory_items?: Maybe<Array<UserInventoryItem>>;
   inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
@@ -2369,6 +2420,7 @@ export type UserCount = {
   dailyMission: Scalars['Int'];
   daily_history: Scalars['Int'];
   favorite_game: Scalars['Int'];
+  inventory_coupons: Scalars['Int'];
   inventory_items: Scalars['Int'];
   inventory_pieces: Scalars['Int'];
   leader_board: Scalars['Int'];
@@ -2426,9 +2478,23 @@ export type UserHistory = {
   user_id: Scalars['Int'];
 };
 
+export type UserInventoryCoupon = {
+  __typename?: 'UserInventoryCoupon';
+  created_at: Scalars['DateTime'];
+  is_used: Scalars['Boolean'];
+  prize?: Maybe<LuckyChestPrize>;
+  prize_id?: Maybe<Scalars['Int']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
 export type UserInventoryItem = {
   __typename?: 'UserInventoryItem';
   created_at: Scalars['DateTime'];
+  gift_card?: Maybe<GameGiftCard>;
+  gift_card_uid?: Maybe<Scalars['String']>;
   is_claimed: Scalars['Boolean'];
   prize?: Maybe<LuckyChestPrize>;
   prize_id?: Maybe<Scalars['Int']>;
