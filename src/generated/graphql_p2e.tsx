@@ -616,6 +616,20 @@ export type GameCount = {
   tournaments: Scalars['Int'];
 };
 
+export type GameGiftCard = {
+  __typename?: 'GameGiftCard';
+  code: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  is_used?: Maybe<Scalars['Boolean']>;
+  platform: Platform;
+  platform_id: Scalars['Int'];
+  reference?: Maybe<Scalars['String']>;
+  reference_desc?: Maybe<Scalars['String']>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  valued_at: Scalars['Decimal'];
+};
+
 export type GamePlatform = {
   __typename?: 'GamePlatform';
   _count: GamePlatformCount;
@@ -634,6 +648,11 @@ export type GamePlatformCount = {
   lucky_chest: Scalars['Int'];
 };
 
+export enum InGamePrizeType {
+  GiftCard = 'GiftCard',
+  Skin = 'Skin'
+}
+
 export type IntroductoryChestPrizes = {
   __typename?: 'IntroductoryChestPrizes';
   id?: Maybe<Scalars['Int']>;
@@ -644,6 +663,7 @@ export type InventoryItem = {
   __typename?: 'InventoryItem';
   prize?: Maybe<LuckyChestPrize>;
   quantity?: Maybe<Scalars['Int']>;
+  uid?: Maybe<Scalars['String']>;
 };
 
 export type InventoryPieceGroup = {
@@ -983,6 +1003,7 @@ export type Member = {
   avatar?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
   is_leader?: Maybe<Scalars['Boolean']>;
+  is_valid?: Maybe<Scalars['Boolean']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -1059,6 +1080,7 @@ export type Mutation = {
   claimBox?: Maybe<Scalars['Boolean']>;
   claimCSGOItem?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<Scalars['Boolean']>;
+  claimGiftCard?: Maybe<GameGiftCard>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimNftBox?: Maybe<Scalars['Boolean']>;
   claimPhysicalItem?: Maybe<Scalars['Boolean']>;
@@ -1113,6 +1135,11 @@ export type MutationClaimCsgoItemArgs = {
 export type MutationClaimChestPrizeArgs = {
   address?: InputMaybe<Scalars['String']>;
   user_prize_history_uid: Scalars['String'];
+};
+
+
+export type MutationClaimGiftCardArgs = {
+  user_inventory_item_uid: Scalars['String'];
 };
 
 
@@ -1285,8 +1312,10 @@ export type Platform = {
   accounts?: Maybe<Array<PlatformAccount>>;
   created_at: Scalars['DateTime'];
   game?: Maybe<Array<GamePlatform>>;
+  gift_cards?: Maybe<Array<GameGiftCard>>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  prize_categories?: Maybe<Array<PrizeCategory>>;
   updated_at: Scalars['DateTime'];
 };
 
@@ -1331,6 +1360,8 @@ export type PlatformCount = {
   __typename?: 'PlatformCount';
   accounts: Scalars['Int'];
   game: Scalars['Int'];
+  gift_cards: Scalars['Int'];
+  prize_categories: Scalars['Int'];
 };
 
 export type PlayTeam = {
@@ -1560,8 +1591,11 @@ export type PrizeCategory = {
   currency_type?: Maybe<CurrrencyType>;
   currency_uid?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  in_game_prize_type?: Maybe<InGamePrizeType>;
   item_group?: Maybe<ItemGroup>;
   piece_group?: Maybe<Scalars['String']>;
+  platform?: Maybe<Platform>;
+  platform_id?: Maybe<Scalars['Int']>;
   prize?: Maybe<Array<LuckyChestPrize>>;
   prize_type?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
@@ -2151,9 +2185,9 @@ export type TicketList = {
 
 export type TopRanking = {
   __typename?: 'TopRanking';
-  playcore: UserRanking;
-  raffle: UserRanking;
-  tournament: UserRanking;
+  playcore?: Maybe<UserRanking>;
+  raffle?: Maybe<UserRanking>;
+  tournament?: Maybe<UserRanking>;
 };
 
 export type Tournament = {
@@ -2187,6 +2221,7 @@ export type Tournament = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;

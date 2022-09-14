@@ -85,6 +85,7 @@ export default observer(function RegistrationPhase(props: Props) {
     {
       variables: {
         user_id: user?.profile?.user_id,
+        tournament_uid: tournamentId
       },
     }
   );

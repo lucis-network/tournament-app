@@ -18,8 +18,8 @@ export const GET_USER_TEAMS = gql`
 `;
 
 export const GET_MY_TEAM = gql`
-	query getMyTeam($user_id: String!) {
-		getMyTeam(user_id: $user_id) {
+	query getMyTeam($user_id: String!, $tournament_uid: String!) {
+		getMyTeam(user_id: $user_id, tournament_uid: $tournament_uid) {
 			team_uid
 			team_name
 			team_avatar
@@ -29,6 +29,7 @@ export const GET_MY_TEAM = gql`
 				display_name
 				is_leader
 				avatar
+				is_valid
 			}
 		}
 	}

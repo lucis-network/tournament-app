@@ -71,7 +71,7 @@ const UseTeamModal = (tournamentData: any) => {
     handleRemove,
     handleSaveTeam,
     handleSearchMember,
-  } = UseCreateNewTeam(user?.profile, team_size);
+  } = UseCreateNewTeam(user?.profile, team_size, tournamentId);
 
   const { url, inputKey, handleFileInput } = UseUploadAvatar(
     handleChangeAvatar,
@@ -412,7 +412,8 @@ const UseTeamModal = (tournamentData: any) => {
                 <TeamSelect
                   key={i}
                   team={team}
-                  isValid={team.team?.length! >= team_size}
+                  isValidMemberLength={team.team?.length! >= team_size}
+                  isValidMemberConnectedGame={team.team?.every(item => item.is_valid === true)!}
                   onSelect={() => handleSelectTeam(team)}
                 />
               ))}

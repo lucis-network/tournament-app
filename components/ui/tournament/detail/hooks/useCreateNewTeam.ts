@@ -23,7 +23,7 @@ export interface MyTeamType {
 	team?: TeamType[];
 }
 
-const UseCreateNewTeam = (profile: any, teamSize: number) => {
+const UseCreateNewTeam = (profile: any, teamSize: number, tournamentId: string) => {
 	const [draftData, setDraftData] = useState<MyTeamType>();
 	const [reset, setReset] = useState<boolean>(false);
 	const [teamId, setTeamId] = useState<string>("");
@@ -42,6 +42,7 @@ const UseCreateNewTeam = (profile: any, teamSize: number) => {
 		useLazyQuery(GET_MY_TEAM, {
 			variables: {
 				user_id: profile?.user_id,
+				tournament_uid: tournamentId
 			},
 		});
 
