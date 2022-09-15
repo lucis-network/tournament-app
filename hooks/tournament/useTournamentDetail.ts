@@ -392,6 +392,8 @@ const GET_TOURNAMENT_DETAIL = gql`
         tournament_uid
       }
       is_auto_checkin
+      game_uid
+      require_connect_game  
     }
   }
 `;

@@ -17,7 +17,7 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, onSelect, team_size }) =>
   const isValidMemberConnectedGame = validMember?.length! >= team_size;
   return (
     <div className="p-4 mb-4 border bg-card relative flex flex-col rounded-8px">
-      <div>
+      <div className={"mb-2"}>
         <img
           className="object-cover mr-2 mb-1"
           src={team?.team_avatar ? team?.team_avatar : "/assets/avatar.jpg"}

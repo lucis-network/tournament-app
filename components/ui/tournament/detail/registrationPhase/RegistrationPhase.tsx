@@ -1,15 +1,15 @@
-import { observer } from "mobx-react-lite";
-import { Button, Col, Image, message, Modal, Row, Tooltip } from "antd";
+import {observer} from "mobx-react-lite";
+import {Button, Col, Image, message, Modal, Row, Tooltip} from "antd";
 import TournamentStore from "src/store/TournamentStore";
 import s from "./index.module.sass";
 import moment from "moment";
 import ChooseTeamModal from "../popup/chooseTeamModal";
 import useTeamModal from "../hooks/useTeamModal";
-import { format } from "utils/Number";
+import {format} from "utils/Number";
 import AuthBoxStore from "components/Auth/components/AuthBoxStore";
 import ConnectWalletStore from "components/Auth/ConnectWalletStore";
 import PopupDonate from "../popup/popupDonate";
-import { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import {
   useClaimReward,
   useUpdateParticipant,
@@ -18,16 +18,22 @@ import {
 } from "hooks/tournament/useTournamentDetail";
 import ClaimDonationModal from "../popup/claimDonationModal/ClaimDonationModal";
 import TournamentService from "components/service/tournament/TournamentService";
-import { ApolloError, ApolloQueryResult, useLazyQuery } from "@apollo/client";
+import {ApolloError, ApolloQueryResult, useLazyQuery, useQuery} from "@apollo/client";
 import useTournament from "../hooks/useTournament";
 import CountdownTimer from "components/ui/common/CountDown";
 import AuthStore from "components/Auth/AuthStore";
 import SpinLoading from "components/ui/common/Spin";
-import { isEmpty } from "lodash";
+import {isEmpty} from "lodash";
 import ClaimResultModal from "../popup/claimResultModal/ClaimResultModal";
-import { getLocalAuthInfo } from "components/Auth/AuthLocal";
-import { GET_MY_TEAM } from "components/ui/common/tabsItem/myTeamDetail/myTeamService";
-import { handleGraphqlErrors } from "utils/apollo_client";
+import {getLocalAuthInfo, setLocalAuthGameInfo} from "components/Auth/AuthLocal";
+import {GET_MY_TEAM, IS_CONNECTED_GAME} from "components/ui/common/tabsItem/myTeamDetail/myTeamService";
+import {handleGraphqlErrors} from "utils/apollo_client";
+import {Game, OverviewSection} from "../../../../../utils/Enum";
+import {ConnectLOLPopup} from "../../../p2e/overview/ConnectLOLPopup";
+import AuthGameStore, {AuthGameUser, AuthLMSSGameUser} from "../../../../Auth/AuthGameStore";
+import {isDevMode} from "../../../../../utils/Env";
+import {fetchJsFromCDN} from "../../../../../utils/DOM";
+import {useRouter} from "next/router";
 
 type Props = {
   isJoin: boolean;
@@ -74,13 +80,15 @@ export default observer(function RegistrationPhase(props: Props) {
     tournament_status,
     additionPrize,
     cache_tournament,
+    require_connect_game,
+    game_uid
   } = props.tournament;
 
-  const { isJoin, isCheckin, tournamentId, refetch, refereeIds, is_auto_checkin} = props;
-
+  const {isJoin, isCheckin, tournamentId, refetch, refereeIds, is_auto_checkin} = props;
+  const router = useRouter();
   const user = getLocalAuthInfo();
 
-  const [searchTeam, { refetch: refetchGetMyTeam }] = useLazyQuery(
+  const [searchTeam, {refetch: refetchGetMyTeam}] = useLazyQuery(
     GET_MY_TEAM,
     {
       variables: {
@@ -90,9 +98,19 @@ export default observer(function RegistrationPhase(props: Props) {
     }
   );
 
+  const {data: isConnectedGameQuery} = useQuery(
+    IS_CONNECTED_GAME,
+    {
+      variables: {
+        user_id: parseFloat(user?.profile?.user_id as unknown as string),
+        tournament_uid: tournamentId
+      },
+    }
+  );
+
   const isFullParticipant = cache_tournament?.team_participated >= participants;
 
-  const { show, step, handleOpenModal, handleCloseModal, stepConfiguration } =
+  const {show, step, handleOpenModal, handleCloseModal, stepConfiguration} =
     useTeamModal(props);
 
   const timeDefault = moment(brackets?.[0].start_at).valueOf();
@@ -100,7 +118,7 @@ export default observer(function RegistrationPhase(props: Props) {
     .subtract(75, "minutes")
     .valueOf();
 
-  if(is_auto_checkin) {
+  if (is_auto_checkin) {
     timeRegistration = moment(brackets?.[0].start_at)
       .subtract(45, "minutes")
       .valueOf();
@@ -116,7 +134,7 @@ export default observer(function RegistrationPhase(props: Props) {
     TournamentStore.claimDonationModalVisible = true;
   };
 
-  const { data, refetch: refetchClaimReward } = useClaimReward({
+  const {data, refetch: refetchClaimReward} = useClaimReward({
     tournament_uid: tournamentId ? tournamentId : "",
     skip: isEmpty(tournamentId),
   });
@@ -132,21 +150,25 @@ export default observer(function RegistrationPhase(props: Props) {
     handleCheckinTournament,
   } = useTournament(tournamentId || "");
 
-  const { dataUpdateTotalDonation } = useUpdateTotalDonation({
+  const {dataUpdateTotalDonation} = useUpdateTotalDonation({
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
 
-  const { dataUpdateTotalPrizePool } = useUpdateTotalPrizePool({
+  const {dataUpdateTotalPrizePool} = useUpdateTotalPrizePool({
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
 
-  const { dataUpdateParticipant } = useUpdateParticipant({
+  const {dataUpdateParticipant} = useUpdateParticipant({
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
 
+  const [faceitLogin, setFaceitLogin] = useState({
+    login: () => { }
+  })
+  const [openConnectLOLPopup, setOpenConnectLOLPopup] = useState<boolean>(false);
   const [dataPrize, setDataPrize] = useState<Reward>();
   const [dataSystemPrize, setDataSystemPrize] = useState<Reward>();
   const [dataDonation, setDataDonation] = useState<Reward[]>();
@@ -313,6 +335,12 @@ export default observer(function RegistrationPhase(props: Props) {
     }
   }, [dataPrize, dataSystemPrize, totalFromDonation, data]);
 
+  const handleConnectGame = () => {
+    router.push("/");
+
+    sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
+    sessionStorage.setItem("redirectUrl", router.asPath);
+  }
   return (
     <>
       <div className={s.registrationPhase} id="registrationPhase">
@@ -325,7 +353,7 @@ export default observer(function RegistrationPhase(props: Props) {
                 preview={false}
               />
             </div>
-            <div style={{ display: "flex", justifyContent: "center" }}>
+            <div style={{display: "flex", justifyContent: "center"}}>
               <div>
                 <div className={s.itemText}>
                   <h3>
@@ -347,7 +375,7 @@ export default observer(function RegistrationPhase(props: Props) {
                             preview={false}
                             alt=""
                           />
-                          {format(Number.parseFloat(additionPrize),2, {zero_trim: true})} LUCIS
+                          {format(Number.parseFloat(additionPrize), 2, {zero_trim: true})} LUCIS
                           token
                         </p>
                       </>
@@ -379,7 +407,7 @@ export default observer(function RegistrationPhase(props: Props) {
               <p>TOTAL DONATION</p>
             </div>
             <div className={s.additionalInfo}>
-              { tournament_status != "CLOSED" && (
+              {tournament_status != "CLOSED" && (
                 <button onClick={openModal}>
                   <Image
                     src="/assets/TournamentDetail/iconDonate.svg"
@@ -409,8 +437,8 @@ export default observer(function RegistrationPhase(props: Props) {
                     {dataUpdateParticipant
                       ? dataUpdateParticipant?.participant
                       : cache_tournament?.team_participated
-                      ? cache_tournament?.team_participated
-                      : 0}
+                        ? cache_tournament?.team_participated
+                        : 0}
                     /{participants}
                   </span>
                 </div>
@@ -430,8 +458,8 @@ export default observer(function RegistrationPhase(props: Props) {
                       {dataUpdateParticipant
                         ? dataUpdateParticipant?.participant
                         : cache_tournament?.team_participated
-                        ? cache_tournament?.team_participated
-                        : 0}
+                          ? cache_tournament?.team_participated
+                          : 0}
                       /{participants}
                     </span>
                   </div>
@@ -449,12 +477,19 @@ export default observer(function RegistrationPhase(props: Props) {
                             Unjoin tournament
                           </Button>
                         ) : (
-                          <Button
-                            onClick={handleOpenModal}
-                            disabled={isFullParticipant}
-                          >
-                            Join tournament
-                          </Button>
+                          (require_connect_game && !isConnectedGameQuery?.isConnectGame) ?
+                            <Button
+                              onClick={handleConnectGame}
+                            >
+                              Connect game
+                            </Button>
+                            :
+                            <Button
+                              onClick={handleOpenModal}
+                              disabled={isFullParticipant}
+                            >
+                              Join tournament
+                            </Button>
                         )}
                       </div>
                     );
@@ -465,7 +500,7 @@ export default observer(function RegistrationPhase(props: Props) {
                           !isCheckin ? (
                             <Button onClick={handleCheckinTournament}>
                               {loadingCheckin ? (
-                                <SpinLoading className="pt-0" size={24} />
+                                <SpinLoading className="pt-0" size={24}/>
                               ) : (
                                 "Check-in"
                               )}
@@ -572,7 +607,7 @@ export default observer(function RegistrationPhase(props: Props) {
                                   totalFromDonation > 0 ? (
                                     <div className={s.rewardsPrize}>
                                       <p className={s.rewardsPrizeTitle}>
-                                        { isCheckUserReferee ? "Reward for referee" : "From Donation"}
+                                        {isCheckUserReferee ? "Reward for referee" : "From Donation"}
                                       </p>
                                       <div className={s.rewardsClaimPrize}>
                                         <h3>
@@ -650,7 +685,7 @@ export default observer(function RegistrationPhase(props: Props) {
                         </p>
                         <CountdownTimer targetDate={timeEditBracket} refetch={refetch}/>
                       </div>
-                  );
+                    );
                   case "PREPARE":
                     return (
                       <div className={s.countdownWrap}>

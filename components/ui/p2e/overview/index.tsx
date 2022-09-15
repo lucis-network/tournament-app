@@ -17,6 +17,7 @@ import { ConnectLOLPopup } from './ConnectLOLPopup';
 import BannerOverview from './component/banner/BannerOverview';
 import { Game, OverviewSection, Platform } from 'utils/Enum';
 import moment from "moment";
+import {fetchJsFromCDN} from "../../../../utils/DOM";
 
 interface IProps {
   overviewSection?: OverviewSection;
@@ -46,24 +47,6 @@ export default observer(function P2EOverview(props: IProps) {
       endpoint: 'p2e'
     }
   })
-  const fetchJsFromCDN = (src: string, externals: any[] = []) => {
-    return new Promise((resolve, reject) => {
-      const script = document.createElement("script");
-      script.setAttribute("src", src);
-      script.addEventListener("load", () => {
-        resolve(
-          externals.map((key) => {
-            const ext = window[key];
-            typeof ext === "undefined" &&
-              console.warn(`No external named '${key}' in window`);
-            return ext;
-          })
-        );
-      });
-      script.addEventListener("error", reject);
-      document.body.appendChild(script);
-    });
-  };
 
   useEffect(() => {
     if (isEmpty(faceitUser)) {
@@ -181,7 +164,14 @@ export default observer(function P2EOverview(props: IProps) {
             AuthGameStore.setAuthGameUser(gameAccount);
             localStorage.setItem("currentGame", Game.CSGO.toString());
             setLocalAuthGameInfo(gameAccount);
-            router.push("/playcore/dashboard");
+
+            const redirectUrl = sessionStorage.getItem("redirectUrl");
+            if (redirectUrl) {
+              router.push(redirectUrl);
+            } else {
+              router.push("/playcore/dashboard");
+            }
+
           }
           setLoadingFaceit(false);
         } catch (e: any) {
@@ -248,7 +238,13 @@ export default observer(function P2EOverview(props: IProps) {
     setLmssUser({ ...lmssUser, avatar: data.lmss_avatar, nick_name: data.lmss_nick_name });
     localStorage.setItem("currentGame", Game.LOL.toString());
     setLocalAuthGameInfo(gameAccount);
-    router.push("/playcore/dashboard");
+
+    const redirectUrl = sessionStorage.getItem("redirectUrl");
+    if (redirectUrl) {
+      router.push(redirectUrl);
+    } else {
+      router.push("/playcore/dashboard");
+    }
 
     setLoadingLMSS(false);
 

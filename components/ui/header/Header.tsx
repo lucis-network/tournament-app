@@ -123,7 +123,7 @@ export default observer(function Header(props: Props) {
 
 
   useEffect(() => {
-    console.log(id)
+
     if (id) {
       const realTimeService = new RealtimeService(id);
       realTimeService.subscriptionArena().then(res => {

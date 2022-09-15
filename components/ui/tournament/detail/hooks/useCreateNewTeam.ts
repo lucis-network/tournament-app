@@ -13,7 +13,8 @@ export interface TeamType extends Record<any, any> {
 	display_name: string;
 	avatar: string;
 	is_leader?: boolean;
-	nick_name?: string;
+	id_in_game?: string;
+	avatar_in_game?: string;
 }
 
 export interface MyTeamType {

@@ -30,10 +30,17 @@ export const GET_MY_TEAM = gql`
 				is_leader
 				avatar
 				is_valid
-				nick_name
+				id_in_game
+				avatar_in_game
 			}
 		}
 	}
+`;
+
+export const IS_CONNECTED_GAME = gql`
+    query isConnectGame($user_id: Float!, $tournament_uid: String!) {
+			isConnectGame(user_id: $user_id, tournament_uid: $tournament_uid)
+		}
 `;
 
 export const CREATE_TEAM = gql`
