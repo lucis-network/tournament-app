@@ -702,7 +702,6 @@ query ($user_id: Int!, $group_filter: String, $search_name: String) {
           desc
           img
           rarity
-          prize_amount
           quantity_in_stock
         }
         quantity
@@ -722,7 +721,6 @@ query ($user_id: Int!, $group_filter: ItemGroup, $search_name: String) {
     desc
     img
     rarity
-    prize_amount
     quantity_in_stock
     category {
       item_group

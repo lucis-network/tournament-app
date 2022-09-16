@@ -52,7 +52,7 @@ export default observer(function MyProfile() {
 	})
 	const router = useRouter();
 	const currentPage = router.query?.page ?? ''
-	const allowedPages = ['', 'teams', 'tournaments', 'edit', 'refer', 'inventory']
+	const allowedPages = ['', 'teams', 'tournaments', 'edit', 'refer', 'inventory', 'nfts']
 	useEffect(() => {
 		if (!AuthStore.isLoggedIn) {
 			router.push('/')
@@ -99,6 +99,10 @@ export default observer(function MyProfile() {
 
 	return (
 		<div className={s.wrapper_profile}>
+			<Head>
+				<meta name="robots" content="noindex" />
+				<title>Profile</title>
+			</Head>
 			{/* Content */}
 			<InfoMyProfile click={handleEditClick} userInfo={localUserInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner isShowEdit={page === 'edit'} />
 			<div className="lucis-container">

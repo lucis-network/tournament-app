@@ -132,7 +132,7 @@ const GET_CHEST_DETAIL = gql`
         id
         title
         desc
-        prize_amount
+        amount_of_currency
         quantity_in_stock
         valued_at
         img
@@ -167,7 +167,7 @@ const GET_LUCKY_CHEST_USER_INFO = gql`
           desc
           img
           rarity
-          prize_amount
+          amount_of_currency
           created_at
           category {
             prize_type

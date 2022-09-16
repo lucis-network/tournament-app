@@ -82,19 +82,19 @@ export default observer(function ContentMyProfile({
           isOwner={isOwner}
         />
       </TabPane>
-      <TabPane tab="NFTs" key="5" disabled>
-        {/* <NFTs isOwner={isOwner} /> */}
+      <TabPane tab="NFTs" key="nfts" disabled>
+         <NFTs isOwner={isOwner} />
       </TabPane>
       <TabPane tab="My Staking" key="6" disabled>
         {/* <MyTournament userInfo={userInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} /> */}
       </TabPane>
       {isOwner &&
           <TabPane tab="Refer history" key="refer">
-              <ReferHistory></ReferHistory>
+              <ReferHistory/>
           </TabPane>
       }
       <TabPane tab="Inventory" key="inventory">
-        <Inventory isOwner={isOwner} userInfo={userInfo}></Inventory>
+        <Inventory isOwner={isOwner} userInfo={userInfo}/>
       </TabPane>
     </Tabs>
   );

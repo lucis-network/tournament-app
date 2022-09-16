@@ -97,7 +97,7 @@ const BannerRanking = ({seasonId}: BannerRankingProps) => {
               title="Total earnings"
               image="/assets/Ranking/flagArena.png"
               type="arena"
-              data={tournamentTopRank}
+              data={tournamentTopRank!}
             />
           </SwiperSlide>
           <SwiperSlide>
@@ -105,7 +105,7 @@ const BannerRanking = ({seasonId}: BannerRankingProps) => {
               title="Missions"
               image="/assets/Ranking/flagPlaycore.png"
               type="playcore"
-              data={playcoreTopRank}
+              data={playcoreTopRank!}
             />
           </SwiperSlide>
           <SwiperSlide>
@@ -113,7 +113,7 @@ const BannerRanking = ({seasonId}: BannerRankingProps) => {
               title="Total rewards"
               image="/assets/Ranking/flagRaffles.png"
               type="raffles"
-              data={raffleTopRank}
+              data={raffleTopRank!}
             />
           </SwiperSlide>
           <SwiperSlide>

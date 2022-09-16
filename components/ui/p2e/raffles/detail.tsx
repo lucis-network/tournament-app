@@ -19,7 +19,7 @@ import {
   BuyRaffleTicketErrorCode,
   RaffleStatusType,
   UserTicketGql,
-  RaffleStatus
+  RaffleStatus, CurrrencyType
 } from "../../../../src/generated/graphql_p2e";
 import {handleGraphqlErrors} from "../../../../utils/apollo_client";
 import RollingRaffles from "./rolling";
@@ -258,6 +258,7 @@ const RafflesDetail = observer((props: { raffleUID: string}) => {
       <DefaultErrorPage statusCode={404}/>
     </>
   )
+
   return (
     <>
       <div className={s.rafflesDetailWrapper}>
@@ -491,18 +492,26 @@ const RafflesDetail = observer((props: { raffleUID: string}) => {
                             <div
                               className={s.raffleValued}>{raffle?.valued_at ? `Valued at $${raffle?.valued_at}` : ''}</div>
                             <div className={s.rafflePrice}>
-                              <div className={s.rafflePriceText}>{raffle?.prize_amount}</div>
                               {
-                                raffle?.prize_category?.currency_type === "LUCIS_POINT" &&
-                                  <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
+                                raffle?.prize_category?.currency_type === CurrrencyType.LucisPoint  &&
+                                  <>
+                                      <div className={s.rafflePriceText}>{raffle?.amount_of_currency}</div>
+                                      <Image src="/assets/P2E/lucis-point.svg" preview={false} alt=""/>
+                                  </>
                               }
                               {
-                                raffle?.prize_category?.currency_type === "LUCIS_TOKEN" &&
-                                  <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                                raffle?.prize_category?.currency_type === CurrrencyType.LucisToken &&
+                                  <>
+                                      <div className={s.rafflePriceText}>{raffle?.amount_of_currency}</div>
+                                      <Image src="/assets/P2E/lucis-token.svg" preview={false} alt=""/>
+                                  </>
                               }
                               {
-                                raffle?.prize_category?.currency_type === "DECENTRALIZED" &&
-                                  <Image src={raffle?.prize_category?.currency?.icon ?? ''} preview={false} alt=""/>
+                                raffle?.prize_category?.currency_type === CurrrencyType.Decentralized &&
+                                  <>
+                                      <div className={s.rafflePriceText}>{raffle?.amount_of_currency}</div>
+                                      <Image src={raffle?.prize_category?.currency?.icon ?? ''} preview={false} alt=""/>
+                                  </>
                               }
                             </div>
                           </div>

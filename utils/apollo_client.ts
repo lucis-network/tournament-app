@@ -8,22 +8,22 @@ import {
   ServerError,
   split,
 } from "@apollo/client";
-import { setContext } from "@apollo/client/link/context";
-import { onError } from "@apollo/client/link/error";
-import { isClient } from "./DOM";
+import {setContext} from "@apollo/client/link/context";
+import {onError} from "@apollo/client/link/error";
+import {isClient} from "./DOM";
 import {
   clearLocalAuthInfo,
   getLocalAuthInfo,
 } from "../components/Auth/AuthLocal";
 import {message as antd_message, Modal, notification} from "antd";
-import { GraphQLError } from "graphql";
-import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
-import { createClient } from "graphql-ws";
-import { getMainDefinition } from "@apollo/client/utilities";
+import {GraphQLError} from "graphql";
+import {GraphQLWsLink} from "@apollo/client/link/subscriptions";
+import {createClient} from "graphql-ws";
+import {getMainDefinition} from "@apollo/client/utilities";
 import AuthStore from "../components/Auth/AuthStore";
 import AuthGameStore from "components/Auth/AuthGameStore";
 
-import { debounce } from "lodash";
+import {debounce} from "lodash";
 //   import { CachePersistor } from 'apollo-cache-persist';
 
 // Cache implementation
@@ -42,6 +42,7 @@ const authCache: {
 export function setAuthToken(token: string) {
   authCache.token = token;
 }
+
 if (isClient) {
   // @ts-ignore
   window.tmp__setApoloAuth = setAuthToken;
@@ -76,8 +77,10 @@ const p2eEndpoint = createHttpLink({
 });
 
 let splitLink: any;
+let splitLinkP2E: any;
+let splitLinkAdmin: any;
 
-const authLink = setContext((_, { headers }) => {
+const authLink = setContext((_, {headers}) => {
   // get the authentication token from local storage if it exists
   const token = _getAuthToken();
 
@@ -99,6 +102,18 @@ if (isClient) {
     })
   );
 
+  const wsLinkP2E = new GraphQLWsLink(
+    createClient({
+      url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_P2E_URL ?? "",
+    })
+  );
+
+  const wsLinkAdmin = new GraphQLWsLink(
+    createClient({
+      url: process.env.NEXT_PUBLIC_GRAPHQL_SUBSCRIPTION_ADMIN_URL ?? "",
+    })
+  );
+
   splitLink = split(
     (op) => {
       const endpoint = op.getContext().endpoint;
@@ -106,7 +121,7 @@ if (isClient) {
     },
     authLink.concat(p2eEndpoint),
     split(
-      ({ query }) => {
+      ({query}) => {
         const definition = getMainDefinition(query);
         return (
           definition.kind === "OperationDefinition" &&
@@ -117,14 +132,51 @@ if (isClient) {
       authLink.concat(httpLink)
     )
   );
+  splitLinkP2E = split(
+    (op) => {
+      const endpoint = op.getContext().endpoint;
+      return endpoint === "p2e";
+    },
+    authLink.concat(p2eEndpoint),
+    split(
+      ({query}) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      authLink.concat(wsLinkP2E),
+      authLink.concat(httpLink)
+    )
+  );
+
+  splitLinkAdmin = split(
+    (op) => {
+      const endpoint = op.getContext().endpoint;
+      return endpoint === "p2e";
+    },
+    authLink.concat(p2eEndpoint),
+    split(
+      ({query}) => {
+        const definition = getMainDefinition(query);
+        return (
+          definition.kind === "OperationDefinition" &&
+          definition.operation === "subscription"
+        );
+      },
+      authLink.concat(wsLinkAdmin),
+      authLink.concat(httpLink)
+    )
+  );
 }
 
 let countGqlErrNetwork = 0;
 let errorWait: any = null;
-const errorLink = onError(({ graphQLErrors, networkError }) => {
+const errorLink = onError(({graphQLErrors, networkError}) => {
   if (graphQLErrors) {
     graphQLErrors.forEach((e) => {
-      const { message, path, extensions } = e;
+      const {message, path, extensions} = e;
       console.log(
         `[GraphQL error]: Message: ${message}, Path: ${path},  extensions: ${extensions?.message}`
       );
@@ -166,15 +218,37 @@ const client = new ApolloClient({
   }
 });
 
+export const clientP2E = new ApolloClient({
+  link: from([errorLink, splitLinkP2E != null ? splitLinkP2E : httpLink]),
+  cache,
+  connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }
+});
+
+export const clientAdmin = new ApolloClient({
+  link: from([errorLink, splitLinkAdmin != null ? splitLinkAdmin : httpLink]),
+  cache,
+  connectToDevTools: true,
+  defaultOptions: {
+    watchQuery: {
+      fetchPolicy: 'cache-and-network',
+    },
+  }
+});
+
 export default client;
 
 /**
  * User for external error handling
  */
 export function handleApolloError(error: ApolloError) {
-  const { graphQLErrors, networkError } = error;
+  const {graphQLErrors, networkError} = error;
   if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) => {
+    graphQLErrors.forEach(({message, locations, path}) => {
       if (message === "Unauthorized") {
         // notification["error"]({
         //   message: "Unauthorized",
@@ -207,7 +281,7 @@ export function onApolloError(
   onAuthError: (e: GraphQLError) => void,
   onNetworkError: (e: Error | ServerParseError | ServerError) => void
 ) {
-  const { graphQLErrors, networkError } = error;
+  const {graphQLErrors, networkError} = error;
 
   if (networkError) {
     onNetworkError(networkError);
@@ -216,7 +290,7 @@ export function onApolloError(
 
   if (graphQLErrors)
     graphQLErrors.forEach((e) => {
-      const { message, locations, path } = e;
+      const {message, locations, path} = e;
       if (message === "Unauthorized") {
         onAuthError(e);
       } else {
@@ -234,7 +308,7 @@ function onSingleError(
   e: any,
   onError: (code: string, message: string, path?: string[]) => void
 ) {
-  const { message, locations, path } = e;
+  const {message, locations, path} = e;
 
   // Inside graphQLErrors
   if (message === "Unauthorized") {
@@ -254,7 +328,7 @@ export function handleGraphqlErrors(
   e: ApolloError,
   onError: (code: string, message: string, path?: string[]) => void
 ) {
-  const { graphQLErrors, networkError, clientErrors } = e;
+  const {graphQLErrors, networkError, clientErrors} = e;
   // console.dir(e)
   // console.log('{handleGraphqlErrors.handleGraphqlErrors} graphQLErrors, networkError: ', graphQLErrors, networkError);
 

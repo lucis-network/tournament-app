@@ -150,7 +150,7 @@ const GET_RAFFLE_IN_CURRENT_MONTH = gql`
       uid
       name
       valued_at
-      prize_amount
+      amount_of_currency
       img
       type
       end_at
@@ -187,7 +187,7 @@ const SEARCH_RAFFLE = gql`
       img
       type
       valued_at
-      prize_amount
+      amount_of_currency
       status
       prize_category {
         currency_type

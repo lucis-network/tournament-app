@@ -40,6 +40,8 @@ const UseTeamModal = (tournamentData: any) => {
     name,
     team_size,
     has_password: tourPassword,
+    require_connect_game,
+    game_uid
   } = tournamentData?.tournament;
   const { tournamentId, is_auto_checkin } = tournamentData;
   const { joinTournament, refreshParticipant } = tournamentData;
@@ -71,7 +73,7 @@ const UseTeamModal = (tournamentData: any) => {
     handleRemove,
     handleSaveTeam,
     handleSearchMember,
-  } = UseCreateNewTeam(user?.profile, team_size);
+  } = UseCreateNewTeam(user?.profile, team_size, tournamentId);
 
   const { url, inputKey, handleFileInput } = UseUploadAvatar(
     handleChangeAvatar,
@@ -98,7 +100,7 @@ const UseTeamModal = (tournamentData: any) => {
 
   const checkEmptyUserId = checkEmptyArrayValue(
     selectedTeam?.team || [],
-    "game_member_id"
+    "id_in_game"
   );
   const checkEmptyPrize = checkEmptyArrayValue(
     selectedTeam?.team || [],
@@ -123,7 +125,9 @@ const UseTeamModal = (tournamentData: any) => {
   };
 
   const handleSelectTeam = (team: MyTeamType) => {
-    const checkOverSize = (team.team?.length || 0) > team_size;
+    const validMember = team.team?.filter(item => !!item.is_valid);
+    const checkOverSize = (validMember?.length || 0) > team_size;
+    const leader = team.team?.find(item => item.is_leader);
     setStep("step-2");
     setSelectedTeam({
       ...team!,
@@ -137,14 +141,16 @@ const UseTeamModal = (tournamentData: any) => {
                 is_leader: true,
                 user_name: user?.profile?.user_name || "",
                 prize: 100,
+                id_in_game: leader?.id_in_game,
+                avatar_in_game: leader?.avatar_in_game
               } as any,
             ]
-          : team?.team,
+          : validMember,
         true
       ),
     });
 
-    setDraftSelectedTeam(team);
+    setDraftSelectedTeam({...team, team: dataTeam(validMember)});
     setErrorTour({} as any);
     setErrorPassword("");
   };
@@ -152,7 +158,7 @@ const UseTeamModal = (tournamentData: any) => {
   const handleSetFormData = (team: Item[]) => {
     setSelectedTeam({ ...selectedTeam!, team: dataTeam(team) });
 
-    const checkEmptyUserId = checkEmptyArrayValue(team, "game_member_id");
+    const checkEmptyUserId = checkEmptyArrayValue(team, "id_in_game");
     const checkEmptyPrize = checkEmptyArrayValue(team, "prize");
     const checkTotalPrize = checkTotalPercent(team, "prize");
 
@@ -204,7 +210,7 @@ const UseTeamModal = (tournamentData: any) => {
       setErrorPassword("");
       setLoading(true);
       const convertTeamMember = selectedTeam?.team?.map((member) => ({
-        id_in_game: member.game_member_id,
+        id_in_game: member.id_in_game,
         is_leader: member.is_leader,
         user_id: member.user_id,
         prize_alloc: member.prize,
@@ -409,13 +415,13 @@ const UseTeamModal = (tournamentData: any) => {
             </div>
             <div className={s.teamListChoosGame}>
               {teamList?.map((team, i) => (
-                <TeamSelect
-                  key={i}
-                  team={team}
-                  isValid={team.team?.length! >= team_size}
-                  onSelect={() => handleSelectTeam(team)}
-                />
-              ))}
+                  <TeamSelect
+                    key={i}
+                    team={team}
+                    team_size={team_size}
+                    onSelect={() => handleSelectTeam(team)}
+                  />
+                ))}
             </div>
           </div>
         ),
@@ -429,6 +435,7 @@ const UseTeamModal = (tournamentData: any) => {
         component: selectedTeam ? (
           <TeamPrizing
             errorPassword={errorPassword}
+            requireConnectGame={require_connect_game}
             loadingJoin={loading}
             isSolo={isSoloVersion}
             error={errorTour}

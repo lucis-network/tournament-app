@@ -1,8 +1,9 @@
-import {Button, Col, Row} from "antd";
+import { Button, Col, Row } from "antd";
 import Link from "next/link";
 import s from "./Footer.module.sass";
 import React from "react";
 import ButtonWrapper from "../../common/button/Button";
+import { KButton } from "../common/button";
 
 type Props = {};
 export default function Footer(props: Props) {
@@ -10,22 +11,46 @@ export default function Footer(props: Props) {
     <section className={`${s.container_footer}`}>
       <div className={`lucis-container-2`}>
         <div className={s.logo}>
-          <img src="/assets/home/logo.png" alt=""/>
+          <img src="/assets/home/logo.png" alt="" />
         </div>
         <Row>
           <Col xs={12} md={8} xl={0} className={s.logoTab}>
-            <img src="/assets/home/logo.png" alt=""/>
+            <img src="/assets/home/logo.png" alt="" />
           </Col>
           <Col xs={0} xl={16}>
             <ul className={s.block_item_menu}>
-              <li><Link href="https://lucis.network">Home</Link></li>
-              <li><Link href="/">Playcore</Link></li>
-              <li><Link href="/arena">Arena</Link></li>
-              <li><Link href="/playcore/raffles"><a>Raffles</a></Link></li>
-              <li><Link href="/" passHref><a style={{opacity: 0.6, cursor: "not-allowed"}}>Ranking</a></Link></li>
-              <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>Scholarship</a></li>
-              <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>SocialFi</a></li>
-              <li><a style={{opacity: 0.6, cursor: "not-allowed"}}>Marketplace</a></li>
+              <li>
+                <Link href="https://lucis.network">Home</Link>
+              </li>
+              <li>
+                <Link href="/">Playcore</Link>
+              </li>
+              <li>
+                <Link href="/arena">Arena</Link>
+              </li>
+              <li>
+                <Link href="/playcore/raffles">
+                  <a>Raffles</a>
+                </Link>
+              </li>
+              <li>
+                <Link href="/" passHref>
+                  <a style={{ opacity: 0.6, cursor: "not-allowed" }}>Ranking</a>
+                </Link>
+              </li>
+              <li>
+                <a style={{ opacity: 0.6, cursor: "not-allowed" }}>
+                  Scholarship
+                </a>
+              </li>
+              <li>
+                <a style={{ opacity: 0.6, cursor: "not-allowed" }}>SocialFi</a>
+              </li>
+              <li>
+                <a style={{ opacity: 0.6, cursor: "not-allowed" }}>
+                  Marketplace
+                </a>
+              </li>
             </ul>
           </Col>
 
@@ -38,7 +63,7 @@ export default function Footer(props: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/assets/footer/tiktok.svg" alt=""/>
+                    <img src="/assets/footer/tiktok.svg" alt="" />
                   </a>
                 </div>
                 <div className={s.ic_item}>
@@ -47,7 +72,7 @@ export default function Footer(props: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/assets/footer/facebook.svg" alt=""/>
+                    <img src="/assets/footer/facebook.svg" alt="" />
                   </a>
                 </div>
                 <div className={s.ic_item}>
@@ -56,7 +81,7 @@ export default function Footer(props: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/assets/footer/youtub.svg" alt=""/>
+                    <img src="/assets/footer/youtub.svg" alt="" />
                   </a>
                 </div>
                 <div className={s.ic_item}>
@@ -65,7 +90,7 @@ export default function Footer(props: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/assets/footer/twitter.svg" alt=""/>
+                    <img src="/assets/footer/twitter.svg" alt="" />
                   </a>
                 </div>
                 <div className={s.ic_item}>
@@ -74,15 +99,18 @@ export default function Footer(props: Props) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <img src="/assets/footer/discord.svg" alt=""/>
+                    <img src="/assets/footer/discord.svg" alt="" />
                   </a>
                 </div>
               </div>
               <div className={s.btn_help}>
-                <a href={`https://discord.com/invite/kdDUjJcSF5`}
-                   target="_blank"
-                   rel="noopener noreferrer">
-                  <ButtonWrapper width={200}>Need Help ?</ButtonWrapper>
+                <a
+                  href={`https://discord.com/invite/kdDUjJcSF5`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {/* <ButtonWrapper width={200}>Need Help ?</ButtonWrapper> */}
+                  <KButton title="Need Help ?" width="200px" fontSize="16px" />
                 </a>
               </div>
             </div>

@@ -7,6 +7,7 @@ import Img from "components/ui/common/Img";
 import {randomPick} from "../../../utils/Array";
 import s from './nft-preview.module.sass'
 import { isClient } from "../../../utils/Env";
+import { useRouter } from 'next/router';
 
 const { Option } = Select;
 
@@ -67,6 +68,7 @@ const NftPreviewPage = () => {
     weapon: _weapon,
     halo: _halo,
     haloLv: _haloLv,
+    rarityLv: _rarityLv,
   } = queryParams;
 
 
@@ -77,6 +79,7 @@ const NftPreviewPage = () => {
   const [weapon, setWeapon] = useState(_weapon ?? 'mouse');
   const [halo, setHalo] = useState(_halo ?? 'water');
   const [haloLv, setHaloLv] = useState(_haloLv ?? 1);
+  const [rarityLv, setRarityLv] = useState(_rarityLv ?? 1);
 
   const [bg, setBg] = useState('black');
   const [nftImg, setNftImg] = useState('');
@@ -87,9 +90,10 @@ const NftPreviewPage = () => {
   const defaultImgUri = '/assets/Raffles/imageReward.png';
   const trelloLink = '<a href="https://trello.com/c/5K2jvFzl/411-gh%C3%A9p-nft-ch%C6%B0a-chu%E1%BA%A9n" target="_blank" rel="noreferrer">Trello Check list này</a>';
 
-  useEffect(() => {
-    // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
-    const queryString = qs.stringify({
+  const router = useRouter();
+
+  const getMixerQueryStr = useCallback(() => {
+    return {
       face: character,
       clother: cloth,
       hat,
@@ -97,8 +101,36 @@ const NftPreviewPage = () => {
       weapon,
       halo,
       halo_level: haloLv,
-    })
-    const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + queryString;
+      level: rarityLv,
+    }
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv])
+
+  const getAppQueryStr = useCallback(() => {
+    return {
+      character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv
+    } as Record<string, string>
+  }, [character, cloth, hat, glasses, weapon, halo, haloLv, rarityLv])
+
+  const aliasToLinkWithoutRouterChange = useCallback(() => {
+    const newParams: Record<string, string> = getAppQueryStr();
+    console.log('{aliasToLinkWithoutRouterChange.replace} newParams: ', newParams);
+
+    const url = new URL(location.href);
+
+    const keys = Object.keys(newParams);
+    for (let i = 0, c = keys.length; i < c; i++) {
+      const k = keys[i];
+      const v = newParams[k];
+      url.searchParams.set(k, v);
+    }
+
+    history.pushState(null, '', url);
+  }, [getAppQueryStr]);
+
+  useEffect(() => {
+    // weapon=pig&hat=mouse&clother=mouse&face=pig&glass=mouse
+    const newQueryString = getMixerQueryStr();
+    const genNftUrl = 'https://nft-img-mixer.lucis.network/v1/image/mixin?' + qs.stringify(newQueryString);
     console.log('{genNft} genNftUrl: ', genNftUrl);
 
     setGenerating(true);
@@ -106,6 +138,7 @@ const NftPreviewPage = () => {
       .then((res) => {
         console.log('{genNft} res: ', res);
         setGenerating(false);
+        aliasToLinkWithoutRouterChange();
 
         if (res.status !== 200) {
           setNftImg(defaultImgUri)
@@ -118,7 +151,7 @@ const NftPreviewPage = () => {
         setNftImg(baseImgUri + img)
         setErrorMsg("")
       });
-  }, [character, cloth, hat, glasses, weapon, halo, haloLv])
+  }, [getMixerQueryStr, aliasToLinkWithoutRouterChange])
 
   const randomNft = useCallback(() => {
     setCharacter(randomPick(characters));
@@ -128,19 +161,21 @@ const NftPreviewPage = () => {
     setWeapon(randomPick(characters));
     setHalo(randomPick(halos));
     setHaloLv(randomPick([1,2,3,4,5,6]));
+    setRarityLv(randomPick([1,2,3,4,5,6]));
   }, [
     setCharacter,
     setCloth,
     setHat,
     setGlasses,
     setWeapon,
+    setHalo,
+    setHaloLv,
+    setRarityLv,
   ])
 
   const copyLink = useCallback(() => {
     const baseLink = 'https://play-beta.lucis.network/playcore/nft-preview';
-    const nftParams = qs.stringify({
-      character, cloth, hat, glasses, weapon, halo, haloLv
-    });
+    const nftParams = qs.stringify(getAppQueryStr());
     const nftPreviewLink = baseLink + '?' +  nftParams;
 
     navigator.clipboard.writeText(nftPreviewLink);
@@ -149,7 +184,7 @@ const NftPreviewPage = () => {
     setTimeout(() => {
       setCpBtnText('Copy Link');
     }, 3000)
-  }, [character, cloth, hat, glasses, weapon, halo, haloLv, setCpBtnText])
+  }, [getAppQueryStr, setCpBtnText])
 
   return (
     <P2EWrapper>
@@ -159,7 +194,6 @@ const NftPreviewPage = () => {
         display: 'flex',
         flexDirection: 'column',
       }}>
-        <h3 style={{color: "white"}}>Select your NFT specs:</h3>
         <Space className={s.nftForm} align={"center"}>
           <div>
             <p>Character</p>
@@ -225,6 +259,15 @@ const NftPreviewPage = () => {
           </div>
 
           <div>
+            <p>Rarity Level</p>
+            <Select style={{ width: 100 }} onChange={setRarityLv} value={rarityLv}>
+              {[1,2,3,4,5,6].map(i => (
+                <Option key={i} value={i}>{i}</Option>
+              ))}
+            </Select>
+          </div>
+
+          <div>
             <p>Background</p>
             <Select style={{ width: 100 }} onChange={setBg} value={bg}>
               {['black', 'white', 'green'].map(i => (
@@ -237,14 +280,18 @@ const NftPreviewPage = () => {
             <p>&nbsp;</p>
             <Button type="primary" onClick={randomNft} loading={generating}>Randomize</Button>
           </div>
-          <div>
-            <p>&nbsp;</p>
-            <Button type="ghost" onClick={copyLink}>{cpBtnText}</Button>
-          </div>
+          {/*<div>*/}
+          {/*  <p>&nbsp;</p>*/}
+          {/*  <Button type="ghost" onClick={copyLink}>{cpBtnText}</Button>*/}
+          {/*</div>*/}
 
         </Space>
 
         <div className={s.previewWrapper}>
+          <div className={s.previewImgC} style={{background: bg,}}>
+            <Img src={nftImg} srcFallback={defaultImgUri} />
+          </div>
+
           {errorMsg
             ? <p className={s.errMsg} dangerouslySetInnerHTML={{__html: errorMsg}} />
             : <p
@@ -252,9 +299,6 @@ const NftPreviewPage = () => {
               dangerouslySetInnerHTML={{__html: 'Nếu thấy ảnh nào bị xấu/lệch/đè layer thì copy link paste vào ' + trelloLink + ' nhá ae!'}}
             />
           }
-          <div className={s.previewImgC} style={{background: bg,}}>
-            <Img src={nftImg} srcFallback={defaultImgUri} />
-          </div>
         </div>
 
       </div>

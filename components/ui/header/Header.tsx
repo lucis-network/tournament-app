@@ -7,7 +7,7 @@ import AuthStore from "components/Auth/AuthStore";
 import User from "components/Auth/components/User";
 import {observer} from "mobx-react-lite";
 import {useWindowSize} from "hooks/useWindowSize";
-import {Button, Col, Row} from "antd";
+import {Col, notification, Row} from "antd";
 import SignupInfoModal from "../../Auth/Login/SignupInfoModal"
 import {isEmpty} from "lodash";
 import LoginBoxStore from "../../Auth/Login/LoginBoxStore";
@@ -16,23 +16,28 @@ import {MenuMobile} from "../common/Menu/MenuMobile";
 import React, {useEffect} from "react";
 import {getLocalAuthInfo} from "components/Auth/AuthLocal";
 import AlertInAppModal from "../../Auth/Login/AlertInAppModal";
-import {useQuery} from "@apollo/client";
-import {GET_STATISTICS} from "../../../hooks/p2e/useP2E";
 import ConnectWalletStore from "../../Auth/ConnectWalletStore";
 import MissionService from "../../service/p2e/MissionService";
 import {currency, fomatNumber, format} from "../../../utils/Number";
 import AuthBoxStore from "../../Auth/components/AuthBoxStore";
 import {AppEmitter} from "../../../services/emitter";
-import AnimatedNumber from "../common/AnimatedNumber/index";
+// import AnimatedNumber from "../common/AnimatedNumber/index";
 import LoginModal from "../../Auth/Login/LoginModal";
+import Notification from "../../Auth/components/notification";
+import {RealtimeService} from "../../service/RealtimeService";
 
 type Props = {
   handleMenuOpen: Function;
 };
 
+let arenaSub: any = null;
+let playcoreSub: any = null;
+let adminSub: any = null;
+
 export default observer(function Header(props: Props) {
   const router = useRouter();
-  const {profile} = AuthStore;
+  const {profile, id} = AuthStore;
+  const [width] = useWindowSize()
   const {address} = ConnectWalletStore;
   const [balance, setBalance] = React.useState<{ lucis_point: number, lucis_token: number }>({
     lucis_point: 0,
@@ -84,6 +89,79 @@ export default observer(function Header(props: Props) {
       listener.remove();
     };
   }, [])
+
+  const displayNotification = (value: any) => {
+    const data = value.data?.pushNotification.new_noti;
+    const countNoti = value.data?.pushNotification.unseen_count;
+
+    AppEmitter.emit("updateNotification", {data, countNotification: countNoti});
+    notification.open({
+      message: data.title,
+      onClick: () => {
+        if (data?.link) {
+          router.push(data.link);
+          AppEmitter.emit("seenNotification", {data});
+        }
+
+      },
+      description: (
+        <div className={s.notificationItemToast}>
+          <img
+            className="mr-2"
+            src={data?.image ?? ""}
+            alt=""
+            onError={(e) => e.currentTarget.src = "/assets/P2E/raffles/defaultAvatar.jpg"}
+          />
+          <div>
+            <p dangerouslySetInnerHTML={{__html: data?.content}}/>
+          </div>
+        </div>
+      ),
+      placement: "bottomRight",
+    });
+  };
+
+
+  useEffect(() => {
+
+    if (id) {
+      const realTimeService = new RealtimeService(id);
+      realTimeService.subscriptionArena().then(res => {
+        arenaSub = res.subscribe({
+          next(value) {
+            displayNotification(value);
+          }
+        })
+      });
+
+      realTimeService.subscriptionP2e().then(res => {
+        playcoreSub = res.subscribe({
+          next(value) {
+            displayNotification(value);
+          }
+        })
+      });
+
+      realTimeService.subscriptionAdmin().then(res => {
+        adminSub = res.subscribe({
+          next(value) {
+            displayNotification(value);
+          }
+        });
+      });
+    } else {
+      // unsubscribe wss
+      adminSub && adminSub.unsubscribe();
+      arenaSub && arenaSub.unsubscribe();
+      playcoreSub && playcoreSub.unsubscribe();
+    }
+
+    return () => {
+      adminSub?.unsubscribe();
+      arenaSub?.unsubscribe();
+      playcoreSub?.unsubscribe();
+    };
+  }, [id]);
 
 
   const animatedNumber = (value: any, decimal: number = 0) => {
@@ -157,6 +235,9 @@ export default observer(function Header(props: Props) {
                         </div>
                       </div>
                       <div className={s.profileBalance}>
+                        <div>
+                          {width > 1024 && id && <Notification userId={id}/>}
+                        </div>
                         {
                           !address ?
                             <div style={{display: "flex", alignItems: "center", marginRight: 8}}>
@@ -207,7 +288,7 @@ export default observer(function Header(props: Props) {
           {/* <InfiniteList /> */}
         </div>
       </div>
-      <MenuMobile balance={balance}/>
+      <MenuMobile id={id} balance={balance}/>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal/>}
       {LoginBoxStore.alertInAppModalVisible && <AlertInAppModal/>}
       <LoginModal />

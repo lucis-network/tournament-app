@@ -158,7 +158,7 @@ const GET_RAFFLE_DETAIL = gql`
       uid
       name
       desc
-      prize_amount
+      amount_of_currency
       winner_total
       valued_at
       img
