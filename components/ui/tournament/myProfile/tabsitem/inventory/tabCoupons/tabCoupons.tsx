@@ -46,24 +46,19 @@ const CouponTabInventory = (props: Props) => {
           />
         </div>
       </div>
-      <div className={s.groupInventory}>
-        <div className={s.listPiecesInventory}>
-          {dataMyInventoryCoupons &&
-            dataMyInventoryCoupons.map((item, index) => (
-              <>
-                <div className={s.rowPieces} key={`${index}${item?.prize_id}`}>
-                  <CouponItem
-                    item={item}
-                    isOwner={isOwner}
-                    refetch={refetchMyInventoryCoupon}
-                  ></CouponItem>
-                </div>
-                {index < dataMyInventoryCoupons.length - 1 && (
-                  <div className={s.cross}></div>
-                )}
-              </>
-            ))}
-        </div>
+      <div className={s.listItemsInventory}>
+        {dataMyInventoryCoupons &&
+          dataMyInventoryCoupons.map((item, index) => (
+            <>
+              <div className={s.item} key={`${index}${item?.prize_id}`}>
+                <CouponItem
+                  item={item}
+                  isOwner={isOwner}
+                  refetch={refetchMyInventoryCoupon}
+                ></CouponItem>
+              </div>
+            </>
+          ))}
       </div>
       {!dataMyInventoryCoupons && <div className={s.emptyItem}>No items</div>}
     </>

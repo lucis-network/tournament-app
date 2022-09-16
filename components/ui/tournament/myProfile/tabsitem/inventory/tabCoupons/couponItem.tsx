@@ -5,6 +5,9 @@ import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass";
 import ButtonWrapper from "../../../../../../common/button/Button";
 import { ApolloQueryResult } from "@apollo/client";
 import { UserInventoryCoupon } from "src/generated/graphql";
+import Link from "next/link";
+import { useCopy } from "hooks/common/useCopy";
+import { KButton } from "components/ui/common/button";
 type Props = {
   item: UserInventoryCoupon;
   isOwner?: boolean;
@@ -14,6 +17,7 @@ type Props = {
 const CouponItem = (props: Props) => {
   const { item, isOwner, refetch } = props;
   const [isShowCode, setShowCode] = useState<boolean>(false);
+  const { isCopied, setCopied, onCopy } = useCopy();
 
   const showCode = () => {
     setShowCode(true);
@@ -46,12 +50,25 @@ const CouponItem = (props: Props) => {
           </div>
           <div className={s.prizeAmount}>
             {isShowCode ? (
-              <div>{item.code}</div>
+              <div style={{ display: "flex" }}>
+                {item.code}
+                <span className={s.iconCopy}>
+                  <img
+                    onClick={() => {
+                      setCopied(true);
+                      onCopy(item.code);
+                    }}
+                    src={
+                      isCopied
+                        ? "/assets/P2E/overview/copied.svg"
+                        : "/assets/P2E/overview/copy-icon.svg"
+                    }
+                  />
+                </span>
+              </div>
             ) : (
               <div>
-                <ButtonWrapper width={80} onClick={showCode}>
-                  Show code
-                </ButtonWrapper>
+                <KButton title="Show code" onClick={showCode} />
               </div>
             )}
           </div>

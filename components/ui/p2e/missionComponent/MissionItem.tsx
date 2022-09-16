@@ -7,6 +7,7 @@ import { handleGraphqlErrors } from "utils/apollo_client";
 import { Game } from "utils/Enum";
 import { CsgoMissionType, PlayerMission } from "src/generated/graphql_p2e";
 import MissionService from "components/service/p2e/MissionService";
+import { KButton } from "components/ui/common/button";
 
 type MissionItemProp = {
   mission: PlayerMission;
@@ -18,12 +19,13 @@ type MissionItemProp = {
 
 const MissionItem = (props: MissionItemProp) => {
   const [loading, setLoading] = useState(false);
-  const [currentMission, setCurrentMission] = useState<PlayerMission>(props.mission);
+  const [currentMission, setCurrentMission] = useState<PlayerMission>(
+    props.mission
+  );
 
   React.useEffect(() => {
     setCurrentMission(props.mission);
-  }, [props.mission])
-
+  }, [props.mission]);
 
   const handleClaimMission = async () => {
     setLoading(true);
@@ -33,7 +35,7 @@ const MissionItem = (props: MissionItemProp) => {
       await MissionService.claimMission(currentMission?.uid);
       let updatedMission: PlayerMission = {
         ...currentMission,
-        is_claim: true
+        is_claim: true,
       };
 
       // if (!props.isDailyMission) {
@@ -56,13 +58,12 @@ const MissionItem = (props: MissionItemProp) => {
       setCurrentMission(updatedMission);
       message.success("Claimed!");
       setLoading(false);
-
     } catch (error: any) {
       setLoading(false);
       handleGraphqlErrors(error, (code) => {
         switch (code) {
           case "INVALID_PLAYER_MISSION_UID":
-            message.error("Invalid mission.")
+            message.error("Invalid mission.");
             return;
           case "NOT_ACHIEVED":
             message.error("You must complete mission.");
@@ -71,32 +72,39 @@ const MissionItem = (props: MissionItemProp) => {
             message.error("You has claimed.");
             return;
           default:
-            message.error("Something was wrong. Please contact to Lucis network for assistance.")
-        };
-      })
+            message.error(
+              "Something was wrong. Please contact to Lucis network for assistance."
+            );
+        }
+      });
     }
-
-
   };
 
   const achieved = currentMission?.achieved;
   const currentPercent =
-    ((achieved as number) / (currentMission?.mission?.goal as unknown as number)) *
+    ((achieved as number) /
+      (currentMission?.mission?.goal as unknown as number)) *
     100;
   const hasDone = currentPercent >= 100;
   let nextDay = new Date();
-  nextDay.setDate(nextDay.getDate() + 1)
+  nextDay.setDate(nextDay.getDate() + 1);
   nextDay.setHours(0, 0, 0);
 
   const finish = hasDone && currentMission?.is_claim;
   return (
-    <div className={s.missionItem} style={
-      finish ?
-        { background: "rgba(50, 110, 123, 0.5)" }
-        : hasDone
-          ? { background: "linear-gradient(270deg, #326E7B 74.38%, rgba(50, 110, 123, 0.2) 99.08%)" }
+    <div
+      className={s.missionItem}
+      style={
+        finish
+          ? { background: "rgba(50, 110, 123, 0.5)" }
+          : hasDone
+          ? {
+              background:
+                "linear-gradient(270deg, #326E7B 74.38%, rgba(50, 110, 123, 0.2) 99.08%)",
+            }
           : {}
-    }>
+      }
+    >
       <Row>
         <Col xs={20} xl={18}>
           <Row className={s.missionInfo}>
@@ -106,33 +114,40 @@ const MissionItem = (props: MissionItemProp) => {
                   src={
                     currentMission?.mission?.img
                       ? currentMission?.mission?.img
-                      : props.currentGame === Game.LOL ? "/assets/P2E/lol-game.svg" : "/assets/P2E/csgo/avatar-mission.png"
+                      : props.currentGame === Game.LOL
+                      ? "/assets/P2E/lol-game.svg"
+                      : "/assets/P2E/csgo/avatar-mission.png"
                   }
-
                   alt=""
                 />
               </div>
               <div className={s.missionTitle}>
                 <h4>{currentMission?.mission?.title}</h4>
 
-                {props.isDailyMission
-                  ? (
-                    <>
-                      <img src="/assets/P2E/csgo/hourglass.png" alt="hourglass" style={{ marginRight: 5 }} />
-                      <span>{moment(nextDay).fromNow().slice(3)} until next mission</span>
-                    </>
-                  )
-                  :
-                  (<div className={s.levelMission}>
+                {props.isDailyMission ? (
+                  <>
+                    <img
+                      src="/assets/P2E/csgo/hourglass.png"
+                      alt="hourglass"
+                      style={{ marginRight: 5 }}
+                    />
+                    <span>
+                      {moment(nextDay).fromNow().slice(3)} until next mission
+                    </span>
+                  </>
+                ) : (
+                  <div className={s.levelMission}>
                     Mission level: {currentMission?.mission?.level?.level}
-                  </div>)
-                }
+                  </div>
+                )}
               </div>
             </Col>
             <Col xl={8} xs={24}>
               <div className={s.missionReward}>
                 <div className={s.rewardItem} style={{ marginRight: 70 }}>
-                  <span className={s.lucisPoint}>+{currentMission?.mission?.level?.lucis_point ?? "--"}</span>
+                  <span className={s.lucisPoint}>
+                    +{currentMission?.mission?.level?.lucis_point ?? "--"}
+                  </span>
                   <img src="/assets/P2E/lucis-point.svg" alt="" />
                 </div>
                 <div className={s.rewardItem}>
@@ -145,42 +160,65 @@ const MissionItem = (props: MissionItemProp) => {
         </Col>
         <Col xs={4} xl={6}>
           <Row gutter={[50, 0]} className={s.missionState}>
-            <Col xl={12} xs={24} className={!hasDone ? s.missionProgress : s.missionProgressFinish} style={finish ? { justifyContent: "center" } : {}}>
+            <Col
+              xl={12}
+              xs={24}
+              className={!hasDone ? s.missionProgress : s.missionProgressFinish}
+              style={finish ? { justifyContent: "center" } : {}}
+            >
               <Progress
                 type="circle"
-                strokeColor={{ '0%': '#1889E4', '100%': '#0BEBD6' }}
+                strokeColor={{ "0%": "#1889E4", "100%": "#0BEBD6" }}
                 width={64}
-                percent={currentPercent} format={() => {
-                  if (currentMission?.mission?.csgo_mission?.type === CsgoMissionType.Kr || currentMission?.mission?.csgo_mission?.type === CsgoMissionType.Kda) {
-                    return `${achieved}`
+                percent={currentPercent}
+                format={() => {
+                  if (
+                    currentMission?.mission?.csgo_mission?.type ===
+                      CsgoMissionType.Kr ||
+                    currentMission?.mission?.csgo_mission?.type ===
+                      CsgoMissionType.Kda
+                  ) {
+                    return `${achieved}`;
                   }
                   if (currentMission?.mission?.goal.length >= 3) {
                     return `${achieved}`;
                   }
-                  return `${achieved}/${currentMission?.mission?.goal}`
-                }
-                } />
+                  return `${achieved}/${currentMission?.mission?.goal}`;
+                }}
+              />
             </Col>
-            <Col xl={12} xs={24} className={s.missionAction} style={finish ? { justifyContent: "center" } : {}}>
-              {finish ?
+            <Col
+              xl={12}
+              xs={24}
+              className={s.missionAction}
+              style={finish ? { justifyContent: "center" } : {}}
+            >
+              {finish ? (
                 <img src="/assets/P2E/csgo/finish.png" alt="" />
-                :
-                <ButtonWrapper
-                  disabled={!hasDone}
-                  onClick={() => handleClaimMission()}
-                  loading={loading}
-                  type="primary"
-                >
-                  Claim
-                </ButtonWrapper>
-              }
+              ) : (
+                // <ButtonWrapper
+                //   disabled={!hasDone}
+                //   onClick={() => handleClaimMission()}
+                //   loading={loading}
+                //   type="primary"
+                // >
+                //   Claim
+                // </ButtonWrapper>
+                <div style={{ marginRight: "16px" }}>
+                  <KButton
+                    title="Claim"
+                    width="88px"
+                    disabled={!hasDone}
+                    onClick={() => handleClaimMission()}
+                    loading={loading}
+                  />
+                </div>
+              )}
             </Col>
           </Row>
         </Col>
       </Row>
-
-
-    </div >
+    </div>
   );
 };
 
