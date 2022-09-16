@@ -47,6 +47,7 @@ export type AuthUserGql = {
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  inventory_coupons?: Maybe<Array<UserInventoryCoupon>>;
   inventory_items?: Maybe<Array<UserInventoryItem>>;
   inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   is_exist_pass?: Maybe<Scalars['Boolean']>;
@@ -943,6 +944,157 @@ export enum CostType {
   LucisToken = 'LUCIS_TOKEN'
 }
 
+export type Coupon = {
+  __typename?: 'Coupon';
+  _count: CouponCount;
+  created_at: Scalars['DateTime'];
+  currency?: Maybe<Currency>;
+  currency_type: CurrrencyType;
+  currency_uid?: Maybe<Scalars['String']>;
+  discount: Scalars['Int'];
+  max_value_off: Scalars['Decimal'];
+  prizes?: Maybe<Array<LuckyChestPrize>>;
+  type: CouponType;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type CouponCount = {
+  __typename?: 'CouponCount';
+  prizes: Scalars['Int'];
+};
+
+export type CouponCreateManyCurrencyInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency_type: CurrrencyType;
+  discount: Scalars['Int'];
+  max_value_off: Scalars['Decimal'];
+  type: CouponType;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type CouponCreateManyCurrencyInputEnvelope = {
+  data: Array<CouponCreateManyCurrencyInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type CouponCreateNestedManyWithoutCurrencyInput = {
+  connect?: InputMaybe<Array<CouponWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<CouponCreateOrConnectWithoutCurrencyInput>>;
+  create?: InputMaybe<Array<CouponCreateWithoutCurrencyInput>>;
+  createMany?: InputMaybe<CouponCreateManyCurrencyInputEnvelope>;
+};
+
+export type CouponCreateNestedOneWithoutPrizesInput = {
+  connect?: InputMaybe<CouponWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<CouponCreateOrConnectWithoutPrizesInput>;
+  create?: InputMaybe<CouponCreateWithoutPrizesInput>;
+};
+
+export type CouponCreateOrConnectWithoutCurrencyInput = {
+  create: CouponCreateWithoutCurrencyInput;
+  where: CouponWhereUniqueInput;
+};
+
+export type CouponCreateOrConnectWithoutPrizesInput = {
+  create: CouponCreateWithoutPrizesInput;
+  where: CouponWhereUniqueInput;
+};
+
+export type CouponCreateWithoutCurrencyInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency_type: CurrrencyType;
+  discount: Scalars['Int'];
+  max_value_off: Scalars['Decimal'];
+  prizes?: InputMaybe<LuckyChestPrizeCreateNestedManyWithoutCouponInput>;
+  type: CouponType;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type CouponCreateWithoutPrizesInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<CurrencyCreateNestedOneWithoutCouponsInput>;
+  currency_type: CurrrencyType;
+  discount: Scalars['Int'];
+  max_value_off: Scalars['Decimal'];
+  type: CouponType;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type CouponTracking = {
+  __typename?: 'CouponTracking';
+  add_information?: Maybe<Scalars['String']>;
+  created_at: Scalars['DateTime'];
+  reference?: Maybe<Scalars['String']>;
+  source: CouponTrackingSource;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user_coupon: UserInventoryCoupon;
+  user_coupon_uid: Scalars['String'];
+  user_id: Scalars['Int'];
+};
+
+export type CouponTrackingCreateManyUser_CouponInput = {
+  add_information?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  reference?: InputMaybe<Scalars['String']>;
+  source: CouponTrackingSource;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type CouponTrackingCreateManyUser_CouponInputEnvelope = {
+  data: Array<CouponTrackingCreateManyUser_CouponInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type CouponTrackingCreateNestedManyWithoutUser_CouponInput = {
+  connect?: InputMaybe<Array<CouponTrackingWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<CouponTrackingCreateOrConnectWithoutUser_CouponInput>>;
+  create?: InputMaybe<Array<CouponTrackingCreateWithoutUser_CouponInput>>;
+  createMany?: InputMaybe<CouponTrackingCreateManyUser_CouponInputEnvelope>;
+};
+
+export type CouponTrackingCreateOrConnectWithoutUser_CouponInput = {
+  create: CouponTrackingCreateWithoutUser_CouponInput;
+  where: CouponTrackingWhereUniqueInput;
+};
+
+export type CouponTrackingCreateWithoutUser_CouponInput = {
+  add_information?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  reference?: InputMaybe<Scalars['String']>;
+  source: CouponTrackingSource;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export enum CouponTrackingSource {
+  Arena = 'Arena',
+  LaunchPad = 'LaunchPad',
+  OtherPlace = 'OtherPlace',
+  PlayCore = 'PlayCore'
+}
+
+export type CouponTrackingWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
+  user_coupon_uid?: InputMaybe<Scalars['String']>;
+};
+
+export enum CouponType {
+  BuyBox = 'BuyBox',
+  Raffle = 'Raffle'
+}
+
+export type CouponWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
+};
+
 export type CreateFavorite = {
   game_uid?: InputMaybe<Array<Scalars['String']>>;
 };
@@ -1087,6 +1239,7 @@ export type Currency = {
   address?: Maybe<Scalars['String']>;
   chain?: Maybe<Chain>;
   chain_symbol?: Maybe<ChainSymbol>;
+  coupons?: Maybe<Array<Coupon>>;
   created_at: Scalars['DateTime'];
   decimals?: Maybe<Scalars['Int']>;
   donateTransactions?: Maybe<Array<DonateTransaction>>;
@@ -1105,11 +1258,18 @@ export type Currency = {
 
 export type CurrencyCount = {
   __typename?: 'CurrencyCount';
+  coupons: Scalars['Int'];
   donateTransactions: Scalars['Int'];
   prize_category: Scalars['Int'];
   sponsorTransactions: Scalars['Int'];
   tournaments: Scalars['Int'];
   withdrawTransactions: Scalars['Int'];
+};
+
+export type CurrencyCreateNestedOneWithoutCouponsInput = {
+  connect?: InputMaybe<CurrencyWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<CurrencyCreateOrConnectWithoutCouponsInput>;
+  create?: InputMaybe<CurrencyCreateWithoutCouponsInput>;
 };
 
 export type CurrencyCreateNestedOneWithoutDonateTransactionsInput = {
@@ -1142,6 +1302,11 @@ export type CurrencyCreateNestedOneWithoutWithdrawTransactionsInput = {
   create?: InputMaybe<CurrencyCreateWithoutWithdrawTransactionsInput>;
 };
 
+export type CurrencyCreateOrConnectWithoutCouponsInput = {
+  create: CurrencyCreateWithoutCouponsInput;
+  where: CurrencyWhereUniqueInput;
+};
+
 export type CurrencyCreateOrConnectWithoutDonateTransactionsInput = {
   create: CurrencyCreateWithoutDonateTransactionsInput;
   where: CurrencyWhereUniqueInput;
@@ -1167,9 +1332,29 @@ export type CurrencyCreateOrConnectWithoutWithdrawTransactionsInput = {
   where: CurrencyWhereUniqueInput;
 };
 
+export type CurrencyCreateWithoutCouponsInput = {
+  address?: InputMaybe<Scalars['String']>;
+  chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  decimals?: InputMaybe<Scalars['Int']>;
+  donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
+  icon?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  owner?: InputMaybe<Scalars['String']>;
+  prize_category?: InputMaybe<PrizeCategoryCreateNestedManyWithoutCurrencyInput>;
+  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutCurrencyInput>;
+  symbol?: InputMaybe<Scalars['String']>;
+  tournaments?: InputMaybe<TournamentCreateNestedManyWithoutCurrencyInput>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  usd_value?: InputMaybe<Scalars['Float']>;
+  withdrawTransactions?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutCurrencyInput>;
+};
+
 export type CurrencyCreateWithoutDonateTransactionsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
+  coupons?: InputMaybe<CouponCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   icon?: InputMaybe<Scalars['String']>;
@@ -1188,6 +1373,7 @@ export type CurrencyCreateWithoutDonateTransactionsInput = {
 export type CurrencyCreateWithoutPrize_CategoryInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
+  coupons?: InputMaybe<CouponCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1206,6 +1392,7 @@ export type CurrencyCreateWithoutPrize_CategoryInput = {
 export type CurrencyCreateWithoutSponsorTransactionsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
+  coupons?: InputMaybe<CouponCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1224,6 +1411,7 @@ export type CurrencyCreateWithoutSponsorTransactionsInput = {
 export type CurrencyCreateWithoutTournamentsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
+  coupons?: InputMaybe<CouponCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1242,6 +1430,7 @@ export type CurrencyCreateWithoutTournamentsInput = {
 export type CurrencyCreateWithoutWithdrawTransactionsInput = {
   address?: InputMaybe<Scalars['String']>;
   chain?: InputMaybe<ChainCreateNestedOneWithoutCurrenciesInput>;
+  coupons?: InputMaybe<CouponCreateNestedManyWithoutCurrencyInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   decimals?: InputMaybe<Scalars['Int']>;
   donateTransactions?: InputMaybe<DonateTransactionCreateNestedManyWithoutCurrencyInput>;
@@ -1261,6 +1450,7 @@ export type CurrencyGql = {
   __typename?: 'CurrencyGql';
   address?: Maybe<Scalars['String']>;
   chain_symbol?: Maybe<ChainSymbol>;
+  coupons?: Maybe<Array<Coupon>>;
   created_at: Scalars['DateTime'];
   decimals?: Maybe<Scalars['Int']>;
   donateTransactions?: Maybe<Array<DonateTransaction>>;
@@ -1532,6 +1722,7 @@ export type GTournament = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -1680,6 +1871,86 @@ export type GameCreateWithoutTournamentsInput = {
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
+export type GameGiftCard = {
+  __typename?: 'GameGiftCard';
+  _count: GameGiftCardCount;
+  code: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  inventory_items?: Maybe<Array<UserInventoryItem>>;
+  is_used?: Maybe<Scalars['Boolean']>;
+  platform: Platform;
+  platform_id: Scalars['Int'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardCount = {
+  __typename?: 'GameGiftCardCount';
+  inventory_items: Scalars['Int'];
+};
+
+export type GameGiftCardCreateManyPlatformInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardCreateManyPlatformInputEnvelope = {
+  data: Array<GameGiftCardCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type GameGiftCardCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<GameGiftCardWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<GameGiftCardCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<GameGiftCardCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<GameGiftCardCreateManyPlatformInputEnvelope>;
+};
+
+export type GameGiftCardCreateNestedOneWithoutInventory_ItemsInput = {
+  connect?: InputMaybe<GameGiftCardWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<GameGiftCardCreateOrConnectWithoutInventory_ItemsInput>;
+  create?: InputMaybe<GameGiftCardCreateWithoutInventory_ItemsInput>;
+};
+
+export type GameGiftCardCreateOrConnectWithoutInventory_ItemsInput = {
+  create: GameGiftCardCreateWithoutInventory_ItemsInput;
+  where: GameGiftCardWhereUniqueInput;
+};
+
+export type GameGiftCardCreateOrConnectWithoutPlatformInput = {
+  create: GameGiftCardCreateWithoutPlatformInput;
+  where: GameGiftCardWhereUniqueInput;
+};
+
+export type GameGiftCardCreateWithoutInventory_ItemsInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  platform: PlatformCreateNestedOneWithoutGift_CardsInput;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardCreateWithoutPlatformInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutGift_CardInput>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  valued_at: Scalars['Decimal'];
+};
+
+export type GameGiftCardWhereUniqueInput = {
+  uid?: InputMaybe<Scalars['String']>;
+};
+
 export type GamePlatform = {
   __typename?: 'GamePlatform';
   _count: GamePlatformCount;
@@ -1779,6 +2050,11 @@ export type GetRefereeInput = {
   name?: InputMaybe<Scalars['String']>;
   page?: InputMaybe<Scalars['Int']>;
 };
+
+export enum InGamePrizeType {
+  GiftCard = 'GiftCard',
+  Skin = 'Skin'
+}
 
 export enum ItemGroup {
   Csgo = 'Csgo',
@@ -2129,12 +2405,15 @@ export type LuckyChestPrize = {
   _count: LuckyChestPrizeCount;
   category?: Maybe<PrizeCategory>;
   category_id?: Maybe<Scalars['Int']>;
+  coupon?: Maybe<Coupon>;
+  coupon_uid?: Maybe<Scalars['String']>;
   created_at: Scalars['DateTime'];
   desc?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   img?: Maybe<Scalars['String']>;
-  inventory_item?: Maybe<Array<UserInventoryItem>>;
-  inventory_piece?: Maybe<Array<UserInventoryPiece>>;
+  inventory_coupons?: Maybe<Array<UserInventoryCoupon>>;
+  inventory_items?: Maybe<Array<UserInventoryItem>>;
+  inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   quantity_in_stock?: Maybe<Scalars['Int']>;
   raffle?: Maybe<Array<Raffle>>;
   rarity?: Maybe<PrizeRarity>;
@@ -2146,13 +2425,15 @@ export type LuckyChestPrize = {
 
 export type LuckyChestPrizeCount = {
   __typename?: 'LuckyChestPrizeCount';
-  inventory_item: Scalars['Int'];
-  inventory_piece: Scalars['Int'];
+  inventory_coupons: Scalars['Int'];
+  inventory_items: Scalars['Int'];
+  inventory_pieces: Scalars['Int'];
   raffle: Scalars['Int'];
   user_prize_history: Scalars['Int'];
 };
 
 export type LuckyChestPrizeCreateManyCategoryInput = {
+  coupon_uid?: InputMaybe<Scalars['String']>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['Int']>;
@@ -2169,6 +2450,24 @@ export type LuckyChestPrizeCreateManyCategoryInputEnvelope = {
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type LuckyChestPrizeCreateManyCouponInput = {
+  category_id?: InputMaybe<Scalars['Int']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  desc?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  img?: InputMaybe<Scalars['String']>;
+  quantity_in_stock?: InputMaybe<Scalars['Int']>;
+  rarity?: InputMaybe<PrizeRarity>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  valued_at?: InputMaybe<Scalars['Decimal']>;
+};
+
+export type LuckyChestPrizeCreateManyCouponInputEnvelope = {
+  data: Array<LuckyChestPrizeCreateManyCouponInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type LuckyChestPrizeCreateNestedManyWithoutCategoryInput = {
   connect?: InputMaybe<Array<LuckyChestPrizeWhereUniqueInput>>;
   connectOrCreate?: InputMaybe<Array<LuckyChestPrizeCreateOrConnectWithoutCategoryInput>>;
@@ -2176,16 +2475,29 @@ export type LuckyChestPrizeCreateNestedManyWithoutCategoryInput = {
   createMany?: InputMaybe<LuckyChestPrizeCreateManyCategoryInputEnvelope>;
 };
 
-export type LuckyChestPrizeCreateNestedOneWithoutInventory_ItemInput = {
-  connect?: InputMaybe<LuckyChestPrizeWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<LuckyChestPrizeCreateOrConnectWithoutInventory_ItemInput>;
-  create?: InputMaybe<LuckyChestPrizeCreateWithoutInventory_ItemInput>;
+export type LuckyChestPrizeCreateNestedManyWithoutCouponInput = {
+  connect?: InputMaybe<Array<LuckyChestPrizeWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<LuckyChestPrizeCreateOrConnectWithoutCouponInput>>;
+  create?: InputMaybe<Array<LuckyChestPrizeCreateWithoutCouponInput>>;
+  createMany?: InputMaybe<LuckyChestPrizeCreateManyCouponInputEnvelope>;
 };
 
-export type LuckyChestPrizeCreateNestedOneWithoutInventory_PieceInput = {
+export type LuckyChestPrizeCreateNestedOneWithoutInventory_CouponsInput = {
   connect?: InputMaybe<LuckyChestPrizeWhereUniqueInput>;
-  connectOrCreate?: InputMaybe<LuckyChestPrizeCreateOrConnectWithoutInventory_PieceInput>;
-  create?: InputMaybe<LuckyChestPrizeCreateWithoutInventory_PieceInput>;
+  connectOrCreate?: InputMaybe<LuckyChestPrizeCreateOrConnectWithoutInventory_CouponsInput>;
+  create?: InputMaybe<LuckyChestPrizeCreateWithoutInventory_CouponsInput>;
+};
+
+export type LuckyChestPrizeCreateNestedOneWithoutInventory_ItemsInput = {
+  connect?: InputMaybe<LuckyChestPrizeWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<LuckyChestPrizeCreateOrConnectWithoutInventory_ItemsInput>;
+  create?: InputMaybe<LuckyChestPrizeCreateWithoutInventory_ItemsInput>;
+};
+
+export type LuckyChestPrizeCreateNestedOneWithoutInventory_PiecesInput = {
+  connect?: InputMaybe<LuckyChestPrizeWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<LuckyChestPrizeCreateOrConnectWithoutInventory_PiecesInput>;
+  create?: InputMaybe<LuckyChestPrizeCreateWithoutInventory_PiecesInput>;
 };
 
 export type LuckyChestPrizeCreateNestedOneWithoutRaffleInput = {
@@ -2205,13 +2517,23 @@ export type LuckyChestPrizeCreateOrConnectWithoutCategoryInput = {
   where: LuckyChestPrizeWhereUniqueInput;
 };
 
-export type LuckyChestPrizeCreateOrConnectWithoutInventory_ItemInput = {
-  create: LuckyChestPrizeCreateWithoutInventory_ItemInput;
+export type LuckyChestPrizeCreateOrConnectWithoutCouponInput = {
+  create: LuckyChestPrizeCreateWithoutCouponInput;
   where: LuckyChestPrizeWhereUniqueInput;
 };
 
-export type LuckyChestPrizeCreateOrConnectWithoutInventory_PieceInput = {
-  create: LuckyChestPrizeCreateWithoutInventory_PieceInput;
+export type LuckyChestPrizeCreateOrConnectWithoutInventory_CouponsInput = {
+  create: LuckyChestPrizeCreateWithoutInventory_CouponsInput;
+  where: LuckyChestPrizeWhereUniqueInput;
+};
+
+export type LuckyChestPrizeCreateOrConnectWithoutInventory_ItemsInput = {
+  create: LuckyChestPrizeCreateWithoutInventory_ItemsInput;
+  where: LuckyChestPrizeWhereUniqueInput;
+};
+
+export type LuckyChestPrizeCreateOrConnectWithoutInventory_PiecesInput = {
+  create: LuckyChestPrizeCreateWithoutInventory_PiecesInput;
   where: LuckyChestPrizeWhereUniqueInput;
 };
 
@@ -2226,11 +2548,13 @@ export type LuckyChestPrizeCreateOrConnectWithoutUser_Prize_HistoryInput = {
 };
 
 export type LuckyChestPrizeCreateWithoutCategoryInput = {
+  coupon?: InputMaybe<CouponCreateNestedOneWithoutPrizesInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
-  inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
-  inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutPrizeInput>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
+  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -2240,12 +2564,14 @@ export type LuckyChestPrizeCreateWithoutCategoryInput = {
   valued_at?: InputMaybe<Scalars['Decimal']>;
 };
 
-export type LuckyChestPrizeCreateWithoutInventory_ItemInput = {
+export type LuckyChestPrizeCreateWithoutCouponInput = {
   category?: InputMaybe<PrizeCategoryCreateNestedOneWithoutPrizeInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
-  inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutPrizeInput>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
+  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -2255,12 +2581,48 @@ export type LuckyChestPrizeCreateWithoutInventory_ItemInput = {
   valued_at?: InputMaybe<Scalars['Decimal']>;
 };
 
-export type LuckyChestPrizeCreateWithoutInventory_PieceInput = {
+export type LuckyChestPrizeCreateWithoutInventory_CouponsInput = {
   category?: InputMaybe<PrizeCategoryCreateNestedOneWithoutPrizeInput>;
+  coupon?: InputMaybe<CouponCreateNestedOneWithoutPrizesInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
-  inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
+  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
+  quantity_in_stock?: InputMaybe<Scalars['Int']>;
+  raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
+  rarity?: InputMaybe<PrizeRarity>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_prize_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutPrizeInput>;
+  valued_at?: InputMaybe<Scalars['Decimal']>;
+};
+
+export type LuckyChestPrizeCreateWithoutInventory_ItemsInput = {
+  category?: InputMaybe<PrizeCategoryCreateNestedOneWithoutPrizeInput>;
+  coupon?: InputMaybe<CouponCreateNestedOneWithoutPrizesInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  desc?: InputMaybe<Scalars['String']>;
+  img?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutPrizeInput>;
+  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
+  quantity_in_stock?: InputMaybe<Scalars['Int']>;
+  raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
+  rarity?: InputMaybe<PrizeRarity>;
+  title?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_prize_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutPrizeInput>;
+  valued_at?: InputMaybe<Scalars['Decimal']>;
+};
+
+export type LuckyChestPrizeCreateWithoutInventory_PiecesInput = {
+  category?: InputMaybe<PrizeCategoryCreateNestedOneWithoutPrizeInput>;
+  coupon?: InputMaybe<CouponCreateNestedOneWithoutPrizesInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  desc?: InputMaybe<Scalars['String']>;
+  img?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutPrizeInput>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -2272,11 +2634,13 @@ export type LuckyChestPrizeCreateWithoutInventory_PieceInput = {
 
 export type LuckyChestPrizeCreateWithoutRaffleInput = {
   category?: InputMaybe<PrizeCategoryCreateNestedOneWithoutPrizeInput>;
+  coupon?: InputMaybe<CouponCreateNestedOneWithoutPrizesInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
-  inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
-  inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutPrizeInput>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
+  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   rarity?: InputMaybe<PrizeRarity>;
   title?: InputMaybe<Scalars['String']>;
@@ -2287,11 +2651,13 @@ export type LuckyChestPrizeCreateWithoutRaffleInput = {
 
 export type LuckyChestPrizeCreateWithoutUser_Prize_HistoryInput = {
   category?: InputMaybe<PrizeCategoryCreateNestedOneWithoutPrizeInput>;
+  coupon?: InputMaybe<CouponCreateNestedOneWithoutPrizesInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
   desc?: InputMaybe<Scalars['String']>;
   img?: InputMaybe<Scalars['String']>;
-  inventory_item?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
-  inventory_piece?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutPrizeInput>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutPrizeInput>;
+  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutPrizeInput>;
   quantity_in_stock?: InputMaybe<Scalars['Int']>;
   raffle?: InputMaybe<RaffleCreateNestedManyWithoutPrizeInput>;
   rarity?: InputMaybe<PrizeRarity>;
@@ -2319,8 +2685,12 @@ export type LuckyChestWhereUniqueInput = {
 export type Member = {
   __typename?: 'Member';
   avatar?: Maybe<Scalars['String']>;
+  avatar_in_game?: Maybe<Scalars['String']>;
   display_name?: Maybe<Scalars['String']>;
+  id_in_game?: Maybe<Scalars['String']>;
   is_leader?: Maybe<Scalars['Boolean']>;
+  is_valid?: Maybe<Scalars['Boolean']>;
+  tournament_list?: Maybe<Array<Scalars['String']>>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -2921,8 +3291,10 @@ export type Platform = {
   accounts?: Maybe<Array<PlatformAccount>>;
   created_at: Scalars['DateTime'];
   game?: Maybe<Array<GamePlatform>>;
+  gift_cards?: Maybe<Array<GameGiftCard>>;
   id: Scalars['ID'];
   name: Scalars['String'];
+  prize_categories?: Maybe<Array<PrizeCategory>>;
   updated_at: Scalars['DateTime'];
 };
 
@@ -3071,6 +3443,8 @@ export type PlatformCount = {
   __typename?: 'PlatformCount';
   accounts: Scalars['Int'];
   game: Scalars['Int'];
+  gift_cards: Scalars['Int'];
+  prize_categories: Scalars['Int'];
 };
 
 export type PlatformCreateNestedOneWithoutAccountsInput = {
@@ -3085,6 +3459,18 @@ export type PlatformCreateNestedOneWithoutGameInput = {
   create?: InputMaybe<PlatformCreateWithoutGameInput>;
 };
 
+export type PlatformCreateNestedOneWithoutGift_CardsInput = {
+  connect?: InputMaybe<PlatformWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlatformCreateOrConnectWithoutGift_CardsInput>;
+  create?: InputMaybe<PlatformCreateWithoutGift_CardsInput>;
+};
+
+export type PlatformCreateNestedOneWithoutPrize_CategoriesInput = {
+  connect?: InputMaybe<PlatformWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<PlatformCreateOrConnectWithoutPrize_CategoriesInput>;
+  create?: InputMaybe<PlatformCreateWithoutPrize_CategoriesInput>;
+};
+
 export type PlatformCreateOrConnectWithoutAccountsInput = {
   create: PlatformCreateWithoutAccountsInput;
   where: PlatformWhereUniqueInput;
@@ -3095,16 +3481,48 @@ export type PlatformCreateOrConnectWithoutGameInput = {
   where: PlatformWhereUniqueInput;
 };
 
+export type PlatformCreateOrConnectWithoutGift_CardsInput = {
+  create: PlatformCreateWithoutGift_CardsInput;
+  where: PlatformWhereUniqueInput;
+};
+
+export type PlatformCreateOrConnectWithoutPrize_CategoriesInput = {
+  create: PlatformCreateWithoutPrize_CategoriesInput;
+  where: PlatformWhereUniqueInput;
+};
+
 export type PlatformCreateWithoutAccountsInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   game?: InputMaybe<GamePlatformCreateNestedManyWithoutPlatformInput>;
+  gift_cards?: InputMaybe<GameGiftCardCreateNestedManyWithoutPlatformInput>;
   name: Scalars['String'];
+  prize_categories?: InputMaybe<PrizeCategoryCreateNestedManyWithoutPlatformInput>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
 
 export type PlatformCreateWithoutGameInput = {
   accounts?: InputMaybe<PlatformAccountCreateNestedManyWithoutPlatformInput>;
   created_at?: InputMaybe<Scalars['DateTime']>;
+  gift_cards?: InputMaybe<GameGiftCardCreateNestedManyWithoutPlatformInput>;
+  name: Scalars['String'];
+  prize_categories?: InputMaybe<PrizeCategoryCreateNestedManyWithoutPlatformInput>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlatformCreateWithoutGift_CardsInput = {
+  accounts?: InputMaybe<PlatformAccountCreateNestedManyWithoutPlatformInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game?: InputMaybe<GamePlatformCreateNestedManyWithoutPlatformInput>;
+  name: Scalars['String'];
+  prize_categories?: InputMaybe<PrizeCategoryCreateNestedManyWithoutPlatformInput>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PlatformCreateWithoutPrize_CategoriesInput = {
+  accounts?: InputMaybe<PlatformAccountCreateNestedManyWithoutPlatformInput>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  game?: InputMaybe<GamePlatformCreateNestedManyWithoutPlatformInput>;
+  gift_cards?: InputMaybe<GameGiftCardCreateNestedManyWithoutPlatformInput>;
   name: Scalars['String'];
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3891,8 +4309,11 @@ export type PrizeCategory = {
   currency_type?: Maybe<CurrrencyType>;
   currency_uid?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  in_game_prize_type?: Maybe<InGamePrizeType>;
   item_group?: Maybe<ItemGroup>;
   piece_group?: Maybe<Scalars['String']>;
+  platform?: Maybe<Platform>;
+  platform_id?: Maybe<Scalars['Int']>;
   prize?: Maybe<Array<LuckyChestPrize>>;
   prize_type?: Maybe<Scalars['String']>;
   updated_at: Scalars['DateTime'];
@@ -3907,8 +4328,10 @@ export type PrizeCategoryCreateManyCurrencyInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_type?: InputMaybe<CurrrencyType>;
   id?: InputMaybe<Scalars['Int']>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
   item_group?: InputMaybe<ItemGroup>;
   piece_group?: InputMaybe<Scalars['String']>;
+  platform_id?: InputMaybe<Scalars['Int']>;
   prize_type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -3918,11 +4341,35 @@ export type PrizeCategoryCreateManyCurrencyInputEnvelope = {
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
 };
 
+export type PrizeCategoryCreateManyPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency_type?: InputMaybe<CurrrencyType>;
+  currency_uid?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
+  item_group?: InputMaybe<ItemGroup>;
+  piece_group?: InputMaybe<Scalars['String']>;
+  prize_type?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PrizeCategoryCreateManyPlatformInputEnvelope = {
+  data: Array<PrizeCategoryCreateManyPlatformInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type PrizeCategoryCreateNestedManyWithoutCurrencyInput = {
   connect?: InputMaybe<Array<PrizeCategoryWhereUniqueInput>>;
   connectOrCreate?: InputMaybe<Array<PrizeCategoryCreateOrConnectWithoutCurrencyInput>>;
   create?: InputMaybe<Array<PrizeCategoryCreateWithoutCurrencyInput>>;
   createMany?: InputMaybe<PrizeCategoryCreateManyCurrencyInputEnvelope>;
+};
+
+export type PrizeCategoryCreateNestedManyWithoutPlatformInput = {
+  connect?: InputMaybe<Array<PrizeCategoryWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<PrizeCategoryCreateOrConnectWithoutPlatformInput>>;
+  create?: InputMaybe<Array<PrizeCategoryCreateWithoutPlatformInput>>;
+  createMany?: InputMaybe<PrizeCategoryCreateManyPlatformInputEnvelope>;
 };
 
 export type PrizeCategoryCreateNestedOneWithoutPrizeInput = {
@@ -3936,6 +4383,11 @@ export type PrizeCategoryCreateOrConnectWithoutCurrencyInput = {
   where: PrizeCategoryWhereUniqueInput;
 };
 
+export type PrizeCategoryCreateOrConnectWithoutPlatformInput = {
+  create: PrizeCategoryCreateWithoutPlatformInput;
+  where: PrizeCategoryWhereUniqueInput;
+};
+
 export type PrizeCategoryCreateOrConnectWithoutPrizeInput = {
   create: PrizeCategoryCreateWithoutPrizeInput;
   where: PrizeCategoryWhereUniqueInput;
@@ -3944,6 +4396,20 @@ export type PrizeCategoryCreateOrConnectWithoutPrizeInput = {
 export type PrizeCategoryCreateWithoutCurrencyInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency_type?: InputMaybe<CurrrencyType>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
+  item_group?: InputMaybe<ItemGroup>;
+  piece_group?: InputMaybe<Scalars['String']>;
+  platform?: InputMaybe<PlatformCreateNestedOneWithoutPrize_CategoriesInput>;
+  prize?: InputMaybe<LuckyChestPrizeCreateNestedManyWithoutCategoryInput>;
+  prize_type?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type PrizeCategoryCreateWithoutPlatformInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  currency?: InputMaybe<CurrencyCreateNestedOneWithoutPrize_CategoryInput>;
+  currency_type?: InputMaybe<CurrrencyType>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
   item_group?: InputMaybe<ItemGroup>;
   piece_group?: InputMaybe<Scalars['String']>;
   prize?: InputMaybe<LuckyChestPrizeCreateNestedManyWithoutCategoryInput>;
@@ -3955,8 +4421,10 @@ export type PrizeCategoryCreateWithoutPrizeInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
   currency?: InputMaybe<CurrencyCreateNestedOneWithoutPrize_CategoryInput>;
   currency_type?: InputMaybe<CurrrencyType>;
+  in_game_prize_type?: InputMaybe<InGamePrizeType>;
   item_group?: InputMaybe<ItemGroup>;
   piece_group?: InputMaybe<Scalars['String']>;
+  platform?: InputMaybe<PlatformCreateNestedOneWithoutPrize_CategoriesInput>;
   prize_type?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
 };
@@ -4049,6 +4517,7 @@ export type Query = {
   getUserProfile?: Maybe<UserGraphql>;
   isCheckInTournament?: Maybe<Scalars['Boolean']>;
   isConfirmTournamentResult?: Maybe<Scalars['Boolean']>;
+  isConnectGame?: Maybe<Scalars['Boolean']>;
   isJoinedTournament?: Maybe<Scalars['Boolean']>;
   me?: Maybe<UserGraphql>;
   regions?: Maybe<Array<Region>>;
@@ -4112,6 +4581,7 @@ export type QueryGetJoinedTournamentArgs = {
 
 
 export type QueryGetMyTeamArgs = {
+  tournament_uid: Scalars['String'];
   user_id: Scalars['String'];
 };
 
@@ -4215,6 +4685,12 @@ export type QueryIsCheckInTournamentArgs = {
 
 export type QueryIsConfirmTournamentResultArgs = {
   tournament_uid: Scalars['String'];
+};
+
+
+export type QueryIsConnectGameArgs = {
+  tournament_uid: Scalars['String'];
+  user_id: Scalars['Float'];
 };
 
 
@@ -5035,6 +5511,7 @@ export type TTournament = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -5332,6 +5809,7 @@ export type Tournament = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   regions?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -5385,6 +5863,7 @@ export type TournamentCreateInputGql = {
   prize_allocation: Array<PrizeAllocation>;
   referees?: InputMaybe<Array<Scalars['Int']>>;
   regions?: InputMaybe<Array<Scalars['String']>>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rounds: Array<BracketRoundCreateInputGql>;
   rules?: InputMaybe<Scalars['String']>;
   sponsor_slots: Array<SponsorSlotCreateInputGql>;
@@ -5414,6 +5893,7 @@ export type TournamentCreateManyCurrencyInput = {
   prize_allocation: Scalars['JSON'];
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -5447,6 +5927,7 @@ export type TournamentCreateManyGameInput = {
   prize_allocation: Scalars['JSON'];
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -5481,6 +5962,7 @@ export type TournamentCreateManyUserInput = {
   prize_allocation: Scalars['JSON'];
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -5646,6 +6128,7 @@ export type TournamentCreateWithoutBracketsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5687,6 +6170,7 @@ export type TournamentCreateWithoutClaim_TransactionsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5728,6 +6212,7 @@ export type TournamentCreateWithoutCurrencyInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5769,6 +6254,7 @@ export type TournamentCreateWithoutDonate_TransactionsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5810,6 +6296,7 @@ export type TournamentCreateWithoutGameInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5851,6 +6338,7 @@ export type TournamentCreateWithoutLeader_BoardInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5892,6 +6380,7 @@ export type TournamentCreateWithoutPlayTeamsInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5933,6 +6422,7 @@ export type TournamentCreateWithoutReactionInput = {
   ranks?: InputMaybe<TournamentRankCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -5975,6 +6465,7 @@ export type TournamentCreateWithoutSponsorSlotInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<TournamentStatus>;
@@ -6016,6 +6507,7 @@ export type TournamentCreateWithoutTournament_SubscribesInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -6057,6 +6549,7 @@ export type TournamentCreateWithoutUserInput = {
   reaction?: InputMaybe<ReactionCreateNestedManyWithoutTournamentInput>;
   referees?: InputMaybe<Scalars['String']>;
   regions?: InputMaybe<Scalars['String']>;
+  require_connect_game?: InputMaybe<Scalars['Boolean']>;
   rules?: InputMaybe<Scalars['String']>;
   sponsorSlot?: InputMaybe<SponsorSlotCreateNestedManyWithoutTournamentInput>;
   spotlight_position?: InputMaybe<Scalars['Int']>;
@@ -6120,6 +6613,8 @@ export type TournamentDepositWhereUniqueInput = {
 export type TournamentFilterInput = {
   bracket?: InputMaybe<GBracketType>;
   game_uid?: InputMaybe<Scalars['String']>;
+  limit?: InputMaybe<Scalars['Int']>;
+  page?: InputMaybe<Scalars['Int']>;
   /** ASC OR DESC */
   prize_pool?: InputMaybe<SortType>;
   size?: InputMaybe<Scalars['String']>;
@@ -6158,6 +6653,7 @@ export type TournamentGql = {
   reaction?: Maybe<Array<Reaction>>;
   referees?: Maybe<Scalars['String']>;
   region?: Maybe<Scalars['String']>;
+  require_connect_game: Scalars['Boolean'];
   rules?: Maybe<Scalars['String']>;
   sponsorSlot?: Maybe<Array<SponsorSlot>>;
   spotlight_position?: Maybe<Scalars['Int']>;
@@ -6453,6 +6949,7 @@ export type User = {
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  inventory_coupons?: Maybe<Array<UserInventoryCoupon>>;
   inventory_items?: Maybe<Array<UserInventoryItem>>;
   inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
@@ -6484,6 +6981,7 @@ export type UserCount = {
   dailyMission: Scalars['Int'];
   daily_history: Scalars['Int'];
   favorite_game: Scalars['Int'];
+  inventory_coupons: Scalars['Int'];
   inventory_items: Scalars['Int'];
   inventory_pieces: Scalars['Int'];
   leader_board: Scalars['Int'];
@@ -6522,6 +7020,12 @@ export type UserCreateNestedOneWithoutFavorite_GameInput = {
   connect?: InputMaybe<UserWhereUniqueInput>;
   connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutFavorite_GameInput>;
   create?: InputMaybe<UserCreateWithoutFavorite_GameInput>;
+};
+
+export type UserCreateNestedOneWithoutInventory_CouponsInput = {
+  connect?: InputMaybe<UserWhereUniqueInput>;
+  connectOrCreate?: InputMaybe<UserCreateOrConnectWithoutInventory_CouponsInput>;
+  create?: InputMaybe<UserCreateWithoutInventory_CouponsInput>;
 };
 
 export type UserCreateNestedOneWithoutInventory_ItemsInput = {
@@ -6622,6 +7126,11 @@ export type UserCreateOrConnectWithoutFavorite_GameInput = {
   where: UserWhereUniqueInput;
 };
 
+export type UserCreateOrConnectWithoutInventory_CouponsInput = {
+  create: UserCreateWithoutInventory_CouponsInput;
+  where: UserWhereUniqueInput;
+};
+
 export type UserCreateOrConnectWithoutInventory_ItemsInput = {
   create: UserCreateWithoutInventory_ItemsInput;
   where: UserWhereUniqueInput;
@@ -6699,6 +7208,7 @@ export type UserCreateWithoutClaim_TournamentInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -6734,6 +7244,7 @@ export type UserCreateWithoutDailyMissionInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -6769,6 +7280,7 @@ export type UserCreateWithoutDaily_HistoryInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -6803,6 +7315,43 @@ export type UserCreateWithoutFavorite_GameInput = {
   daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
   email?: InputMaybe<Scalars['String']>;
   facebook_id?: InputMaybe<Scalars['String']>;
+  google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
+  inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
+  inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
+  leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
+  luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
+  notification?: InputMaybe<NotificationCreateNestedManyWithoutUserInput>;
+  password?: InputMaybe<Scalars['String']>;
+  platform_account?: InputMaybe<PlatformAccountCreateNestedManyWithoutUserInput>;
+  platform_uid?: InputMaybe<Scalars['String']>;
+  playTeamMembers?: InputMaybe<PlayTeamMemberCreateNestedManyWithoutUserInput>;
+  profile?: InputMaybe<UserProfileCreateNestedOneWithoutUserInput>;
+  reaction?: InputMaybe<ReactionCreateNestedManyWithoutUserInput>;
+  ref_code?: InputMaybe<Scalars['String']>;
+  role?: InputMaybe<UserRole>;
+  sponsorTransactions?: InputMaybe<SponsorTransactionCreateNestedManyWithoutUserInput>;
+  status?: InputMaybe<UserStatus>;
+  teamMembers?: InputMaybe<TeamMemberCreateNestedManyWithoutUserInput>;
+  tournament?: InputMaybe<TournamentCreateNestedManyWithoutUserInput>;
+  tournamentSubscriber?: InputMaybe<TournamentSubscriberCreateNestedManyWithoutUsersInput>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_ticket?: InputMaybe<UserTicketCreateNestedManyWithoutUserInput>;
+  withdraws?: InputMaybe<WithdrawTransactionCreateNestedManyWithoutUserInput>;
+};
+
+export type UserCreateWithoutInventory_CouponsInput = {
+  balace_history?: InputMaybe<BalanceHistoryCreateNestedManyWithoutUserInput>;
+  balance?: InputMaybe<BalanceCreateNestedOneWithoutUserInput>;
+  claim_prize_transactions?: InputMaybe<ClaimPrizeTransactionCreateNestedManyWithoutUserInput>;
+  claim_tournament?: InputMaybe<ClaimTransactionCreateNestedManyWithoutUserInput>;
+  code?: InputMaybe<Scalars['String']>;
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  dailyMission?: InputMaybe<UserDailyMissionCreateNestedManyWithoutUserInput>;
+  daily_history?: InputMaybe<MissionHistoryCreateNestedManyWithoutUserInput>;
+  email?: InputMaybe<Scalars['String']>;
+  facebook_id?: InputMaybe<Scalars['String']>;
+  favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
@@ -6840,6 +7389,7 @@ export type UserCreateWithoutInventory_ItemsInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
@@ -6875,6 +7425,7 @@ export type UserCreateWithoutInventory_PiecesInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
@@ -6910,6 +7461,7 @@ export type UserCreateWithoutLeader_BoardInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   luckychest_history?: InputMaybe<UserLuckyChestHistoryCreateNestedManyWithoutUserInput>;
@@ -6945,6 +7497,7 @@ export type UserCreateWithoutLuckychest_HistoryInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -6980,6 +7533,7 @@ export type UserCreateWithoutPlatform_AccountInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7015,6 +7569,7 @@ export type UserCreateWithoutPlayTeamMembersInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7050,6 +7605,7 @@ export type UserCreateWithoutReactionInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7085,6 +7641,7 @@ export type UserCreateWithoutSponsorTransactionsInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7120,6 +7677,7 @@ export type UserCreateWithoutTeamMembersInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7155,6 +7713,7 @@ export type UserCreateWithoutTournamentInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7190,6 +7749,7 @@ export type UserCreateWithoutTournamentSubscriberInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7225,6 +7785,7 @@ export type UserCreateWithoutUser_TicketInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7260,6 +7821,7 @@ export type UserCreateWithoutWithdrawsInput = {
   facebook_id?: InputMaybe<Scalars['String']>;
   favorite_game?: InputMaybe<UserFavoriteGameCreateNestedManyWithoutUserInput>;
   google_id?: InputMaybe<Scalars['String']>;
+  inventory_coupons?: InputMaybe<UserInventoryCouponCreateNestedManyWithoutUserInput>;
   inventory_items?: InputMaybe<UserInventoryItemCreateNestedManyWithoutUserInput>;
   inventory_pieces?: InputMaybe<UserInventoryPieceCreateNestedManyWithoutUserInput>;
   leader_board?: InputMaybe<TournamentLeaderBoardCreateNestedManyWithoutUserInput>;
@@ -7507,6 +8069,7 @@ export type UserGraphql = {
   favorite_game?: Maybe<Array<UserFavoriteGame>>;
   google_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
+  inventory_coupons?: Maybe<Array<UserInventoryCoupon>>;
   inventory_items?: Maybe<Array<UserInventoryItem>>;
   inventory_pieces?: Maybe<Array<UserInventoryPiece>>;
   leader_board?: Maybe<Array<TournamentLeaderBoard>>;
@@ -7529,9 +8092,108 @@ export type UserGraphql = {
   withdraws?: Maybe<Array<WithdrawTransaction>>;
 };
 
+export type UserInventoryCoupon = {
+  __typename?: 'UserInventoryCoupon';
+  _count: UserInventoryCouponCount;
+  code: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  is_used: Scalars['Boolean'];
+  prize?: Maybe<LuckyChestPrize>;
+  prize_id?: Maybe<Scalars['Int']>;
+  tracking?: Maybe<Array<CouponTracking>>;
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+  user: User;
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryCouponCount = {
+  __typename?: 'UserInventoryCouponCount';
+  tracking: Scalars['Int'];
+};
+
+export type UserInventoryCouponCreateManyPrizeInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+};
+
+export type UserInventoryCouponCreateManyPrizeInputEnvelope = {
+  data: Array<UserInventoryCouponCreateManyPrizeInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UserInventoryCouponCreateManyUserInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  prize_id?: InputMaybe<Scalars['Int']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type UserInventoryCouponCreateManyUserInputEnvelope = {
+  data: Array<UserInventoryCouponCreateManyUserInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UserInventoryCouponCreateNestedManyWithoutPrizeInput = {
+  connect?: InputMaybe<Array<UserInventoryCouponWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserInventoryCouponCreateOrConnectWithoutPrizeInput>>;
+  create?: InputMaybe<Array<UserInventoryCouponCreateWithoutPrizeInput>>;
+  createMany?: InputMaybe<UserInventoryCouponCreateManyPrizeInputEnvelope>;
+};
+
+export type UserInventoryCouponCreateNestedManyWithoutUserInput = {
+  connect?: InputMaybe<Array<UserInventoryCouponWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserInventoryCouponCreateOrConnectWithoutUserInput>>;
+  create?: InputMaybe<Array<UserInventoryCouponCreateWithoutUserInput>>;
+  createMany?: InputMaybe<UserInventoryCouponCreateManyUserInputEnvelope>;
+};
+
+export type UserInventoryCouponCreateOrConnectWithoutPrizeInput = {
+  create: UserInventoryCouponCreateWithoutPrizeInput;
+  where: UserInventoryCouponWhereUniqueInput;
+};
+
+export type UserInventoryCouponCreateOrConnectWithoutUserInput = {
+  create: UserInventoryCouponCreateWithoutUserInput;
+  where: UserInventoryCouponWhereUniqueInput;
+};
+
+export type UserInventoryCouponCreateWithoutPrizeInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  tracking?: InputMaybe<CouponTrackingCreateNestedManyWithoutUser_CouponInput>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user: UserCreateNestedOneWithoutInventory_CouponsInput;
+};
+
+export type UserInventoryCouponCreateWithoutUserInput = {
+  code: Scalars['String'];
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_used?: InputMaybe<Scalars['Boolean']>;
+  prize?: InputMaybe<LuckyChestPrizeCreateNestedOneWithoutInventory_CouponsInput>;
+  tracking?: InputMaybe<CouponTrackingCreateNestedManyWithoutUser_CouponInput>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+};
+
+export type UserInventoryCouponWhereUniqueInput = {
+  code?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+};
+
 export type UserInventoryItem = {
   __typename?: 'UserInventoryItem';
   created_at: Scalars['DateTime'];
+  gift_card?: Maybe<GameGiftCard>;
+  gift_card_uid?: Maybe<Scalars['String']>;
   is_claimed: Scalars['Boolean'];
   prize?: Maybe<LuckyChestPrize>;
   prize_id?: Maybe<Scalars['Int']>;
@@ -7544,8 +8206,26 @@ export type UserInventoryItem = {
   user_phone?: Maybe<Scalars['String']>;
 };
 
+export type UserInventoryItemCreateManyGift_CardInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_claimed?: InputMaybe<Scalars['Boolean']>;
+  prize_id?: InputMaybe<Scalars['Int']>;
+  shipping_address?: InputMaybe<Scalars['String']>;
+  steam_url?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user_id: Scalars['Int'];
+  user_phone?: InputMaybe<Scalars['String']>;
+};
+
+export type UserInventoryItemCreateManyGift_CardInputEnvelope = {
+  data: Array<UserInventoryItemCreateManyGift_CardInput>;
+  skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
 export type UserInventoryItemCreateManyPrizeInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
+  gift_card_uid?: InputMaybe<Scalars['String']>;
   is_claimed?: InputMaybe<Scalars['Boolean']>;
   shipping_address?: InputMaybe<Scalars['String']>;
   steam_url?: InputMaybe<Scalars['String']>;
@@ -7562,6 +8242,7 @@ export type UserInventoryItemCreateManyPrizeInputEnvelope = {
 
 export type UserInventoryItemCreateManyUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
+  gift_card_uid?: InputMaybe<Scalars['String']>;
   is_claimed?: InputMaybe<Scalars['Boolean']>;
   prize_id?: InputMaybe<Scalars['Int']>;
   shipping_address?: InputMaybe<Scalars['String']>;
@@ -7574,6 +8255,13 @@ export type UserInventoryItemCreateManyUserInput = {
 export type UserInventoryItemCreateManyUserInputEnvelope = {
   data: Array<UserInventoryItemCreateManyUserInput>;
   skipDuplicates?: InputMaybe<Scalars['Boolean']>;
+};
+
+export type UserInventoryItemCreateNestedManyWithoutGift_CardInput = {
+  connect?: InputMaybe<Array<UserInventoryItemWhereUniqueInput>>;
+  connectOrCreate?: InputMaybe<Array<UserInventoryItemCreateOrConnectWithoutGift_CardInput>>;
+  create?: InputMaybe<Array<UserInventoryItemCreateWithoutGift_CardInput>>;
+  createMany?: InputMaybe<UserInventoryItemCreateManyGift_CardInputEnvelope>;
 };
 
 export type UserInventoryItemCreateNestedManyWithoutPrizeInput = {
@@ -7590,6 +8278,11 @@ export type UserInventoryItemCreateNestedManyWithoutUserInput = {
   createMany?: InputMaybe<UserInventoryItemCreateManyUserInputEnvelope>;
 };
 
+export type UserInventoryItemCreateOrConnectWithoutGift_CardInput = {
+  create: UserInventoryItemCreateWithoutGift_CardInput;
+  where: UserInventoryItemWhereUniqueInput;
+};
+
 export type UserInventoryItemCreateOrConnectWithoutPrizeInput = {
   create: UserInventoryItemCreateWithoutPrizeInput;
   where: UserInventoryItemWhereUniqueInput;
@@ -7600,8 +8293,21 @@ export type UserInventoryItemCreateOrConnectWithoutUserInput = {
   where: UserInventoryItemWhereUniqueInput;
 };
 
+export type UserInventoryItemCreateWithoutGift_CardInput = {
+  created_at?: InputMaybe<Scalars['DateTime']>;
+  is_claimed?: InputMaybe<Scalars['Boolean']>;
+  prize?: InputMaybe<LuckyChestPrizeCreateNestedOneWithoutInventory_ItemsInput>;
+  shipping_address?: InputMaybe<Scalars['String']>;
+  steam_url?: InputMaybe<Scalars['String']>;
+  uid?: InputMaybe<Scalars['String']>;
+  updated_at?: InputMaybe<Scalars['DateTime']>;
+  user: UserCreateNestedOneWithoutInventory_ItemsInput;
+  user_phone?: InputMaybe<Scalars['String']>;
+};
+
 export type UserInventoryItemCreateWithoutPrizeInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
+  gift_card?: InputMaybe<GameGiftCardCreateNestedOneWithoutInventory_ItemsInput>;
   is_claimed?: InputMaybe<Scalars['Boolean']>;
   shipping_address?: InputMaybe<Scalars['String']>;
   steam_url?: InputMaybe<Scalars['String']>;
@@ -7613,8 +8319,9 @@ export type UserInventoryItemCreateWithoutPrizeInput = {
 
 export type UserInventoryItemCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
+  gift_card?: InputMaybe<GameGiftCardCreateNestedOneWithoutInventory_ItemsInput>;
   is_claimed?: InputMaybe<Scalars['Boolean']>;
-  prize?: InputMaybe<LuckyChestPrizeCreateNestedOneWithoutInventory_ItemInput>;
+  prize?: InputMaybe<LuckyChestPrizeCreateNestedOneWithoutInventory_ItemsInput>;
   shipping_address?: InputMaybe<Scalars['String']>;
   steam_url?: InputMaybe<Scalars['String']>;
   uid?: InputMaybe<Scalars['String']>;
@@ -7698,7 +8405,7 @@ export type UserInventoryPieceCreateWithoutPrizeInput = {
 
 export type UserInventoryPieceCreateWithoutUserInput = {
   created_at?: InputMaybe<Scalars['DateTime']>;
-  prize: LuckyChestPrizeCreateNestedOneWithoutInventory_PieceInput;
+  prize: LuckyChestPrizeCreateNestedOneWithoutInventory_PiecesInput;
   quantity: Scalars['Int'];
   uid?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['DateTime']>;
