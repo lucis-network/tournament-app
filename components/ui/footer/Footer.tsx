@@ -110,7 +110,7 @@ export default function Footer(props: Props) {
                   rel="noopener noreferrer"
                 >
                   {/* <ButtonWrapper width={200}>Need Help ?</ButtonWrapper> */}
-                  <KButton title="Need Help ?" width="200px" />
+                  <KButton title="Need Help ?" width="200px" fontSize="16px" />
                 </a>
               </div>
             </div>

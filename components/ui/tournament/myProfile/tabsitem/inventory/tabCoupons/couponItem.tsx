@@ -2,12 +2,11 @@ import React, { useState } from "react";
 import s from "../index.module.sass";
 import PrizePopover from "../../../../../p2e/lucky/prize/popover";
 import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass";
-import ButtonWrapper from "../../../../../../common/button/Button";
 import { ApolloQueryResult } from "@apollo/client";
 import { UserInventoryCoupon } from "src/generated/graphql";
-import Link from "next/link";
 import { useCopy } from "hooks/common/useCopy";
 import { KButton } from "components/ui/common/button";
+
 type Props = {
   item: UserInventoryCoupon;
   isOwner?: boolean;
@@ -50,13 +49,25 @@ const CouponItem = (props: Props) => {
           </div>
           <div className={s.prizeAmount}>
             {isShowCode ? (
-              <div style={{ display: "flex" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#ebebeb",
+                  fontSize: "16px",
+                }}
+              >
                 {item.code}
                 <span className={s.iconCopy}>
                   <img
                     onClick={() => {
                       setCopied(true);
                       onCopy(item.code);
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      marginBottom: "8px",
                     }}
                     src={
                       isCopied

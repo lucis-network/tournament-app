@@ -10,6 +10,7 @@ type KButtonProps = {
   width?: string;
   height?: string;
   padding?: string;
+  fontSize?: string;
 };
 
 export function KButton(props: KButtonProps) {
