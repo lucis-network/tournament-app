@@ -88,7 +88,6 @@ export class RealtimeService {
         },
 
       });
-
     return response;
   }
 

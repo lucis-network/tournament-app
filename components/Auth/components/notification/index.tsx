@@ -32,7 +32,6 @@ const Notification = ({ userId }: IProps) => {
   const [isSeen, setIsSeen] = useState(false)
   const [countNoti, setCountNoti] = useState(0)
   const [notiList, setNotiList] = useState<NotificationType[]>([])
-
   const loadMoreData = async () => {
     setPage(page + 1);
     try {
@@ -70,6 +69,7 @@ const Notification = ({ userId }: IProps) => {
 
   const markAllNotificationAsSeen = async () => {
     await markAllNotisAsSeen();
+    setNotiList(notiList.map(item => ({...item, is_seen: true})));
     setCountNoti(0);
   }
 
@@ -109,67 +109,6 @@ const Notification = ({ userId }: IProps) => {
       listener1.remove();
       listener2.remove();
     };
-  }, [])
-
-
-  const subscribe = (value: any) => {
-    const data = value.data?.pushNotification.new_noti;
-    const countNoti = value.data?.pushNotification.unseen_count;
-
-    AppEmitter.emit("updateNotification", {data, countNotification: countNoti});
-    notification.open({
-      message: data.title,
-      onClick: () => {
-        if (data?.link) {
-          router.push(data.link);
-          AppEmitter.emit("seenNotification", {data});
-        }
-
-      },
-      description: (
-        <div className={s.notificationItemToast}>
-          <img
-            className="mr-2"
-            src={data?.image ?? ""}
-            alt=""
-            onError={(e) => e.currentTarget.src = "/assets/P2E/raffles/defaultAvatar.jpg"}
-          />
-          <div>
-            <p dangerouslySetInnerHTML={{__html: data?.content}}/>
-          </div>
-        </div>
-      ),
-      placement: "bottomRight",
-    });
-  };
-
-
-  useEffect(() => {
-    const realTimeService = new RealtimeService(userId);
-    realTimeService.subscriptionArena().then(res => {
-      res.subscribe({
-        next(value) {
-          subscribe(value);
-        }
-      })
-    });
-
-    realTimeService.subscriptionP2e().then(res => {
-      res.subscribe({
-        next(value) {
-          subscribe(value);
-        }
-      })
-    });
-
-    // realTimeService.subscriptionAdmin().then(res => {
-    //   res.subscribe({
-    //     next(value) {
-    //       subscribe(value);
-    //     }
-    //   })
-    // });
-
   }, [])
 
   return (

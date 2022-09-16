@@ -7,6 +7,7 @@ export class P2EOnChainService extends EthersService {
 
   private lucisAddress: string;
   private nftManagerAddress: string;
+  // private lucisBoxAddress: string;
   constructor(web3Provider: ethers.providers.Web3Provider, _lucisAddress: string, _nftManagerAddress: string) {
     super(web3Provider);
     this.lucisAddress = _lucisAddress;
