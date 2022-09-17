@@ -40,11 +40,20 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, onSelect, team_size }) =>
                 alt=""
                 width={30}
                 height={30}
+                onError={(e) => e.currentTarget.src="/assets/avatar.jpg"}
               />
             </div>
             <h3 className="mb-0 ml-2 text-white text-[14px]">
               {user?.display_name}
             </h3>
+            {
+              user.tournament_list?.length! > 0 &&
+              <Tooltip
+                title={`This member joining another tournament!`}
+              >
+                <img className={"ml-2 mb-1"} src="/assets/icon-warning.svg" alt=""/>
+              </Tooltip>
+            }
           </div>
         ))}
       </div>
@@ -60,11 +69,20 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, onSelect, team_size }) =>
                 alt=""
                 width={30}
                 height={30}
+                onError={(e) => e.currentTarget.src="/assets/avatar.jpg"}
               />
             </div>
             <h3 className="mb-0 ml-2 text-white text-[14px]">
               {user?.display_name}
             </h3>
+            {
+              user.tournament_list?.length! > 0 &&
+              <Tooltip
+                title={`This member joining another tournament!`}
+              >
+                <img className={"ml-2 mb-1"} src="/assets/icon-warning.svg" alt=""/>
+              </Tooltip>
+            }
           </div>
         ))}
       </div>}

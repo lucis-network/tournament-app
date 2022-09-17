@@ -32,6 +32,7 @@ export const GET_MY_TEAM = gql`
 				is_valid
 				id_in_game
 				avatar_in_game
+        tournament_list
 			}
 		}
 	}

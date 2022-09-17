@@ -1,4 +1,4 @@
-import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import {getLocalAuthGameInfo, getLocalAuthInfo} from "components/Auth/AuthLocal";
 import { useRouter } from "next/router";
 import { useState, useCallback, useEffect, ReactElement, useMemo } from "react";
 import { PlusOutlined, WarningOutlined } from "@ant-design/icons";
@@ -36,6 +36,7 @@ export type ErrorTourKey =
 const UseTeamModal = (tournamentData: any) => {
   const router = useRouter();
   const user = getLocalAuthInfo();
+  const gameUser = getLocalAuthGameInfo();
   const {
     name,
     team_size,
@@ -344,6 +345,19 @@ const UseTeamModal = (tournamentData: any) => {
     searchTeam();
     if (isSoloVersion) {
       setStep("step-2");
+      let id_in_game = null;
+      let avatar_in_game = null;
+
+      if (game_uid === "06") {
+        id_in_game = gameUser?.lmss_nick_name;
+        avatar_in_game = gameUser?.lmss_avatar;
+      }
+
+      if (game_uid === "03") {
+        id_in_game = gameUser?.faceit_nick_name;
+        avatar_in_game = gameUser?.faceit_avatar;
+      }
+
       setSelectedTeam({
         team: [
           {
@@ -352,6 +366,8 @@ const UseTeamModal = (tournamentData: any) => {
             avatar: user?.profile?.avatar,
             is_leader: true,
             prize: 100,
+            id_in_game,
+            avatar_in_game
           },
         ] as Item[],
       } as MyTeamType);
