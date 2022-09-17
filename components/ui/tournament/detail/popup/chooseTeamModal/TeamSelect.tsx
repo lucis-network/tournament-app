@@ -48,9 +48,7 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, onSelect, team_size }) =>
             </h3>
             {
               user.tournament_list?.length! > 0 &&
-              <Tooltip
-                title={`This member joining another tournament!`}
-              >
+              <Tooltip title={`This member is joining another tournament!`} className={s.toolTip} >
                 <img className={"ml-2 mb-1"} src="/assets/icon-warning.svg" alt=""/>
               </Tooltip>
             }
@@ -77,9 +75,7 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, onSelect, team_size }) =>
             </h3>
             {
               user.tournament_list?.length! > 0 &&
-              <Tooltip
-                title={`This member joining another tournament!`}
-              >
+              <Tooltip title={`This member is joining another tournament!`} className={s.toolTip}>
                 <img className={"ml-2 mb-1"} src="/assets/icon-warning.svg" alt=""/>
               </Tooltip>
             }
