@@ -656,7 +656,7 @@ export default observer(function RegistrationPhase(props: Props) {
                       <div className={s.countdownWrap}>
                         <p className="mb-0">
                           <span className={s.countdownRegistration}>
-                            Registration phase will ends in{" "}
+                            Registration phase will end in{" "}
                           </span>
                           <span className={s.countdownRegistrationTimer}>
                             <CountdownTimer targetDate={timeRegistration} refetch={refetch}/>
