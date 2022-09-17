@@ -24,6 +24,7 @@ const TeamSelect: React.FC<TeamSelectProps> = ({ team, onSelect, team_size }) =>
           alt=""
           width={30}
           height={30}
+          onError={(e) => e.currentTarget.src="/assets/avatar.jpg"}
         />
         <span>{team.team_name}</span>
       </div>
