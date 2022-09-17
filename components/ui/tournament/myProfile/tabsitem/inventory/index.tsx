@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import s from "./index.module.sass";
 import Tabs from "antd/lib/tabs";
 import TabItemsInventory from "./tabItems/tabItems";
@@ -17,9 +17,8 @@ const Inventory = (props: Props) => {
   const { isOwner, userInfo } = props;
   const router = useRouter();
   const selectedType = router.query.type as string;
-
   const onChange = (key: string) => {
-    //console.log(key);
+    router.push("/profile?page=inventory&type=" + key);
   };
 
   return (
