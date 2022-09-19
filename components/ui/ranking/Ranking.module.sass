@@ -144,3 +144,50 @@
 
   img
     width: 100%
+
+.selectSeason
+  width: 210px
+  color: #fff
+  @media (max-width: 768px)
+    width: 180px
+  @media (max-width: 768px)
+    width: 140px
+  :global(.ant-select-selector)
+    height: 36px !important
+    background-color: rgba(69, 80, 107, 0.5) !important
+    backdrop-filter: blur(20px) !important
+    border-color: transparent !important
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 400
+    font-size: 16px
+    @media (max-width: 768px)
+      font-size: 12px
+    @media (max-width: 480px)
+      font-size: 10px
+  :global(.ant-select-arrow)
+    color: #DBE0E8
+  :global(.ant-select-selection-item)
+    line-height: 36px
+
+.optionSelect
+  //display: flex
+  text-align: center
+  background: rgba(69, 80, 107, 0.2)
+  border-radius: 4px
+  padding: 4px
+  width: 100%
+
+  .optionName
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 400
+    font-size: 14px
+    color: #DBE0E8
+  .fromDateToDate
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 300
+    font-size: 10px
+    color: #FFD058
+

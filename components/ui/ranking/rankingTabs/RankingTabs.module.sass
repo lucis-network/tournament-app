@@ -29,32 +29,84 @@
       background: rgba(18, 176, 180, 0.1)
       color: #00F9FF
 .rankingTabsFilter
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin-bottom: 32px
+  position: relative
+  &::after
+    content: ""
+    display: block
+    height: 1px
+    position: absolute
+    bottom: -12px
+    left: 0
+    right: 0
+    background: #38505F
   .filterItems
     display: flex
     align-items: center
     button
       font-family: 'Revx Neue Demo'
-      font-weight: 400
-      font-size: 12px
-      line-height: 13px
+      font-weight: 600
+      font-size: 16px
+      line-height: 18px
       color: rgba(255, 255, 255, 0.3)
-      padding: 4px 8px
+      padding: 8px 16px
       display: block
+      position: relative
+      @media (max-width: 768px)
+        font-size: 12px
+      @media (max-width: 480px)
+        font-size: 10px
       &:global(.active)
         font-weight: 600
         color: #00F9FF
+        &::before
+          content: ""
+          width: 15px
+          height: 15px
+          background: url(/assets/P2E/lucky-chest/iconTabActive.svg) no-repeat top center
+          background-size: cover
+          display: block
+          position: absolute
+          left: 50%
+          transform: translateX(-50%)
+          bottom: -20px
+          z-index: 2
+      &:after
+        content: ''
+        position: absolute
+      &:after
+        width: 1px
+        background: rgba(255, 255, 255, 0.3)
+        top: 3px
+        bottom: 3px
+        right: 0
+      &:last-of-type
+        &:after
+          content: none
   .filterDateTime
     text-transform: uppercase
     font-size: 16px
+    display: flex
+    align-items: center
+
     .seasonCountdown
+      margin-right: 16px
+      display: flex
+      align-items: center
+      @media (max-width: 992px)
+        display: none
       .endText
-        font-family: 'Poppins'
+        font-family: 'Lexend'
         font-weight: 400
         line-height: 24px
         background: linear-gradient(91.09deg, #00FFFF 0.33%, #0BEBD6 99.88%)
         -webkit-background-clip: text
         -webkit-text-fill-color: transparent
         text-fill-color: transparent
+        margin-right: 8px
       .countdownText
         font-family: 'Lexend'
         font-weight: 500
@@ -178,7 +230,7 @@
   width: 100%
   display: flex
   justify-content: flex-end
-  padding-right: 12px
+  //padding-right: 12px
 .headerName
   width: 100%
   display: flex
@@ -387,3 +439,14 @@
       aspect-ratio: 24/40
       @media screen and (min-width: 992px)
         width: 18px
+
+.yourRank
+  margin-top: 20px
+  .titleYourRank
+    color: #00F9FF
+    font-family: 'Revx Neue Demo'
+    font-style: normal
+    font-weight: 400
+    font-size: 24px
+    line-height: 120%
+    margin-bottom: 12px

@@ -36,7 +36,7 @@ const SwiperSlideContent = ({title, type, image, data, comingSoon}: SwiperSlideC
           <div className={s.rankingUserDisplayName}>{displayName}</div>
         )}
         {userName && (
-          <div className={s.rankingUsername}>{data?.profile?.user_name}</div>
+          <div className={s.rankingUsername}>@{data?.profile?.user_name}</div>
         )}
         {(!comingSoon && (rank && (rank < 3))) && (
           <div className={s.rankingMedal}>
@@ -102,7 +102,7 @@ const BannerRanking = ({seasonId}: BannerRankingProps) => {
           </SwiperSlide>
           <SwiperSlide>
             <SwiperSlideContent
-              title="Missions"
+              title="Total rewards"
               image="/assets/Ranking/flagPlaycore.png"
               type="playcore"
               data={playcoreTopRank!}

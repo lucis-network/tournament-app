@@ -33,7 +33,7 @@ export const usePlaycoreRanking = ({seasonId, skip}: GetRankingProps): {
     context: {
       endpoint: 'p2e'
     },
-    fetchPolicy: "no-cache"
+    // fetchPolicy: "no-cache"
   })
 
   return {
@@ -65,7 +65,7 @@ export const useArenaRanking = ({seasonId, skip}: GetRankingProps): {
     context: {
       endpoint: 'p2e'
     },
-    fetchPolicy: "no-cache"
+    // fetchPolicy: "no-cache"
   })
 
   return {
@@ -97,7 +97,7 @@ export const useRaffleRanking = ({seasonId, skip}: GetRankingProps): {
     context: {
       endpoint: 'p2e'
     },
-    fetchPolicy: "no-cache"
+    // fetchPolicy: "no-cache"
   })
 
   return {
@@ -157,4 +157,55 @@ const GET_RAFFLE_RANKING = gql`
       rank
     }
   }
+`
+
+export const GET_USER_RANK_PLAYCORE = gql`
+    query ($user_id: Int!, $seasonId: String!) {
+        getUserPlaycoreRanking (user_id: $user_id, seasonId: $seasonId) {
+            id
+            code
+            email
+            profile {
+                user_name
+                display_name
+                avatar
+            }
+            total_earning
+            rank
+        }
+    }
+`
+
+export const GET_USER_RANK_TOURNAMENT = gql`
+    query ($user_id: Int!, $seasonId: String!) {
+        getUserTournamentRanking (user_id: $user_id, seasonId: $seasonId) {
+            id
+            code
+            email
+            profile {
+                user_name
+                display_name
+                avatar
+            }
+            total_earning
+            rank
+        }
+    }
+`
+
+export const GET_USER_RANK_RAFFLE = gql`
+    query ($user_id: Int!, $seasonId: String!) {
+        getUserRaffleRanking (user_id: $user_id, seasonId: $seasonId) {
+            id
+            code
+            email
+            profile {
+                user_name
+                display_name
+                avatar
+            }
+            total_earning
+            rank
+        }
+    }
 `
