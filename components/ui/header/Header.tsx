@@ -7,7 +7,7 @@ import AuthStore from "components/Auth/AuthStore";
 import User from "components/Auth/components/User";
 import {observer} from "mobx-react-lite";
 import {useWindowSize} from "hooks/useWindowSize";
-import {Button, Col, notification, Row} from "antd";
+import {Col, notification, Row} from "antd";
 import SignupInfoModal from "../../Auth/Login/SignupInfoModal"
 import {isEmpty} from "lodash";
 import LoginBoxStore from "../../Auth/Login/LoginBoxStore";
@@ -21,7 +21,7 @@ import MissionService from "../../service/p2e/MissionService";
 import {currency, fomatNumber, format} from "../../../utils/Number";
 import AuthBoxStore from "../../Auth/components/AuthBoxStore";
 import {AppEmitter} from "../../../services/emitter";
-import AnimatedNumber from "../common/AnimatedNumber/index";
+// import AnimatedNumber from "../common/AnimatedNumber/index";
 import LoginModal from "../../Auth/Login/LoginModal";
 import Notification from "../../Auth/components/notification";
 import {RealtimeService} from "../../service/RealtimeService";
@@ -29,6 +29,10 @@ import {RealtimeService} from "../../service/RealtimeService";
 type Props = {
   handleMenuOpen: Function;
 };
+
+let arenaSub: any = null;
+let playcoreSub: any = null;
+let adminSub: any = null;
 
 export default observer(function Header(props: Props) {
   const router = useRouter();
@@ -86,27 +90,7 @@ export default observer(function Header(props: Props) {
     };
   }, [])
 
-
-  const animatedNumber = (value: any, decimal: number = 0) => {
-    if (value) {
-      return format(value, decimal);
-    }
-    // return (
-    //   <AnimatedNumber
-    //     component="text" value={value}
-    //     style={{
-    //       transition: '0.8s ease-out',
-    //       transitionProperty:
-    //         'background-color, color, opacity'
-    //     }}
-    //     stepPrecision={0}
-    //     duration={300}
-    //     formatValue={(n: number) => format(n, decimal)}
-    //   />
-    // )
-  }
-
-  const subscribe = (value: any) => {
+  const displayNotification = (value: any) => {
     const data = value.data?.pushNotification.new_noti;
     const countNoti = value.data?.pushNotification.unseen_count;
 
@@ -139,25 +123,65 @@ export default observer(function Header(props: Props) {
 
 
   useEffect(() => {
+
     if (id) {
       const realTimeService = new RealtimeService(id);
       realTimeService.subscriptionArena().then(res => {
-        res.subscribe({
+        arenaSub = res.subscribe({
           next(value) {
-            subscribe(value);
+            displayNotification(value);
           }
         })
       });
 
       realTimeService.subscriptionP2e().then(res => {
-        res.subscribe({
+        playcoreSub = res.subscribe({
           next(value) {
-            subscribe(value);
+            displayNotification(value);
           }
         })
       });
+
+      realTimeService.subscriptionAdmin().then(res => {
+        adminSub = res.subscribe({
+          next(value) {
+            displayNotification(value);
+          }
+        });
+      });
+    } else {
+      // unsubscribe wss
+      adminSub && adminSub.unsubscribe();
+      arenaSub && arenaSub.unsubscribe();
+      playcoreSub && playcoreSub.unsubscribe();
     }
-  }, [id])
+
+    return () => {
+      adminSub?.unsubscribe();
+      arenaSub?.unsubscribe();
+      playcoreSub?.unsubscribe();
+    };
+  }, [id]);
+
+
+  const animatedNumber = (value: any, decimal: number = 0) => {
+    if (value) {
+      return format(value, decimal);
+    }
+    // return (
+    //   <AnimatedNumber
+    //     component="text" value={value}
+    //     style={{
+    //       transition: '0.8s ease-out',
+    //       transitionProperty:
+    //         'background-color, color, opacity'
+    //     }}
+    //     stepPrecision={0}
+    //     duration={300}
+    //     formatValue={(n: number) => format(n, decimal)}
+    //   />
+    // )
+  }
 
   return (
     <>
@@ -212,7 +236,7 @@ export default observer(function Header(props: Props) {
                       </div>
                       <div className={s.profileBalance}>
                         <div>
-                          {width > 1024 && <Notification/>}
+                          {width > 1024 && id && <Notification userId={id}/>}
                         </div>
                         {
                           !address ?
@@ -264,7 +288,7 @@ export default observer(function Header(props: Props) {
           {/* <InfiniteList /> */}
         </div>
       </div>
-      <MenuMobile balance={balance}/>
+      <MenuMobile id={id} balance={balance}/>
       {LoginBoxStore.signupInfoModalVisible && <SignupInfoModal/>}
       {LoginBoxStore.alertInAppModalVisible && <AlertInAppModal/>}
       <LoginModal />

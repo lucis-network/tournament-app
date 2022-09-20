@@ -797,11 +797,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
           ></PopupNotifyProfile>
         </div>
 
-        <div className={s.side}>
-          <div>
-            right side bar
-          </div>
-        </div>
+        {/*<div className={s.side}>*/}
+        {/*  <div>*/}
+        {/*    right side bar*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
       <LoginModal />
     </>

@@ -13,9 +13,11 @@ import {useMutation} from "@apollo/client";
 import {OPEN_CHEST} from "../../../../hooks/p2e/luckyChest/useLuckyChest";
 import {AppEmitter} from "../../../../services/emitter";
 
-const Notification = () => {
+interface IProps {
+  userId: number;
+}
+const Notification = ({ userId }: IProps) => {
   const [width] = useWindowSize()
-  const {id} = AuthStore
   const [visible, setVisible] = useState(false);
   const router = useRouter();
   const [page, setPage] = useState(1);
@@ -30,7 +32,6 @@ const Notification = () => {
   const [isSeen, setIsSeen] = useState(false)
   const [countNoti, setCountNoti] = useState(0)
   const [notiList, setNotiList] = useState<NotificationType[]>([])
-
   const loadMoreData = async () => {
     setPage(page + 1);
     try {
@@ -54,7 +55,6 @@ const Notification = () => {
   }, [getNotificationData])
 
 
-
   const notificationList = {
     notificationData: notiList,
     unseenNotificationCount: countNoti
@@ -69,6 +69,7 @@ const Notification = () => {
 
   const markAllNotificationAsSeen = async () => {
     await markAllNotisAsSeen();
+    setNotiList(notiList.map(item => ({...item, is_seen: true})));
     setCountNoti(0);
   }
 
@@ -95,17 +96,21 @@ const Notification = () => {
   useEffect(() => {
     const listener1 = AppEmitter.addListener("updateNotification", (res: any) => {
       setCountNoti(Number(res.countNotification));
-      setNotiList((oldState) =>[res.data, ...oldState]);
+      setNotiList((oldState) => [res.data, ...oldState]);
     });
     const listener2 = AppEmitter.addListener("seenNotification", (res: any) => {
       setCountNoti((oldState) => oldState - 1);
-      setNotiList((oldState) =>oldState.map(item => ({...item, is_seen: item.id === res.data.id ? true : item.is_seen})));
+      setNotiList((oldState) => oldState.map(item => ({
+        ...item,
+        is_seen: item.id === res.data.id ? true : item.is_seen
+      })));
     });
     return () => {
       listener1.remove();
       listener2.remove();
     };
   }, [])
+
   return (
     <div className={s.notification}>
       <Popover
@@ -123,7 +128,7 @@ const Notification = () => {
         visible={visible}
         onVisibleChange={handleVisibleChange}
       >
-        <Badge count={isSeen ? 0 : countNoti} size="small">
+        <Badge count={isSeen ? 10 : countNoti} size="small">
           <img
             className={s.notificationIcon}
             src="/assets/notification-icon.svg"
@@ -135,4 +140,4 @@ const Notification = () => {
   );
 };
 
-export default observer(Notification);
+export default Notification;

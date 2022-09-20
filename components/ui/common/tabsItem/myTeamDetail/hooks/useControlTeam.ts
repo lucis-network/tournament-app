@@ -21,6 +21,7 @@ export interface TeamType extends Record<any, any> {
 	display_name: string;
 	avatar: string;
 	is_leader?: boolean;
+	list_tournament?: any[];
 }
 
 export interface MyTeamType {

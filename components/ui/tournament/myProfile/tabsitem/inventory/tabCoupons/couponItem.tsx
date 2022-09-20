@@ -1,34 +1,25 @@
 import React, { useState } from "react";
 import s from "../index.module.sass";
-import { InventoryItem, ItemGroup } from "src/generated/graphql_p2e";
 import PrizePopover from "../../../../../p2e/lucky/prize/popover";
 import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass";
-import ButtonWrapper from "../../../../../../common/button/Button";
 import { ApolloQueryResult } from "@apollo/client";
-import PopupConfirmItemsCsgo from "../popup/popupConfirmItemsCsgo";
-import PopupConfirmItemsPhysical from "../popup/popupConfirmItemsPhysical";
-import PopupContactRaffles from "components/ui/p2e/raffles/popup/popupContact";
+import { UserInventoryCoupon } from "src/generated/graphql";
+import { useCopy } from "hooks/common/useCopy";
 import { KButton } from "components/ui/common/button";
+
 type Props = {
-  item: InventoryItem;
+  item: UserInventoryCoupon;
   isOwner?: boolean;
-  refetchMyInventoryItems: () => Promise<ApolloQueryResult<any>>;
+  refetch: () => Promise<ApolloQueryResult<any>>;
 };
 
-const ItemsTabItem = (props: Props) => {
-  const { item, isOwner, refetchMyInventoryItems } = props;
-  const [statusCsgo, setStatusCsgo] = useState<boolean>(false);
-  const [statusPhysical, setStatusPhysical] = useState<boolean>(false);
-  const [statusPopupContact, setStatusPopupContact] = useState<boolean>(false);
+const CouponItem = (props: Props) => {
+  const { item, isOwner, refetch } = props;
+  const [isShowCode, setShowCode] = useState<boolean>(false);
+  const { isCopied, setCopied, onCopy } = useCopy();
 
-  const openClaimConfirmPopup = () => {
-    if (item?.prize?.category?.item_group === ItemGroup.Csgo) {
-      setStatusCsgo(true);
-    } else if (item?.prize?.category?.item_group === ItemGroup.Physical) {
-      setStatusPhysical(true);
-    } else {
-      setStatusPopupContact(true);
-    }
+  const showCode = () => {
+    setShowCode(true);
   };
 
   return (
@@ -56,26 +47,49 @@ const ItemsTabItem = (props: Props) => {
           <div className={`${sChestPrize.prizeTitle} ${s.prizeTitle}`}>
             {item?.prize?.title ?? ""}
           </div>
-          {item?.quantity && isOwner && (
-            <div className={s.prizeAmount}>
-              <div className={s.prizeAmountQty}>Amount: {item?.quantity}</div>
-              <div>
-                <KButton
-                  title="Claim"
-                  width="80px"
-                  disabled={item?.quantity <= 0}
-                  onClick={openClaimConfirmPopup}
-                />
+          <div className={s.prizeAmount}>
+            {isShowCode ? (
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#ebebeb",
+                  fontSize: "16px",
+                }}
+              >
+                {item.code}
+                <span className={s.iconCopy}>
+                  <img
+                    onClick={() => {
+                      setCopied(true);
+                      onCopy(item.code);
+                    }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      marginBottom: "8px",
+                    }}
+                    src={
+                      isCopied
+                        ? "/assets/P2E/overview/copied.svg"
+                        : "/assets/P2E/overview/copy-icon.svg"
+                    }
+                  />
+                </span>
               </div>
-            </div>
-          )}
+            ) : (
+              <div>
+                <KButton title="Show code" onClick={showCode} />
+              </div>
+            )}
+          </div>
         </div>
       </PrizePopover>
-      {statusCsgo && (
+      {/* {statusCsgo && (
         <PopupConfirmItemsCsgo
           item={item}
           status={statusCsgo}
-          refetchMyInventoryItems={refetchMyInventoryItems}
+          refetchMyInventoryItems={refetch}
           onClosePopup={() => setStatusCsgo(false)}
         ></PopupConfirmItemsCsgo>
       )}
@@ -83,7 +97,7 @@ const ItemsTabItem = (props: Props) => {
         <PopupConfirmItemsPhysical
           item={item}
           status={statusPhysical}
-          refetchMyInventoryItems={refetchMyInventoryItems}
+          refetchMyInventoryItems={refetch}
           onClosePopup={() => setStatusPhysical(false)}
         ></PopupConfirmItemsPhysical>
       )}
@@ -94,9 +108,9 @@ const ItemsTabItem = (props: Props) => {
           contactURL="https://discord.gg/7SdtYpGENT"
           description="Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize."
         />
-      )}
+      )} */}
     </>
   );
 };
 
-export default ItemsTabItem;
+export default CouponItem;

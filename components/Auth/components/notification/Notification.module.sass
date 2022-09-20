@@ -4,7 +4,7 @@
 
 .infinite
   .infiniteContainer
-    height: 560px
+    height: 560px !important
     overflow: auto
     width: 350px
     @media screen and (min-width: 768px)
@@ -20,7 +20,7 @@
 .notificationSeenAll
   opacity: 0.5
   color: #fff !important
-  cursor: pointer !important
+  cursor: not-allowed !important
 .notificationItem
   cursor: pointer
   color: #ffffff
@@ -35,11 +35,14 @@
     display: flex
     justify-content: center
     align-items: flex-start
+    margin-top: 6px
 
 
   .notificationItemTime
     opacity: 0.7
     margin: 0
+    @media (max-width: 768px)
+      font-size: 12px
 
   .notificationItemTitle
     font-weight: 600
@@ -48,30 +51,43 @@
   .notificationItemContent
     display: flex
     flex-direction: column
-    justify-content: center
+    @media (max-width: 768px)
+      padding: 0 4px
     .notiContentTitle
       white-space: nowrap
       overflow: hidden
       text-overflow: ellipsis
+      @media (max-width: 768px)
+        font-size: 12px
     .notiContentDescription
       display: -webkit-box
       -webkit-box-orient: vertical
       -webkit-line-clamp: 2
       overflow: hidden
-
+      @media (max-width: 768px)
+        font-size: 12px
 
   img
     width: 60px
-    height: 60px
+    height: auto
     object-fit: contain
+    align-self: flex-start
+    @media (max-width: 768px)
+      width: 50px
 .loadMore
   width: 100%
   display: flex
   justify-content: center
   color: #fff
-  text-decoration-line: underline
-  cursor: pointer
   margin: 8px 0
+.sticky
+  position: sticky
+  top: 0
+  left: 0
+  z-index: 10
+  background: rgba(100, 100, 115, 1)
+  backdrop-filter: blur(20px)
+  border-radius: 10px 10px 0 0
 .topOption
   display: flex
   justify-content: space-between
@@ -84,14 +100,24 @@
   .title
     font-weight: 600
     font-size: 18px
-.unseenDot
-  position: absolute
-  right: 0
-  color: #1889E4
-  font-size: 30px
+
 .subMenu
   color: white
   padding: 0px 16px
+.notificationItemToast
+  cursor: pointer
+  display: flex
+  color: #ffffff
+  width: 100%
+  padding: 8px
+  img
+    width: 60px
+    height: 60px
+    object-fit: contain
+.badge
+  font-size: 10px
+  min-width: 12px
+  height: 12px
 
   & > li
     color: #fff
