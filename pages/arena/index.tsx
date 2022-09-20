@@ -9,6 +9,7 @@ import CreateTournament from 'components/ui/tournament/home/createYourTournament
 import { useRankingSeason } from "../../hooks/ranking/useTopRanking";
 import { StatusSeason } from "../../src/generated/graphql_p2e";
 import TopSponsors from "../../components/ui/tournament/home/topSponsors";
+import SpotLightHome from "../../components/ui/tournament/home/spotlight";
 
 const TournamentHome: NextPage = () => {
   const {dataRankingSeason} = useRankingSeason();
@@ -18,6 +19,7 @@ const TournamentHome: NextPage = () => {
       <DocHead />
       <main className={s.arenaHomeWrapper}>
         <BannerPage />
+        <SpotLightHome />
         <TabHome />
         <CreateTournament />
         <PlayerHome seasonId={seasonId} />

@@ -1,6 +1,5 @@
 import s from "./TournamentDetail.module.sass";
 import { Col, Row, Spin, Tabs, message, Image } from "antd";
-import Banner from "components/ui/tournament/detail/Banner";
 import {
   useSponsors,
   useTournamentDetail,
@@ -8,7 +7,7 @@ import {
 import { Router, useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
-import Overview from "components/ui/tournament/detail/tabsitem/overview/Index";
+import Overview from "components/ui/tournament/detail/tabsitem/overview";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
 import TableParticipant from "components/ui/tournament/detail/tabsitem/participants";
 import Referees from "components/ui/tournament/detail/tabsitem/referees";
@@ -33,6 +32,7 @@ import moment from "moment";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import useTeamModal from "components/ui/tournament/detail/hooks/useTeamModal";
 import PopupNotifyProfile from "components/ui/tournament/detail/popup/popupNotifyProfile";
+import Banner from "components/ui/ranking/banner";
 
 const { TabPane } = Tabs;
 
@@ -233,11 +233,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       <DocHead />
         <div className={`lucis-container-2 ${s.page}`}>
           <div className={`${s.wrapper} ${s.main}`}>
-            <Banner
-              cover={cover}
-              className={s.bannerTourDetailWrap}
-              bannerClassName={s.bannerTourDetail}
-            />
+            <Overview data={dataTournamentDetail}/>
+            {/*<Banner*/}
+            {/*  cover={cover}*/}
+            {/*  className={s.bannerTourDetailWrap}*/}
+            {/*  bannerClassName={s.bannerTourDetail}*/}
+            {/*/>*/}
             <section className={s.tournamentInfo}>
               <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
                 {/*<TournamentDetailMarquee tournamentId={tournamentId as string} />*/}
@@ -691,8 +692,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             <div className={s.content_tab}>
               {(() => {
                 switch (activeTab) {
-                  case "Overview":
-                    return <Overview desc={desc as string} />;
+                  // case "Overview":
+                  //   return <Overview desc={desc as string} />;
                   case "Rules":
                     return <Rules rules={rules as string} />;
                   case "Brackets":

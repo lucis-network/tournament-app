@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Saira:wght@300;400;600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;900&display=swap");
 /*@font-face {*/
 /*  font-family: "Transformer";*/
 /*  src: url(/font/SVN-Transformer.ttf);*/
@@ -1027,15 +1028,6 @@ body .ant-picker-cell-inner {
 
 body .ant-modal-mask {
   background-color: rgba(0, 0, 0, 0.2)
-}
-
-body .ant-carousel .slick-list {
-  box-shadow: 0px 0px 25px -8px #0bebd6;
-  border-radius: 6px;
-}
-
-body .ant-carousel .slick-dots-bottom {
-  bottom: -30px;
 }
 
 /* new container */

@@ -1,79 +1,76 @@
 import s from "./sliderBanner.module.sass";
-import GradientButton from "../../../common/button/GradientButton";
-import { Carousel } from "antd";
 import { GTournament } from "src/generated/graphql";
-import { orderBy, stubString } from "lodash";
-import { useState } from "react";
+import { orderBy } from "lodash";
+import {memo, useRef, useState } from "react";
 import { useRouter } from "next/router";
 import { slugify } from "utils/String";
-import { currency } from "utils/Number";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Carousel } from "antd";
+import React from "react";
+import Img from "../../../common/Img";
+import ButtonBorder from "components/ui/common/button/buttonBorder/ButtonBorder";
 
 interface SliderBannerProps {
   data: GTournament[];
 }
 
-export default function SilderBanner({ data }: SliderBannerProps) {
+function SilderBanner({ data }: SliderBannerProps) {
   const router = useRouter();
   const orderData: GTournament[] = orderBy(data, "spotlight_position", "asc");
-  const [uidTournament, setUidTournament] = useState("");
+
+  const slider = useRef(null);
 
   const handleJoinDetail = (dataTournament: GTournament) => {
     const { uid, name } = dataTournament;
     router.push(`/arena/${uid}/${slugify(name)}`);
   };
 
+  console.log("orderData", orderData);
   return (
-    <Carousel autoplay className={s.wrapper}>
-      {orderData?.map((item) => {
-        const getName = item?.name
-        const name = item?.name.length > 40 ?  getName.slice(0, 40) + '...':  getName
-        return (
-          <div key={item?.uid} className={`${s.container} cursor-pointer`}>
-            <div className={s.im_conver}>
-              <div
-                className={s.im_banner}
-                onClick={() => handleJoinDetail(item)}
-                style={{
-                  backgroundImage: `url(${item?.cover})`,
-                }}
-              ></div>
-              <div className={s.title}>
-                <div style={{ position: "relative" }}>
-                  <div className={s.line}></div>
-                  <div className={s.line}></div>
-                  <p className={s.name}>{name}</p>
-                  <div className={s.detail}>
-                    <div style={{ paddingRight: "12px" }}>
-                      <p className={s.pl}>Prize pool</p>
-                      <div className={s.total}>
-                        <img
-                          src={item?.currency?.icon || ""}
-                          alt="icon"
-                        />
-                        <span>
-                          {
-                            //@ts-ignore
-                            currency(item?.totalPrizePool)
-                          }{" "}
-                          {item?.currency?.symbol}
-                        </span>
-                      </div>
-                    </div>
-                    <GradientButton
-                      type={1}
-                      className={`text-white text-16px leading-28px py-2 ${s.btn}`}
-                      style={{ whiteSpace: "nowrap", fontWeight: "600" }}
-                      onClick={() => handleJoinDetail(item)}
-                    >
-                      JOIN NOW
-                    </GradientButton>
-                  </div>
+    <div className={s.wrapper}>
+      <div className={s.leftArrow}>
+        <img src="/assets/home/ic_prev.svg" alt="" onClick={() => {
+          // @ts-ignore
+          slider.current.prev();
+        }}/>
+      </div>
+      <Carousel ref={slider} className={`lucis-container-2 ${s.container}`}>
+        {orderData && orderData?.map((item, index) => (
+          <div className={`${s.banner}`} key={index}>
+            <Img src={item?.cover ?? "/assets/home/bg_banner.jpg"} srcFallback="/assets/home/bg_banner.jpg" />
+            <div className={s.popup}>
+              <div className={s.popupContent}>
+                <div className={s.popupContentName}>
+                  {item.name}
                 </div>
+                {
+                  item?.totalPrizePool && item?.totalPrizePool > 0 ?
+                    <div className={s.popupContentPrize}>
+                        <span>{item?.totalPrizePool} {item?.currency.symbol}</span> Prize Pool
+                    </div>
+                    : ""
+                }
               </div>
+              <ButtonBorder>
+                <div className={s.btnJoin} onClick={() => handleJoinDetail(item)}>
+                  Join Now
+                </div>
+              </ButtonBorder>
             </div>
           </div>
-        );
-      })}
-    </Carousel>
+        ))}
+      </Carousel>
+      <div className={s.rightArrow}>
+        <img src="/assets/home/ic_next.svg" alt="" onClick={() => {
+          // @ts-ignore
+          slider.current.next();
+        }}/>
+      </div>
+
+    </div>
   );
 }
+
+export default memo(SilderBanner);

@@ -10,15 +10,13 @@ type Props = {
 export default function PlayerHome({ seasonId }: Props) {
   const { dataTopPlayer, loading } = useTopPlayer();
   return (
-    <div className={s.wrapper_player}>
-      <div className="lucis-container" style={{ width: "100%" }}>
-        <h1>BEST PLAYER OF LUCIS NETWORK</h1>
-        <div className={s.block_card}>
-          <PlayerCard data={dataTopPlayer} loading={loading} />
-        </div>
-        <div>
-          <Ranking seasonId={seasonId} />
-        </div>
+    <div className={`lucis-container-2 ${s.wrapper_player}`}>
+      <h1>BEST PLAYER OF LUCIS NETWORK</h1>
+      <div className={s.block_card}>
+        <PlayerCard data={dataTopPlayer} loading={loading} />
+      </div>
+      <div className={s.ranking}>
+        <Ranking seasonId={seasonId} />
       </div>
     </div>
   );

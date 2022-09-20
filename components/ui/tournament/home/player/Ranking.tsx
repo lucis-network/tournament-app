@@ -2,15 +2,14 @@ import { Table } from "antd";
 import Link from "next/link";
 import s from "./Ranking.module.sass";
 import { useArenaRanking } from "../../../../../hooks/ranking/useRanking";
-import { useEffect, useState } from "react";
-import { UserRanking } from "../../../../../src/generated/graphql_p2e";
-import AuthStore from "../../../../Auth/AuthStore";
+import {format} from "utils/Number";
 
 const columns = [
   {
     title: 'No',
     dataIndex: 'rank',
     className: s.columnRank,
+    width: "10%",
     render: (rank: number) => {
       return (
         <div className={s.userRank}>
@@ -28,6 +27,7 @@ const columns = [
     title: 'Name',
     dataIndex: ['profile', 'rank'],
     className: s.columnName,
+    width: "35%",
     render: (_text: string, data: any) => {
       const profile = data?.profile
       const rank = data?.rank
@@ -57,9 +57,10 @@ const columns = [
     title: 'Total earnings',
     dataIndex: 'total_earning',
     className: s.columnEarning,
+    width: "25%",
     render: (totalEarning: number) => {
       return totalEarning > 0 && (
-        <div className={`${s.userEarning} ${s.userValue}`}>{totalEarning} BUSD</div>
+        <div className={`${s.totalEarning}`}>{format(Number(totalEarning), 2, {zero_trim: true})} BUSD</div>
       )
     }
   },
@@ -67,6 +68,7 @@ const columns = [
     title: 'Your Reward',
     dataIndex: ['reward', 'rank'],
     className: s.columnReward,
+    width: "30%",
     render: (_text: string, data: any) => {
       return (
         <div className={s.userReward}>
@@ -90,41 +92,15 @@ type Props = {
 }
 
 const Ranking = ({ seasonId }: Props) => {
-  const [rankingData, setRankingData] = useState<UserRanking[]>([])
   const {getArenaRankingLoading, dataArenaRanking} = useArenaRanking({
     seasonId
   })
-
-  const userId = AuthStore.id
-  //const [userRankingData, setUserRankingData] = useState<UserRanking>()
-  //const {dataArenaUserRanking} = userId
-  //  ? useArenaUserRanking({
-  //      seasonId,
-  //      userId
-  //    })
-  //  : {} as any
-
-  const arenaRanking = dataArenaRanking?.getTournamentRanking
-  useEffect(() => {
-    if (arenaRanking) {
-      setRankingData(arenaRanking)
-    } else {
-      setRankingData([])
-    }
-  }, [dataArenaRanking?.getTournamentRanking])
-
-  //const arenaUserRanking = dataArenaUserRanking?.getUserRanking;
-  //useEffect(() => {
-  //  if (arenaUserRanking) {
-  //    setUserRankingData(arenaUserRanking)
-  //  }
-  //}, [dataArenaUserRanking?.getUserRanking])
 
   return (
     <> 
       <div className={s.rankingTableWrapper}>
         <div className={s.rankingTableResponsive}>
-          <Table columns={columns} dataSource={rankingData} pagination={false} rowKey="id" loading={getArenaRankingLoading} />
+          <Table columns={columns} dataSource={dataArenaRanking?.getTournamentRanking} pagination={false} rowKey="id" loading={getArenaRankingLoading} />
         </div>
       </div>
     </>

@@ -1,43 +1,25 @@
 .container_create_tournament
+  margin-top: 64px
   display: flex
   justify-content: space-between
   height: fit-content
-  margin: 0 auto
   flex-direction: column
   gap: 16px
-  padding: 64px 8px 0 8px
-  max-width: 360px
-  @media screen and (min-width: 414px)
-    max-width: 414px
-  @media screen and (min-width: 540px)
-    gap: 32px
-    max-width: 540px
-  @media screen and (min-width: 640px)
-    max-width: 640px
-  @media screen and (min-width: 768px)
+  //padding: 64px 8px 0 8px
+  //max-width: 360px
+  //@media screen and (min-width: 414px)
+  //  max-width: 414px
+  //@media screen and (min-width: 540px)
+  //  gap: 32px
+  //  max-width: 540px
+  //@media screen and (min-width: 640px)
+  //  max-width: 640px
+  @media screen and (min-width: 992px)
     flex-direction: row-reverse
     background: radial-gradient(#0bffd64a, transparent 70%)
     // background: linear-gradient(90deg, rgba(11, 235, 214, 0) -0.04%, rgba(11, 235, 214, 0.4) 51.33%, rgba(11, 235, 214, 0) 99.96%), linear-gradient(180deg, rgba(11, 235, 214, 0) 0%, rgba(11, 235, 214, 0.4) 51.37%, rgba(11, 235, 214, 0) 100%)
     gap: 40px
     align-items: center
-    max-width: 768px
-    padding: 100px 32px
-  @media screen and (min-width: 992px)
-    max-width: 992px
-    padding: 100px 48px
-  @media screen and (min-width: 1024px)
-    max-width: 1024px
-  @media screen and (min-width: 1280px)
-    // gap: 96px
-    max-width: 1280px
-    padding: 48px 80px
-  @media screen and (min-width: 1440px)
-    max-width: 1440px
-  @media screen and (min-width: 1600px)
-    max-width: 1600px
-  @media screen and (min-width: 1920px)
-    max-width: 1920px
-    padding: 48px 260px
 
 .info
   display: flex
@@ -60,6 +42,10 @@
     &::selection
       -webkit-text-fill-color: white
       text-fill-color: white
+  @media screen and (min-width: 992px)
+    margin-top: 90px
+  @media screen and (min-width: 1200px)
+    margin-top: 30px
   p
     font-weight: 300
     color: #fff
@@ -85,20 +71,24 @@
       margin-bottom: 32px
       font-size: 16px
       line-height: 22px
+
+  @media screen and (min-width: 992px)
+    padding-bottom: 40px
+    p
       &:after
+        bottom: -20px
+        left: 360px
+        transform: scale(0.9)
         position: absolute
         content: url(/assets/home/create/group-1.svg)
         aspect-ratio: 4600/4200
-        bottom: -30px
-        left: 270px 
-        transform: scale(0.8)
     &:before
       position: absolute
       content: url(/assets/home/create/group-2.svg)
       aspect-ratio: 164/175
-      left: 40px
-      top: -150px
-      transform: scale(0.8)
+      left: 18px
+      top: -140px
+      transform: scale(0.7)
     &:after
       position: absolute
       content: url(/assets/home/create/group.svg)
@@ -106,25 +96,18 @@
       bottom: -116px
       left: 80px
       transform: scale(0.8)
-  @media screen and (min-width: 992px)
-    padding-bottom: 56px
-    p
-      &:after
-        bottom: -20px
-        left: 360px
-        transform: scale(0.9)
-    &:before
-      transform: scale(0.9)
-    &:before
-      transform: scale(0.9)
-  // @media screen and (min-width: 1024px)
 
-  @media screen and (min-width: 1280px)
+  @media screen and (min-width: 1200px)
+    h1
+      font-size: 40px
+      line-height: 53px
+      margin-bottom: 16px
     p
       &:after
         left: 460px
 
   @media screen and (min-width: 1440px)
+    padding-bottom: 56px
     h1
       font-size: 48px
       line-height: 53px
@@ -151,13 +134,11 @@
   aspect-ratio: 269/337
   margin: 0 auto
   max-width: 100%
-  // padding: 0 37px
   @media screen and (min-width: 540px)
-    max-width: 300px
-  @media screen and (min-width: 768px)
+    max-width: 360px
+  @media screen and (min-width: 992px)
     content: url(/assets/home/create/create-tour.png)
     aspect-ratio: 560/655
-    max-width: 330px
     margin: 0
   @media screen and (min-width: 1024px)
     max-width: 400px
@@ -190,7 +171,7 @@
     text-align: center
     letter-spacing: 0.2em
     text-transform: uppercase
-    // color: #FFF
+    color: #000000
     height: 10px
     position: relative
     z-index: 5
@@ -206,7 +187,7 @@
       height: 25px
     @media screen and (min-width: 1280px)
       font-size: 28px
-      line-height: 31px
+      line-height: 35px
       height: 28px
   &:before
     content: ''

@@ -1,176 +1,133 @@
-//.wrapper
-.container
-  .im_conver
-    width: 100%
-    height: auto
-    position: relative
-    max-height: 400px
-    @media (min-width: 0px)
-      min-height: 164px
-    @media (min-width: 414px)
-      min-height: 174px
-    @media (min-width: 540px)
-      min-height: 205px
-    @media (min-width: 640px)
-      min-height: 220px
-    @media (min-width: 768px)
-      min-height: 256px
-    @media (min-width: 992px)
-      min-height: auto
-    .im_banner
-      background-size: 100%
-      background-repeat: no-repeat
-      background-position: center center
-      @media (min-width: 0px)
-        height: 84px
-      @media (min-width: 414px)
-        height: 95.5px
-      @media (min-width: 540px)
-        height: 125px
-      @media (min-width: 640px)
-        height: 144px
-      @media (min-width: 768px)
-        height: 176px
-      @media (min-width: 992px)
-        height: 224px
-      @media (min-width: 1024px)
-        height: 248.5px
-      @media (min-width: 1280px)
-        height: 280px
-      @media (min-width: 1440px)
-        height: 320px
-      @media (min-width: 1600px)
-        height: 360px
-      @media (min-width: 1920px)
-        height: 398px
-
-.title
-  background: linear-gradient(332deg, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)
-  backdrop-filter: blur(12px)
-  position: absolute
-  cursor: default
-  @media (min-width: 0px) and (max-width: 991px)
-    max-width: 100%
-    width: 100%
-    left: 0
-    bottom: 0
-    border-radius: 0px 0px 6px 6px
-    padding: 8px 12px
-  @media (min-width: 992px)
-    top: -20px
-    left: 0
-    border-radius: 16px
-    max-width: 336px
-    min-width: 336px
-    padding: 20px
-    margin-top: 38px
-    margin-left: 60px
-  .line
-    position: absolute
-    width: 4px
-    height: 50px
-    background: #FFF
-    @media (min-width: 0px)
-      top: -67%
-      display: none
-    @media (min-width: 992px)
-      top: -74px
-      display: block
-  .line:nth-child(1)
-    left: 12px
-  .line:nth-child(2)
-    right: 12px
-  .name
-    color: #FFF
-    font-size: 24px
-    line-height: 28px
-    font-weight: 700
-    @media (min-width: 0px)
-      font-size: 15px
-      margin-bottom: 0px
-      line-height: 20px
-      height: 20px 
-      overflow: hidden
-    @media (min-width: 992px)
-      font-size: 18px
-      margin-bottom: 0px
-      line-height: 20px
-      padding-bottom: 8px
-      height: 40px 
-      overflow: hidden
-    @media (min-width: 1280px)
-      font-size: 24px
-      line-height: 26px
-      height: 54px
-  .detail
-    display: flex
+.wrapper
+  position: relative
+  display: flex !important
+  justify-content: center
+  :global(.ant-carousel)
+    @media screen and (max-width: 1024px)
+      width: 100%
+  .leftArrow
+    display: flex !important
+    justify-content: flex-end
+    flex: 1
     align-items: center
-    justify-content: space-between
-    padding-top: 2px
-    .pl
-      color: #FFF
-      margin: 0
-      font-size: 16px
-      font-weight: 300
-      @media (max-width: 992px)
-        font-size: 14px
-    .total
-      display: flex
+    background: linear-gradient(270deg, #000000 0%, rgba(0, 0, 0, 0) 100%)
+    @media screen and (max-width: 1024px)
+      display: none !important
+    img
+      margin-right: 35%
+      width: 12px
+      @media screen and (min-width: 1600px)
+        width: 22px
+        height: 35px
+  .rightArrow
+    display: flex !important
+    justify-content: flex-start
+    flex: 1
+    align-items: center
+    background: linear-gradient(90deg, #000000 0%, rgba(0, 0, 0, 0) 100%)
+    @media screen and (max-width: 1024px)
+      display: none !important
+    img
+      margin-left: 35%
+      width: 12px
+      @media screen and (min-width: 1600px)
+        width: 22px
+        height: 35px
+
+  .container
+    position: relative
+    @media screen and (max-width: 1024px)
+      width: 100%
+      padding: 0
+    :global(.slick-dots)
+      @media screen and (max-width: 767px)
+        display: none !important
+    .banner
+      display: flex !important
+      justify-content: flex-start
       align-items: center
-      justify-content: space-between
-      @media (max-width: 992px)
-        margin-right: 12px
-      span
-        font-size: 18px
-        color: #0BEBD6
-        font-weight: 700
-        margin-left: 4px
-        @media (max-width: 992px)
-          font-size: 13px
+      position: relative
+      flex-direction: column
+      @media screen and (min-width: 768px)
+        flex-direction: row
+      .popup
+        //position: absolute
+        content: ""
+        width: 100%
+        height: 64px
+        top: 15%
+        right: 0
+        color: #FFFFFF
+        background: linear-gradient(270deg, rgba(8, 9, 14, 0) 9.69%, rgba(8, 9, 14, 0.5) 46.69%, rgba(8, 9, 14, 0) 91.93%)
+        padding: 0 16px
+        display: flex
+        align-items: center
+        gap: 0 16px
+        @media screen and (min-width: 768px)
+          width: 400px
+          height: 64px
+          position: absolute
+          padding: 10px 16px
+          gap: 0 24px
+        @media screen and (min-width: 992px)
+          width: 440px
+          height: 74px
+        @media screen and (min-width: 1400px)
+          width: 527px
+          height: 84px
+          padding: 10px 20px
+        @media screen and (max-width: 575px)
+          //bottom: 0
+          //left: 0
+        .popupContent
+          flex: 1
+          font-family: 'Lexend'
+          .popupContentName
+            font-style: normal
+            font-weight: 400
+            font-size: 20px
+            line-height: 25px
+            text-shadow: 0 0 4px #FFFFFF
+            overflow: hidden
+            display: -webkit-box
+            -webkit-line-clamp: 1
+            -webkit-box-orient: vertical
+            @media screen and (min-width: 575px)
+              font-size: 24px
+              line-height: 28px
+            @media screen and (min-width: 992px)
+              font-size: 28px
+              line-height: 32px
+            @media screen and (min-width: 1400px)
+              font-size: 32px
+              line-height: 40px
+          .popupContentPrize
+            font-weight: 300
+            font-size: 14px
+            line-height: 18px
+            margin-top: 2px
+            @media screen and (min-width: 992px)
+              margin-top: 4px
+              font-size: 16px
+              line-height: 20px
+            span
+              font-weight: 500
+              color: #FFD058
+        .btnJoin
+          color: #FFFFFF !important
+          padding: 0 8px
+          font-family: 'Revx Neue Demo' !important
+          font-weight: 500 !important
+          font-size: 12px !important
+          line-height: 16px !important
+          letter-spacing: 0.04em !important
+          @media screen and (min-width: 575px)
+            padding: 0 16px
+            font-size: 18px !important
+            line-height: 20px !important
       img
-        width: 20px
-        height: 20px
-    .btn
-      padding: 4px 20px
-      font-size: 14px
-      moz-transition: all .3s ease-in-out
-      -o-transition: all .3s ease-in-out
-      -webkit-transition: all .3s ease-in-out
-      transition: all .3s ease-in-out
-      background-size: 140% 50%
-      @media (max-width: 992px)
-        font-size: 12px
-    .btn:hover
-      background-position: 50% 0% 
-      moz-transition: all .3s ease-in-out
-      -o-transition: all .3s ease-in-out
-      -webkit-transition: all .3s ease-in-out
-      transition: all .3s ease-in-out
-  .line::before
-    content: ""
-    position: absolute
-    top: 99%
-    left: -2px
-    width: 8px
-    height: 8px
-    border-radius: 100%
-    background: #FFF
-    box-shadow: 0px 0px 9px 8px rgba(67, 224, 247, 0.37)
-.title::before
-  content: ""
-  position: absolute
-  top: 0
-  left: 0
-  right: 0
-  bottom: 0
-  z-index: -1
-  padding: 1px
-  background: linear-gradient(341.59deg, rgba(11, 235, 214, 0.3) -37.08%, rgba(11,235, 214, 0.3) 96.75%), rgba(241, 241, 241, 0.1)
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)
-  -webkit-mask-composite: xor
-  mask-composite: exclude
-  @media ( min-width: 0px )
-    border-radius: 0px 0px 6px 6px
-  @media ( min-width: 992px )
-    border-radius: 16px
-      
+        //max-width: 1400px
+        width: 100%
+        aspect-ratio: 1400/720
+        object-fit: cover
+

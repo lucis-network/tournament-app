@@ -32,7 +32,7 @@ export default function ButtonSort({
 		onFilter(type, value?.toString() || "");
 	};
 	return (
-		<div className={`lucis-container-2 ${s.container} `}>
+		<div className={`${s.container}`}>
 				<div className={s.rightGroupItem}>
 					<div className={s.prizepool}>
 						<Order

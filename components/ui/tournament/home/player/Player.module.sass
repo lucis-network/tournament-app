@@ -1,57 +1,40 @@
 .wrapper_player
-  background-image: url("/assets/home/bg_player.png")
-  background-repeat: no-repeat
-  background-size: cover
-  background-position: top center
   position: relative
   z-index: 1
-  margin-top: -20px
   display: flex
   align-items: center
   justify-content: center
-  @media ( min-width: 0 )
-    padding: 100px 0px
-  @media ( min-width: 540px )
-    padding-bottom: 180px
-  @media ( min-width: 640px )
-    padding-bottom: 200px
-  @media ( min-width: 768px )
-    padding-bottom: 240px
-
+  flex-direction: column
+  margin-top: 64px
+  @media ( min-width: 992px )
+    margin-top: 80px
   h1
-    color: #FFF
-    font-weight: 700
-    font-size: 48px
-    line-height: 115% 
-    margin-top: -160px
-    padding-bottom: 160px
     text-align: center
-    @media ( min-width: 0 )
-      margin: 0
-      font-size: 28px 
-      padding-bottom: 0px
-    @media ( min-width: 414px )
-      font-size: 32px 
-    @media ( min-width: 540px )
-      padding-bottom: 40px
+    font-family: 'Revx Neue Demo'
+    font-weight: 400
+    letter-spacing: 0.2em
+    text-transform: uppercase
+    color: #FFFFFF
+    font-size: 24px
+    line-height: 26px
+    margin-bottom: 24px
     @media ( min-width: 768px )
-      padding-bottom: 160px
+      font-size: 30px
+      line-height: 36px
     @media ( min-width: 992px )
-      padding-bottom: 150px
+      font-size: 36px
+      line-height: 40px
+    @media ( min-width: 1200px )
+      font-size: 42px
+      line-height: 48px
+    @media ( min-width: 1400px )
       font-size: 48px
-    @media ( min-width: 1920px )
-      padding-bottom: 200px
+      line-height: 53px
 
   .block_card
     display: flex
     align-items: center
     justify-content: center
-    @media (min-width: 0px)
-      margin-left: 8%
-    @media (min-width: 640px)
-      margin-left: 4%
-    @media (min-width: 992px)
-      margin-left: 0
 
   .btn_see_all
     display: flex
@@ -72,4 +55,8 @@
       @media (min-width: 640px)
         font-size: 20px
         padding: 14px 20px
-
+  .ranking
+    min-width: 100%
+    margin-top: -40px
+    @media screen and (min-width: 992px)
+      margin-top: -80px
