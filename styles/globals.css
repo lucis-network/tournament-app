@@ -1298,3 +1298,7 @@ body .ant-carousel .slick-dots-bottom {
     width: 300px;
   }
 }
+
+.ant-modal-footer {
+  padding: 0 !important;
+}

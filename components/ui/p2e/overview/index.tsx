@@ -18,6 +18,7 @@ import BannerOverview from './component/banner/BannerOverview';
 import { Game, OverviewSection, Platform } from 'utils/Enum';
 import moment from "moment";
 import {fetchJsFromCDN} from "../../../../utils/DOM";
+import {ConnectCSGOPopup} from "./ConnectCSGOPopup";
 
 interface IProps {
   overviewSection?: OverviewSection;
@@ -33,6 +34,7 @@ export default observer(function P2EOverview(props: IProps) {
   const [loadingFaceit, setLoadingFaceit] = useState<boolean>(false);
   const [loadingLMSS, setLoadingLMSS] = useState<boolean>(false);
   const [openConnectLOLPopup, setOpenConnectLOLPopup] = useState<boolean>(false);
+  const [openConnectCsgoPopup, setOpenConnectCsgoPopup] = useState<boolean>(false);
   const [faceitUser, setFaceitUser] = useState<PlatformAccount>({} as PlatformAccount)
   const [lmssUser, setLmssUser] = useState<PlatformAccount>({} as PlatformAccount)
   const router = useRouter();
@@ -295,6 +297,15 @@ export default observer(function P2EOverview(props: IProps) {
             onCancel={() => setOpenConnectLOLPopup(false)}
             onConnectLOL={(summonerName) => connectLOL(summonerName)}
           />}
+
+        {openConnectCsgoPopup &&
+          <ConnectCSGOPopup
+            onCancel={() => setOpenConnectCsgoPopup(false)}
+            onConnectCSGO={() => {
+              setOpenConnectCsgoPopup(false);
+              handleConnectFaceit();
+            }}
+          />}
         <div className={s.overviewContainer}>
           <BannerOverview isLogin={AuthStore.isLoggedIn} />
           <div className={s.overviewSection} ref={connectGameRef as any}>
@@ -349,7 +360,7 @@ export default observer(function P2EOverview(props: IProps) {
                         {/* <div id="faceitLogin" className={s.btnConnectGame}></div> */}
                         <div
                           className={s.overviewBtnConnect}
-                          onClick={() => handleConnectFaceit()}
+                          onClick={() => setOpenConnectCsgoPopup(true)}
                         >
                           <div><span>{loadingFaceit && <Spin />}</span> CONNECT GAME</div>
                         </div>
