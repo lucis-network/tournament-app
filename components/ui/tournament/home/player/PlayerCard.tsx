@@ -41,7 +41,7 @@ export default function CardPlayer(props: Props) {
                 1500 mission
               </p>
 
-              <p className={`${s.top_reward} ${i !== 0 ? s.top_reward_fix : ''}`}>
+              <p className={`${s.top_reward}`}>
                 <span className={s.reward_point}>
                   +1000 <img className={s.reward_point_icon} src="/assets/P2E/lucis-point.svg" alt=""/>
                 </span>

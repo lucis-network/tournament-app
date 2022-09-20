@@ -1,0 +1,61 @@
+.btn
+  width: fit-content
+  padding: 11px 0
+  background: linear-gradient(93.02deg, #1889E4 0.52%, #0BEBD6 100.48%)
+  position: relative
+  cursor: pointer
+  z-index: 10
+  overflow: hidden
+  //@media screen and (min-width: 768px)
+  //  width: 258px
+  //@media screen and (min-width: 1400px)
+  //  width: 338px
+  div
+    font-family: 'RevxNeueDemo', serif
+    font-weight: 400
+    font-size: 12px
+    line-height: 13px
+    text-align: center
+    letter-spacing: 0.2em
+    color: #000000
+    height: 12px
+    position: relative
+    z-index: 5
+    color: #FFFFFF
+    //@media screen and (min-width: 768px)
+    //  font-size: 18px
+    //  line-height: 22px
+    //  height: 18px
+    //@media screen and (min-width: 992px)
+    //  font-size: 24px
+    //  line-height: 28px
+    //  height: 25px
+    @media screen and (min-width: 1400px)
+      font-size: 14px
+      line-height: 15px
+      height: 13px
+  &:before
+    content: ''
+    display: block
+    position: absolute
+    top: 1px
+    right: 1px
+    bottom: 1px
+    left: 1px
+    border: 1px solid #000000
+  &:hover
+    span
+      width: 400px
+      height: 300px
+  .btn_hover
+    width: 0
+    height: 0
+    content: ""
+    z-index: 1
+    position: absolute
+    background: radial-gradient(circle closest-side,rgb(255 255 255 / 80%),transparent)
+    transform: translate(-50%,-50%)
+    transition: width .2s ease,height .2s ease
+    left: 0
+    top: 0
+    pointer-events: none

@@ -46,35 +46,6 @@ export default function  TabHome() {
   return (
     <div className={`${s.container_card_tournament}`}>
       <div className="lucis-container-2">
-        {/*<Row className={s.top_tab}>*/}
-        {/*  <Col className={s.tabs}>*/}
-        {/*    <img src="/assets/home/line_type.svg" alt=""/>*/}
-        {/*    <div className={s.groupType}>*/}
-        {/*      {listTabs.map((item: StatusGameType) => (*/}
-        {/*        <div*/}
-        {/*          key={item}*/}
-        {/*          onClick={() => handleChangeTab(item)}*/}
-        {/*          className={*/}
-        {/*            filter.type === item*/}
-        {/*              ? `${s.tab_item} ${s.active}`*/}
-        {/*              : `${s.tab_item}`*/}
-        {/*          }*/}
-        {/*        >*/}
-        {/*          <p className="mb-0">{item}</p>*/}
-        {/*        </div>*/}
-        {/*      ))}*/}
-        {/*    </div>*/}
-        {/*    <img  src="/assets/home/line_type.svg" alt=""/>*/}
-        {/*  </Col>*/}
-        {/*  <Col className={s.container_search}>*/}
-        {/*    <Search*/}
-        {/*      className={s.search}*/}
-        {/*      placeholder="Name of tournament"*/}
-        {/*      value={filter.search}*/}
-        {/*      onChange={(e) => handleChangeFilter("search", e.target.value)}*/}
-        {/*    />*/}
-        {/*  </Col>*/}
-        {/*</Row>*/}
         <ButtonSort
           filter={filter}
           gameData={gameData}
@@ -82,33 +53,7 @@ export default function  TabHome() {
           onOrder={handleOrder}
           listTabs={listTabs}
         />
-        <div style={{ minHeight: "380px" }}>{cardHome}</div>
-        <div className={s.container_create}>
-          <div className={s.line}></div>
-          <div className={s.lin1}></div>
-          <div className={s.im_create_tournament}>
-            <img src="/assets/Banner/im_creat_tournament.png" alt="" />
-          </div>
-          <Row className={s.creat_tournament}>
-            <Col></Col>
-            <Col className={s.heading}>
-              <h2>CREATE MY TOURNAMENT</h2>
-              <p>
-                Everyone can create tournaments on Lucis Network. The most
-                useful platform to create and manage your own tournaments with
-                ease.
-              </p>
-              <Button
-                type="primary"
-                loading={creating}
-                onClick={createTournament}
-                className={s.btn_create_now}
-              >
-                CREATE NOW
-              </Button>
-            </Col>
-          </Row>
-        </div>
+        <div>{cardHome}</div>
       </div>
     </div>
   );

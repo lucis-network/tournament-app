@@ -17,7 +17,7 @@ export default function CreateTournament() {
 
   return (
     <>
-      <div className={s.container_create_tournament}>
+      <div className={`lucis-container-2 ${s.container_create_tournament}`}>
         <div className={s.img} >
           <div />
         </div>

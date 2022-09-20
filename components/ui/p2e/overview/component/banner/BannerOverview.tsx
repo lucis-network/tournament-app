@@ -25,7 +25,7 @@ function BannerOverview(props: IProps) {
 
     
     <Col xs={24} lg={14} className={s.banner_thumb}>
-      <img src="/assets/P2E/overview/thumb_banner-1.png" alt="" />
+      <img src="/assets/P2E/overview/thumb_banner.png" alt="" />
     </Col>
   </Row>
   );

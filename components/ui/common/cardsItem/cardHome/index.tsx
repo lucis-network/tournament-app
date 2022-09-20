@@ -1,6 +1,6 @@
 import { Button, Col } from "antd";
 import { memo, useState } from "react";
-
+import {Image} from "antd";
 import {format} from "utils/Number";
 import {Bracket, TournamentGql } from "src/generated/graphql";
 import s from "./CardHome.module.sass";
@@ -31,8 +31,7 @@ function CardHome(props: Props) {
   }
 
   return (
-    <div className="lucis-container-2">
-
+    <div>
       <div className={s.listItems} >
         {datas?.slice(0, isLoadMore).map((item) => {
           return (
@@ -108,7 +107,8 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                     <p>Free entry</p>
                   </div>
                   <div className={s.itemAva}>
-                    <img src={item?.user?.profile?.avatar ? item?.user?.profile?.avatar : "/assets/homepage/default_avatar.png"} alt=""/>
+                    <Image src={item?.user?.profile?.avatar ? item?.user?.profile?.avatar : "/assets/home/avt_null.jpg"} alt=""
+                    fallback="/assets/home/avt_null.jpg"/>
                   </div>
                   <div className={s.itemCreator}>
                     <p>Creator</p>

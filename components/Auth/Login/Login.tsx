@@ -18,7 +18,7 @@ export default function Login(props: any) {
       >
         <div>SIGN IN</div>
       </div>
-      {/*<GradientButton*/}
+      {/*<ButtonBorder*/}
       {/*  onClick={showModal}*/}
       {/*  type={1}*/}
       {/*  small={!!props.small}*/}
@@ -26,7 +26,7 @@ export default function Login(props: any) {
       {/*  style={{ whiteSpace: "nowrap", fontWeight: "600", color: '#FFF' }}*/}
       {/*>*/}
       {/*  Sign in*/}
-      {/*</GradientButton>*/}
+      {/*</ButtonBorder>*/}
       {/*<LoginModal />*/}
     </div>
   );

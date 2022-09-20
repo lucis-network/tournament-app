@@ -443,39 +443,40 @@
 
 .listItems
   display: flex
-  justify-content: center
+  justify-content: flex-start
   align-items: center
-  gap: 10px 7px
+  gap: 10px 8px
   flex-wrap: wrap
-  @media screen and (max-width: 374px)
-    width: 360px !important
   @media screen and (min-width: 575px)
-    gap: 15px 15px
-  @media screen and (min-width: 768px)
-    gap: 10px 7px
+    gap: 10px 10px
   @media screen and (min-width: 992px)
-    gap: 20px 20px
+    gap: 15px 10px
   @media screen and (min-width: 1200px)
-    //width: 992px !important
+    gap: 20px 13px
+  @media screen and (min-width: 1600px)
     gap: 32px 40px
-  //@media screen and (min-width: 1400px)
-  //  width: 1400px !important
 
   .item
     display: flex
     flex-direction: column
     color: #FFFFFF
-    width: 176px
+    width: 160px
     position: relative
     cursor: pointer
     border-radius: 4px
     backdrop-filter: blur(40px)
     background: rgba(69, 80, 107, 0.4)
     @media screen and (min-width: 375px)
-      width: 184px
+      width: 167px
+    @media screen and (min-width: 575px)
+      width: 174px
     @media screen and (min-width: 768px)
-      width: 235px
+      width: 233px
+    @media screen and (min-width: 992px)
+      width: 232px
     @media screen and (min-width: 1200px)
+      width: 275px
+    @media screen and (min-width: 1400px)
       width: 320px
     > *
       z-index: 1
@@ -505,9 +506,10 @@
         justify-content: space-around
         background: linear-gradient(180deg, rgba(23, 29, 46, 0.8) 0%, rgba(23, 29, 46, 0.8) 0.01%, rgba(23, 29, 46, 0.48) 73.33%, rgba(0, 6, 37, 0) 100%)
         color: #FFFFFF
-        padding: 8px 0
+        padding: 4px 4px
+        @media screen and (min-width: 575px)
+          padding: 8px 4px
         width: 100%
-        margin-bottom: 16px
         .itemDescImgL
           display: flex
           align-items: center
@@ -522,8 +524,11 @@
           span
             font-family: 'Lexend', serif
             font-weight: 300
-            font-size: 10px
+            font-size: 9px
             line-height: 15px
+            @media screen and (min-width: 575px)
+              font-size: 10px
+              line-height: 15px
             @media screen and (min-width: 768px)
               font-size: 12px
               line-height: 18px
@@ -545,8 +550,11 @@
           span
             font-family: 'Lexend', serif
             font-weight: 300
-            font-size: 10px
-            line-height: 15px
+            font-size: 9px
+            line-height: 13px
+            @media screen and (min-width: 575px)
+              font-size: 10px
+              line-height: 15px
             @media screen and (min-width: 768px)
               font-size: 12px
               line-height: 18px
@@ -556,10 +564,13 @@
         .itemDescImgGameMode
           font-family: 'Lexend', serif
           font-weight: 300
-          font-size: 10px
-          line-height: 15px
+          font-size: 9px
+          line-height: 13px
           color: #DBE0E8
           margin-top: 1px
+          @media screen and (min-width: 575px)
+            font-size: 10px
+            line-height: 15px
           @media screen and (min-width: 768px)
             font-size: 12px
             line-height: 15px
@@ -581,16 +592,23 @@
       //@media screen and (min-width: 768px)
       //  margin-top: 12px
       .itemFreeEntry
-        padding: 4px
-        min-width: 62px
-        max-width: 62px
+        padding: 0 4px 4px 4px
+        min-width: 56px
+        max-width: 56px
         position: relative
         overflow: hidden
         opacity: 0.8
+        @media screen and (min-width: 375px)
+          min-width: 62px
+          max-width: 62px
         @media screen and (min-width: 575px)
-          min-width: 80px
-          max-width: 80px
+          min-width: 68px
+          max-width: 68px
         @media screen and (min-width: 768px)
+          min-width: 90px
+          max-width: 90px
+          padding: 8px 22px 8px 9px
+        @media screen and (min-width: 1200px)
           min-width: 106px
           max-width: 106px
           padding: 8px 20px 8px 9px
@@ -627,7 +645,6 @@
           @media screen and (min-width: 768px)
             font-size: 10px
             line-height: 12px
-            margin-left: 7px
           @media screen and (min-width: 1200px)
             font-size: 12px
             line-height: 15px
@@ -636,17 +653,20 @@
       .itemAva
         margin-top: 8px
         margin-right: 8px
-        @media screen and (min-width: 768px)
+        @media screen and (min-width: 575px)
           margin-top: 12px
         img
-          width: 20px
-          height: 20px
+          min-width: 20px
+          max-width: 20px
           border-radius: 50%
           @media screen and (min-width: 575px)
-            width: 30px
-            height: 30px
+            min-width: 25px
+            max-width: 25px
+          @media screen and (min-width: 768px)
+            min-width: 30px
+            max-width: 30px
       .itemCreator
-        margin-top: 6px
+        margin-top: 8px
         @media screen and (min-width: 575px)
           margin-top: 9px
         @media screen and (min-width: 768px)
@@ -676,11 +696,13 @@
             font-size: 12px
             line-height: 15px
     .itemTitle
-      margin: 6px 8px
+      margin: 8px 4px
       @media screen and (min-width: 375px)
-          margin: 10px 6px 13px 6px
+          margin: 10px 6px 12px 6px
       @media screen and (min-width: 768px)
-        margin: 12px 15px 20px 15px
+        margin: 12px 8px 12px 8px
+      @media screen and (min-width: 1400px)
+        margin-bottom: 20px
       p
         max-height: 31px
         min-height: 31px
@@ -701,7 +723,6 @@
         @media screen and (min-width: 768px)
           font-size: 20px
           line-height: 28px
-          padding: 0 8px
           max-height: 56px
           min-height: 56px
     .itemGroupCT
@@ -713,13 +734,18 @@
       @media screen and (min-width: 575px)
         padding: 8px
       @media screen and (min-width: 768px)
+        padding: 15px 8px
+      @media screen and (min-width: 1400px)
         padding: 15px 15px
       .itemCurrency
         font-family: 'Lexend', serif
         font-weight: 500
-        font-size: 14px
-        line-height: 18px
+        font-size: 12px
+        line-height: 15px
         color: #FFD058
+        @media screen and (min-width: 375px)
+          font-size: 14px
+          line-height: 18px
         @media screen and (min-width: 768px)
           font-size: 18px
           line-height: 22px
@@ -740,10 +766,12 @@
           margin-bottom: 0
           font-family: 'Lexend', serif
           font-weight: 400
-          font-size: 10px
+          font-size: 9px
           line-height: 15px
-          margin-top: 3px
           color: #00F9FF
+          @media screen and (min-width: 575px)
+            font-size: 10px
+            line-height: 15px
           @media screen and (min-width: 768px)
             font-size: 12px
             line-height: 16px

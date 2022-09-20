@@ -2,10 +2,10 @@
   display: flex
   justify-content: space-between
   flex-wrap: wrap
-  margin-bottom: 24px
+  margin-bottom: 16px
+  @media screen and (min-width: 575px)
+    margin-bottom: 24px
   gap: 16px 0
-  @media screen and (max-width: 575px)
-    padding: 0 16px
   :global(.ant-select-item-option-content)
     color: #FFFFFF
     font-family: 'Revx Neue Demo'
@@ -149,6 +149,7 @@
         font-weight: 400
         font-size: 16px
         line-height: 18px
+        height: 40px
       :global(.ant-btn)
         border: none
       :global(.ant-input-search > .ant-input-group > .ant-input-group-addon:last-child .ant-input-search-button:not(.ant-btn-primary))

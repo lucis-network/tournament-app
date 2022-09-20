@@ -1,19 +1,19 @@
 .top
   transform-style: preserve-3d
-  perspective: 1000px
-  margin-top: 100px
-  @media screen and (min-width: 768px)
-    margin-top: 0
+  //perspective: 1000px
+  margin-top: 60px
 
 .top_players
   display: flex
   align-items: center
   justify-content: center
-  gap: 28px
   position: relative
-  top: -96px
+  top: 10px
+  @media screen and (min-width: 575px)
+    top: 40px
   @media screen and (min-width: 768px)
-    top: -80px
+    top: 0
+    gap: 0 40px
 
 .top_player
   display: flex
@@ -21,48 +21,47 @@
   justify-content: center
   flex-direction: column
   position: relative
+  align-self: flex-end
 
 .player_top1
-  left: -6px
+  top: -40px
+  .top_medal
+    scale: 0.95
+    @media screen and (min-width: 575px)
+      scale: 0.85
+    @media screen and (min-width: 768px)
+      scale: 1
+      margin-top: 15px
   @media screen and (min-width: 575px)
-    left: -18px
+    top: -45px
+    left: -15px
   @media screen and (min-width: 768px)
-    left: 0
-  
-
+    top: -75px
+    left: 5px
 .player_top2
   order: -1
-  top: 86px
-  @media screen and (min-width: 414px)
-    top: 104px
-  @media screen and (min-width: 575px)
-    top: 120px
-  @media screen and (min-width: 768px)
-    top: 145px
-    left: 20px
+  .top_medal
+    scale: 0.9
+    @media screen and (min-width: 575px)
+      scale: 0.95
+    @media screen and (min-width: 768px)
+      scale: 1
 
 .player_top3
-  top: 100px
-  right: 20px
-  @media screen and (min-width: 414px)
-    top: 120px
-    right: 22px
-  @media screen and (min-width: 575px)
-    top: 160px
-    right: 24px
+  top: 15px
+  .top_medal
+    scale: 0.8
+    @media screen and (min-width: 768px)
+      scale: 1
   @media screen and (min-width: 768px)
-    top: 198px
-    right: 26px
-  @media screen and (min-width: 992px)
-    right: 12px
-
+    top: 0
 .player_name
   font-family: 'Lexend'
   color: #fff
   font-weight: 600
   font-size: 14px
   line-height: 110%
-  letter-spacing: 0.4%
+  letter-spacing: 0.04
   display: block
   text-align: center
   overflow: hidden
@@ -77,18 +76,18 @@
     max-width: 214px
 
 .top_platform
+  width: 100%
   display: block
-  margin-top: -100px
-  transform: translateX(-10px) translateZ(-100px) scale(1.1)
-
+  margin-top: -45px
+  //transform: translateX(-10px) translateZ(-100px) scale(1.1)
   @media screen and (min-width: 768px)
-    transform: translateZ(-100px)
+    margin-top: -100px
 
 .top_mission
   color: #FFDE9D
   font-size: 12px
   line-height: 13px
-  letter-spacing: 0.4%
+  letter-spacing: 0.04
   font-family: 'Revx Neue Demo'
   margin: 12px 0 6px 0
 
@@ -107,11 +106,8 @@
 
 .top_reward
   display: flex
-  gap: 11px
-  margin-bottom: 28px
-
-.top_reward_fix
-  margin-bottom: 11px
+  gap: 10px
+  //margin-bottom: 28px
 
 .reward_point
   color: #DF9B16
@@ -119,7 +115,9 @@
   font-weight: 300
   font-size: 8px
   line-height: 125%
-
+  @media screen and (min-width: 575px)
+    font-size: 10px
+    line-height: 16px
   @media screen and (min-width: 768px)
     font-size: 14px
     line-height: 18px
@@ -130,7 +128,9 @@
   font-weight: 300
   font-size: 8px
   line-height: 125%
-
+  @media screen and (min-width: 575px)
+    font-size: 10px
+    line-height: 16px
   @media screen and (min-width: 768px)
     font-size: 14px
     line-height: 18px
