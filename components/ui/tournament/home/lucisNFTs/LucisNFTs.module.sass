@@ -1,0 +1,100 @@
+.sectionFavoriteGames
+  margin-top: 40px
+  padding: 54px 0
+  @media screen and (min-width: 992px)
+    margin-top: 64px
+    padding: 80px 0
+  @media screen and (min-width: 1200px)
+    margin-top: 80px
+    padding: 104px 0
+.sliderWrap
+  position: relative
+  :global(.lucis-container-2)
+    @media screen and (max-width: 991px)
+      width: 100%
+      padding: 0
+  :global(.swiper-slide)
+    width: 272px !important
+    display: flex
+    @media screen and (min-width: 1600px)
+      width: 504px !important
+.nftItem
+  border-bottom-left-radius: 4px
+  border-bottom-right-radius: 4px
+  background: rgba(69, 80, 107, 0.5)
+  backdrop-filter: blur(40px)
+  width: 132px
+  margin-right: 8px
+  &:last-of-type
+    margin-right: 0
+  @media screen and (min-width: 1600px)
+    width: 240px
+    margin-right: 24px
+  img
+    width: 100%
+    height: 151px
+    @media screen and (min-width: 1600px)
+      height: 274px
+  .nftInfo
+    padding: 10px
+    .nftName
+      font-family: 'Revx Neue Demo'
+      font-weight: 600
+      font-size: 12px
+      line-height: 13px
+      text-align: center
+      letter-spacing: 0.04em
+      color: #00F9FF
+      @media screen and (min-width: 1600px)
+        font-size: 20px
+        line-height: 22px
+    .nftValue
+      font-family: 'Lexend'
+      font-weight: 600
+      font-size: 14px
+      line-height: 18px
+      text-align: center
+      letter-spacing: 0.04em
+      color: #FFB601
+      margin-bottom: 0
+      @media screen and (min-width: 1600px)
+        font-size: 24px
+        line-height: 30px
+.btnCommon
+  display: block
+  margin: 24px auto 0
+  //width: 133px
+  height: 30px
+  @media screen and (min-width: 768px)
+    height: 41px
+    width: 277px
+  @media screen and (min-width: 1600px)
+    margin-top: 50px
+    width: 405px
+    height: 52px
+.nftSwiper
+  position: relative
+.swiperNavWrap
+  position: absolute
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  z-index: 2
+  width: 100%
+  @media screen and (max-width: 1599px)
+    display: none
+  @media screen and (min-width: 1600px)
+    width: 1592px
+.sliderNav
+  position: absolute
+  top: 50%
+  transform: translateY(-50%)
+  z-index: 2
+  padding: 10px
+  &:global(.prev)
+    left: 0
+  &:global(.next)
+    right: 0
+  img
+    width: 48px
+    aspect-ratio: 48/48

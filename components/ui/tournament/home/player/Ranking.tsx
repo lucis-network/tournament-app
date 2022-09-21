@@ -6,7 +6,7 @@ import {format} from "utils/Number";
 
 const columns = [
   {
-    title: 'No',
+    title: 'Rank',
     dataIndex: 'rank',
     className: s.columnRank,
     width: "10%",
@@ -60,12 +60,12 @@ const columns = [
     width: "25%",
     render: (totalEarning: number) => {
       return totalEarning > 0 && (
-        <div className={`${s.totalEarning}`}>{format(Number(totalEarning), 2, {zero_trim: true})} BUSD</div>
+        <div className={`${s.totalEarning}`}>{format(Number(totalEarning), 2, {zero_trim: true})}$</div>
       )
     }
   },
   {
-    title: 'Your Reward',
+    title: 'Rewards',
     dataIndex: ['reward', 'rank'],
     className: s.columnReward,
     width: "30%",
@@ -73,14 +73,14 @@ const columns = [
       return (
         <div className={s.userReward}>
           <div className={s.rewardPoint}>
-            9000 <img src="/assets/P2E/lucis-point.svg" alt=""/>
+            ---- <img src="/assets/P2E/lucis-point.svg" alt=""/>
           </div>
           <div className={s.rewardToken}>
-            9000 <img src="/assets/P2E/lucis-token.svg" alt=""/>
+            ---- <img src="/assets/P2E/lucis-token.svg" alt=""/>
           </div>
-          {data.rank == 1
-            ? <img className={s.rewardChest} src="/assets/home/chest-1.png" alt="" />
-            : <img className={s.rewardChest} src="/assets/home/chest-n.png" alt="" />}
+          {/*{data.rank == 1*/}
+          {/*  ? <img className={s.rewardChest} src="/assets/home/chest-1.png" alt="" />*/}
+          {/*  : <img className={s.rewardChest} src="/assets/home/chest-n.png" alt="" />}*/}
         </div>
       )
     }

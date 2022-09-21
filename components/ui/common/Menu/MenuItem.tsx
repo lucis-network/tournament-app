@@ -55,7 +55,7 @@ export const MenuItem = (props: { item: MenuItemType }) => {
 
   if (props.item.to) {
     Comp = <Link href={props.item.to} passHref>
-      <a className={`${props.item?.isComingSoon ? 'comingSoon' : ''}`}>
+      <a className={`${props.item?.isComingSoon ? 'comingSoon' : ''}`} target="_blank" rel="noopener noreferrer">
         {props.item.text}
         {props.item?.isComingSoon && (
           <span>Coming Soon</span>
