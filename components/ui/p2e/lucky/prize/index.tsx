@@ -1,16 +1,22 @@
-import s from "./ChestPrize.module.sass"
-import {Maybe} from "@graphql-tools/utils";
+import s from "./ChestPrize.module.sass";
+import { Maybe } from "@graphql-tools/utils";
 import PrizePopover from "./popover";
 
 export type ChestPrizeProps = {
-  image: string,
-  title: string,
-  description: Maybe<string> | undefined,
-  rarity: string,
-  amount?: number,
-}
+  image: string;
+  title: string;
+  description: Maybe<string> | undefined;
+  rarity: string;
+  amount?: number;
+};
 
-const ChestPrize = ({image, title, description, rarity, amount}: ChestPrizeProps) => {
+const ChestPrize = ({
+  image,
+  title,
+  description,
+  rarity,
+  amount,
+}: ChestPrizeProps) => {
   return (
     <PrizePopover
       image={image}
@@ -18,22 +24,23 @@ const ChestPrize = ({image, title, description, rarity, amount}: ChestPrizeProps
       description={description}
       rarity={rarity}
     >
-      <div className={`${s.chestPrize} ${rarity ?? ''}`}>
-        <div className={`${s.prizeImg} ${amount == 0 ? s.disableImg : ``}`} >
-          <img src={image ?? '/assets/P2E/lucky-chest/defaultPrizeImage.png'} className={amount == 0 ? s.disableImg : ``} alt="" />
+      <div className={`${s.chestPrize} ${rarity ?? ""}`}>
+        <div className={`${s.prizeImg} ${amount == 0 ? s.disableImg : ``}`}>
+          <img
+            src={image ?? "/assets/P2E/lucky-chest/defaultPrizeImage.png"}
+            className={amount == 0 ? s.disableImg : ``}
+            alt=""
+          />
         </div>
-        <div className={s.prizeTitle}>
-          {title ?? ''}
-        </div>
-        { amount && amount > 0 ?
-            <div className={`${s.prizeAmount}`}>
-              Amount:{" "}{amount}
-            </div>
-          : <></>
-        }
+        <div className={s.prizeTitle}>{title ?? ""}</div>
+        {amount && amount > 0 ? (
+          <div className={`${s.prizeAmount}`}>Amount: {amount}</div>
+        ) : (
+          <></>
+        )}
       </div>
     </PrizePopover>
-  )
-}
+  );
+};
 
-export default ChestPrize
+export default ChestPrize;

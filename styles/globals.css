@@ -1290,3 +1290,7 @@ body .ant-modal-mask {
     width: 300px;
   }
 }
+
+.ant-modal-footer {
+  padding: 0 !important;
+}
