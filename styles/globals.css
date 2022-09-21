@@ -1294,3 +1294,7 @@ body .ant-modal-mask {
 .ant-modal-footer {
   padding: 0 !important;
 }
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+  background: none !important;
+}
