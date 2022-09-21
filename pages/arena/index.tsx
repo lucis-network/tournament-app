@@ -10,6 +10,7 @@ import { useRankingSeason } from "../../hooks/ranking/useTopRanking";
 import { StatusSeason } from "../../src/generated/graphql_p2e";
 import TopSponsors from "../../components/ui/tournament/home/topSponsors";
 import SpotLightHome from "../../components/ui/tournament/home/spotlight";
+import LucisNFTs from 'components/ui/tournament/home/lucisNFTs'
 
 const TournamentHome: NextPage = () => {
   const {dataRankingSeason} = useRankingSeason();
@@ -23,6 +24,7 @@ const TournamentHome: NextPage = () => {
         <TabHome />
         <CreateTournament />
         <PlayerHome seasonId={seasonId} />
+        <LucisNFTs />
         <TopSponsors />
       </main>
       <Footer />

@@ -7,23 +7,23 @@ type Props = {
   onClick?: () => void;
   width?: string;
   children?: React.ReactNode;
+  name?: string;
 };
 
 const ButtonBorder: React.FC<Props> = (props: Props) => {
-  const {onClick, children} = props;
+  const {onClick, children, name} = props;
 
-  useEffect(() => {
+    useEffect(() => {
     let btn = document.querySelector('.btn_hover_common');
-    console.log(btn);
+    console.log(btn)
     if(btn) {
       btn.addEventListener('mousemove', e => {
-        console.log("e", e);
+        console.log(e);
         if(e) {
           let rect = e.target.getBoundingClientRect();
           let x = e.clientX - rect.left;
           let y = e.clientY - rect.top;
           const span = btn.querySelector('.btn_glow_common');
-          console.log(x,y);
           if(span) {
             span.style.left = x + 'px';
             span.style.top = y + 'px';

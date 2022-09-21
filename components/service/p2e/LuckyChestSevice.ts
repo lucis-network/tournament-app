@@ -1,101 +1,127 @@
 import { gql } from "@apollo/client";
 import { PlayerMission } from "src/generated/graphql";
-import {ChestDetail, LuckyChestTier, LuckyChestUserInfo} from "src/generated/graphql_p2e";
+import {
+  ChestDetail,
+  LuckyChestTier,
+  LuckyChestUserInfo,
+} from "src/generated/graphql_p2e";
 import apoloClient from "utils/apollo_client";
 
 type GetUserHistoryProps = {
-  game_platform_id?: number,
-  tier?: string,
-  page?: number,
-  limit?: number,
-}
+  game_platform_id?: number;
+  tier?: string;
+  page?: number;
+  limit?: number;
+};
 class LuckyChestService {
-  public async getChestDetail(game_platform_id: number | undefined, tier: string) {
-      const response = await apoloClient.query<{getChestDetail: ChestDetail}>({
-          query: gql`
-              query($game_platform_id: Int, $tier: LuckyChestTier!) {
-                  getChestDetail(game_platform_id: $game_platform_id, tier: $tier) {
-                      id
-                      title
-                      desc
-                      ticket_cost
-                      ticket_cost_type
-                      created_at
-                      sponsors {
-                          uid
-                          name
-                          img
-                          link
-                      }
-                      prizes {
-                          id
-                          title
-                          desc
-                          amount_of_currency
-                          quantity_in_stock
-                          valued_at
-                          img
-                          rarity
-                      }
-                  }
-              }
-          `,
-        context: {
-          endpoint: 'p2e'
-        },
-        variables: {
-          game_platform_id: game_platform_id,
-          tier: tier,
+  public async getChestDetail(
+    game_platform_id: number | undefined,
+    tier: string
+  ) {
+    const response = await apoloClient.query<{ getChestDetail: ChestDetail }>({
+      query: gql`
+        query ($game_platform_id: Int, $tier: LuckyChestTier!) {
+          getChestDetail(game_platform_id: $game_platform_id, tier: $tier) {
+            id
+            title
+            desc
+            ticket_cost
+            ticket_cost_type
+            created_at
+            sponsors {
+              uid
+              name
+              img
+              link
+            }
+            prizes {
+              id
+              title
+              desc
+              amount_of_currency
+              number_of_prize
+              quantity_in_stock
+              valued_at
+              img
+              rarity
+            }
+          }
         }
-      });
+      `,
+      context: {
+        endpoint: "p2e",
+      },
+      variables: {
+        game_platform_id: game_platform_id,
+        tier: tier,
+      },
+    });
 
     return response;
   }
 
-  public async getLuckyChestUserInfo({game_platform_id, tier, page, limit}: GetUserHistoryProps) {
-      const response = await apoloClient.query<{getLuckyChestUserInfo: LuckyChestUserInfo}>({
-          query: gql`
-              query($game_platform_id: Int, $tier: LuckyChestTier!, $page: Int, $limit: Int) {
-                  getLuckyChestUserInfo(game_platform_id: $game_platform_id, tier: $tier, page: $page ,limit: $limit) {
-                      history_count
-                      history {
-                          uid
-                          code
-                          tier
-                          prize_id
-                          prize {
-                              id
-                              title
-                              desc
-                              img
-                              rarity
-                              created_at
-                              category {
-                                  prize_type
-                                  currency_uid
-                                  currency_type
-                              }
-                          }
-                          is_claimed
-                          created_at
-                      }
-                  }
+  public async getLuckyChestUserInfo({
+    game_platform_id,
+    tier,
+    page,
+    limit,
+  }: GetUserHistoryProps) {
+    const response = await apoloClient.query<{
+      getLuckyChestUserInfo: LuckyChestUserInfo;
+    }>({
+      query: gql`
+        query (
+          $game_platform_id: Int
+          $tier: LuckyChestTier!
+          $page: Int
+          $limit: Int
+        ) {
+          getLuckyChestUserInfo(
+            game_platform_id: $game_platform_id
+            tier: $tier
+            page: $page
+            limit: $limit
+          ) {
+            history_count
+            history {
+              uid
+              code
+              tier
+              amount_of_currency
+              number_of_prize
+              prize_id
+              prize {
+                id
+                title
+                desc
+                img
+                rarity
+                created_at
+                category {
+                  prize_type
+                  currency_uid
+                  currency_type
+                }
               }
-          `,
-        context: {
-          endpoint: 'p2e'
-        },
-        variables: {
-          game_platform_id: game_platform_id,
-          tier: tier,
-          page: page,
-          limit: limit,
+              is_claimed
+              created_at
+            }
+          }
         }
-      });
+      `,
+      context: {
+        endpoint: "p2e",
+      },
+      variables: {
+        game_platform_id: game_platform_id,
+        tier: tier,
+        page: page,
+        limit: limit,
+      },
+    });
 
     return response;
   }
-
 }
 
 export default new LuckyChestService();

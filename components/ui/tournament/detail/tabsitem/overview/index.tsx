@@ -65,7 +65,7 @@ export default function Overview(props: Props) {
           </div>
         </div>
         <div className={s.btnGroup}>
-          <ButtonBorder>
+          <ButtonBorder name="btn_join_banner">
             <div className={s.btnJoin}><p>JOIN NOW</p></div>
           </ButtonBorder>
           <ButtonBorder>
