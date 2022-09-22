@@ -1886,7 +1886,7 @@ export type QueryGetTopRankingArgs = {
 
 
 export type QueryGetTournamentRankingArgs = {
-  seasonId: Scalars['String'];
+  seasonId?: InputMaybe<Scalars['String']>;
 };
 
 

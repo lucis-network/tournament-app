@@ -16,36 +16,56 @@ export default function TopSponsors() {
 
       <div className={s.wrapper}>
         <div className={`${s.container}`}>
-          <div className={`${s.itemLg} ${s.lgBizverse}`} onClick={() => window.open("https://bizverse.io/", '_blank')}>
+          <a href="https://bizverse.io/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgBizverse}`}>
             <img srcSet="/assets/lg_partner/bizverse.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgAnimverse}`} onClick={() => window.open("https://animverse.com/", '_blank')}>
+          </a>
+          <a href="https://animverse.com/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgAnimverse}`}>
             <img srcSet="/assets/lg_partner/animverse.png" alt="" />
           </div>
-          <div className={s.itemLg} onClick={() => window.open("https://mones.io/", '_blank')}>
+          </a>
+          <a href="https://mones.io/" target="_blank" rel="noopener noreferrer">
+          <div className={s.itemLg}>
             <img srcSet="/assets/lg_partner/mones.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgGalaxy}`} onClick={() => window.open("https://www.galaxysurvivor.io/", '_blank')}>
+          </a>
+          <a href="https://www.galaxysurvivor.io/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgGalaxy}`}>
             <img srcSet="/assets/lg_partner/galaxy.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgAiza}`} onClick={() => window.open("https://aizaworld.com/", '_blank')}>
+          </a>
+          <a href="https://aizaworld.com/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgAiza}`}>
             <img srcSet="/assets/lg_partner/aiza.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgCoinbay}`} onClick={() => window.open("https://coinbay.io/vi/home/", '_blank')}>
+          </a>
+          <a href="https://coinbay.io/vi/home/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgCoinbay}`}>
             <img srcSet="/assets/lg_partner/coinbay.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgFltrend}`} onClick={() => window.open("https://followtrend.net/", '_blank')}>
+          </a>
+          <a href="https://followtrend.net/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgFltrend}`}>
             <img srcSet="/assets/lg_partner/fl_trend.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgMetawork}`} onClick={() => window.open("https://www.metawork.com/", '_blank')}>
+          </a>
+          <a href="https://www.metawork.com/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgMetawork}`}>
             <img srcSet="/assets/lg_partner/metawork.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgMifu}`} onClick={() => window.open("https://mifu.asia/", '_blank')}>
+          </a>
+          <a href="https://mifu.asia/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgMifu}`}>
             <img srcSet="/assets/lg_partner/mifu.png" alt="" />
           </div>
-          <div className={`${s.itemLg} ${s.lgSpac3ship}`} onClick={() => window.open("https://www.spac3ship.com/", '_blank')}>
+          </a>
+          <a href="https://www.spac3ship.com/" target="_blank" rel="noopener noreferrer">
+          <div className={`${s.itemLg} ${s.lgSpac3ship}`}>
             <img srcSet="/assets/lg_partner/spac3ship.png" alt="" />
           </div>
+          </a>
         </div>
       </div>
       </>

@@ -92,9 +92,7 @@ type Props = {
 }
 
 const Ranking = ({ seasonId }: Props) => {
-  const {getArenaRankingLoading, dataArenaRanking} = useArenaRanking({
-    seasonId
-  })
+  const {getArenaRankingLoading, dataArenaRanking} = useArenaRanking({})
 
   return (
     <> 
