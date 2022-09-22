@@ -1,18 +1,17 @@
 .top
   transform-style: preserve-3d
-  //perspective: 1000px
-  margin-top: 60px
-
+  @media screen and (min-width: 992px)
+    margin-top: 10px
 .top_players
   display: flex
   align-items: center
   justify-content: center
   position: relative
-  top: 10px
+  top: 15px
   @media screen and (min-width: 575px)
     top: 40px
   @media screen and (min-width: 768px)
-    top: 0
+    top: 40px
     gap: 0 40px
 
 .top_player
@@ -24,9 +23,9 @@
   align-self: flex-end
 
 .player_top1
-  top: -40px
+  top: -35px
   .top_medal
-    scale: 0.95
+    scale: 0.85
     @media screen and (min-width: 575px)
       scale: 0.85
     @media screen and (min-width: 768px)
@@ -53,7 +52,7 @@
 .player_top2
   order: -1
   .top_medal
-    scale: 0.9
+    scale: 0.8
     @media screen and (min-width: 575px)
       scale: 0.95
     @media screen and (min-width: 768px)
@@ -71,9 +70,11 @@
     @media screen and (min-width: 992px)
       font-size: 20px
 .player_top3
-  top: 15px
+  top: 5px
   .top_medal
-    scale: 0.8
+    scale: 0.75
+    @media screen and (min-width: 575px)
+      scale: 0.85
     @media screen and (min-width: 768px)
       scale: 1
   @media screen and (min-width: 768px)
@@ -117,7 +118,8 @@
   //transform: translateX(-10px) translateZ(-100px) scale(1.1)
   @media screen and (min-width: 768px)
     margin-top: -100px
-
+  @media screen and (min-width: 768px)
+    margin-top: -60px
 .mission
   color: #FFDE9D
   line-height: 13px
@@ -181,3 +183,11 @@
   width: 10px
   @media screen and (min-width: 575px)
     width: 18px
+
+.top_number
+  scale: 0.8
+  margin-bottom: -10px
+  @media screen and (min-width: 768px)
+    scale: 0.85
+  @media screen and (min-width: 992px)
+    scale: 1

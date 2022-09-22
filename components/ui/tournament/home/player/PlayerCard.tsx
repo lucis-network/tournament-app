@@ -31,10 +31,10 @@ export default function CardPlayer(props: Props) {
               className={`${s.top_player} ${i === 0 ? s.player_top1 : i === 1 ? s.player_top2 : s.player_top3}`}
               key={i}
             >
-              <img src={`/assets/home/${topNumber}`} alt="" />
+              <img className={s.top_number} src={`/assets/home/${topNumber}`} alt="" />
 
               <Link href={`/profile/${slugify(e?.user_name)}`} passHref>
-                <a className={` ${s.name} ${s.player_name}`}>
+                <a className={` ${s.name} ${s.player_name}`} target="_blank">
                   {e.display_name ?? "_ _"}
                 </a>
               </Link>

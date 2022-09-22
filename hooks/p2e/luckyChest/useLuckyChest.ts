@@ -9,7 +9,6 @@ import {
   ChestDetail,
   LuckyChestUserInfo,
 } from "../../../src/generated/graphql_p2e";
-import { isEmpty } from "lodash";
 
 type GetChestDetailProps = {
   game_platform_id?: number;

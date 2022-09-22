@@ -2,7 +2,7 @@ import {ApolloError, ApolloQueryResult, gql, useQuery} from "@apollo/client";
 import {UserRanking} from "../../src/generated/graphql_p2e";
 
 type GetRankingProps = {
-  seasonId: string,
+  seasonId?: string,
   skip?: boolean,
 }
 
@@ -126,7 +126,7 @@ const GET_PLAYCORE_RANKING = gql`
 `
 
 const GET_ARENA_RANKING = gql`
-  query ($seasonId: String!) {
+  query ($seasonId: String) {
     getTournamentRanking (seasonId: $seasonId) {
       id
       code
