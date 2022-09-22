@@ -38,7 +38,9 @@ const SwiperSlideContent = ({title, type, image, data, comingSoon, loading}: Swi
         <div className={s.rankingTitle}>{title}</div>
         {loading ? null : !!displayName ?
           <div className={s.rankingUserDisplayName}>{displayName}</div>
-           : <KButton onClick={() => router.push(redirectUrl)} width="inherit" title="Join now" fontSize="14px"/>}
+           : <div style={{width: "inherit", display: "flex", justifyContent: "center"}}>
+              <KButton onClick={() => router.push(redirectUrl)} width="calc(100% - 10px)" title="Join now" fontSize="14px"/>
+            </div>}
         {userName && (
           <div className={s.rankingUsername}>@{data?.profile?.user_name}</div>
         )}

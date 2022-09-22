@@ -11,7 +11,9 @@
   background: rgba(255, 255, 255, 0.1)
   backdrop-filter: blur(40px)
   margin-bottom: 24px
-  height: 60px
+  height: 40px
+  @media screen and (min-width: 768px)
+    height: 60px
   .rankingTabsItem
     font-family: 'Revx Neue Demo'
     font-weight: 400
@@ -25,6 +27,7 @@
     height: inherit
     @media screen and (min-width: 768px)
       min-width: 20%
+      font-size: 16px
     &:global(.active)
       background: rgba(18, 176, 180, 0.1)
       color: #00F9FF
@@ -58,9 +61,9 @@
       @media (max-width: 768px)
         font-size: 12px
       @media (max-width: 480px)
-        font-size: 10px
+        font-size: 12px
       &:global(.active)
-        font-weight: 600
+        font-weight: 500
         color: #00F9FF
         &::before
           content: ""
@@ -87,7 +90,7 @@
         &:after
           content: none
   .filterDateTime
-    text-transform: uppercase
+    //text-transform: uppercase
     font-size: 16px
     display: flex
     align-items: center
@@ -119,6 +122,9 @@
       color: #E4E4E4
 .rankingTableWrapper
   :global(.swiper)
+    @media screen and (min-width: 320px)
+      //width: 400px
+      padding: 16px
     @media screen and (min-width: 576px)
       width: 540px
       padding: 0
@@ -498,6 +504,8 @@
     margin-bottom: 12px
     @media screen and (max-width: 768px)
       font-size: 18px
+    @media screen and (max-width: 575px)
+      font-size: 14px
 .blankStateDescription
   color: #fff
   font-size: 24px
