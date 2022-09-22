@@ -162,6 +162,10 @@ export default function LuckyChest(props: any) {
         onCompleted: (data) => {
           // const decodedData: LuckyChestPrize = JSON.parse(b64DecodeUnicode(data?.openChest?.prize))
           // console.log(fromBinary(data?.openChest))
+          console.log(
+            "JSON.parse(fromBinary(data?.openChest)): ",
+            JSON.parse(fromBinary(data?.openChest))
+          );
           setChestPrize(JSON.parse(fromBinary(data?.openChest)));
           setRollingChestPopupVisible(true);
           AppEmitter.emit("updateBalance");
@@ -284,17 +288,20 @@ export default function LuckyChest(props: any) {
   //     <SpinLoading/>
   //   </div>
   // )
+
   function getPrizeTitle(item: LuckyChestPrizeGql) {
     if (!item) {
       return "";
     }
+    let isShowNumberOfPrize =
+      item.number_of_prize != null && item.number_of_prize > 1;
     return `${
       item.amount_of_currency != null && item.amount_of_currency > 0
         ? item.amount_of_currency
-        : item.number_of_prize != null && item.number_of_prize > 1
+        : isShowNumberOfPrize
         ? item.number_of_prize
         : ""
-    } ${item.title}`;
+    } ${item.title}${isShowNumberOfPrize ? "s" : ""}`;
   }
 
   if (chestDetailError)

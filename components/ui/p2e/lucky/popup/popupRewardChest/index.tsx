@@ -22,18 +22,20 @@ const PopupRewardChest = (props: Props) => {
     resetAutoRolling,
   } = props;
 
-  function getPrizeTitle(item: LuckyChestPrize) {
+  function getPrizeTitle(item: any) {
     if (!item) {
       return "";
     }
-    return `${item.title}`;
-    // return `${
-    //   item.amount_of_currency != null && item.amount_of_currency > 0
-    //     ? item.amount_of_currency
-    //     : item.number_of_prize != null && item.number_of_prize > 1
-    //     ? item.number_of_prize
-    //     : item.number_of_prize
-    // } ${item.title}`;
+    // console.log("item:", item);
+    let isSHowNumberOfPrize =
+      item.numberOfPrize != null && item.numberOfPrize > 1;
+    return `${
+      item.currencyAmount != null && item.currencyAmount > 0
+        ? item.currencyAmount
+        : isSHowNumberOfPrize
+        ? item.numberOfPrize
+        : ""
+    } ${item.title}${isSHowNumberOfPrize ? "s" : ""}`;
   }
 
   return (
