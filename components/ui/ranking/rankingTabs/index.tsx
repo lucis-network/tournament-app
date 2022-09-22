@@ -20,6 +20,9 @@ import CountdownTimer from "../../common/CountDown";
 import {useQuery} from "@apollo/client";
 import {observer} from "mobx-react-lite";
 import AuthStore from "../../../Auth/AuthStore";
+import {fomatNumber, format} from "../../../../utils/Number";
+import ButtonWrapper from "../../../common/button/Button";
+import {useRouter} from "next/router";
 
 const tabs = [
   // {
@@ -44,85 +47,6 @@ const tabs = [
   //   tabIndex: 5,
   // },
 ]
-
-const columns = [
-  {
-    title: () => <div className={s.headerNo}>Rank</div>,
-    dataIndex: 'rank',
-    className: s.columnNo,
-    render: (rank: number) => {
-      return (
-        <div className={s.userRank}>
-          {rank < 3 && (
-            <div className={s.userMedal}>
-              <img src={rank === 1 ? '/assets/Ranking/medalGold.svg' : '/assets/Ranking/medalSilver.svg'} alt=""/>
-            </div>
-          )}
-          <div className={`${s.userRankName} ${rank === 1 ? 'top1' : rank === 2 ? 'top2' : ''}`}>
-            <div className={s.rankNumber}>
-              {rank < 3 && (
-                <span className={s.rankNameText}>TOP </span>
-              )}
-              {rank}
-            </div>
-          </div>
-        </div>
-      )
-    }
-  },
-  {
-    title: () => <div className={s.headerName}>Name</div>,
-    dataIndex: ['profile', 'rank', 'total_earning'],
-    className: s.columnName,
-    render: (text: string, data: UserRanking) => {
-      const profile = data?.profile
-      const rank = data?.rank
-      const totalEarning = data?.total_earning
-      const userRank = rank === 1 ? 'top1' : rank === 2 ? 'top2' : ''
-
-      return (
-        <div className={s.userWrap}>
-          <div className={`${s.userAvatar} ${userRank}`}>
-            <Link href={`/profile/${profile?.user_name}`} passHref>
-              <a target="_blank">
-                <img src={profile?.avatar ? profile?.avatar : '/assets/MyProfile/default_avatar.png'} alt=""
-                     onError={(e) => {
-                       e.currentTarget.src = '/assets/MyProfile/default_avatar.png'
-                     }}/>
-              </a>
-            </Link>
-          </div>
-          <div className={`${s.userName} ${userRank}`}>
-            <Link href={`/profile/${profile?.user_name}`} passHref>
-              <a target="_blank">{profile?.display_name}</a>
-            </Link>
-          </div>
-          {totalEarning && (
-            <div className={s.userValue}>-- NFTs</div>
-          )}
-        </div>
-      )
-    }
-  },
-  {
-    title: 'Reward',
-    dataIndex: 'reward',
-    className: s.columnReward,
-    render: (text: string, data: UserRanking) => {
-      const totalEarning = data?.total_earning;
-      return (
-        <div className={s.userReward}>
-          <div className={s.rewardPoint}>
-            {totalEarning} <img src="/assets/P2E/lucis-point.svg" alt=""/>
-          </div>
-          <div className={s.rewardToken}>
-            -- <img src="/assets/P2E/lucis-token.svg" alt=""/>
-          </div>
-        </div>
-      )
-    }
-  },
-];
 
 
 type SwiperNavProps = {
@@ -152,11 +76,23 @@ type RankingTabsProps = {
   endIn: number;
 }
 
+const BlankState = ({redirectUrl}: any) => {
+  const router = useRouter();
+  return (
+    <>
+      <ButtonWrapper onClick={() => router.push(redirectUrl)}>Join now</ButtonWrapper>
+      <div className={s.blankStateDescription}>
+        For high rank and big prizes on Lucis Network.
+      </div>
+    </>
+  );
+}
+
 const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}: RankingTabsProps) => {
   const [activeTab, setActiveTab] = useState<string>('playcore')
   const [currentMonth, setCurrentMonth] = useState<AcceptedMonths>(defaultCurrentMonth)
   const [currentYear, setCurrentYear] = useState<number>(defaultCurrentYear)
-  const [rankingData, setRankingData] = useState<UserRanking[]>([])
+  const [rankingData, setRankingData] = useState<{ [activeTab: string]: UserRanking[] }>({})
   const [userRank, setUserRank] = useState<UserRanking | null>(null);
   const {id} = AuthStore;
   const {getPlaycoreRankingError, getPlaycoreRankingLoading, dataPlaycoreRanking} = usePlaycoreRanking({
@@ -180,7 +116,8 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
     skip: (activeTab !== 'playcore') || !seasonId || !id,
     context: {
       endpoint: 'p2e'
-    }
+    },
+    fetchPolicy: "no-cache"
   })
 
   const userRankTournament = useQuery(GET_USER_RANK_TOURNAMENT, {
@@ -191,7 +128,8 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
     skip: (activeTab !== 'arena') || !seasonId || !id,
     context: {
       endpoint: 'p2e'
-    }
+    },
+    fetchPolicy: "no-cache"
   })
 
   const userRankRaffle = useQuery(GET_USER_RANK_RAFFLE, {
@@ -199,10 +137,11 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
       user_id: Number(id),
       seasonId: seasonId,
     },
-    skip: (activeTab !== 'raffle') || !seasonId || !id,
+    skip: (activeTab !== 'raffles') || !seasonId || !id,
     context: {
       endpoint: 'p2e'
-    }
+    },
+    fetchPolicy: "no-cache"
   })
 
   const playcoreRanking = dataPlaycoreRanking?.getPlaycoreRanking
@@ -210,35 +149,141 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
   const rafflesRanking = dataRaffleRanking?.getRaffleRanking
 
   useEffect(() => {
-    if (playcoreRanking) {
-      setRankingData(playcoreRanking)
-      setUserRank(userRankPlaycore.data?.getUserPlaycoreRanking)
+    if (playcoreRanking && activeTab === "playcore") {
+      setRankingData({"playcore": playcoreRanking})
+    } else if (arenaRanking && activeTab === "arena") {
+      setRankingData({"arena": arenaRanking})
+    } else if (rafflesRanking && activeTab === "raffles") {
+      setRankingData({"raffles": rafflesRanking})
     } else {
-      setRankingData([])
+      setRankingData({})
     }
-  }, [dataPlaycoreRanking?.getPlaycoreRanking, userRankPlaycore.data?.getUserPlaycoreRanking])
+  }, [playcoreRanking, arenaRanking, rafflesRanking])
+
+  // useEffect(() => {
+  //   if (arenaRanking) {
+  //     setRankingData(arenaRanking)
+  //   } else {
+  //     setRankingData([])
+  //   }
+  // }, [dataArenaRanking?.getTournamentRanking])
+  //
+  // useEffect(() => {
+  //   if (rafflesRanking) {
+  //     setRankingData(rafflesRanking)
+  //   } else {
+  //     setRankingData([])
+  //   }
+  // }, [dataRaffleRanking?.getRaffleRanking])
 
   useEffect(() => {
-    if (arenaRanking) {
-      setRankingData(arenaRanking)
-      setUserRank(userRankTournament.data?.getUserTournamentRanking)
-    } else {
-      setRankingData([])
-    }
-  }, [dataArenaRanking?.getTournamentRanking, userRankTournament.data?.getUserTournamentRanking])
+    setUserRank(userRankPlaycore.data?.getUserPlaycoreRanking)
+  }, [userRankPlaycore.data?.getUserPlaycoreRanking])
 
   useEffect(() => {
-    if (rafflesRanking) {
-      setRankingData(rafflesRanking)
-      setUserRank(userRankRaffle.data?.getUserRaffleRanking)
-    } else {
-      setRankingData([])
-    }
-  }, [dataRaffleRanking?.getRaffleRanking, userRankRaffle.data?.getUserRaffleRanking])
+    setUserRank(userRankTournament.data?.getUserTournamentRanking)
+  }, [userRankTournament.data?.getUserTournamentRanking])
+
+  useEffect(() => {
+    setUserRank(userRankTournament.data?.getUserTournamentRanking)
+  }, [userRankTournament.data?.getUserTournamentRanking])
+
+  useEffect(() => {
+    setUserRank(userRankRaffle.data?.getUserRaffleRanking)
+  }, [userRankRaffle.data?.getUserRaffleRanking])
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab)
   }
+
+  const columns = [
+    {
+      title: () => <div className={s.headerNo}>Rank</div>,
+      dataIndex: 'rank',
+      className: s.columnNo,
+      render: (rank: number) => {
+        return (
+          <div className={s.userRank}>
+            {rank < 3 && (
+              <div className={s.userMedal}>
+                <img src={rank === 1 ? '/assets/Ranking/medalGold.svg' : '/assets/Ranking/medalSilver.svg'} alt=""/>
+              </div>
+            )}
+            <div className={`${s.userRankName} ${rank === 1 ? 'top1' : rank === 2 ? 'top2' : ''}`}>
+              <div className={s.rankNumber}>
+                {rank < 3 && (
+                  <span className={s.rankNameText}>TOP </span>
+                )}
+                {rank}
+              </div>
+            </div>
+          </div>
+        )
+      }
+    },
+    {
+      title: () => <div className={s.headerName}>Name</div>,
+      dataIndex: ['profile', 'rank', 'total_earning'],
+      className: s.columnName,
+      render: (text: string, data: UserRanking) => {
+        const profile = data?.profile
+        const rank = data?.rank
+        const userRank = rank === 1 ? 'top1' : rank === 2 ? 'top2' : ''
+
+        return (
+          <div className={s.userWrap}>
+            <div className={`${s.userAvatar} ${userRank}`}>
+              <Link href={`/profile/${profile?.user_name}`} passHref>
+                <a target="_blank">
+                  <img src={profile?.avatar ? profile?.avatar : '/assets/MyProfile/default_avatar.png'} alt=""
+                       onError={(e) => {
+                         e.currentTarget.src = '/assets/MyProfile/default_avatar.png'
+                       }}/>
+                </a>
+              </Link>
+            </div>
+            <div className={`${s.userName} ${userRank}`}>
+              <Link href={`/profile/${profile?.user_name}`} passHref>
+                <a target="_blank">{profile?.display_name}</a>
+              </Link>
+            </div>
+          </div>
+        )
+      }
+    },
+
+    {
+      title: () => <div className={s.headerEarning}>{activeTab === "arena" ? "Total earnings" : "Total rewards"}</div>,
+      dataIndex: ['profile', 'rank', 'total_earning'],
+      className: s.columnEarning,
+      render: (text: string, data: UserRanking) => {
+        const totalEarning = data?.total_earning!
+        return (
+          <div className={s.userWrap}>
+            <div
+              className={s.userValue}>{activeTab === "playcore" ? format(totalEarning) : format(totalEarning, 2)} {activeTab === "playcore" ? "points" : "$"}</div>
+          </div>
+        )
+      }
+    },
+    {
+      title: 'Reward',
+      dataIndex: 'reward',
+      className: s.columnReward,
+      render: (text: string, data: UserRanking) => {
+        return (
+          <div className={s.userReward}>
+            <div className={s.rewardPoint}>
+              -- <img src="/assets/P2E/lucis-point.svg" alt=""/>
+            </div>
+            <div className={s.rewardToken}>
+              -- <img src="/assets/P2E/lucis-token.svg" alt=""/>
+            </div>
+          </div>
+        )
+      }
+    },
+  ];
 
   return (
     <section className={s.sectionRanking}>
@@ -286,10 +331,18 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
         >
           <SwiperSlide>
             <div className={s.rankingTableResponsive}>
-              <Table columns={columns} dataSource={rankingData} pagination={false}
-                     loading={getPlaycoreRankingLoading || getArenaRankingLoading || getRaffleRankingLoading}/>
+              <Table
+                columns={columns}
+                dataSource={rankingData[activeTab]}
+                locale={{
+                  emptyText: <BlankState
+                    redirectUrl={`/${activeTab === "playcore" ? "/" : (activeTab === "raffles" ? `/playcore/${activeTab}` : activeTab)}`}
+                  />
+                }}
+                pagination={false}
+                loading={getPlaycoreRankingLoading || getArenaRankingLoading || getRaffleRankingLoading}/>
             </div>
-            { userRank && <div className={s.yourRank}>
+            {userRank && <div className={s.yourRank}>
               <div className={s.titleYourRank}>Your Rank</div>
               <Table
                 showHeader={false}

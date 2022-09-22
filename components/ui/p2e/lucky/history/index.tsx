@@ -222,13 +222,15 @@ export default observer(function HistoryTable({
     if (!item) {
       return "";
     }
+    let isShowNumberOfPrize =
+      item.number_of_prize != null && item.number_of_prize > 1;
     return `${
       item.amount_of_currency != null && item.amount_of_currency > 0
         ? item.amount_of_currency
-        : item.number_of_prize != null && item.number_of_prize > 1
+        : isShowNumberOfPrize
         ? item.number_of_prize
         : ""
-    } ${item.prize.title}`;
+    } ${item.prize.title}${isShowNumberOfPrize ? "s" : ""}`;
   }
 
   const handleClaimChestPrize = async (

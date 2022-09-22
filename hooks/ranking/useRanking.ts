@@ -33,7 +33,7 @@ export const usePlaycoreRanking = ({seasonId, skip}: GetRankingProps): {
     context: {
       endpoint: 'p2e'
     },
-    // fetchPolicy: "no-cache"
+    fetchPolicy: "no-cache"
   })
 
   return {
@@ -65,7 +65,7 @@ export const useArenaRanking = ({seasonId, skip}: GetRankingProps): {
     context: {
       endpoint: 'p2e'
     },
-    // fetchPolicy: "no-cache"
+    fetchPolicy: "no-cache"
   })
 
   return {
@@ -97,7 +97,7 @@ export const useRaffleRanking = ({seasonId, skip}: GetRankingProps): {
     context: {
       endpoint: 'p2e'
     },
-    // fetchPolicy: "no-cache"
+    fetchPolicy: "no-cache"
   })
 
   return {
