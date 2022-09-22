@@ -217,6 +217,22 @@ export default observer(function P2EOverview(props: IProps) {
     }
   }, [props.overviewSection])
 
+  useEffect(() => {
+    const gameConnect = sessionStorage.getItem("openPopupConnectGame");
+
+    if (gameConnect) {
+      switch (gameConnect) {
+        case "03":
+          setOpenConnectCsgoPopup(true);
+          break;
+        case "06":
+          setOpenConnectLOLPopup(true);
+          break;
+      }
+      sessionStorage.removeItem("openPopupConnectGame");
+    }
+  }, [])
+
 
   // const loginWithSteam = () => {
   //   steam.resolve("https://steamcommunity.com/id/IMAPOORKID").then((id: string) => {
