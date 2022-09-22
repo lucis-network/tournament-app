@@ -936,8 +936,8 @@ body .ant-input-group-addon {
 }*/
 
 body .ant-select-dropdown{
-  background: rgba(69, 80, 107, 0.4);
-  backdrop-filter: blur(10px);
+  background: rgba(45, 52, 70, 0.5);
+  backdrop-filter: blur(20px);
   color: #FFF;
 }
 
@@ -1297,4 +1297,8 @@ body .ant-modal-mask {
 
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
   background: none !important;
+}
+
+.ant-select-item-option-selected:not(.ant-select-item-option-disabled) #option-ranking {
+  background: #45506B !important;
 }

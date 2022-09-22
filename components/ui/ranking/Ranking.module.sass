@@ -14,7 +14,7 @@
     @media screen and (max-width: 991px)
       width: 100%
       padding: 0
-    @media screen and (min-width: 16 00px)
+    @media screen and (min-width: 1600px)
       width: 1400px
   :global(.swiper-wrapper)
     @media screen and (min-width: 992px)
@@ -150,8 +150,8 @@
   color: #fff
   @media (max-width: 768px)
     width: 180px
-  @media (max-width: 768px)
-    width: 140px
+  @media (max-width: 540px)
+    width: 160px
   :global(.ant-select-selector)
     height: 36px !important
     background-color: rgba(69, 80, 107, 0.5) !important
@@ -168,7 +168,7 @@
   :global(.ant-select-arrow)
     color: #DBE0E8
   :global(.ant-select-selection-item)
-    line-height: 36px
+    line-height: 36px !important
 
 .optionSelect
   //display: flex
@@ -182,12 +182,16 @@
     font-family: 'Lexend'
     font-style: normal
     font-weight: 400
-    font-size: 14px
+    font-size: 10px
     color: #DBE0E8
+    @media screen and (min-width: 540px)
+      font-size: 12px
   .fromDateToDate
     font-family: 'Lexend'
     font-style: normal
     font-weight: 300
-    font-size: 10px
+    font-size: 8px
     color: #FFD058
+    @media screen and (min-width: 540px)
+      font-size: 10px
 

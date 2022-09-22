@@ -23,7 +23,7 @@ export const SelectSeason = (props: IProps) => {
           optionLabelProp="label"
         >
           {seasonList?.map(item => <Option value={item.uid} key={item.uid} label={item.name}>
-            <div className={s.optionSelect}>
+            <div id="option-ranking" className={s.optionSelect}>
               <div className={s.optionName}>{item.name}</div>
               <div className={s.fromDateToDate}>
                 {moment(new Date(item.fromDate)).format("ll")} - {moment(new Date(item.toDate)).format("ll")}

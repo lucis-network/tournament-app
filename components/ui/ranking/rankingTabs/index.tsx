@@ -23,6 +23,7 @@ import AuthStore from "../../../Auth/AuthStore";
 import {fomatNumber, format} from "../../../../utils/Number";
 import ButtonWrapper from "../../../common/button/Button";
 import {useRouter} from "next/router";
+import {KButton} from "../../common/button";
 
 const tabs = [
   // {
@@ -80,10 +81,15 @@ const BlankState = ({redirectUrl}: any) => {
   const router = useRouter();
   return (
     <>
-      <ButtonWrapper onClick={() => router.push(redirectUrl)}>Join now</ButtonWrapper>
       <div className={s.blankStateDescription}>
-        For high rank and big prizes on Lucis Network.
+        For high rank and big prizes on Lucis Network
+        <div className={s.buttonJoinNow}>
+          <div className={s.wrapButton}>
+            <KButton onClick={() => router.push(redirectUrl)} width="inherit" title="Join now" fontSize="16px"/>
+          </div>
+        </div>
       </div>
+
     </>
   );
 }
@@ -253,7 +259,7 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
     },
 
     {
-      title: () => <div className={s.headerEarning}>{activeTab === "arena" ? "Total earnings" : "Total rewards"}</div>,
+      title: () => <div className={s.headerName}>{activeTab === "arena" ? "Total earnings" : "Total rewards"}</div>,
       dataIndex: ['profile', 'rank', 'total_earning'],
       className: s.columnEarning,
       render: (text: string, data: UserRanking) => {
@@ -261,13 +267,13 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
         return (
           <div className={s.userWrap}>
             <div
-              className={s.userValue}>{activeTab === "playcore" ? format(totalEarning) : format(totalEarning, 2)} {activeTab === "playcore" ? "points" : "$"}</div>
+              className={s.userValue}>{activeTab === "playcore" ? "" : "$"}{activeTab === "playcore" ? format(totalEarning) : format(totalEarning, 2)} {activeTab === "playcore" ? "points" : ""}</div>
           </div>
         )
       }
     },
     {
-      title: 'Reward',
+      title: () => <div className={s.headerName}>Reward</div>,
       dataIndex: 'reward',
       className: s.columnReward,
       render: (text: string, data: UserRanking) => {
@@ -344,17 +350,19 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
             </div>
             {userRank && <div className={s.yourRank}>
               <div className={s.titleYourRank}>Your Rank</div>
-              <Table
-                showHeader={false}
-                columns={columns}
-                dataSource={[userRank]}
-                pagination={false}/>
+              <div className={s.rankingTableResponsive}>
+                <Table
+                  showHeader={false}
+                  columns={columns}
+                  dataSource={[userRank]}
+                  pagination={false}/>
+              </div>
             </div>}
           </SwiperSlide>
-          <div className={`${s.rankingSwiperNavWrap}`}>
-            <SwiperNav direction="prev"/>
-            <SwiperNav direction="next"/>
-          </div>
+          {/*<div className={`${s.rankingSwiperNavWrap}`}>*/}
+          {/*  <SwiperNav direction="prev"/>*/}
+          {/*  <SwiperNav direction="next"/>*/}
+          {/*</div>*/}
         </Swiper>
       </div>
     </section>
