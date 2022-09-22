@@ -2,6 +2,8 @@ import s from "./PlayerCard.module.sass";
 import { GTopEarning } from "src/generated/graphql";
 import Link from "next/link";
 import { slugify } from "utils/String";
+import {format} from "../../../../../utils/Number";
+import TournamentStore from "../../../../../src/store/TournamentStore";
 
 type Props = {
   data: GTopEarning[];
@@ -32,23 +34,25 @@ export default function CardPlayer(props: Props) {
               <img src={`/assets/home/${topNumber}`} alt="" />
 
               <Link href={`/profile/${slugify(e?.user_name)}`} passHref>
-                <a className={s.player_name}>
+                <a className={` ${s.name} ${s.player_name}`}>
                   {e.display_name ?? "_ _"}
                 </a>
               </Link>
 
-              <p className={`${s.top_mission} ${i === 0 ? s.top_mission_top1 : ''}`}>
-                1500 mission
+              <p className={`${s.mission} ${s.top_mission} ${i === 0 ? s.top_mission_top1 : ''}`}>
+                {format(
+                  e?.total_earning, 2, {zero_trim: true}
+                )}$
               </p>
 
-              <p className={`${s.top_reward}`}>
-                <span className={s.reward_point}>
-                  +1000 <img className={s.reward_point_icon} src="/assets/P2E/lucis-point.svg" alt=""/>
-                </span>
-                <span className={s.reward_token}>
-                  +1000 <img className={s.reward_token_icon} src="/assets/P2E/lucis-token.svg" alt=""/>
-                </span>
-              </p>
+              {/*<p className={`${s.top_reward}`}>*/}
+              {/*  <span className={s.reward_point}>*/}
+              {/*    +1000 <img className={s.reward_point_icon} src="/assets/P2E/lucis-point.svg" alt=""/>*/}
+              {/*  </span>*/}
+              {/*  <span className={s.reward_token}>*/}
+              {/*    +1000 <img className={s.reward_token_icon} src="/assets/P2E/lucis-token.svg" alt=""/>*/}
+              {/*  </span>*/}
+              {/*</p>*/}
               
               <img className={s.top_medal} src={`/assets/home/${topMedal}`} alt="" />
 

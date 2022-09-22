@@ -155,11 +155,15 @@
 
   :global(.swiper-slide)
     padding: 0 30px
+    @media screen and (min-width: 768px)
+      width: 720px !important
     @media screen and (min-width: 992px)
-      width: 900px !important
+      width: 960px !important
       padding: 0
     @media screen and (min-width: 1200px)
-      width: 960px !important
+      width: 1140px !important
+    @media screen and (min-width: 1400px)
+      width: 1320px !important
     @media screen and (min-width: 1600px)
       width: 1400px !important
   :global(.ant-table)
@@ -234,13 +238,15 @@
 .headerNo
   width: 100%
   display: flex
-  justify-content: flex-end
+  justify-content: center
   //padding-right: 12px
+  @media screen and (min-width: 992px)
+    justify-content: flex-end
 .headerName
   width: 100%
   display: flex
-  justify-content: flex-start
-  padding-left: 165px
+  justify-content: center
+  // padding-left: 165px
 .columnNo
   min-width: 40px
   width: 40px
@@ -259,19 +265,23 @@
     width: 200px
   @media screen and (min-width: 1600px)
     width: 400px
+.columnEarning
+  min-width: 170px
+  width: 170px
 .columnReward
   min-width: 100px
   width: 100px
   @media screen and (min-width: 1600px)
     width: 200px
     max-width: 200px
-    padding-right: 155px !important
+    padding-right: 110px !important
 .userRank
   display: flex
   align-items: center
   justify-content: flex-end
   flex-direction: column-reverse
-  @media screen and (min-width: 768px)
+
+  @media screen and (min-width: 992px)
     flex-direction: row
   .userRankName
     font-family: 'Lexend'
@@ -294,12 +304,15 @@
       color: #00FF29
     .rankNameText
       margin-right: 4px
-      @media screen and (max-width: 767px)
+      @media screen and (max-width: 992px)
         display: none
   .userMedal
     min-width: 24px
     max-width: 24px
     @media screen and (min-width: 768px)
+      min-width: 36px
+      max-width: 36px
+    @media screen and (min-width: 992px)
       min-width: 64px
       max-width: 64px
       margin-right: 20px
@@ -342,11 +355,11 @@
         max-width: 64px
   .userName
     margin-right: 21px
-    width: calc(100% - 100px)
-    @media screen and (min-width: 992px)
-      width: calc(100% - 190px)
-    @media screen and (min-width: 1200px)
-      width: calc(100% - 220px)
+    //width: calc(100% - 100px)
+    //@media screen and (min-width: 992px)
+    //  width: calc(100% - 190px)
+    //@media screen and (min-width: 1200px)
+    //  width: calc(100% - 220px)
     a
       font-family: 'Lexend'
       font-weight: 400
@@ -373,6 +386,9 @@
         color: rgba(255, 212, 157, 0.9069)
         text-shadow: 0 0 4px rgba(255, 255, 255, 0.25)
   .userValue
+    display: flex
+    justify-content: center
+    width: 100%
     font-family: 'Lexend'
     font-weight: 300
     font-size: 10px
@@ -425,17 +441,21 @@
   position: relative
   .rankingSwiperNavWrap
     position: absolute
-    top: 50%
+    top: 33%
     left: 50%
     transform: translate(-50%, -50%)
     z-index: 2
     width: 100%
+    @media screen and (min-width: 768px)
+      //width: 790px
+      top: 40%
     @media screen and (min-width: 992px)
-      width: 980px
+      width: 1040px
+      top: 40%
     @media screen and (min-width: 1200px)
-      width: 1050px
+      width: 1240px
     @media screen and (min-width: 1400px)
-      width: 1070px
+      width: 1440px
     @media screen and (min-width: 1600px)
       width: 1520px
   .sliderNav
@@ -464,3 +484,8 @@
     font-size: 24px
     line-height: 120%
     margin-bottom: 12px
+    @media screen and (max-width: 768px)
+      font-size: 18px
+.blankStateDescription
+  color: #fff
+  font-size: 24px

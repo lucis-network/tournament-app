@@ -12,8 +12,8 @@
   //@media screen and (min-width: 540px)
   //  gap: 32px
   //  max-width: 540px
-  //@media screen and (min-width: 640px)
-  //  max-width: 640px
+  @media screen and (min-width: 1200px)
+    margin-top: 80px
   @media screen and (min-width: 992px)
     flex-direction: row-reverse
     background: radial-gradient(#0bffd64a, transparent 70%)
@@ -67,7 +67,6 @@
       line-height: 53px
       margin-bottom: 16px
     p
-      text-transform: capitalize
       margin-bottom: 32px
       font-size: 16px
       line-height: 22px
@@ -127,7 +126,8 @@
       transform: scale(1)
 
 .img
-  padding: 0 37px
+  @media screen and (max-width: 768px)
+    padding: 0 37px
 
 .img>div
   content: url(/assets/home/create/create-tour-m.png)
@@ -200,4 +200,3 @@
     border: 1px solid #000
     @media screen and (min-width: 768px)
       border: 2px solid #000
-
