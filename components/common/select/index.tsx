@@ -7,6 +7,7 @@ type Props = {
   defaultValue?: string;
   datas: DropdownItem[];
   onSelect: (value: string) => void;
+  value?: string;
 };
 export function Select(props: Props) {
   return (
@@ -15,6 +16,8 @@ export function Select(props: Props) {
         defaultValue={props.defaultValue}
         style={{ background: "transparent" }}
         onChange={props.onSelect}
+        value={props.value}
+        allowClear
       >
         {props.datas.map((item, idx) => (
           <Option value={item.id} key={`${item.id}_${idx}`}>

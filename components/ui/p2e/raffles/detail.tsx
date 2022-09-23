@@ -316,6 +316,9 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
           refetchMyTickets();
           refetchAllTickets();
           refetchMyInventoryCoupon();
+          setCoupon(undefined);
+          setTicketBuyAmount(0);
+          estimateDiscount(0);
 
           antMessage.success("Success!");
           AppEmitter.emit("updateBalance");
@@ -340,19 +343,17 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
     }
   };
 
-  function onChangeCoupon(coupon: UserInventoryCoupon) {
-    txtCoupon.onChange(coupon.code);
+  function onChangeCoupon(coupon?: UserInventoryCoupon) {
     estimateDiscount(ticketBuyAmount, coupon);
   }
-  function estimateDiscount(amount: number, coupon?: UserInventoryCoupon) {
-    if (!coupon?.prize?.coupon) {
-      console.log("coupon: ", coupon);
-      return;
-    }
-    setCoupon(coupon);
+  function estimateDiscount(amount: number, _coupon?: UserInventoryCoupon) {
     if (!raffleDetailData?.ticket?.cost) {
       return;
     }
+
+    setCoupon(_coupon);
+    let _discount = _coupon?.prize?.coupon?.discount ?? 0;
+    let max_value_off = _coupon?.prize?.coupon?.max_value_off;
 
     let totalAmount = KMath.mul(
       amount,
@@ -365,18 +366,12 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
     let totalPayment = totalAmount;
     let discount = 0;
 
-    if (coupon != null) {
-      discount = KMath.mul(
-        coupon.prize.coupon.discount ?? "0",
-        totalAmountCanDiscount
-      )
-        .div(100)
-        .toNumber();
-      if (coupon.prize.coupon.max_value_off != null) {
-        discount = Math.min(discount, coupon.prize.coupon.max_value_off);
-      }
-      totalPayment -= discount;
+    console.log("_discount:", _discount);
+    discount = KMath.mul(_discount, totalAmountCanDiscount).div(100).toNumber();
+    if (max_value_off != null) {
+      discount = Math.min(discount, max_value_off);
     }
+    totalPayment -= discount;
 
     setDiscount(discount);
     setTotalCost(totalAmount);
@@ -521,6 +516,7 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
                       <InputNumber
                         controls={false}
                         onChange={handleAmountChange}
+                        value={ticketBuyAmount}
                         min={0}
                         precision={0}
                       />
@@ -536,6 +532,7 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
                     coupons={dataMyInventoryCoupons}
                     raffle={raffleDetailData}
                     onSelect={onChangeCoupon}
+                    value={coupon}
                   />
                   {discount > 0 && (
                     <React.Fragment>

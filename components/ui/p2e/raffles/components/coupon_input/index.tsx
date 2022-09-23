@@ -7,12 +7,17 @@ import s from "./coupon.module.sass";
 type Props = {
   raffle: RaffleDetail;
   coupons?: UserInventoryCoupon[];
-  onSelect?: (code: UserInventoryCoupon) => void;
+  value?: UserInventoryCoupon;
+  onSelect?: (code?: UserInventoryCoupon) => void;
 };
 export function CouponInput(props: Props) {
-  const handleChange = (value: string) => {
+  const handleChange = (value?: string) => {
     console.log(`selected ${value}`);
     if (!props.coupons) {
+      return;
+    }
+    if (!value) {
+      props.onSelect && props.onSelect();
       return;
     }
     let result = props.coupons.find((item) => item.uid === value);
@@ -40,6 +45,7 @@ export function CouponInput(props: Props) {
           })) ?? []
         }
         onSelect={handleChange}
+        value={props.value?.uid}
       />
     </div>
   );
