@@ -1,34 +1,43 @@
-import {ApolloError, ApolloQueryResult, gql, useApolloClient, useQuery} from "@apollo/client";
-import {RaffleDetail, TicketList} from "../../../src/generated/graphql_p2e";
-import {isEmpty} from "lodash";
+import {
+  ApolloError,
+  ApolloQueryResult,
+  gql,
+  useApolloClient,
+  useQuery,
+} from "@apollo/client";
+import { RaffleDetail, TicketList } from "../../../src/generated/graphql_p2e";
+import { isEmpty } from "lodash";
 
 type BuyRaffleTicketProps = {
-  raffle_ticket_uid?: string,
-  quantity?: number,
-  onError?: (error: ApolloError) => void,
-  onCompleted?: (data: any) => void,
-}
+  raffle_ticket_uid?: string;
+  quantity?: number;
+  user_coupon_uid?: string;
+  onError?: (error: ApolloError) => void;
+  onCompleted?: (data: any) => void;
+};
 
 type GetAllTicketsProps = {
-  raffle_uid?: string,
-  page?: number,
-  limit?: number,
-  display_name?: string,
-}
+  raffle_uid?: string;
+  page?: number;
+  limit?: number;
+  display_name?: string;
+};
 
 type GetMyTicketsProps = {
-  raffle_uid?: string,
-  limit?: number,
-  page?: number
-}
+  raffle_uid?: string;
+  limit?: number;
+  page?: number;
+};
 
-export const useGetRaffleDetail = (raffle_uid?: string): {
-  getRaffleDetailLoading: boolean,
-  getRaffleDetailError: ApolloError | undefined,
-  refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>,
+export const useGetRaffleDetail = (
+  raffle_uid?: string
+): {
+  getRaffleDetailLoading: boolean;
+  getRaffleDetailError: ApolloError | undefined;
+  refetchRaffleDetail: () => Promise<ApolloQueryResult<any>>;
   getRaffleDetailData: {
-    getRaffleDetail: RaffleDetail
-  },
+    getRaffleDetail: RaffleDetail;
+  };
 } => {
   const {
     loading: getRaffleDetailLoading,
@@ -37,30 +46,34 @@ export const useGetRaffleDetail = (raffle_uid?: string): {
     data: getRaffleDetailData,
   } = useQuery(GET_RAFFLE_DETAIL, {
     variables: {
-      raffle_uid: raffle_uid
+      raffle_uid: raffle_uid,
     },
     //skip: isEmpty(raffle_uid),
     context: {
-      endpoint: 'p2e'
+      endpoint: "p2e",
     },
     fetchPolicy: "no-cache",
-  })
+  });
 
   return {
     getRaffleDetailLoading,
     getRaffleDetailError,
     refetchRaffleDetail,
     getRaffleDetailData,
-  }
-}
+  };
+};
 
-export const useGetMyTicket = ({raffle_uid, limit, page}: GetMyTicketsProps): {
-  getMyTicketsLoading: boolean,
-  getMyTicketsError: ApolloError | undefined,
-  refetchMyTickets: () => Promise<ApolloQueryResult<any>>,
+export const useGetMyTicket = ({
+  raffle_uid,
+  limit,
+  page,
+}: GetMyTicketsProps): {
+  getMyTicketsLoading: boolean;
+  getMyTicketsError: ApolloError | undefined;
+  refetchMyTickets: () => Promise<ApolloQueryResult<any>>;
   getMyTicketsData: {
-    getMyTickets: TicketList
-  },
+    getMyTickets: TicketList;
+  };
 } => {
   const {
     loading: getMyTicketsLoading,
@@ -75,26 +88,31 @@ export const useGetMyTicket = ({raffle_uid, limit, page}: GetMyTicketsProps): {
     },
     skip: isEmpty(raffle_uid),
     context: {
-      endpoint: 'p2e'
+      endpoint: "p2e",
     },
     fetchPolicy: "no-cache",
-  })
+  });
 
   return {
     getMyTicketsLoading,
     getMyTicketsError,
     refetchMyTickets,
     getMyTicketsData,
-  }
-}
+  };
+};
 
-export const useGetAllTicket = ({raffle_uid, page, limit, display_name}: GetAllTicketsProps): {
-  getAllTicketsLoading: boolean,
-  getAllTicketsError: ApolloError | undefined,
-  refetchAllTickets: () => Promise<ApolloQueryResult<any>>,
+export const useGetAllTicket = ({
+  raffle_uid,
+  page,
+  limit,
+  display_name,
+}: GetAllTicketsProps): {
+  getAllTicketsLoading: boolean;
+  getAllTicketsError: ApolloError | undefined;
+  refetchAllTickets: () => Promise<ApolloQueryResult<any>>;
   getAllTicketsData: {
-    getAllTickets: TicketList
-  },
+    getAllTickets: TicketList;
+  };
 } => {
   const {
     loading: getAllTicketsLoading,
@@ -110,24 +128,36 @@ export const useGetAllTicket = ({raffle_uid, page, limit, display_name}: GetAllT
     },
     skip: isEmpty(raffle_uid),
     context: {
-      endpoint: 'p2e'
+      endpoint: "p2e",
     },
     fetchPolicy: "no-cache",
-  })
+  });
 
   return {
     getAllTicketsLoading,
     getAllTicketsError,
     refetchAllTickets,
     getAllTicketsData,
-  }
-}
+  };
+};
 
 export const useBuyRaffleTicket = (): {
-  buyRaffleTicket: ({raffle_ticket_uid, quantity, onError, onCompleted}: BuyRaffleTicketProps) => Promise<any>
+  buyRaffleTicket: ({
+    raffle_ticket_uid,
+    quantity,
+    user_coupon_uid,
+    onError,
+    onCompleted,
+  }: BuyRaffleTicketProps) => Promise<any>;
 } => {
-  const client = useApolloClient()
-  const buyRaffleTicket = async ({raffle_ticket_uid, quantity, onError, onCompleted}: BuyRaffleTicketProps) => {
+  const client = useApolloClient();
+  const buyRaffleTicket = async ({
+    raffle_ticket_uid,
+    quantity,
+    user_coupon_uid,
+    onError,
+    onCompleted,
+  }: BuyRaffleTicketProps) => {
     try {
       const result = await client.mutate({
         mutation: BUY_RAFFLE_TICKET,
@@ -135,25 +165,26 @@ export const useBuyRaffleTicket = (): {
           input: {
             raffle_ticket_uid: raffle_ticket_uid,
             quantity: quantity,
+            user_coupon_uid,
           },
         },
         context: {
-          endpoint: 'p2e'
-        }
-      })
-      onCompleted && onCompleted(result)
+          endpoint: "p2e",
+        },
+      });
+      onCompleted && onCompleted(result);
     } catch (error: any) {
-      onError && onError(error)
+      onError && onError(error);
     }
-  }
+  };
 
   return {
-    buyRaffleTicket
-  }
-}
+    buyRaffleTicket,
+  };
+};
 
 const GET_RAFFLE_DETAIL = gql`
-  query($raffle_uid: String!) {
+  query ($raffle_uid: String!) {
     getRaffleDetail(raffle_uid: $raffle_uid) {
       uid
       name
@@ -200,10 +231,10 @@ const GET_RAFFLE_DETAIL = gql`
       }
     }
   }
-`
+`;
 
 const GET_MY_TICKET = gql`
-  query($raffle_uid: String!, $page: Int!, $limit: Int!) {
+  query ($raffle_uid: String!, $page: Int!, $limit: Int!) {
     getMyTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit) {
       count
       user_tickets {
@@ -213,11 +244,21 @@ const GET_MY_TICKET = gql`
       }
     }
   }
-`
+`;
 
 const GET_ALL_TICKET = gql`
-  query($raffle_uid: String!, $page: Int!, $limit: Int!, $display_name: String) {
-    getAllTickets(raffle_uid: $raffle_uid, page: $page, limit: $limit, display_name: $display_name) {
+  query (
+    $raffle_uid: String!
+    $page: Int!
+    $limit: Int!
+    $display_name: String
+  ) {
+    getAllTickets(
+      raffle_uid: $raffle_uid
+      page: $page
+      limit: $limit
+      display_name: $display_name
+    ) {
       count
       user_tickets {
         uid
@@ -234,10 +275,10 @@ const GET_ALL_TICKET = gql`
       }
     }
   }
-`
+`;
 
 const BUY_RAFFLE_TICKET = gql`
-  mutation($input: UserTicketInputGql!) {
+  mutation ($input: UserTicketInputGql!) {
     buyRaffleTicket(input: $input)
   }
-`
+`;

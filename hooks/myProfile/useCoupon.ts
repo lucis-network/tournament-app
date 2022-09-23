@@ -4,6 +4,8 @@ import { UserInventoryCoupon } from "src/generated/graphql";
 type Props = {
   user_id?: number;
   search_name?: string;
+  type?: string;
+  currency_type?: string;
 };
 export function useMyCoupon(props: Props): {
   loading: boolean;
@@ -15,6 +17,8 @@ export function useMyCoupon(props: Props): {
     variables: {
       filter: {
         search: props.search_name,
+        type: props.type,
+        currency_type: props.currency_type,
       },
     },
     context: {
@@ -42,6 +46,11 @@ export const GET_MY_COUPONS = gql`
         title
         desc
         rarity
+        coupon {
+          uid
+          discount
+          max_value_off
+        }
       }
     }
   }

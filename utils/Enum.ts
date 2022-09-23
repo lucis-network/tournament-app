@@ -16,7 +16,8 @@ export const BUSD = "0x4bE02BFe61a7ABDd31F8fE5e51a03ABd7028d450";
 export const USDT = "0x7e66289AeD602Ed053F5Dc0cFC2973a3EB471731";
 export const LUCIS = "0x0B0AF2077D1D831A879aBa2775b1a90dcE7c994A";
 
-export const LucisNFT = "0x52aB650e614aFde5bb2aeEaf56640b5027F9326b";
+export const LucisNFT = "0x6a1046f030716B1C9083495500404ecBb77A2C1A";
+export const BoxAddress = "0xfd39ea133863c5bdBB1EbcCE24CfcF2b0AFcBf5E";
 export const NFTManager = "0x061017427D9Ac586dD85c69d1D24cF6c84689914";
 
 export const LUCIS_FEE = 0;

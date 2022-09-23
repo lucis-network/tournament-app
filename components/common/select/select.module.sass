@@ -1,0 +1,30 @@
+.text
+    font-family: 'Lexend'
+    font-style: normal
+    font-weight: 300
+    font-size: 16px
+    line-height: 20px
+    text-transform: capitalize
+    color: rgba(255, 255, 255, 0.8)
+.input
+    @extend .text
+    // flex: 1
+    text-align: right
+    overflow: hidden
+    width: 100%
+    :global(.ant-select)
+        width: 100%
+    :global(.ant-select-selector)
+        background: transparent !important
+        border: none !important
+        outline: none !important
+    :global(.ant-select-selection-item)
+        color: #ffffff
+        line-height: 18px
+    :global(.ant-select:not(.ant-select-disabled):hover .ant-select-selector)
+        border-color: rgba(69, 80, 107, 0.4)
+        box-shadow: 0 0 0 0
+        border: none
+    :global(.ant-select-arrow)
+        color: #00FFEC
+        font-size: 12px

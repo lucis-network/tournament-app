@@ -1302,3 +1302,8 @@ body .ant-modal-mask {
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled) #option-ranking {
   background: #45506B !important;
 }
+
+
+.lucis-dark-theme {
+  color: white;
+}

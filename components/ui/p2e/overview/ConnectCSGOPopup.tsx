@@ -31,7 +31,7 @@ export const ConnectCSGOPopup = (props: IProps) => {
           <div className={s.tutorial}>
             <h1>Connect CS:GO account step by step:</h1>
           </div>
-          <div>1. Go to www.faceit.com.</div>
+          <div>1. Go to <a href="https://www.faceit.com/en" target="_blank" rel="noreferrer" >www.faceit.com.</a></div>
           <div>2. Click on the “Register” button, which is located in the upper right.</div>
           <div>3. Register with your personal email or Facebook.</div>
           <div>4. Enter personal data.</div>
