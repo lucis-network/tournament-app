@@ -1,35 +1,27 @@
 import { Image } from "antd";
 import { Select } from "components/common/select";
-import { useInput } from "hooks/common/use_input";
-import { useMyCoupon } from "hooks/myProfile/useCoupon";
 import { UserInventoryCoupon } from "src/generated/graphql";
 import { RaffleDetail } from "src/generated/graphql_p2e";
 import s from "./coupon.module.sass";
 
 type Props = {
   raffle: RaffleDetail;
+  coupons?: UserInventoryCoupon[];
   onSelect?: (code: UserInventoryCoupon) => void;
 };
 export function CouponInput(props: Props) {
-  const input = useInput();
-  const { dataMyInventoryCoupons, loading, refetchMyInventoryCoupon } =
-    useMyCoupon({
-      type: "Raffle",
-      currency_type: props.raffle.ticket?.cost_type ?? undefined,
-    });
-
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
-    if (!dataMyInventoryCoupons) {
+    if (!props.coupons) {
       return;
     }
-    let result = dataMyInventoryCoupons.find((item) => item.uid === value);
+    let result = props.coupons.find((item) => item.uid === value);
     if (!result) {
       return;
     }
     props.onSelect && props.onSelect(result);
   };
-  if (!dataMyInventoryCoupons || dataMyInventoryCoupons.length == 0) {
+  if (!props.coupons || props.coupons.length == 0) {
     return <div></div>;
   }
   return (
@@ -42,7 +34,7 @@ export function CouponInput(props: Props) {
       {/* {!loading && dataMyInventoryCoupons && dataMyInventoryCoupons.length > 0 && } */}
       <Select
         datas={
-          dataMyInventoryCoupons?.map((item) => ({
+          props.coupons?.map((item) => ({
             id: item.uid,
             title: item.prize?.title ?? "",
           })) ?? []

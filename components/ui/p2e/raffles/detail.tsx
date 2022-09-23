@@ -42,6 +42,7 @@ import { CurrencyType, UserInventoryCoupon } from "src/generated/graphql";
 import { useInput } from "hooks/common/use_input";
 import { CouponInput } from "./components/coupon_input";
 import { KMath } from "utils/math.helper";
+import { useMyCoupon } from "hooks/myProfile/useCoupon";
 
 const RafflesDetail = observer((props: { raffleUID: string }) => {
   const { raffleUID } = props;
@@ -102,6 +103,7 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
     page: 1,
     display_name: ticketSearchKeyword,
   });
+
   const { buyRaffleTicket } = useBuyRaffleTicket();
   const { dataWinTicket } = RafflesStore;
   const txtCoupon = useInput();
@@ -180,6 +182,12 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
   ]);
 
   const raffleDetailData = getRaffleDetailData?.getRaffleDetail;
+  const { dataMyInventoryCoupons, loading, refetchMyInventoryCoupon } =
+    useMyCoupon({
+      type: "Raffle",
+      currency_type: raffleDetailData?.ticket?.cost_type ?? undefined,
+    });
+
   const raffleEndAt = moment(raffleDetailData?.end_at).format("HH:mm MMM Do");
   const allTicketsCount = getAllTicketsData?.getAllTickets?.count
     ? getAllTicketsData?.getAllTickets?.count
@@ -307,6 +315,8 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
         ) {
           refetchMyTickets();
           refetchAllTickets();
+          refetchMyInventoryCoupon();
+
           antMessage.success("Success!");
           AppEmitter.emit("updateBalance");
         }
@@ -348,11 +358,18 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
       amount,
       raffleDetailData.ticket.cost
     ).toNumber();
+    let totalAmountCanDiscount = KMath.mul(
+      Math.min(1, amount),
+      raffleDetailData.ticket.cost
+    ).toNumber();
     let totalPayment = totalAmount;
     let discount = 0;
 
     if (coupon != null) {
-      discount = KMath.mul(coupon.prize.coupon.discount ?? "0", totalAmount)
+      discount = KMath.mul(
+        coupon.prize.coupon.discount ?? "0",
+        totalAmountCanDiscount
+      )
         .div(100)
         .toNumber();
       if (coupon.prize.coupon.max_value_off != null) {
@@ -516,6 +533,7 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
                     }}
                   />
                   <CouponInput
+                    coupons={dataMyInventoryCoupons}
                     raffle={raffleDetailData}
                     onSelect={onChangeCoupon}
                   />
