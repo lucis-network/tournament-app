@@ -332,6 +332,7 @@ export default observer(function HistoryTable({
 
         <Table
           dataSource={historyData}
+          rowKey={"code"}
           // dataSource={[]}
           columns={columns}
           pagination={false}

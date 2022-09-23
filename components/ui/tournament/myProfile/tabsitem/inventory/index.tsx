@@ -6,6 +6,7 @@ import TabPiecesInventory from "./tabPieces/tabPieces";
 import { AuthUser } from "../../../../../Auth/AuthStore";
 import { useRouter } from "next/router";
 import CouponTabInventory from "./tabCoupons/tabCoupons";
+import NftTabInventory from "./tabNft/TabNft";
 
 type Props = {
   isOwner?: boolean;
@@ -43,6 +44,12 @@ const Inventory = (props: Props) => {
             isOwner={isOwner}
             userInfo={userInfo}
           ></CouponTabInventory>
+        </TabPane>
+        <TabPane tab="Nfts" key="nfts">
+          <NftTabInventory
+            isOwner={isOwner}
+            userInfo={userInfo} 
+          ></NftTabInventory>
         </TabPane>
       </Tabs>
     </div>

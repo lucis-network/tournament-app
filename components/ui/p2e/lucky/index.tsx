@@ -436,16 +436,14 @@ export default function LuckyChest(props: any) {
               onMouseLeave={enableBodyScroll}
             >
               <ScrollMenu onWheel={onWheel}>
-                {chestPrizes.map((prize) => (
-                  <>
+                {chestPrizes.map((prize, index) => (
                     <ChestPrize
-                      key={prize?.id}
+                      key={prize?.id ?? `prize-${index}`}
                       description={prize?.desc}
                       image={prize?.img ?? ""}
                       title={getPrizeTitle(prize)}
                       rarity={prize?.rarity ?? ""}
                     />
-                  </>
                 ))}
               </ScrollMenu>
             </div>
