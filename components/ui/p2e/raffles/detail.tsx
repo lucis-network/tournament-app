@@ -563,7 +563,7 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
                         </div>
                         <div className={s.buyTicketInfoValue}>
                           <div className={s.rafflePrice}>
-                            <div className={s.rafflePriceText}>{discount}</div>
+                            <div className={s.rafflePriceText}>-{discount}</div>
                             <Image
                               src={
                                 raffleDetailData?.ticket?.cost_type ===
@@ -586,10 +586,14 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
                     </React.Fragment>
                   )}
                   <div className={s.buyTicketInfoItem}>
-                    <div className={s.buyTicketInfoLabel}>Total payment</div>
+                    <div className={s.buyTicketInfoLabelLarge}>
+                      Total payment
+                    </div>
                     <div className={s.buyTicketInfoValue}>
                       <div className={s.rafflePrice}>
-                        <div className={s.rafflePriceText}>{totalPayment}</div>
+                        <div className={s.rafflePriceTextLarge}>
+                          {totalPayment}
+                        </div>
                         <Image
                           src={
                             raffleDetailData?.ticket?.cost_type ===
