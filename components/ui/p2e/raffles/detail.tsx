@@ -1,5 +1,6 @@
 import s from "./Raffles.module.sass";
 import {
+  Divider,
   Empty,
   Image,
   Input,
@@ -37,7 +38,10 @@ import { useGetWonTickets } from "../../../../hooks/p2e/useRaffleDetail";
 import { AppEmitter } from "../../../../services/emitter";
 import { isClientDevMode } from "../../../../utils/Env";
 import DocHeadPlaycore from "../../../DocHeadPlaycore";
-import { CurrencyType } from "src/generated/graphql";
+import { CurrencyType, UserInventoryCoupon } from "src/generated/graphql";
+import { useInput } from "hooks/common/use_input";
+import { CouponInput } from "./components/coupon_input";
+import { KMath } from "utils/math.helper";
 
 const RafflesDetail = observer((props: { raffleUID: string }) => {
   const { raffleUID } = props;
@@ -46,7 +50,10 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
   const [allTickets, setAllTickets] = useState<UserTicketGql[]>([]);
   const [ticketBuyAmount, setTicketBuyAmount] = useState<number>(0);
   const [totalCost, setTotalCost] = useState<number>(0);
+  const [discount, setDiscount] = useState<number>(0);
+  const [totalPayment, setTotalPayment] = useState<number>(0);
   const [ticketBuying, setTicketBuying] = useState<boolean>(false);
+  const [coupon, setCoupon] = useState<UserInventoryCoupon>();
   const [ticketSearchKeyword, setTicketSearchKeyword] = useState<string>("");
   const [checkDisplayEndAt, setCheckDisplayEndAt] = useState(false);
   const [isCheckRefetchDataWonTickets, setIsCheckRefetchDataWonTickets] =
@@ -97,6 +104,7 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
   });
   const { buyRaffleTicket } = useBuyRaffleTicket();
   const { dataWinTicket } = RafflesStore;
+  const txtCoupon = useInput();
 
   useEffect(() => {
     if (
@@ -134,9 +142,6 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
       if (isSubscribed) {
         setAllTickets(sortedTickets);
       }
-      console.log("[] dataWinTicketDict: ", dataWinTicketDict);
-      console.log("[] sortedTickets: ", sortedTickets);
-      console.log("[] dataWinTicket: ", dataWinTicket);
     }
     return () => {
       isSubscribed = false;
@@ -202,26 +207,45 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
     []
   );
 
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setCheckDisplayEndAt(false);
+    };
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, []);
+
+  if (getRaffleDetailLoading)
+    return (
+      <div className={s.rafflesDetailWrapper}>
+        <div className="lucis-container-2">
+          <SpinLoading />
+        </div>
+      </div>
+    );
+
+  if (getRaffleDetailError || isEmpty(getRaffleDetailData?.getRaffleDetail))
+    return (
+      <>
+        <Head>
+          <meta name="robots" content="noindex" />
+          <title>404 | This page could not be found.</title>
+        </Head>
+        <DefaultErrorPage statusCode={404} />
+      </>
+    );
+
   const handleTicketSearch = (event: React.FormEvent<HTMLInputElement>) => {
     debouncedInputTyping(event.currentTarget.value);
   };
-
-  const handleAmountChange = (amount: number) => {
-    if (amount === null) {
-      setTicketBuyAmount(0);
-      setTotalCost(0);
-    } else {
-      amount = parseInt(amount.toString());
-      setTicketBuyAmount(amount);
-      setTotalCost(amount * raffleDetailData?.ticket?.cost);
-    }
-  };
-
   const handleBuyRaffleTicket = () => {
     setTicketBuying(true);
     buyRaffleTicket({
       raffle_ticket_uid: raffleDetailData?.ticket?.uid,
       quantity: ticketBuyAmount,
+      user_coupon_uid: coupon?.uid,
       onError: (error) =>
         handleGraphqlErrors(error, (code, message) => {
           if (code !== "UnAuth") {
@@ -290,35 +314,57 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
     }).finally(() => setTicketBuying(false));
   };
 
-  useEffect(() => {
-    const handleRouteChange = () => {
-      setCheckDisplayEndAt(false);
-    };
-    router.events.on("routeChangeStart", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeStart", handleRouteChange);
-    };
-  }, []);
+  const handleAmountChange = (amount: number) => {
+    if (amount === null) {
+      setTicketBuyAmount(0);
+      setTotalCost(0);
+      setTotalPayment(0);
+      estimateDiscount(0, coupon);
+    } else {
+      amount = parseInt(amount.toString());
+      setTicketBuyAmount(amount);
+      let _totalCost = amount * raffleDetailData?.ticket?.cost;
+      setTotalCost(_totalCost);
+      setTotalPayment(_totalCost);
+      estimateDiscount(amount, coupon);
+    }
+  };
 
-  if (getRaffleDetailLoading)
-    return (
-      <div className={s.rafflesDetailWrapper}>
-        <div className="lucis-container-2">
-          <SpinLoading />
-        </div>
-      </div>
-    );
+  function onChangeCoupon(coupon: UserInventoryCoupon) {
+    txtCoupon.onChange(coupon.code);
+    estimateDiscount(ticketBuyAmount, coupon);
+  }
+  function estimateDiscount(amount: number, coupon?: UserInventoryCoupon) {
+    if (!coupon?.prize?.coupon) {
+      console.log("coupon: ", coupon);
+      return;
+    }
+    setCoupon(coupon);
+    if (!raffleDetailData?.ticket?.cost) {
+      return;
+    }
 
-  if (getRaffleDetailError || isEmpty(getRaffleDetailData?.getRaffleDetail))
-    return (
-      <>
-        <Head>
-          <meta name="robots" content="noindex" />
-          <title>404 | This page could not be found.</title>
-        </Head>
-        <DefaultErrorPage statusCode={404} />
-      </>
-    );
+    let totalAmount = KMath.mul(
+      amount,
+      raffleDetailData.ticket.cost
+    ).toNumber();
+    let totalPayment = totalAmount;
+    let discount = 0;
+
+    if (coupon != null) {
+      discount = KMath.mul(coupon.prize.coupon.discount ?? "0", totalAmount)
+        .div(100)
+        .toNumber();
+      if (coupon.prize.coupon.max_value_off != null) {
+        discount = Math.min(discount, coupon.prize.coupon.max_value_off);
+      }
+      totalPayment -= discount;
+    }
+
+    setDiscount(discount);
+    setTotalCost(totalAmount);
+    setTotalPayment(totalPayment);
+  }
 
   return (
     <>
@@ -463,7 +509,84 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
                       />
                     </div>
                   </div>
+                  <Divider
+                    style={{
+                      backgroundColor: "rgba(118, 108, 108, 0.6)",
+                      margin: "16px 0px",
+                    }}
+                  />
+                  <CouponInput
+                    raffle={raffleDetailData}
+                    onSelect={onChangeCoupon}
+                  />
+                  {discount > 0 && (
+                    <React.Fragment>
+                      <div className={s.buyTicketInfoItem}>
+                        <div className={s.buyTicketInfoLabel}>Subtotal</div>
+                        <div className={s.buyTicketInfoValue}>
+                          <div className={s.rafflePrice}>
+                            <div className={s.rafflePriceText}>{totalCost}</div>
+                            <Image
+                              src={
+                                raffleDetailData?.ticket?.cost_type ===
+                                "LUCIS_POINT"
+                                  ? "/assets/P2E/raffles/iconLucisPoint.svg"
+                                  : "/assets/P2E/raffles/iconLucisToken.svg"
+                              }
+                              preview={false}
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className={s.buyTicketInfoItem}>
+                        <div className={s.buyTicketInfoLabel}>
+                          Promotion total
+                        </div>
+                        <div className={s.buyTicketInfoValue}>
+                          <div className={s.rafflePrice}>
+                            <div className={s.rafflePriceText}>{discount}</div>
+                            <Image
+                              src={
+                                raffleDetailData?.ticket?.cost_type ===
+                                "LUCIS_POINT"
+                                  ? "/assets/P2E/raffles/iconLucisPoint.svg"
+                                  : "/assets/P2E/raffles/iconLucisToken.svg"
+                              }
+                              preview={false}
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <Divider
+                        style={{
+                          backgroundColor: "rgba(118, 108, 108, 0.6)",
+                          margin: "16px 0px",
+                        }}
+                      />
+                    </React.Fragment>
+                  )}
+                  <div className={s.buyTicketInfoItem}>
+                    <div className={s.buyTicketInfoLabel}>Total payment</div>
+                    <div className={s.buyTicketInfoValue}>
+                      <div className={s.rafflePrice}>
+                        <div className={s.rafflePriceText}>{totalPayment}</div>
+                        <Image
+                          src={
+                            raffleDetailData?.ticket?.cost_type ===
+                            "LUCIS_POINT"
+                              ? "/assets/P2E/raffles/iconLucisPoint.svg"
+                              : "/assets/P2E/raffles/iconLucisToken.svg"
+                          }
+                          preview={false}
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+
                 <div className={s.buyTicket}>
                   <button
                     className={s.sidebarBtn}
@@ -472,21 +595,6 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
                   >
                     <span>Buy</span>
                   </button>
-                  <div className={s.buyTicketTotal}>
-                    Total
-                    <div className={s.rafflePrice}>
-                      <div className={s.rafflePriceText}>{totalCost}</div>
-                      <Image
-                        src={
-                          raffleDetailData?.ticket?.cost_type === "LUCIS_POINT"
-                            ? "/assets/P2E/raffles/iconLucisPoint.svg"
-                            : "/assets/P2E/raffles/iconLucisToken.svg"
-                        }
-                        preview={false}
-                        alt=""
-                      />
-                    </div>
-                  </div>
                 </div>
                 <div className={s.buyTicketDesc}>
                   <h2>How you get tickets</h2>
