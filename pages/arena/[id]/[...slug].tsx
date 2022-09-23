@@ -1,11 +1,11 @@
 import s from "./TournamentDetail.module.sass";
-import { Col, Row, Spin, Tabs, message, Image } from "antd";
+import {Col, Row, Spin, Tabs, message, Image} from "antd";
 import {
   useSponsors,
   useTournamentDetail,
 } from "hooks/tournament/useTournamentDetail";
-import { Router, useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import {Router, useRouter} from "next/router";
+import React, {useEffect, useState} from "react";
 import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
@@ -16,7 +16,7 @@ import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
-import { isClientDevMode } from "../../../utils/Env";
+import {isClientDevMode} from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
@@ -24,8 +24,8 @@ import PopupConfirm from "components/ui/tournament/detail/popup/PopupConfirm";
 import Link from "next/link";
 import LoginModal from "components/Auth/Login/LoginModal";
 import AuthStore from "components/Auth/AuthStore";
-import { getLocalAuthInfo } from "components/Auth/AuthLocal";
-import { isEmpty } from "lodash";
+import {getLocalAuthInfo} from "components/Auth/AuthLocal";
+import {isEmpty} from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import DocHead from "../../../components/DocHead";
 import moment from "moment";
@@ -33,8 +33,9 @@ import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/Tou
 import useTeamModal from "components/ui/tournament/detail/hooks/useTeamModal";
 import PopupNotifyProfile from "components/ui/tournament/detail/popup/popupNotifyProfile";
 import Banner from "components/ui/ranking/banner";
+import {LuckyChestTier} from "../../../src/generated/graphql_p2e";
 
-const { TabPane } = Tabs;
+const {TabPane} = Tabs;
 
 const tabList = [
   "Overview",
@@ -50,11 +51,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupNotifyProfile, setIsPopupNotifyProfile] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
-  const { tournamentId, asPath } = props;
+  const {tournamentId, asPath} = props;
   const [isLoadingSub, setIsLoadingSub] = useState(false);
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("Overview");
   const [dataRankSponsors, setDataRankSponsors] = useState([]);
+  const [tab, setTab] = useState(0);
 
   const {
     dataTournamentDetail,
@@ -90,7 +92,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     skip: isEmpty(tournamentId),
   });
 
-  const { dataSponsors, refetchSponsor } = useSponsors({
+  const {dataSponsors, refetchSponsor} = useSponsors({
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
@@ -203,7 +205,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     }
 
     if (!AuthStore.isHasMail) {
-      setIsPopupNotifyProfile(true);s
+      setIsPopupNotifyProfile(true);
+      s
       return;
     }
 
@@ -230,15 +233,35 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
   return (
     <>
-      <DocHead />
-        <div className={`lucis-container-2 ${s.page}`}>
-          <div className={`${s.wrapper} ${s.main}`}>
-            <Overview data={dataTournamentDetail}/>
-            {/*<Banner*/}
-            {/*  cover={cover}*/}
-            {/*  className={s.bannerTourDetailWrap}*/}
-            {/*  bannerClassName={s.bannerTourDetail}*/}
-            {/*/>*/}
+      <DocHead/>
+      <div className={s.container}>
+        <div className={`lucis-container-2 ${s.wrapper}`}>
+          <div className={`${s.left_side}`}>
+            <div className={s.list_tabs}>
+              {tabList.map((item: string, activeTab) => {
+                return (
+                  <div
+                    className={`${s.tab_item} ${
+                      tab === activeTab ? "active" : ""
+                    }`}
+                    key={item}
+                    onClick={() => setTab(activeTab)}
+                  >
+                    {item}
+                  </div>
+                );
+              })}
+            </div>
+            <div className={s.tab_content}>
+              {(() => {
+                switch (tab) {
+                  case 0:
+                    return <Overview data={dataTournamentDetail}/>;
+                  default:
+                    break;
+                }
+              })()}
+            </div>
             <section className={s.tournamentInfo}>
               <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
                 {/*<TournamentDetailMarquee tournamentId={tournamentId as string} />*/}
@@ -256,7 +279,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   )}
                 <div className={s.infoWrap}>
                   <div className={s.tournamentThumbnail}>
-                    <Image src={thumbnail} alt="" preview={false} />
+                    <Image src={thumbnail} alt="" preview={false}/>
                   </div>
                   <div className={s.tournamentMetadataWrap}>
                     <h1 className={s.tournamentTitle}>
@@ -283,15 +306,15 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     <Row className={s.tournamentMetadataRow}>
                       {/* metadata */}
                       <Col
-                        xs={{ span: 24 }}
-                        xl={{ span: 24 }}
+                        xs={{span: 24}}
+                        xl={{span: 24}}
                         className={s.tournamentMetadata}
                       >
                         <Row
-                          gutter={{ sm: 20, lg: 30 }}
+                          gutter={{sm: 20, lg: 30}}
                           className={s.tournamentTagWrap}
                         >
-                          <Col style={{ width: "100%" }}>
+                          <Col style={{width: "100%"}}>
                             <Row className={s.contentTopWrap}>
                               <Col className={`${s.btb_free_entry} ${s.bracket}`}>
                                 <div className={s.tournamentTag}>
@@ -328,7 +351,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                               <Col
                                 className={`${s.gradientBtnWrap} ${s.team_size}`}
                               >
-                                <Row style={{ width: "100%" }}>
+                                <Row style={{width: "100%"}}>
                                   <Col className={s.btn_join_discord}>
                                     {discord && (
                                       <Link
@@ -421,10 +444,10 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           </Col>
                         </Row>
                         <Row
-                          gutter={{ sm: 20, lg: 30 }}
+                          gutter={{sm: 20, lg: 30}}
                           className={s.content_bottom}
                         >
-                          <Row style={{ width: "100%" }}>
+                          <Row style={{width: "100%"}}>
                             <Col
                               className={`${s.metadataBlock} ${s.col_item} ${s.bracket}`}
                             >
@@ -459,61 +482,61 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             </Col>
                           </Row>
 
-                        <Col className={s.gameInfoBlock}>
-                          <div className={s.gameInfo}>
-                            <Image
-                              src={game?.logo}
-                              className={s.gameLogo}
-                              preview={false}
-                              alt=""
-                            />
-                            <div className={s.gameName}>{game?.name}</div>
-                          </div>
-                        </Col>
-                        <Col
-                          xs={{ span: 12 }}
-                          sm={{ span: 8 }}
-                          className={s.userInfoBlock}
-                        >
-                          <Link
-                            href={
-                              user?.profile?.user_name
-                                ? `/profile/${user?.profile?.user_name}`
-                                : "#"
-                            }
-                            passHref
+                          <Col className={s.gameInfoBlock}>
+                            <div className={s.gameInfo}>
+                              <Image
+                                src={game?.logo}
+                                className={s.gameLogo}
+                                preview={false}
+                                alt=""
+                              />
+                              <div className={s.gameName}>{game?.name}</div>
+                            </div>
+                          </Col>
+                          <Col
+                            xs={{span: 12}}
+                            sm={{span: 8}}
+                            className={s.userInfoBlock}
                           >
-                            <a
-                              className={`${s.userInfo} ${s.alignRightMb} ${s.profileAva}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                            <Link
+                              href={
+                                user?.profile?.user_name
+                                  ? `/profile/${user?.profile?.user_name}`
+                                  : "#"
+                              }
+                              passHref
                             >
-                              {user?.profile?.avatar ? (
-                                <Image
-                                  src={user?.profile?.avatar}
-                                  className={s.userAvatar}
-                                  alt=""
-                                  preview={false}
-                                />
-                              ) : (
-                                <Image
-                                  src="/assets/avatar.jpg"
-                                  className={s.userAvatar}
-                                  alt=""
-                                  preview={false}
-                                />
-                              )}
-                              <div className={s.userName}>
-                                {user?.profile?.display_name}
-                              </div>
-                            </a>
-                          </Link>
-                        </Col>
-                      </Row>
-                    </Col>
+                              <a
+                                className={`${s.userInfo} ${s.alignRightMb} ${s.profileAva}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                              >
+                                {user?.profile?.avatar ? (
+                                  <Image
+                                    src={user?.profile?.avatar}
+                                    className={s.userAvatar}
+                                    alt=""
+                                    preview={false}
+                                  />
+                                ) : (
+                                  <Image
+                                    src="/assets/avatar.jpg"
+                                    className={s.userAvatar}
+                                    alt=""
+                                    preview={false}
+                                  />
+                                )}
+                                <div className={s.userName}>
+                                  {user?.profile?.display_name}
+                                </div>
+                              </a>
+                            </Link>
+                          </Col>
+                        </Row>
+                      </Col>
 
-                    {/* generous sponsors */}
-                    {/* <Col
+                      {/* generous sponsors */}
+                      {/* <Col
                       xs={{ span: 24 }}
                       xl={{ span: 9 }}
                       className={s.generousSponsorsWrap}
@@ -560,257 +583,186 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                         </>
                       )}
                     </Col> */}
-                  </Row>
+                    </Row>
+                  </div>
                 </div>
               </div>
-            </div>
-          </section>
-          <div className={`${s.bgCharacters}`}>
-            <div>
-              {/* ==== registration phase ====  */}
-              <RegistrationPhase
-                isJoin={isJoin}
-                isCheckin={isCheckin}
-                tournament={dataTournamentDetail}
-                tournamentId={tournamentId as string}
-                joinTournament={joinTournament}
-                dataBracket={dataBracket}
-                refetch={refetch}
-                refreshParticipant={refreshParticipant}
-                tournament_status={tournament_status as string}
-                refereeIds={referees ? referees.split(",") : []}
-                is_auto_checkin={is_auto_checkin}
-              />
-              {/* ===== sponsor ===== */}
-              {/* <TournamentDetailSponsor
+            </section>
+            <div className={`${s.bgCharacters}`}>
+              <div>
+                {/* ==== registration phase ====  */}
+                <RegistrationPhase
+                  isJoin={isJoin}
+                  isCheckin={isCheckin}
+                  tournament={dataTournamentDetail}
+                  tournamentId={tournamentId as string}
+                  joinTournament={joinTournament}
+                  dataBracket={dataBracket}
+                  refetch={refetch}
+                  refreshParticipant={refreshParticipant}
+                  tournament_status={tournament_status as string}
+                  refereeIds={referees ? referees.split(",") : []}
+                  is_auto_checkin={is_auto_checkin}
+                />
+                {/* ===== sponsor ===== */}
+                {/* <TournamentDetailSponsor
                 tournamentId={tournamentId as string}
                 tournament_status={tournament_status as string}
                 refetchTounament={refetch}
                 currency={currency}m
               /> */}
-              {/* ===== end sponsor ===== */}
+                {/* ===== end sponsor ===== */}
+              </div>
+            </div>
+            <div>
+              <TournamentDetailSponsor
+                tournamentId={tournamentId as string}
+                tournament_status={tournament_status as string}
+                refetchTounament={refetch}
+                currency={currency}
+                //refetchSponsor={refetchSponsor}
+              />
+            </div>
+            {/* ===== tabs ===== */}
+            <div className={`${s.container_Tabs}`}>
+
+              <div className={s.block_tabs}>
+                {tabList.map((item: string) => {
+                  return (
+                    <div
+                      className={s.tab_item}
+                      style={item === activeTab ? {opacity: 1} : {opacity: 0.5}}
+                      key={item}
+                      onClick={() => handleActiveTab(item)}
+                    >
+                      {item}
+                    </div>
+                  );
+                })}
+              </div>
+
+              <div className={s.content_tab}>
+                {(() => {
+                  switch (activeTab) {
+                    // case "Overview":
+                    //   return <Overview desc={desc as string} />;
+                    case "Rules":
+                      return <Rules rules={rules as string}/>;
+                    case "Brackets":
+                      return (
+                        <Brackets
+                          dataBracket={dataBracket}
+                          loadingBracket={loadingBracket}
+                          refereeIds={referees ? referees.split(",") : []}
+                          refetchBracket={refetchBracket}
+                        />
+                      );
+                    case "Participants":
+                      return (
+                        <>
+                          {tournament_status !== "CLOSED" && (
+                            <TableParticipant
+                              dataParticipants={dataParticipants}
+                              loading={loadingParticipant}
+                              tournamentId={tournamentId as string}
+                              currency={currency}
+                              tournament_status={tournament_status as string}
+                              refetch={refetch}
+                              dataBracket={dataBracket}
+                              is_auto_checkin={is_auto_checkin}
+                            />
+                          )}
+                          {tournament_status === "CLOSED" && (
+                            <ListRanks
+                              tournamentId={tournamentId as string}
+                              currency={currency}
+                            />
+                          )}
+                        </>
+                      );
+                    case "Referees":
+                      return (
+                        <Referees
+                          dataRefereesDetail={dataRefereesDetail}
+                          loadingReferees={loadingReferees}
+                          tournamentId={tournamentId as string}
+                          currency={currency}
+                          tournament_status={tournament_status as string}
+                          refetch={refetch}
+                          is_auto_checkin={is_auto_checkin}
+                        />
+                      );
+                    case "Prizing":
+                      return (
+                        <Prizing
+                          dataPrizing={dataPrizing}
+                          loadingPrizing={loadingPrizing}
+                          currency={currency}
+                        />
+                      );
+                    case "Donation history":
+                      return (
+                        <DonationHistory
+                          dataDonation={dataDonation}
+                          loadingDonation={loadingDonation}
+                          currency={currency}
+                        />
+                      );
+                    default:
+                      break;
+                  }
+                })()}
+              </div>
+            </div>
+
+            <div className={s.communityC}></div>
+          </div>
+          <div className={s.right_side}>
+            <div>
+              right side bar
             </div>
           </div>
-          <div>
-            <TournamentDetailSponsor
-              tournamentId={tournamentId as string}
-              tournament_status={tournament_status as string}
-              refetchTounament={refetch}
-              currency={currency}
-              //refetchSponsor={refetchSponsor}
-            />
-          </div>
-          {/* ===== tabs ===== */}
-          <div className={`lucis-container-2 ${s.container_Tabs}`}>
-            {/* <Tabs
-              defaultActiveKey="1"
-              className={s.block_tabs}
-              tabPosition="top"
-            >
-              <TabPane tab="Overview" key="1">
-                <Overview desc={desc as string} />
-              </TabPane>
-              <TabPane tab="Rules" key="2">
-                <Rules rules={rules as string} />
-              </TabPane>
-              <TabPane tab="Bracket" key="3">
-                <Brackets
-                  dataBracket={dataBracket}
-                  loadingBracket={loadingBracket}
-                  refereeIds={referees ? referees.split(",") : []}
-                  refetchBracket={refetchBracket}
-                />
-              </TabPane>
-              <TabPane
-                tab={`Participants (${
-                  cache_tournament?.team_participated
-                    ? cache_tournament?.team_participated
-                    : 0
-                }/${participants})`}
-                key="4"
-              >
-                <>
-                  {tournament_status !== "CLOSED" && (
-                    <TableParticipant
-                      dataParticipants={dataParticipants}
-                      loading={loadingParticipant}
-                      tournamentId={tournamentId as string}
-                      currency={currency}
-                      tournament_status={tournament_status as string}
-                      refetch={refetch}
-                    />
-                  )}
-                  {tournament_status === "CLOSED" && (
-                    <ListRanks
-                      tournamentId={tournamentId as string}
-                      currency={currency}
-                    />
-                  )}
-                </>
-              </TabPane>
-              <TabPane tab="Referees" key="5">
-                <Referees
-                  dataRefereesDetail={dataRefereesDetail}
-                  loadingReferees={loadingReferees}
-                  tournamentId={tournamentId as string}
-                  currency={currency}
-                  tournament_status={tournament_status as string}
-                  refetch={refetch}
-                />
-              </TabPane>
-              <TabPane tab="Prizing" key="6">
-                <Prizing
-                  dataPrizing={dataPrizing}
-                  loadingPrizing={loadingPrizing}
-                  currency={currency}
-                />
-              </TabPane>
-              <TabPane tab="Donation history" key="7">
-                <DonationHistory
-                  dataDonation={dataDonation}
-                  loadingDonation={loadingDonation}
-                  currency={currency}
-                />
-              </TabPane>
-            </Tabs> */}
-
-            <div className={s.block_tabs}>
-              {tabList.map((item: string) => {
-                return (
-                  <div
-                    className={s.tab_item}
-                    style={item === activeTab ? { opacity: 1 } : { opacity: 0.5 }}
-                    key={item}
-                    onClick={() => handleActiveTab(item)}
-                  >
-                    {item}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div className={s.content_tab}>
-              {(() => {
-                switch (activeTab) {
-                  // case "Overview":
-                  //   return <Overview desc={desc as string} />;
-                  case "Rules":
-                    return <Rules rules={rules as string} />;
-                  case "Brackets":
-                    return (
-                      <Brackets
-                        dataBracket={dataBracket}
-                        loadingBracket={loadingBracket}
-                        refereeIds={referees ? referees.split(",") : []}
-                        refetchBracket={refetchBracket}
-                      />
-                    );
-                  case "Participants":
-                    return (
-                      <>
-                        {tournament_status !== "CLOSED" && (
-                          <TableParticipant
-                            dataParticipants={dataParticipants}
-                            loading={loadingParticipant}
-                            tournamentId={tournamentId as string}
-                            currency={currency}
-                            tournament_status={tournament_status as string}
-                            refetch={refetch}
-                            dataBracket={dataBracket}
-                            is_auto_checkin={is_auto_checkin}
-                          />
-                        )}
-                        {tournament_status === "CLOSED" && (
-                          <ListRanks
-                            tournamentId={tournamentId as string}
-                            currency={currency}
-                          />
-                        )}
-                      </>
-                    );
-                  case "Referees":
-                    return (
-                      <Referees
-                        dataRefereesDetail={dataRefereesDetail}
-                        loadingReferees={loadingReferees}
-                        tournamentId={tournamentId as string}
-                        currency={currency}
-                        tournament_status={tournament_status as string}
-                        refetch={refetch}
-                        is_auto_checkin={is_auto_checkin}
-                      />
-                    );
-                  case "Prizing":
-                    return (
-                      <Prizing
-                        dataPrizing={dataPrizing}
-                        loadingPrizing={loadingPrizing}
-                        currency={currency}
-                      />
-                    );
-                  case "Donation history":
-                    return (
-                      <DonationHistory
-                        dataDonation={dataDonation}
-                        loadingDonation={loadingDonation}
-                        currency={currency}
-                      />
-                    );
-                  default:
-                    break;
-                }
-              })()}
-            </div>
-          </div>
-
-          <div className={s.communityC}></div>
-          <PopupDonate
-            closeModal={() => closeModal("Donate")}
-            status={isPopupDonate}
-            tournamentId={tournamentId}
-            currency={currency}
-            types={"TOURNAMENT"}
-            name={name}
-            thumbnail={thumbnail}
-            refetch={refetch}
-          />
-          <PopupShare
-            closeModal={() => closeModal("Invite or Share")}
-            status={isPopupShare}
-            asPath={asPath}
-          />
-
-          <ConnectWalletModal />
-
-          <PopupConfirm
-            show={showConfirm}
-            onCancel={() => setShowConfirm(false)}
-            tournamentId={tournamentId as string}
-            refetchConfirmResult={refetchConfirmResult}
-            tournament_status={tournament_status}
-            refetchTounament={refetch}
-          />
-
-          <PopupNotifyProfile
-            status={isPopupNotifyProfile}
-            onCancel={onCancelPopupNotifyProfile}
-          ></PopupNotifyProfile>
         </div>
-
-        {/*<div className={s.side}>*/}
-        {/*  <div>*/}
-        {/*    right side bar*/}
-        {/*  </div>*/}
-        {/*</div>*/}
       </div>
-      <LoginModal />
+      <LoginModal/>
+      <PopupDonate
+        closeModal={() => closeModal("Donate")}
+        status={isPopupDonate}
+        tournamentId={tournamentId}
+        currency={currency}
+        types={"TOURNAMENT"}
+        name={name}
+        thumbnail={thumbnail}
+        refetch={refetch}
+      />
+      <PopupShare
+        closeModal={() => closeModal("Invite or Share")}
+        status={isPopupShare}
+        asPath={asPath}
+      />
+
+      <ConnectWalletModal/>
+
+      <PopupConfirm
+        show={showConfirm}
+        onCancel={() => setShowConfirm(false)}
+        tournamentId={tournamentId as string}
+        refetchConfirmResult={refetchConfirmResult}
+        tournament_status={tournament_status}
+        refetchTounament={refetch}
+      />
+
+      <PopupNotifyProfile
+        status={isPopupNotifyProfile}
+        onCancel={onCancelPopupNotifyProfile}
+      ></PopupNotifyProfile>
     </>
   );
 };
 
 export default function TournamentDetailSafe() {
   const router = useRouter();
-  const { id } = router.query;
+  const {id} = router.query;
   if (!id) {
     if (isClientDevMode) {
       console.warn("{TournamentDetail} Hey tournamentId is NULL");
@@ -818,6 +770,6 @@ export default function TournamentDetailSafe() {
   }
 
   return id ? (
-    <TournamentDetail tournamentId={id as string} asPath={router.asPath} />
-  ) : <DocHead />;
+    <TournamentDetail tournamentId={id as string} asPath={router.asPath}/>
+  ) : <DocHead/>;
 }

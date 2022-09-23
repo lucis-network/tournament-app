@@ -70,7 +70,45 @@
   &::-webkit-scrollbar-thumb
     background: #00F9FF
     border-radius: 10px
-
+.yourRank
+  display: flex
+  align-items: center
+  margin-top: 20px
+  @media screen and (min-width: 992px)
+    font-size: 42px
+  font-family: 'Revx Neue Demo'
+  .titleYourRank
+    width: 10%
+    color: #00F9FF
+    letter-spacing: 0.04em
+    font-size: 24px
+    line-height: 120%
+    display: none
+    @media screen and (min-width: 575px)
+      display: block
+      font-size: 10px
+    @media screen and (min-width: 768px)
+      font-size: 14px
+    @media screen and (min-width: 992px)
+      font-size: 18px
+  .numYourRank
+    width: 14%
+    text-align: center
+    @media screen and (min-width: 575px)
+      width: 15%
+  .nameYourRank
+    width: 35%
+    @media screen and (min-width: 575px)
+      width: 30%
+  .earningYourRank
+    width: 27%
+    text-align: center
+    @media screen and (min-width: 575px)
+      width: 20%
+  .rewardsYourRank
+    width: 26%
+    @media screen and (min-width: 575px)
+      width: 25%
 .userRank
   display: flex
   align-items: center
@@ -107,7 +145,7 @@
 .userWrap
   display: flex
   align-items: center
-  justify-content: start
+  justify-content: flex-start
 
   .userAvatar
     margin-right: 16px
@@ -238,4 +276,15 @@
     color: #DF9B16
   @media screen and (min-width: 1200px)
     font-size: 20px
-
+.columnRankTop
+  display: none
+  @media screen and (min-width: 575px)
+    display: block
+.columnName
+  width: 35%
+  @media screen and (min-width: 575px)
+    width: 30%
+.columnReward
+  width: 30%
+  @media screen and (min-width: 575px)
+    width: 25%

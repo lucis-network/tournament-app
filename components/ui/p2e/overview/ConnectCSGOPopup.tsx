@@ -18,19 +18,20 @@ export const ConnectCSGOPopup = (props: IProps) => {
   return (
     <>
       <Modal
-        title="Connect Csgo account"
+        title="Connect CS:GO account"
         visible={true}
         onCancel={() => props.onCancel()}
         wrapClassName="connect-lmss-modal"
         footer={[]}
+        centered
         width={500}
         maskClosable={false}
       >
         <div className={s.connectLmssModal}>
           <div className={s.tutorial}>
-            <h1>Connect CSGO account step by step:</h1>
+            <h1>Connect CS:GO account step by step:</h1>
           </div>
-          <div>1. Go to www.faceit.com.</div>
+          <div>1. Go to <a href="https://www.faceit.com/en" target="_blank" rel="noreferrer" >www.faceit.com.</a></div>
           <div>2. Click on the “Register” button, which is located in the upper right.</div>
           <div>3. Register with your personal email or Facebook.</div>
           <div>4. Enter personal data.</div>
@@ -38,7 +39,7 @@ export const ConnectCSGOPopup = (props: IProps) => {
           <div>6. Sign in Lucis and connect CS:GO Faceit account.</div>
           <div style={{width: "100%", textAlign: "center"}}>
             <button onClick={() => props.onConnectCSGO()} className={s.actionButton} style={{ marginTop: 16,  }}>
-              <span>Connect CSGO</span>
+              <span>Connect CS:GO</span>
             </button>
           </div>
         </div>

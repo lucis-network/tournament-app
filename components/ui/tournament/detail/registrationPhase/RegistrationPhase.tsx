@@ -340,6 +340,7 @@ export default observer(function RegistrationPhase(props: Props) {
 
     sessionStorage.setItem("overviewSection", OverviewSection.CONNECT_GAME.toString());
     sessionStorage.setItem("redirectUrl", router.asPath);
+    sessionStorage.setItem("openPopupConnectGame", game_uid);
   }
   return (
     <>

@@ -177,7 +177,7 @@ export const GET_USER_RANK_PLAYCORE = gql`
 `
 
 export const GET_USER_RANK_TOURNAMENT = gql`
-    query ($user_id: Int!, $seasonId: String!) {
+    query ($user_id: Int!, $seasonId: String) {
         getUserTournamentRanking (user_id: $user_id, seasonId: $seasonId) {
             id
             code
