@@ -11,7 +11,6 @@ type Props = {
 };
 export default function Overview(props: Props) {
   const { data } = props;
-  console.log(data);
   return (
     <div className={s.wrapper}>
       {/*<div dangerouslySetInnerHTML={{ __html: desc ? desc : "" }}></div>*/}

@@ -40,9 +40,9 @@ export default function CardPlayer(props: Props) {
               </Link>
 
               <p className={`${s.mission} ${s.top_mission} ${i === 0 ? s.top_mission_top1 : ''}`}>
-                {format(
+                ${format(
                   e?.total_earning, 2, {zero_trim: true}
-                )}$
+                )}
               </p>
 
               {/*<p className={`${s.top_reward}`}>*/}

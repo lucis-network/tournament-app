@@ -1,15 +1,28 @@
-import { Table } from "antd";
+import { Table, Image } from "antd";
 import Link from "next/link";
 import s from "./Ranking.module.sass";
-import { useArenaRanking } from "../../../../../hooks/ranking/useRanking";
+import {GET_USER_RANK_TOURNAMENT, useArenaRanking} from "../../../../../hooks/ranking/useRanking";
 import {format} from "utils/Number";
+import {useQuery} from "@apollo/client";
+import AuthStore from "components/Auth/AuthStore";
 
 const columns = [
+  {
+    title: '',
+    dataIndex: 'rank',
+    className: s.columnRankTop,
+    width: "10%",
+    render: (rank: number) => {
+      return (
+        <></>
+      )
+    }
+  },
   {
     title: 'Rank',
     dataIndex: 'rank',
     className: s.columnRank,
-    width: "10%",
+    width: "15%",
     render: (rank: number) => {
       return (
         <div className={s.userRank}>
@@ -27,7 +40,7 @@ const columns = [
     title: 'Name',
     dataIndex: ['profile', 'rank'],
     className: s.columnName,
-    width: "35%",
+    width: "30%",
     render: (_text: string, data: any) => {
       const profile = data?.profile
       const rank = data?.rank
@@ -57,10 +70,10 @@ const columns = [
     title: 'Total earnings',
     dataIndex: 'total_earning',
     className: s.columnEarning,
-    width: "25%",
+    width: "20%",
     render: (totalEarning: number) => {
       return totalEarning > 0 && (
-        <div className={`${s.totalEarning}`}>{format(Number(totalEarning), 2, {zero_trim: true})}$</div>
+        <div className={`${s.totalEarning}`}>${format(Number(totalEarning), 2, {zero_trim: true})}</div>
       )
     }
   },
@@ -68,7 +81,7 @@ const columns = [
     title: 'Rewards',
     dataIndex: ['reward', 'rank'],
     className: s.columnReward,
-    width: "30%",
+    width: "25%",
     render: (_text: string, data: any) => {
       return (
         <div className={s.userReward}>
@@ -94,11 +107,64 @@ type Props = {
 const Ranking = ({ seasonId }: Props) => {
   const {getArenaRankingLoading, dataArenaRanking} = useArenaRanking({})
 
+  const userRankTournament = useQuery(GET_USER_RANK_TOURNAMENT, {
+    variables: {
+      user_id: Number(AuthStore.id),
+    },
+    context: {
+      endpoint: 'p2e'
+    },
+    fetchPolicy: "no-cache"
+  })
+
+  console.log("userRankTournament", userRankTournament);
   return (
     <> 
       <div className={s.rankingTableWrapper}>
         <div className={s.rankingTableResponsive}>
           <Table columns={columns} dataSource={dataArenaRanking?.getTournamentRanking} pagination={false} rowKey="id" loading={getArenaRankingLoading} />
+        </div>
+        <div className={s.yourRank}>
+          <div className={s.titleYourRank}>
+            <span>Your Rank</span>
+          </div>
+          <div className={s.numYourRank}>
+            <div className={s.userRank}>
+              <div className={`${s.userRankName}`}>
+                {userRankTournament?.data?.getUserTournamentRanking?.rank}
+              </div>
+            </div>
+          </div>
+          <div className={s.nameYourRank}>
+            <div className={s.userWrap}>
+              <div className={`${s.userAvatar}`}>
+                <Link href={`/profile/${userRankTournament?.data?.getUserTournamentRanking?.profile?.user_name}`} passHref>
+                  <a target="_blank">
+                    <Image src={userRankTournament?.data?.getUserTournamentRanking?.profile?.avatar} alt=""
+                         fallback="/assets/P2E/raffles/defaultAvatar.jpg"/>
+                  </a>
+                </Link>
+              </div>
+              <div className={`${s.userName}`}>
+                <Link href={`/profile/${userRankTournament?.data?.getUserTournamentRanking?.profile?.user_name}`} passHref>
+                  <a target="_blank">{userRankTournament?.data?.getUserTournamentRanking?.profile?.display_name}</a>
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className={s.earningYourRank}>
+            <div className={`${s.totalEarning}`}>${format(userRankTournament?.data?.getUserTournamentRanking?.total_earning, 2, {zero_trim: true})}</div>
+          </div>
+          <div className={s.rewardsYourRank}>
+            <div className={s.userReward}>
+              <div className={s.rewardPoint}>
+                ---- <img src="/assets/P2E/lucis-point.svg" alt=""/>
+              </div>
+              <div className={s.rewardToken}>
+                ---- <img src="/assets/P2E/lucis-token.svg" alt=""/>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>
