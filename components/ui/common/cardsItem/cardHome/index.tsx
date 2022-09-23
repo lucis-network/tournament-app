@@ -69,7 +69,7 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
           {
             //@ts-ignore
             item ? (
-              <a href={`/arena/${item.uid}/${slugify(item.name)}`} target="_blank" rel="noopener noreferrer">
+              <a href={`/arena/${item.uid}/${slugify(item.name)}`}>
                 <div className={s.item} >
                   <div className={s.itemImg}>
                     <div className={s.itemDescImg}>
@@ -123,7 +123,7 @@ function TournamentCard(props: { data: TournamentGql; typeTab?: string }) {
                     <div className={s.itemTime}>
                       <img src="/assets/home/ic_date.svg" alt=""/>
                       <span>{moment(item.brackets?.[0].start_at).format(
-                        "MMM Do, hh:mm"
+                        "MMM Do, HH:mm"
                       )}</span>
                     </div>
                   </div>

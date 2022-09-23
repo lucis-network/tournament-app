@@ -5,6 +5,8 @@ import {GET_USER_RANK_TOURNAMENT, useArenaRanking} from "../../../../../hooks/ra
 import {format} from "utils/Number";
 import {useQuery} from "@apollo/client";
 import AuthStore from "components/Auth/AuthStore";
+import {memo, useEffect} from "react";
+import {observer} from "mobx-react-lite";
 
 const columns = [
   {
@@ -104,10 +106,10 @@ type Props = {
   seasonId: string
 }
 
-const Ranking = ({ seasonId }: Props) => {
+export default observer (function Ranking ({ seasonId }: Props) {
   const {getArenaRankingLoading, dataArenaRanking} = useArenaRanking({})
 
-  const userRankTournament = useQuery(GET_USER_RANK_TOURNAMENT, {
+  const {data, loading, refetch} = useQuery(GET_USER_RANK_TOURNAMENT, {
     variables: {
       user_id: Number(AuthStore.id),
     },
@@ -117,13 +119,17 @@ const Ranking = ({ seasonId }: Props) => {
     fetchPolicy: "no-cache"
   })
 
-  console.log("userRankTournament", userRankTournament);
+  useEffect(() => {
+    refetch();
+  }, [AuthStore.isLoggedIn])
+
   return (
-    <> 
+    <>
       <div className={s.rankingTableWrapper}>
         <div className={s.rankingTableResponsive}>
           <Table columns={columns} dataSource={dataArenaRanking?.getTournamentRanking} pagination={false} rowKey="id" loading={getArenaRankingLoading} />
         </div>
+        { data &&
         <div className={s.yourRank}>
           <div className={s.titleYourRank}>
             <span>Your Rank</span>
@@ -131,29 +137,32 @@ const Ranking = ({ seasonId }: Props) => {
           <div className={s.numYourRank}>
             <div className={s.userRank}>
               <div className={`${s.userRankName}`}>
-                {userRankTournament?.data?.getUserTournamentRanking?.rank}
+                {data?.getUserTournamentRanking?.rank}
               </div>
             </div>
           </div>
-          <div className={s.nameYourRank}>
-            <div className={s.userWrap}>
-              <div className={`${s.userAvatar}`}>
-                <Link href={`/profile/${userRankTournament?.data?.getUserTournamentRanking?.profile?.user_name}`} passHref>
-                  <a target="_blank">
-                    <Image src={userRankTournament?.data?.getUserTournamentRanking?.profile?.avatar} alt=""
-                         fallback="/assets/P2E/raffles/defaultAvatar.jpg"/>
-                  </a>
-                </Link>
-              </div>
-              <div className={`${s.userName}`}>
-                <Link href={`/profile/${userRankTournament?.data?.getUserTournamentRanking?.profile?.user_name}`} passHref>
-                  <a target="_blank">{userRankTournament?.data?.getUserTournamentRanking?.profile?.display_name}</a>
-                </Link>
+
+            <div className={s.nameYourRank}>
+              <div className={s.userWrap}>
+                <div className={`${s.userAvatar}`}>
+                  <Link href={`/profile/${data?.getUserTournamentRanking?.profile?.user_name}`} passHref>
+                    <a target="_blank">
+                      <Image src={data?.getUserTournamentRanking?.profile?.avatar} alt=""
+                             fallback="/assets/P2E/raffles/defaultAvatar.jpg" preview={false}
+                      />
+                    </a>
+                  </Link>
+                </div>
+                <div className={`${s.userName} ${s.userNameYourRank}`}>
+                  <Link href={`/profile/${data?.getUserTournamentRanking?.profile?.user_name}`} passHref>
+                    <a target="_blank">{data?.getUserTournamentRanking?.profile?.display_name}</a>
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
+
           <div className={s.earningYourRank}>
-            <div className={`${s.totalEarning}`}>${format(userRankTournament?.data?.getUserTournamentRanking?.total_earning, 2, {zero_trim: true})}</div>
+            <div className={`${s.totalEarning}`}>${format(data?.getUserTournamentRanking?.total_earning, 2, {zero_trim: true})}</div>
           </div>
           <div className={s.rewardsYourRank}>
             <div className={s.userReward}>
@@ -166,9 +175,9 @@ const Ranking = ({ seasonId }: Props) => {
             </div>
           </div>
         </div>
+        }
       </div>
     </>
   )
 }
-
-export default Ranking;
+)

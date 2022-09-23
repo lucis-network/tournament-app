@@ -5,17 +5,19 @@ import {Image} from "antd";
 import Link from "next/link";
 import ButtonBorder from "../../../../common/button/buttonBorder/ButtonBorder";
 import React from "react";
+import moment from "moment/moment";
 
 type Props = {
   data: TournamentGql;
 };
 export default function Overview(props: Props) {
   const { data } = props;
+  console.log("data", data)
   return (
     <div className={s.wrapper}>
       {/*<div dangerouslySetInnerHTML={{ __html: desc ? desc : "" }}></div>*/}
       <Banner
-        cover={"https://image-upload-s3-demo.s3.ap-southeast-1.amazonaws.com/tournaments/anh-anime-de-thuong-p1-1-564x375.jpg"}
+        cover={data?.cover}
         className={s.bannerTourDetailWrap}
         bannerClassName={s.bannerTourDetail}
       />
@@ -86,25 +88,53 @@ export default function Overview(props: Props) {
       <div className={s.desc}>
         <div className={s.topDesc}>
           <div className={s.time}>
-            <span>Start time:</span>
-            <span>2022/05/12 18:00</span>
+            <span className={s.timeText}>Start: </span>
+            <span className={s.timeBrackets}>{data && data?.brackets && data?.brackets[0] && moment(data?.brackets[0]?.start_at).format(
+                "YYYY/MM/DD HH:mm"
+            )}</span>
           </div>
-          <div className={s.entryDesc}>
+          <div className={`${s.btnDesc} ${s.entryDesc}`}>
+            <Image
+                src="/assets/TournamentDetail/iconDollarCoin.svg"
+                preview={false}
+                alt=""
+            />{" "}
             <span>Free entry</span>
           </div>
-          <div className={s.countryDesc}>
+          <div className={`${s.btnDesc} ${s.countryDesc}`}>
+            <Image
+                src="/assets/TournamentDetail/iconMapMark.svg"
+                preview={false}
+                alt=""
+            />
             <span>Northwest of American</span>
           </div>
-          <div className={s.discordDesc}>
+          <div className={`${s.btnDesc} ${s.discordDesc}`}>
+            <Image
+                src="/assets/TournamentDetail/ic_dis.svg"
+                alt=""
+                preview={false}
+            />
             <span>Join our Discord</span>
           </div>
-          <div className={s.subDesc}>
+          <div className={`${s.btnDesc} ${s.subDesc}`}>
+            <Image
+                src="/assets/TournamentDetail/ic_sub.svg"
+                preview={false}
+                alt=""
+            />
             <span>Subscribe (100K)</span>
           </div>
         </div>
         <div className={s.botDesc}>
           <div className={s.gameDesc}>
-            <span>Leguage of legend</span>
+            <Image
+                src={data?.game?.logo ?? ""}
+                className={s.gameLogo}
+                preview={false}
+                alt=""
+            />
+            <span>{data?.game?.name}</span>
           </div>
           <div className={s.typeDesc}>
             <span>Bracket type</span>

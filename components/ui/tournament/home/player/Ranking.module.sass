@@ -32,7 +32,6 @@
         line-height: 100%
         letter-spacing: 0.04em
         color: #DBE0E8
-        padding: 10px
         text-align: center
         border: none
         position: sticky
@@ -100,15 +99,18 @@
     width: 35%
     @media screen and (min-width: 575px)
       width: 30%
+    .userNameYourRank
+      a
+        color: #00F9FF
   .earningYourRank
     width: 27%
     text-align: center
     @media screen and (min-width: 575px)
       width: 20%
+    @media screen and (min-width: 768px)
+      width: 19%
   .rewardsYourRank
     width: 26%
-    @media screen and (min-width: 575px)
-      width: 25%
 .userRank
   display: flex
   align-items: center
@@ -170,7 +172,6 @@
       height: 44px
       max-width: 44px
       max-height: 44px
-      display: block
       border-radius: 50%
       border: 1px solid #DBE0E8
       @media screen and (min-width: 1200px)
@@ -277,9 +278,8 @@
   @media screen and (min-width: 1200px)
     font-size: 20px
 .columnRankTop
-  display: none
-  @media screen and (min-width: 575px)
-    display: block
+  @media screen and (max-width: 574px)
+    display: none
 .columnName
   width: 35%
   @media screen and (min-width: 575px)

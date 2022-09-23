@@ -27,7 +27,6 @@ function SilderBanner({ data }: SliderBannerProps) {
     router.push(`/arena/${uid}/${slugify(name)}`);
   };
 
-  console.log("orderData", orderData);
   return (
     <div className={s.wrapper}>
       <div className={s.leftArrow}>
@@ -39,7 +38,9 @@ function SilderBanner({ data }: SliderBannerProps) {
       <Carousel ref={slider} className={`lucis-container-2 ${s.container}`}>
         {orderData && orderData?.map((item, index) => (
           <div className={`${s.banner}`} key={index}>
-            <Img src={item?.cover ?? "/assets/home/bg_banner.jpg"} srcFallback="/assets/home/bg_banner.jpg" />
+              <a href={`/arena/${item?.uid}/${slugify(item?.name)}`}>
+                  <Img src={item?.cover ?? "/assets/home/bg_banner.jpg"} srcFallback="/assets/home/bg_banner.jpg" />
+              </a>
             <div className={s.popup}>
               <div className={s.popupContent}>
                 <div className={s.popupContentName}>
@@ -53,11 +54,14 @@ function SilderBanner({ data }: SliderBannerProps) {
                     : ""
                 }
               </div>
-              <ButtonBorder>
-                <div className={s.btnJoin} onClick={() => handleJoinDetail(item)}>
-                  Join Now
-                </div>
-              </ButtonBorder>
+              <a href={`/arena/${item?.uid}/${slugify(item?.name)}`}>
+                  <ButtonBorder>
+                      <div className={s.btnJoin}>
+                          Join Now
+                      </div>
+                  </ButtonBorder>
+              </a>
+
             </div>
           </div>
         ))}
