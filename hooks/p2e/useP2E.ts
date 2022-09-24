@@ -726,7 +726,8 @@ query ($user_id: Int!, $group_filter: ItemGroup, $search_name: String) {
       item_group
       piece_group
       prize_type
-      currency_type    
+      currency_type
+      in_game_prize_type
     }
    }
    quantity

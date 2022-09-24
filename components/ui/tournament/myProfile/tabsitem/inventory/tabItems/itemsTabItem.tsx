@@ -58,7 +58,8 @@ const ItemsTabItem = (props: Props) => {
           </div>
           {item?.quantity && isOwner && (
             <div className={s.prizeAmount}>
-              <div className={s.prizeAmountQty}>Amount: {item?.quantity}</div>
+              {/* only show claim if not GiftCard */}
+              {(item?.prize?.category?.in_game_prize_type != "GiftCard") && <div className={s.prizeAmountQty}>Amount: {item?.quantity}</div>}
               <div>
                 <KButton
                   title="Claim"
