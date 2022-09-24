@@ -1,4 +1,4 @@
-import { TournamentGql } from "src/generated/graphql";
+import {BracketGql, TournamentGql } from "src/generated/graphql";
 import Banner from "../../banner/Banner";
 import s from "./Overview.module.sass";
 import {Image} from "antd";
@@ -9,10 +9,10 @@ import moment from "moment/moment";
 
 type Props = {
   data: TournamentGql;
+  dataBracket: BracketGql;
 };
 export default function Overview(props: Props) {
-  const { data } = props;
-  console.log("data", data)
+  const { data, dataBracket } = props;
   return (
     <div className={s.wrapper}>
       {/*<div dangerouslySetInnerHTML={{ __html: desc ? desc : "" }}></div>*/}
@@ -82,20 +82,20 @@ export default function Overview(props: Props) {
       </div>
 
       <div className={s.titleTour}>
-        <h2>Find the Best Yas ua Mid summer 2022 Find the Best Yasua Mid summer 2022 Best Yasua Mid summer 2022 </h2>
+        <h2>{data?.name}</h2>
       </div>
 
       <div className={s.desc}>
         <div className={s.topDesc}>
           <div className={s.time}>
-            <span className={s.timeText}>Start: </span>
-            <span className={s.timeBrackets}>{data && data?.brackets && data?.brackets[0] && moment(data?.brackets[0]?.start_at).format(
+            <span className={s.timeText}>Start :{` `}</span>
+            <span className={s.timeBrackets}>{` `}{data && data?.brackets && data?.brackets[0] && moment(data?.brackets[0]?.start_at).format(
                 "YYYY/MM/DD HH:mm"
             )}</span>
           </div>
           <div className={`${s.btnDesc} ${s.entryDesc}`}>
             <Image
-                src="/assets/TournamentDetail/iconDollarCoin.svg"
+                src="/assets/TournamentDetail/ic_dollar.svg"
                 preview={false}
                 alt=""
             />{" "}
@@ -107,7 +107,7 @@ export default function Overview(props: Props) {
                 preview={false}
                 alt=""
             />
-            <span>Northwest of American</span>
+            <span>{data?.region}</span>
           </div>
           <div className={`${s.btnDesc} ${s.discordDesc}`}>
             <Image
@@ -134,19 +134,23 @@ export default function Overview(props: Props) {
                 preview={false}
                 alt=""
             />
-            <span>{data?.game?.name}</span>
+            <span className={s.botDescContent}>{data?.game?.name}</span>
           </div>
           <div className={s.typeDesc}>
-            <span>Bracket type</span>
-            <span>Single Elimination</span>
+            <span className={s.botDescText}>Bracket type </span>
+            <span className={s.botDescContent}>{dataBracket?.type === "SINGLE"
+              ? "Single elimination"
+              : dataBracket?.type === "DOUBLE"
+                ? "Double elimination"
+                : ""}</span>
           </div>
           <div className={s.teamSizeDesc}>
-            <span>Team size</span>
-            <span>3v3</span>
+            <span className={s.botDescText}>Team size </span>
+            <span className={s.botDescContent}>{data?.team_size ?? "-"}v{data?.team_size ?? "-"}</span>
           </div>
           <div className={s.matchDesc}>
-            <span>Match</span>
-            <span>BO2</span>
+            <span className={s.botDescText}>Match </span>
+            <span className={s.botDescContent}>BO{data?.turns}</span>
           </div>
         </div>
       </div>
