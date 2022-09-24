@@ -22,9 +22,9 @@ const nextConfig = withAntdLess({
 		path: "",
 	},
 
-	sassOptions: {
-	  includePaths: [path.join(__dirname, 'styles')],
-	},
+	// sassOptions: {
+	//   includePaths: [path.join(__dirname, 'styles')],
+	// },
 
 	/**
 	 * Custom webpack config
