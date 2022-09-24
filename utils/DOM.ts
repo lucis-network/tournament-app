@@ -1,28 +1,28 @@
 export const isClient = typeof window !== "undefined";
 
 export function getAppScrollContainer() {
-  return isClient
-    ? window
-    : null
+  return isClient ? window : null;
 }
 
 export function scrollHeight(y: number) {
-  isClient && getAppScrollContainer()?.scrollTo({
-    top: y,
-    left: 0,
-    behavior: 'smooth'
-  });
+  isClient &&
+    getAppScrollContainer()?.scrollTo({
+      top: y,
+      left: 0,
+      behavior: "smooth",
+    });
 }
 
 export function scrollBy(y: number) {
-  isClient && getAppScrollContainer()?.scrollBy({
-    top: y,
-    behavior: 'smooth'
-  });
+  isClient &&
+    getAppScrollContainer()?.scrollBy({
+      top: y,
+      behavior: "smooth",
+    });
 }
 
 export function getViewport(): VisualViewport | null {
-  return isClient ? window.visualViewport: null;
+  return isClient ? window.visualViewport : null;
 }
 
 export function setBodyScroll(enable: boolean) {
@@ -38,26 +38,38 @@ export function setBodyScroll(enable: boolean) {
   }
 }
 
-export function scrollToSection(selector: string, top: boolean = true, offset: number = 0) {
+export function scrollToSection(
+  selector: string,
+  top: boolean = true,
+  offset: number = 0
+) {
   const GotoDiv = document.querySelector(selector);
   if (!GotoDiv) {
-    console.warn('{scrollToSection} el not found, selector: ', selector);
+    console.warn("{scrollToSection} el not found, selector: ", selector);
     return;
   }
   // console.log('{scrollToSection} GotoDiv : ', GotoDiv);
   // GotoDiv?.scrollIntoView({ behavior: "smooth", block: "start" }); // Not stable in target scrolling position
-  const rect = GotoDiv.getBoundingClientRect()
+  const rect = GotoDiv.getBoundingClientRect();
   if (top) {
     // @ts-ignore
     scrollHeight(offset + window.scrollY + rect.top); // NOTE: offsetTop is the number of pixels from the top of the closest relatively positioned parent element.
   } else {
     // @ts-ignore
-    scrollHeight(offset + window.scrollY + rect.top + rect.height - window.visualViewport.height); // NOTE: offsetTop is the number of pixels from the top of the closest relatively positioned parent element.
+    scrollHeight(
+      offset +
+        window.scrollY +
+        rect.top +
+        rect.height -
+        window.visualViewport.height
+    ); // NOTE: offsetTop is the number of pixels from the top of the closest relatively positioned parent element.
   }
 }
 
-// ## function declaration
-export function scrollEventThrottle(onScroll: (scrollTop: number, prev_offset: number) => void) {
+// scrollEventThrottle
+export function useScroll(
+  onScroll: (scrollTop: number, prev_offset: number) => void
+) {
   if (!isClient) {
     return;
   }
@@ -75,7 +87,7 @@ export function scrollEventThrottle(onScroll: (scrollTop: number, prev_offset: n
       });
       ticking = true;
     }
-  }
+  };
   window.addEventListener("scroll", listener);
 
   return () => {
@@ -100,7 +112,7 @@ export const fetchJsFromCDN = (src: string, externals: any[] = []) => {
         externals.map((key) => {
           const ext = window[key];
           typeof ext === "undefined" &&
-          console.warn(`No external named '${key}' in window`);
+            console.warn(`No external named '${key}' in window`);
           return ext;
         })
       );

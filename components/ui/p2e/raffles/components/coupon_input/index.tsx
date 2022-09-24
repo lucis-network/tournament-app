@@ -12,7 +12,6 @@ type Props = {
 };
 export function CouponInput(props: Props) {
   const handleChange = (value?: string) => {
-    console.log(`selected ${value}`);
     if (!props.coupons) {
       return;
     }

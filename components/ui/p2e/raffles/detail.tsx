@@ -337,8 +337,8 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
       amount = parseInt(amount.toString());
       setTicketBuyAmount(amount);
       let _totalCost = amount * raffleDetailData?.ticket?.cost;
-      setTotalCost(_totalCost);
-      setTotalPayment(_totalCost);
+      setTotalCost(Math.round(_totalCost));
+      setTotalPayment(Math.round(_totalCost));
       estimateDiscount(amount, coupon);
     }
   };
@@ -366,10 +366,11 @@ const RafflesDetail = observer((props: { raffleUID: string }) => {
     let totalPayment = totalAmount;
     let discount = 0;
 
-    console.log("_discount:", _discount);
-    discount = KMath.mul(_discount, totalAmountCanDiscount).div(100).toNumber();
+    discount = Math.round(
+      KMath.mul(_discount, totalAmountCanDiscount).div(100).toNumber()
+    );
     if (max_value_off != null) {
-      discount = Math.min(discount, max_value_off);
+      discount = Math.round(Math.min(discount, max_value_off));
     }
     totalPayment -= discount;
 
