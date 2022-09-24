@@ -92,9 +92,9 @@
         color: rgba(240, 185, 11, 0.8)
     .btnDesc
       padding: 6px 16px
-      background: rgba(69, 80, 107, 0.5)
-      backdrop-filter: blur(20px)
       border-radius: 4px
+      position: relative
+      background: rgba(69, 80, 107, 0.5)
       span
         font-weight: 300
         font-size: 12px
@@ -105,10 +105,23 @@
   .botDesc
     display: flex
     align-items: center
+    gap: 0 70px
     .gameDesc
       img
         width: 48px
+        margin-right: 16px
         aspect-ratio: 1/1
         border-radius: 50%
-
+    .teamSizeDesc
+      margin-left: 10px
+.botDescText
+  font-weight: 400
+  font-size: 18px
+  line-height: 115%
+  color: #DBE0E8
+.botDescContent
+  font-weight: 500
+  font-size: 17px
+  line-height: 115%
+  color: #00F9FF
 

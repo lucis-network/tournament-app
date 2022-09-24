@@ -256,7 +256,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               {(() => {
                 switch (tab) {
                   case 0:
-                    return <Overview data={dataTournamentDetail}/>;
+                    return <Overview data={dataTournamentDetail} dataBracket={dataBracket}/>;
                   default:
                     break;
                 }

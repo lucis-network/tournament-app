@@ -41,7 +41,7 @@ function CardHome(props: Props) {
           );
         })}
       </div>
-      {isLoadMore > datas?.length ? (
+      {isLoadMore >= datas?.length ? (
         ""
       ) : (
         <div className={s.btn_load}>

@@ -979,6 +979,12 @@ body .ant-select-clear {
 body .ant-select-clear:hover {
   color: #00FFEC;
 }
+/*body .ant-select-focused:hover .ant-select-arrow {*/
+/*  opacity: 0;*/
+/*}*/
+/*body .ant-select-allow-clear:hover .ant-select-arrow{*/
+/*  opacity: 0;*/
+/*}*/
 
 body .rc-virtual-list-scrollbar-thumb {
   background: rgba(69, 80, 107, 0.4) !important;

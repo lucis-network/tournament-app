@@ -95,10 +95,15 @@
         width: 94px
     .game_uid
       order: 3
+      flex: 1
+      @media screen and (min-width: 768px)
+        flex: 0
       div
         width: 108px
         @media screen and (min-width: 375px)
-          width: 122px
+          width: 100%
+        @media screen and (min-width: 768px)
+          width: 140px
         @media screen and (min-width: 1200px)
           width: 140px
         @media screen and (min-width: 1400px)
@@ -117,22 +122,30 @@
           width: 81px
     .selectType
       order: 3
+      flex: 1
+      @media screen and (min-width: 768px)
+        flex: 0
       :global(.ant-select:not(.ant-select-customize-input) .ant-select-selector)
         background: linear-gradient(93.02deg, rgba(24, 137, 228, 0.4) 0.52%, rgba(11, 235, 214, 0.4) 100.48%)
       div
         width: 107px
         @media screen and (min-width: 375px)
+          width: 100%
+        @media screen and (min-width: 768px)
           width: 122px
         @media screen and (min-width: 1400px)
           width: 143px
     .container_search
-      width: 360px
+      width: 100%
       order: -1
-      @media screen and (min-width: 575px) and (max-width: 991px)
+      @media screen and (min-width: 575px) and (max-width: 767px)
+        order: 2
+        width: calc(100% - 213px)
+      @media screen and (min-width: 768px) and (max-width: 991px)
         order: 2
         width: calc(100% - 221px)
       @media screen and (min-width: 992px)
-        width: 242px
+        width: 224px
         order: 4
       @media screen and (min-width: 1200px)
         width: 330px

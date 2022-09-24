@@ -88,10 +88,10 @@ const columns = [
       return (
         <div className={s.userReward}>
           <div className={s.rewardPoint}>
-            ---- <img src="/assets/P2E/lucis-point.svg" alt=""/>
+            -- <img src="/assets/P2E/lucis-point.svg" alt=""/>
           </div>
           <div className={s.rewardToken}>
-            ---- <img src="/assets/P2E/lucis-token.svg" alt=""/>
+            -- <img src="/assets/P2E/lucis-token.svg" alt=""/>
           </div>
           {/*{data.rank == 1*/}
           {/*  ? <img className={s.rewardChest} src="/assets/home/chest-1.png" alt="" />*/}
@@ -129,7 +129,7 @@ export default observer (function Ranking ({ seasonId }: Props) {
         <div className={s.rankingTableResponsive}>
           <Table columns={columns} dataSource={dataArenaRanking?.getTournamentRanking} pagination={false} rowKey="id" loading={getArenaRankingLoading} />
         </div>
-        { data &&
+        { data && data?.getUserTournamentRanking?.total_earning > 0 &&
         <div className={s.yourRank}>
           <div className={s.titleYourRank}>
             <span>Your Rank</span>
@@ -167,10 +167,10 @@ export default observer (function Ranking ({ seasonId }: Props) {
           <div className={s.rewardsYourRank}>
             <div className={s.userReward}>
               <div className={s.rewardPoint}>
-                ---- <img src="/assets/P2E/lucis-point.svg" alt=""/>
+                -- <img src="/assets/P2E/lucis-point.svg" alt=""/>
               </div>
               <div className={s.rewardToken}>
-                ---- <img src="/assets/P2E/lucis-token.svg" alt=""/>
+                -- <img src="/assets/P2E/lucis-token.svg" alt=""/>
               </div>
             </div>
           </div>
