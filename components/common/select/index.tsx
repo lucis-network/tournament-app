@@ -18,6 +18,9 @@ export function Select(props: Props) {
         onChange={props.onSelect}
         value={props.value}
         allowClear
+        getPopupContainer={(trigger) =>
+          trigger.parentElement.parentElement.parentElement.parentElement
+        }
       >
         {props.datas.map((item, idx) => (
           <Option value={item.id} key={`${item.id}_${idx}`}>

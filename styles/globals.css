@@ -1295,9 +1295,9 @@ body .ant-modal-mask {
   padding: 0 !important;
 }
 
-.ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
+/* .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
   background: none !important;
-}
+} */
 
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled) #option-ranking {
   background: #45506B !important;
