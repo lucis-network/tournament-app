@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import s from "../index.module.sass";
 import { InventoryItem, ItemGroup } from "src/generated/graphql_p2e";
 import PrizePopover from "../../../../../p2e/lucky/prize/popover";
@@ -9,6 +9,7 @@ import PopupConfirmItemsCsgo from "../popup/popupConfirmItemsCsgo";
 import PopupConfirmItemsPhysical from "../popup/popupConfirmItemsPhysical";
 import PopupContactRaffles from "components/ui/p2e/raffles/popup/popupContact";
 import { KButton } from "components/ui/common/button";
+import StyledModal from '../../../../../common/StyledModal';
 type Props = {
   item: InventoryItem;
   isOwner?: boolean;
@@ -20,6 +21,7 @@ const ItemsTabItem = (props: Props) => {
   const [statusCsgo, setStatusCsgo] = useState<boolean>(false);
   const [statusPhysical, setStatusPhysical] = useState<boolean>(false);
   const [statusPopupContact, setStatusPopupContact] = useState<boolean>(false);
+  const [codePopupVisible, setCodePopupVisible] = useState<boolean>(false);
 
   const openClaimConfirmPopup = () => {
     if (item?.prize?.category?.item_group === ItemGroup.Csgo) {
@@ -30,6 +32,11 @@ const ItemsTabItem = (props: Props) => {
       setStatusPopupContact(true);
     }
   };
+
+  const openCodePopup = useCallback(() => setCodePopupVisible(true), [setCodePopupVisible]);
+
+  const is_claim = Math.random() > 0.5; // TODO:
+  const is_gift_card = item?.prize?.category?.in_game_prize_type == "GiftCard";
 
   return (
     <>
@@ -59,14 +66,21 @@ const ItemsTabItem = (props: Props) => {
           {item?.quantity && isOwner && (
             <div className={s.prizeAmount}>
               {/* only show claim if not GiftCard */}
-              {(item?.prize?.category?.in_game_prize_type != "GiftCard") && <div className={s.prizeAmountQty}>Amount: {item?.quantity}</div>}
+              {!is_gift_card && <div className={s.prizeAmountQty}>Amount: {item?.quantity}</div>}
               <div>
-                <KButton
-                  title="Claim"
-                  width="80px"
-                  disabled={item?.quantity <= 0}
-                  onClick={openClaimConfirmPopup}
-                />
+                {(is_claim && is_gift_card)
+                  ? <KButton
+                    title="Show Code"
+                    width="80px"
+                    onClick={openCodePopup}
+                  />
+                  : <KButton
+                    title="Claim"
+                    width="80px"
+                    disabled={item?.quantity <= 0}
+                    onClick={openClaimConfirmPopup}
+                  />
+                }
               </div>
             </div>
           )}
@@ -96,6 +110,13 @@ const ItemsTabItem = (props: Props) => {
           description="Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize."
         />
       )}
+      <StyledModal
+        visible={codePopupVisible}
+        onCancel={() => setCodePopupVisible(false)}
+      >
+        <p>OK</p>
+        <h1>tetst</h1>
+      </StyledModal>
     </>
   );
 };
