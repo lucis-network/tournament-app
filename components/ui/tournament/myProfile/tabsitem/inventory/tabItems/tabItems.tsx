@@ -59,6 +59,7 @@ const TabItemsInventory = (props: Props) => {
             <Option value={ItemGroup.Csgo}>{ItemGroup.Csgo.toUpperCase()}</Option>
             <Option value={ItemGroup.Lol}>{ItemGroup.Lol.toUpperCase()}</Option>
             <Option value={ItemGroup.Nft}>{ItemGroup.Nft.toUpperCase()}</Option>
+            <Option value={ItemGroup.Physical}>{ItemGroup.Physical.toUpperCase()}</Option>
           </Select>
         </div>
         <div>
