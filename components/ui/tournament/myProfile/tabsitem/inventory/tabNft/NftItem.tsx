@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import s from "../index.module.sass";
 import PrizePopover from "../../../../../p2e/lucky/prize/popover";
 import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass";
@@ -24,12 +24,15 @@ const NftItem = (props: Props) => {
   }, []);
   // console.log(metadata)
 
+  const imageLink = useMemo(() => {
+    return metadata?.image?.replace(".webp", "_md.webp");
+  }, [metadata?.image])
   return (
     <>
       <div className={`${sChestPrize.chestPrize} ${s.chestPrize}`}>
         <div className={sChestPrize.prizeImg}>
           <img
-            src={metadata?.image}
+            src={imageLink}
             alt="lucis box"
             style={{width: "100%", height: "auto"}}
           />

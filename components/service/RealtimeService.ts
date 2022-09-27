@@ -91,5 +91,33 @@ export class RealtimeService {
     return response;
   }
 
+  public async nftSubscription() {
+      const response = await clientP2E.subscribe<{ nftSubscribe: any }>({
+          query: gql`
+              subscription ($user_id: Int!){
+                  nftSubscribe(user_id: $user_id) {
+                      user_id,
+                      status,
+                      data {
+                          name,
+                          desc,
+                          metadata,
+                          metadata_link,
+                          image_sm,
+                          image_md,
+                          image_origin,
+                          token_id
+                      }
+                  }
+              }
+          `,
+        variables: {
+          user_id: Number(this._userId)
+        },
+      });
+
+    return response;
+  }
+
 
 }

@@ -33,6 +33,7 @@ type Props = {
 let arenaSub: any = null;
 let playcoreSub: any = null;
 let adminSub: any = null;
+let nftSub: any = null;
 
 export default observer(function Header(props: Props) {
   const router = useRouter();
@@ -149,17 +150,26 @@ export default observer(function Header(props: Props) {
           }
         });
       });
+      realTimeService.nftSubscription().then(res => {
+        nftSub = res.subscribe({
+          next(value) {
+            AppEmitter.emit("nftResponse", {data: value.data?.nftSubscribe});
+          }
+        });
+      });
     } else {
       // unsubscribe wss
       adminSub && adminSub.unsubscribe();
       arenaSub && arenaSub.unsubscribe();
       playcoreSub && playcoreSub.unsubscribe();
+      nftSub && nftSub.unsubscribe();
     }
 
     return () => {
       adminSub?.unsubscribe();
       arenaSub?.unsubscribe();
       playcoreSub?.unsubscribe();
+      nftSub?.unsubscribe();
     };
   }, [id]);
 

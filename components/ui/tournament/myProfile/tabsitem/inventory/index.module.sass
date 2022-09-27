@@ -54,11 +54,6 @@
         flex-grow: 1
         display: flex
         align-items: center
-      .cross
-        width: 100%
-        height: 1px
-        border: 1px solid #38505F
-        transform: matrix(1, 0, 0, -1, 0, 0)
     .rowPieces
       display: flex
       flex-direction: column
@@ -99,6 +94,7 @@
       min-width: 343px
 .listItemsInventory
   display: flex
+  justify-content: center
   gap: 20px 20px
   flex-wrap: wrap
   margin-top: 50px
@@ -174,3 +170,37 @@
   height: 22px
   cursor: pointer
   margin-left: 8px
+.cross
+  width: 100%
+  height: 1px
+  border: 1px solid #38505F
+  transform: matrix(1, 0, 0, -1, 0, 0)
+.connectWallet
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
+  margin: 50px 0
+
+.backdrop
+  position: fixed
+  top: 0
+  left: 0
+  display: flex
+  -webkit-box-align: center
+  align-items: center
+  -webkit-box-pack: center
+  justify-content: center
+  inset: 0px
+  background-color: rgba(0, 0, 0, 0.6)
+  -webkit-tap-highlight-color: transparent
+  color: rgb(255, 255, 255)
+  z-index: 1201
+.nftPreview
+  display: flex
+  justify-content: center
+  align-items: center
+  flex-direction: column
+  .nftPreviewImage
+    width: 400px
+    margin-bottom: 16px

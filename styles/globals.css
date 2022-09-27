@@ -1313,3 +1313,7 @@ body .ant-modal-mask {
 .lucis-dark-theme {
   color: white;
 }
+
+.ant-table-tbody>tr.ant-table-row:hover>td, .ant-table-tbody>tr>td.ant-table-cell-row-hover {
+  background: none !important;
+}

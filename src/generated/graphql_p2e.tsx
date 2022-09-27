@@ -19,6 +19,12 @@ export type Scalars = {
   JSON: any;
 };
 
+export enum AssembleErrorCode {
+  CategoryNotYetCreated = 'CategoryNotYetCreated',
+  ItemNotYetCreated = 'ItemNotYetCreated',
+  NotEnoughPieces = 'NotEnoughPieces'
+}
+
 export type Balance = {
   __typename?: 'Balance';
   created_at: Scalars['DateTime'];
@@ -265,6 +271,13 @@ export enum ClaimChestPrizeErrorCode {
   UserHasClaimed = 'UserHasClaimed',
   UserHistoryNotFound = 'UserHistoryNotFound',
   WalletAddressRequired = 'WalletAddressRequired'
+}
+
+export enum ClaimGiftCardErrorCode {
+  ItemNotFound = 'ItemNotFound',
+  NotGiftCard = 'NotGiftCard',
+  OutOfStock = 'OutOfStock',
+  UserHasClaimed = 'UserHasClaimed'
 }
 
 export type ClaimPhysicalInput = {
@@ -738,6 +751,7 @@ export type InventoryCouponFilter = {
 export type InventoryItem = {
   __typename?: 'InventoryItem';
   gift_card?: Maybe<GameGiftCard>;
+  is_claimed?: Maybe<Scalars['Boolean']>;
   prize?: Maybe<LuckyChestPrize>;
   quantity?: Maybe<Scalars['Int']>;
   uid?: Maybe<Scalars['String']>;
@@ -1165,7 +1179,7 @@ export type Mutation = {
   claimBox?: Maybe<Scalars['Boolean']>;
   claimCSGOItem?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<Scalars['Boolean']>;
-  claimGiftCard?: Maybe<Scalars['Boolean']>;
+  claimGiftCard?: Maybe<Scalars['String']>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimNftBox?: Maybe<Scalars['Boolean']>;
   claimPhysicalItem?: Maybe<Scalars['Boolean']>;
@@ -1357,6 +1371,30 @@ export type NestedStringNullableFilter = {
   notIn?: InputMaybe<Array<Scalars['String']>>;
   search?: InputMaybe<Scalars['String']>;
   startsWith?: InputMaybe<Scalars['String']>;
+};
+
+export type Nft = {
+  __typename?: 'Nft';
+  address_miner?: Maybe<Scalars['String']>;
+  contract_address: Scalars['String'];
+  created_at: Scalars['DateTime'];
+  desc?: Maybe<Scalars['String']>;
+  image_md: Scalars['String'];
+  image_origin: Scalars['String'];
+  image_sm: Scalars['String'];
+  metadata: Scalars['String'];
+  metadata_link: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  token_id: Scalars['Int'];
+  uid: Scalars['ID'];
+  updated_at: Scalars['DateTime'];
+};
+
+export type NftSubscribeResponse = {
+  __typename?: 'NftSubscribeResponse';
+  data?: Maybe<Nft>;
+  status: Status;
+  user_id: Scalars['Int'];
 };
 
 export type Notification = {
@@ -1789,8 +1827,10 @@ export type QueryGetAllTicketsArgs = {
 
 
 export type QueryGetAppErrorCodeArgs = {
+  AssembleErrorCode?: InputMaybe<AssembleErrorCode>;
   BuyRaffleTicketErrorCode?: InputMaybe<BuyRaffleTicketErrorCode>;
   ClaimChestPrizeErrorCode?: InputMaybe<ClaimChestPrizeErrorCode>;
+  ClaimGiftCardErrorCode?: InputMaybe<ClaimGiftCardErrorCode>;
   OpenChestErrorCode?: InputMaybe<OpenChestErrorCode>;
 };
 
@@ -1903,7 +1943,7 @@ export type QueryGetUserRaffleRankingArgs = {
 
 
 export type QueryGetUserTournamentRankingArgs = {
-  seasonId: Scalars['String'];
+  seasonId?: InputMaybe<Scalars['String']>;
   user_id: Scalars['Int'];
 };
 
@@ -2184,6 +2224,11 @@ export type StakedNft = {
   apr?: InputMaybe<Scalars['Float']>;
 };
 
+export enum Status {
+  Failed = 'FAILED',
+  Success = 'SUCCESS'
+}
+
 export enum StatusSeason {
   Active = 'ACTIVE',
   Closed = 'CLOSED',
@@ -2207,8 +2252,14 @@ export type StringNullableFilter = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  nftSubscribe: NftSubscribeResponse;
   pushNotification: PushNotiGql;
   winnerAnnouncement: WinnerAnnouncement;
+};
+
+
+export type SubscriptionNftSubscribeArgs = {
+  user_id: Scalars['Int'];
 };
 
 
