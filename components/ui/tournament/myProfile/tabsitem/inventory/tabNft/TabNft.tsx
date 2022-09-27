@@ -28,13 +28,13 @@ type Props = {
   isOwner?: boolean;
   userInfo: AuthUser;
 };
-const antIcon = <LoadingOutlined style={{ fontSize: 48 }} spin />;
+const antIcon = <LoadingOutlined style={{ fontSize: 32 }} spin />;
 const {Option} = Select;
 
 const NftTabInventory = (props: Props) => {
   const {isOwner, userInfo} = props;
   const [searchName, setSearchName] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   const [amountBox, setAmountBox] = useState<number | undefined>(undefined);
   const [tokenIdList, setTokenIdList] = useState<number[]>([]);
   const [tipLoading, setTipLoading] = useState<string>("Loading ...");
