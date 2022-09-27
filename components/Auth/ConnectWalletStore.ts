@@ -6,6 +6,7 @@ import Web3Modal from "web3modal";
 import { to_hex_str } from "utils/String";
 import { isClient } from "../../utils/DOM";
 import { ChainNetwork, Wallet } from "../../utils/blockchain/BlockChain";
+import AuthBoxStore from "./components/AuthBoxStore";
 
 interface IConnectWalletStore {
   address?: string;
@@ -79,6 +80,14 @@ class ConnectWalletStore implements IConnectWalletStore {
     this._chainNetwork = undefined;
     this._wallet = undefined;
   }
+
+  get isConnected(): boolean {
+    return !!this.address;
+  }
+
+  showConnectWalletModal() {
+    AuthBoxStore.connectModalVisible = true;
+  };
 }
 
 const s = new ConnectWalletStore();

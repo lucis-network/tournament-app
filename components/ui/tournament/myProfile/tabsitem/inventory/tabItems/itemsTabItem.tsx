@@ -1,18 +1,18 @@
 import React, {ReactNode, useCallback, useState} from "react";
 import s from "../index.module.sass";
-import { InventoryItem, ItemGroup } from "src/generated/graphql_p2e";
+import {InventoryItem, ItemGroup} from "src/generated/graphql_p2e";
 import PrizePopover from "../../../../../p2e/lucky/prize/popover";
 import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass";
-import {ApolloError, ApolloQueryResult} from "@apollo/client";
+import {ApolloQueryResult} from "@apollo/client";
 import PopupConfirmItemsCsgo from "../popup/popupConfirmItemsCsgo";
 import PopupConfirmItemsPhysical from "../popup/popupConfirmItemsPhysical";
 import PopupContactRaffles from "components/ui/p2e/raffles/popup/popupContact";
-import { KButton } from "components/ui/common/button";
-import StyledModal from '../../../../../common/StyledModal';
+import {KButton} from "components/ui/common/button";
 import {useClaimGiftCard} from "../InventoryService";
 import {handleGraphqlErrors} from "../../../../../../../utils/apollo_client";
 import {isDevMode} from "../../../../../../../utils/Env";
 import CopyText from "./CopyText";
+import BtnClaimNft from "./BtnClaimNft";
 
 type Props = {
   item: InventoryItem;
@@ -75,7 +75,11 @@ const ItemsTabItem = (props: Props) => {
       setStatusCsgo(true);
     } else if (item?.prize?.category?.item_group === ItemGroup.Physical) {
       setStatusPhysical(true);
-    } else {
+    }
+    // else if (item?.prize?.category?.item_group === ItemGroup.Nft) {
+    //   handleClaimNftBox();
+    // }
+    else {
       setStatusPopupContact(true);
     }
   };
@@ -100,6 +104,14 @@ const ItemsTabItem = (props: Props) => {
         loading={loadingClaimGiftCard}
         disabled={(item.quantity ?? 0) <= 0}
         onClick={handleClaimGiftCard}
+      />
+    }
+
+    const is_nft_box = item.prize?.category?.item_group == ItemGroup.Nft;
+    if (is_nft_box) {
+      return <BtnClaimNft
+        prize_id={item.prize?.id}
+        setStatusPopupContact={setStatusPopupContact}
       />
     }
 
