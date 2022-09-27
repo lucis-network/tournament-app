@@ -165,7 +165,10 @@ const NftTabInventory = (props: Props) => {
             width="150px"
             height={"40px"}
             // disabled={item?.quantity <= 0}
-            onClick={() => setLoading(false)}
+            onClick={() => {
+              setLoading(false);
+              setNftPreview(null);
+            }}
           />
         </div> : <Spin indicator={antIcon} size={"large"} tip={tipLoading}/>}
       </div>}
