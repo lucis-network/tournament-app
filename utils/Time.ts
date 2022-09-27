@@ -1,6 +1,12 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
 
+export async function sleep(ms: number): Promise<void> {
+  return new Promise<void>(resolve => {
+    setTimeout(() => resolve(), ms)
+  })
+}
+
 /**
  * convert seconds count to time string in mm:ss
  * @param secs
