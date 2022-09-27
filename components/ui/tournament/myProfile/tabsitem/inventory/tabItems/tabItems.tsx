@@ -75,11 +75,9 @@ const TabItemsInventory = (props: Props) => {
           dataMyInventoryItems &&
           dataMyInventoryItems?.map((item , index) =>
             (
-              <>
-                <div className={s.item} key={`${index}`}>
-                  <ItemsTabItem item={item} isOwner={isOwner} refetchMyInventoryItems={refetchMyInventoryItems}></ItemsTabItem>
-                </div>
-              </>
+              <div className={s.item} key={`${index}`}>
+                <ItemsTabItem item={item} isOwner={isOwner} refetchMyInventoryItems={refetchMyInventoryItems}></ItemsTabItem>
+              </div>
             )
           )
         }

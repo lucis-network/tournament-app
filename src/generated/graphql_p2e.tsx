@@ -738,6 +738,7 @@ export type InventoryCouponFilter = {
 export type InventoryItem = {
   __typename?: 'InventoryItem';
   gift_card?: Maybe<GameGiftCard>;
+  is_claimed?: Maybe<Scalars['Boolean']>;
   prize?: Maybe<LuckyChestPrize>;
   quantity?: Maybe<Scalars['Int']>;
   uid?: Maybe<Scalars['String']>;
@@ -1165,7 +1166,7 @@ export type Mutation = {
   claimBox?: Maybe<Scalars['Boolean']>;
   claimCSGOItem?: Maybe<Scalars['Boolean']>;
   claimChestPrize?: Maybe<Scalars['Boolean']>;
-  claimGiftCard?: Maybe<Scalars['Boolean']>;
+  claimGiftCard?: Maybe<Scalars['String']>;
   claimMission?: Maybe<Scalars['Boolean']>;
   claimNftBox?: Maybe<Scalars['Boolean']>;
   claimPhysicalItem?: Maybe<Scalars['Boolean']>;
@@ -1903,7 +1904,7 @@ export type QueryGetUserRaffleRankingArgs = {
 
 
 export type QueryGetUserTournamentRankingArgs = {
-  seasonId: Scalars['String'];
+  seasonId?: InputMaybe<Scalars['String']>;
   user_id: Scalars['Int'];
 };
 

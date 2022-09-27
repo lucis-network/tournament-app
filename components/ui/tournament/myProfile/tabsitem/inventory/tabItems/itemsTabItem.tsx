@@ -35,7 +35,7 @@ const ItemsTabItem = (props: Props) => {
 
   const openCodePopup = useCallback(() => setCodePopupVisible(true), [setCodePopupVisible]);
 
-  const is_claim = Math.random() > 0.5; // TODO:
+  const is_claim = item.is_claimed === true; // is_claimed is null / false / true
   const is_gift_card = item?.prize?.category?.in_game_prize_type == "GiftCard";
 
   return (
