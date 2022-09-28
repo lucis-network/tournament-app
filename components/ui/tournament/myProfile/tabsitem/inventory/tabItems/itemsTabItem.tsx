@@ -16,6 +16,7 @@ import BtnClaimNft from "./BtnClaimNft";
 import StyledModal from "../../../../../common/StyledModal";
 import ButtonWrapper from "../../../../../../common/button/Button";
 import {AppEmitter} from "../../../../../../../services/emitter";
+import Link from "next/link";
 
 type Props = {
   item: InventoryItem;
@@ -99,7 +100,16 @@ const ItemsTabItem = (props: Props) => {
     setStState && setStState({
       visible: true,
       content: <div>
-        <p style={{"wordBreak": "break-word"}}>Successfully claim 1 Lucis NFT BOX into your wallet with transaction <a href={explorer_url} target="_blank">{tx_hash}</a></p>
+        <p style={{"wordBreak": "break-word"}}>
+          Successfully claim 1 Lucis NFT BOX into your wallet
+          with transaction <a href={explorer_url} target="_blank" rel="noreferrer">{tx_hash}</a>
+          <br/>
+          <p>
+            Please check the
+            <Link href={'/profile?page=inventory&type=nfts'} passHref>&nbsp;NFT tabs</Link>
+            &nbsp;or import the token into your favorite wallet
+          </p>
+        </p>
       </div>,
     })
     // Reduce amount
