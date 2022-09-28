@@ -1,4 +1,4 @@
-import React, {ReactNode, useCallback, useState} from "react";
+import React, {ReactElement, ReactNode, useCallback, useState} from "react";
 import s from "../index.module.sass";
 import {InventoryItem, ItemGroup} from "src/generated/graphql_p2e";
 import PrizePopover from "../../../../../p2e/lucky/prize/popover";
@@ -13,6 +13,8 @@ import {handleGraphqlErrors} from "../../../../../../../utils/apollo_client";
 import {isDevMode} from "../../../../../../../utils/Env";
 import CopyText from "./CopyText";
 import BtnClaimNft from "./BtnClaimNft";
+import StyledModal from "../../../../../common/StyledModal";
+import ButtonWrapper from "../../../../../../common/button/Button";
 
 type Props = {
   item: InventoryItem;
@@ -26,6 +28,13 @@ const ItemsTabItem = (props: Props) => {
   const [statusPhysical, setStatusPhysical] = useState<boolean>(false);
   const [statusPopupContact, setStatusPopupContact] = useState<boolean>(false);
   const [codeVisible, setCodeVisible] = useState<boolean>(false);
+  const [stState, setStState] = useState<{
+    visible: boolean,
+    content?: ReactNode,
+  }>({
+    visible: false,
+    content: null,
+  });
 
   // const openCodePopup = useCallback(() => setCodeVisible(true), [setCodeVisible]);
   const revealCode = useCallback(() => setCodeVisible(true), [setCodeVisible]);
@@ -84,6 +93,25 @@ const ItemsTabItem = (props: Props) => {
     }
   };
 
+
+  const onClaimSuccess = useCallback((tx_hash: string, explorer_url: string) => {
+    setStState && setStState({
+      visible: true,
+      content: <div>
+        <p style={{"wordBreak": "break-word"}}>Successfully claim 1 Lucis NFT BOX into your wallet with transaction <a href={explorer_url} target="_blank">{tx_hash}</a></p>
+      </div>,
+    })
+    // Reduce amount
+    refetchMyInventoryItems()
+
+    // Refetch NFT tabs
+  }, [setStState]);
+
+  const onClaimError = useCallback((e: Error) => {
+    setStatusPopupContact && setStatusPopupContact(true);
+  }, [setStatusPopupContact]);
+
+
   const getCta = (): ReactNode => {
     if (is_claimed) {
       if (is_gift_card) {
@@ -111,7 +139,8 @@ const ItemsTabItem = (props: Props) => {
     if (is_nft_box) {
       return <BtnClaimNft
         prize_id={item.prize?.id}
-        setStatusPopupContact={setStatusPopupContact}
+        onClaimSuccess={onClaimSuccess}
+        onClaimError={onClaimError}
       />
     }
 
@@ -132,9 +161,7 @@ const ItemsTabItem = (props: Props) => {
         rarity={item?.prize?.rarity ?? ""}
       >
         <div
-          className={`${sChestPrize.chestPrize} ${item?.prize?.rarity ?? ""} ${
-            s.chestPrize
-          }`}
+          className={`${sChestPrize.chestPrize} ${item?.prize?.rarity ?? ""} ${s.chestPrize}`}
         >
           <div className={sChestPrize.prizeImg}>
             <img
@@ -183,13 +210,15 @@ const ItemsTabItem = (props: Props) => {
           description="Congratulations on your lucky win from Lucis. It is not sent to you right away, please contact Lucis Support for instructions on receiving the prize."
         />
       )}
-      {/*<StyledModal*/}
-      {/*  visible={codePopupVisible}*/}
-      {/*  onCancel={() => setCodeVisible(false)}*/}
-      {/*>*/}
-      {/*  <p>OK</p>*/}
-      {/*  <h1>tetst</h1>*/}
-      {/*</StyledModal>*/}
+
+      <StyledModal
+        visible={stState.visible}
+        onCancel={() => setStState({visible: false})}
+        onOk={() => setStState({visible: false})}
+        cancelText={"Close"}
+      >
+        {stState.content ?? null}
+      </StyledModal>
     </>
   );
 };

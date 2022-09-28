@@ -5,13 +5,16 @@ import ConnectWalletStore from "../../../../../../Auth/ConnectWalletStore";
 import {useClaimNftBox} from "../InventoryService";
 import {handleGraphqlErrors} from "../../../../../../../utils/apollo_client";
 import {isDevMode} from "../../../../../../../utils/Env";
+import {BSC_MainNet, BSC_TestNet} from "../../../../../../../utils/blockchain/ChainConfig";
+
 
 type Props = {
   prize_id?: string,
-  setStatusPopupContact?: (visible: boolean) => void,
+  onClaimSuccess: (tx_hash: string, explorer_url: string) => void,
+  onClaimError: (e: Error) => void,
 }
 export default observer(function BtnClaimNft(props: Props) {
-  const {prize_id, setStatusPopupContact} = props;
+  const {prize_id, onClaimSuccess, onClaimError} = props;
 
   const walletConnected = ConnectWalletStore.isConnected;
   const connectWallet = () => {
@@ -25,15 +28,26 @@ export default observer(function BtnClaimNft(props: Props) {
 
   const handleClaimNftBox = () => {
     claimNftBox()
+    // (new Promise((r, rj) => r({
+    //   claimNftBox: {tx_hash: "0x617fffa0dc0b45a559ea52f584decc78cb794375d57e36747fbc22b08342b6f9"}
+    // })))
       .then((res: any) => {
         console.log('{useClaimNftBox} res: ', res);
-        if (res.claimNftBox) {
+        const tx_hash = res.claimNftBox.tx_hash ?? '';
+        if (tx_hash) {
           // success
-          // TODO: Show popup congrate with styled modal
-          // Reduce amount
+          const chain_id = parseInt("" + process.env.NEXT_PUBLIC_CHAIN_ID__BSC);
+          const is_mainnet = chain_id === BSC_MainNet.chain_id;
+          const explorer_url = (is_mainnet ? BSC_MainNet.blockExplorerUrls![0] : BSC_TestNet.blockExplorerUrls![0]) + `/tx/${tx_hash}`;
+
+          onClaimSuccess(tx_hash, explorer_url)
         } else {
           // something wrong
-          // TODO:
+          const e = new Error("Unknown");
+          // @ts-ignore
+          e.code = "Unknown";
+
+          onClaimError(e)
         }
       })
       .catch(e => {
@@ -55,7 +69,7 @@ export default observer(function BtnClaimNft(props: Props) {
             default:
               // client or other error
               // IF error then user cannot claim automatically, so we handle it manually
-              setStatusPopupContact && setStatusPopupContact(true);
+              onClaimError(e)
               break;
           }
         })

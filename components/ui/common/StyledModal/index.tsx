@@ -5,11 +5,12 @@ import s from "./index.module.sass";
 type Props = ModalProps;
 
 const StyledModal = (props: Props) => {
-  const { className, children, ...rest} = props;
+  const { className, wrapClassName, children, ...rest} = props;
 
   return (
     <Modal
       className={s.content_modal}
+      wrapClassName={`lucis-theme`}
       {...rest}
     >
       <div className={s.container}>
