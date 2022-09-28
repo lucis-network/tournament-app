@@ -15,6 +15,7 @@ import CopyText from "./CopyText";
 import BtnClaimNft from "./BtnClaimNft";
 import StyledModal from "../../../../../common/StyledModal";
 import ButtonWrapper from "../../../../../../common/button/Button";
+import {AppEmitter} from "../../../../../../../services/emitter";
 
 type Props = {
   item: InventoryItem;
@@ -105,6 +106,7 @@ const ItemsTabItem = (props: Props) => {
     refetchMyInventoryItems()
 
     // Refetch NFT tabs
+    AppEmitter.emit("refetchMyInventoryNft");
   }, [setStState]);
 
   const onClaimError = useCallback((e: Error) => {
@@ -216,6 +218,7 @@ const ItemsTabItem = (props: Props) => {
         onCancel={() => setStState({visible: false})}
         onOk={() => setStState({visible: false})}
         cancelText={"Close"}
+        maskClosable={false}
       >
         {stState.content ?? null}
       </StyledModal>

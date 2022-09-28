@@ -931,6 +931,7 @@ export type ContractCreateWithoutChainInput = {
 export enum ContractType {
   Donate = 'DONATE',
   LucisBox = 'LUCIS_BOX',
+  LucisNft = 'LUCIS_NFT',
   LucisToken = 'LUCIS_TOKEN',
   Prize = 'PRIZE'
 }

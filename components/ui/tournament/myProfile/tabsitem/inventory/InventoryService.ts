@@ -100,6 +100,8 @@ export const CLAIM_GIFT_CARD = gql`
 
 export const CLAIM_NFT_BOX = gql`
   mutation claimNftBox($prize_id: Float!, $address: String!) {
-    claimNftBox(prize_id: $prize_id, address: $address)
+    claimNftBox(prize_id: $prize_id, address: $address) {
+      tx_hash
+    }
   }
 `
