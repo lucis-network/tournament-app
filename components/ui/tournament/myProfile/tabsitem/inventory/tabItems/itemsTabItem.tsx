@@ -51,8 +51,23 @@ const ItemsTabItem = (props: Props) => {
 
   const handleClaimGiftCard = () => {
     claimGiftCard()
-      .then(res => {
+      .then((res: any) => {
         console.log('{handleClaimGiftCard} res: ', res);
+        const code = res.claimGiftCard;
+        setStState({
+          visible: true,
+          content: <div>
+            <p style={{"wordBreak": "break-word"}}>
+              Successfully claim a gift card!
+              <br/>
+              Your gift code is <b style={{color: "orange", fontSize: "xx-large"}}>{code}</b>
+              <br/>
+              You can still see this code in your inventory later.
+            </p>
+          </div>,
+        })
+
+        setTimeout(() => refetchMyInventoryItems(), 2000);
       })
       .catch(e => {
         // console.log('{handleClaimGiftCard} e: ');
@@ -66,6 +81,7 @@ const ItemsTabItem = (props: Props) => {
           switch (code) {
             case "UserHasClaimed":
               // do nothing because of UI error, this must never happen
+              refetchMyInventoryItems()
               break;
             case "OutOfStock":
               // yes if out of stock mean  user can still receive prize, cuz we forgot to prepare the inventory
