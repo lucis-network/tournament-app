@@ -10,7 +10,7 @@ import PopupContactRaffles from "components/ui/p2e/raffles/popup/popupContact";
 import {KButton} from "components/ui/common/button";
 import {useClaimGiftCard} from "../InventoryService";
 import {handleGraphqlErrors} from "../../../../../../../utils/apollo_client";
-import {isDevMode} from "../../../../../../../utils/Env";
+import {isClientDevMode, isDevMode} from "../../../../../../../utils/Env";
 import CopyText from "./CopyText";
 import BtnClaimNft from "./BtnClaimNft";
 import StyledModal from "../../../../../common/StyledModal";
@@ -37,6 +37,11 @@ const ItemsTabItem = (props: Props) => {
     visible: false,
     content: null,
   });
+
+  if (isClientDevMode) {
+    // @ts-ignore
+    window.tmp__refetchMyInventoryItems = refetchMyInventoryItems;
+  }
 
   // const openCodePopup = useCallback(() => setCodeVisible(true), [setCodeVisible]);
   const revealCode = useCallback(() => setCodeVisible(true), [setCodeVisible]);
@@ -112,7 +117,7 @@ const ItemsTabItem = (props: Props) => {
   };
 
 
-  const onClaimSuccess = useCallback((tx_hash: string, explorer_url: string) => {
+  const onClaimNftBoxSuccess = useCallback((tx_hash: string, explorer_url: string) => {
     setStState && setStState({
       visible: true,
       content: <div>
@@ -135,7 +140,7 @@ const ItemsTabItem = (props: Props) => {
     AppEmitter.emit("refetchMyInventoryNft");
   }, [setStState]);
 
-  const onClaimError = useCallback((e: Error) => {
+  const onClaimNftBoxError = useCallback((e: Error) => {
     setStatusPopupContact && setStatusPopupContact(true);
   }, [setStatusPopupContact]);
 
@@ -167,8 +172,8 @@ const ItemsTabItem = (props: Props) => {
     if (is_nft_box) {
       return <BtnClaimNft
         prize_id={item.prize?.id}
-        onClaimSuccess={onClaimSuccess}
-        onClaimError={onClaimError}
+        onClaimSuccess={onClaimNftBoxSuccess}
+        onClaimError={onClaimNftBoxError}
       />
     }
 
