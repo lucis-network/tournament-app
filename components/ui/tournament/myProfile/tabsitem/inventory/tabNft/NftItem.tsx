@@ -4,10 +4,13 @@ import sNftTab from "./nftTab.module.sass";
 import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass";
 import {useMutation} from "@apollo/client";
 import {MINT_NFT} from "../../../../../../../hooks/useNft";
+import {NftDetail} from "./PopupDetail";
 
 type Props = {
   tokenId?: number;
   isOwner?: boolean;
+  contractAddress: string;
+  ownerAddress: string;
 
 };
 
@@ -15,7 +18,7 @@ const s3Metadata = "https://image-upload-s3-demo.s3.ap-southeast-1.amazonaws.com
 const NftItem = (props: Props) => {
   const [isMetadataError, setIsMetadataError] = useState(false);
   const [metadata, setMetadata] = useState<any>({});
-
+  const [openDetail, setOpenDetail] = useState(false);
   const [loadedImage, setLoadedImage] = React.useState(false);
   const [mintNFT] = useMutation(MINT_NFT, {
     context: {
@@ -46,27 +49,30 @@ const NftItem = (props: Props) => {
     return metadata?.image?.replace(".webp", "_md.webp");
   }, [metadata?.image])
   return (
-    <div className={sNftTab.nftItem}>
-      <div className={`${sChestPrize.chestPrize} ${s.chestPrize}`}>
-        <div className={sChestPrize.prizeImg}>
-          <img
-            style={loadedImage ? {} : {display: "none"}}
-            src={imageLink}
-            alt="lucis box"
-            onLoad={() => setLoadedImage(true)}
-          />
-          {!loadedImage && <img
-            src={"/assets/la-bai.jpg"}
-            alt="lucis box"
-            style={{width: "100%", height: "auto"}}
-          />}
-        </div>
-        <div className={`${sChestPrize.prizeTitle} ${s.prizeTitle}`}>
-          {metadata.name}
-        </div>
+    <>
+      {openDetail && <NftDetail contractAddress={props.contractAddress} ownerAddress={props.ownerAddress} metadata={metadata} onCancel={() => setOpenDetail(false)} tokenId={props.tokenId!}/>}
+      <div className={sNftTab.nftItem} onClick={() => setOpenDetail(true)}>
+        <div className={`${sChestPrize.chestPrize} ${s.chestPrize}`}>
+          <div className={sChestPrize.prizeImg}>
+            <img
+              style={loadedImage ? {} : {display: "none"}}
+              src={imageLink}
+              alt="lucis box"
+              onLoad={() => setLoadedImage(true)}
+            />
+            {!loadedImage && <img
+                src={"/assets/la-bai.jpg"}
+                alt="lucis box"
+                style={{width: "100%", height: "auto"}}
+            />}
+          </div>
+          <div className={`${sChestPrize.prizeTitle} ${s.prizeTitle}`}>
+            {metadata.name}
+          </div>
 
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

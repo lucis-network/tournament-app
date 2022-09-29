@@ -225,6 +225,8 @@ const NftTabInventory = (props: Props) => {
                 <NftItem
                   tokenId={item}
                   isOwner={isOwner}
+                  contractAddress={LucisNFT}
+                  ownerAddress={ConnectWalletStore.address!}
                 />
               </div>
             ))}

@@ -38,10 +38,45 @@
       border-radius: 72px
       margin-bottom: 12px
 .nftItem
+  transition: all 0.4s ease
   &:hover
-
+    cursor: pointer
+    transform: scale(1.1)
+    transition: all 0.4s ease
   img
     aspect-ratio: auto !important
+
+.nftDetail
+  font-size: 14px
+  .name
+    font-size: 32px
+    font-weight: 600
+  .des
+    margin-top: 8px
+    font-weight: 300
+    font-size: 14px
+  .ownerBy
+    margin-top: 8px
+    color: rgb(22, 218, 223)
+    cursor: pointer
+    span
+      opacity: 0.7
+      color: #FFF
+  .contractAddress
+    margin-top: 8px
+    color: rgb(22, 218, 223)
+    cursor: pointer
+    span
+      opacity: 0.7
+      color: #FFF
+  .tokenId
+    margin-top: 8px
+    color: rgb(22, 218, 223)
+    cursor: pointer
+    span
+      opacity: 0.7
+      color: #FFF
+
 
 
 @keyframes up_down
