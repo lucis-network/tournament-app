@@ -55,12 +55,8 @@ const CouponTabInventory = (props: Props) => {
             onChange={handleChange}
           >
             <Option value="">All</Option>
-            <Option value={CouponType.Raffle}>
-              {CouponType.Raffle.toUpperCase()}
-            </Option>
-            <Option value={CouponType.BuyBox}>
-              {CouponType.BuyBox.toUpperCase()}
-            </Option>
+            <Option value={CouponType.Raffle}>Raffle</Option>
+            <Option value={CouponType.BuyBox}>NFT box</Option>
           </Select>
         </div>
         <div>
