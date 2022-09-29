@@ -10,7 +10,7 @@ import PopupContactRaffles from "components/ui/p2e/raffles/popup/popupContact";
 import {KButton} from "components/ui/common/button";
 import {useClaimGiftCard} from "../InventoryService";
 import {handleGraphqlErrors} from "../../../../../../../utils/apollo_client";
-import {isDevMode} from "../../../../../../../utils/Env";
+import {isClientDevMode, isDevMode} from "../../../../../../../utils/Env";
 import CopyText from "./CopyText";
 import BtnClaimNft from "./BtnClaimNft";
 import StyledModal from "../../../../../common/StyledModal";
@@ -38,6 +38,11 @@ const ItemsTabItem = (props: Props) => {
     content: null,
   });
 
+  if (isClientDevMode) {
+    // @ts-ignore
+    window.tmp__refetchMyInventoryItems = refetchMyInventoryItems;
+  }
+
   // const openCodePopup = useCallback(() => setCodeVisible(true), [setCodeVisible]);
   const revealCode = useCallback(() => setCodeVisible(true), [setCodeVisible]);
 
@@ -51,8 +56,23 @@ const ItemsTabItem = (props: Props) => {
 
   const handleClaimGiftCard = () => {
     claimGiftCard()
-      .then(res => {
+      .then((res: any) => {
         console.log('{handleClaimGiftCard} res: ', res);
+        const code = res.claimGiftCard;
+        setStState({
+          visible: true,
+          content: <div>
+            <p style={{"wordBreak": "break-word"}}>
+              Successfully claim a gift card!
+              <br/>
+              Your gift code is <b style={{color: "orange", fontSize: "xx-large"}}>{code}</b>
+              <br/>
+              You can still see this code in your inventory later.
+            </p>
+          </div>,
+        })
+
+        setTimeout(() => refetchMyInventoryItems(), 2000);
       })
       .catch(e => {
         // console.log('{handleClaimGiftCard} e: ');
@@ -66,6 +86,7 @@ const ItemsTabItem = (props: Props) => {
           switch (code) {
             case "UserHasClaimed":
               // do nothing because of UI error, this must never happen
+              refetchMyInventoryItems()
               break;
             case "OutOfStock":
               // yes if out of stock mean  user can still receive prize, cuz we forgot to prepare the inventory
@@ -96,7 +117,7 @@ const ItemsTabItem = (props: Props) => {
   };
 
 
-  const onClaimSuccess = useCallback((tx_hash: string, explorer_url: string) => {
+  const onClaimNftBoxSuccess = useCallback((tx_hash: string, explorer_url: string) => {
     setStState && setStState({
       visible: true,
       content: <div>
@@ -104,11 +125,19 @@ const ItemsTabItem = (props: Props) => {
           Successfully claim 1 Lucis NFT BOX into your wallet
           with transaction <a href={explorer_url} target="_blank" rel="noreferrer">{tx_hash}</a>
           <br/>
-          <p>
-            Please check the
-            <Link href={'/profile?page=inventory&type=nfts'} passHref>&nbsp;NFT tabs</Link>
-            &nbsp;or import the token into your favorite wallet
-          </p>
+          Please check the
+          <a
+            href={'/profile?page=inventory&type=nfts'}
+            target="_blank" rel="noreferrer"
+            onClick={() => {
+              setTimeout(() => {
+                setStState({visible: false});
+              }, 1000);
+            }}
+          >
+            &nbsp;NFT tabs
+          </a>
+          &nbsp;or import the token into your favorite wallet
         </p>
       </div>,
     })
@@ -119,7 +148,7 @@ const ItemsTabItem = (props: Props) => {
     AppEmitter.emit("refetchMyInventoryNft");
   }, [setStState]);
 
-  const onClaimError = useCallback((e: Error) => {
+  const onClaimNftBoxError = useCallback((e: Error) => {
     setStatusPopupContact && setStatusPopupContact(true);
   }, [setStatusPopupContact]);
 
@@ -151,8 +180,8 @@ const ItemsTabItem = (props: Props) => {
     if (is_nft_box) {
       return <BtnClaimNft
         prize_id={item.prize?.id}
-        onClaimSuccess={onClaimSuccess}
-        onClaimError={onClaimError}
+        onClaimSuccess={onClaimNftBoxSuccess}
+        onClaimError={onClaimNftBoxError}
       />
     }
 

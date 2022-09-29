@@ -35,22 +35,32 @@ export default function PopupConfirmItemsPhysical(props: Props) {
     setVisible(false);
   };
 
-  const showPopconfirm = () => {
-    form
+  const showPopconfirm = async () => {
+    let valid = await form
       .validateFields()
-      .then( () => {
-          setVisible(true);
+      .then( (values) => {
+        return true;
+      })
+      .catch(errorInfo => {
+        console.log('{default.errorInfo} errorInfo: ', errorInfo);
 
-          if (!isEmpty(phone)) {
-            const _phone = (!phone.includes('+')) ? ('+' + phone) : phone
-            if (!isPhoneNumber(_phone)) {
-              setPhoneError("Invalid phone number")
-              return
-            }
-            setPhone(_phone);
-          }
-        }
-      );
+        // setPhoneError("Invalid phone number")
+
+        return errorInfo.errorFields.length > 0;
+      });
+
+    if (valid) {
+      // validate phone because phone does not use Antd Form
+      if (isEmpty(phone) || !isPhoneNumber(phone)) {
+        valid = false
+        setPhoneError("Invalid phone number")
+        console.log('{showPopconfirm} invalid phone: ', phone);
+      }
+    }
+
+    if (valid) {
+      setVisible(true);
+    }
   };
   const handleOk = () => {
     setConfirmLoading(true);
@@ -156,11 +166,11 @@ export default function PopupConfirmItemsPhysical(props: Props) {
                 value={phone}
                 onChange={(phone) => {
                   setPhoneError(undefined)
+                  phone = !phone.includes('+') ? '+' + phone : phone
                   setPhone(phone)
                 }}
                 placeholder="Enter phone number"
                 buttonClass={`${s.inputPhone}`}
-
               />
               <span style={{color: 'red', marginTop: '16px'}}>{phoneError}</span>
             </Form.Item>
