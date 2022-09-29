@@ -125,11 +125,19 @@ const ItemsTabItem = (props: Props) => {
           Successfully claim 1 Lucis NFT BOX into your wallet
           with transaction <a href={explorer_url} target="_blank" rel="noreferrer">{tx_hash}</a>
           <br/>
-          <p>
-            Please check the
-            <Link href={'/profile?page=inventory&type=nfts'} passHref>&nbsp;NFT tabs</Link>
-            &nbsp;or import the token into your favorite wallet
-          </p>
+          Please check the
+          <a
+            href={'/profile?page=inventory&type=nfts'}
+            target="_blank" rel="noreferrer"
+            onClick={() => {
+              setTimeout(() => {
+                setStState({visible: false});
+              }, 1000);
+            }}
+          >
+            &nbsp;NFT tabs
+          </a>
+          &nbsp;or import the token into your favorite wallet
         </p>
       </div>,
     })
