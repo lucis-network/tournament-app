@@ -94,7 +94,7 @@
       min-width: 343px
 .listItemsInventory
   display: flex
-  justify-content: center
+  //justify-content: center
   gap: 20px 20px
   flex-wrap: wrap
   margin-top: 50px
@@ -180,7 +180,7 @@
   justify-content: center
   align-items: center
   width: 100%
-  margin: 50px 0
+  margin-top: 50px
 
 .backdrop
   position: fixed
@@ -196,11 +196,46 @@
   -webkit-tap-highlight-color: transparent
   color: rgb(255, 255, 255)
   z-index: 1201
+
+
 .nftPreview
   display: flex
   justify-content: center
   align-items: center
   flex-direction: column
+  padding: 0 16px
   .nftPreviewImage
     width: 400px
     margin-bottom: 16px
+    animation: animation_open_box 2s ease-in-out
+.nftInventory
+  display: flex
+  justify-content: center
+  gap: 20px 20px
+  flex-wrap: wrap
+  margin-top: 50px
+  @media screen and (min-width: 575px)
+    gap: 20px 48px
+  @media screen and (min-width: 768px)
+    gap: 20px 64px
+  @media screen and (min-width: 1200px)
+    gap: 20px 96px
+  .item
+    p
+      color: #FFFFFF
+      text-align: center
+      font-size: 18px
+    img
+      width: 150px
+      @media screen and (min-width: 640px)
+        width: 180px
+      @media screen and (min-width: 768px)
+        width: 214px
+    .btnClaim
+      text-align: center
+
+@keyframes animation_open_box
+  0%
+    width: 0
+  100%
+    width: 400px
