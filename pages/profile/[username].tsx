@@ -18,10 +18,13 @@ const MyProfile = () => {
   const user_name = router.query.username;
   const [page, setPage] = useState<string>('');
   const [isShowEdit, setIsShowEdit] = useState(false);
-
+  const [profileLoaded, setProfileLoaded] = useState<boolean>(false);
   const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData} = useGetUserProfile({
     user_name: `${user_name}`,
     skip: isEmpty(user_name),
+    onCompleted: () => {
+      setProfileLoaded(true);
+    }
   });
   const currentPage = router.query?.page ?? ''
   const allowedPages = ['', 'teams', 'tournaments', 'inventory']
@@ -36,22 +39,6 @@ const MyProfile = () => {
 
   if (isEmpty(user_name)) return null
 
-  if (loadingUserProfile) {
-    return (
-      <main style={{ minHeight: '100vh' }}>
-        <SpinLoading />
-      </main>
-    )
-  } else if (isEmpty(getUserProfileData?.getUserProfile) || !allowedPages.includes(currentPage as string)) return (
-    <>
-      <Head>
-        <meta name="robots" content="noindex" />
-        <title>404 | This page could not be found.</title>
-      </Head>
-      <DefaultErrorPage statusCode={404} />
-    </>
-  );
-
   let isOwner = false;
   if (getUserProfileData?.getUserProfile.id === localUserInfo.id?.toString()) isOwner = true
 
@@ -64,18 +51,39 @@ const MyProfile = () => {
 		getUserProfileRefetch()
 	}
 
+  const u = getUserProfileData?.getUserProfile as unknown as AuthUser;
+
   return (
     <div className={s.wrapper_profile}>
-      {/* Content */}
-      <InfoMyProfile userInfo={getUserProfileData?.getUserProfile as unknown as AuthUser} isOwner={isOwner} click={handleClick} />
+      <Head>
+        <meta name="robots" content="noindex" />
+        <title>Profile</title>
+      </Head>
 
-      <div className="lucis-container">
-        {
-          isShowEdit ?
-            <EditProfile userInfo={getUserProfileData?.getUserProfile as unknown as AuthUser} onEditedProfile={onEditedProfile} /> :
-            <ContentMyProfile userInfo={getUserProfileData?.getUserProfile as unknown as AuthUser} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} page={page} />
-        }
-      </div>
+      {loadingUserProfile
+        ? <SpinLoading />
+        : (profileLoaded && (isEmpty(getUserProfileData?.getUserProfile) || !allowedPages.includes(currentPage as string)))
+          ? <>
+            <Head>
+              <meta name="robots" content="noindex" />
+              <title>404 | This page could not be found.</title>
+            </Head>
+            <div style={{color: "white"}}>
+              <DefaultErrorPage statusCode={404} />
+            </div>
+          </>
+          : <>
+            {/* Content */}
+            <InfoMyProfile userInfo={u} isOwner={isOwner} click={handleClick} />
+            <div className="lucis-container">
+              {
+                isShowEdit ?
+                  <EditProfile userInfo={u} onEditedProfile={onEditedProfile} /> :
+                  <ContentMyProfile userInfo={u} getUserProfileRefetch={getUserProfileRefetch} isOwner={isOwner} page={page} />
+              }
+            </div>
+          </>
+      }
     </div>
   );
 };

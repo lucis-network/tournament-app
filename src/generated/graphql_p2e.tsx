@@ -357,6 +357,7 @@ export type Contract = {
 export enum ContractType {
   Donate = 'DONATE',
   LucisBox = 'LUCIS_BOX',
+  LucisNft = 'LUCIS_NFT',
   LucisToken = 'LUCIS_TOKEN',
   Prize = 'PRIZE'
 }
@@ -1181,7 +1182,7 @@ export type Mutation = {
   claimChestPrize?: Maybe<Scalars['Boolean']>;
   claimGiftCard?: Maybe<Scalars['String']>;
   claimMission?: Maybe<Scalars['Boolean']>;
-  claimNftBox?: Maybe<Scalars['Boolean']>;
+  claimNftBox?: Maybe<NftBoxResponse>;
   claimPhysicalItem?: Maybe<Scalars['Boolean']>;
   claimRaffle?: Maybe<Scalars['Boolean']>;
   claimStaked?: Maybe<Scalars['Boolean']>;
@@ -1194,6 +1195,7 @@ export type Mutation = {
   equipNft?: Maybe<Scalars['Boolean']>;
   getOrSetDailyMission: Array<PlayerMission>;
   kycAccount?: Maybe<PlatformAccountDto>;
+  mintNft?: Maybe<Nft>;
   openChest?: Maybe<Scalars['String']>;
   rerollDailyMission?: Maybe<PlayerMission>;
   sendPendingTransactionOpenBox?: Maybe<Scalars['Boolean']>;
@@ -1303,6 +1305,11 @@ export type MutationKycAccountArgs = {
 };
 
 
+export type MutationMintNftArgs = {
+  tokenId: Scalars['Float'];
+};
+
+
 export type MutationOpenChestArgs = {
   game_platform_id?: InputMaybe<Scalars['Int']>;
   tier: LuckyChestTier;
@@ -1388,6 +1395,11 @@ export type Nft = {
   token_id: Scalars['Int'];
   uid: Scalars['ID'];
   updated_at: Scalars['DateTime'];
+};
+
+export type NftBoxResponse = {
+  __typename?: 'NftBoxResponse';
+  tx_hash?: Maybe<Scalars['String']>;
 };
 
 export type NftSubscribeResponse = {

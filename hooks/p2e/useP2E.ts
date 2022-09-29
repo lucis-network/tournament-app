@@ -715,6 +715,8 @@ query ($user_id: Int!, $group_filter: String, $search_name: String) {
 export const GET_MY_INVENTORY_ITEMS = gql`
 query ($user_id: Int!, $group_filter: ItemGroup, $search_name: String) {
   inventoryItems (user_id: $user_id, group_filter: $group_filter, search_name: $search_name) {
+   uid
+   is_claimed
    prize {
     id
     title
@@ -726,10 +728,15 @@ query ($user_id: Int!, $group_filter: ItemGroup, $search_name: String) {
       item_group
       piece_group
       prize_type
-      currency_type    
+      currency_type
+      in_game_prize_type
     }
    }
    quantity
+   gift_card {
+      uid
+      code
+    }
   }
 }
 `

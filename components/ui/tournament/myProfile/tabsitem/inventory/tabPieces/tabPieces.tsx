@@ -68,14 +68,14 @@ const TabPiecesInventory = (props: Props) => {
           {
             dataMyInventoryPieces &&
             dataMyInventoryPieces.map((item, index) => (
-              <>
-                <div className={s.rowPieces} key={`${index}${item?.type}`}>
+              <div key={`${index}${item?.type}`}>
+                <div className={s.rowPieces}>
                   <ItemsPiece item={item} isOwner={isOwner} refetchMyInventoryPieces={refetchMyInventoryPieces}></ItemsPiece>
                 </div>
                 {index < dataMyInventoryPieces.length-1 &&
-                    <div className={s.cross}></div>
+                  <div className={s.cross}></div>
                 }
-              </>
+              </div>
             ))
           }
         </div>

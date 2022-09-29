@@ -1297,9 +1297,9 @@ body .ant-modal-mask {
   }
 }
 
-.ant-modal-footer {
-  padding: 0 !important;
-}
+/*.ant-modal-footer {*/
+/*  padding: 0 !important;*/
+/*}*/
 
 /* .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
   background: none !important;
@@ -1316,4 +1316,8 @@ body .ant-modal-mask {
 
 .ant-table-tbody>tr.ant-table-row:hover>td, .ant-table-tbody>tr>td.ant-table-cell-row-hover {
   background: none !important;
+}
+
+.lucis-theme .ant-modal {
+  padding-bottom: 0
 }

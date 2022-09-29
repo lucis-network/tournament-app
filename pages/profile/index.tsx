@@ -17,12 +17,14 @@ import {getLocalAuthInfo, setLocalAuthInfo} from "../../components/Auth/AuthLoca
 export default observer(function MyProfile() {
 	const localUserInfo = AuthStore;
 	const [page, setPage] = useState<string>('');
+	const [profileLoaded, setProfileLoaded] = useState<boolean>(false);
 	const { loading: loadingUserProfile, refetch: getUserProfileRefetch, getUserProfileData } = useGetUserProfile({
 		user_id: Number(localUserInfo?.profile?.user_id),
 		skip: isEmpty(localUserInfo?.profile?.user_id),
 		onCompleted: (data: {
 			getUserProfile: UserGraphql;
 		}) => {
+			setProfileLoaded(true);
 			const profile = data.getUserProfile.profile
 			let userData = getLocalAuthInfo()
 			let newUserData = {
@@ -50,6 +52,7 @@ export default observer(function MyProfile() {
 			AuthStore.setAuthUser(newUserData)
 		}
 	})
+
 	const router = useRouter();
 	const currentPage = router.query?.page ?? ''
 	const allowedPages = ['', 'teams', 'tournaments', 'edit', 'refer', 'inventory', 'nfts']
@@ -58,7 +61,7 @@ export default observer(function MyProfile() {
 			router.push('/')
 		}
 	}, [AuthStore.isLoggedIn])
-	
+
 	useEffect(() => {
 		if (currentPage === '') {
 			setPage('overview')
@@ -66,24 +69,6 @@ export default observer(function MyProfile() {
 			setPage(currentPage as string)
 		}
 	}, [currentPage])
-	
-	if (loadingUserProfile) {
-		return (
-			<main style={{ minHeight: '100vh' }}>
-				<SpinLoading />
-			</main>
-		)
-	} else if (isEmpty(getUserProfileData?.getUserProfile) || !allowedPages.includes(currentPage as string)) {
-		return (
-			<>
-				<Head>
-					<meta name="robots" content="noindex" />
-					<title>404 | This page could not be found.</title>
-				</Head>
-				<DefaultErrorPage statusCode={404} />
-			</>
-		)
-	}
 
 	const handleEditClick = () => {
 		if (page === 'edit') {
@@ -103,15 +88,31 @@ export default observer(function MyProfile() {
 				<meta name="robots" content="noindex" />
 				<title>Profile</title>
 			</Head>
-			{/* Content */}
-			<InfoMyProfile click={handleEditClick} userInfo={localUserInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner isShowEdit={page === 'edit'} />
-			<div className="lucis-container">
-				{
-					page === 'edit' ?
-						<EditProfile userInfo={localUserInfo} onEditedProfile={onEditedProfile} /> :
-						<ContentMyProfile userInfo={localUserInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner page={page} />
-				}
-			</div>
+
+			{loadingUserProfile
+				? <SpinLoading />
+				: (profileLoaded && (isEmpty(getUserProfileData?.getUserProfile) || !allowedPages.includes(currentPage as string)))
+					? <>
+						<Head>
+							<meta name="robots" content="noindex" />
+							<title>404 | This page could not be found.</title>
+						</Head>
+						<div style={{color: "white"}}>
+							<DefaultErrorPage statusCode={404} />
+						</div>
+					</>
+					: <>
+						{/* Content */}
+						<InfoMyProfile click={handleEditClick} userInfo={localUserInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner isShowEdit={page === 'edit'} />
+						<div className="lucis-container">
+							{
+								page === 'edit' ?
+									<EditProfile userInfo={localUserInfo} onEditedProfile={onEditedProfile} /> :
+									<ContentMyProfile userInfo={localUserInfo} getUserProfileRefetch={getUserProfileRefetch} isOwner page={page} />
+							}
+						</div>
+					</>
+			}
 		</div>
 	);
 })

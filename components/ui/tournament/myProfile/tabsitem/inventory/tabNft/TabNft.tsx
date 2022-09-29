@@ -83,6 +83,16 @@ const NftTabInventory = (props: Props) => {
   }, [])
 
   useEffect(() => {
+    const listener = AppEmitter.addListener("refetchMyInventoryNft", () => {
+      setAmountBox(amount => amount! + 1);
+    });
+
+    return () => {
+      listener.remove();
+    };
+  }, [])
+
+  useEffect(() => {
     if (isConnectedWallet) {
       getNFTs().then();
     } else {
