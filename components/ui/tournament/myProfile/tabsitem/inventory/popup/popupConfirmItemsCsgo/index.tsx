@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {ReactNode, useState} from "react";
 import {Button, Form, Input, message, Modal, Popconfirm} from "antd";
 import s from "./index.module.sass";
 import {InventoryItem} from "../../../../../../../../src/generated/graphql_p2e";
@@ -23,6 +23,8 @@ export default function PopupConfirmItemsCsgo(props: Props) {
   const onCancel = () => {
     onClosePopup();
   }
+  // const [modal, modalContextHolder] = Modal.useModal();
+
   const onCancelPopupconfirm = () => {
     setVisible(false);
   };
@@ -34,6 +36,19 @@ export default function PopupConfirmItemsCsgo(props: Props) {
         setVisible(true)
       );
   };
+
+  // const openModal = (action: string, content: ReactNode) => {
+  //   // @ts-ignore
+  //   const modal_action = modal[action];
+  //   if (!modal_action) {
+  //     throw new Error("openModal: Invalid action: " + action)
+  //   }
+  //
+  //   modal_action({
+  //     content: content,
+  //   })
+  // }
+
   const handleOk = () => {
     setConfirmLoading(true);
     const steam_url = form.getFieldValue("steamUrl");
@@ -49,12 +64,14 @@ export default function PopupConfirmItemsCsgo(props: Props) {
         endpoint: 'p2e'
       }
     }).then((res) => {
-      message.success("Success!");
+      message.success("Success!", 10);
+      // openModal('success', <p>Success: This item will be sent to you asap</p>);
       setConfirmLoading(false);
       onClosePopup();
       refetchMyInventoryItems();
     }).catch((err) => {
-      message.error("Error!");
+      message.error("Error!", 10);
+      // openModal('error', <p>Error</p>);
       setConfirmLoading(false);
       setVisible(false);
     })
@@ -134,6 +151,8 @@ export default function PopupConfirmItemsCsgo(props: Props) {
             </Form.Item>
           </Form>
         </div>
+
+        {/*{modalContextHolder}*/}
       </div>
     </Modal>
   );

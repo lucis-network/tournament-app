@@ -1,18 +1,14 @@
 import React, {useCallback, useEffect, useState} from "react";
 import s from "../index.module.sass";
 import {Input, message, Select, Spin} from "antd";
-import debounce from "lodash/debounce";
 import BoxItem from "./BoxItem";
 import AuthStore, {AuthUser} from "../../../../../../Auth/AuthStore";
-import {useMyCoupon} from "hooks/myProfile/useCoupon";
 import ConnectWalletStore, {
   nonReactive as ConnectWalletStore_NonReactiveData
 } from "../../../../../../Auth/ConnectWalletStore";
-import {P2EOnChainService} from "../../../../../../../services/blockchain/P2EOnChainService";
 import {BoxAddress, LucisNFT, NFTManager} from "../../../../../../../utils/Enum";
 import {NftService} from "../../../../../../../services/blockchain/NftService";
 import {BigNumber} from "ethers";
-import CouponItem from "../tabCoupons/couponItem";
 import NftItem from "./NftItem";
 import {useMutation} from "@apollo/client";
 import {SEND_PENDING_TRANSACTION_OPEN_BOX} from "../../../../../../../hooks/useNft";
@@ -20,7 +16,6 @@ import {KButton} from "../../../../../common/button";
 import {observer} from "mobx-react-lite";
 import AuthBoxStore from "../../../../../../Auth/components/AuthBoxStore";
 import {AppEmitter} from "../../../../../../../services/emitter";
-import MissionService from "../../../../../../service/p2e/MissionService";
 import {LoadingOutlined} from "@ant-design/icons";
 import {Nft, Status} from "../../../../../../../src/generated/graphql_p2e";
 
@@ -28,34 +23,39 @@ type Props = {
   isOwner?: boolean;
   userInfo: AuthUser;
 };
-const antIcon = <LoadingOutlined style={{ fontSize: 32 }} spin />;
+const antIcon = <LoadingOutlined style={{fontSize: 32}} spin/>;
 const {Option} = Select;
 
 const NftTabInventory = (props: Props) => {
   const {isOwner, userInfo} = props;
-  const [searchName, setSearchName] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [loadingFetchNft, setLoadingFetchNft] = useState<boolean>(false);
   const [amountBox, setAmountBox] = useState<number | undefined>(undefined);
   const [tokenIdList, setTokenIdList] = useState<number[]>([]);
   const [tipLoading, setTipLoading] = useState<string>("Loading ...");
   const [nftPreview, setNftPreview] = useState<Nft | null>(null);
+
+  ///////////////////////////////////////////
+  // load image
+  const [loadedNftPreview, setLoadedNftPreview] = React.useState(false);
+  const [showBtnClosePreview, setShowBtnClosePreview] = useState(false);
+
+  //////////////////////////////////////////
+
   const isConnectedWallet = !!ConnectWalletStore.address;
   const [sendTransactionOpenedBox] = useMutation(SEND_PENDING_TRANSACTION_OPEN_BOX, {
     context: {
       endpoint: "p2e"
     }
   })
-  const onSearch = (e: any) => {
-    delayedSearch(e.target.value);
-  };
 
-  const delayedSearch = useCallback(
-    debounce((value: string) => {
-      setSearchName(value);
-    }, 600),
-    []
-  );
-
+  useEffect(() => {
+    if (loading) {
+      document.getElementsByTagName("body")[0].style.overflow = "hidden";
+    } else {
+      document.getElementsByTagName("body")[0].style.overflow = "auto";
+    }
+  }, [loading])
   useEffect(() => {
     const listener = AppEmitter.addListener("nftResponse", (res: any) => {
       const status = res?.data?.status;
@@ -64,11 +64,14 @@ const NftTabInventory = (props: Props) => {
       if (status === Status.Success) {
         setNftPreview(() => nft);
         setAmountBox(amount => amount! - 1);
-        setTokenIdList(l => [...l, nft.token_id])
+        setTimeout(() => {
+          setTokenIdList(l => [nft.token_id, ...l])
+        }, 2200)
       } else if (status === Status.Failed) {
         setNftPreview(null);
+        setLoadedNftPreview(false);
         setLoading(false);
-        message.error("open box failed, Please try again!");
+        message.error("Open box failed, please try again!");
       }
 
       setTipLoading("Loading ...");
@@ -100,9 +103,11 @@ const NftTabInventory = (props: Props) => {
   }, [isConnectedWallet])
 
   const getNFTs = async () => {
+    setLoadingFetchNft(true);
     if (!ConnectWalletStore_NonReactiveData.web3Provider) {
       console.log("You need connect your wallet to continue!");
       setLoading(false);
+      setLoadingFetchNft(false);
       message.error("Please connect wallet to continue!");
 
     } else {
@@ -119,12 +124,12 @@ const NftTabInventory = (props: Props) => {
       const nfts = promise[0];
       const boxex = promise[1];
 
-      setTokenIdList(nfts);
+      setTokenIdList(nfts.sort((a, b) => b - a));
 
       setAmountBox(BigNumber.from(boxex).toNumber())
-      //console.log("box: ", boxex)
+
       setLoading(false);
-      //console.log(nfts);
+      setLoadingFetchNft(false);
     }
   }
 
@@ -167,10 +172,19 @@ const NftTabInventory = (props: Props) => {
   return (
     <>
       {loading && <div className={s.backdrop}>
-
-        {nftPreview ? <div className={s.nftPreview}>
-          <img className={s.nftPreviewImage} src={nftPreview.image_md} alt=""/>
-          <KButton
+        <div style={loadedNftPreview ? {} : {display: "none"}} className={s.nftPreview}>
+          <img
+              className={s.nftPreviewImage}
+              src={nftPreview?.image_md}
+              alt=""
+              onLoad={() => {
+                setLoadedNftPreview(true);
+                setTimeout(() => {
+                  setShowBtnClosePreview(true);
+                }, 2200)
+              }}
+          />
+          {showBtnClosePreview && <KButton
             title="Ok"
             width="150px"
             height={"40px"}
@@ -178,49 +192,45 @@ const NftTabInventory = (props: Props) => {
             onClick={() => {
               setLoading(false);
               setNftPreview(null);
+              setLoadedNftPreview(false);
             }}
-          />
-        </div> : <Spin indicator={antIcon} size={"large"} tip={tipLoading}/>}
+          />}
+        </div>
+        {!loadedNftPreview && <Spin indicator={antIcon} size={"large"} tip={tipLoading}/>}
       </div>}
-      <div className={s.groupSearch}>
-        <div>
-          {/*<img src="/assets/home/ic_member.svg" alt="" />*/}
-          <Input
-            placeholder="Search"
-            onChange={onSearch}
-            className={`${s.searchText}`}
-          />
+      <div>
+        <div className={s.nftInventory}>
+          <div className={s.item}>
+            <BoxItem
+              amount={amountBox}
+              openBox={() => openBox()}
+            />
+          </div>
         </div>
-        <KButton
-          title="Reload"
-          width="80px"
-          // disabled={item?.quantity <= 0}
-          onClick={() => getNFTs()}
-        />
-      </div>
-
-      <div className={s.listItemsInventory}>
-        <div className={s.item}>
-          <BoxItem
-            amount={amountBox}
-            openBox={() => openBox()}
-          />
+        <div className={s.connectWallet}>
+          {!isConnectedWallet &&
+              <KButton onClick={() => showModal()} title={"Connect wallet"} fontSize={"15px"} width="140px"
+                       height={"40px"}/>}
         </div>
-      </div>
-      <div className={s.connectWallet}>
-        {!isConnectedWallet && <KButton onClick={() => showModal()} title={"Connect wallet"} fontSize={"16px"} width="200px" height={"60px"}/>}
-      </div>
-      <div className={s.cross}></div>
-      <div className={s.listItemsInventory}>
-        {tokenIdList &&
-          tokenIdList.map((item, index) => (
-            <div className={s.item} key={`${index}${item}`}>
-              <NftItem
-                tokenId={item}
-                isOwner={isOwner}
-              />
-            </div>
-          ))}
+        {isConnectedWallet  && tokenIdList?.length > 0 && <div className={s.cross}></div> }
+        <div className={s.nftInventory}>
+          {loadingFetchNft &&
+              <div className="flex justify-center w-full">
+                  <Spin indicator={antIcon} size={"large"} tip={"Loading ..."}/>
+              </div>
+              }
+          {tokenIdList &&
+            tokenIdList.map((item, index) => (
+              <div className={s.item} key={`${index}${item}`}>
+                <NftItem
+                  tokenId={item}
+                  isOwner={isOwner}
+                  contractAddress={LucisNFT}
+                  ownerAddress={ConnectWalletStore.address!}
+                />
+              </div>
+            ))}
+        </div>
       </div>
       {/*{!dataMyInventoryCoupons && <div className={s.emptyItem}>No items</div>}*/}
     </>

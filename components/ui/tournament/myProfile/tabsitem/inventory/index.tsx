@@ -54,7 +54,7 @@ const Inventory = (props: Props) => {
             userInfo={userInfo}
           ></CouponTabInventory>
         </TabPane>
-        <TabPane tab="NFT" key="nfts">
+        <TabPane tab="NFTs" key="nfts">
           <NftTabInventory
             isOwner={isOwner}
             userInfo={userInfo}

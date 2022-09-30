@@ -1,21 +1,23 @@
 .boxItem
-  width: 400px
   text-align: center
   background: linear-gradient(0deg, rgba(248, 237, 255, 0.2), rgba(248, 237, 255, 0.2)), radial-gradient(50% 50% at 50% 50%, rgba(236, 196, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%)
   backdrop-filter: blur(40px)
   color: #fff
-  padding: 20px
+  border-radius: 4px
+  padding: 20px 40px
   .boxItemTitle
     color: rgba(240, 185, 11, 0.8)
     font-family: 'Revx Neue Demo'
     font-style: normal
     font-weight: 600
-    font-size: 32px
+    font-size: 28px
     line-height: 35px
   .boxImage
-    img
-      width: 300px
-      margin-top: 20px
+    width: 230px
+    position: relative
+    animation: up_down 2s linear infinite
+    //img
+
   .boxItemAction
     display: flex
     justify-content: center
@@ -25,7 +27,7 @@
     .boxItemAmount
       font-family: "Revx Neue Demo"
       font-weight: 600
-      font-size: 16px
+      font-size: 14px
       line-height: 13px
       letter-spacing: 0.04em
       background: rgba(69, 80, 107, 0.5)
@@ -35,3 +37,52 @@
       backdrop-filter: blur(40px)
       border-radius: 72px
       margin-bottom: 12px
+.nftItem
+  transition: all 0.4s ease
+  &:hover
+    cursor: pointer
+    transform: scale(1.1)
+    transition: all 0.4s ease
+  img
+    aspect-ratio: auto !important
+
+.nftDetail
+  font-size: 14px
+  .name
+    font-size: 32px
+    font-weight: 600
+  .des
+    margin-top: 8px
+    font-weight: 300
+    font-size: 14px
+  .ownerBy
+    margin-top: 8px
+    color: rgb(22, 218, 223)
+    cursor: pointer
+    span
+      opacity: 0.7
+      color: #FFF
+  .contractAddress
+    margin-top: 8px
+    color: rgb(22, 218, 223)
+    cursor: pointer
+    span
+      opacity: 0.7
+      color: #FFF
+  .tokenId
+    margin-top: 8px
+    color: rgb(22, 218, 223)
+    cursor: pointer
+    span
+      opacity: 0.7
+      color: #FFF
+
+
+
+@keyframes up_down
+  0%, 100%
+     bottom: 0
+  50%
+    bottom: 10px
+
+
