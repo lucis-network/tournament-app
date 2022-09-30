@@ -5,6 +5,7 @@ import React, {useMemo} from "react";
 import s from "./nftTab.module.sass";
 import {trim_middle} from "../../../../../../../utils/String";
 import {isClient, isClientDevMode} from "../../../../../../../utils/Env";
+import {BSC_MainNet, BSC_TestNet} from "../../../../../../../utils/blockchain/ChainConfig";
 
 interface IProps {
   metadata: any;
@@ -18,7 +19,9 @@ export const NftDetail = ({metadata, tokenId, onCancel, ownerAddress, contractAd
   const [isCopyOwnerAddress, setIsCopyOwnerAddress] = React.useState(false);
   const [isCopyContractAddress, setIsCopyContractAddress] = React.useState(false);
 
-  const explorer = isClientDevMode ? process.env.NEXT_PUBLIC_BSC_EXPLORER_TESTNET : process.env.NEXT_PUBLIC_BSC_EXPLORER_MAINNET ?? "https://testnet.bscscan.com";
+  const chain_id = parseInt("" + process.env.NEXT_PUBLIC_CHAIN_ID__BSC);
+  const is_mainnet = chain_id === BSC_MainNet.chain_id;
+  const explorer_url = (is_mainnet ? BSC_MainNet.blockExplorerUrls![0] : BSC_TestNet.blockExplorerUrls![0]);
   const imageLink = useMemo(() => {
     return metadata?.image?.replace(".webp", "_md.webp");
   }, [metadata?.image])
@@ -54,7 +57,7 @@ export const NftDetail = ({metadata, tokenId, onCancel, ownerAddress, contractAd
                 <div className={s.item} title={ownerAddress}>
                   <span>Owned by </span>
                   <span className={`${s.content} ${s.link}`}>
-                    <a target="_blank" rel="noopener noreferrer" href={`${explorer}/address/${ownerAddress}`}>
+                    <a target="_blank" rel="noopener noreferrer" href={`${explorer_url}/address/${ownerAddress}`}>
                       {trim_middle(ownerAddress, 8, 6)}
                     </a>
                     <img width="20"
@@ -72,7 +75,7 @@ export const NftDetail = ({metadata, tokenId, onCancel, ownerAddress, contractAd
                 <div className={s.item}>
                   <span>Contract address </span>
                   <span className={`${s.content} ${s.link}`}>
-                    <a target="_blank" rel="noopener noreferrer" href={`${explorer}/address/${contractAddress}`}>
+                    <a target="_blank" rel="noopener noreferrer" href={`${explorer_url}/address/${contractAddress}`}>
                       {trim_middle(contractAddress, 8, 6)}
                     </a>
                     <img width="20"
