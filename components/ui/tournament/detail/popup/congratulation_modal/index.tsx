@@ -1,27 +1,24 @@
 import React, { useState } from "react";
 import { message, Modal, Table, Image, Button } from "antd";
-import s from "./join_tour_success_modal.module.sass";
+import s from "./congratulation_modal.module.sass";
 import { KButton } from "components/ui/common/button";
 import Link from "next/link";
 
 type Props = {
-  show: boolean;
-  onClose?: (playNow?: boolean) => void;
+  isOpen: boolean;
+  amount: string;
+  onClose?: () => void;
 };
 
 export function CongratulationModal(props: Props) {
-  const { show, onClose } = props;
-
-  const [loadingBtn, setLoadingBtn] = useState(false);
+  const { isOpen, amount, onClose } = props;
 
   return (
     <Modal
       centered
-      visible={show}
+      visible={isOpen}
       wrapClassName={s.mdl}
-      // okText="Confirm"
-      // onCancel={onCancel}
-      // onOk={handOk}
+      onCancel={onClose}
       footer={null}
       width="766px"
     >
@@ -29,7 +26,7 @@ export function CongratulationModal(props: Props) {
         <div className={s.title}>
           Congratulations on winning <span>TOP1</span> with high skill
         </div>
-        <div className={s.amount}>22,800 busd</div>
+        <div className={s.amount}>{amount}</div>
         <div className={s.text_more}>
           And you get additional rewards:{" "}
           <span>NFT Box, Riot Point 150USD, Weapon 150USD,...</span>

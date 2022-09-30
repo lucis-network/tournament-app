@@ -1,28 +1,26 @@
 import React, { useState } from "react";
-import { message, Modal, Table, Image, Button } from "antd";
+import { Modal, Image } from "antd";
 import s from "./join_tour_success_modal.module.sass";
 import { KButton } from "components/ui/common/button";
+import Link from "next/link";
 
 type Props = {
-  show: boolean;
-  onClose?: (playNow?: boolean) => void;
+  isOpen: boolean;
+  onClose?: () => void;
 };
 
 export function JoinTourSuccessModal(props: Props) {
-  const { show, onClose } = props;
-
-  const [loadingBtn, setLoadingBtn] = useState(false);
+  const { isOpen, onClose } = props;
 
   return (
     <Modal
       centered
-      visible={show}
+      visible={isOpen}
       wrapClassName={s.mdl}
-      // okText="Confirm"
-      // onCancel={onCancel}
-      // onOk={handOk}
+      onCancel={onClose}
       footer={null}
       width="766px"
+      closable
     >
       <div className={s.wrapper}>
         <div className={s.title}>
