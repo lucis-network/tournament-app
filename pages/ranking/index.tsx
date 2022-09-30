@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react"
+import React, {useEffect, useMemo, useState} from "react"
 import s from "/components/ui/ranking/Ranking.module.sass"
 import {NextPage} from "next";
 import DocHead from "../../components/DocHead";
@@ -13,14 +13,25 @@ const RankingPage: NextPage = () => {
   const {dataRankingSeason} = useRankingSeason()
   const [seasonId, setSeasonId] = useState("");
   const [endIn, setEndIn] = useState(0);
-  const activeSeason = dataRankingSeason?.getRankingSeasons?.find(season => season.status === StatusSeason.Active)
-  const activeSeasonId = activeSeason?.uid
+  const activeSeasonId = useMemo(() => {
+    let activeSeason = dataRankingSeason?.getRankingSeasons?.find(season => season.status === StatusSeason.Active);
+
+    if (!activeSeason) {
+      activeSeason = dataRankingSeason?.getRankingSeasons?.find(season => season.status === StatusSeason.Closed);
+    }
+
+    if (!activeSeason) {
+      activeSeason = dataRankingSeason?.getRankingSeasons?.[0];
+    }
+    return activeSeason?.uid;
+  }, [dataRankingSeason?.getRankingSeasons]);
+
   // const endDate = activeSeason?.toDate;
 
   useEffect(() => {
     setSeasonId(activeSeasonId!);
     // setEndIn(new Date(endDate).getTime());
-  }, [activeSeason])
+  }, [activeSeasonId])
 
   useEffect(() => {
     const endDate = dataRankingSeason?.getRankingSeasons?.find(season => season.uid === seasonId)?.toDate;

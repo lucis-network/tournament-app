@@ -1,27 +1,25 @@
 import React, {useEffect, useState} from "react";
 
 import {Table} from "antd";
-import {Swiper, SwiperSlide} from 'swiper/react';
-import {useSwiper} from 'swiper/react';
+import {Swiper, SwiperSlide, useSwiper} from 'swiper/react';
 
 import s from "./RankingTabs.module.sass"
 import {
-  GET_USER_RANK_PLAYCORE, GET_USER_RANK_RAFFLE, GET_USER_RANK_TOURNAMENT,
+  GET_USER_RANK_PLAYCORE,
+  GET_USER_RANK_RAFFLE,
+  GET_USER_RANK_TOURNAMENT,
   useArenaRanking,
   usePlaycoreRanking,
   useRaffleRanking
 } from "../../../../hooks/ranking/useRanking";
-import {currentMonth as defaultCurrentMonth, currentYear as defaultCurrentYear} from "../banner";
-import {AcceptedMonths} from "../../../../hooks/ranking/useTopRanking";
-import {RankingSeasonDto, UserRanking} from "../../../../src/generated/graphql_p2e";
+import {RankingSeasonDto, StatusSeason, UserRanking} from "../../../../src/generated/graphql_p2e";
 import Link from "next/link"
 import {SelectSeason} from "../SelectSeason";
 import CountdownTimer from "../../common/CountDown";
 import {useQuery} from "@apollo/client";
 import {observer} from "mobx-react-lite";
 import AuthStore from "../../../Auth/AuthStore";
-import {fomatNumber, format} from "../../../../utils/Number";
-import ButtonWrapper from "../../../common/button/Button";
+import {format} from "../../../../utils/Number";
 import {useRouter} from "next/router";
 import {KButton} from "../../common/button";
 
@@ -96,8 +94,6 @@ const BlankState = ({redirectUrl}: any) => {
 
 const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}: RankingTabsProps) => {
   const [activeTab, setActiveTab] = useState<string>('playcore')
-  const [currentMonth, setCurrentMonth] = useState<AcceptedMonths>(defaultCurrentMonth)
-  const [currentYear, setCurrentYear] = useState<number>(defaultCurrentYear)
   const [rankingData, setRankingData] = useState<{ [activeTab: string]: UserRanking[] }>({})
   const [userRank, setUserRank] = useState<UserRanking | null>(null);
   const {id} = AuthStore;
@@ -308,7 +304,7 @@ const RankingTabs = ({seasonId, seasonList, setSeasonId, activeSeasonId, endIn}:
             </div>
             <div className={s.filterDateTime}>
               <div className={s.seasonCountdown}><span
-                className={s.endText}>{endIn > Date.now() ? "End Season In" : "Season ended"}</span>
+                className={s.endText}>{endIn < Date.now() ? "Season ended" : (seasonList?.find(item => item.uid === seasonId)?.status === StatusSeason.Upcoming ? "Season starts in" : "End Season In")}</span>
                 {endIn > Date.now() && <span className={s.countdownText}>
                   <CountdownTimer targetDate={endIn}/>
                 </span>
