@@ -11,14 +11,14 @@ type Props = {
   isOwner?: boolean;
   contractAddress: string;
   ownerAddress: string;
-
+  openDetail?: boolean;
 };
 
 const s3Metadata = "https://image-upload-s3-demo.s3.ap-southeast-1.amazonaws.com/metadata";
 const NftItem = (props: Props) => {
   const [isMetadataError, setIsMetadataError] = useState(false);
   const [metadata, setMetadata] = useState<any>({});
-  const [openDetail, setOpenDetail] = useState(false);
+  const [openDetail, setOpenDetail] = useState(props.openDetail ?? false);
   const [loadedImage, setLoadedImage] = React.useState(false);
   const [mintNFT] = useMutation(MINT_NFT, {
     context: {

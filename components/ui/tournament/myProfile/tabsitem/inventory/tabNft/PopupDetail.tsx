@@ -1,4 +1,4 @@
-import {Form, Input, message, Modal, Image, Spin, Button, Row, Col, Tooltip} from "antd";
+import {Form, Input, message, Modal, Image, Spin, Button, Row, Col, Tooltip, Tag} from "antd";
 
 import Link from "next/link";
 import React, {useMemo} from "react";
@@ -40,16 +40,21 @@ export const NftDetail = ({metadata, tokenId, onCancel, ownerAddress, contractAd
       >
         <div className={s.nftDetail}>
           <Row gutter={16}>
-            <Col md={12} lg={12} xs={24}>
+            <Col sm={12} lg={12} xs={24}>
               <img
+                className={s.nftImg}
                 src={imageLink}
                 alt={"nft" + tokenId}
               />
             </Col>
-            <Col md={12} lg={12} xs={24}>
+            <Col sm={12} lg={12} xs={24}>
               <div>
                 <div className={s.name}>
                   {metadata.name}
+                </div>
+                <div className={s.tag}>
+                  <Tag>{metadata.attributes[2].value}</Tag>
+                  <Tag>{metadata.attributes[3].value}</Tag>
                 </div>
                 <div className={s.des}>
                   {metadata.description}

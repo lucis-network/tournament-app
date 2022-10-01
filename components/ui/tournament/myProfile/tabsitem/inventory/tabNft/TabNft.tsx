@@ -133,9 +133,6 @@ const NftTabInventory = (props: Props) => {
     }
   }
 
-  const showModal = () => {
-    AuthBoxStore.connectModalVisible = true;
-  };
   const openBox = async () => {
     setLoading(true);
     if (!ConnectWalletStore_NonReactiveData.web3Provider) {
@@ -193,6 +190,7 @@ const NftTabInventory = (props: Props) => {
               setLoading(false);
               setNftPreview(null);
               setLoadedNftPreview(false);
+
             }}
           />}
         </div>
@@ -204,13 +202,9 @@ const NftTabInventory = (props: Props) => {
             <BoxItem
               amount={amountBox}
               openBox={() => openBox()}
+              isConnectedWallet={isConnectedWallet}
             />
           </div>
-        </div>
-        <div className={s.connectWallet}>
-          {!isConnectedWallet &&
-              <KButton onClick={() => showModal()} title={"Connect wallet"} fontSize={"15px"} width="140px"
-                       height={"40px"}/>}
         </div>
         {isConnectedWallet  && tokenIdList?.length > 0 && <div className={s.cross}></div> }
         <div className={s.nftInventory}>
