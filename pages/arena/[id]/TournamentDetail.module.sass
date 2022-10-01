@@ -4,6 +4,8 @@
   background: url("/assets/TournamentDetail/bg_arena_detail.png") no-repeat center center fixed
   background-size: cover
   padding-top: 140px
+  :global(.lucis-container-2)
+    //padding: 0
 .wrapper
   position: relative
 
@@ -11,8 +13,12 @@
   min-height: 100vh
   overflow-x: hidden
   word-break: break-word
-  width: calc(100% - 475px)
+  width: calc(100% - 345px)
   position: relative
+  @media screen and (max-width: 1199px)
+    width: 100%
+  @media screen and (min-width: 1400px)
+    width: calc(100% - 475px)
   .banner
     position: relative
     //min-height: 400px
@@ -22,27 +28,28 @@
       background-size: cover
       background-repeat: no-repeat
       background-position: bottom center
+.list_tabs_content
+  position: relative
+  &:after
+    content: ''
+    display: block
+    height: 1px
+    position: absolute
+    bottom: 10px
+    left: 0
+    right: 0
+    background: #38505F
+    z-index: 0
+    &::-webkit-scrollbar
+      display: none
+      color: #FFFFFF
   .list_tabs
     display: flex
     align-items: center
     justify-content: flex-start
-    overflow-x: scroll
+    overflow-x: auto
     min-height: 46px
     padding-bottom: 20px
-    position: relative
-    &:after
-      content: ''
-      display: block
-      height: 1px
-      position: absolute
-      bottom: 10px
-      left: 0
-      right: 0
-      background: #38505F
-      z-index: 0
-    &::-webkit-scrollbar
-      display: none
-      color: #FFFFFF
     .tab_item
       min-width: 125px
       padding: 10px
@@ -675,7 +682,7 @@
 
 
 .right_side
-  width: 424px
+  width: 320px
   position: absolute
   top: 0
   right: 0
@@ -687,3 +694,7 @@
     top: 140px
     color: white
     height: 300px
+  @media screen and (max-width: 1199px)
+    display: none
+  @media screen and (min-width: 1400px)
+    width: 424px
