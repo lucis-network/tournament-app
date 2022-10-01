@@ -32,8 +32,8 @@ import moment from "moment";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import useTeamModal from "components/ui/tournament/detail/hooks/useTeamModal";
 import PopupNotifyProfile from "components/ui/tournament/detail/popup/popupNotifyProfile";
-import Banner from "components/ui/ranking/banner";
 import {LuckyChestTier} from "../../../src/generated/graphql_p2e";
+import Banner from "components/ui/tournament/detail/banner/Banner";
 
 const {TabPane} = Tabs;
 
@@ -237,22 +237,24 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
       <div className={s.container}>
         <div className={`lucis-container-2 ${s.wrapper}`}>
           <div className={`${s.left_side}`}>
-            <div className={s.list_tabs}>
-              {tabList.map((item: string, activeTab) => {
-                return (
-                  <div
-                    className={`${s.tab_item} ${
-                      tab === activeTab ? "active" : ""
-                    }`}
-                    key={item}
-                    onClick={() => setTab(activeTab)}
-                  >
-                    {item}
-                  </div>
-                );
-              })}
-            </div>
-            <div className={s.tab_content}>
+            <section className={` ${s.list_tabs_content}`}>
+              <div className={s.list_tabs}>
+                {tabList.map((item: string, activeTab) => {
+                  return (
+                    <div
+                      className={`${s.tab_item} ${
+                        tab === activeTab ? "active" : ""
+                      }`}
+                      key={item}
+                      onClick={() => setTab(activeTab)}
+                    >
+                      {item}
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+            <section className={` ${s.tab_content}`}>
               {(() => {
                 switch (tab) {
                   case 0:
@@ -261,7 +263,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     break;
                 }
               })()}
-            </div>
+            </section>
             <section className={s.tournamentInfo}>
               <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
                 {/*<TournamentDetailMarquee tournamentId={tournamentId as string} />*/}

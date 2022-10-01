@@ -1,5 +1,6 @@
 .wrapper
   color: white
+  font-family: 'Lexend'
   .info
     display: flex
     align-items: center
@@ -8,120 +9,159 @@
     height: 120px
     gap: 0 78px
     background: rgba(0, 0, 0, 0.4)
-    .user
-      .userInfo
-        display: flex
-        align-items: center
-        gap: 0 8px
-        img
-          width: 48px
-          border-radius: 49%
-      .userName
-        h2
-          font-family: 'Lexend'
-          font-style: normal
-          font-weight: 400
-          font-size: 16px
-          line-height: 20px
-          color: #FFFFFF
-          margin-bottom: 4px
-        h3
-          font-family: 'Lexend'
-          font-style: normal
-          font-weight: 400
-          font-size: 12px
-          line-height: 15px
-          color: #DBE0E8
-          margin-bottom: 0
-    .participants
-      h3
-        font-family: 'Lexend'
-        font-style: normal
-        font-weight: 300
-        font-size: 14px
-        line-height: 150%
-        color: #FFFFFF
-      .groupParticipants
-        display: flex
-        align-items: center
-        gap: 0 4px
-        span
-          font-family: 'Lexend'
-          font-style: normal
-          font-weight: 500
-          font-size: 24px
-          line-height: 115%
-          color: #00F9FF
-    .btnGroup
-      display: flex
-      flex-direction: row
-      height: fit-content
-      gap: 0 4px
-      .btnJoin
-        padding: 0 30px
-.titleTour
+    @media screen and (max-width: 991px)
+      display: none
+.userInfo
+  display: flex
+  align-items: center
+  gap: 0 8px
+  img
+    width: 32px
+    border-radius: 49%
+    @media screen and (min-width: 992px)
+      width: 48px
+.userName
   h2
-    margin: 24px 0 12px 0
-    font-family: 'Lexend'
     font-weight: 400
-    font-size: 24px
-    line-height: 30px
+    font-size: 12px
+    line-height: 15px
+    color: #FFFFFF
+    margin-bottom: 4px
+    @media screen and (min-width: 575px)
+      font-size: 16px
+      line-height: 20px
+  h3
+    font-weight: 400
+    font-size: 10px
+    line-height: 12px
+    color: #DBE0E8
+    margin-bottom: 0
+    @media screen and (min-width: 575px)
+      font-size: 12px
+      line-height: 15px
+.participants
+  h3
+    font-weight: 300
+    font-size: 14px
+    line-height: 150%
+    color: #FFFFFF
+  .groupParticipants
+    display: flex
+    align-items: center
+    gap: 0 4px
+    span
+      font-style: normal
+      font-weight: 500
+      font-size: 24px
+      line-height: 115%
+      color: #00F9FF
+.btnGroup
+  display: flex
+  flex-direction: row
+  height: fit-content
+  gap: 0 4px
+  .btnJoin
+    padding: 0 30px
+.titleTour
+  border-bottom: 1px solid #38505F
+  padding-bottom: 8px
+  @media screen and (max-width: 768px)
+    padding-bottom: 12px
+  h1
+    margin: 16px 0
+    font-weight: 400
+    font-size: 20px
+    line-height: 25px
     text-transform: capitalize
     color: #FFFFFF
-    border-bottom: 1px solid #38505F
-    padding-bottom: 12px
+    @media screen and (min-width: 575px)
+      margin: 24px 0 12px 0
+      font-size: 24px
+      line-height: 30px
+.time
+  padding-right: 29px
+  @media screen and (max-width: 991px)
+    display: none
+  .timeText
+    font-weight: 300
+    font-size: 14px
+    line-height: 100%
+    color: #DBE0E8
+    @media screen and (min-width: 575px)
+      font-size: 16px
+  .timeBrackets
+    font-weight: 500
+    font-size: 14px
+    line-height: 100%
+    color: rgba(240, 185, 11, 0.8)
+    @media screen and (min-width: 768px)
+      font-size: 20px
 .desc
-  font-family: 'Lexend'
   color: #FFFFFF
-  .topDesc
-    display: flex
-    align-items: center
-    gap: 0 16px
-    margin-bottom: 8px
-    .time
-      padding-right: 29px
-      .timeText
-        font-weight: 300
-        font-size: 16px
-        line-height: 100%
-        color: #DBE0E8
-      .timeBrackets
-        font-weight: 500
-        font-size: 20px
-        line-height: 100%
-        color: rgba(240, 185, 11, 0.8)
-    .btnDesc
+.topDesc
+  display: flex
+  align-items: center
+  gap: 8px
+  margin: 12px 0 8px 0
+  flex-wrap: wrap
+  @media screen and (min-width: 768px)
+    gap: 8px 16px
+  .btnDesc
+    padding: 8px
+    border-radius: 4px
+    position: relative
+    background: rgba(69, 80, 107, 0.5)
+    @media screen and (min-width: 575px)
       padding: 6px 16px
-      border-radius: 4px
-      position: relative
-      background: rgba(69, 80, 107, 0.5)
-      span
-        font-weight: 300
-        font-size: 12px
-        line-height: 115%
-        margin-left: 8px
-    .countryDesc
-      flex: 1
-  .botDesc
-    display: flex
-    align-items: center
-    gap: 0 70px
-    .gameDesc
-      img
-        width: 48px
+    span
+      font-weight: 300
+      font-size: 12px
+      line-height: 115%
+      margin-left: 8px
+  .countryDesc
+    flex: 1
+.botDesc
+  display: flex
+  align-items: center
+  gap: 0 62px
+  flex-wrap: wrap
+  .gameDesc
+    img
+      width: 32px
+      aspect-ratio: 1/1
+      border-radius: 50%
+      @media screen and (min-width: 768px)
         margin-right: 16px
-        aspect-ratio: 1/1
-        border-radius: 50%
-    .teamSizeDesc
+        width: 48px
+    .botDescContent
+      @media screen and (max-width: 574px)
+        display: none
+  .teamSizeDesc
+    @media screen and (min-width: 768px)
       margin-left: 10px
 .botDescText
   font-weight: 400
-  font-size: 18px
+  font-size: 10px
   line-height: 115%
   color: #DBE0E8
+  @media screen and (min-width: 768px)
+    font-size: 18px
 .botDescContent
   font-weight: 500
-  font-size: 17px
+  font-size: 12px
   line-height: 115%
   color: #00F9FF
-
+  @media screen and (min-width: 768px)
+    font-size: 18px
+.infoM
+  display: flex
+  justify-content: space-between
+.timeM
+  padding: 0
+  min-width: 120px
+  max-width: 120px
+  @media screen and (max-width: 991px)
+    display: block
+  @media screen and (min-width: 768px)
+    min-width: 170px
+    max-width: 170px

@@ -82,7 +82,43 @@ export default function Overview(props: Props) {
       </div>
 
       <div className={s.titleTour}>
-        <h2>{data?.name}</h2>
+        <h1>{data?.name}</h1>
+        <div className={s.infoM}>
+          <div className={s.userM}>
+            <Link
+              href={
+                data?.user?.profile?.user_name
+                  ? `/profile/${data?.user?.profile?.user_name}`
+                  : "#"
+              }
+              passHref
+            >
+              <a
+                className={`${s.userInfo} `}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  //src={data?.user?.profile?.avatar ?? '/assets/avatar.jpg'}
+                  src="/assets/avatar.jpg"
+                  className={s.userAvatar}
+                  alt=""
+                  preview={false}
+                />
+                <div className={s.userName}>
+                  <h2>{data?.user?.profile?.display_name}</h2>
+                  <h3>@{data?.user?.profile?.user_name}</h3>
+                </div>
+              </a>
+            </Link>
+          </div>
+          <div className={`${s.time} ${s.timeM}`}>
+            <span className={s.timeText}>Start time</span><br/>
+            <span className={s.timeBrackets}>{` `}{data && data?.brackets && data?.brackets[0] && moment(data?.brackets[0]?.start_at).format(
+              "YYYY/MM/DD HH:mm"
+            )}</span>
+          </div>
+        </div>
       </div>
 
       <div className={s.desc}>
