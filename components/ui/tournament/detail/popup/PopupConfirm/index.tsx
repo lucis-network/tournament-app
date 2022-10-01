@@ -109,7 +109,9 @@ export default function PopupConfirm(props: Props) {
         result, please contact to the referee(s) to resolve your problem
       </div>
       <div className={s.btnContainter}>
-        <Button onClick={onCancel} className="mr-2">Cancel</Button>
+        <Button onClick={onCancel} className="mr-2">
+          Cancel
+        </Button>
         <Button onClick={handOk} className={s.btnConfirm} loading={loadingBtn}>
           Confirm
         </Button>

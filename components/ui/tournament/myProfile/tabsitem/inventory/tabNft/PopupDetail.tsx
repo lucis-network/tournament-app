@@ -4,6 +4,8 @@ import Link from "next/link";
 import React, {useMemo} from "react";
 import s from "./nftTab.module.sass";
 import {trim_middle} from "../../../../../../../utils/String";
+import {isClient, isClientDevMode} from "../../../../../../../utils/Env";
+import {BSC_MainNet, BSC_TestNet} from "../../../../../../../utils/blockchain/ChainConfig";
 
 interface IProps {
   metadata: any;
@@ -17,6 +19,9 @@ export const NftDetail = ({metadata, tokenId, onCancel, ownerAddress, contractAd
   const [isCopyOwnerAddress, setIsCopyOwnerAddress] = React.useState(false);
   const [isCopyContractAddress, setIsCopyContractAddress] = React.useState(false);
 
+  const chain_id = parseInt("" + process.env.NEXT_PUBLIC_CHAIN_ID__BSC);
+  const is_mainnet = chain_id === BSC_MainNet.chain_id;
+  const explorer_url = (is_mainnet ? BSC_MainNet.blockExplorerUrls![0] : BSC_TestNet.blockExplorerUrls![0]);
   const imageLink = useMemo(() => {
     return metadata?.image?.replace(".webp", "_md.webp");
   }, [metadata?.image])
@@ -25,12 +30,12 @@ export const NftDetail = ({metadata, tokenId, onCancel, ownerAddress, contractAd
   return (
     <>
       <Modal
-        title={"Nft #" + tokenId}
         visible={true}
         onCancel={() => onCancel()}
         wrapClassName="connect-lmss-modal"
         footer={[]}
-        width={1200}
+        centered
+        width={1000}
         maskClosable={false}
       >
         <div className={s.nftDetail}>
@@ -49,37 +54,45 @@ export const NftDetail = ({metadata, tokenId, onCancel, ownerAddress, contractAd
                 <div className={s.des}>
                   {metadata.description}
                 </div>
-                <div className={s.ownerBy} title={ownerAddress}>
-                  <span>Owned by: </span>
-                  {trim_middle(ownerAddress, 8, 6)}
-                  <img width="20"
-                       onClick={() => {
-                         setIsCopyOwnerAddress(true);
-                         navigator.clipboard.writeText(ownerAddress);
-                         setTimeout(() => {
-                           setIsCopyOwnerAddress(false);
-                         }, 3000);
-                       }}
-                       style={{cursor: "pointer", marginLeft: 4}}
-                       src={isCopyOwnerAddress ? "/assets/P2E/overview/copied.svg" : "/assets/P2E/overview/copy-icon.svg"}/>
+                <div className={s.item} title={ownerAddress}>
+                  <span>Owned by </span>
+                  <span className={`${s.content} ${s.link}`}>
+                    <a target="_blank" rel="noopener noreferrer" href={`${explorer_url}/address/${ownerAddress}`}>
+                      {trim_middle(ownerAddress, 8, 6)}
+                    </a>
+                    <img width="20"
+                         onClick={() => {
+                           setIsCopyOwnerAddress(true);
+                           navigator.clipboard.writeText(ownerAddress);
+                           setTimeout(() => {
+                             setIsCopyOwnerAddress(false);
+                           }, 3000);
+                         }}
+                         style={{cursor: "pointer", marginLeft: 4}}
+                         src={isCopyOwnerAddress ? "/assets/P2E/overview/copied.svg" : "/assets/P2E/overview/copy-icon.svg"}/>
+                    </span>
                 </div>
-                <div className={s.contractAddress}>
-                  <span>Contract address: </span>
-                  {contractAddress}
-                  <img width="20"
-                       onClick={() => {
-                         setIsCopyContractAddress(true);
-                         navigator.clipboard.writeText(ownerAddress);
-                         setTimeout(() => {
-                           setIsCopyContractAddress(false);
-                         }, 3000);
-                       }}
-                       style={{cursor: "pointer", marginLeft: 4}}
-                       src={isCopyContractAddress ? "/assets/P2E/overview/copied.svg" : "/assets/P2E/overview/copy-icon.svg"}/>
+                <div className={s.item}>
+                  <span>Contract address </span>
+                  <span className={`${s.content} ${s.link}`}>
+                    <a target="_blank" rel="noopener noreferrer" href={`${explorer_url}/address/${contractAddress}`}>
+                      {trim_middle(contractAddress, 8, 6)}
+                    </a>
+                    <img width="20"
+                         onClick={() => {
+                           setIsCopyContractAddress(true);
+                           navigator.clipboard.writeText(ownerAddress);
+                           setTimeout(() => {
+                             setIsCopyContractAddress(false);
+                           }, 3000);
+                         }}
+                         style={{cursor: "pointer", marginLeft: 4}}
+                         src={isCopyContractAddress ? "/assets/P2E/overview/copied.svg" : "/assets/P2E/overview/copy-icon.svg"}/>
+                    </span>
                 </div>
-                <div className={s.tokenId}>
-                  <span>Token ID: </span>
-                  #{tokenId}
+                <div className={s.item}>
+                  <span>Token ID </span>
+                  <span className={s.content}>#{tokenId}</span>
                 </div>
               </div>
             </Col>

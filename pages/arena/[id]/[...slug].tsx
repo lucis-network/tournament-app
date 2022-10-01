@@ -1,11 +1,11 @@
 import s from "./TournamentDetail.module.sass";
-import {Col, Row, Spin, Tabs, message, Image} from "antd";
+import { Col, Row, Spin, Tabs, message, Image } from "antd";
 import {
   useSponsors,
   useTournamentDetail,
 } from "hooks/tournament/useTournamentDetail";
-import {Router, useRouter} from "next/router";
-import React, {useEffect, useState} from "react";
+import { Router, useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import Brackets from "components/ui/tournament/detail/tabsitem/brackets";
 import Overview from "components/ui/tournament/detail/tabsitem/overview";
 import Rules from "components/ui/tournament/detail/tabsitem/rules/Index";
@@ -16,7 +16,7 @@ import PopupDonate from "components/ui/tournament/detail/popup/popupDonate";
 import PopupShare from "components/ui/tournament/detail/popup/popupShare";
 import RegistrationPhase from "components/ui/tournament/detail/registrationPhase/RegistrationPhase";
 import ConnectWalletModal from "components/Auth/components/ConnectWalletModal";
-import {isClientDevMode} from "../../../utils/Env";
+import { isClientDevMode } from "../../../utils/Env";
 import TournamentService from "components/service/tournament/TournamentService";
 import DonationHistory from "../../../components/ui/tournament/detail/tabsitem/donationHistory";
 import ListRanks from "components/ui/tournament/detail/tabsitem/listranks";
@@ -24,18 +24,20 @@ import PopupConfirm from "components/ui/tournament/detail/popup/PopupConfirm";
 import Link from "next/link";
 import LoginModal from "components/Auth/Login/LoginModal";
 import AuthStore from "components/Auth/AuthStore";
-import {getLocalAuthInfo} from "components/Auth/AuthLocal";
-import {isEmpty} from "lodash";
+import { getLocalAuthInfo } from "components/Auth/AuthLocal";
+import { isEmpty } from "lodash";
 import TournamentDetailMarquee from "../../../components/ui/tournament/detail/marquee";
 import DocHead from "../../../components/DocHead";
 import moment from "moment";
 import TournamentDetailSponsor from "components/ui/tournament/detail/sponsor/TournamentDetailSponsor";
 import useTeamModal from "components/ui/tournament/detail/hooks/useTeamModal";
 import PopupNotifyProfile from "components/ui/tournament/detail/popup/popupNotifyProfile";
-import {LuckyChestTier} from "../../../src/generated/graphql_p2e";
-import Banner from "components/ui/tournament/detail/banner/Banner";
+import Banner from "components/ui/ranking/banner";
+import { LuckyChestTier } from "../../../src/generated/graphql_p2e";
+import { JoinTourSuccessModal } from "components/ui/tournament/detail/popup/join_tour_success_modal";
+import { useModal } from "hooks/use_modal";
 
-const {TabPane} = Tabs;
+const { TabPane } = Tabs;
 
 const tabList = [
   "Overview",
@@ -51,7 +53,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   const [isPopupDonate, setIsPopupDonate] = useState(false);
   const [isPopupNotifyProfile, setIsPopupNotifyProfile] = useState(false);
   const [isPopupShare, setIsPopupShare] = useState(false);
-  const {tournamentId, asPath} = props;
+  const { tournamentId, asPath } = props;
   const [isLoadingSub, setIsLoadingSub] = useState(false);
   const [showConfirm, setShowConfirm] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("Overview");
@@ -92,10 +94,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     skip: isEmpty(tournamentId),
   });
 
-  const {dataSponsors, refetchSponsor} = useSponsors({
+  const { dataSponsors, refetchSponsor } = useSponsors({
     tournament_uid: tournamentId,
     skip: isEmpty(tournamentId),
   });
+
+  const joinTourModal = useModal(true);
 
   useEffect(() => {
     let obj: any = [];
@@ -122,7 +126,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
   }, [dataSponsors]);
 
   if (loading) {
-    return <DocHead/>;
+    return <DocHead />;
   }
 
   const openModal = (item: string) => {
@@ -169,7 +173,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
     referees,
     turns,
     discord,
-    is_auto_checkin
+    is_auto_checkin,
   } = dataTournamentDetail ?? {};
 
   const userLocal = getLocalAuthInfo();
@@ -206,7 +210,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
     if (!AuthStore.isHasMail) {
       setIsPopupNotifyProfile(true);
-      s
+      s;
       return;
     }
 
@@ -233,7 +237,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
 
   return (
     <>
-      <DocHead/>
+      <DocHead />
       <div className={s.container}>
         <div className={`lucis-container-2 ${s.wrapper}`}>
           <div className={`${s.left_side}`}>
@@ -258,14 +262,21 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
               {(() => {
                 switch (tab) {
                   case 0:
-                    return <Overview data={dataTournamentDetail} dataBracket={dataBracket}/>;
+                    return (
+                      <Overview
+                        data={dataTournamentDetail}
+                        dataBracket={dataBracket}
+                      />
+                    );
                   default:
                     break;
                 }
               })()}
             </section>
             <section className={s.tournamentInfo}>
-              <div className={`${s.containnerTournamentDetail} lucis-container-2`}>
+              <div
+                className={`${s.containnerTournamentDetail} lucis-container-2`}
+              >
                 {/*<TournamentDetailMarquee tournamentId={tournamentId as string} />*/}
                 {userLocal?.id === user?.id &&
                   tournament_status === "FINISH" &&
@@ -281,7 +292,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                   )}
                 <div className={s.infoWrap}>
                   <div className={s.tournamentThumbnail}>
-                    <Image src={thumbnail} alt="" preview={false}/>
+                    <Image src={thumbnail} alt="" preview={false} />
                   </div>
                   <div className={s.tournamentMetadataWrap}>
                     <h1 className={s.tournamentTitle}>
@@ -300,25 +311,27 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                       />
                       <span>
                         Start time:{" "}
-                        {moment(dataTournamentDetail?.brackets[0]?.start_at).format(
-                          "YYYY/MM/DD HH:mm"
-                        )}
+                        {moment(
+                          dataTournamentDetail?.brackets[0]?.start_at
+                        ).format("YYYY/MM/DD HH:mm")}
                       </span>
                     </div>
                     <Row className={s.tournamentMetadataRow}>
                       {/* metadata */}
                       <Col
-                        xs={{span: 24}}
-                        xl={{span: 24}}
+                        xs={{ span: 24 }}
+                        xl={{ span: 24 }}
                         className={s.tournamentMetadata}
                       >
                         <Row
-                          gutter={{sm: 20, lg: 30}}
+                          gutter={{ sm: 20, lg: 30 }}
                           className={s.tournamentTagWrap}
                         >
-                          <Col style={{width: "100%"}}>
+                          <Col style={{ width: "100%" }}>
                             <Row className={s.contentTopWrap}>
-                              <Col className={`${s.btb_free_entry} ${s.bracket}`}>
+                              <Col
+                                className={`${s.btb_free_entry} ${s.bracket}`}
+                              >
                                 <div className={s.tournamentTag}>
                                   <Image
                                     src="/assets/TournamentDetail/iconDollarCoin.svg"
@@ -353,12 +366,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                               <Col
                                 className={`${s.gradientBtnWrap} ${s.team_size}`}
                               >
-                                <Row style={{width: "100%"}}>
+                                <Row style={{ width: "100%" }}>
                                   <Col className={s.btn_join_discord}>
                                     {discord && (
                                       <Link
                                         href={
-                                          discord ? discord : `https://discord.com/`
+                                          discord
+                                            ? discord
+                                            : `https://discord.com/`
                                         }
                                         passHref
                                       >
@@ -430,7 +445,9 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                                     <button
                                       key={"InviteorShare"}
                                       className={`${s.btn_detail} ${s.btn_detail_share}`}
-                                      onClick={() => openModal("Invite or Share")}
+                                      onClick={() =>
+                                        openModal("Invite or Share")
+                                      }
                                     >
                                       <Image
                                         src="/assets/TournamentDetail/ic_share.svg"
@@ -446,10 +463,10 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                           </Col>
                         </Row>
                         <Row
-                          gutter={{sm: 20, lg: 30}}
+                          gutter={{ sm: 20, lg: 30 }}
                           className={s.content_bottom}
                         >
-                          <Row style={{width: "100%"}}>
+                          <Row style={{ width: "100%" }}>
                             <Col
                               className={`${s.metadataBlock} ${s.col_item} ${s.bracket}`}
                             >
@@ -458,8 +475,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                                 {dataBracket?.type === "SINGLE"
                                   ? "Single elimination"
                                   : dataBracket?.type === "DOUBLE"
-                                    ? "Double elimination"
-                                    : ""}
+                                  ? "Double elimination"
+                                  : ""}
                               </div>
                             </Col>
                             <Col
@@ -473,8 +490,12 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             <Col
                               className={`${s.metadataBlock} ${s.alignRightMb} ${s.col_item} ${s.participants}`}
                             >
-                              <h4 className={s.metadataTitle}>Max participants</h4>
-                              <div className={s.metadataValue}>{participants}</div>
+                              <h4 className={s.metadataTitle}>
+                                Max participants
+                              </h4>
+                              <div className={s.metadataValue}>
+                                {participants}
+                              </div>
                             </Col>
                             <Col
                               className={`${s.metadataBlock} ${s.alignRightMb} ${s.bo} ${s.col_item} ${s.participants}`}
@@ -496,8 +517,8 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                             </div>
                           </Col>
                           <Col
-                            xs={{span: 12}}
-                            sm={{span: 8}}
+                            xs={{ span: 12 }}
+                            sm={{ span: 8 }}
                             className={s.userInfoBlock}
                           >
                             <Link
@@ -627,13 +648,14 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             </div>
             {/* ===== tabs ===== */}
             <div className={`${s.container_Tabs}`}>
-
               <div className={s.block_tabs}>
                 {tabList.map((item: string) => {
                   return (
                     <div
                       className={s.tab_item}
-                      style={item === activeTab ? {opacity: 1} : {opacity: 0.5}}
+                      style={
+                        item === activeTab ? { opacity: 1 } : { opacity: 0.5 }
+                      }
                       key={item}
                       onClick={() => handleActiveTab(item)}
                     >
@@ -649,7 +671,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
                     // case "Overview":
                     //   return <Overview desc={desc as string} />;
                     case "Rules":
-                      return <Rules rules={rules as string}/>;
+                      return <Rules rules={rules as string} />;
                     case "Brackets":
                       return (
                         <Brackets
@@ -720,13 +742,11 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
             <div className={s.communityC}></div>
           </div>
           <div className={s.right_side}>
-            <div>
-              right side bar
-            </div>
+            <div>right side bar</div>
           </div>
         </div>
       </div>
-      <LoginModal/>
+      <LoginModal />
       <PopupDonate
         closeModal={() => closeModal("Donate")}
         status={isPopupDonate}
@@ -743,7 +763,7 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         asPath={asPath}
       />
 
-      <ConnectWalletModal/>
+      <ConnectWalletModal />
 
       <PopupConfirm
         show={showConfirm}
@@ -758,13 +778,18 @@ const TournamentDetail = (props: { tournamentId: string; asPath: string }) => {
         status={isPopupNotifyProfile}
         onCancel={onCancelPopupNotifyProfile}
       ></PopupNotifyProfile>
+
+      <JoinTourSuccessModal
+        isOpen={joinTourModal.isOpen}
+        onClose={joinTourModal.onClose}
+      />
     </>
   );
 };
 
 export default function TournamentDetailSafe() {
   const router = useRouter();
-  const {id} = router.query;
+  const { id } = router.query;
   if (!id) {
     if (isClientDevMode) {
       console.warn("{TournamentDetail} Hey tournamentId is NULL");
@@ -772,6 +797,8 @@ export default function TournamentDetailSafe() {
   }
 
   return id ? (
-    <TournamentDetail tournamentId={id as string} asPath={router.asPath}/>
-  ) : <DocHead/>;
+    <TournamentDetail tournamentId={id as string} asPath={router.asPath} />
+  ) : (
+    <DocHead />
+  );
 }
