@@ -42,6 +42,7 @@ export class NftService extends EthersService {
 
     return await contract.summonItem();
   }
+
   private getLucisNFTContract(): ethers.Contract {
     return new ethers.Contract(this._nftAddress, LucisNFT.abi, this.getSigner());
   }

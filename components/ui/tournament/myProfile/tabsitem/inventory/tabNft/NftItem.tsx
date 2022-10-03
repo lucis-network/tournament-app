@@ -5,6 +5,7 @@ import sChestPrize from "../../../../../p2e/lucky/prize/ChestPrize.module.sass";
 import {useMutation} from "@apollo/client";
 import {MINT_NFT} from "../../../../../../../hooks/useNft";
 import {NftDetail} from "./PopupDetail";
+import {isClient} from "../../../../../../../utils/Env";
 
 type Props = {
   tokenId?: number;
@@ -14,7 +15,7 @@ type Props = {
   openDetail?: boolean;
 };
 
-const s3Metadata = "https://image-upload-s3-demo.s3.ap-southeast-1.amazonaws.com/metadata";
+const s3Metadata = isClient ? process.env.NEXT_PUBLIC_BSC_NFT_URI_TESTNET : process.env.NEXT_PUBLIC_BSC_NFT_URI_MAINNET;
 const NftItem = (props: Props) => {
   const [isMetadataError, setIsMetadataError] = useState(false);
   const [metadata, setMetadata] = useState<any>({});
